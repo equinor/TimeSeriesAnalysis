@@ -32,3 +32,16 @@ Plotting works by launching a browser(chrome) and directing it to "http://localh
 
 
 
+Nuget package
+===
+
+This is  .NET framework 4.6.1 class library published to github packages, by means of the following tutorial:
+https://github.community/t/publish-net-framework-nuget-package/3077/2
+and here:
+https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-msbuild
+
+
+For .NET Framework 
+
+- pacakges.nuget needs to be moved into *.csproj as <pacakgereference> items instead
+- NuGet.Build.Tasks.Pack need to be added as a pacakage

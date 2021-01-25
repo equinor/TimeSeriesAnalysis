@@ -2,6 +2,13 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\NUnit.3.13.0\build\NUnit.props" Condition="Exists('packages\NUnit.3.13.0\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <ItemGroup>
+    <PackageReference Include="Accord" version="3.8.0" targetFramework="net461" />
+    <PackageReference Include="Accord.Math" version="3.8.0" targetFramework="net461" />
+    <PackageReference Include="Accord.Statistics" version="3.8.0" targetFramework="net461" />
+    <PackageReference Include="NuGet.Build.Tasks.Pack" version="5.8.1" targetFramework="net461" developmentDependency="true" />
+    <PackageReference Include="NUnit" version="3.13.0" targetFramework="net461" />
+  </ItemGroup>
   <PropertyGroup>
     <RepositoryUrl>https://github.com/equinor/TimeSeriesAnalysis</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -99,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="nuget.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
