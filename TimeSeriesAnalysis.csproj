@@ -3,6 +3,12 @@
   <Import Project="packages\NUnit.3.13.0\build\NUnit.props" Condition="Exists('packages\NUnit.3.13.0\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <RepositoryUrl>https://github.com/equinor/TimeSeriesAnalysis</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>bin\debug\</PackageOutputPath>
+    <Version>1.0.0</Version>
+    <Authors>Steinar Elgsæter</Authors>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}</ProjectGuid>
@@ -92,6 +98,7 @@
     <Compile Include="Vector\Vec.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="nuget.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
@@ -102,6 +109,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\NUnit.3.13.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\NUnit.3.13.0\build\NUnit.props'))" />
     <Error Condition="!Exists('packages\Accord.3.8.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Accord.3.8.0\build\Accord.targets'))" />
+    <Error Condition="!Exists('packages\NuGet.Build.Tasks.Pack.5.8.1\build\NuGet.Build.Tasks.Pack.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\NuGet.Build.Tasks.Pack.5.8.1\build\NuGet.Build.Tasks.Pack.targets'))" />
   </Target>
   <Import Project="packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('packages\Accord.3.8.0\build\Accord.targets')" />
+  <Import Project="packages\NuGet.Build.Tasks.Pack.5.8.1\build\NuGet.Build.Tasks.Pack.targets" Condition="Exists('packages\NuGet.Build.Tasks.Pack.5.8.1\build\NuGet.Build.Tasks.Pack.targets')" />
 </Project>
