@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSeriesAnalysis", "TimeSeriesAnalysis.csproj", "{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x64.ActiveCfg = Debug|x64
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x64.Build.0 = Debug|x64
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Release|x64.ActiveCfg = Release|x64
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4BFE617-F23C-4348-95A6-A60B01565E75}
+	EndGlobalSection
+EndGlobal

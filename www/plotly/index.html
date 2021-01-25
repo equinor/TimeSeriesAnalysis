@@ -1,0 +1,58 @@
+<html>
+<head>
+	<script src="vendor/plotly.min.js"></script>
+	<!--<script src="vendor/plotly-latest.js"></script>-->
+	
+	<script src="plotlyInterface.js"></script>
+	<script src="CsvToTable.js"></script>
+	<script src="sorttable.js"></script>
+	<style>
+	table{text-align:right; font-family:"Whitney SSm A","Whitney SSm B",Arial,sans-serif; font-size:0.85em;font-weight:bold}
+	thead{font-weight:bold}
+	td{padding-left:6px; padding-right:6px; padding-bottom:3px; padding-top:3px}
+	table.sortable thead {
+		background-color:rgb(223, 157, 157);
+		color:#000000;
+		font-weight: bold;
+		cursor: default;
+	}
+	table.sortable tbody tr:nth-child(2n) td {		background: #f7f7f7;	}
+	table.sortable tbody tr:nth-child(2n+1) td {  		background: #ffffff;	}
+	.tableBodyScroll tbody {
+		display:block;
+		max-height:600px;
+		overflow-y:scroll;
+	}
+	.tableBodyScroll thead, tbody tr {
+		display:table;
+		width:70%;
+		table-layout:fixed;
+	}
+	</style>
+</head>
+
+<body>
+	<div id="TableDiv" ><!-- Plotly chart will be drawn inside this DIV --></div>
+	<div id="PlotDiv" style="width: 1500px; height: 800px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+	<div id="ButtonDiv" style="width: 1500px; height: 30px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+	<script>
+
+	// if address has hash, then go directly to individual plot
+	var hash 			= window.location.hash;
+	var ID = hash.replace("#","");
+	if (ID.length>0)
+		makePlotlyPlotFromCSV(ID);
+	else
+		CSVtoTable("TableDiv","data/table.csv");
+
+	window.onhashchange					= onHashChange;
+	//*************
+	function onHashChange(evt)
+	{
+		window.location.reload()
+	}
+
+	</script>
+</body>
+</html>
+
