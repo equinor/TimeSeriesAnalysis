@@ -82,6 +82,7 @@
     <Compile Include="IO\CSV.cs" />
     <Compile Include="IO\StringToFileWriter.cs" />
     <Compile Include="IO\UnixTime.cs" />
+    <Compile Include="Plot\Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\LowPassUnitTests.cs" />
     <Compile Include="Tests\VecUnitTests.cs" />
@@ -93,6 +94,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
