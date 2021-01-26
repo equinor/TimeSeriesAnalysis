@@ -14,8 +14,17 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Steinar Elgsæter</Authors>
+	 <Description>
+.NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 
+
+The aim is to make the C# time series analysis workflow as easy as working in Matlab, R or Python, but with the benefit of having a compiled version of your resulting algorithm. 
+
+The package uses plot.ly for plotting and Accord.NET for math.   
+
+This package is targeted toward control engineering where C# seems to be the de-facto industry standard for sharing algorithms with vendors and implementing them in advanced control, but could also be used for exploratory data analysis if you want to avoid using Matlab, R or Python.
+</Description>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}</ProjectGuid>
