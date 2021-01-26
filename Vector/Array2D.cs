@@ -11,7 +11,7 @@ namespace TimeSeriesAnalysis
     ///  see Matrix.cs
     ///</summary>
 
-    class Array2D<T>
+    public class Array2D<T>
     {
         static public T[] GetColumn(T[,] matrix, int columnNumber)
         {

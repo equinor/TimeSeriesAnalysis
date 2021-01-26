@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace TimeSeriesAnalysis
 {
-    class CSV
+    public class CSV
     {
         public static bool loadDataFromCSV(string filePath, out double[,] doubleData, out string[] variableNames, out string[,] stringData)
         {

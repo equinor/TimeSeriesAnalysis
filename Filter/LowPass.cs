@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis
 {
-    class LowPass
+    public class LowPass
     {
         private double timeBase_s;
         private double prevFilteredSignal;

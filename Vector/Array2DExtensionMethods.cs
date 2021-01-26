@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace TimeSeriesAnalysis
 {
-    static class Array2DExtensionMethods
+    public static class Array2DExtensionMethods
     {
         static public double[,] WriteColumn(this double[,] matrix, int colIdx, double[] allRowVals)
         {

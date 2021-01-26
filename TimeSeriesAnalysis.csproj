@@ -14,9 +14,9 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.1</Version>
+    <Version>1.0.3</Version>
     <Authors>Steinar Elgsæter</Authors>
-	 <Description>
+    <Description>
 .NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 
 
 The aim is to make the C# time series analysis workflow as easy as working in Matlab, R or Python, but with the benefit of having a compiled version of your resulting algorithm. 
@@ -115,6 +115,7 @@ This package is targeted toward control engineering where C# seems to be the de-
   </ItemGroup>
   <ItemGroup>
     <None Include="nuget.config" />
+    <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

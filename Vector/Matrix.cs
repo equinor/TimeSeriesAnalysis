@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis
 {
-    static class Matrix
+    public static class Matrix
     {
         static public double[,] ReplaceRow(double[,] matrix, int rowIndex, double[] newRowVec)
         {
