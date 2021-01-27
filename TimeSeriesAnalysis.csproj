@@ -92,6 +92,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Plot\Plot.cs" />
     <Compile Include="Plot\Plot4Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\PlotUnitTests.cs" />
     <Compile Include="Tests\LowPassUnitTests.cs" />
     <Compile Include="Tests\VecUnitTests.cs" />
     <Compile Include="Vector\Array2D.cs" />

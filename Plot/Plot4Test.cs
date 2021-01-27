@@ -51,7 +51,7 @@ namespace TimeSeriesAnalysis
         private bool DetermineIfToPlot()
         {
             plotCounter++;
-            if (isEnabled && plotCounter < maxNplots)
+            if (isEnabled && plotCounter <= maxNplots)
                 return true;
             else
                 return false;
