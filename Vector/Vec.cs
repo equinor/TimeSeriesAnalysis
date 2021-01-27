@@ -26,6 +26,10 @@ namespace TimeSeriesAnalysis
     }
 
 
+    ///<summary>
+    /// Utility functions and operations for treating arrays as mathetmatical vectors
+    ///</summary>
+
     public static class Vec
     {
         private static double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma

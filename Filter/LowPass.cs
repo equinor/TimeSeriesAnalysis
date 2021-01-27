@@ -12,6 +12,8 @@ namespace TimeSeriesAnalysis
         private double prevFilteredSignal;
         private double prevFilteredSignalOrder2;
         private Int64 nSignals = 0;
+        
+        
 
         public LowPass(double TimeBase_s)
         {

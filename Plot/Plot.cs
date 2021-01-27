@@ -9,15 +9,13 @@ using System.Runtime.CompilerServices;
 
 namespace TimeSeriesAnalysis
 {
-    /*
 
-    TODO: there is a danger that you forget to disable plotting and that plots are active in 
-    the release code with the way this is currently coded. 
+    ///<summary>
+    /// Static methods for plotting one or more time-series across one or more y-axes and one or more subplots. 
+    /// If you sometimes need to disable plots (for instance if plotting code is included in unit tests) see Plot4Test
+    ///</summary>
 
-    There is a need to create some mechanism to disable plots "on-the fly" 
-    for instance by a "Plot.Disable()"
 
-    */
     public class Plot
     {
         const string plotDataPath = @"C:\Appl\ProcessDataFramework\www\plotly\Data\";
@@ -25,17 +23,9 @@ namespace TimeSeriesAnalysis
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyPath = @"localhost\plotly\index.html";
 
-        const bool isEnabled = true;//disable to do "run all unit tests"
-
-        /* public void Disable()
-         {
-             isEnabled = false;
-         }
-
-         public void Enable()
-         {
-             isEnabled = true;
-         }*/
+        ///<summary>
+        /// Creates a monotonically increasing list of DataTimes starting at t0, with length N and step time dT_s
+        ///</summary>
 
         static private List<DateTime> InitTimeList(DateTime t0, int dT_s, int N)
         {
@@ -60,12 +50,12 @@ namespace TimeSeriesAnalysis
         }
 
 
+        ///<summary>
+        /// Plot one vector X, where the sampling time interval is dT_s. 
+        ///</summary>
 
         static public void One(double[] X, int dT_s, string tagName = "Var1", string comment=null, DateTime t0 = new DateTime())
         {
-            if (!isEnabled)
-                return;
-
             var time = InitTimeList(t0,dT_s, X.Count());
             // 
 
@@ -75,13 +65,14 @@ namespace TimeSeriesAnalysis
                 @"-r "+ plotlyPath + "#"+tagName + CreateCommentStr(comment), out bool returnVal);
         }
 
+        ///<summary>
+        /// Plot two vectors V1 and V2, where the sampling time interval is dT_s. 
+        ///</summary>
+
         static public void Two(double[] V1, double[] V2, int dT_s, 
             string tagNameV1 = "Var1",string tagNameV2 = "Var2",
             bool plotAllVarsOnLeftYaxis=true, bool useSubplots= false, string comment = null, DateTime t0 = new DateTime())
         {
-            if (!isEnabled)
-                return;
-
             var time = InitTimeList(t0, dT_s,V1.Count());
             WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
             WriteSingleDataToCSV(time.ToArray(), V2, tagNameV2);
@@ -103,13 +94,13 @@ namespace TimeSeriesAnalysis
             }
         }
 
+        ///<summary>
+        /// Plot three vectors V1,V2,V3 where the sampling time interval is dT_s. 
+        ///</summary>
         static public void Three(double[] V1, double[] V2, double[] V3, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
         {
-            if (!isEnabled)
-                return;
-
             var time = InitTimeList(t0, dT_s, V1.Count());
             
             WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
@@ -153,12 +144,14 @@ namespace TimeSeriesAnalysis
                 return ";comment=" + comment.Replace(" ","_"); 
         }
 
+        ///<summary>
+        /// Plot four vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
+        ///</summary>
+
         static public void Four(double[] V1, double[] V2, double[] V3,double[] V4, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
         {
-            if (!isEnabled) 
-                return;
             var time = InitTimeList(t0,dT_s, V1.Count());
             // 
             if (V1 == null)
@@ -204,13 +197,13 @@ namespace TimeSeriesAnalysis
             }
         }
 
+        ///<summary>
+        /// Plot five vectors V1,V2,V3,V4,V5 where the sampling time interval is dT_s. 
+        ///</summary>
         static public void Five(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0= new DateTime())
         {
-            if (!isEnabled)
-                return;
-
             var time = InitTimeList(t0, dT_s, V1.Count());
             // 
             if (V1 == null)
@@ -239,14 +232,14 @@ namespace TimeSeriesAnalysis
             }
         }
 
+        ///<summary>
+        /// Plot six vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
+        ///</summary>
         static public void Six(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, double[] V6, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
             string tagNameV6 = "Var6",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
         {
-            if (!isEnabled)
-                return;
-
             var time = InitTimeList(t0, dT_s, V1.Count());
             // 
             if (V1 == null)

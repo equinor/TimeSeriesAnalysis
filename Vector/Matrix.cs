@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis
 {
+    ///<summary>
+    /// Utility functions and operations for treating 2D-arrays as mathetmatical matrices
+    ///</summary>
+
     public static class Matrix
     {
         static public double[,] ReplaceRow(double[,] matrix, int rowIndex, double[] newRowVec)
