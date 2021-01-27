@@ -236,13 +236,13 @@ Also add the the url to the repository and some other info such as shown below:
 		</packageSources>
 	 <packageSourceCredentials>
 			<github>
-				<add key="Username" value="steinelg" />
+				<add key="Username" value="yourgithubuser" />
 				<add key="ClearTextPassword" value=xxxxxxx" />
 			</github>
 		</packageSourceCredentials>
 </configuration>```
 
-* pacakges.nuget needs to be moved into project file *.csproj as <pacakgereference> items instead
+* pacakges.nuget needs to be moved into project file *.csproj as <packagereference> items instead
 * NuGet.Build.Tasks.Pack need to be added as a pacakage to project
 * need to download nuget.exe and use it to push generated .nupkg file
 
@@ -252,7 +252,7 @@ Also add the the url to the repository and some other info such as shown below:
 	pause
 ```
 
-* check that the script concludes with "Your package was pushe" and no error messages in yellow or red.
+* check that the script concludes with "Your package was pushed" and no error messages in yellow or red.
 
 * notice that you need to iterate the version number in your .csproj file every time you push a new version of the package.
 

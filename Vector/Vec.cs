@@ -332,7 +332,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns an array of the difference between every neighbhoring item in array
         ///</summary>
-        internal static double[] Diff(double[] array)
+        public static double[] Diff(double[] array)
         {
             double[] ucur = SubArray(array, 1);
             double[] uprev = SubArray(array, 0, array.Length - 2);
