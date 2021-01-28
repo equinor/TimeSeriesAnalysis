@@ -14,7 +14,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 .NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 
@@ -73,6 +73,14 @@ This package is targeted toward control engineering where C# seems to be the de-
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="www\" />
+    <None Include="www\**\*.*">
+      <Pack>True</Pack>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <PackagePath>\lib\$(TargetFramework)</PackagePath>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

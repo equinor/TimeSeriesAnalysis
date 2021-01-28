@@ -48,6 +48,12 @@ namespace TimeSeriesAnalysis
             isEnabled = true;
         }
 
+        public int GetNumberOfPlotsMade()
+        {
+            return plotCounter;
+        }
+
+
         private bool DetermineIfToPlot()
         {
             plotCounter++;
