@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace TimeSeriesAnalysis
 {
@@ -14,11 +15,11 @@ namespace TimeSeriesAnalysis
             if (array.Length > 0)
             {
                 sb.Append("[");
-                sb.Append(SignificantDigits.Format(array[0], nSignificantDigits));
+                sb.Append(SignificantDigits.Format(array[0], nSignificantDigits).ToString("", CultureInfo.InvariantCulture));
                 for (int i = 1; i < array.Length; i++)
                 {
                     sb.Append(";");
-                    sb.Append(SignificantDigits.Format(array[i], nSignificantDigits) );
+                    sb.Append(SignificantDigits.Format(array[i], nSignificantDigits).ToString("",CultureInfo.InvariantCulture) );
                 }
                 sb.Append("]");
             }
