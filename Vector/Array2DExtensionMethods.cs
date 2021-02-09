@@ -39,7 +39,10 @@ namespace TimeSeriesAnalysis
             return Array2D<double>.GetRow(matrix, rowNumber);
         }
 
-
+        ///<summary>
+        ///  For the format of dateFormat, see https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
+        ///</summary>
+       
         static public DateTime[] GetColumnParsedAsDateTime(this string[,] matrix, int columnNumber, string dateFormat)
         {
             string[] strArray = Array2D<string>.GetColumn(matrix, columnNumber);
