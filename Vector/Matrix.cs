@@ -13,9 +13,15 @@ namespace TimeSeriesAnalysis
 
     public static class Matrix
     {
+        ///<summary>
+        ///  Replace a single row of a matrix 
+        ///</summary>
+
         static public double[,] ReplaceRow(double[,] matrix, int rowIndex, double[] newRowVec)
         {
             if (newRowVec.Length != matrix.GetNColumns())
+                return null;
+            if (rowIndex > matrix.GetNRows() - 1)
                 return null;
             for (int colIdx = 0; colIdx < newRowVec.Length; colIdx++)
             {
@@ -25,7 +31,25 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        ///  Multipliy either entire matrix or single row(optional third input) by a scalara 
+        ///  Replace a single column of a matrix 
+        ///</summary>
+
+        static public double[,] ReplaceColumn(double[,] matrix, int colIndex, double[] newColVec)
+        {
+            if (newColVec.Length != matrix.GetNRows())
+                return null;
+            if (colIndex > matrix.GetNColumns() - 1)
+                return null;
+            for (int rowIdx = 0; rowIdx < newColVec.Length; rowIdx++)
+            {
+                matrix[rowIdx, colIndex] = newColVec[rowIdx];
+            }
+            return matrix;
+        }
+
+
+        ///<summary>
+        ///  Multipliy either entire matrix or single row(optional third input) by a scalar
         ///</summary>
 
         static public double[,] Mult(double[,] matrix, double scalar, int singleMatrixRowToMult = -1)
