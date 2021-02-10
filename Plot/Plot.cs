@@ -24,9 +24,17 @@ namespace TimeSeriesAnalysis
         const string plotlyPath = @"localhost\plotly\index.html";
 
         ///<summary>
-        /// Creates a monotonically increasing list of DataTimes starting at t0, with length N and step time dT_s
+        /// Remove illegal characters from tagName.
         ///</summary>
 
+        static private string PreprocessTagName(string tagName)
+        {
+            return tagName.Replace(" ", "_");
+        }
+
+        ///<summary>
+        /// Creates a monotonically increasing list of DataTimes starting at t0, with length N and step time dT_s
+        ///</summary>
         static private List<DateTime> InitTimeList(DateTime t0, int dT_s, int N)
         {
             DateTime defaultT0 = new DateTime(2000, 1, 1, 0, 0, 0);
@@ -56,6 +64,7 @@ namespace TimeSeriesAnalysis
 
         static public void One(double[] X, int dT_s, string tagName = "Var1", string comment=null, DateTime t0 = new DateTime())
         {
+            tagName = PreprocessTagName(tagName);
             var time = InitTimeList(t0,dT_s, X.Count());
             // 
 
@@ -73,6 +82,9 @@ namespace TimeSeriesAnalysis
             string tagNameV1 = "Var1",string tagNameV2 = "Var2",
             bool plotAllVarsOnLeftYaxis=true, bool useSubplots= false, string comment = null, DateTime t0 = new DateTime())
         {
+            tagNameV1 = PreprocessTagName(tagNameV1);
+            tagNameV2 = PreprocessTagName(tagNameV2);
+
             var time = InitTimeList(t0, dT_s,V1.Count());
             WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
             WriteSingleDataToCSV(time.ToArray(), V2, tagNameV2);
@@ -152,6 +164,11 @@ namespace TimeSeriesAnalysis
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
         {
+            tagNameV1 = PreprocessTagName(tagNameV1);
+            tagNameV2 = PreprocessTagName(tagNameV2);
+            tagNameV3 = PreprocessTagName(tagNameV3);
+            tagNameV4 = PreprocessTagName(tagNameV4);
+
             var time = InitTimeList(t0,dT_s, V1.Count());
             // 
             if (V1 == null)
@@ -204,6 +221,12 @@ namespace TimeSeriesAnalysis
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0= new DateTime())
         {
+            tagNameV1 = PreprocessTagName(tagNameV1);
+            tagNameV2 = PreprocessTagName(tagNameV2);
+            tagNameV3 = PreprocessTagName(tagNameV3);
+            tagNameV4 = PreprocessTagName(tagNameV4);
+            tagNameV5 = PreprocessTagName(tagNameV5);
+
             var time = InitTimeList(t0, dT_s, V1.Count());
             // 
             if (V1 == null)
@@ -240,6 +263,13 @@ namespace TimeSeriesAnalysis
             string tagNameV6 = "Var6",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
         {
+            tagNameV1 = PreprocessTagName(tagNameV1);
+            tagNameV2 = PreprocessTagName(tagNameV2);
+            tagNameV3 = PreprocessTagName(tagNameV3);
+            tagNameV4 = PreprocessTagName(tagNameV4);
+            tagNameV5 = PreprocessTagName(tagNameV5);
+            tagNameV6 = PreprocessTagName(tagNameV6);
+
             var time = InitTimeList(t0, dT_s, V1.Count());
             // 
             if (V1 == null)
@@ -290,6 +320,8 @@ namespace TimeSeriesAnalysis
         // - ";" column separator
         static private void WriteSingleDataToCSV(DateTime[] time, double[] data, string tagName, string comment = null)
         {
+            tagName = PreprocessTagName(tagName);
+
             string CSVseparator = ",";
             StringBuilder sb = new StringBuilder();
             // make header

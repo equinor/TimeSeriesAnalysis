@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis
             if (matrix == null)
                 return null;
 
-            if (columnNumber <= matrix.GetLength(0))
+            if (columnNumber < matrix.GetLength(1))
             {
                 return Enumerable.Range(0, matrix.GetLength(0))
                         .Select(x => matrix[x, columnNumber])
@@ -104,7 +104,8 @@ namespace TimeSeriesAnalysis
             if (matrix == null)
                 return null;
 
-            if (rowNumber <= matrix.GetLength(0))
+        
+            if (rowNumber < matrix.GetLength(0))
             {
                 return Enumerable.Range(0, matrix.GetLength(1))
                     .Select(x => matrix[rowNumber, x])

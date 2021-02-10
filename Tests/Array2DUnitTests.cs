@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using TimeSeriesAnalysis;
+
+namespace TimeSeriesAnalysis.UnitTests
+{
+    [TestFixture]
+    class ArrayUnitTests
+    {
+        [Test]
+        public void ArrayGetColumn()
+        {
+            double[,] matrix = new double[,]{ { 1,2}, { 3,4}, {5,6 } };
+            Assert.AreEqual(new double[] { 1 ,3, 5 }, matrix.GetColumn(0));
+            Assert.AreEqual(new double[] { 2, 4, 6 }, matrix.GetColumn(1));
+            Assert.AreEqual(null, matrix.GetColumn(2));
+        }
+
+        [Test]
+        public void ArrayGetRow()
+        {
+            double[,] matrix = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            Assert.AreEqual(new double[] { 1, 2 }, matrix.GetRow(0));
+            Assert.AreEqual(new double[] { 3, 4 }, matrix.GetRow(1));
+            Assert.AreEqual(new double[] { 5, 6 }, matrix.GetRow(2));
+            Assert.AreEqual(null, matrix.GetRow(3));
+        }
+
+        [Test]
+        public void ArrayGetNColumns()
+        {
+            double[,] matrix = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            Assert.AreEqual(2, matrix.GetNColumns());
+        }
+
+        public void ArrayGetNRows()
+        {
+            double[,] matrix = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            Assert.AreEqual(3, matrix.GetNRows());
+        }
+
+    }
+}

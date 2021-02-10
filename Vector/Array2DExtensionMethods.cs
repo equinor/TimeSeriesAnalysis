@@ -72,8 +72,6 @@ namespace TimeSeriesAnalysis
             return result;
         }
 
-
-
         static public double[,] GetColumns(this double[,] matrix, int[] columnNumbers)
         {
             return Array2D<double>.GetColumns(matrix, columnNumbers);

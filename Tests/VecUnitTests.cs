@@ -11,7 +11,6 @@ namespace TimeSeriesAnalysis.UnitTests
     [TestFixture]
     class VecUnitTests
     {
-
         [TestCase(new int[] { 0, 1 }, 3, new int[] { 2 })]
         [TestCase(new int[] { 0, 2 }, 3, new int[] { 1 })]
         [TestCase(new int[] { 1, 2 }, 3, new int[] { 0 })]
