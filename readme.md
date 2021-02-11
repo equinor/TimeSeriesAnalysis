@@ -21,7 +21,7 @@ The result is a that tasks that you would normally do in for instance Matlab due
 accomplished in about the same amount of code in C#/.NET. So the resulting code is in many was "just as simple".
 
 The benefit of doing this in C#/.NET 
-- that you get the benefits of a compiled language,prototype code is written in a lanugage suitable for implementation, (unlike Matlab scripts). 
+- that you get the benefits of a compiled language,prototype code is written in a lanugage suitable for implementation, (unlike Matlab scripts). That means you avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
 - the resulting code does not required a paid license to run, anybody can download a free copy of VS code and re-compile the code, 
 without requiring a working license server, a correct number of licenses or enough licenses. 
 - you can easily extend your code to for instance run in paralell using the "paralell.for" functionaliy freely available in .NET, wheres this functionality
@@ -29,7 +29,6 @@ may require a very expensive toolbox in Matlab(Paralell processing toolbox).
 
 Originally this code has been written with control-engineering in mind, as control engineers typically 
 prefer compiled languages such as C# for code that is to be integrated in the control system. 
-
 
 Install instructions to make in-browser time-series plotting work
 =========================================
