@@ -41,7 +41,23 @@ in your broser serves up a folder on your computer as "localhost".
 Copy the folder "plotly" into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
 such as "c:\inetpub\plotly" if  "c:\inetpub" is the folder that IIS is serving.
 
+Note that this repo includes some custom javascript code which wraps some plot.ly timeseries plotting functionality, so that a "Plot(Var1)" in C# can trigger
+a browser to open with a time-series plot of "Var1". 
+
+
 Plotting works by launching a browser(chrome) and directing it to "http://localhost/plotly/index.html", but all the low-level details are handled by the Plot class for you.
+
+Plotting
+=========================================
+
+Plotting supports
+- one or two subplots(stacked vertically)
+- one or two y-axes on either subplot
+- support for zooming in the plot, 
+- subplots x-axes are linked when zooming
+- ability to turn trends on/off, which will cause auto-zoom to update
+- ability to hover over trends to inspect values
+- currently up to six trends can be plotted on a page in total(this can be increased if there is interest)
 
 
 Usage
