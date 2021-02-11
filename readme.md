@@ -13,8 +13,22 @@ It handles
 The aim of this library is to make the process of working with time series as easy as possible, 
 and the resulting workflow should be comparable to working in Matlab, Python or R. 
 
+This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform 
+operations like adding, subtracting, multiplying with vectors and matrices, as well as typicall pre-processing tasks like selecting
+subsets of a larger dataset, removing spurious values, min/max range limits etc. 
+
+The result is a that tasks that you would normally do in for instance Matlab due to the "simplicity" offered by the language, can now be 
+accomplished in about the same amount of code in C#/.NET. So the resulting code is in many was "just as simple".
+
+The benefit of doing this in C#/.NET 
+- that you get the benefits of a compiled language,prototype code is written in a lanugage suitable for implementation, (unlike Matlab scripts). 
+- the resulting code does not required a paid license to run, anybody can download a free copy of VS code and re-compile the code, 
+without requiring a working license server, a correct number of licenses or enough licenses. 
+- you can easily extend your code to for instance run in paralell using the "paralell.for" functionaliy freely available in .NET, wheres this functionality
+may require a very expensive toolbox in Matlab(Paralell processing toolbox).
+
 Originally this code has been written with control-engineering in mind, as control engineers typically 
-prefer compiled languages such as c# for code that is to be integrated in the control system. 
+prefer compiled languages such as C# for code that is to be integrated in the control system. 
 
 
 Install instructions to make in-browser time-series plotting work
@@ -25,7 +39,7 @@ The plotting in this package is based on the javacsript plotting library plot.ly
 The repo includes a folder "www\plotly" and for plotting to work you need to run an http-server such as Internet Information Services that
 in your broser serves up a folder on your computer as "localhost". 
 
-Copy the folder "plotly" into the folder that for instance IIS is serveing(where it can live along side other pages you may be serving up),
+Copy the folder "plotly" into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
 such as "c:\inetpub\plotly" if  "c:\inetpub" is the folder that IIS is serving.
 
 Plotting works by launching a browser(chrome) and directing it to "http://localhost/plotly/index.html", but all the low-level details are handled by the Plot class for you.
@@ -195,8 +209,6 @@ namespace SubseaPALL
 
 
 
-
-
 Nuget package upload how-to
 =========================================
 
@@ -213,6 +225,7 @@ For future reference, this is the steps followed:
 
 * the description that will be shown in nuget when downloading is pulled from <description></description> in the .csproj file beneath <propertygroup>. Consider adding it.
 Also add the the url to the repository and some other info such as shown below:
+	
 ```
     <RepositoryUrl>https://github.com/equinor/TimeSeriesAnalysis</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -227,6 +240,7 @@ Also add the the url to the repository and some other info such as shown below:
 * a personal acceess token xxxxxxx needs to be generated for your user in github,and needs access to "read:packages", 
 "write:packages" and "repo".organization access (authorize with SSO ) and then press "authorize"
 * create a nuget.config file that defines "github" as a nuget destination:
+
 ```	<?xml version="1.0" encoding="utf-8"?>
 	<configuration>
 		<packageSources>
@@ -240,7 +254,8 @@ Also add the the url to the repository and some other info such as shown below:
 				<add key="ClearTextPassword" value=xxxxxxx" />
 			</github>
 		</packageSourceCredentials>
-</configuration>```
+</configuration>
+```
 
 * pacakges.nuget needs to be moved into project file *.csproj as <packagereference> items instead
 * NuGet.Build.Tasks.Pack need to be added as a pacakage to project
