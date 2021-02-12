@@ -277,7 +277,8 @@ Also add the the url to the repository and some other info such as shown below:
 * need to download nuget.exe and use it to push generated .nupkg file
 
 * then to publish put the following two commands in a publish.bat file:
-```	nuget setapikey xxxxxxxx -source "github"
+```	
+	nuget setapikey xxxxxxxx -source "github"
 	nuget push bin\Debug\*.nupkg -source "github" -SkipDuplicate
 	pause
 ```
