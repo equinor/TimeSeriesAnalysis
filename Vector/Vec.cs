@@ -34,10 +34,6 @@ namespace TimeSeriesAnalysis
     {
         private static double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
 
-
-
-
-
         ///<summary>
         ///  Returns maximum value of array between indices startInd and endInd
         ///</summary>
@@ -603,7 +599,7 @@ namespace TimeSeriesAnalysis
                 }
                 return Concat(regression.Weights, regression.Intercept);
             }
-            catch
+            catch (Exception e)
             {
                 return null;
             }

@@ -121,6 +121,7 @@ namespace TimeSeriesAnalysis.UnitTests
             double[] X2 = { 0, 0, 1, 2,0 };// gain:2
             double[][] X = { X1, X2 };
             double[] b = Vec.Regress(Y, X);
+            Assert.IsNotNull(b);
             Assert.Less(Math.Abs(1 - b[0]), 0.001);
             Assert.Less(Math.Abs(2 - b[1]), 0.001);
         }

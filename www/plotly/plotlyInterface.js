@@ -52,7 +52,7 @@ function makePlotlyPlotFromCSV(hash)
 			if (splitStr[i].indexOf("comment:")==-1 && splitStr[i].indexOf("comment=")==-1) //ignore "comment= "field
 			{
 				this.nVariablesToPlot++;
-				this.csvnames[i]= splitStr[i].replace("y2=","").replace("y3=","").replace("y4=","");
+				this.csvnames[i]= splitStr[i].replace("y1=","").replace("y2=","").replace("y3=","").replace("y4=","");
 			}
         }
         for (var i=0; i<this.nVariablesToPlot; i++)

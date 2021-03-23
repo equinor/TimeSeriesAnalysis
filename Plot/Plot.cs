@@ -322,6 +322,11 @@ namespace TimeSeriesAnalysis
         {
             tagName = PreprocessTagName(tagName);
 
+            tagName = tagName.Replace("y1=", "");
+            tagName = tagName.Replace("y2=", "");
+            tagName = tagName.Replace("y3=", "");
+            tagName = tagName.Replace("y4=", "");
+
             string CSVseparator = ",";
             StringBuilder sb = new StringBuilder();
             // make header
