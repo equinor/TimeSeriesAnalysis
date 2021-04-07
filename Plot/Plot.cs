@@ -59,7 +59,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        /// Plot one vector X, where the sampling time interval is dT_s. 
+        /// (deprecated)Plot one vector X, where the sampling time interval is dT_s. 
         ///</summary>
 
         static public void One(double[] X, int dT_s, string tagName = "Var1", string comment=null, DateTime t0 = new DateTime())
@@ -75,7 +75,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Plot two vectors V1 and V2, where the sampling time interval is dT_s. 
+        ///(deprecated) Plot two vectors V1 and V2, where the sampling time interval is dT_s. 
         ///</summary>
 
         static public void Two(double[] V1, double[] V2, int dT_s, 
@@ -107,7 +107,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Plot three vectors V1,V2,V3 where the sampling time interval is dT_s. 
+        /// (deprecated)Plot three vectors V1,V2,V3 where the sampling time interval is dT_s. 
         ///</summary>
         static public void Three(double[] V1, double[] V2, double[] V3, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3",
@@ -157,7 +157,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Plot four vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
+        /// (deprecated)Plot four vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
         ///</summary>
 
         static public void Four(double[] V1, double[] V2, double[] V3,double[] V4, int dT_s,
@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Plot five vectors V1,V2,V3,V4,V5 where the sampling time interval is dT_s. 
+        /// (deprecated)Plot five vectors V1,V2,V3,V4,V5 where the sampling time interval is dT_s. 
         ///</summary>
         static public void Five(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
@@ -256,7 +256,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Plot six vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
+        /// (deprecated)Plot six vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
         ///</summary>
         static public void Six(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, double[] V6, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
@@ -300,9 +300,44 @@ namespace TimeSeriesAnalysis
             }
         }
 
+        ///<summary>
+        ///  Plot any number of variables,by giving values and names by lists (preferred)
+        ///</summary>
 
+        public static void FromList(List<double[]> plotValue, List<string> plotNames, int dT_s, string comment = null, DateTime t0 = new DateTime())
+        {
+            if (plotValue == null)
+                return;
+            if (plotNames == null)
+                return;
+            if (plotValue.Count() == 0)
+                return;
+            if (plotNames.Count() == 0)
+                return;
 
+            string command = @"-r " + plotlyPath + "#";
 
+            var time = InitTimeList(t0, dT_s, plotValue.ElementAt(0).Count());
+            /*for (int i = 0; i < plotValue.ElementAt(0).Length; i++)
+            {
+                time.Add(time.Last().AddSeconds(dT_s));
+            }*/
+
+            int j = 0;
+            foreach (string plotName in plotNames)
+            {
+                string ppTagName = PreprocessTagName(plotName);
+                command += ppTagName;
+                if (j < plotNames.Count-1)//dont add semicolon after last variable
+                    command += ";";
+                WriteSingleDataToCSV(time.ToArray(), plotValue.ElementAt(j), ppTagName);
+                j++;
+            }
+            command += CreateCommentStr(comment);
+
+            Start(chromePath,command, out bool returnVal);
+
+        }
 
 
         static private Process Start(string procname, string arguments, out bool returnValue, string comment = null)
