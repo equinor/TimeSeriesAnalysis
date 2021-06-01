@@ -43,6 +43,10 @@ namespace TimeSeriesAnalysis
         public static string ToString(this double[] array,int nSignificantDigits,string dividerStr =";")
         {
             StringBuilder sb = new StringBuilder();
+            if (array == null)
+            {
+                return "null";
+            }
             if (array.Length > 0)
             {
                 sb.Append("[");
