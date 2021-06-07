@@ -12,6 +12,20 @@ namespace TimeSeriesAnalysis.UnitTests
     class MatrixUnitTests
     {
         [Test]
+        public void MatrixMult()
+        {
+
+            double[,] matrix = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            // (3x2) x (2x1) = 3x1
+            double[] result = Matrix.Mult(matrix, new double[] { 2, 3 });
+            Assert.AreEqual(result,new double[] { 8, 18,28 } );
+
+        }
+
+
+
+
+        [Test]
         public void ReplaceRow()
         {
             double[,] matrix = new double[,]{ { 1,2}, { 3,4}, {5,6 } };

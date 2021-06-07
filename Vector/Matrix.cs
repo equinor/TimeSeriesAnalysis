@@ -76,13 +76,13 @@ namespace TimeSeriesAnalysis
         ///  Multipliy either entire matrix or single row(optional third input) by a vector 
         ///</summary>
 
-        static public double[,] Mult(double[,] matrix, double[] vector, int singleMatrixRowToMult=-1)
+        static public double[] Mult(double[,] matrix, double[] vector, int singleMatrixRowToMult=-1)
         {
             if (matrix.GetNColumns() != vector.Count())
             {
                 return null;//incompatible matrix and vector lengths
             }
-
+            /*
             if (singleMatrixRowToMult >= 0)
             {
                 if (singleMatrixRowToMult > matrix.GetNRows() - 1)
@@ -94,16 +94,20 @@ namespace TimeSeriesAnalysis
                     matrix[singleMatrixRowToMult, curMatrixCol] = matrix[singleMatrixRowToMult, curMatrixCol] * vector[curMatrixCol];
                 }
                 return matrix;
-            }
+            }*/
+
+            double[] returnVec = new double[matrix.GetNRows()];
+
 
             for (int curMatrixRow = 0; curMatrixRow < matrix.GetNRows(); curMatrixRow++)
             {
+                returnVec[curMatrixRow] = 0;
                 for (int curMatrixCol = 0; curMatrixCol < vector.Count(); curMatrixCol++)
                 {
-                    matrix[curMatrixRow, curMatrixCol] = matrix[curMatrixRow, curMatrixCol] * vector[curMatrixCol];
+                    returnVec[curMatrixRow] += matrix[curMatrixRow, curMatrixCol] * vector[curMatrixCol];
                 }
             }
-            return matrix;
+            return returnVec;
         }
 
 
