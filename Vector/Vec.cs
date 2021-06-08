@@ -870,6 +870,29 @@ namespace TimeSeriesAnalysis
             return array;
         }
 
+
+        ///<summary>
+        /// replaces all the vaules in array with indices in indList NaN
+        ///</summary>
+        public static double[] ReplaceIndWithValue(double[] array, List<int> indList, 
+            double valueToReplaceWith)
+        {
+            int[] vecInd = indList.ToArray();
+            for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
+            {
+                int curVecInd = vecInd[curIndInd];
+                if (curVecInd > 0)
+                {
+                    array[curVecInd] = valueToReplaceWith;
+                }
+            }
+            return array;
+        }
+
+
+
+
+
         ///<summary>
         /// returns the intersection of array1 and array2, a list of elements that are in both vectors
         ///</summary>
