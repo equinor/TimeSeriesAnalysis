@@ -4,7 +4,7 @@ function makePlotlyPlotFromCSV(hash)
     // one or more csvs will be loaded and placed on either left or right y-axis depening on format of hash
     // reading each csv is asyncrhonous, and plotting is done only after reading all csvs has completed...
     var DataStorage = function(hash){this.hash=hash; this.data = [];this.csvnames=[];this.hasTwoSubplots; 
-        this.isVarOnY1=[];this.isVarOnY2=[];this.isVarOnY3=[];this.isVarOnY4=[];};// create object
+        this.isVarOnY1=[];this.isVarOnY2=[];this.isVarOnY3=[];this.isVarOnY4=[];this.comment="";};// create object
     DataStorage.prototype.addData = function (csvname,dataIn) 
     {
         this.data[csvname] = dataIn; 
@@ -54,6 +54,11 @@ function makePlotlyPlotFromCSV(hash)
 				this.nVariablesToPlot++;
 				this.csvnames[i]= splitStr[i].replace("y1=","").replace("y2=","").replace("y3=","").replace("y4=","");
 			}
+			else
+			{
+				this.comment = splitStr[i].replace("comment=","").replace("comment:","");
+			}
+			
         }
         for (var i=0; i<this.nVariablesToPlot; i++)
         {
@@ -233,7 +238,7 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
     }
 
     var layout = {};
-  //  layout.autosize = true;
+ //  layout.autosize = true;
     layout.hovermode= 'x'; 
     if( dataStorageObj.hasTwoSubplots)
     {
@@ -250,6 +255,7 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
         layout.yaxis1 =  { domain: [0, 1],                  side: 'left',  anchor: 'x1' }
         layout.yaxis2 =  { domain: [0, 1],overlaying: 'y1',  side: 'right', anchor: 'x1' }
     }
+	layout.title = dataStorageObj.comment;
 
     Plotly.newPlot('PlotDiv', data,layout);
 
