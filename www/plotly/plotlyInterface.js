@@ -64,10 +64,20 @@ function makePlotlyPlotFromCSV(hash)
 			}
 			
         }
+		
+		if (this.caseName !== "")
+		{
+			for (var i=0; i<this.nVariablesToPlot; i++)
+			{
+				this.csvnames[i]= this.casename + this.csvnames[i];
+			}
+		}
+		
         for (var i=0; i<this.nVariablesToPlot; i++)
         {
-            this.data[this.casename + this.csvnames[i]]= null;
+            this.data[this.csvnames[i]]= null;
         }
+	
         return;
     }
     DataStorage.prototype.HasAllDataArrived = function () 
