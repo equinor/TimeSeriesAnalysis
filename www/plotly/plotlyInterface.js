@@ -4,7 +4,7 @@ function makePlotlyPlotFromCSV(hash)
     // one or more csvs will be loaded and placed on either left or right y-axis depening on format of hash
     // reading each csv is asyncrhonous, and plotting is done only after reading all csvs has completed...
     var DataStorage = function(hash){this.hash=hash; this.data = [];this.csvnames=[];this.hasTwoSubplots; 
-        this.isVarOnY1=[];this.isVarOnY2=[];this.isVarOnY3=[];this.isVarOnY4=[];this.comment="";};// create object
+        this.isVarOnY1=[];this.isVarOnY2=[];this.isVarOnY3=[];this.isVarOnY4=[];this.comment="";this.casename=""};// create object
     DataStorage.prototype.addData = function (csvname,dataIn) 
     {
         this.data[csvname] = dataIn; 
@@ -49,20 +49,24 @@ function makePlotlyPlotFromCSV(hash)
                 this.isVarOnY4[i]=true;
                 this.hasTwoSubplots = true;
             }
-			if (splitStr[i].indexOf("comment:")==-1 && splitStr[i].indexOf("comment=")==-1) //ignore "comment= "field
+			if (splitStr[i].indexOf("comment:")==-1 && splitStr[i].indexOf("comment=")==-1 && 
+				splitStr[i].indexOf("casename:")==-1)//ignore "comment= "field
 			{
 				this.nVariablesToPlot++;
 				this.csvnames[i]= splitStr[i].replace("y1=","").replace("y2=","").replace("y3=","").replace("y4=","");
 			}
 			else
 			{
-				this.comment = splitStr[i].replace("comment=","").replace("comment:","");
+				if (splitStr[i].indexOf("casename:")>-1)
+					this.casename = splitStr[i].replace("casename:","");
+				else
+					this.comment = splitStr[i].replace("comment=","").replace("comment:","");
 			}
 			
         }
         for (var i=0; i<this.nVariablesToPlot; i++)
         {
-            this.data[this.csvnames[i]]= null;
+            this.data[this.casename + this.csvnames[i]]= null;
         }
         return;
     }
@@ -187,6 +191,16 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
                     colorName = "GoldenRod";
                 else if (columnIdx <= 24)
                     colorName = "DarkOrchid";
+				else if (columnIdx <= 30)
+					 colorName = "RosyBrown";
+				else if (columnIdx <= 36)
+					 colorName = "Black";
+				else if (columnIdx <= 42)
+					 colorName = "DarkGray";
+				else if (columnIdx <= 48)
+					 colorName = "IndianRed";
+				
+				
             }else if(csvIdx==1)
             {   colorName  ="RosyBrown";}
             else if (csvIdx==2)
@@ -200,7 +214,25 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
 		    else if (csvIdx==6)
             {   colorName  ="GoldenRod";}
 		    else if (csvIdx==7)
-            {   colorName  ="DarkOrchid";}
+            {   colorName  ="Brown";}
+			else if (csvIdx==8)
+            {   colorName  ="CadetBlue";}
+			else if (csvIdx==9)
+            {   colorName  ="Violet";}
+			else if (csvIdx==10)
+            {   colorName  ="DarkSlateBlue";}
+			else if (csvIdx==11)
+            {   colorName  ="LightPink";}
+			else if (csvIdx==12)
+            {   colorName  ="YellowGreen";}
+			else if (csvIdx==13)
+            {   colorName  ="Olive";}
+			else if (csvIdx==14)
+            {   colorName  ="DarkCyan";}
+			else if (csvIdx==15)
+            {   colorName  ="MediumSpringGreen";}
+
+
 		
 
             let prettyName = currentValueColumnName;

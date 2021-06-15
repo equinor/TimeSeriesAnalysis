@@ -302,20 +302,30 @@ namespace TimeSeriesAnalysis
 
         ///<summary>
         ///  Plot any number of variables,by giving values and names by lists (preferred)
+        ///  
+        ///  If you want to plot mutliple plots with the same variable names, 
+        ///  specify a unique casename for each plot.
+        ///  
+        ///  By setting doStartChrome to false, you can skip opening up chrome, the link to figure
+        ///   will instead be returned 
+        /// 
         ///</summary>
 
-        public static void FromList(List<double[]> plotValue, List<string> plotNames, int dT_s, string comment = null, DateTime t0 = new DateTime())
+        public static string FromList(List<double[]> plotValue, List<string> plotNames, 
+            int dT_s, string comment = null, DateTime t0 = new DateTime(),
+            string caseName="",bool doStartChrome=true)
         {
             if (plotValue == null)
-                return;
+                return "";
             if (plotNames == null)
-                return;
+                return "";
             if (plotValue.Count() == 0)
-                return;
+                return "";
             if (plotNames.Count() == 0)
-                return;
+                return "";
 
             string command = @"-r " + plotlyPath + "#";
+            string plotURL = ""; ;
 
             var time = InitTimeList(t0, dT_s, plotValue.ElementAt(0).Count());
             /*for (int i = 0; i < plotValue.ElementAt(0).Length; i++)
@@ -326,16 +336,22 @@ namespace TimeSeriesAnalysis
             int j = 0;
             foreach (string plotName in plotNames)
             {
-                string ppTagName = PreprocessTagName(plotName);
-                command += ppTagName;
+                string ppTagName = PreprocessTagName(caseName + plotName);
+                string shortPPtagName = PreprocessTagName(plotName);
+                plotURL += shortPPtagName;
                 if (j < plotNames.Count-1)//dont add semicolon after last variable
-                    command += ";";
+                    plotURL += ";";
                 WriteSingleDataToCSV(time.ToArray(), plotValue.ElementAt(j), ppTagName);
                 j++;
             }
-            command += CreateCommentStr(comment);
-
-            Start(chromePath,command, out bool returnVal);
+            plotURL += CreateCommentStr(comment);
+            if (caseName.Length > 0)
+                plotURL += ";casename:" + caseName;
+            if (doStartChrome)
+            {
+                Start(chromePath, command+plotURL, out bool returnVal);
+            }
+            return plotURL;
 
         }
 
