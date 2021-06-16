@@ -324,6 +324,20 @@ namespace TimeSeriesAnalysis.UnitTests
             Assert.AreEqual(4, sumAbsErr);
         }
 
+        [Test]
+        public void SerializeAndDeserialize_works()
+        {
+            string fileName = @"C:\Appl\source\TimeSeriesAnalysis\unittest.txt";
+            double[] vec1 = { 0.0001,1.00002,-0.02,-1.002, 200000, Double.NaN };
+            Vec.Serialize(vec1, fileName);
+            double[] vec2 = Vec.Deserialize(fileName);
+
+            Assert.AreEqual(vec1,vec2);
+
+
+        }
+
+
 
     }
 }

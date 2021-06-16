@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Accord.Statistics.Models.Regression.Linear;
 using Accord.Statistics.Models.Regression.Fitting;
+using System.Globalization;
+using System.IO;
 
 namespace TimeSeriesAnalysis
 {
@@ -1031,5 +1033,48 @@ namespace TimeSeriesAnalysis
 
             return appendedIndiceArray;
         }
+
+        /// <summary>
+        ///  serializes a single vector/array to a file for persistent storage to a human-readable text format
+        /// </summary>
+        static public bool Serialize(double[] vector, string fileName)
+        {
+            using (StringToFileWriter writer = new StringToFileWriter(fileName))
+            {
+                foreach (double val in vector)
+                {
+                    writer.Write(val.ToString("##.###########", CultureInfo.InvariantCulture) +"\r\n");
+                }
+                writer.Close();
+            }
+            return true;
+        }
+        
+
+        /// <summary>
+        ///  de-serializes a single vector/array (written by serialize)
+        /// </summary>
+        static public double[] Deserialize(string fileName)
+        {
+            List<double> values  = new List<double> ();
+            string[] lines = File.ReadAllLines(fileName);
+
+            foreach (string line in lines)
+            {
+                bool isOk = Double.TryParse(line, NumberStyles.Any,
+                    CultureInfo.InvariantCulture,out double result);
+                if (isOk)
+                {
+                    values.Add(result);
+                }
+                else
+                {
+                    values.Add(Double.NaN);
+                }
+            }
+            return values.ToArray();
+        }
+
+        
     }
 }
