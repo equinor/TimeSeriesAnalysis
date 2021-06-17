@@ -245,7 +245,7 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
 
 		
 
-            let prettyName = currentValueColumnName;
+            let prettyName = currentValueColumnName.replace(dataStorageObj.casename,'');
             if (prettyName == "price")
                 prettyName = csvname;
             let trace1 = {
