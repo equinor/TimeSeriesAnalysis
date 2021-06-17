@@ -303,6 +303,28 @@ namespace TimeSeriesAnalysis.UnitTests
         }
 
         [Test]
+        public void VecMax()
+        {
+            double[] vec1 = { 0, 1, 2, 3,};
+            double[] vec2 = { 2, 2, 2, 2 };
+            double[] vecres = Vec.Max(vec1,vec2);
+
+            Assert.AreEqual( new double[]{2,2,2,3 }, vecres);
+        }
+
+        [Test]
+        public void VecMin()
+        {
+            double[] vec1 = { 0, 1, 2, 3, };
+            double[] vec2 = { 2, 2, 2, 2 };
+            double[] vecres = Vec.Min(vec1, vec2);
+
+            Assert.AreEqual(new double[] { 0, 1, 2, 2 }, vecres);
+        }
+
+
+
+        [Test]
         public void SumOfSquareErrors()
         {
             double[] vec1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };

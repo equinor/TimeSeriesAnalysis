@@ -55,6 +55,42 @@ namespace TimeSeriesAnalysis
             return maxVal;
         }
 
+
+        ///<summary>
+        ///  Returns maximum value of two array as new array 
+        ///</summary>
+        public static double[] Max(double[] array1, double[] array2)
+        {
+            double[] retVal = new double[array1.Length];
+
+            for (int i = 0; i < retVal.Length  ; i++)
+            {
+                if (array1[i] > array2[i])
+                    retVal[i] = array1[i];
+                else
+                    retVal[i] = array2[i];
+            }
+            return retVal;
+        }
+
+        ///<summary>
+        ///  Returns minimum value of two array as new array 
+        ///</summary>
+        public static double[] Min(double[] array1, double[] array2)
+        {
+            double[] retVal = new double[array1.Length];
+
+            for (int i = 0; i < retVal.Length; i++)
+            {
+                if (array1[i] > array2[i])
+                    retVal[i] = array2[i];
+                else
+                    retVal[i] = array1[i];
+            }
+            return retVal;
+        }
+
+
         ///<summary>
         ///  Returns maximum value of array and index of maximum value 
         ///</summary>
