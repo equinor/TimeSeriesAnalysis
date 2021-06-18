@@ -313,7 +313,7 @@ namespace TimeSeriesAnalysis
 
         public static string FromList(List<double[]> plotValue, List<string> plotNames, 
             int dT_s, string comment = null, DateTime t0 = new DateTime(),
-            string caseName="",bool doStartChrome=true)
+            string caseName="",bool doStartChrome=true,string customPlotDataPath=null)
         {
             if (plotValue == null)
                 return "";
@@ -341,7 +341,7 @@ namespace TimeSeriesAnalysis
                 plotURL += shortPPtagName;
                 if (j < plotNames.Count-1)//dont add semicolon after last variable
                     plotURL += ";";
-                WriteSingleDataToCSV(time.ToArray(), plotValue.ElementAt(j), ppTagName);
+                WriteSingleDataToCSV(time.ToArray(), plotValue.ElementAt(j), ppTagName,null, customPlotDataPath);
                 j++;
             }
             plotURL += CreateCommentStr(comment);
@@ -369,7 +369,8 @@ namespace TimeSeriesAnalysis
         // plotly interface used to plot csv expects 
         // - first row to be time in unix time
         // - ";" column separator
-        static private void WriteSingleDataToCSV(DateTime[] time, double[] data, string tagName, string comment = null)
+        static private void WriteSingleDataToCSV(DateTime[] time, double[] data, string tagName, string comment = null, 
+            string customPlotDataPath=null)
         {
             tagName = PreprocessTagName(tagName);
 
@@ -406,7 +407,13 @@ namespace TimeSeriesAnalysis
                 }
             }
             string fileName = plotDataPath + tagName + ".csv";
-
+            if (customPlotDataPath!=null)
+            {
+                fileName = customPlotDataPath;
+                if (!customPlotDataPath.EndsWith("\\"))
+                    fileName += "\\";
+                fileName+= tagName + ".csv";
+            }
             using (StringToFileWriter writer = new StringToFileWriter(fileName))
             {
                 writer.Write(sb.ToString());
