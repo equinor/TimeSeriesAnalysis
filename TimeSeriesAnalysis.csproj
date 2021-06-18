@@ -14,7 +14,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.20</Version>
+    <Version>1.0.21</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 .NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 
@@ -105,6 +105,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Tests\VecExtensionsMethodsUnitTests.cs" />
     <Compile Include="Tests\Array2DUnitTests.cs" />
     <Compile Include="Tests\VecUnitTests.cs" />
+    <Compile Include="Utility\ParserFeedback.cs" />
     <Compile Include="Utility\SignificantDigit.cs" />
     <Compile Include="Vector\Array2D.cs" />
     <Compile Include="Vector\Array2DExtensionMethods.cs" />
