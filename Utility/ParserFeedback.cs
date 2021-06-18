@@ -77,11 +77,18 @@ namespace TimeSeriesAnalysis
 
         public ParserFeedback(bool doOutputAlsoToConsole = false)
         {
-            this.doOutputAlsoToConsole = doOutputAlsoToConsole;
+            doOutputAlsoToConsole = false;
             numberOfSlackErrorMessagesSent = 0;
             logList = new List<LogLine>();
             ResetCounters();
         }
+
+        public void EnableConsoleOutput(bool doEnable)
+        {
+            this.doOutputAlsoToConsole = doEnable;
+
+        }
+
 
         public void CloseCaseLogFile()
         {
