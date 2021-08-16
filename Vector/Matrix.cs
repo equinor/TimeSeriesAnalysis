@@ -30,7 +30,7 @@ namespace TimeSeriesAnalysis
                 {
                     newMatrix = Matrix.ReplaceRow(newMatrix,curRow, matrix.GetRow(curRow));
                 }
-                newMatrix = Matrix.ReplaceRow(newMatrix, matrix.GetNColumns(), newRowVec);
+                newMatrix = Matrix.ReplaceRow(newMatrix, matrix.GetNRows(), newRowVec);
                 return newMatrix;
             }
             else
