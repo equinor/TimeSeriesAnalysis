@@ -6,15 +6,21 @@
     <PackageReference Include="Accord" version="3.8.0" targetFramework="net461" />
     <PackageReference Include="Accord.Math" version="3.8.0" targetFramework="net461" />
     <PackageReference Include="Accord.Statistics" version="3.8.0" targetFramework="net461" />
-    <PackageReference Include="NuGet.Build.Tasks.Pack" version="5.8.1" targetFramework="net461" developmentDependency="true" />
-    <PackageReference Include="NUnit" version="3.13.0" targetFramework="net461" />
+    <PackageReference Include="NuGet.Build.Tasks.Pack">
+      <Version>5.10.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit">
+      <Version>3.13.0</Version>
+    </PackageReference>
   </ItemGroup>
   <PropertyGroup>
     <RepositoryUrl>https://github.com/equinor/TimeSeriesAnalysis</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.23</Version>
+    <Version>1.0.24</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 .NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 

@@ -278,25 +278,27 @@ namespace TimeSeriesAnalysis
                     logList.Add(currentLogLine);
                     //message also output to console if appdebug==2
                     if (doOutputAlsoToConsole)
+                    {
                         Console.WriteLine(msgString);
-                        if (commonLogFile != null)
+                    }
+                    if (commonLogFile != null)
+                    {
+                        if (commonLogFile.BaseStream != null)
                         {
-                            if (commonLogFile.BaseStream != null)
-                            {
-                                commonLogFile.WriteLine(timestamp.ToString("yyyy-MM-dd HH:mm:ss") + ">" + msgString);
-                                commonLogFile.Flush();
-                                commonFilestream.Flush();
-                            }
+                            commonLogFile.WriteLine(timestamp.ToString("yyyy-MM-dd HH:mm:ss") + ">" + msgString);
+                            commonLogFile.Flush();
+                            commonFilestream.Flush();
                         }
-                        if (caseLogFile != null)
+                    }
+                    if (caseLogFile != null)
+                    {
+                        if (caseLogFile.BaseStream != null)
                         {
-                            if (caseLogFile.BaseStream != null)
-                            {
-                                caseLogFile.WriteLine(timestamp.ToString("yyyy-MM-dd HH:mm:ss") + ">" + msgString);
-                                caseLogFile.Flush();
-                                caseFilestream.Flush();
-                            }
+                            caseLogFile.WriteLine(timestamp.ToString("yyyy-MM-dd HH:mm:ss") + ">" + msgString);
+                            caseLogFile.Flush();
+                            caseFilestream.Flush();
                         }
+                    }
                     
                 }
             }
