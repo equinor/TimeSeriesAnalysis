@@ -12,6 +12,19 @@ namespace TimeSeriesAnalysis.UnitTests
     class MatrixUnitTests
     {
         [Test]
+        public void AppendRow()
+        {
+
+            double[,] matrix = new double[,] { { 1, 2, 3 }, { 3, 4, 5}, { 6,7,8 } };
+            double[] vec = new double[] {9,10,11 };
+            double[,] expResult = new double[,] { { 1, 2, 3 }, { 3, 4, 5 }, { 6, 7, 8 }, { 9, 10, 11 } };
+            // (3x2) x (2x1) = 3x1
+            double[,] result = Matrix.AppendRow(matrix, vec);
+            Assert.AreEqual(expResult,result);
+
+        }
+
+        [Test]
         public void MatrixMult()
         {
 

@@ -14,10 +14,37 @@ namespace TimeSeriesAnalysis
     public static class Matrix
     {
         ///<summary>
-        ///  Replace a single row of a matrix 
+        ///  Appends another row onto an existing matrix. Returns null if this was not possible(ie. dimnesions dont agree). 
         ///</summary>
+        static public double[,] AppendRow(double[,] matrix , double[] newRowVec)
+        {
+            if (matrix == null)
+                return null;
+            if (newRowVec == null)
+                return null;
 
-        static public double[,] ReplaceRow(double[,] matrix, int rowIndex, double[] newRowVec)
+            if (matrix.GetNColumns() == newRowVec.Length)
+            {
+                double[,] newMatrix = new double[matrix.GetNRows() + 1, matrix.GetNColumns()];
+                for (int curRow = 0; curRow < matrix.GetNRows(); curRow++)
+                {
+                    newMatrix = Matrix.ReplaceRow(newMatrix,curRow, matrix.GetRow(curRow));
+                }
+                newMatrix = Matrix.ReplaceRow(newMatrix, matrix.GetNColumns(), newRowVec);
+                return newMatrix;
+            }
+            else
+                return null;
+        }
+
+
+
+
+            ///<summary>
+            ///  Replace a single row of a matrix 
+            ///</summary>
+
+            static public double[,] ReplaceRow(double[,] matrix, int rowIndex, double[] newRowVec)
         {
             if (newRowVec.Length != matrix.GetNColumns())
                 return null;
