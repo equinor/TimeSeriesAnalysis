@@ -113,7 +113,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        ///  Returns element-wise maximum of array element and value
+        ///  Returns element-wise minimum of array element and value
         ///</summary>
         public static double[] Min(double[] array, double value)
         {
@@ -134,6 +134,31 @@ namespace TimeSeriesAnalysis
             }
             return retArray;
         }
+
+        ///<summary>
+        ///  Returns element-wise maximum of array element and value
+        ///</summary>
+        public static double[] Max(double[] array, double value)
+        {
+            double[] retArray = new double[array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                double thisNum = array[i];
+                if (thisNum == nanValue)
+                    continue;
+                if (thisNum > value)
+                {
+                    retArray[i] = thisNum;
+                }
+                else
+                {
+                    retArray[i] = value;
+                }
+            }
+            return retArray;
+        }
+
+
 
         ///<summary>
         ///  Returns minimum value of array and index of maximum value 
