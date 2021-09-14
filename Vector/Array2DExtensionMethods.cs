@@ -54,13 +54,28 @@ namespace TimeSeriesAnalysis
             }
             return datetimes.ToArray();
         }
-     
 
+        ///<summary>
+        /// Returns rows starting with rowIndex and onwards 
+        ///</summary>
         static public double[] GetRowsAfterIndex(this double[] array, int rowIndex)
         {
-            return Vec.SubArray(array, rowIndex);
+            return Vec<double>.SubArray(array, rowIndex);
         }
 
+        ///<summary>
+        /// Returns rows starting with rowIndex and onwards 
+        ///</summary>
+        static public DateTime[] GetRowsAfterIndex(this DateTime[] array, int rowIndex)
+        {
+            return Vec<DateTime>.SubArray(array, rowIndex);
+        }
+
+
+
+        ///<summary>
+        /// Returns rows starting with rowIndex and onwards 
+        ///</summary>
         static public double[,] GetRowsAfterIndex(this double[,] array, int rowIndex)
         {
             double[,] result = new double[array.GetNRows() - rowIndex, array.GetNColumns()];

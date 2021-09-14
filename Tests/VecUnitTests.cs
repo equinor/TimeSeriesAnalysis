@@ -70,7 +70,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-            double[] vecResult = Vec.SubArray(vec, 1, 2);
+            double[] vecResult = Vec<double>.SubArray(vec, 1, 2);
             double[] vecExpt = { 1, 2 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -79,7 +79,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-            double[] vecResult = Vec.SubArray(vec, 9);
+            double[] vecResult = Vec<double>.SubArray(vec, 9);
             double[] vecExpt = { 9, 10 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -89,7 +89,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-            double[] vecResult = Vec.SubArray(vec, -1, 2);
+            double[] vecResult = Vec<double>.SubArray(vec, -1, 2);
             double[] vecExpt = { 0, 1, 2 };
             Assert.AreEqual(vecExpt, vecResult);
         }

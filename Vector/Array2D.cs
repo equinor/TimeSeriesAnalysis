@@ -13,6 +13,12 @@ namespace TimeSeriesAnalysis
 
     public class Array2D<T>
     {
+
+
+        ///<summary>
+        /// returns the column of the matrix with the given index
+        ///</summary>
+
         static public T[] GetColumn(T[,] matrix, int columnNumber)
         {
             if (matrix == null)

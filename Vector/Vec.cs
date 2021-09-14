@@ -27,6 +27,41 @@ namespace TimeSeriesAnalysis
         Descending = 2
     }
 
+    public static class Vec<T>
+    {
+
+        ///<summary>
+        /// returns the portion of array1 starting and indStart, and ending at indEnd(or at the end if third paramter is omitted)
+        ///</summary>
+        public static T[] SubArray(T[] array1, int indStart, int indEnd = -9999)
+        {
+            if (array1 == null)
+                return null;
+
+            if (indEnd > array1.Length - 1 || indEnd == -9999)
+                indEnd = array1.Length - 1;
+            else if (indEnd < 0)
+            {
+                indEnd = 0;
+                return new T[0];
+            }
+            if (indStart < 0)
+                indStart = 0;
+            int length = indEnd - indStart + 1;
+            T[] retArray = new T[length];
+            int outInd = 0;
+            for (int i = indStart; i <= indEnd; i++)
+            {
+                retArray[outInd] = array1[i];
+                outInd++;
+            }
+            return retArray;
+        }
+
+    }
+
+
+
 
     ///<summary>
     /// Utility functions and operations for treating arrays as mathetmatical vectors
@@ -397,8 +432,8 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public static double[] Diff(double[] array)
         {
-            double[] ucur = SubArray(array, 1);
-            double[] uprev = SubArray(array, 0, array.Length - 2);
+            double[] ucur = Vec<double>.SubArray(array, 1);
+            double[] uprev = Vec<double>.SubArray(array, 0, array.Length - 2);
             double[] uDiff = Sub(ucur, uprev);
             return Concat(new double[] { 0 }, uDiff);
         }
@@ -473,33 +508,7 @@ namespace TimeSeriesAnalysis
             }
             return retVal;
         }
-        ///<summary>
-        /// returns the portion of array1 starting and indStart, and ending at indEnd(or at the end if third paramter is omitted)
-        ///</summary>
-        public static double[] SubArray(double[] array1, int indStart, int indEnd = -9999)
-        {
-            if (array1 == null)
-                return null;
 
-            if (indEnd > array1.Length - 1 || indEnd == -9999)
-                indEnd = array1.Length - 1;
-            else if (indEnd < 0)
-            {
-                indEnd = 0;
-                return new double[0];
-            }
-            if (indStart < 0)
-                indStart = 0;
-            int length = indEnd - indStart + 1;
-            double[] retArray = new double[length];
-            int outInd = 0;
-            for (int i = indStart; i <= indEnd; i++)
-            {
-                retArray[outInd] = array1[i];
-                outInd++;
-            }
-            return retArray;
-        }
         ///<summary>
         /// creates an array of size N where every element has value value
         ///</summary>
@@ -549,6 +558,8 @@ namespace TimeSeriesAnalysis
             }
             return ret;
         }
+
+
 
         ///<summary>
         /// returns the parameters which best regress the two-dimensional array X into the vector Y. returns null if regression fails.
@@ -791,11 +802,11 @@ namespace TimeSeriesAnalysis
 
         public static double SelfSumOfSquareErr(double[] ymeas)
         {
-            return SumOfSquareErr(SubArray(ymeas, 1), SubArray(ymeas, 0, ymeas.Length - 2), 0);
+            return SumOfSquareErr(Vec<double>.SubArray(ymeas, 1), Vec<double>.SubArray(ymeas, 0, ymeas.Length - 2), 0);
         }
         public static double SelfSumOfAbsErr(double[] ymeas)
         {
-            return SumOfAbsErr(SubArray(ymeas, 1), SubArray(ymeas, 0, ymeas.Length - 2), 0);
+            return SumOfAbsErr(Vec<double>.SubArray(ymeas, 1), Vec<double>.SubArray(ymeas, 0, ymeas.Length - 2), 0);
         }
 
         ///<summary>

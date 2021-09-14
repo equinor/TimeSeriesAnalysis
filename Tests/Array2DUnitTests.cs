@@ -36,12 +36,23 @@ namespace TimeSeriesAnalysis.UnitTests
             double[,] matrix = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
             Assert.AreEqual(2, matrix.GetNColumns());
         }
-
+        [Test]
         public void ArrayGetNRows()
         {
             double[,] matrix = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
             Assert.AreEqual(3, matrix.GetNRows());
         }
+        [Test]
+        public void ArrayGetRowsAfterIndex()
+        {
+            DateTime[] vec = new DateTime[] { new DateTime(2000,1,1),new DateTime(2000,1,2)};
+            DateTime[] result = vec.GetRowsAfterIndex(1);
+            Assert.AreEqual(new DateTime(2000,1,2), result);
+        }
+
+        
+
+
 
     }
 }
