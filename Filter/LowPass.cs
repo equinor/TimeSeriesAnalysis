@@ -31,6 +31,11 @@ namespace TimeSeriesAnalysis
             else
                 a = 1 / (1 + this.timeBase_s / FilterTc_s); // (*time constant *)
 
+            if (Double.IsNaN(a))
+            {
+                a = 0;// turn off filter if 
+            }
+
             if (Double.IsNaN(this.prevFilteredSignal) || Double.IsInfinity(this.prevFilteredSignal) || prevFilteredSignal == -9999)
                 filteredSignal = signal;
             else
