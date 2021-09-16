@@ -1,6 +1,6 @@
 TimeSeriesAnalysis : 
 
-<a href="_site/api/TimeSeriesAnalysis.html" >API reference documentation</a>
+<a href="https://stunning-fortnight-3ee29831.pages.github.io/api/TimeSeriesAnalysis.html" >API reference documentation</a>
 
 
 What is this?
