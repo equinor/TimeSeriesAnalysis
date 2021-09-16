@@ -15,10 +15,8 @@ namespace TimeSeriesAnalysis
     public class CSV
     {
 
-
-
         ///<summary>
-        /// Load data from the file
+        /// Load time-series data from a CSV-file into variables for further processing
         ///</summary>
         /// <param name="filename"> path of file to be loaded</param>
         /// <param name="doubleData">(output) the returned 2D array where each column is the data for one variable</param>

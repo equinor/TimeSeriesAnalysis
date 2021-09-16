@@ -1,6 +1,6 @@
 TimeSeriesAnalysis : 
 
-[API reference documentaiton](_site/api/TimeSeriesAnalysis.html)
+<a href="_site/api/TimeSeriesAnalysis.html" >API reference documentation</a>
 
 
 What is this?

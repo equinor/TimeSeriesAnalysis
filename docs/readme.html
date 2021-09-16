@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>What is this? </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="What is this? ">
+    <meta name="generator" content="docfx 2.58.4.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p>TimeSeriesAnalysis :</p>
+<p><a href="_site/api/TimeSeriesAnalysis.html">API reference documentation</a></p>
+<h1 id="what-is-this">What is this?</h1>
+<p>This is a .NET class library for making it easy to work with time series in .NET language such as C#.
+It handles</p>
+<ul>
+<li>loading data from CSV</li>
+<li>manipulating time-series data as arrays and vectors</li>
+<li>filtering</li>
+<li>doing linear regression</li>
+<li>plotting times-series</li>
+</ul>
+<p>The aim of this library is to make the process of working with time series as easy as possible,
+and the resulting workflow should be comparable to working in Matlab, Python or R.</p>
+<p>This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform
+operations like adding, subtracting, multiplying with vectors and matrices, as well as typicall pre-processing tasks like selecting
+subsets of a larger dataset, removing spurious values, min/max range limits etc.</p>
+<p>The result is a that tasks that you would normally do in for instance Matlab due to the &quot;simplicity&quot; offered by the language, can now be
+accomplished in about the same amount of code in C#/.NET. So the resulting code is in many was &quot;just as simple&quot;.</p>
+<p>The benefit of doing this in C#/.NET</p>
+<ul>
+<li>that you get the benefits of a compiled language,prototype code is written in a lanugage suitable for implementation, (unlike Matlab scripts). That means you avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses.</li>
+<li>the resulting code does not required a paid license to run, anybody can download a free copy of VS code and re-compile the code,
+without requiring a working license server, a correct number of licenses or enough licenses.</li>
+<li>you can easily extend your code to for instance run in paralell using the &quot;paralell.for&quot; functionaliy freely available in .NET, wheres this functionality
+may require a very expensive toolbox in Matlab(Paralell processing toolbox).</li>
+</ul>
+<p>Originally this code has been written with control-engineering in mind, as control engineers typically
+prefer compiled languages such as C# for code that is to be integrated in the control system.</p>
+<h1 id="install-instructions-to-make-in-browser-time-series-plotting-work">Install instructions to make in-browser time-series plotting work</h1>
+<p>The plotting in this package is based on the javacsript plotting library plot.ly., a copy of which is included.</p>
+<p>The repo includes a folder &quot;www\plotly&quot; and for plotting to work you need to run an http-server such as Internet Information Services that
+in your broser serves up a folder on your computer as &quot;localhost&quot;.</p>
+<p>Copy the folder &quot;plotly&quot; into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
+such as &quot;c:\inetpub\plotly&quot; if  &quot;c:\inetpub&quot; is the folder that IIS is serving.</p>
+<p>Note that this repo includes some custom javascript code which wraps some plot.ly timeseries plotting functionality, so that a &quot;Plot(Var1)&quot; in C# can trigger
+a browser to open with a time-series plot of &quot;Var1&quot;.</p>
+<p>Plotting works by launching a browser(chrome) and directing it to &quot;http://localhost/plotly/index.html&quot;, but all the low-level details are handled by the Plot class for you.</p>
+<h1 id="plotting">Plotting</h1>
+<p>Plotting supports</p>
+<ul>
+<li>one or two subplots(stacked vertically)</li>
+<li>one or two y-axes on either subplot</li>
+<li>support for zooming in the plot,</li>
+<li>subplots x-axes are linked when zooming</li>
+<li>ability to turn trends on/off, which will cause auto-zoom to update</li>
+<li>ability to hover over trends to inspect values</li>
+<li>currently up to six trends can be plotted on a page in total(this can be increased if there is interest)</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<ul>
+<li>You may like to load data from a file into a 2D array for doubles and strings and an array of table headers using CSV.loadDataFromCSV.</li>
+<li>the dates in the array can be parsed using GetColumnParsedAsDateTime (useful to find data sample time, and data time span, and selecting a subset timespan for analysis)</li>
+<li>use Array.IndexOf() on the header array to find the indices of variables in the CSV-file,</li>
+<li>use GetColumn() to or GetColumns to load data into 1D vectors or 2D arrays</li>
+<li>use GetRowsAfterIndex to cut off a chunk of data the data</li>
+<li>use Vec.FindValues to find values which are nan or out-of-range which are to be ignored in regression</li>
+<li>use Transpose() to transpose matrix before regression as needed</li>
+<li>use Vec.ReplaceIndWithValuesPrior to replace bad values with the prior value, this makes for nicer plots.</li>
+<li>if you want to multiply, divide, add or subtract or use min, max on the arrays retreived from the csv file, use Vec.Add, Vec.Sub, Vec.Mult or Vec.Div</li>
+<li>you can do the above on rows of a 2d-matrix by using Matrix.ReplaceRow</li>
+<li>scaling of entire 2d-matrices can be done by Matrix.Mult</li>
+<li>Low-pass filtering on specific time-series can be done by LowPass().</li>
+<li>to do regression, give the regressors to Vec.Regress, along with the indices to ignore based on pre-processing, which returns the model output along with paramters and uncertainty</li>
+<li>finally, you can plot the resulting regression using different versions of Plot. To plot a single variable, use Plot.One, to plot two variables Plot.Two() etc.</li>
+</ul>
+<p>Currently plotting supports up to two subplots where each can have two y-axes. Remember that for plotting to work, you need to be running a web-server on your computer
+and add the &quot;www\plotly&quot; folder to the folder that the web server serves up.</p>
+<h1 id="example-usage">Example usage:</h1>
+<p>This example uses a ficticious csv-file example.csv, that has column headers
+&quot;Time&quot;,&quot;Var1&quot;,&quot;Var2&quot;,&quot;Var3&quot;,&quot;Var4,&quot;Var5&quot;,Var6&quot;,&quot;Var7&quot;.</p>
+<p>&quot;Var1&quot; is to be modelled by Var2-Var6 as regressors, while Var7 is to be multiplied to Var2-Var6.
+The data contains some instances of -9999 which indicates bad data, and this is removed in preprocessing.</p>
+<p>A low-pass filter is used to imitate a time-constant in the system by smoothing the model inputs.</p>
+<p>Only the data starting after a specific t0 is to be used in the regression, so a subset of the raw data in the csv-file is
+given to regression.</p>
+<p>This example illustrates that by using the TimeSeriesAnalysis package, the complexity of the code required to do practical exploratory time-series
+analysis is comparable to what is normally accomplished by parsed languages such as Matlab, R or Python.</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using TimeSeriesAnalysis;
+
+namespace SubseaPALL
+{
+    class run
+    { 
+        public static void Main()
+        {
+            CSV.loadDataFromCSV(@&quot;C:\Appl\ex1\Data\example.csv&quot;, out double[,] data, out string[] variableNames,out string[,] stringData);
+            
+            int tInd = Array.IndexOf(variableNames, &quot;Time&quot;);
+            DateTime[] dateTimes = stringData.GetColumnParsedAsDateTime(tInd, &quot;yyyy-MM-dd HH:mm:ss&quot;);
+            TimeSpan span = dateTimes[1].Subtract(dateTimes[0]);
+            int dT_s = (int)span.TotalSeconds;
+
+            int t0Ind = 9476;// first instance
+
+            DateTime t0 = dateTimes.ElementAt(t0Ind);
+
+            int yInd  = Array.IndexOf(variableNames, &quot;var1&quot;);
+            //V1: use choke openings as inputs
+            int u1Ind, u2Ind, u3Ind, u4Ind, u5Ind;
+
+			u1Ind = Array.IndexOf(variableNames, &quot;var2&quot;);
+			u2Ind = Array.IndexOf(variableNames, &quot;var3&quot;);
+			u3Ind = Array.IndexOf(variableNames, &quot;var4&quot;);
+			u4Ind = Array.IndexOf(variableNames, &quot;var5&quot;);
+			u5Ind = Array.IndexOf(variableNames, &quot;var6&quot;);
+
+            int u6ind = Array.IndexOf(variableNames, &quot;var7&quot;);
+
+            int[] uIndArray = new int[] { u1Ind, u2Ind, u3Ind, u4Ind, u5Ind };
+
+            double[]  y_raw = data.GetColumn(yInd);
+            double[,] u_raw = data.GetColumns(uIndArray) ;
+            double[] u6_raw = data.GetColumn(u6ind);
+
+            // clip out desired chunk of data
+            double[] y = y_raw.GetRowsAfterIndex(t0Ind);
+            double[,] u = u_raw.GetRowsAfterIndex(t0Ind);
+            double[] z_topside = u6_raw.GetRowsAfterIndex(t0Ind);
+
+            // preprocessing - remove bad values
+            List&lt;int&gt; yIndToIgnoreRaw = new List&lt;int&gt;();
+            for (int colInd = 0; colInd &lt; u.GetNColumns(); colInd++)
+            {
+                List&lt;int&gt; badValInd = Vec.FindValues(u.GetColumn(colInd), -9999, FindValues.NaN);
+                yIndToIgnoreRaw.AddRange(badValInd);
+            }
+            yIndToIgnoreRaw.AddRange(Vec.FindValues(y, -9999, FindValues.NaN));
+            yIndToIgnoreRaw.AddRange(Vec.FindValues(z_topside, -9999, FindValues.NaN));
+            List&lt;int&gt; yIndToIgnore =(List&lt;int&gt;)yIndToIgnoreRaw.Distinct().ToList();
+
+            // do scaling, input trickery and then regress
+           
+            u = u.Transpose();
+
+            double[] y_plot = Vec.ReplaceIndWithValuesPrior(y, yIndToIgnore);// -9999 destroys plot
+            double[] u1_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(0), yIndToIgnore);// -9999 destroys plot
+            double[] u2_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(1), yIndToIgnore);// -9999 destroys plot
+            double[] u3_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(2), yIndToIgnore);// -9999 destroys plot
+            double[] u4_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(3), yIndToIgnore);// -9999 destroys plot
+            double[] u5_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(4), yIndToIgnore);// -9999 destroys plot
+            double[] u6_plot = Vec.ReplaceIndWithValuesPrior(z_topside, yIndToIgnore);// -9999 destroys plot
+
+            // temperature does not change much based on changes in the upper half of the range valve-opening rate, as flow rates also
+            // do not change that much (valve flow vs. choke opening is nonlinear)
+
+
+			double z_Max = 60;
+			double z_MaxTopside = 80;
+			u = Matrix.ReplaceRow(u,0, Vec.Min(u.GetRow(0), z_Max));
+			u = Matrix.ReplaceRow(u,1, Vec.Min(u.GetRow(1), z_Max));
+			u = Matrix.ReplaceRow(u,2, Vec.Min(u.GetRow(2), z_Max));
+			u = Matrix.ReplaceRow(u,3, Vec.Min(u.GetRow(3), z_Max));
+			u = Matrix.ReplaceRow(u,4, Vec.Min(u.GetRow(4), z_Max));
+			u = Matrix.Mult(u, 0.01);
+
+			z_topside = Vec.Mult(Vec.Min(z_topside, z_MaxTopside), 0.01);
+			z_topside = Vec.Mult(z_topside, 0.01);
+			u = Matrix.Mult(u, z_topside);
+
+			// lowpass filtering of inputs
+			double TimeConstant_s = 1800;//73.24
+
+			LowPass filter = new LowPass(TimeConstant_s);
+			u = Matrix.ReplaceRow(u, 0, filter.Filter(u.GetRow(0), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 1, filter.Filter(u.GetRow(1), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 2, filter.Filter(u.GetRow(2), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 3, filter.Filter(u.GetRow(3), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 4, filter.Filter(u.GetRow(4), TimeConstant_s));
+		
+
+            if (u == null)
+            {
+                Console.WriteLine(&quot;u is null, something went wrong&quot;);
+                return;
+            }
+
+            var uJaggedArray = u.Convert2DtoJagged();
+            double[] parameters = Vec.Regress(y, uJaggedArray, yIndToIgnore.ToArray(), out _, out double[] y_mod,out double Rsq);
+
+            double[] e = Vec.Sub(y_plot, y_mod);
+
+            //present results
+            if (y_mod == null)
+            {
+                Console.WriteLine(&quot;something went wrong, regress returned null&quot;);
+            }
+            else
+            {
+                Plot.Six(u1_plot, u2_plot, u3_plot, u4_plot, u5_plot,u6_plot, dT_s,&quot;z_D1&quot;, &quot;z_D2&quot;, &quot;z_D3&quot;, &quot;z_D4&quot;,&quot;z_D5&quot;,&quot;z_topside&quot;,true,false,null,t0);
+                Plot.Two(y_plot, y_mod, dT_s, &quot;T_Dtopside(meas)&quot;, &quot;T_Dtopside(mod)&quot;,true,false,&quot;Rsq&quot;+Rsq.ToString(&quot;#.##&quot;),t0);
+                Plot.One(e,dT_s,&quot;avvik&quot;,null, t0);
+            }
+        }
+    }
+}
+</code></pre>
+<h1 id="nuget-package-upload-how-to">Nuget package upload how-to</h1>
+<p>This is  .NET framework 4.6.1 class library published to github packages, by means of the following tutorial:
+<a href="https://github.community/t/publish-net-framework-nuget-package/3077/2">https://github.community/t/publish-net-framework-nuget-package/3077/2</a>
+and here:
+<a href="https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-msbuild">https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-msbuild</a></p>
+<p>Note that the steps here are somewhat different to most online tutorials which target .NET Core and use the &quot;dotnet&quot; CLI instead of &quot;nuget&quot; CLI.</p>
+<p>For future reference, this is the steps followed:</p>
+<ul>
+<li><p>make sure the classes you want to give access to are public.</p>
+</li>
+<li><p>the description that will be shown in nuget when downloading is pulled from <description></description> in the .csproj file beneath <propertygroup>. Consider adding it.
+Also add the the url to the repository and some other info such as shown below:<p>
+</propertygroup></li>
+</ul>
+<pre><code>    &lt;RepositoryUrl&gt;https://github.com/equinor/TimeSeriesAnalysis&lt;/RepositoryUrl&gt;
+    &lt;RepositoryType&gt;git&lt;/RepositoryType&gt;
+    &lt;GeneratePackageOnBuild&gt;true&lt;/GeneratePackageOnBuild&gt;
+    &lt;PackageOutputPath&gt;bin\debug\&lt;/PackageOutputPath&gt;
+    &lt;Version&gt;1.0.0&lt;/Version&gt;
+    &lt;Authors&gt;Steinar Elgsæter&lt;/Authors&gt;
+	&lt;description&gt;todo&lt;/description&gt; 
+</code></pre>
+<ul>
+<li>reccomend adding in information to the AssemblyInfo.cs before starting.</li>
+<li>a personal acceess token xxxxxxx needs to be generated for your user in github,and needs access to &quot;read:packages&quot;,
+&quot;write:packages&quot; and &quot;repo&quot;.organization access (authorize with SSO ) and then press &quot;authorize&quot;</li>
+<li>create a nuget.config file that defines &quot;github&quot; as a nuget destination:</li>
+</ul>
+<pre><code class="lang-&lt;?xml">	&lt;configuration&gt;
+		&lt;packageSources&gt;
+			&lt;clear /&gt;
+			&lt;add key=&quot;github&quot; value=&quot;https://nuget.pkg.github.com/equinor/index.json&quot; /&gt;
+			&lt;add key=&quot;nuget&quot; value=&quot;https://api.nuget.org/v3/index.json&quot; /&gt;
+		&lt;/packageSources&gt;
+	 &lt;packageSourceCredentials&gt;
+			&lt;github&gt;
+				&lt;add key=&quot;Username&quot; value=&quot;yourgithubuser&quot; /&gt;
+				&lt;add key=&quot;ClearTextPassword&quot; value=xxxxxxx&quot; /&gt;
+			&lt;/github&gt;
+		&lt;/packageSourceCredentials&gt;
+&lt;/configuration&gt;
+</code></pre>
+<ul>
+<li><p>pacakges.nuget needs to be moved into project file *.csproj as <packagereference> items instead<p>
+</packagereference></li>
+<li><p>NuGet.Build.Tasks.Pack need to be added as a pacakage to project</p>
+</li>
+<li><p>need to download nuget.exe and use it to push generated .nupkg file</p>
+</li>
+<li><p>then to publish put the following two commands in a publish.bat file:</p>
+</li>
+</ul>
+<pre><code>	nuget setapikey xxxxxxxx -source &quot;github&quot;
+	nuget push bin\Debug\*.nupkg -source &quot;github&quot; -SkipDuplicate
+	pause
+</code></pre>
+<ul>
+<li><p>check that the script concludes with &quot;Your package was pushed&quot; and no error messages in yellow or red.</p>
+</li>
+<li><p>notice that you need to iterate the version number in your .csproj file every time you push a new version of the package.</p>
+</li>
+</ul>
+<h1 id="nuget-package-download-how-to">Nuget package download how-to</h1>
+<p>To use this nuget pacakge, you need to incldue the nuget.config file above in the solution that intends to pull down the package. You can then select github as
+the package source in Visual Studio &quot;Manage Nuget packages for Solution&quot;.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
