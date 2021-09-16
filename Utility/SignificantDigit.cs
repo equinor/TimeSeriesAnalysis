@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns number in scientific format with coefficient and exponential paramters
         ///</summary>
-        public static void getSciFormat(double number, out double coeff, out int exp)
+        public static void GetSciFormat(double number, out double coeff, out int exp)
         {
             coeff = 0;
             exp = 0;

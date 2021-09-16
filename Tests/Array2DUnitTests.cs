@@ -47,7 +47,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             DateTime[] vec = new DateTime[] { new DateTime(2000,1,1),new DateTime(2000,1,2)};
             DateTime[] result = vec.GetRowsAfterIndex(1);
-            Assert.AreEqual(new DateTime(2000,1,2), result);
+            Assert.AreEqual(new List<DateTime> { new DateTime(2000, 1, 2) }, result);
         }
 
         

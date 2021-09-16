@@ -18,10 +18,68 @@ namespace TimeSeriesAnalysis
 
     public class Plot
     {
+        //TODO: this is not general - consider pointing to a virtual folder.
         const string plotDataPath = @"C:\Appl\ProcessDataFramework\www\plotly\Data\";
-        const string firefoxPath = @"C:\Program Files\Mozilla Firefox\firefox.exe";
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyPath = @"localhost\plotly\index.html";
+
+
+        ///<summary>
+        ///  Plot any number of variables,by giving values and names by lists (preferred)
+        ///  
+        ///  If you want to plot mutliple plots with the same variable names, 
+        ///  specify a unique casename for each plot.
+        ///  
+        ///  By setting doStartChrome to false, you can skip opening up chrome, the link to figure
+        ///   will instead be returned 
+        /// 
+        ///</summary>
+
+        public static string FromList(List<double[]> plotValue, List<string> plotNames,
+            int dT_s, string comment = null, DateTime t0 = new DateTime(),
+            string caseName = "", bool doStartChrome = true, string customPlotDataPath = null)
+        {
+            if (plotValue == null)
+                return "";
+            if (plotNames == null)
+                return "";
+            if (plotValue.Count() == 0)
+                return "";
+            if (plotNames.Count() == 0)
+                return "";
+
+            string command = @"-r " + plotlyPath + "#";
+            string plotURL = ""; ;
+
+            var time = InitTimeList(t0, dT_s, plotValue.ElementAt(0).Count());
+            /*for (int i = 0; i < plotValue.ElementAt(0).Length; i++)
+            {
+                time.Add(time.Last().AddSeconds(dT_s));
+            }*/
+
+            int j = 0;
+            foreach (string plotName in plotNames)
+            {
+                string ppTagName = PreprocessTagName(caseName + plotName);
+                string shortPPtagName = PreprocessTagName(plotName);
+                plotURL += shortPPtagName;
+                if (j < plotNames.Count - 1)//dont add semicolon after last variable
+                    plotURL += ";";
+                WriteSingleDataToCSV(time.ToArray(), plotValue.ElementAt(j), ppTagName, null, customPlotDataPath);
+                j++;
+            }
+            plotURL += CreateCommentStr(comment);
+            if (caseName.Length > 0)
+                plotURL += ";casename:" + caseName;
+            if (doStartChrome)
+            {
+                Start(chromePath, command + plotURL, out bool returnVal);
+            }
+            return plotURL;
+
+        }
+
+
 
         ///<summary>
         /// Remove illegal characters from tagName.
@@ -61,7 +119,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// (deprecated)Plot one vector X, where the sampling time interval is dT_s. 
         ///</summary>
-
+        [Obsolete("Deprecated, please use FromList instead.")]
         static public void One(double[] X, int dT_s, string tagName = "Var1", string comment=null, DateTime t0 = new DateTime())
         {
             tagName = PreprocessTagName(tagName);
@@ -77,7 +135,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///(deprecated) Plot two vectors V1 and V2, where the sampling time interval is dT_s. 
         ///</summary>
-
+        [Obsolete("Deprecated, please use FromList instead.")]
         static public void Two(double[] V1, double[] V2, int dT_s, 
             string tagNameV1 = "Var1",string tagNameV2 = "Var2",
             bool plotAllVarsOnLeftYaxis=true, bool useSubplots= false, string comment = null, DateTime t0 = new DateTime())
@@ -109,6 +167,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// (deprecated)Plot three vectors V1,V2,V3 where the sampling time interval is dT_s. 
         ///</summary>
+        [Obsolete("Deprecated, please use FromList instead.")]
         static public void Three(double[] V1, double[] V2, double[] V3, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
@@ -159,7 +218,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// (deprecated)Plot four vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
         ///</summary>
-
+        [Obsolete("Deprecated, please use FromList instead.")]
         static public void Four(double[] V1, double[] V2, double[] V3,double[] V4, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
@@ -217,6 +276,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// (deprecated)Plot five vectors V1,V2,V3,V4,V5 where the sampling time interval is dT_s. 
         ///</summary>
+        [Obsolete("Deprecated, please use FromList instead.")]
         static public void Five(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0= new DateTime())
@@ -258,6 +318,8 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// (deprecated)Plot six vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
         ///</summary>
+
+        [Obsolete("Deprecated, please use FromList instead.")]
         static public void Six(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, double[] V6, int dT_s,
             string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
             string tagNameV6 = "Var6",
@@ -300,60 +362,6 @@ namespace TimeSeriesAnalysis
             }
         }
 
-        ///<summary>
-        ///  Plot any number of variables,by giving values and names by lists (preferred)
-        ///  
-        ///  If you want to plot mutliple plots with the same variable names, 
-        ///  specify a unique casename for each plot.
-        ///  
-        ///  By setting doStartChrome to false, you can skip opening up chrome, the link to figure
-        ///   will instead be returned 
-        /// 
-        ///</summary>
-
-        public static string FromList(List<double[]> plotValue, List<string> plotNames, 
-            int dT_s, string comment = null, DateTime t0 = new DateTime(),
-            string caseName="",bool doStartChrome=true,string customPlotDataPath=null)
-        {
-            if (plotValue == null)
-                return "";
-            if (plotNames == null)
-                return "";
-            if (plotValue.Count() == 0)
-                return "";
-            if (plotNames.Count() == 0)
-                return "";
-
-            string command = @"-r " + plotlyPath + "#";
-            string plotURL = ""; ;
-
-            var time = InitTimeList(t0, dT_s, plotValue.ElementAt(0).Count());
-            /*for (int i = 0; i < plotValue.ElementAt(0).Length; i++)
-            {
-                time.Add(time.Last().AddSeconds(dT_s));
-            }*/
-
-            int j = 0;
-            foreach (string plotName in plotNames)
-            {
-                string ppTagName = PreprocessTagName(caseName + plotName);
-                string shortPPtagName = PreprocessTagName(plotName);
-                plotURL += shortPPtagName;
-                if (j < plotNames.Count-1)//dont add semicolon after last variable
-                    plotURL += ";";
-                WriteSingleDataToCSV(time.ToArray(), plotValue.ElementAt(j), ppTagName,null, customPlotDataPath);
-                j++;
-            }
-            plotURL += CreateCommentStr(comment);
-            if (caseName.Length > 0)
-                plotURL += ";casename:" + caseName;
-            if (doStartChrome)
-            {
-                Start(chromePath, command+plotURL, out bool returnVal);
-            }
-            return plotURL;
-
-        }
 
 
         static private Process Start(string procname, string arguments, out bool returnValue, string comment = null)
@@ -364,11 +372,11 @@ namespace TimeSeriesAnalysis
             returnValue = proc.Start();
             return proc;
         }
-
-
-        // plotly interface used to plot csv expects 
+        ///<summary>
+        // plotly interface used to plot csv expects :
         // - first row to be time in unix time
         // - ";" column separator
+        ///</summary>
         static private void WriteSingleDataToCSV(DateTime[] time, double[] data, string tagName, string comment = null, 
             string customPlotDataPath=null)
         {

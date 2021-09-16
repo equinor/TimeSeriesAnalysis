@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis.UnitTests
 
             double[] refArr = new double[vec.Length];
             Array.Copy(vec, refArr, vec.Length);
-            double[] sorted = Vec.Sort(vec, SortType.Ascending, out int[] idx);
+            double[] sorted = Vec<double>.Sort(vec, SortType.Ascending, out int[] idx);
             Assert.AreEqual(sorted, vecExp);
             Assert.AreEqual(idx, idxExp);
         }
@@ -44,7 +44,7 @@ namespace TimeSeriesAnalysis.UnitTests
             double[] idxExp = new double[] { 4, 5, 3, 1, 0, 2 };
             double[] refArr = new double[vec.Length];
             Array.Copy(vec, refArr, vec.Length);
-            double[] sorted = Vec.Sort(vec, SortType.Descending, out int[] idx);
+            double[] sorted = Vec<double>.Sort(vec, SortType.Descending, out int[] idx);
             Assert.AreEqual(sorted, vecExp);
             Assert.AreEqual(idx, idxExp);
         }
@@ -52,7 +52,7 @@ namespace TimeSeriesAnalysis.UnitTests
         [Test]
         public void Mean_isOk()
         {
-            double[] vec = Vec.Fill(10, 1);
+            double[] vec = Vec<double>.Fill(10, 1);
             double mean = Vec.Mean(vec).Value;
             Assert.AreEqual(10, mean);
         }
@@ -60,8 +60,8 @@ namespace TimeSeriesAnalysis.UnitTests
         [Test]
         public void Var_ZeroForConstantVector()
         {
-            double[] vec = Vec.Fill(10, 1);
-            double var = Vec.VarAbs(vec);
+            double[] vec = Vec<double>.Fill(10, 1);
+            double var = Vec.Var(vec);
             Assert.AreEqual(0, var);
         }
 
@@ -97,9 +97,9 @@ namespace TimeSeriesAnalysis.UnitTests
         [Test]
         public void Cov_ZeroForConstantVectors()
         {
-            double[] vec1 = Vec.Fill(10, 1);
-            double[] vec2 = Vec.Fill(10, 2);
-            double cov = Vec.CovAbs(vec1, vec2);
+            double[] vec1 = Vec<double>.Fill(2,10);
+            double[] vec2 = Vec<double>.Fill(1,10);
+            double cov = Vec.Cov(vec1, vec2);
             Assert.AreEqual(0, cov);
         }
 
@@ -108,8 +108,8 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec1 = Vec.Rand(10);
             double[] vec2 = Vec.Rand(10);
-            double cov1 = Vec.CovAbs(vec1, vec2);
-            double cov2 = Vec.CovAbs(vec2, vec1);
+            double cov1 = Vec.Cov(vec1, vec2);
+            double cov2 = Vec.Cov(vec2, vec1);
             Assert.AreEqual(cov1, cov2);
         }
 
@@ -168,15 +168,15 @@ namespace TimeSeriesAnalysis.UnitTests
         public void ContainsM9999()
         {
             double[] Y1 = { 1, 0, -9999, 0 };
-            bool contM9999 = Vec.ContainsM9999(Y1);
+            bool contM9999 = Vec.ContainsBadData(Y1);
             Assert.IsTrue(contM9999);
 
             double[] Y2 = { 1, 0, 0, -9999 };
-            contM9999 = Vec.ContainsM9999(Y2);
+            contM9999 = Vec.ContainsBadData(Y2);
             Assert.IsTrue(contM9999);
 
             double[] Y3 = { 1, 0, 0, 9999 };
-            contM9999 = Vec.ContainsM9999(Y3);
+            contM9999 = Vec.ContainsBadData(Y3);
             Assert.IsFalse(contM9999);
         }
 
@@ -236,7 +236,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec = { 0, 1, 2, 3, 4, -9999, -9999, -9999, 8, 9, 10 };
             List<int> vecInd = new List<int> { 5,6,7 };
-            double[] vecResult = Vec.ReplaceIndWithValuesPrior(vec, vecInd);
+            double[] vecResult = Vec<double>.ReplaceIndWithValuesPrior(vec, vecInd);
             double[] vecExpt = { 0, 1, 2, 3, 4, 4, 4, 4, 8, 9, 10 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -246,7 +246,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec = { 0, 1, 2, 3, 4, -9999, -9999, 7, -9999, -9999, 10 };
             List<int> vecInd = new List<int> { 5, 6, 8, 9 };
-            double[] vecResult = Vec.ReplaceIndWithValuesPrior(vec, vecInd);
+            double[] vecResult = Vec<double>.ReplaceIndWithValuesPrior(vec, vecInd);
             double[] vecExpt = { 0, 1, 2, 3, 4, 4, 4, 7, 7, 7, 10 };
             Assert.AreEqual(vecExpt, vecResult);
         }

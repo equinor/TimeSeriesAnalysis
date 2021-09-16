@@ -29,6 +29,42 @@ namespace TimeSeriesAnalysis
 
     public static class Vec<T>
     {
+        private static int nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
+
+
+        ///<summary>
+        /// sort the vector vec acording to the sortType.
+        ///</summary>
+        public static T[] Sort(T[] vec, SortType sortType)
+        {
+            return Vec<T>.Sort(vec, sortType, out _);
+        }
+
+        ///<summary>
+        /// sort the vector vec acording to the sortType. The indices corresponding tot he sorted values are given out in the idx array.
+        ///</summary>
+        public static T[] Sort(T[] vec, SortType sortType, out int[] idx)
+        {
+
+            if (vec == null)
+            {
+                idx = new int[0];
+                return new T[0];
+            }
+            T[] sortedAsc = new T[vec.Length];
+            idx = new int[vec.Length];
+            for (int i = 0; i < vec.Length; i++)
+                idx[i] = i;
+
+            Array.Copy(vec, sortedAsc, vec.Length);
+            Array.Sort(sortedAsc, idx);  // Sort array in ascending order. 
+            if (sortType == SortType.Descending)
+            {
+                Array.Reverse(sortedAsc);
+                Array.Reverse(idx);
+            }
+            return sortedAsc;
+        }
 
         ///<summary>
         /// returns the portion of array1 starting and indStart, and ending at indEnd(or at the end if third paramter is omitted)
@@ -58,18 +94,134 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
+        ///<summary>
+        /// creates an array of size N where every element has value value
+        ///</summary>
+        public static T[] Fill(T value, int N)
+        {
+            T[] ret = new T[N];
+
+            for (int i = 0; i < N; i++)
+                ret[i] = value;
+            return ret;
+        }
+
+        ///<summary>
+        /// concatenates arrays x and y into a new larger array
+        ///</summary>
+        public static T[] Concat(T[] x, T[] y)
+        {
+            var z = new T[x.Length + y.Length];
+            x.CopyTo(z, 0);
+            y.CopyTo(z, x.Length);
+            return z;
+        }
+
+        ///<summary>
+        /// concatenates the value y to the end of array x
+        ///</summary>
+        public static T[] Concat(T[] x, T y)
+        {
+            var z = new T[x.Length + 1];
+            x.CopyTo(z, 0);
+            z[z.Length - 1] = y;
+            return z;
+        }
+
+
+        ///<summary>
+        /// replaces all the vaules in array with indices in indList with the last good value
+        /// prior to that index.
+        ///</summary>
+        public static double[] ReplaceIndWithValuesPrior(double[] array, List<int> indList)
+        {
+            int[] vecInd = indList.ToArray();
+
+            int lastVecInd = -1;
+            double lastReplacementValue = -1;
+            for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
+            {
+                int curVecInd = vecInd[curIndInd];
+                if (curVecInd > 0)
+                {
+                    if (lastVecInd == curVecInd - 1)
+                    {
+                        array[curVecInd] = lastReplacementValue;
+                    }
+                    else
+                    {
+                        array[curVecInd] = array[curVecInd - 1];
+                        lastReplacementValue = array[curVecInd];
+                    }
+                }
+                lastVecInd = curVecInd;
+            }
+            return array;
+        }
+
+
+        ///<summary>
+        /// returns an array of the values that are in array at the indeices given by indices list
+        ///</summary>
+
+        public static T[] GetValuesAtIndices(T[] array, List<int> indices)
+        {
+            T[] ret = new T[indices.Count()];
+
+            for (int i = 0; i < indices.Count(); i++)
+            {
+                ret[i] = array[indices.ElementAt(i)];
+            }
+            return ret;
+        }
+
+
+
     }
-
-
 
 
     ///<summary>
     /// Utility functions and operations for treating arrays as mathetmatical vectors
+    /// This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec<T>)
     ///</summary>
 
     public static class Vec
     {
         private static double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
+
+        ///<summary>
+        /// All checks for NaN will test both for Double.IsNan and if value== a specific "nan" value (-9999)
+        ///</summary>
+
+        static private bool IsNaN(double value)
+        {
+            if (double.IsNaN(value) || value == nanValue)
+                return true;
+            else
+                return false;
+        }
+
+
+
+
+
+
+        ///<summary>
+        ///  Returns maximum value of two array as new array 
+        ///</summary>
+        public static double[] Max(double[] array1, double[] array2)
+        {
+            double[] retVal = new double[array1.Length];
+
+            for (int i = 0; i < retVal.Length; i++)
+            {
+                if (array1[i] > array2[i])
+                    retVal[i] = array1[i];
+                else
+                    retVal[i] = array2[i];
+            }
+            return retVal;
+        }
 
         ///<summary>
         ///  Returns maximum value of array between indices startInd and endInd
@@ -80,7 +232,7 @@ namespace TimeSeriesAnalysis
             for (int i = startInd; i < endInd; i++)
             {
                 double thisNum = array[i];
-                if (thisNum == -nanValue)
+                if (IsNaN(thisNum))
                     continue;
                 if (thisNum > maxVal)
                 {
@@ -88,24 +240,6 @@ namespace TimeSeriesAnalysis
                 }
             }
             return maxVal;
-        }
-
-
-        ///<summary>
-        ///  Returns maximum value of two array as new array 
-        ///</summary>
-        public static double[] Max(double[] array1, double[] array2)
-        {
-            double[] retVal = new double[array1.Length];
-
-            for (int i = 0; i < retVal.Length  ; i++)
-            {
-                if (array1[i] > array2[i])
-                    retVal[i] = array1[i];
-                else
-                    retVal[i] = array2[i];
-            }
-            return retVal;
         }
 
         ///<summary>
@@ -136,7 +270,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array.Length; i++)
             {
                 double thisNum = array[i];
-                if (thisNum == -nanValue)
+                if (IsNaN(thisNum))
                     continue;
                 if (thisNum > maxVal)
                 {
@@ -156,7 +290,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array.Length; i++)
             {
                 double thisNum = array[i];
-                if (thisNum == nanValue)
+                if (IsNaN(thisNum))
                     continue;
                 if (thisNum < value)
                 {
@@ -179,7 +313,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array.Length; i++)
             {
                 double thisNum = array[i];
-                if (thisNum == nanValue)
+                if (IsNaN(thisNum))
                     continue;
                 if (thisNum > value)
                 {
@@ -205,7 +339,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array.Length; i++)
             {
                 double thisNum = array[i];
-                if (thisNum == nanValue)
+                if (IsNaN(thisNum))
                     continue;
                 if (thisNum < minVal)
                 {
@@ -241,7 +375,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        ///  creates a monotonically increase(11.12.13...) array starting at startValue and ending at endValue
+        ///  creates a monotonically increasing integer (11.12.13...) array starting at startValue and ending at endValue
         ///</summary>
         public static int[] MakeIndexArray(int startValue, int endValue)
         {
@@ -256,35 +390,45 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  returns the variance of the array (always apositive number)
         ///</summary>
-        public static double VarAbs(double[] array1)
+        public static double Var(double[] array1,bool doNormalize=false)
         {
             double retVal = 0;
             double avg = Mean(array1).Value;
+            int N = 0;
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     continue;
+                N++;
                 retVal += Math.Pow(array1[i] - avg, 2);
             }
-            //   retVal = retVal / (array1.Length-1);
+            if (doNormalize)
+            {
+                retVal = retVal / (N);
+            }
             return retVal;
         }
 
         ///<summary>
         ///  returns the co-variance of two arrays(interpreted as "vectors")
         ///</summary>
-        public static double CovAbs(double[] array1, double[] array2)
+        public static double Cov(double[] array1, double[] array2, bool doNormalize = false)
         {
             double retVal = 0;
             double avg1 = Mean(array1).Value;
             double avg2 = Mean(array2).Value;
+            int N = 0;
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue || array2[i] == nanValue)
+                if (IsNaN(array1[i]) || IsNaN(array2[i]) )
                     continue;
+                N++;
                 retVal += (array1[i] - avg1) * (array2[i] - avg2);
             }
-            //    retVal = retVal / (array1.Length-1);
+            if (doNormalize)
+            {
+                retVal = retVal / (N);
+            }
             return retVal;
         }
         ///<summary>
@@ -292,12 +436,13 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public static double[] Add(double[] array1, double[] array2)
         {
+
             if (array1 == null || array2 == null)
                 return null;
             double[] retVal = new double[array1.Length];
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     retVal[i] = nanValue;
                 else
                 {
@@ -318,7 +463,7 @@ namespace TimeSeriesAnalysis
             int[] retVal = new int[array1.Length];
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     retVal[i] = (int)nanValue;
                 else
                     retVal[i] = array1[i] + val2;
@@ -336,7 +481,7 @@ namespace TimeSeriesAnalysis
             double[] retVal = new double[array1.Length];
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     retVal[i] = nanValue;
                 else
                     retVal[i] = array1[i] + val2;
@@ -355,7 +500,7 @@ namespace TimeSeriesAnalysis
 
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     retVal[i] = nanValue;
                 else
                     retVal[i] = array1[i] * val2;
@@ -381,7 +526,7 @@ namespace TimeSeriesAnalysis
 
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue || array2[i] == nanValue)
+                if (IsNaN(array1[i]) || IsNaN(array2[i]))
                     retVal[i] = nanValue;
                 else
                     retVal[i] = array1[i] * array2[i];
@@ -402,7 +547,7 @@ namespace TimeSeriesAnalysis
 
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue || array2[i] == nanValue)
+                if (IsNaN(array1[i]) || IsNaN(array2[i]))
                     retVal[i] = nanValue;
                 else
                     retVal[i] = array1[i] - array2[i];
@@ -419,7 +564,7 @@ namespace TimeSeriesAnalysis
             double[] retVal = new double[array1.Length];
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     continue;
                 retVal[i] = array1[i] - val2;
             }
@@ -435,7 +580,7 @@ namespace TimeSeriesAnalysis
             double[] ucur = Vec<double>.SubArray(array, 1);
             double[] uprev = Vec<double>.SubArray(array, 0, array.Length - 2);
             double[] uDiff = Sub(ucur, uprev);
-            return Concat(new double[] { 0 }, uDiff);
+            return Vec<double>.Concat(new double[] { 0 }, uDiff);
         }
 
         ///<summary>
@@ -449,7 +594,7 @@ namespace TimeSeriesAnalysis
 
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     continue;
                 retVal[i] = array1[i] - val2;
             }
@@ -466,7 +611,7 @@ namespace TimeSeriesAnalysis
 
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     retVal[i] = nanValue;
                 else
                     retVal[i] = Math.Abs(array1[i]);
@@ -484,7 +629,7 @@ namespace TimeSeriesAnalysis
             double N = 0;
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] != nanValue)
+                if (!IsNaN(array1[i]))
                 {
                     N = N + 1;
                     retVal = retVal * (N - 1) / N + array1[i] * 1 / N;
@@ -502,46 +647,11 @@ namespace TimeSeriesAnalysis
             double retVal = 0;
             for (int i = 0; i < array1.Length; i++)
             {
-                if (array1[i] == nanValue)
+                if (IsNaN(array1[i]))
                     continue;
                 retVal = retVal + array1[i];
             }
             return retVal;
-        }
-
-        ///<summary>
-        /// creates an array of size N where every element has value value
-        ///</summary>
-
-        public static double[] Fill(double value, int N)
-        {
-            double[] ret = new double[N];
-
-            for (int i = 0; i < N; i++)
-                ret[i] = value;
-            return ret;
-        }
-
-        ///<summary>
-        /// concatenates arrays x and y into a new larger array
-        ///</summary>
-        public static double[] Concat(double[] x, double[] y)
-        {
-            var z = new double[x.Length + y.Length];
-            x.CopyTo(z, 0);
-            y.CopyTo(z, x.Length);
-            return z;
-        }
-
-        ///<summary>
-        /// concatenates the value y to the end of array x
-        ///</summary>
-        public static double[] Concat(double[] x, double y)
-        {
-            var z = new double[x.Length + 1];
-            x.CopyTo(z, 0);
-            z[z.Length - 1] = y;
-            return z;
         }
 
         ///<summary>
@@ -591,7 +701,7 @@ namespace TimeSeriesAnalysis
             Rsq = 0;
             if (yIndToIgnore != null)
             {
-                weights = Fill(1, Y.Length);
+                weights = Vec<double>.Fill(1, Y.Length);
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
                     areAllWeightsOne = false;
@@ -671,7 +781,7 @@ namespace TimeSeriesAnalysis
                         param95prcConfInterval = null;
                     }
                 }
-                return Concat(regression.Weights, regression.Intercept);
+                return Vec<double>.Concat(regression.Weights, regression.Intercept);
             }
             catch (Exception e)
             {
@@ -679,9 +789,9 @@ namespace TimeSeriesAnalysis
             }
         }
         ///<summary>
-        /// Returns true f array contains a "-9999" indicating missing data
+        /// Returns true f array contains a "-9999" or NaN indicating missing data
         ///</summary>
-        public static bool ContainsM9999(double[] x)
+        public static bool ContainsBadData(double[] x)
         {
             bool doesVectorContainMinus9999 = false;
             for (int i = 0; i < x.Length; i++)
@@ -774,7 +884,7 @@ namespace TimeSeriesAnalysis
             int nGoodValues = 0;
             for (int i = ymodOffset; i < ymeas.Count(); i++)
             {
-                if (Double.IsNaN(ymeas[i]) || Double.IsNaN(ymod[i]) || ymeas[i] == nanValue || ymod[i] == nanValue)
+                if (IsNaN(ymeas[i]) || IsNaN(ymod[i]) )
                 {
                     continue;
                 }
@@ -787,62 +897,43 @@ namespace TimeSeriesAnalysis
                 return ret;
         }
 
-        public static double SumOfSquareErr(double[] ymod, double yconst, bool divByN = true)
+
+        ///<summary>
+        /// sum of square error of the vector compared to a constant. by defautl the return value is normalized by dividing by,
+        /// this normalization can be turned off
+        ///</summary>
+
+        public static double SumOfSquareErr(double[] vec, double constant, bool doNormalization = true)
         {
             double ret = 0;
-            for (int i = 0; i < ymod.Count(); i++)
+            for (int i = 0; i < vec.Count(); i++)
             {
-                ret += Math.Pow(ymod[i] - yconst, 2);
+                ret += Math.Pow(vec[i] - constant, 2);
             }
-            if (divByN)
-                return ret / ymod.Length;
+            if (doNormalization)
+                return ret / vec.Length;
             else
                 return ret;
         }
 
-        public static double SelfSumOfSquareErr(double[] ymeas)
+
+        ///<summary>
+        /// sum of square error of the vector compared to itself
+        ///</summary>
+
+        public static double SelfSumOfSquareErr(double[] vec)
         {
-            return SumOfSquareErr(Vec<double>.SubArray(ymeas, 1), Vec<double>.SubArray(ymeas, 0, ymeas.Length - 2), 0);
-        }
-        public static double SelfSumOfAbsErr(double[] ymeas)
-        {
-            return SumOfAbsErr(Vec<double>.SubArray(ymeas, 1), Vec<double>.SubArray(ymeas, 0, ymeas.Length - 2), 0);
+            return SumOfSquareErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
 
         ///<summary>
-        /// sort an array 
+        /// sum of absolute error of the vector compared to itself
         ///</summary>
 
-        public static double[] Sort(double[] vec, SortType sortType)
+        public static double SelfSumOfAbsErr(double[] vec)
         {
-            return Sort(vec, sortType, out _);
+            return SumOfAbsErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
-        public static double[] Sort(double[] vec, SortType sortType, out int[] idx)
-        {
-
-            if (vec == null)
-            {
-                idx = new int[0];
-                return new double[0];
-            }
-            double[] sortedAsc = new double[vec.Length];
-            idx = new int[vec.Length];
-            for (int i = 0; i < vec.Length; i++)
-                idx[i] = i;
-
-            Array.Copy(vec, sortedAsc, vec.Length);
-            Array.Sort(sortedAsc, idx);  // Sort array in ascending order. 
-            if (sortType == SortType.Descending)
-            {
-                Array.Reverse(sortedAsc);
-                Array.Reverse(idx);
-            }
-            return sortedAsc;
-        }
-
-
-
-
 
         ///<summary>
         /// return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
@@ -857,7 +948,7 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (vec[i] > value && vec[i] != nanValue)
+                    if (vec[i] > value && !IsNaN(vec[i]))
                         indices.Add(i);
                 }
             }
@@ -865,7 +956,7 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (vec[i] < value && vec[i] != nanValue)
+                    if (vec[i] < value && !IsNaN(vec[i]))
                         indices.Add(i);
                 }
             }
@@ -873,7 +964,7 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (vec[i] >= value)
+                    if (vec[i] >= value && !IsNaN(vec[i]))
                         indices.Add(i);
                 }
             }
@@ -881,7 +972,7 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (vec[i] <= value && vec[i] != nanValue)
+                    if (vec[i] <= value && !IsNaN(vec[i]))
                         indices.Add(i);
                 }
             }
@@ -897,7 +988,7 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (Double.IsNaN(vec[i]) || vec[i] == nanValue)
+                    if (!IsNaN(vec[i]))
                         indices.Add(i);
                 }
             }
@@ -905,44 +996,14 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (!Double.IsNaN(vec[i]) && vec[i] != nanValue)
+                    if (!IsNaN(vec[i]))
                         indices.Add(i);
                 }
             }
 
-
-
             return indices;
         }
-        ///<summary>
-        /// replaces all the vaules in array with indices in indList with the last good value
-        /// prior to that index.
-        ///</summary>
-        public static double[] ReplaceIndWithValuesPrior(double[] array, List<int> indList)
-        {
-            int[] vecInd = indList.ToArray();
 
-            int lastVecInd = -1;
-            double lastReplacementValue = -1;
-            for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
-            {
-                int curVecInd = vecInd[curIndInd];
-                if (curVecInd > 0)
-                {
-                    if (lastVecInd == curVecInd - 1)
-                    {
-                        array[curVecInd] = lastReplacementValue;
-                    }
-                    else
-                    {
-                        array[curVecInd] = array[curVecInd - 1];
-                        lastReplacementValue = array[curVecInd];
-                    }
-                }
-                lastVecInd = curVecInd;
-            }
-            return array;
-        }
 
 
         ///<summary>
@@ -984,20 +1045,7 @@ namespace TimeSeriesAnalysis
             return c;
         }
 
-        ///<summary>
-        /// returns an array of the values that are in array at the indeices given by indices list
-        ///</summary>
 
-        public static double[] GetValuesAtIndices(double[] array, List<int> indices)
-        {
-            double[] ret = new double[indices.Count()];
-
-            for (int i = 0; i < indices.Count(); i++)
-            {
-                ret[i] = array[indices.ElementAt(i)];
-            }
-            return ret;
-        }
 
         ///<summary>
         /// given a list of sorted indeces and a desired vector size N, returns the indices that are not in "sortedIndices"
@@ -1146,6 +1194,31 @@ namespace TimeSeriesAnalysis
             }
             return values.ToArray();
         }
+
+        ///<comment>
+        /// Create a compact string of vector with a certain number of significant digits and a chosen divider
+        ///</summary>
+        public static string ToString(double[] array, int nSignificantDigits, string dividerStr = ";")
+        {
+            StringBuilder sb = new StringBuilder();
+            if (array == null)
+            {
+                return "null";
+            }
+            if (array.Length > 0)
+            {
+                sb.Append("[");
+                sb.Append(SignificantDigits.Format(array[0], nSignificantDigits).ToString("", CultureInfo.InvariantCulture));
+                for (int i = 1; i < array.Length; i++)
+                {
+                    sb.Append(dividerStr);
+                    sb.Append(SignificantDigits.Format(array[i], nSignificantDigits).ToString("", CultureInfo.InvariantCulture));
+                }
+                sb.Append("]");
+            }
+            return sb.ToString();
+        }
+
 
         
     }

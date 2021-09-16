@@ -6,6 +6,11 @@
     <PackageReference Include="Accord" version="3.8.0" targetFramework="net461" />
     <PackageReference Include="Accord.Math" version="3.8.0" targetFramework="net461" />
     <PackageReference Include="Accord.Statistics" version="3.8.0" targetFramework="net461" />
+    <PackageReference Include="docfx.console">
+      <Version>2.58.4</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="NuGet.Build.Tasks.Pack">
       <Version>5.11.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

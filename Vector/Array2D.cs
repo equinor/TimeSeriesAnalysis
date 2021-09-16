@@ -13,8 +13,6 @@ namespace TimeSeriesAnalysis
 
     public class Array2D<T>
     {
-
-
         ///<summary>
         /// returns the column of the matrix with the given index
         ///</summary>
@@ -33,6 +31,10 @@ namespace TimeSeriesAnalysis
             else
                 return null;
         }
+
+        ///<summary>
+        /// returns all the columns correspoding to columnNumbers in a 2d-array
+        ///</summary>
 
         static public T[,] GetColumns(T[,] matrix, int[] columnNumbers)
         {
@@ -69,6 +71,9 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
+        ///<summary>
+        /// converts a 2d array into a jagged array
+        ///</summary>
 
         static public T[][] Convert2DtoJagged(T[,] matrix)
         {
@@ -80,16 +85,10 @@ namespace TimeSeriesAnalysis
             }
             return ret;
         }
-        /*
-        static public T[,] CopyTo (T[,] sourceMatrix,T[,] copyMatrix)
-        { 
-            for (int rowIdx =0;rowIdx<sourceMatrix.GetN)
 
-
-        
-        }
-        */
-
+        ///<summary>
+        /// transposes a 2d-array (rows are turned into columns and vice versa)
+        ///</summary>
         static public T[,] Transpose(T[,] matrix)
         {
             T[,] ret = new T[matrix.GetLength(1), matrix.GetLength(0)];
@@ -104,6 +103,10 @@ namespace TimeSeriesAnalysis
             return ret;
         }
 
+
+        ///<summary>
+        /// returns the row of the matrix with the given index as an vector
+        ///</summary>
 
         static public T[] GetRow(T[,] matrix, int rowNumber)
         {

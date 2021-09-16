@@ -1,5 +1,8 @@
 TimeSeriesAnalysis : 
 
+[API reference documentaiton](_site/api/TimeSeriesAnalysis.html)
+
+
 What is this?
 =========================================
 This is a .NET class library for making it easy to work with time series in .NET language such as C#. 

@@ -1,0 +1,2216 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: TimeSeriesAnalysis
+  name: TimeSeriesAnalysis
+  href: api/TimeSeriesAnalysis.html
+  commentId: N:TimeSeriesAnalysis
+  fullName: TimeSeriesAnalysis
+  nameWithType: TimeSeriesAnalysis
+- uid: TimeSeriesAnalysis.Array2D`1
+  name: Array2D<T>
+  href: api/TimeSeriesAnalysis.Array2D-1.html
+  commentId: T:TimeSeriesAnalysis.Array2D`1
+  name.vb: Array2D(Of T)
+  fullName: TimeSeriesAnalysis.Array2D<T>
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T)
+  nameWithType: Array2D<T>
+  nameWithType.vb: Array2D(Of T)
+- uid: TimeSeriesAnalysis.Array2D`1.Convert2DtoJagged(`0[0:,0:])
+  name: Convert2DtoJagged(T[,])
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Convert2DtoJagged__0_0__0___
+  commentId: M:TimeSeriesAnalysis.Array2D`1.Convert2DtoJagged(`0[0:,0:])
+  name.vb: Convert2DtoJagged(T(,))
+  fullName: TimeSeriesAnalysis.Array2D<T>.Convert2DtoJagged(T[,])
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Convert2DtoJagged(T(,))
+  nameWithType: Array2D<T>.Convert2DtoJagged(T[,])
+  nameWithType.vb: Array2D(Of T).Convert2DtoJagged(T(,))
+- uid: TimeSeriesAnalysis.Array2D`1.Convert2DtoJagged*
+  name: Convert2DtoJagged
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Convert2DtoJagged_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.Convert2DtoJagged
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.Convert2DtoJagged
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Convert2DtoJagged
+  nameWithType: Array2D<T>.Convert2DtoJagged
+  nameWithType.vb: Array2D(Of T).Convert2DtoJagged
+- uid: TimeSeriesAnalysis.Array2D`1.GetColumn(`0[0:,0:],System.Int32)
+  name: GetColumn(T[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumn__0_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2D`1.GetColumn(`0[0:,0:],System.Int32)
+  name.vb: GetColumn(T(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2D<T>.GetColumn(T[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetColumn(T(,), System.Int32)
+  nameWithType: Array2D<T>.GetColumn(T[,], Int32)
+  nameWithType.vb: Array2D(Of T).GetColumn(T(,), Int32)
+- uid: TimeSeriesAnalysis.Array2D`1.GetColumn*
+  name: GetColumn
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumn_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.GetColumn
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.GetColumn
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetColumn
+  nameWithType: Array2D<T>.GetColumn
+  nameWithType.vb: Array2D(Of T).GetColumn
+- uid: TimeSeriesAnalysis.Array2D`1.GetColumns(`0[0:,0:],System.Int32[])
+  name: GetColumns(T[,], Int32[])
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumns__0_0__0___System_Int32___
+  commentId: M:TimeSeriesAnalysis.Array2D`1.GetColumns(`0[0:,0:],System.Int32[])
+  name.vb: GetColumns(T(,), Int32())
+  fullName: TimeSeriesAnalysis.Array2D<T>.GetColumns(T[,], System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetColumns(T(,), System.Int32())
+  nameWithType: Array2D<T>.GetColumns(T[,], Int32[])
+  nameWithType.vb: Array2D(Of T).GetColumns(T(,), Int32())
+- uid: TimeSeriesAnalysis.Array2D`1.GetColumns*
+  name: GetColumns
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumns_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.GetColumns
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.GetColumns
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetColumns
+  nameWithType: Array2D<T>.GetColumns
+  nameWithType.vb: Array2D(Of T).GetColumns
+- uid: TimeSeriesAnalysis.Array2D`1.GetRow(`0[0:,0:],System.Int32)
+  name: GetRow(T[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetRow__0_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2D`1.GetRow(`0[0:,0:],System.Int32)
+  name.vb: GetRow(T(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2D<T>.GetRow(T[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetRow(T(,), System.Int32)
+  nameWithType: Array2D<T>.GetRow(T[,], Int32)
+  nameWithType.vb: Array2D(Of T).GetRow(T(,), Int32)
+- uid: TimeSeriesAnalysis.Array2D`1.GetRow*
+  name: GetRow
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetRow_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.GetRow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.GetRow
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetRow
+  nameWithType: Array2D<T>.GetRow
+  nameWithType.vb: Array2D(Of T).GetRow
+- uid: TimeSeriesAnalysis.Array2D`1.Transpose(`0[0:,0:])
+  name: Transpose(T[,])
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Transpose__0_0__0___
+  commentId: M:TimeSeriesAnalysis.Array2D`1.Transpose(`0[0:,0:])
+  name.vb: Transpose(T(,))
+  fullName: TimeSeriesAnalysis.Array2D<T>.Transpose(T[,])
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Transpose(T(,))
+  nameWithType: Array2D<T>.Transpose(T[,])
+  nameWithType.vb: Array2D(Of T).Transpose(T(,))
+- uid: TimeSeriesAnalysis.Array2D`1.Transpose*
+  name: Transpose
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Transpose_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.Transpose
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.Transpose
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Transpose
+  nameWithType: Array2D<T>.Transpose
+  nameWithType.vb: Array2D(Of T).Transpose
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods
+  name: Array2DExtensionMethods
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html
+  commentId: T:TimeSeriesAnalysis.Array2DExtensionMethods
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods
+  nameWithType: Array2DExtensionMethods
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.Convert2DtoJagged(System.Double[0:,0:])
+  name: Convert2DtoJagged(Double[,])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_Convert2DtoJagged_System_Double_0__0___
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.Convert2DtoJagged(System.Double[0:,0:])
+  name.vb: Convert2DtoJagged(Double(,))
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.Convert2DtoJagged(System.Double[,])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.Convert2DtoJagged(System.Double(,))
+  nameWithType: Array2DExtensionMethods.Convert2DtoJagged(Double[,])
+  nameWithType.vb: Array2DExtensionMethods.Convert2DtoJagged(Double(,))
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.Convert2DtoJagged*
+  name: Convert2DtoJagged
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_Convert2DtoJagged_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.Convert2DtoJagged
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.Convert2DtoJagged
+  nameWithType: Array2DExtensionMethods.Convert2DtoJagged
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.Double[0:,0:],System.Int32)
+  name: GetColumn(Double[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetColumn_System_Double_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.Double[0:,0:],System.Int32)
+  name.vb: GetColumn(Double(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.Double[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.Double(,), System.Int32)
+  nameWithType: Array2DExtensionMethods.GetColumn(Double[,], Int32)
+  nameWithType.vb: Array2DExtensionMethods.GetColumn(Double(,), Int32)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.String[0:,0:],System.Int32)
+  name: GetColumn(String[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetColumn_System_String_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.String[0:,0:],System.Int32)
+  name.vb: GetColumn(String(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.String[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn(System.String(,), System.Int32)
+  nameWithType: Array2DExtensionMethods.GetColumn(String[,], Int32)
+  nameWithType.vb: Array2DExtensionMethods.GetColumn(String(,), Int32)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn*
+  name: GetColumn
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetColumn_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumn
+  nameWithType: Array2DExtensionMethods.GetColumn
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumnParsedAsDateTime(System.String[0:,0:],System.Int32,System.String)
+  name: GetColumnParsedAsDateTime(String[,], Int32, String)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetColumnParsedAsDateTime_System_String_0__0___System_Int32_System_String_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetColumnParsedAsDateTime(System.String[0:,0:],System.Int32,System.String)
+  name.vb: GetColumnParsedAsDateTime(String(,), Int32, String)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumnParsedAsDateTime(System.String[,], System.Int32, System.String)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumnParsedAsDateTime(System.String(,), System.Int32, System.String)
+  nameWithType: Array2DExtensionMethods.GetColumnParsedAsDateTime(String[,], Int32, String)
+  nameWithType.vb: Array2DExtensionMethods.GetColumnParsedAsDateTime(String(,), Int32, String)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumnParsedAsDateTime*
+  name: GetColumnParsedAsDateTime
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetColumnParsedAsDateTime_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.GetColumnParsedAsDateTime
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumnParsedAsDateTime
+  nameWithType: Array2DExtensionMethods.GetColumnParsedAsDateTime
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns(System.Double[0:,0:],System.Int32[])
+  name: GetColumns(Double[,], Int32[])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetColumns_System_Double_0__0___System_Int32___
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns(System.Double[0:,0:],System.Int32[])
+  name.vb: GetColumns(Double(,), Int32())
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns(System.Double[,], System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns(System.Double(,), System.Int32())
+  nameWithType: Array2DExtensionMethods.GetColumns(Double[,], Int32[])
+  nameWithType.vb: Array2DExtensionMethods.GetColumns(Double(,), Int32())
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns*
+  name: GetColumns
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetColumns_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns
+  nameWithType: Array2DExtensionMethods.GetColumns
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double[0:,0:])
+  name: GetNColumns(Double[,])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNColumns_System_Double_0__0___
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double[0:,0:])
+  name.vb: GetNColumns(Double(,))
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double[,])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double(,))
+  nameWithType: Array2DExtensionMethods.GetNColumns(Double[,])
+  nameWithType.vb: Array2DExtensionMethods.GetNColumns(Double(,))
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns*
+  name: GetNColumns
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNColumns_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns
+  nameWithType: Array2DExtensionMethods.GetNColumns
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double[0:,0:])
+  name: GetNRows(Double[,])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNRows_System_Double_0__0___
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double[0:,0:])
+  name.vb: GetNRows(Double(,))
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double[,])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double(,))
+  nameWithType: Array2DExtensionMethods.GetNRows(Double[,])
+  nameWithType.vb: Array2DExtensionMethods.GetNRows(Double(,))
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows*
+  name: GetNRows
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNRows_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows
+  nameWithType: Array2DExtensionMethods.GetNRows
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.Double[0:,0:],System.Int32)
+  name: GetRow(Double[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetRow_System_Double_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.Double[0:,0:],System.Int32)
+  name.vb: GetRow(Double(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.Double[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.Double(,), System.Int32)
+  nameWithType: Array2DExtensionMethods.GetRow(Double[,], Int32)
+  nameWithType.vb: Array2DExtensionMethods.GetRow(Double(,), Int32)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.String[0:,0:],System.Int32)
+  name: GetRow(String[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetRow_System_String_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.String[0:,0:],System.Int32)
+  name.vb: GetRow(String(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.String[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow(System.String(,), System.Int32)
+  nameWithType: Array2DExtensionMethods.GetRow(String[,], Int32)
+  nameWithType.vb: Array2DExtensionMethods.GetRow(String(,), Int32)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow*
+  name: GetRow
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetRow_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.GetRow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetRow
+  nameWithType: Array2DExtensionMethods.GetRow
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.DateTime[],System.Int32)
+  name: GetRowsAfterIndex(DateTime[], Int32)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetRowsAfterIndex_System_DateTime___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.DateTime[],System.Int32)
+  name.vb: GetRowsAfterIndex(DateTime(), Int32)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.DateTime[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.DateTime(), System.Int32)
+  nameWithType: Array2DExtensionMethods.GetRowsAfterIndex(DateTime[], Int32)
+  nameWithType.vb: Array2DExtensionMethods.GetRowsAfterIndex(DateTime(), Int32)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double[],System.Int32)
+  name: GetRowsAfterIndex(Double[], Int32)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetRowsAfterIndex_System_Double___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double[],System.Int32)
+  name.vb: GetRowsAfterIndex(Double(), Int32)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double(), System.Int32)
+  nameWithType: Array2DExtensionMethods.GetRowsAfterIndex(Double[], Int32)
+  nameWithType.vb: Array2DExtensionMethods.GetRowsAfterIndex(Double(), Int32)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double[0:,0:],System.Int32)
+  name: GetRowsAfterIndex(Double[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetRowsAfterIndex_System_Double_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double[0:,0:],System.Int32)
+  name.vb: GetRowsAfterIndex(Double(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex(System.Double(,), System.Int32)
+  nameWithType: Array2DExtensionMethods.GetRowsAfterIndex(Double[,], Int32)
+  nameWithType.vb: Array2DExtensionMethods.GetRowsAfterIndex(Double(,), Int32)
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex*
+  name: GetRowsAfterIndex
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetRowsAfterIndex_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetRowsAfterIndex
+  nameWithType: Array2DExtensionMethods.GetRowsAfterIndex
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.Transpose(System.Double[0:,0:])
+  name: Transpose(Double[,])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_Transpose_System_Double_0__0___
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.Transpose(System.Double[0:,0:])
+  name.vb: Transpose(Double(,))
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.Transpose(System.Double[,])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.Transpose(System.Double(,))
+  nameWithType: Array2DExtensionMethods.Transpose(Double[,])
+  nameWithType.vb: Array2DExtensionMethods.Transpose(Double(,))
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.Transpose*
+  name: Transpose
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_Transpose_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.Transpose
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.Transpose
+  nameWithType: Array2DExtensionMethods.Transpose
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn(System.Double[0:,0:],System.Int32,System.Double[])
+  name: WriteColumn(Double[,], Int32, Double[])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_WriteColumn_System_Double_0__0___System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn(System.Double[0:,0:],System.Int32,System.Double[])
+  name.vb: WriteColumn(Double(,), Int32, Double())
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn(System.Double[,], System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn(System.Double(,), System.Int32, System.Double())
+  nameWithType: Array2DExtensionMethods.WriteColumn(Double[,], Int32, Double[])
+  nameWithType.vb: Array2DExtensionMethods.WriteColumn(Double(,), Int32, Double())
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn*
+  name: WriteColumn
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_WriteColumn_
+  commentId: Overload:TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn
+  nameWithType: Array2DExtensionMethods.WriteColumn
+- uid: TimeSeriesAnalysis.CSV
+  name: CSV
+  href: api/TimeSeriesAnalysis.CSV.html
+  commentId: T:TimeSeriesAnalysis.CSV
+  fullName: TimeSeriesAnalysis.CSV
+  nameWithType: CSV
+- uid: TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
+  name: LoadDataFromCSV(String, out Double[,], out String[], out String[,])
+  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_LoadDataFromCSV_System_String_System_Double_0__0____System_String____System_String_0__0____
+  commentId: M:TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
+  name.vb: LoadDataFromCSV(String, ByRef Double(,), ByRef String(), ByRef String(,))
+  fullName: TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String, out System.Double[,], out System.String[], out System.String[,])
+  fullName.vb: TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String, ByRef System.Double(,), ByRef System.String(), ByRef System.String(,))
+  nameWithType: CSV.LoadDataFromCSV(String, out Double[,], out String[], out String[,])
+  nameWithType.vb: CSV.LoadDataFromCSV(String, ByRef Double(,), ByRef String(), ByRef String(,))
+- uid: TimeSeriesAnalysis.CSV.LoadDataFromCSV*
+  name: LoadDataFromCSV
+  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_LoadDataFromCSV_
+  commentId: Overload:TimeSeriesAnalysis.CSV.LoadDataFromCSV
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.CSV.LoadDataFromCSV
+  nameWithType: CSV.LoadDataFromCSV
+- uid: TimeSeriesAnalysis.CSV.RobustParseDouble(System.String,System.Double@)
+  name: RobustParseDouble(String, out Double)
+  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_RobustParseDouble_System_String_System_Double__
+  commentId: M:TimeSeriesAnalysis.CSV.RobustParseDouble(System.String,System.Double@)
+  name.vb: RobustParseDouble(String, ByRef Double)
+  fullName: TimeSeriesAnalysis.CSV.RobustParseDouble(System.String, out System.Double)
+  fullName.vb: TimeSeriesAnalysis.CSV.RobustParseDouble(System.String, ByRef System.Double)
+  nameWithType: CSV.RobustParseDouble(String, out Double)
+  nameWithType.vb: CSV.RobustParseDouble(String, ByRef Double)
+- uid: TimeSeriesAnalysis.CSV.RobustParseDouble*
+  name: RobustParseDouble
+  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_RobustParseDouble_
+  commentId: Overload:TimeSeriesAnalysis.CSV.RobustParseDouble
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.CSV.RobustParseDouble
+  nameWithType: CSV.RobustParseDouble
+- uid: TimeSeriesAnalysis.FindValues
+  name: FindValues
+  href: api/TimeSeriesAnalysis.FindValues.html
+  commentId: T:TimeSeriesAnalysis.FindValues
+  fullName: TimeSeriesAnalysis.FindValues
+  nameWithType: FindValues
+- uid: TimeSeriesAnalysis.FindValues.BiggerOrEqual
+  name: BiggerOrEqual
+  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_BiggerOrEqual
+  commentId: F:TimeSeriesAnalysis.FindValues.BiggerOrEqual
+  fullName: TimeSeriesAnalysis.FindValues.BiggerOrEqual
+  nameWithType: FindValues.BiggerOrEqual
+- uid: TimeSeriesAnalysis.FindValues.BiggerThan
+  name: BiggerThan
+  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_BiggerThan
+  commentId: F:TimeSeriesAnalysis.FindValues.BiggerThan
+  fullName: TimeSeriesAnalysis.FindValues.BiggerThan
+  nameWithType: FindValues.BiggerThan
+- uid: TimeSeriesAnalysis.FindValues.Equal
+  name: Equal
+  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_Equal
+  commentId: F:TimeSeriesAnalysis.FindValues.Equal
+  fullName: TimeSeriesAnalysis.FindValues.Equal
+  nameWithType: FindValues.Equal
+- uid: TimeSeriesAnalysis.FindValues.NaN
+  name: NaN
+  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_NaN
+  commentId: F:TimeSeriesAnalysis.FindValues.NaN
+  fullName: TimeSeriesAnalysis.FindValues.NaN
+  nameWithType: FindValues.NaN
+- uid: TimeSeriesAnalysis.FindValues.NotNaN
+  name: NotNaN
+  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_NotNaN
+  commentId: F:TimeSeriesAnalysis.FindValues.NotNaN
+  fullName: TimeSeriesAnalysis.FindValues.NotNaN
+  nameWithType: FindValues.NotNaN
+- uid: TimeSeriesAnalysis.FindValues.SmallerOrEqual
+  name: SmallerOrEqual
+  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_SmallerOrEqual
+  commentId: F:TimeSeriesAnalysis.FindValues.SmallerOrEqual
+  fullName: TimeSeriesAnalysis.FindValues.SmallerOrEqual
+  nameWithType: FindValues.SmallerOrEqual
+- uid: TimeSeriesAnalysis.FindValues.SmallerThan
+  name: SmallerThan
+  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_SmallerThan
+  commentId: F:TimeSeriesAnalysis.FindValues.SmallerThan
+  fullName: TimeSeriesAnalysis.FindValues.SmallerThan
+  nameWithType: FindValues.SmallerThan
+- uid: TimeSeriesAnalysis.LogLine
+  name: LogLine
+  href: api/TimeSeriesAnalysis.LogLine.html
+  commentId: T:TimeSeriesAnalysis.LogLine
+  fullName: TimeSeriesAnalysis.LogLine
+  nameWithType: LogLine
+- uid: TimeSeriesAnalysis.LogLine.message
+  name: message
+  href: api/TimeSeriesAnalysis.LogLine.html#TimeSeriesAnalysis_LogLine_message
+  commentId: F:TimeSeriesAnalysis.LogLine.message
+  fullName: TimeSeriesAnalysis.LogLine.message
+  nameWithType: LogLine.message
+- uid: TimeSeriesAnalysis.LogLine.messageLevel
+  name: messageLevel
+  href: api/TimeSeriesAnalysis.LogLine.html#TimeSeriesAnalysis_LogLine_messageLevel
+  commentId: F:TimeSeriesAnalysis.LogLine.messageLevel
+  fullName: TimeSeriesAnalysis.LogLine.messageLevel
+  nameWithType: LogLine.messageLevel
+- uid: TimeSeriesAnalysis.LogLine.time
+  name: time
+  href: api/TimeSeriesAnalysis.LogLine.html#TimeSeriesAnalysis_LogLine_time
+  commentId: F:TimeSeriesAnalysis.LogLine.time
+  fullName: TimeSeriesAnalysis.LogLine.time
+  nameWithType: LogLine.time
+- uid: TimeSeriesAnalysis.LowPass
+  name: LowPass
+  href: api/TimeSeriesAnalysis.LowPass.html
+  commentId: T:TimeSeriesAnalysis.LowPass
+  fullName: TimeSeriesAnalysis.LowPass
+  nameWithType: LowPass
+- uid: TimeSeriesAnalysis.LowPass.#ctor(System.Double)
+  name: LowPass(Double)
+  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass__ctor_System_Double_
+  commentId: M:TimeSeriesAnalysis.LowPass.#ctor(System.Double)
+  fullName: TimeSeriesAnalysis.LowPass.LowPass(System.Double)
+  nameWithType: LowPass.LowPass(Double)
+- uid: TimeSeriesAnalysis.LowPass.#ctor*
+  name: LowPass
+  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass__ctor_
+  commentId: Overload:TimeSeriesAnalysis.LowPass.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.LowPass.LowPass
+  nameWithType: LowPass.LowPass
+- uid: TimeSeriesAnalysis.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)
+  name: Filter(Double, Double, Int32, Boolean)
+  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_System_Double_System_Double_System_Int32_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)
+  fullName: TimeSeriesAnalysis.LowPass.Filter(System.Double, System.Double, System.Int32, System.Boolean)
+  nameWithType: LowPass.Filter(Double, Double, Int32, Boolean)
+- uid: TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32,System.Boolean)
+  name: Filter(Double[], Double, Int32, Boolean)
+  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_System_Double___System_Double_System_Int32_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32,System.Boolean)
+  name.vb: Filter(Double(), Double, Int32, Boolean)
+  fullName: TimeSeriesAnalysis.LowPass.Filter(System.Double[], System.Double, System.Int32, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.LowPass.Filter(System.Double(), System.Double, System.Int32, System.Boolean)
+  nameWithType: LowPass.Filter(Double[], Double, Int32, Boolean)
+  nameWithType.vb: LowPass.Filter(Double(), Double, Int32, Boolean)
+- uid: TimeSeriesAnalysis.LowPass.Filter*
+  name: Filter
+  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_
+  commentId: Overload:TimeSeriesAnalysis.LowPass.Filter
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.LowPass.Filter
+  nameWithType: LowPass.Filter
+- uid: TimeSeriesAnalysis.Matrix
+  name: Matrix
+  href: api/TimeSeriesAnalysis.Matrix.html
+  commentId: T:TimeSeriesAnalysis.Matrix
+  fullName: TimeSeriesAnalysis.Matrix
+  nameWithType: Matrix
+- uid: TimeSeriesAnalysis.Matrix.AppendRow(System.Double[0:,0:],System.Double[])
+  name: AppendRow(Double[,], Double[])
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_AppendRow_System_Double_0__0___System_Double___
+  commentId: M:TimeSeriesAnalysis.Matrix.AppendRow(System.Double[0:,0:],System.Double[])
+  name.vb: AppendRow(Double(,), Double())
+  fullName: TimeSeriesAnalysis.Matrix.AppendRow(System.Double[,], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Matrix.AppendRow(System.Double(,), System.Double())
+  nameWithType: Matrix.AppendRow(Double[,], Double[])
+  nameWithType.vb: Matrix.AppendRow(Double(,), Double())
+- uid: TimeSeriesAnalysis.Matrix.AppendRow*
+  name: AppendRow
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_AppendRow_
+  commentId: Overload:TimeSeriesAnalysis.Matrix.AppendRow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Matrix.AppendRow
+  nameWithType: Matrix.AppendRow
+- uid: TimeSeriesAnalysis.Matrix.ComponentMult(System.Double[0:,0:],System.Double[],System.Int32)
+  name: ComponentMult(Double[,], Double[], Int32)
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_ComponentMult_System_Double_0__0___System_Double___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Matrix.ComponentMult(System.Double[0:,0:],System.Double[],System.Int32)
+  name.vb: ComponentMult(Double(,), Double(), Int32)
+  fullName: TimeSeriesAnalysis.Matrix.ComponentMult(System.Double[,], System.Double[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Matrix.ComponentMult(System.Double(,), System.Double(), System.Int32)
+  nameWithType: Matrix.ComponentMult(Double[,], Double[], Int32)
+  nameWithType.vb: Matrix.ComponentMult(Double(,), Double(), Int32)
+- uid: TimeSeriesAnalysis.Matrix.ComponentMult*
+  name: ComponentMult
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_ComponentMult_
+  commentId: Overload:TimeSeriesAnalysis.Matrix.ComponentMult
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Matrix.ComponentMult
+  nameWithType: Matrix.ComponentMult
+- uid: TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double,System.Int32)
+  name: Mult(Double[,], Double, Int32)
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_Mult_System_Double_0__0___System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double,System.Int32)
+  name.vb: Mult(Double(,), Double, Int32)
+  fullName: TimeSeriesAnalysis.Matrix.Mult(System.Double[,], System.Double, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Matrix.Mult(System.Double(,), System.Double, System.Int32)
+  nameWithType: Matrix.Mult(Double[,], Double, Int32)
+  nameWithType.vb: Matrix.Mult(Double(,), Double, Int32)
+- uid: TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double[],System.Int32)
+  name: Mult(Double[,], Double[], Int32)
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_Mult_System_Double_0__0___System_Double___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double[],System.Int32)
+  name.vb: Mult(Double(,), Double(), Int32)
+  fullName: TimeSeriesAnalysis.Matrix.Mult(System.Double[,], System.Double[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Matrix.Mult(System.Double(,), System.Double(), System.Int32)
+  nameWithType: Matrix.Mult(Double[,], Double[], Int32)
+  nameWithType.vb: Matrix.Mult(Double(,), Double(), Int32)
+- uid: TimeSeriesAnalysis.Matrix.Mult*
+  name: Mult
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_Mult_
+  commentId: Overload:TimeSeriesAnalysis.Matrix.Mult
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Matrix.Mult
+  nameWithType: Matrix.Mult
+- uid: TimeSeriesAnalysis.Matrix.ReplaceColumn(System.Double[0:,0:],System.Int32,System.Double[])
+  name: ReplaceColumn(Double[,], Int32, Double[])
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_ReplaceColumn_System_Double_0__0___System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Matrix.ReplaceColumn(System.Double[0:,0:],System.Int32,System.Double[])
+  name.vb: ReplaceColumn(Double(,), Int32, Double())
+  fullName: TimeSeriesAnalysis.Matrix.ReplaceColumn(System.Double[,], System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Matrix.ReplaceColumn(System.Double(,), System.Int32, System.Double())
+  nameWithType: Matrix.ReplaceColumn(Double[,], Int32, Double[])
+  nameWithType.vb: Matrix.ReplaceColumn(Double(,), Int32, Double())
+- uid: TimeSeriesAnalysis.Matrix.ReplaceColumn*
+  name: ReplaceColumn
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_ReplaceColumn_
+  commentId: Overload:TimeSeriesAnalysis.Matrix.ReplaceColumn
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Matrix.ReplaceColumn
+  nameWithType: Matrix.ReplaceColumn
+- uid: TimeSeriesAnalysis.Matrix.ReplaceRow(System.Double[0:,0:],System.Int32,System.Double[])
+  name: ReplaceRow(Double[,], Int32, Double[])
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_ReplaceRow_System_Double_0__0___System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Matrix.ReplaceRow(System.Double[0:,0:],System.Int32,System.Double[])
+  name.vb: ReplaceRow(Double(,), Int32, Double())
+  fullName: TimeSeriesAnalysis.Matrix.ReplaceRow(System.Double[,], System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Matrix.ReplaceRow(System.Double(,), System.Int32, System.Double())
+  nameWithType: Matrix.ReplaceRow(Double[,], Int32, Double[])
+  nameWithType.vb: Matrix.ReplaceRow(Double(,), Int32, Double())
+- uid: TimeSeriesAnalysis.Matrix.ReplaceRow*
+  name: ReplaceRow
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_ReplaceRow_
+  commentId: Overload:TimeSeriesAnalysis.Matrix.ReplaceRow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Matrix.ReplaceRow
+  nameWithType: Matrix.ReplaceRow
+- uid: TimeSeriesAnalysis.MessageLevel
+  name: MessageLevel
+  href: api/TimeSeriesAnalysis.MessageLevel.html
+  commentId: T:TimeSeriesAnalysis.MessageLevel
+  fullName: TimeSeriesAnalysis.MessageLevel
+  nameWithType: MessageLevel
+- uid: TimeSeriesAnalysis.MessageLevel.error
+  name: error
+  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_error
+  commentId: F:TimeSeriesAnalysis.MessageLevel.error
+  fullName: TimeSeriesAnalysis.MessageLevel.error
+  nameWithType: MessageLevel.error
+- uid: TimeSeriesAnalysis.MessageLevel.fatal
+  name: fatal
+  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_fatal
+  commentId: F:TimeSeriesAnalysis.MessageLevel.fatal
+  fullName: TimeSeriesAnalysis.MessageLevel.fatal
+  nameWithType: MessageLevel.fatal
+- uid: TimeSeriesAnalysis.MessageLevel.info
+  name: info
+  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_info
+  commentId: F:TimeSeriesAnalysis.MessageLevel.info
+  fullName: TimeSeriesAnalysis.MessageLevel.info
+  nameWithType: MessageLevel.info
+- uid: TimeSeriesAnalysis.MessageLevel.warn
+  name: warn
+  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_warn
+  commentId: F:TimeSeriesAnalysis.MessageLevel.warn
+  fullName: TimeSeriesAnalysis.MessageLevel.warn
+  nameWithType: MessageLevel.warn
+- uid: TimeSeriesAnalysis.MovingAvg
+  name: MovingAvg
+  href: api/TimeSeriesAnalysis.MovingAvg.html
+  commentId: T:TimeSeriesAnalysis.MovingAvg
+  fullName: TimeSeriesAnalysis.MovingAvg
+  nameWithType: MovingAvg
+- uid: TimeSeriesAnalysis.MovingAvg.#ctor(System.Int32)
+  name: MovingAvg(Int32)
+  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg__ctor_System_Int32_
+  commentId: M:TimeSeriesAnalysis.MovingAvg.#ctor(System.Int32)
+  fullName: TimeSeriesAnalysis.MovingAvg.MovingAvg(System.Int32)
+  nameWithType: MovingAvg.MovingAvg(Int32)
+- uid: TimeSeriesAnalysis.MovingAvg.#ctor*
+  name: MovingAvg
+  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg__ctor_
+  commentId: Overload:TimeSeriesAnalysis.MovingAvg.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.MovingAvg.MovingAvg
+  nameWithType: MovingAvg.MovingAvg
+- uid: TimeSeriesAnalysis.MovingAvg.Add(System.Double)
+  name: Add(Double)
+  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg_Add_System_Double_
+  commentId: M:TimeSeriesAnalysis.MovingAvg.Add(System.Double)
+  fullName: TimeSeriesAnalysis.MovingAvg.Add(System.Double)
+  nameWithType: MovingAvg.Add(Double)
+- uid: TimeSeriesAnalysis.MovingAvg.Add*
+  name: Add
+  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg_Add_
+  commentId: Overload:TimeSeriesAnalysis.MovingAvg.Add
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.MovingAvg.Add
+  nameWithType: MovingAvg.Add
+- uid: TimeSeriesAnalysis.ParserFeedback
+  name: ParserFeedback
+  href: api/TimeSeriesAnalysis.ParserFeedback.html
+  commentId: T:TimeSeriesAnalysis.ParserFeedback
+  fullName: TimeSeriesAnalysis.ParserFeedback
+  nameWithType: ParserFeedback
+- uid: TimeSeriesAnalysis.ParserFeedback.#ctor(System.Boolean)
+  name: ParserFeedback(Boolean)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback__ctor_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.#ctor(System.Boolean)
+  fullName: TimeSeriesAnalysis.ParserFeedback.ParserFeedback(System.Boolean)
+  nameWithType: ParserFeedback.ParserFeedback(Boolean)
+- uid: TimeSeriesAnalysis.ParserFeedback.#ctor*
+  name: ParserFeedback
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback__ctor_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.ParserFeedback
+  nameWithType: ParserFeedback.ParserFeedback
+- uid: TimeSeriesAnalysis.ParserFeedback.AddError(System.String,System.String)
+  name: AddError(String, String)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddError_System_String_System_String_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddError(System.String,System.String)
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddError(System.String, System.String)
+  nameWithType: ParserFeedback.AddError(String, String)
+- uid: TimeSeriesAnalysis.ParserFeedback.AddError*
+  name: AddError
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddError_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddError
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddError
+  nameWithType: ParserFeedback.AddError
+- uid: TimeSeriesAnalysis.ParserFeedback.AddFatalError(System.String,System.String)
+  name: AddFatalError(String, String)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddFatalError_System_String_System_String_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddFatalError(System.String,System.String)
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddFatalError(System.String, System.String)
+  nameWithType: ParserFeedback.AddFatalError(String, String)
+- uid: TimeSeriesAnalysis.ParserFeedback.AddFatalError*
+  name: AddFatalError
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddFatalError_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddFatalError
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddFatalError
+  nameWithType: ParserFeedback.AddFatalError
+- uid: TimeSeriesAnalysis.ParserFeedback.AddInfo(System.String)
+  name: AddInfo(String)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddInfo_System_String_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddInfo(System.String)
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddInfo(System.String)
+  nameWithType: ParserFeedback.AddInfo(String)
+- uid: TimeSeriesAnalysis.ParserFeedback.AddInfo*
+  name: AddInfo
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddInfo_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddInfo
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddInfo
+  nameWithType: ParserFeedback.AddInfo
+- uid: TimeSeriesAnalysis.ParserFeedback.AddWarning(System.String)
+  name: AddWarning(String)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddWarning_System_String_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddWarning(System.String)
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddWarning(System.String)
+  nameWithType: ParserFeedback.AddWarning(String)
+- uid: TimeSeriesAnalysis.ParserFeedback.AddWarning*
+  name: AddWarning
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddWarning_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddWarning
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.AddWarning
+  nameWithType: ParserFeedback.AddWarning
+- uid: TimeSeriesAnalysis.ParserFeedback.Close
+  name: Close()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_Close
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.Close
+  fullName: TimeSeriesAnalysis.ParserFeedback.Close()
+  nameWithType: ParserFeedback.Close()
+- uid: TimeSeriesAnalysis.ParserFeedback.Close*
+  name: Close
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_Close_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.Close
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.Close
+  nameWithType: ParserFeedback.Close
+- uid: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
+  name: CloseCaseLogFile()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CloseCaseLogFile
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
+  fullName: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile()
+  nameWithType: ParserFeedback.CloseCaseLogFile()
+- uid: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile*
+  name: CloseCaseLogFile
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CloseCaseLogFile_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
+  nameWithType: ParserFeedback.CloseCaseLogFile
+- uid: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile(System.String,System.Int32)
+  name: CreateCaseLogFile(String, Int32)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCaseLogFile_System_String_System_Int32_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile(System.String,System.Int32)
+  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile(System.String, System.Int32)
+  nameWithType: ParserFeedback.CreateCaseLogFile(String, Int32)
+- uid: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile*
+  name: CreateCaseLogFile
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCaseLogFile_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile
+  nameWithType: ParserFeedback.CreateCaseLogFile
+- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
+  name: CreateCommonHTMLfile()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonHTMLfile
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
+  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile()
+  nameWithType: ParserFeedback.CreateCommonHTMLfile()
+- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile*
+  name: CreateCommonHTMLfile
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonHTMLfile_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
+  nameWithType: ParserFeedback.CreateCommonHTMLfile
+- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile(System.String)
+  name: CreateCommonLogFile(String)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonLogFile_System_String_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile(System.String)
+  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile(System.String)
+  nameWithType: ParserFeedback.CreateCommonLogFile(String)
+- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile*
+  name: CreateCommonLogFile
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonLogFile_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile
+  nameWithType: ParserFeedback.CreateCommonLogFile
+- uid: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput(System.Boolean)
+  name: EnableConsoleOutput(Boolean)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_EnableConsoleOutput_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput(System.Boolean)
+  fullName: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput(System.Boolean)
+  nameWithType: ParserFeedback.EnableConsoleOutput(Boolean)
+- uid: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput*
+  name: EnableConsoleOutput
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_EnableConsoleOutput_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput
+  nameWithType: ParserFeedback.EnableConsoleOutput
+- uid: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
+  name: GetFirstErrorOrWarning()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetFirstErrorOrWarning
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning()
+  nameWithType: ParserFeedback.GetFirstErrorOrWarning()
+- uid: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning*
+  name: GetFirstErrorOrWarning
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetFirstErrorOrWarning_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
+  nameWithType: ParserFeedback.GetFirstErrorOrWarning
+- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.MessageLevel)
+  name: GetListOfAllLogLinesAtOrAboveLevel(MessageLevel)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrAboveLevel_TimeSeriesAnalysis_MessageLevel_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.MessageLevel)
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.MessageLevel)
+  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(MessageLevel)
+- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel*
+  name: GetListOfAllLogLinesAtOrAboveLevel
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrAboveLevel_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
+  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
+- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.MessageLevel)
+  name: GetListOfAllLogLinesAtOrBelowLevel(MessageLevel)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrBelowLevel_TimeSeriesAnalysis_MessageLevel_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.MessageLevel)
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.MessageLevel)
+  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(MessageLevel)
+- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel*
+  name: GetListOfAllLogLinesAtOrBelowLevel
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrBelowLevel_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
+  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
+- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.MessageLevel)
+  name: GetListOfAllLogLinesOfLevel(MessageLevel)
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesOfLevel_TimeSeriesAnalysis_MessageLevel_
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.MessageLevel)
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.MessageLevel)
+  nameWithType: ParserFeedback.GetListOfAllLogLinesOfLevel(MessageLevel)
+- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel*
+  name: GetListOfAllLogLinesOfLevel
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesOfLevel_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel
+  nameWithType: ParserFeedback.GetListOfAllLogLinesOfLevel
+- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilename
+  name: GetLogFilename()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilename
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetLogFilename
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilename()
+  nameWithType: ParserFeedback.GetLogFilename()
+- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilename*
+  name: GetLogFilename
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilename_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetLogFilename
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilename
+  nameWithType: ParserFeedback.GetLogFilename
+- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
+  name: GetLogFilePath()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilePath
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath()
+  nameWithType: ParserFeedback.GetLogFilePath()
+- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath*
+  name: GetLogFilePath
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilePath_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
+  nameWithType: ParserFeedback.GetLogFilePath
+- uid: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+  name: IsNumberOfErrorsAndWarningsZero()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_IsNumberOfErrorsAndWarningsZero
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+  fullName: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero()
+  nameWithType: ParserFeedback.IsNumberOfErrorsAndWarningsZero()
+- uid: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero*
+  name: IsNumberOfErrorsAndWarningsZero
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_IsNumberOfErrorsAndWarningsZero_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+  nameWithType: ParserFeedback.IsNumberOfErrorsAndWarningsZero
+- uid: TimeSeriesAnalysis.ParserFeedback.ResetCounters
+  name: ResetCounters()
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_ResetCounters
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.ResetCounters
+  fullName: TimeSeriesAnalysis.ParserFeedback.ResetCounters()
+  nameWithType: ParserFeedback.ResetCounters()
+- uid: TimeSeriesAnalysis.ParserFeedback.ResetCounters*
+  name: ResetCounters
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_ResetCounters_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.ResetCounters
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.ResetCounters
+  nameWithType: ParserFeedback.ResetCounters
+- uid: TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String[])
+  name: SetCaseArray(String[])
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_SetCaseArray_System_String___
+  commentId: M:TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String[])
+  name.vb: SetCaseArray(String())
+  fullName: TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String[])
+  fullName.vb: TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String())
+  nameWithType: ParserFeedback.SetCaseArray(String[])
+  nameWithType.vb: ParserFeedback.SetCaseArray(String())
+- uid: TimeSeriesAnalysis.ParserFeedback.SetCaseArray*
+  name: SetCaseArray
+  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_SetCaseArray_
+  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.SetCaseArray
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.ParserFeedback.SetCaseArray
+  nameWithType: ParserFeedback.SetCaseArray
+- uid: TimeSeriesAnalysis.Plot
+  name: Plot
+  href: api/TimeSeriesAnalysis.Plot.html
+  commentId: T:TimeSeriesAnalysis.Plot
+  fullName: TimeSeriesAnalysis.Plot
+  nameWithType: Plot
+- uid: TimeSeriesAnalysis.Plot.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot.Five(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot.Five(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot.Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot.Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot.Five*
+  name: Five
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Five_
+  commentId: Overload:TimeSeriesAnalysis.Plot.Five
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot.Five
+  nameWithType: Plot.Five
+- uid: TimeSeriesAnalysis.Plot.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot.Four(System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot.Four(System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot.Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot.Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot.Four*
+  name: Four
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Four_
+  commentId: Overload:TimeSeriesAnalysis.Plot.Four
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot.Four
+  nameWithType: Plot.Four
+- uid: TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
+  name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_
+  commentId: M:TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
+  name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
+  fullName: TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
+  fullName.vb: TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
+  nameWithType: Plot.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
+  nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
+- uid: TimeSeriesAnalysis.Plot.FromList*
+  name: FromList
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_FromList_
+  commentId: Overload:TimeSeriesAnalysis.Plot.FromList
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot.FromList
+  nameWithType: Plot.FromList
+- uid: TimeSeriesAnalysis.Plot.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+  name: One(Double[], Int32, String, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_One_System_Double___System_Int32_System_String_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+  name.vb: One(Double(), Int32, String, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot.One(System.Double[], System.Int32, System.String, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot.One(System.Double(), System.Int32, System.String, System.String, System.DateTime)
+  nameWithType: Plot.One(Double[], Int32, String, String, DateTime)
+  nameWithType.vb: Plot.One(Double(), Int32, String, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot.One*
+  name: One
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_One_
+  commentId: Overload:TimeSeriesAnalysis.Plot.One
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot.One
+  nameWithType: Plot.One
+- uid: TimeSeriesAnalysis.Plot.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot.Six(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot.Six(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot.Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot.Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot.Six*
+  name: Six
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Six_
+  commentId: Overload:TimeSeriesAnalysis.Plot.Six
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot.Six
+  nameWithType: Plot.Six
+- uid: TimeSeriesAnalysis.Plot.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot.Three(System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot.Three(System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot.Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot.Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot.Three*
+  name: Three
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Three_
+  commentId: Overload:TimeSeriesAnalysis.Plot.Three
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot.Three
+  nameWithType: Plot.Three
+- uid: TimeSeriesAnalysis.Plot.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot.Two(System.Double[], System.Double[], System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot.Two(System.Double(), System.Double(), System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot.Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot.Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot.Two*
+  name: Two
+  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Two_
+  commentId: Overload:TimeSeriesAnalysis.Plot.Two
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot.Two
+  nameWithType: Plot.Two
+- uid: TimeSeriesAnalysis.Plot4Test
+  name: Plot4Test
+  href: api/TimeSeriesAnalysis.Plot4Test.html
+  commentId: T:TimeSeriesAnalysis.Plot4Test
+  fullName: TimeSeriesAnalysis.Plot4Test
+  nameWithType: Plot4Test
+- uid: TimeSeriesAnalysis.Plot4Test.#ctor(System.Boolean,System.Int32)
+  name: Plot4Test(Boolean, Int32)
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test__ctor_System_Boolean_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Plot4Test.#ctor(System.Boolean,System.Int32)
+  fullName: TimeSeriesAnalysis.Plot4Test.Plot4Test(System.Boolean, System.Int32)
+  nameWithType: Plot4Test.Plot4Test(Boolean, Int32)
+- uid: TimeSeriesAnalysis.Plot4Test.#ctor*
+  name: Plot4Test
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Plot4Test
+  nameWithType: Plot4Test.Plot4Test
+- uid: TimeSeriesAnalysis.Plot4Test.Disable
+  name: Disable()
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Disable
+  commentId: M:TimeSeriesAnalysis.Plot4Test.Disable
+  fullName: TimeSeriesAnalysis.Plot4Test.Disable()
+  nameWithType: Plot4Test.Disable()
+- uid: TimeSeriesAnalysis.Plot4Test.Disable*
+  name: Disable
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Disable_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Disable
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Disable
+  nameWithType: Plot4Test.Disable
+- uid: TimeSeriesAnalysis.Plot4Test.Enable
+  name: Enable()
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Enable
+  commentId: M:TimeSeriesAnalysis.Plot4Test.Enable
+  fullName: TimeSeriesAnalysis.Plot4Test.Enable()
+  nameWithType: Plot4Test.Enable()
+- uid: TimeSeriesAnalysis.Plot4Test.Enable*
+  name: Enable
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Enable_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Enable
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Enable
+  nameWithType: Plot4Test.Enable
+- uid: TimeSeriesAnalysis.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot4Test.Five(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot4Test.Five(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot4Test.Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot4Test.Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot4Test.Five*
+  name: Five
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Five_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Five
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Five
+  nameWithType: Plot4Test.Five
+- uid: TimeSeriesAnalysis.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot4Test.Four(System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot4Test.Four(System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot4Test.Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot4Test.Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot4Test.Four*
+  name: Four
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Four_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Four
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Four
+  nameWithType: Plot4Test.Four
+- uid: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
+  name: GetNumberOfPlotsMade()
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_GetNumberOfPlotsMade
+  commentId: M:TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
+  fullName: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade()
+  nameWithType: Plot4Test.GetNumberOfPlotsMade()
+- uid: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade*
+  name: GetNumberOfPlotsMade
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_GetNumberOfPlotsMade_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
+  nameWithType: Plot4Test.GetNumberOfPlotsMade
+- uid: TimeSeriesAnalysis.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+  name: One(Double[], Int32, String, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_One_System_Double___System_Int32_System_String_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+  name.vb: One(Double(), Int32, String, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot4Test.One(System.Double[], System.Int32, System.String, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot4Test.One(System.Double(), System.Int32, System.String, System.String, System.DateTime)
+  nameWithType: Plot4Test.One(Double[], Int32, String, String, DateTime)
+  nameWithType.vb: Plot4Test.One(Double(), Int32, String, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot4Test.One*
+  name: One
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_One_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.One
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.One
+  nameWithType: Plot4Test.One
+- uid: TimeSeriesAnalysis.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot4Test.Six(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot4Test.Six(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot4Test.Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot4Test.Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot4Test.Six*
+  name: Six
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Six_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Six
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Six
+  nameWithType: Plot4Test.Six
+- uid: TimeSeriesAnalysis.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot4Test.Three(System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot4Test.Three(System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot4Test.Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot4Test.Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot4Test.Three*
+  name: Three
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Three_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Three
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Three
+  nameWithType: Plot4Test.Three
+- uid: TimeSeriesAnalysis.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name: Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  name.vb: Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
+  fullName: TimeSeriesAnalysis.Plot4Test.Two(System.Double[], System.Double[], System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Plot4Test.Two(System.Double(), System.Double(), System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  nameWithType: Plot4Test.Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
+  nameWithType.vb: Plot4Test.Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
+- uid: TimeSeriesAnalysis.Plot4Test.Two*
+  name: Two
+  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Two_
+  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Two
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Plot4Test.Two
+  nameWithType: Plot4Test.Two
+- uid: TimeSeriesAnalysis.SignificantDigits
+  name: SignificantDigits
+  href: api/TimeSeriesAnalysis.SignificantDigits.html
+  commentId: T:TimeSeriesAnalysis.SignificantDigits
+  fullName: TimeSeriesAnalysis.SignificantDigits
+  nameWithType: SignificantDigits
+- uid: TimeSeriesAnalysis.SignificantDigits.DecimalSeparator
+  name: DecimalSeparator
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_DecimalSeparator
+  commentId: F:TimeSeriesAnalysis.SignificantDigits.DecimalSeparator
+  fullName: TimeSeriesAnalysis.SignificantDigits.DecimalSeparator
+  nameWithType: SignificantDigits.DecimalSeparator
+- uid: TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32)
+  name: Format(Double, Int32)
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_Format_System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.SignificantDigits.Format(System.Double, System.Int32)
+  nameWithType: SignificantDigits.Format(Double, Int32)
+- uid: TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32,System.Int32@)
+  name: Format(Double, Int32, out Int32)
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_Format_System_Double_System_Int32_System_Int32__
+  commentId: M:TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32,System.Int32@)
+  name.vb: Format(Double, Int32, ByRef Int32)
+  fullName: TimeSeriesAnalysis.SignificantDigits.Format(System.Double, System.Int32, out System.Int32)
+  fullName.vb: TimeSeriesAnalysis.SignificantDigits.Format(System.Double, System.Int32, ByRef System.Int32)
+  nameWithType: SignificantDigits.Format(Double, Int32, out Int32)
+  nameWithType.vb: SignificantDigits.Format(Double, Int32, ByRef Int32)
+- uid: TimeSeriesAnalysis.SignificantDigits.Format*
+  name: Format
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_Format_
+  commentId: Overload:TimeSeriesAnalysis.SignificantDigits.Format
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SignificantDigits.Format
+  nameWithType: SignificantDigits.Format
+- uid: TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double,System.Double@,System.Int32@)
+  name: GetSciFormat(Double, out Double, out Int32)
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_GetSciFormat_System_Double_System_Double__System_Int32__
+  commentId: M:TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double,System.Double@,System.Int32@)
+  name.vb: GetSciFormat(Double, ByRef Double, ByRef Int32)
+  fullName: TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double, out System.Double, out System.Int32)
+  fullName.vb: TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double, ByRef System.Double, ByRef System.Int32)
+  nameWithType: SignificantDigits.GetSciFormat(Double, out Double, out Int32)
+  nameWithType.vb: SignificantDigits.GetSciFormat(Double, ByRef Double, ByRef Int32)
+- uid: TimeSeriesAnalysis.SignificantDigits.GetSciFormat*
+  name: GetSciFormat
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_GetSciFormat_
+  commentId: Overload:TimeSeriesAnalysis.SignificantDigits.GetSciFormat
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SignificantDigits.GetSciFormat
+  nameWithType: SignificantDigits.GetSciFormat
+- uid: TimeSeriesAnalysis.SignificantDigits.sciToDouble(System.Double,System.Int32)
+  name: sciToDouble(Double, Int32)
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_sciToDouble_System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.SignificantDigits.sciToDouble(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.SignificantDigits.sciToDouble(System.Double, System.Int32)
+  nameWithType: SignificantDigits.sciToDouble(Double, Int32)
+- uid: TimeSeriesAnalysis.SignificantDigits.sciToDouble*
+  name: sciToDouble
+  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_sciToDouble_
+  commentId: Overload:TimeSeriesAnalysis.SignificantDigits.sciToDouble
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SignificantDigits.sciToDouble
+  nameWithType: SignificantDigits.sciToDouble
+- uid: TimeSeriesAnalysis.SortType
+  name: SortType
+  href: api/TimeSeriesAnalysis.SortType.html
+  commentId: T:TimeSeriesAnalysis.SortType
+  fullName: TimeSeriesAnalysis.SortType
+  nameWithType: SortType
+- uid: TimeSeriesAnalysis.SortType.Ascending
+  name: Ascending
+  href: api/TimeSeriesAnalysis.SortType.html#TimeSeriesAnalysis_SortType_Ascending
+  commentId: F:TimeSeriesAnalysis.SortType.Ascending
+  fullName: TimeSeriesAnalysis.SortType.Ascending
+  nameWithType: SortType.Ascending
+- uid: TimeSeriesAnalysis.SortType.Descending
+  name: Descending
+  href: api/TimeSeriesAnalysis.SortType.html#TimeSeriesAnalysis_SortType_Descending
+  commentId: F:TimeSeriesAnalysis.SortType.Descending
+  fullName: TimeSeriesAnalysis.SortType.Descending
+  nameWithType: SortType.Descending
+- uid: TimeSeriesAnalysis.StringToFileWriter
+  name: StringToFileWriter
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html
+  commentId: T:TimeSeriesAnalysis.StringToFileWriter
+  fullName: TimeSeriesAnalysis.StringToFileWriter
+  nameWithType: StringToFileWriter
+- uid: TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String)
+  name: StringToFileWriter(String)
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter__ctor_System_String_
+  commentId: M:TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String)
+  fullName: TimeSeriesAnalysis.StringToFileWriter.StringToFileWriter(System.String)
+  nameWithType: StringToFileWriter.StringToFileWriter(String)
+- uid: TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String,System.Text.Encoding)
+  name: StringToFileWriter(String, Encoding)
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter__ctor_System_String_System_Text_Encoding_
+  commentId: M:TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String,System.Text.Encoding)
+  fullName: TimeSeriesAnalysis.StringToFileWriter.StringToFileWriter(System.String, System.Text.Encoding)
+  nameWithType: StringToFileWriter.StringToFileWriter(String, Encoding)
+- uid: TimeSeriesAnalysis.StringToFileWriter.#ctor*
+  name: StringToFileWriter
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter__ctor_
+  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.StringToFileWriter.StringToFileWriter
+  nameWithType: StringToFileWriter.StringToFileWriter
+- uid: TimeSeriesAnalysis.StringToFileWriter.Close
+  name: Close()
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Close
+  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Close
+  fullName: TimeSeriesAnalysis.StringToFileWriter.Close()
+  nameWithType: StringToFileWriter.Close()
+- uid: TimeSeriesAnalysis.StringToFileWriter.Close*
+  name: Close
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Close_
+  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.Close
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.StringToFileWriter.Close
+  nameWithType: StringToFileWriter.Close
+- uid: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure(System.String)
+  name: CreateDirectoryStructure(String)
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_CreateDirectoryStructure_System_String_
+  commentId: M:TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure(System.String)
+  fullName: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure(System.String)
+  nameWithType: StringToFileWriter.CreateDirectoryStructure(String)
+- uid: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure*
+  name: CreateDirectoryStructure
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_CreateDirectoryStructure_
+  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure
+  nameWithType: StringToFileWriter.CreateDirectoryStructure
+- uid: TimeSeriesAnalysis.StringToFileWriter.Dispose
+  name: Dispose()
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Dispose
+  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Dispose
+  fullName: TimeSeriesAnalysis.StringToFileWriter.Dispose()
+  nameWithType: StringToFileWriter.Dispose()
+- uid: TimeSeriesAnalysis.StringToFileWriter.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Dispose_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Dispose(System.Boolean)
+  fullName: TimeSeriesAnalysis.StringToFileWriter.Dispose(System.Boolean)
+  nameWithType: StringToFileWriter.Dispose(Boolean)
+- uid: TimeSeriesAnalysis.StringToFileWriter.Dispose*
+  name: Dispose
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Dispose_
+  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.Dispose
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.StringToFileWriter.Dispose
+  nameWithType: StringToFileWriter.Dispose
+- uid: TimeSeriesAnalysis.StringToFileWriter.Write(System.String)
+  name: Write(String)
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Write_System_String_
+  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Write(System.String)
+  fullName: TimeSeriesAnalysis.StringToFileWriter.Write(System.String)
+  nameWithType: StringToFileWriter.Write(String)
+- uid: TimeSeriesAnalysis.StringToFileWriter.Write*
+  name: Write
+  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Write_
+  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.Write
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.StringToFileWriter.Write
+  nameWithType: StringToFileWriter.Write
+- uid: TimeSeriesAnalysis.UnixTime
+  name: UnixTime
+  href: api/TimeSeriesAnalysis.UnixTime.html
+  commentId: T:TimeSeriesAnalysis.UnixTime
+  fullName: TimeSeriesAnalysis.UnixTime
+  nameWithType: UnixTime
+- uid: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp(System.Double)
+  name: ConvertFromUnixTimestamp(Double)
+  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertFromUnixTimestamp_System_Double_
+  commentId: M:TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp(System.Double)
+  fullName: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp(System.Double)
+  nameWithType: UnixTime.ConvertFromUnixTimestamp(Double)
+- uid: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp*
+  name: ConvertFromUnixTimestamp
+  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertFromUnixTimestamp_
+  commentId: Overload:TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp
+  nameWithType: UnixTime.ConvertFromUnixTimestamp
+- uid: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp(System.DateTime)
+  name: ConvertToUnixTimestamp(DateTime)
+  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertToUnixTimestamp_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp(System.DateTime)
+  fullName: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp(System.DateTime)
+  nameWithType: UnixTime.ConvertToUnixTimestamp(DateTime)
+- uid: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp*
+  name: ConvertToUnixTimestamp
+  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertToUnixTimestamp_
+  commentId: Overload:TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp
+  nameWithType: UnixTime.ConvertToUnixTimestamp
+- uid: TimeSeriesAnalysis.UnixTime.GetNowUnixTime
+  name: GetNowUnixTime()
+  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_GetNowUnixTime
+  commentId: M:TimeSeriesAnalysis.UnixTime.GetNowUnixTime
+  fullName: TimeSeriesAnalysis.UnixTime.GetNowUnixTime()
+  nameWithType: UnixTime.GetNowUnixTime()
+- uid: TimeSeriesAnalysis.UnixTime.GetNowUnixTime*
+  name: GetNowUnixTime
+  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_GetNowUnixTime_
+  commentId: Overload:TimeSeriesAnalysis.UnixTime.GetNowUnixTime
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.UnixTime.GetNowUnixTime
+  nameWithType: UnixTime.GetNowUnixTime
+- uid: TimeSeriesAnalysis.Vec
+  name: Vec
+  href: api/TimeSeriesAnalysis.Vec.html
+  commentId: T:TimeSeriesAnalysis.Vec
+  fullName: TimeSeriesAnalysis.Vec
+  nameWithType: Vec
+- uid: TimeSeriesAnalysis.Vec.Abs(System.Double[])
+  name: Abs(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Abs_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Abs(System.Double[])
+  name.vb: Abs(Double())
+  fullName: TimeSeriesAnalysis.Vec.Abs(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Abs(System.Double())
+  nameWithType: Vec.Abs(Double[])
+  nameWithType.vb: Vec.Abs(Double())
+- uid: TimeSeriesAnalysis.Vec.Abs*
+  name: Abs
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Abs_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Abs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Abs
+  nameWithType: Vec.Abs
+- uid: TimeSeriesAnalysis.Vec.Add(System.Double[],System.Double)
+  name: Add(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Add_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Add(System.Double[],System.Double)
+  name.vb: Add(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Add(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Add(System.Double(), System.Double)
+  nameWithType: Vec.Add(Double[], Double)
+  nameWithType.vb: Vec.Add(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.Add(System.Double[],System.Double[])
+  name: Add(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Add_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Add(System.Double[],System.Double[])
+  name.vb: Add(Double(), Double())
+  fullName: TimeSeriesAnalysis.Vec.Add(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Add(System.Double(), System.Double())
+  nameWithType: Vec.Add(Double[], Double[])
+  nameWithType.vb: Vec.Add(Double(), Double())
+- uid: TimeSeriesAnalysis.Vec.Add(System.Int32[],System.Int32)
+  name: Add(Int32[], Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Add_System_Int32___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec.Add(System.Int32[],System.Int32)
+  name.vb: Add(Int32(), Int32)
+  fullName: TimeSeriesAnalysis.Vec.Add(System.Int32[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.Add(System.Int32(), System.Int32)
+  nameWithType: Vec.Add(Int32[], Int32)
+  nameWithType.vb: Vec.Add(Int32(), Int32)
+- uid: TimeSeriesAnalysis.Vec.Add*
+  name: Add
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Add_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Add
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Add
+  nameWithType: Vec.Add
+- uid: TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List{System.Int32})
+  name: AppendTrailingIndices(List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_AppendTrailingIndices_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List{System.Int32})
+  name.vb: AppendTrailingIndices(List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.AppendTrailingIndices(List<Int32>)
+  nameWithType.vb: Vec.AppendTrailingIndices(List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec.AppendTrailingIndices*
+  name: AppendTrailingIndices
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_AppendTrailingIndices_
+  commentId: Overload:TimeSeriesAnalysis.Vec.AppendTrailingIndices
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.AppendTrailingIndices
+  nameWithType: Vec.AppendTrailingIndices
+- uid: TimeSeriesAnalysis.Vec.ContainsBadData(System.Double[])
+  name: ContainsBadData(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ContainsBadData_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.ContainsBadData(System.Double[])
+  name.vb: ContainsBadData(Double())
+  fullName: TimeSeriesAnalysis.Vec.ContainsBadData(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.ContainsBadData(System.Double())
+  nameWithType: Vec.ContainsBadData(Double[])
+  nameWithType.vb: Vec.ContainsBadData(Double())
+- uid: TimeSeriesAnalysis.Vec.ContainsBadData*
+  name: ContainsBadData
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ContainsBadData_
+  commentId: Overload:TimeSeriesAnalysis.Vec.ContainsBadData
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.ContainsBadData
+  nameWithType: Vec.ContainsBadData
+- uid: TimeSeriesAnalysis.Vec.Cov(System.Double[],System.Double[],System.Boolean)
+  name: Cov(Double[], Double[], Boolean)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Cov_System_Double___System_Double___System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Vec.Cov(System.Double[],System.Double[],System.Boolean)
+  name.vb: Cov(Double(), Double(), Boolean)
+  fullName: TimeSeriesAnalysis.Vec.Cov(System.Double[], System.Double[], System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Vec.Cov(System.Double(), System.Double(), System.Boolean)
+  nameWithType: Vec.Cov(Double[], Double[], Boolean)
+  nameWithType.vb: Vec.Cov(Double(), Double(), Boolean)
+- uid: TimeSeriesAnalysis.Vec.Cov*
+  name: Cov
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Cov_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Cov
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Cov
+  nameWithType: Vec.Cov
+- uid: TimeSeriesAnalysis.Vec.Deserialize(System.String)
+  name: Deserialize(String)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Deserialize_System_String_
+  commentId: M:TimeSeriesAnalysis.Vec.Deserialize(System.String)
+  fullName: TimeSeriesAnalysis.Vec.Deserialize(System.String)
+  nameWithType: Vec.Deserialize(String)
+- uid: TimeSeriesAnalysis.Vec.Deserialize*
+  name: Deserialize
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Deserialize_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Deserialize
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Deserialize
+  nameWithType: Vec.Deserialize
+- uid: TimeSeriesAnalysis.Vec.Diff(System.Double[])
+  name: Diff(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Diff_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Diff(System.Double[])
+  name.vb: Diff(Double())
+  fullName: TimeSeriesAnalysis.Vec.Diff(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Diff(System.Double())
+  nameWithType: Vec.Diff(Double[])
+  nameWithType.vb: Vec.Diff(Double())
+- uid: TimeSeriesAnalysis.Vec.Diff*
+  name: Diff
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Diff_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Diff
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Diff
+  nameWithType: Vec.Diff
+- uid: TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.FindValues)
+  name: FindValues(Double[], Double, FindValues)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_FindValues_
+  commentId: M:TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.FindValues)
+  name.vb: FindValues(Double(), Double, FindValues)
+  fullName: TimeSeriesAnalysis.Vec.FindValues(System.Double[], System.Double, TimeSeriesAnalysis.FindValues)
+  fullName.vb: TimeSeriesAnalysis.Vec.FindValues(System.Double(), System.Double, TimeSeriesAnalysis.FindValues)
+  nameWithType: Vec.FindValues(Double[], Double, FindValues)
+  nameWithType.vb: Vec.FindValues(Double(), Double, FindValues)
+- uid: TimeSeriesAnalysis.Vec.FindValues*
+  name: FindValues
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_
+  commentId: Overload:TimeSeriesAnalysis.Vec.FindValues
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.FindValues
+  nameWithType: Vec.FindValues
+- uid: TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
+  name: Intersect(List<Int32>, List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Intersect_System_Collections_Generic_List_System_Int32__System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
+  name.vb: Intersect(List(Of Int32), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List<System.Int32>, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List(Of System.Int32), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.Intersect(List<Int32>, List<Int32>)
+  nameWithType.vb: Vec.Intersect(List(Of Int32), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec.Intersect*
+  name: Intersect
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Intersect_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Intersect
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Intersect
+  nameWithType: Vec.Intersect
+- uid: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
+  name: InverseIndices(Int32, List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_InverseIndices_System_Int32_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
+  name.vb: InverseIndices(Int32, List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32, System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.InverseIndices(Int32, List<Int32>)
+  nameWithType.vb: Vec.InverseIndices(Int32, List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec.InverseIndices*
+  name: InverseIndices
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_InverseIndices_
+  commentId: Overload:TimeSeriesAnalysis.Vec.InverseIndices
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.InverseIndices
+  nameWithType: Vec.InverseIndices
+- uid: TimeSeriesAnalysis.Vec.IsAllM9999(System.Double[])
+  name: IsAllM9999(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllM9999_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.IsAllM9999(System.Double[])
+  name.vb: IsAllM9999(Double())
+  fullName: TimeSeriesAnalysis.Vec.IsAllM9999(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.IsAllM9999(System.Double())
+  nameWithType: Vec.IsAllM9999(Double[])
+  nameWithType.vb: Vec.IsAllM9999(Double())
+- uid: TimeSeriesAnalysis.Vec.IsAllM9999*
+  name: IsAllM9999
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllM9999_
+  commentId: Overload:TimeSeriesAnalysis.Vec.IsAllM9999
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.IsAllM9999
+  nameWithType: Vec.IsAllM9999
+- uid: TimeSeriesAnalysis.Vec.IsAllValue(System.Double[],System.Double)
+  name: IsAllValue(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllValue_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.IsAllValue(System.Double[],System.Double)
+  name.vb: IsAllValue(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.IsAllValue(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.IsAllValue(System.Double(), System.Double)
+  nameWithType: Vec.IsAllValue(Double[], Double)
+  nameWithType.vb: Vec.IsAllValue(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.IsAllValue*
+  name: IsAllValue
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllValue_
+  commentId: Overload:TimeSeriesAnalysis.Vec.IsAllValue
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.IsAllValue
+  nameWithType: Vec.IsAllValue
+- uid: TimeSeriesAnalysis.Vec.MakeIndexArray(System.Int32,System.Int32)
+  name: MakeIndexArray(Int32, Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_MakeIndexArray_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec.MakeIndexArray(System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.Vec.MakeIndexArray(System.Int32, System.Int32)
+  nameWithType: Vec.MakeIndexArray(Int32, Int32)
+- uid: TimeSeriesAnalysis.Vec.MakeIndexArray*
+  name: MakeIndexArray
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_MakeIndexArray_
+  commentId: Overload:TimeSeriesAnalysis.Vec.MakeIndexArray
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.MakeIndexArray
+  nameWithType: Vec.MakeIndexArray
+- uid: TimeSeriesAnalysis.Vec.Max(System.Double[])
+  name: Max(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Double[])
+  name.vb: Max(Double())
+  fullName: TimeSeriesAnalysis.Vec.Max(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double())
+  nameWithType: Vec.Max(Double[])
+  nameWithType.vb: Vec.Max(Double())
+- uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Double)
+  name: Max(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Double[],System.Double)
+  name.vb: Max(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Max(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), System.Double)
+  nameWithType: Vec.Max(Double[], Double)
+  nameWithType.vb: Vec.Max(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Double[])
+  name: Max(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Double[],System.Double[])
+  name.vb: Max(Double(), Double())
+  fullName: TimeSeriesAnalysis.Vec.Max(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), System.Double())
+  nameWithType: Vec.Max(Double[], Double[])
+  nameWithType.vb: Vec.Max(Double(), Double())
+- uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32,System.Int32)
+  name: Max(Double[], Int32, Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32,System.Int32)
+  name.vb: Max(Double(), Int32, Int32)
+  fullName: TimeSeriesAnalysis.Vec.Max(System.Double[], System.Int32, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), System.Int32, System.Int32)
+  nameWithType: Vec.Max(Double[], Int32, Int32)
+  nameWithType.vb: Vec.Max(Double(), Int32, Int32)
+- uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32@)
+  name: Max(Double[], out Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32@)
+  name.vb: Max(Double(), ByRef Int32)
+  fullName: TimeSeriesAnalysis.Vec.Max(System.Double[], out System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), ByRef System.Int32)
+  nameWithType: Vec.Max(Double[], out Int32)
+  nameWithType.vb: Vec.Max(Double(), ByRef Int32)
+- uid: TimeSeriesAnalysis.Vec.Max*
+  name: Max
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Max
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Max
+  nameWithType: Vec.Max
+- uid: TimeSeriesAnalysis.Vec.Mean(System.Double[])
+  name: Mean(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Mean_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Mean(System.Double[])
+  name.vb: Mean(Double())
+  fullName: TimeSeriesAnalysis.Vec.Mean(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Mean(System.Double())
+  nameWithType: Vec.Mean(Double[])
+  nameWithType.vb: Vec.Mean(Double())
+- uid: TimeSeriesAnalysis.Vec.Mean*
+  name: Mean
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Mean_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Mean
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Mean
+  nameWithType: Vec.Mean
+- uid: TimeSeriesAnalysis.Vec.Min(System.Double[])
+  name: Min(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Min_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Min(System.Double[])
+  name.vb: Min(Double())
+  fullName: TimeSeriesAnalysis.Vec.Min(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Min(System.Double())
+  nameWithType: Vec.Min(Double[])
+  nameWithType.vb: Vec.Min(Double())
+- uid: TimeSeriesAnalysis.Vec.Min(System.Double[],System.Double)
+  name: Min(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Min_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Min(System.Double[],System.Double)
+  name.vb: Min(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Min(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Min(System.Double(), System.Double)
+  nameWithType: Vec.Min(Double[], Double)
+  nameWithType.vb: Vec.Min(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.Min(System.Double[],System.Double[])
+  name: Min(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Min_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Min(System.Double[],System.Double[])
+  name.vb: Min(Double(), Double())
+  fullName: TimeSeriesAnalysis.Vec.Min(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Min(System.Double(), System.Double())
+  nameWithType: Vec.Min(Double[], Double[])
+  nameWithType.vb: Vec.Min(Double(), Double())
+- uid: TimeSeriesAnalysis.Vec.Min(System.Double[],System.Int32@)
+  name: Min(Double[], out Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Min_System_Double___System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Min(System.Double[],System.Int32@)
+  name.vb: Min(Double(), ByRef Int32)
+  fullName: TimeSeriesAnalysis.Vec.Min(System.Double[], out System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.Min(System.Double(), ByRef System.Int32)
+  nameWithType: Vec.Min(Double[], out Int32)
+  nameWithType.vb: Vec.Min(Double(), ByRef Int32)
+- uid: TimeSeriesAnalysis.Vec.Min*
+  name: Min
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Min_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Min
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Min
+  nameWithType: Vec.Min
+- uid: TimeSeriesAnalysis.Vec.Mult(System.Double[],System.Double)
+  name: Mult(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Mult_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Mult(System.Double[],System.Double)
+  name.vb: Mult(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Mult(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Mult(System.Double(), System.Double)
+  nameWithType: Vec.Mult(Double[], Double)
+  nameWithType.vb: Vec.Mult(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.Mult(System.Double[],System.Double[])
+  name: Mult(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Mult_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Mult(System.Double[],System.Double[])
+  name.vb: Mult(Double(), Double())
+  fullName: TimeSeriesAnalysis.Vec.Mult(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Mult(System.Double(), System.Double())
+  nameWithType: Vec.Mult(Double[], Double[])
+  nameWithType.vb: Vec.Mult(Double(), Double())
+- uid: TimeSeriesAnalysis.Vec.Mult*
+  name: Mult
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Mult_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Mult
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Mult
+  nameWithType: Vec.Mult
+- uid: TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double)
+  name: Rand(Int32, Double, Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Rand_System_Int32_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Vec.Rand(System.Int32, System.Double, System.Double)
+  nameWithType: Vec.Rand(Int32, Double, Double)
+- uid: TimeSeriesAnalysis.Vec.Rand*
+  name: Rand
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Rand_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Rand
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Rand
+  nameWithType: Vec.Rand
+- uid: TimeSeriesAnalysis.Vec.Range(System.Double[])
+  name: Range(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Range_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Range(System.Double[])
+  name.vb: Range(Double())
+  fullName: TimeSeriesAnalysis.Vec.Range(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Range(System.Double())
+  nameWithType: Vec.Range(Double[])
+  nameWithType.vb: Vec.Range(Double())
+- uid: TimeSeriesAnalysis.Vec.Range*
+  name: Range
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Range_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Range
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Range
+  nameWithType: Vec.Range
+- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][])
+  name: Regress(Double[], Double[][])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____
+  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][])
+  name.vb: Regress(Double(), Double()())
+  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][])
+  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()())
+  nameWithType: Vec.Regress(Double[], Double[][])
+  nameWithType.vb: Vec.Regress(Double(), Double()())
+- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[]@,System.Double@)
+  name: Regress(Double[], Double[][], Int32[], out Double[], out Double[], out Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___System_Double____System_Double____System_Double__
+  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[]@,System.Double@)
+  name.vb: Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double(), ByRef Double)
+  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][], System.Int32[], out System.Double[], out System.Double[], out System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32(), ByRef System.Double(), ByRef System.Double(), ByRef System.Double)
+  nameWithType: Vec.Regress(Double[], Double[][], Int32[], out Double[], out Double[], out Double)
+  nameWithType.vb: Vec.Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double(), ByRef Double)
+- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[][]@,System.Double[]@,System.Double@)
+  name: Regress(Double[], Double[][], Int32[], out Double[], out Double[][], out Double[], out Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___System_Double____System_Double______System_Double____System_Double__
+  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[][]@,System.Double[]@,System.Double@)
+  name.vb: Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double()(), ByRef Double(), ByRef Double)
+  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][], System.Int32[], out System.Double[], out System.Double[][], out System.Double[], out System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32(), ByRef System.Double(), ByRef System.Double()(), ByRef System.Double(), ByRef System.Double)
+  nameWithType: Vec.Regress(Double[], Double[][], Int32[], out Double[], out Double[][], out Double[], out Double)
+  nameWithType.vb: Vec.Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double()(), ByRef Double(), ByRef Double)
+- uid: TimeSeriesAnalysis.Vec.Regress*
+  name: Regress
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Regress
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Regress
+  nameWithType: Vec.Regress
+- uid: TimeSeriesAnalysis.Vec.ReplaceIndWithValue(System.Double[],System.Collections.Generic.List{System.Int32},System.Double)
+  name: ReplaceIndWithValue(Double[], List<Int32>, Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceIndWithValue_System_Double___System_Collections_Generic_List_System_Int32__System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.ReplaceIndWithValue(System.Double[],System.Collections.Generic.List{System.Int32},System.Double)
+  name.vb: ReplaceIndWithValue(Double(), List(Of Int32), Double)
+  fullName: TimeSeriesAnalysis.Vec.ReplaceIndWithValue(System.Double[], System.Collections.Generic.List<System.Int32>, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.ReplaceIndWithValue(System.Double(), System.Collections.Generic.List(Of System.Int32), System.Double)
+  nameWithType: Vec.ReplaceIndWithValue(Double[], List<Int32>, Double)
+  nameWithType.vb: Vec.ReplaceIndWithValue(Double(), List(Of Int32), Double)
+- uid: TimeSeriesAnalysis.Vec.ReplaceIndWithValue*
+  name: ReplaceIndWithValue
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceIndWithValue_
+  commentId: Overload:TimeSeriesAnalysis.Vec.ReplaceIndWithValue
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.ReplaceIndWithValue
+  nameWithType: Vec.ReplaceIndWithValue
+- uid: TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
+  name: RSquared(Double[], Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_RSquared_System_Double___System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: RSquared(Double(), Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.RSquared(System.Double[], System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.RSquared(System.Double(), System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.RSquared(Double[], Double[], List<Int32>)
+  nameWithType.vb: Vec.RSquared(Double(), Double(), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec.RSquared*
+  name: RSquared
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_RSquared_
+  commentId: Overload:TimeSeriesAnalysis.Vec.RSquared
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.RSquared
+  nameWithType: Vec.RSquared
+- uid: TimeSeriesAnalysis.Vec.SelfSumOfAbsErr(System.Double[])
+  name: SelfSumOfAbsErr(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SelfSumOfAbsErr_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.SelfSumOfAbsErr(System.Double[])
+  name.vb: SelfSumOfAbsErr(Double())
+  fullName: TimeSeriesAnalysis.Vec.SelfSumOfAbsErr(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.SelfSumOfAbsErr(System.Double())
+  nameWithType: Vec.SelfSumOfAbsErr(Double[])
+  nameWithType.vb: Vec.SelfSumOfAbsErr(Double())
+- uid: TimeSeriesAnalysis.Vec.SelfSumOfAbsErr*
+  name: SelfSumOfAbsErr
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SelfSumOfAbsErr_
+  commentId: Overload:TimeSeriesAnalysis.Vec.SelfSumOfAbsErr
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.SelfSumOfAbsErr
+  nameWithType: Vec.SelfSumOfAbsErr
+- uid: TimeSeriesAnalysis.Vec.SelfSumOfSquareErr(System.Double[])
+  name: SelfSumOfSquareErr(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SelfSumOfSquareErr_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.SelfSumOfSquareErr(System.Double[])
+  name.vb: SelfSumOfSquareErr(Double())
+  fullName: TimeSeriesAnalysis.Vec.SelfSumOfSquareErr(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.SelfSumOfSquareErr(System.Double())
+  nameWithType: Vec.SelfSumOfSquareErr(Double[])
+  nameWithType.vb: Vec.SelfSumOfSquareErr(Double())
+- uid: TimeSeriesAnalysis.Vec.SelfSumOfSquareErr*
+  name: SelfSumOfSquareErr
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SelfSumOfSquareErr_
+  commentId: Overload:TimeSeriesAnalysis.Vec.SelfSumOfSquareErr
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.SelfSumOfSquareErr
+  nameWithType: Vec.SelfSumOfSquareErr
+- uid: TimeSeriesAnalysis.Vec.Serialize(System.Double[],System.String)
+  name: Serialize(Double[], String)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Serialize_System_Double___System_String_
+  commentId: M:TimeSeriesAnalysis.Vec.Serialize(System.Double[],System.String)
+  name.vb: Serialize(Double(), String)
+  fullName: TimeSeriesAnalysis.Vec.Serialize(System.Double[], System.String)
+  fullName.vb: TimeSeriesAnalysis.Vec.Serialize(System.Double(), System.String)
+  nameWithType: Vec.Serialize(Double[], String)
+  nameWithType.vb: Vec.Serialize(Double(), String)
+- uid: TimeSeriesAnalysis.Vec.Serialize*
+  name: Serialize
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Serialize_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Serialize
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Serialize
+  nameWithType: Vec.Serialize
+- uid: TimeSeriesAnalysis.Vec.Sub(System.Double[],System.Double)
+  name: Sub(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Sub_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Sub(System.Double[],System.Double)
+  name.vb: Sub(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Sub(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Sub(System.Double(), System.Double)
+  nameWithType: Vec.Sub(Double[], Double)
+  nameWithType.vb: Vec.Sub(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.Sub(System.Double[],System.Double[])
+  name: Sub(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Sub_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Sub(System.Double[],System.Double[])
+  name.vb: Sub(Double(), Double())
+  fullName: TimeSeriesAnalysis.Vec.Sub(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Sub(System.Double(), System.Double())
+  nameWithType: Vec.Sub(Double[], Double[])
+  nameWithType.vb: Vec.Sub(Double(), Double())
+- uid: TimeSeriesAnalysis.Vec.Sub(System.Int32[],System.Int32)
+  name: Sub(Int32[], Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Sub_System_Int32___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec.Sub(System.Int32[],System.Int32)
+  name.vb: Sub(Int32(), Int32)
+  fullName: TimeSeriesAnalysis.Vec.Sub(System.Int32[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.Sub(System.Int32(), System.Int32)
+  nameWithType: Vec.Sub(Int32[], Int32)
+  nameWithType.vb: Vec.Sub(Int32(), Int32)
+- uid: TimeSeriesAnalysis.Vec.Sub*
+  name: Sub
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Sub_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Sub
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Sub
+  nameWithType: Vec.Sub
+- uid: TimeSeriesAnalysis.Vec.Sum(System.Double[])
+  name: Sum(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Sum_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Sum(System.Double[])
+  name.vb: Sum(Double())
+  fullName: TimeSeriesAnalysis.Vec.Sum(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Sum(System.Double())
+  nameWithType: Vec.Sum(Double[])
+  nameWithType.vb: Vec.Sum(Double())
+- uid: TimeSeriesAnalysis.Vec.Sum*
+  name: Sum
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Sum_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Sum
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Sum
+  nameWithType: Vec.Sum
+- uid: TimeSeriesAnalysis.Vec.SumOfAbsErr(System.Double[],System.Double[],System.Int32)
+  name: SumOfAbsErr(Double[], Double[], Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfAbsErr_System_Double___System_Double___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec.SumOfAbsErr(System.Double[],System.Double[],System.Int32)
+  name.vb: SumOfAbsErr(Double(), Double(), Int32)
+  fullName: TimeSeriesAnalysis.Vec.SumOfAbsErr(System.Double[], System.Double[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.SumOfAbsErr(System.Double(), System.Double(), System.Int32)
+  nameWithType: Vec.SumOfAbsErr(Double[], Double[], Int32)
+  nameWithType.vb: Vec.SumOfAbsErr(Double(), Double(), Int32)
+- uid: TimeSeriesAnalysis.Vec.SumOfAbsErr*
+  name: SumOfAbsErr
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfAbsErr_
+  commentId: Overload:TimeSeriesAnalysis.Vec.SumOfAbsErr
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.SumOfAbsErr
+  nameWithType: Vec.SumOfAbsErr
+- uid: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double,System.Boolean)
+  name: SumOfSquareErr(Double[], Double, Boolean)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfSquareErr_System_Double___System_Double_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double,System.Boolean)
+  name.vb: SumOfSquareErr(Double(), Double, Boolean)
+  fullName: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[], System.Double, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double(), System.Double, System.Boolean)
+  nameWithType: Vec.SumOfSquareErr(Double[], Double, Boolean)
+  nameWithType.vb: Vec.SumOfSquareErr(Double(), Double, Boolean)
+- uid: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double[],System.Int32,System.Boolean)
+  name: SumOfSquareErr(Double[], Double[], Int32, Boolean)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfSquareErr_System_Double___System_Double___System_Int32_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double[],System.Int32,System.Boolean)
+  name.vb: SumOfSquareErr(Double(), Double(), Int32, Boolean)
+  fullName: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[], System.Double[], System.Int32, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double(), System.Double(), System.Int32, System.Boolean)
+  nameWithType: Vec.SumOfSquareErr(Double[], Double[], Int32, Boolean)
+  nameWithType.vb: Vec.SumOfSquareErr(Double(), Double(), Int32, Boolean)
+- uid: TimeSeriesAnalysis.Vec.SumOfSquareErr*
+  name: SumOfSquareErr
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfSquareErr_
+  commentId: Overload:TimeSeriesAnalysis.Vec.SumOfSquareErr
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.SumOfSquareErr
+  nameWithType: Vec.SumOfSquareErr
+- uid: TimeSeriesAnalysis.Vec.ToString(System.Double[],System.Int32,System.String)
+  name: ToString(Double[], Int32, String)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ToString_System_Double___System_Int32_System_String_
+  commentId: M:TimeSeriesAnalysis.Vec.ToString(System.Double[],System.Int32,System.String)
+  name.vb: ToString(Double(), Int32, String)
+  fullName: TimeSeriesAnalysis.Vec.ToString(System.Double[], System.Int32, System.String)
+  fullName.vb: TimeSeriesAnalysis.Vec.ToString(System.Double(), System.Int32, System.String)
+  nameWithType: Vec.ToString(Double[], Int32, String)
+  nameWithType.vb: Vec.ToString(Double(), Int32, String)
+- uid: TimeSeriesAnalysis.Vec.ToString*
+  name: ToString
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ToString_
+  commentId: Overload:TimeSeriesAnalysis.Vec.ToString
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.ToString
+  nameWithType: Vec.ToString
+- uid: TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
+  name: Union(List<Int32>, List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Union_System_Collections_Generic_List_System_Int32__System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
+  name.vb: Union(List(Of Int32), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List<System.Int32>, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List(Of System.Int32), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.Union(List<Int32>, List<Int32>)
+  nameWithType.vb: Vec.Union(List(Of Int32), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec.Union*
+  name: Union
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Union_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Union
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Union
+  nameWithType: Vec.Union
+- uid: TimeSeriesAnalysis.Vec.Var(System.Double[],System.Boolean)
+  name: Var(Double[], Boolean)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Var_System_Double___System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Vec.Var(System.Double[],System.Boolean)
+  name.vb: Var(Double(), Boolean)
+  fullName: TimeSeriesAnalysis.Vec.Var(System.Double[], System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Vec.Var(System.Double(), System.Boolean)
+  nameWithType: Vec.Var(Double[], Boolean)
+  nameWithType.vb: Vec.Var(Double(), Boolean)
+- uid: TimeSeriesAnalysis.Vec.Var*
+  name: Var
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Var_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Var
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Var
+  nameWithType: Vec.Var
+- uid: TimeSeriesAnalysis.Vec`1
+  name: Vec<T>
+  href: api/TimeSeriesAnalysis.Vec-1.html
+  commentId: T:TimeSeriesAnalysis.Vec`1
+  name.vb: Vec(Of T)
+  fullName: TimeSeriesAnalysis.Vec<T>
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T)
+  nameWithType: Vec<T>
+  nameWithType.vb: Vec(Of T)
+- uid: TimeSeriesAnalysis.Vec`1.Concat(`0[],`0)
+  name: Concat(T[], T)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Concat__0____0_
+  commentId: M:TimeSeriesAnalysis.Vec`1.Concat(`0[],`0)
+  name.vb: Concat(T(), T)
+  fullName: TimeSeriesAnalysis.Vec<T>.Concat(T[], T)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Concat(T(), T)
+  nameWithType: Vec<T>.Concat(T[], T)
+  nameWithType.vb: Vec(Of T).Concat(T(), T)
+- uid: TimeSeriesAnalysis.Vec`1.Concat(`0[],`0[])
+  name: Concat(T[], T[])
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Concat__0____0___
+  commentId: M:TimeSeriesAnalysis.Vec`1.Concat(`0[],`0[])
+  name.vb: Concat(T(), T())
+  fullName: TimeSeriesAnalysis.Vec<T>.Concat(T[], T[])
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Concat(T(), T())
+  nameWithType: Vec<T>.Concat(T[], T[])
+  nameWithType.vb: Vec(Of T).Concat(T(), T())
+- uid: TimeSeriesAnalysis.Vec`1.Concat*
+  name: Concat
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Concat_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.Concat
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.Concat
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Concat
+  nameWithType: Vec<T>.Concat
+  nameWithType.vb: Vec(Of T).Concat
+- uid: TimeSeriesAnalysis.Vec`1.Fill(`0,System.Int32)
+  name: Fill(T, Int32)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Fill__0_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec`1.Fill(`0,System.Int32)
+  fullName: TimeSeriesAnalysis.Vec<T>.Fill(T, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Fill(T, System.Int32)
+  nameWithType: Vec<T>.Fill(T, Int32)
+  nameWithType.vb: Vec(Of T).Fill(T, Int32)
+- uid: TimeSeriesAnalysis.Vec`1.Fill*
+  name: Fill
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Fill_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.Fill
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.Fill
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Fill
+  nameWithType: Vec<T>.Fill
+  nameWithType.vb: Vec(Of T).Fill
+- uid: TimeSeriesAnalysis.Vec`1.GetValuesAtIndices(`0[],System.Collections.Generic.List{System.Int32})
+  name: GetValuesAtIndices(T[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_GetValuesAtIndices__0___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec`1.GetValuesAtIndices(`0[],System.Collections.Generic.List{System.Int32})
+  name.vb: GetValuesAtIndices(T(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec<T>.GetValuesAtIndices(T[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetValuesAtIndices(T(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec<T>.GetValuesAtIndices(T[], List<Int32>)
+  nameWithType.vb: Vec(Of T).GetValuesAtIndices(T(), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec`1.GetValuesAtIndices*
+  name: GetValuesAtIndices
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_GetValuesAtIndices_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.GetValuesAtIndices
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.GetValuesAtIndices
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetValuesAtIndices
+  nameWithType: Vec<T>.GetValuesAtIndices
+  nameWithType.vb: Vec(Of T).GetValuesAtIndices
+- uid: TimeSeriesAnalysis.Vec`1.ReplaceIndWithValuesPrior(System.Double[],System.Collections.Generic.List{System.Int32})
+  name: ReplaceIndWithValuesPrior(Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_ReplaceIndWithValuesPrior_System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec`1.ReplaceIndWithValuesPrior(System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: ReplaceIndWithValuesPrior(Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec<T>.ReplaceIndWithValuesPrior(System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).ReplaceIndWithValuesPrior(System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec<T>.ReplaceIndWithValuesPrior(Double[], List<Int32>)
+  nameWithType.vb: Vec(Of T).ReplaceIndWithValuesPrior(Double(), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec`1.ReplaceIndWithValuesPrior*
+  name: ReplaceIndWithValuesPrior
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_ReplaceIndWithValuesPrior_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.ReplaceIndWithValuesPrior
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.ReplaceIndWithValuesPrior
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).ReplaceIndWithValuesPrior
+  nameWithType: Vec<T>.ReplaceIndWithValuesPrior
+  nameWithType.vb: Vec(Of T).ReplaceIndWithValuesPrior
+- uid: TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType)
+  name: Sort(T[], SortType)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort__0___TimeSeriesAnalysis_SortType_
+  commentId: M:TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType)
+  name.vb: Sort(T(), SortType)
+  fullName: TimeSeriesAnalysis.Vec<T>.Sort(T[], TimeSeriesAnalysis.SortType)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Sort(T(), TimeSeriesAnalysis.SortType)
+  nameWithType: Vec<T>.Sort(T[], SortType)
+  nameWithType.vb: Vec(Of T).Sort(T(), SortType)
+- uid: TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType,System.Int32[]@)
+  name: Sort(T[], SortType, out Int32[])
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort__0___TimeSeriesAnalysis_SortType_System_Int32____
+  commentId: M:TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType,System.Int32[]@)
+  name.vb: Sort(T(), SortType, ByRef Int32())
+  fullName: TimeSeriesAnalysis.Vec<T>.Sort(T[], TimeSeriesAnalysis.SortType, out System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Sort(T(), TimeSeriesAnalysis.SortType, ByRef System.Int32())
+  nameWithType: Vec<T>.Sort(T[], SortType, out Int32[])
+  nameWithType.vb: Vec(Of T).Sort(T(), SortType, ByRef Int32())
+- uid: TimeSeriesAnalysis.Vec`1.Sort*
+  name: Sort
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.Sort
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.Sort
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Sort
+  nameWithType: Vec<T>.Sort
+  nameWithType.vb: Vec(Of T).Sort
+- uid: TimeSeriesAnalysis.Vec`1.SubArray(`0[],System.Int32,System.Int32)
+  name: SubArray(T[], Int32, Int32)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_SubArray__0___System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec`1.SubArray(`0[],System.Int32,System.Int32)
+  name.vb: SubArray(T(), Int32, Int32)
+  fullName: TimeSeriesAnalysis.Vec<T>.SubArray(T[], System.Int32, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).SubArray(T(), System.Int32, System.Int32)
+  nameWithType: Vec<T>.SubArray(T[], Int32, Int32)
+  nameWithType.vb: Vec(Of T).SubArray(T(), Int32, Int32)
+- uid: TimeSeriesAnalysis.Vec`1.SubArray*
+  name: SubArray
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_SubArray_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.SubArray
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.SubArray
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).SubArray
+  nameWithType: Vec<T>.SubArray
+  nameWithType.vb: Vec(Of T).SubArray
+- uid: TimeSeriesAnalysis.VecExtensionMethods
+  name: VecExtensionMethods
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html
+  commentId: T:TimeSeriesAnalysis.VecExtensionMethods
+  fullName: TimeSeriesAnalysis.VecExtensionMethods
+  nameWithType: VecExtensionMethods
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[],System.Double)
+  name: Add(Double[], Double)
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Add_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[],System.Double)
+  name.vb: Add(Double(), Double)
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double(), System.Double)
+  nameWithType: VecExtensionMethods.Add(Double[], Double)
+  nameWithType.vb: VecExtensionMethods.Add(Double(), Double)
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Add*
+  name: Add
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Add_
+  commentId: Overload:TimeSeriesAnalysis.VecExtensionMethods.Add
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Add
+  nameWithType: VecExtensionMethods.Add
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[],System.Double)
+  name: Mult(Double[], Double)
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Mult_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[],System.Double)
+  name.vb: Mult(Double(), Double)
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double(), System.Double)
+  nameWithType: VecExtensionMethods.Mult(Double[], Double)
+  nameWithType.vb: VecExtensionMethods.Mult(Double(), Double)
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Mult*
+  name: Mult
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Mult_
+  commentId: Overload:TimeSeriesAnalysis.VecExtensionMethods.Mult
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Mult
+  nameWithType: VecExtensionMethods.Mult
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[],System.Double[])
+  name: Sub(Double[], Double[])
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Sub_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[],System.Double[])
+  name.vb: Sub(Double(), Double())
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double(), System.Double())
+  nameWithType: VecExtensionMethods.Sub(Double[], Double[])
+  nameWithType.vb: VecExtensionMethods.Sub(Double(), Double())
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Sub*
+  name: Sub
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Sub_
+  commentId: Overload:TimeSeriesAnalysis.VecExtensionMethods.Sub
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Sub
+  nameWithType: VecExtensionMethods.Sub
+- uid: TimeSeriesAnalysis.VecExtensionMethods.ToString(System.Double[],System.Int32,System.String)
+  name: ToString(Double[], Int32, String)
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_ToString_System_Double___System_Int32_System_String_
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.ToString(System.Double[],System.Int32,System.String)
+  name.vb: ToString(Double(), Int32, String)
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.ToString(System.Double[], System.Int32, System.String)
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.ToString(System.Double(), System.Int32, System.String)
+  nameWithType: VecExtensionMethods.ToString(Double[], Int32, String)
+  nameWithType.vb: VecExtensionMethods.ToString(Double(), Int32, String)
+- uid: TimeSeriesAnalysis.VecExtensionMethods.ToString*
+  name: ToString
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_ToString_
+  commentId: Overload:TimeSeriesAnalysis.VecExtensionMethods.ToString
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.ToString
+  nameWithType: VecExtensionMethods.ToString

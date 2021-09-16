@@ -42,23 +42,7 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public static string ToString(this double[] array,int nSignificantDigits,string dividerStr =";")
         {
-            StringBuilder sb = new StringBuilder();
-            if (array == null)
-            {
-                return "null";
-            }
-            if (array.Length > 0)
-            {
-                sb.Append("[");
-                sb.Append(SignificantDigits.Format(array[0], nSignificantDigits).ToString("", CultureInfo.InvariantCulture));
-                for (int i = 1; i < array.Length; i++)
-                {
-                    sb.Append(dividerStr);
-                    sb.Append(SignificantDigits.Format(array[i], nSignificantDigits).ToString("",CultureInfo.InvariantCulture) );
-                }
-                sb.Append("]");
-            }
-            return sb.ToString();
+            return Vec.ToString(array, nSignificantDigits, dividerStr);
         }
     }
 }

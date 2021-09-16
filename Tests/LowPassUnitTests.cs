@@ -21,7 +21,7 @@ namespace TimeSeriesAnalysis.UnitTests
 
         public void StepChange(double TimeBase_s, double FilterTc_s)
         {
-            double[] input = Vec.Concat(Vec.Fill(0, 10), Vec.Fill(1, 30));
+            double[] input = Vec<double>.Concat(Vec<double>.Fill(0, 10), Vec<double>.Fill(1, 30));
             LowPass lp = new LowPass(TimeBase_s);
             double[] output = lp.Filter(input, FilterTc_s);
 
