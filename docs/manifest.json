@@ -278,11 +278,38 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "XEQ/Bt/CZ+1oS1VsnVxx5GpO1pNys+AD3rwINFu/wdE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "readme.md",
       "output": {
         ".html": {
           "relative_path": "readme.html",
-          "hash": "n/zV72t3c9tDqaIG34yIKIpXNAURwE1H80fjJlzqi54="
+          "hash": "UVdkQXpIS7dJGtNzqojVTgjF3bExkLon08ncrTHbr4k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Toc",
+      "source_relative_path": "toc.md",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "a5o11XbAYpBf2lrH9P9F5xo9yKISe81jaxr3oFZjEr0="
         }
       },
       "is_incremental": false,
@@ -301,14 +328,14 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 1,
-          "skipped_file_count": 1
+          "total_file_count": 2,
+          "skipped_file_count": 2
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 21,
-          "skipped_file_count": 17
+          "skipped_file_count": 21
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

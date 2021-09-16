@@ -104,6 +104,11 @@
     "title": "Enum VectorSortType | TimeSeriesAnalysis reference documentation",
     "keywords": "Enum VectorSortType Namespace : TimeSeriesAnalysis Assembly : TimeSeriesAnalysis.dll Syntax public enum VectorSortType Fields Name Description Ascending Descending"
   },
+  "index.html": {
+    "href": "index.html",
+    "title": "| TimeSeriesAnalysis reference documentation",
+    "keywords": ""
+  },
   "readme.html": {
     "href": "readme.html",
     "title": "What is this? | TimeSeriesAnalysis reference documentation",
