@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis.UnitTests
 
             double[] refArr = new double[vec.Length];
             Array.Copy(vec, refArr, vec.Length);
-            double[] sorted = Vec<double>.Sort(vec, SortType.Ascending, out int[] idx);
+            double[] sorted = Vec<double>.Sort(vec, VectorSortType.Ascending, out int[] idx);
             Assert.AreEqual(sorted, vecExp);
             Assert.AreEqual(idx, idxExp);
         }
@@ -44,7 +44,7 @@ namespace TimeSeriesAnalysis.UnitTests
             double[] idxExp = new double[] { 4, 5, 3, 1, 0, 2 };
             double[] refArr = new double[vec.Length];
             Array.Copy(vec, refArr, vec.Length);
-            double[] sorted = Vec<double>.Sort(vec, SortType.Descending, out int[] idx);
+            double[] sorted = Vec<double>.Sort(vec, VectorSortType.Descending, out int[] idx);
             Assert.AreEqual(sorted, vecExp);
             Assert.AreEqual(idx, idxExp);
         }
@@ -185,7 +185,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_BiggerThan()
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            List<int> vecResult = Vec.FindValues(vec, 6, FindValues.BiggerThan);
+            List<int> vecResult = Vec.FindValues(vec, 6, VectorFindValueType.BiggerThan);
             List<int> vecExpt = new List<int>() { 7, 8, 9, 10 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -194,7 +194,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_SmallerThan()
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            List<int> vecResult = Vec.FindValues(vec, 6, FindValues.SmallerThan);
+            List<int> vecResult = Vec.FindValues(vec, 6, VectorFindValueType.SmallerThan);
             List<int> vecExpt = new List<int> { 0, 1, 2, 3, 4, 5 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -216,7 +216,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_Equal()
         {
             double[] vec = { 0, 1, 2, 3, 4, -9999, 6, 7, 8, -9999, 10 };
-            List<int> vecResult = Vec.FindValues(vec, -9999, FindValues.Equal);
+            List<int> vecResult = Vec.FindValues(vec, -9999, VectorFindValueType.Equal);
             List<int> vecExpt = new List<int> {5,9 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -225,7 +225,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_NotNan()
         {
             double[] vec = { 0, 1, 2, 3, 4, -9999, 6, 7, 8, -9999, 10 };
-            List<int> vecResult = Vec.FindValues(vec, -9999, FindValues.NotNaN);
+            List<int> vecResult = Vec.FindValues(vec, -9999, VectorFindValueType.NotNaN);
             List<int> vecExpt = new List<int> { 0, 1,2,3,4,6,7,8,10 };
             Assert.AreEqual(vecExpt, vecResult);
         }

@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
+
+    ///<summary>
+    /// Utility class to round double variables to a given nubmer of signficant digits.
+    ///</summary>
+
     public static class SignificantDigits
     {
         public static string DecimalSeparator;
@@ -13,7 +18,6 @@ namespace TimeSeriesAnalysis
         static SignificantDigits()
         {
         }
-
 
         ///<summary>
         ///  Returns number in scientific format with coefficient and exponential paramters

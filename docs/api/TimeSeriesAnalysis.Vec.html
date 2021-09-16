@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class Vec
-   </title>
+   | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Vec
-   ">
+   | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -19,7 +19,7 @@
     <meta property="docfx:navrel" content="">
     <meta property="docfx:tocrel" content="toc.html">
     
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
@@ -58,6 +58,16 @@
           </div>
         </div>
       </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -530,14 +540,14 @@ for instance on</p>
   
   
   <a id="TimeSeriesAnalysis_Vec_FindValues_" data-uid="TimeSeriesAnalysis.Vec.FindValues*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_FindValues_" data-uid="TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.FindValues)">FindValues(Double[], Double, FindValues)</h4>
+  <h4 id="TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_" data-uid="TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)">FindValues(Double[], Double, VectorFindValueType)</h4>
   <div class="markdown level1 summary"><p>return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
 Also capable of finding NaN values</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static List&lt;int&gt; FindValues(double[] vec, double value, FindValues type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static List&lt;int&gt; FindValues(double[] vec, double value, VectorFindValueType type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -560,7 +570,7 @@ Also capable of finding NaN values</p>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.FindValues.html">FindValues</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.VectorFindValueType.html">VectorFindValueType</a></td>
         <td><span class="parametername">type</span></td>
         <td></td>
       </tr>
@@ -680,14 +690,14 @@ i.e. of the &quot;other vectors</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_IsAllM9999_" data-uid="TimeSeriesAnalysis.Vec.IsAllM9999*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_IsAllM9999_System_Double___" data-uid="TimeSeriesAnalysis.Vec.IsAllM9999(System.Double[])">IsAllM9999(Double[])</h4>
-  <div class="markdown level1 summary"><p>Returns true if all elements in array are &quot;-9999&quot;(NaN)</p>
+  <a id="TimeSeriesAnalysis_Vec_IsAllNaN_" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])">IsAllNaN(Double[])</h4>
+  <div class="markdown level1 summary"><p>Returns true if all elements in array are &quot;-9999&quot; or Double.NaN</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsAllM9999(double[] array)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsAllNaN(double[] array)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

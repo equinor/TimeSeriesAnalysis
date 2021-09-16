@@ -4,8 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
+
+    ///<summary>
+    /// Numerical low-pass filtering of time-series
+    ///</summary>
+
+
+
     public class LowPass
     {
         private double timeBase_s;
@@ -15,12 +22,24 @@ namespace TimeSeriesAnalysis
         
         
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="TimeBase_s">The time base, the time interval between each time step of the dataset, in seconds</param>
         public LowPass(double TimeBase_s)
         {
             this.timeBase_s = TimeBase_s;
             this.nSignals = 0;
         }
 
+        /// <summary>
+        /// Adds a single data point to the filter
+        /// </summary>
+        /// <param name="signal">data point</param>
+        /// <param name="FilterTc_s">filter time constant in seconds</param>
+        /// <param name="order">filter order, eitehr 1 or 2 is supported</param>
+        /// <param name="doReset">usually false, setting to true causes filter to reset to the value of signal</param>
+        /// <returns></returns>
         public double Filter(double signal, double FilterTc_s, int order=1, bool doReset = false)
         {
             nSignals++;
@@ -65,12 +84,19 @@ namespace TimeSeriesAnalysis
             return filteredSignal;
         }
 
-        public double[] Filter(double[] signal, double FilterTc_s, int order=1, bool doReset = false)
+        /// <summary>
+        /// Filter an entire time-series in one command
+        /// </summary>
+        /// <param name="signal">the vector of the entire time-series to be filtered</param>
+        /// <param name="FilterTc_s">filter time constant</param>
+        /// <param name="order">filter order, either 1 or 2</param>
+         /// <returns>a vector of the filtered time-series</returns>
+        public double[] Filter(double[] signal, double FilterTc_s, int order=1)
         {
             double[] outSig = new double[signal.Length];
             for (int i = 0; i < signal.Count(); i++)
             {
-                outSig[i] = this.Filter(signal[i], FilterTc_s, order,doReset);
+                outSig[i] = this.Filter(signal[i], FilterTc_s, order,false);
             }
             return outSig;
         }

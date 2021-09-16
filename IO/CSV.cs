@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
 
     ///<summary>
-    /// Utility class for loading time-series data from a plain text comma-separated variable(CSV) file
+    /// IO Utility class for loading time-series data from a plain text comma-separated variable(CSV) file
     ///</summary>
 
     public class CSV

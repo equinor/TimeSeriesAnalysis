@@ -8,183 +8,14 @@ using Accord.Statistics.Models.Regression.Fitting;
 using System.Globalization;
 using System.IO;
 
+using TimeSeriesAnalysis.Utility;
+
 namespace TimeSeriesAnalysis
 {
-    public enum FindValues
-    {
-        BiggerThan=1,
-        SmallerThan=2,
-        BiggerOrEqual=3,
-        SmallerOrEqual=4,
-        Equal=5,
-        NaN=6,
-        NotNaN=7
-    }
-
-    public enum SortType
-    {
-        Ascending = 1,
-        Descending = 2
-    }
-
-    public static class Vec<T>
-    {
-        private static int nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
-
-
-        ///<summary>
-        /// sort the vector vec acording to the sortType.
-        ///</summary>
-        public static T[] Sort(T[] vec, SortType sortType)
-        {
-            return Vec<T>.Sort(vec, sortType, out _);
-        }
-
-        ///<summary>
-        /// sort the vector vec acording to the sortType. The indices corresponding tot he sorted values are given out in the idx array.
-        ///</summary>
-        public static T[] Sort(T[] vec, SortType sortType, out int[] idx)
-        {
-
-            if (vec == null)
-            {
-                idx = new int[0];
-                return new T[0];
-            }
-            T[] sortedAsc = new T[vec.Length];
-            idx = new int[vec.Length];
-            for (int i = 0; i < vec.Length; i++)
-                idx[i] = i;
-
-            Array.Copy(vec, sortedAsc, vec.Length);
-            Array.Sort(sortedAsc, idx);  // Sort array in ascending order. 
-            if (sortType == SortType.Descending)
-            {
-                Array.Reverse(sortedAsc);
-                Array.Reverse(idx);
-            }
-            return sortedAsc;
-        }
-
-        ///<summary>
-        /// returns the portion of array1 starting and indStart, and ending at indEnd(or at the end if third paramter is omitted)
-        ///</summary>
-        public static T[] SubArray(T[] array1, int indStart, int indEnd = -9999)
-        {
-            if (array1 == null)
-                return null;
-
-            if (indEnd > array1.Length - 1 || indEnd == -9999)
-                indEnd = array1.Length - 1;
-            else if (indEnd < 0)
-            {
-                indEnd = 0;
-                return new T[0];
-            }
-            if (indStart < 0)
-                indStart = 0;
-            int length = indEnd - indStart + 1;
-            T[] retArray = new T[length];
-            int outInd = 0;
-            for (int i = indStart; i <= indEnd; i++)
-            {
-                retArray[outInd] = array1[i];
-                outInd++;
-            }
-            return retArray;
-        }
-
-        ///<summary>
-        /// creates an array of size N where every element has value value
-        ///</summary>
-        public static T[] Fill(T value, int N)
-        {
-            T[] ret = new T[N];
-
-            for (int i = 0; i < N; i++)
-                ret[i] = value;
-            return ret;
-        }
-
-        ///<summary>
-        /// concatenates arrays x and y into a new larger array
-        ///</summary>
-        public static T[] Concat(T[] x, T[] y)
-        {
-            var z = new T[x.Length + y.Length];
-            x.CopyTo(z, 0);
-            y.CopyTo(z, x.Length);
-            return z;
-        }
-
-        ///<summary>
-        /// concatenates the value y to the end of array x
-        ///</summary>
-        public static T[] Concat(T[] x, T y)
-        {
-            var z = new T[x.Length + 1];
-            x.CopyTo(z, 0);
-            z[z.Length - 1] = y;
-            return z;
-        }
-
-
-        ///<summary>
-        /// replaces all the vaules in array with indices in indList with the last good value
-        /// prior to that index.
-        ///</summary>
-        public static double[] ReplaceIndWithValuesPrior(double[] array, List<int> indList)
-        {
-            int[] vecInd = indList.ToArray();
-
-            int lastVecInd = -1;
-            double lastReplacementValue = -1;
-            for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
-            {
-                int curVecInd = vecInd[curIndInd];
-                if (curVecInd > 0)
-                {
-                    if (lastVecInd == curVecInd - 1)
-                    {
-                        array[curVecInd] = lastReplacementValue;
-                    }
-                    else
-                    {
-                        array[curVecInd] = array[curVecInd - 1];
-                        lastReplacementValue = array[curVecInd];
-                    }
-                }
-                lastVecInd = curVecInd;
-            }
-            return array;
-        }
-
-
-        ///<summary>
-        /// returns an array of the values that are in array at the indeices given by indices list
-        ///</summary>
-
-        public static T[] GetValuesAtIndices(T[] array, List<int> indices)
-        {
-            T[] ret = new T[indices.Count()];
-
-            for (int i = 0; i < indices.Count(); i++)
-            {
-                ret[i] = array[indices.ElementAt(i)];
-            }
-            return ret;
-        }
-
-
-
-    }
-
-
-    ///<summary>
+    /// <summary>
     /// Utility functions and operations for treating arrays as mathetmatical vectors
     /// This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec<T>)
-    ///</summary>
-
+    /// </summary>
     public static class Vec
     {
         private static double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
@@ -192,7 +23,6 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// All checks for NaN will test both for Double.IsNan and if value== a specific "nan" value (-9999)
         ///</summary>
-
         static private bool IsNaN(double value)
         {
             if (double.IsNaN(value) || value == nanValue)
@@ -200,11 +30,6 @@ namespace TimeSeriesAnalysis
             else
                 return false;
         }
-
-
-
-
-
 
         ///<summary>
         ///  Returns maximum value of two array as new array 
@@ -805,9 +630,9 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Returns true if all elements in array are "-9999"(NaN)
+        /// Returns true if all elements in array are "-9999" or Double.NaN
         ///</summary>
-        public static bool IsAllM9999(double[] array)
+        public static bool IsAllNaN(double[] array)
         {
             int count = 0;
             while (array[count] == nanValue && count < array.Length - 1)
@@ -940,11 +765,11 @@ namespace TimeSeriesAnalysis
         /// Also capable of finding NaN values
         ///</summary>
 
-        public static List<int> FindValues(double[] vec, double value, FindValues type)
+        public static List<int> FindValues(double[] vec, double value, VectorFindValueType type)
         {
             List<int> indices = new List<int>();
 
-            if (type == TimeSeriesAnalysis.FindValues.BiggerThan)
+            if (type == TimeSeriesAnalysis.VectorFindValueType.BiggerThan)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -952,7 +777,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.FindValues.SmallerThan)
+            else if (type == TimeSeriesAnalysis.VectorFindValueType.SmallerThan)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -960,7 +785,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.FindValues.BiggerOrEqual)
+            else if (type == TimeSeriesAnalysis.VectorFindValueType.BiggerOrEqual)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -968,7 +793,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.FindValues.SmallerOrEqual)
+            else if (type == TimeSeriesAnalysis.VectorFindValueType.SmallerOrEqual)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -976,7 +801,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.FindValues.Equal)
+            else if (type == TimeSeriesAnalysis.VectorFindValueType.Equal)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -984,7 +809,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.FindValues.NaN)
+            else if (type == TimeSeriesAnalysis.VectorFindValueType.NaN)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -992,7 +817,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.FindValues.NotNaN)
+            else if (type == TimeSeriesAnalysis.VectorFindValueType.NotNaN)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -1106,8 +931,8 @@ namespace TimeSeriesAnalysis
             array2.CopyTo(x_meas_int, 0);
 
             // protect r-squared from -9999 values.
-            List<int> minus9999ind = FindValues(array2, nanValue, TimeSeriesAnalysis.FindValues.Equal);
-            List<int> nanind = FindValues(array1, Double.NaN, TimeSeriesAnalysis.FindValues.NaN);
+            List<int> minus9999ind = FindValues(array2, nanValue, TimeSeriesAnalysis.VectorFindValueType.Equal);
+            List<int> nanind = FindValues(array1, Double.NaN, TimeSeriesAnalysis.VectorFindValueType.NaN);
             List<int> indToIgnoreInt = minus9999ind.Union(nanind).ToList();
 
             List<int> indToIgnore;

@@ -7,6 +7,8 @@ using NUnit.Framework;
 
 using TimeSeriesAnalysis;
 
+using TimeSeriesAnalysis.Utility;
+
 namespace TimeSeriesAnalysis.UnitTests
 {
     [TestFixture]

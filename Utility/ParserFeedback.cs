@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
-    public enum MessageLevel
+    public enum ParserfeedbackMessageLevel
     {
         fatal = 5,
         error = 4,
@@ -17,24 +17,22 @@ namespace TimeSeriesAnalysis
        //no debug messages not here!
     }
 
-    public struct LogLine
+    public struct ParserFeedbackLogLine
     {
         public DateTime time;
         public String message;
-        public MessageLevel messageLevel;
+        public ParserfeedbackMessageLevel messageLevel;
     }
 
-    /*
- 
 
-    */
-    ///<summary>
-    ///     This class is responsible for collecting feedback lines to a file structure 
+
+    /// <summary>
+    ///     Utility class is responsible for collecting feedback lines, such as warnings,error or info text to either the console window,
+    ///     to a file structure or both. Class makes it easy to swithc between displaying output to a console while debugging, but 
+    ///     instead swithcing to outputtting to file when code moves to a server. 
     ///     Suitable for collecting debugging info from services that run many cases repeatedly.
     ///     log levels:  INFO<WARN<ERROR<FATAL  (no debug messages here)
-    ///</summary>
-
-
+    /// </summary>
     public class ParserFeedback
     {
        
@@ -71,7 +69,7 @@ namespace TimeSeriesAnalysis
         private static System.IO.StreamWriter commonLogFile = null;
         private static System.IO.StreamWriter caseLogFile = null;
 
-        private List<LogLine> logList;
+        private List<ParserFeedbackLogLine> logList;
         private string[] caseArray;
         private string[] eventArray;
 
@@ -79,7 +77,7 @@ namespace TimeSeriesAnalysis
         {
             doOutputAlsoToConsole = false;
             numberOfSlackErrorMessagesSent = 0;
-            logList = new List<LogLine>();
+            logList = new List<ParserFeedbackLogLine>();
             ResetCounters();
         }
 
@@ -118,7 +116,7 @@ namespace TimeSeriesAnalysis
                     commonLogFile.Close();
                 }
             }
-            logList  = new List<LogLine>();
+            logList  = new List<ParserFeedbackLogLine>();
         }
 
         public void SetCaseArray(string[] caseArray)
@@ -253,7 +251,7 @@ namespace TimeSeriesAnalysis
             nLogMessages    = 0;
         }
 
-        private void StoreMessage(string msgString, MessageLevel msgLevel)
+        private void StoreMessage(string msgString, ParserfeedbackMessageLevel msgLevel)
         {
             try
             {
@@ -270,7 +268,7 @@ namespace TimeSeriesAnalysis
                     nLogMessages++;
                     DateTime timestamp = DateTime.Now;
 
-                    LogLine currentLogLine = new LogLine();
+                    ParserFeedbackLogLine currentLogLine = new ParserFeedbackLogLine();
                     currentLogLine.time = timestamp;
                     currentLogLine.message = msgString;
                     currentLogLine.messageLevel = msgLevel;
@@ -311,13 +309,13 @@ namespace TimeSeriesAnalysis
         public void AddFatalError(string message, string attachment=null)
         {
             nFatalErrors++;
-            StoreMessage("Fatal Error :" + message+ "\r\n"+ attachment, MessageLevel.fatal);
+            StoreMessage("Fatal Error :" + message+ "\r\n"+ attachment, ParserfeedbackMessageLevel.fatal);
         }
 
         public void AddError(string message,string attachment=null)
         {
             nErrors++;
-            StoreMessage("Error:" + message, MessageLevel.error);
+            StoreMessage("Error:" + message, ParserfeedbackMessageLevel.error);
         }
 
         ///<summary>
@@ -340,7 +338,7 @@ namespace TimeSeriesAnalysis
         public void AddWarning(string message)
         {
             nWarnings++;
-            StoreMessage("Warning:" + message, MessageLevel.warn);
+            StoreMessage("Warning:" + message, ParserfeedbackMessageLevel.warn);
         }
 
         ///<summary>
@@ -349,7 +347,7 @@ namespace TimeSeriesAnalysis
         public void AddInfo(string message)
         {
             nInfo++;
-            StoreMessage("Info:"+message, MessageLevel.info);
+            StoreMessage("Info:"+message, ParserfeedbackMessageLevel.info);
         }
 
         ///<summary>
@@ -357,7 +355,7 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public string GetFirstErrorOrWarning()
         {
-            List<string> list = GetListOfAllLogLinesAtOrAboveLevel(MessageLevel.warn);
+            List<string> list = GetListOfAllLogLinesAtOrAboveLevel(ParserfeedbackMessageLevel.warn);
 
            if (list.Count > 0)
                 return list.ElementAt(0).ToString();
@@ -379,7 +377,7 @@ namespace TimeSeriesAnalysis
         ///     Returns all log lines of a specified level
         ///</summary>
 
-        public List<string> GetListOfAllLogLinesOfLevel(MessageLevel desiredLevel)
+        public List<string> GetListOfAllLogLinesOfLevel(ParserfeedbackMessageLevel desiredLevel)
         {
             IEnumerable <string> ret = from a in logList
                       where a.messageLevel == desiredLevel
@@ -390,7 +388,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///     Returns all log lines at or above a specified level
         ///</summary>
-        public List<string> GetListOfAllLogLinesAtOrAboveLevel(MessageLevel desiredLevel = MessageLevel.warn)
+        public List<string> GetListOfAllLogLinesAtOrAboveLevel(ParserfeedbackMessageLevel desiredLevel = ParserfeedbackMessageLevel.warn)
         {
             IEnumerable<string> ret = from a in logList
                       where a.messageLevel >= desiredLevel 
@@ -401,7 +399,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///     Returns all log lines at or belowe a specified level
         ///</summary>
-        public List<string> GetListOfAllLogLinesAtOrBelowLevel(MessageLevel desiredLevel = MessageLevel.warn)
+        public List<string> GetListOfAllLogLinesAtOrBelowLevel(ParserfeedbackMessageLevel desiredLevel = ParserfeedbackMessageLevel.warn)
         {
             IEnumerable<string> ret = from a in logList
                                     where a.messageLevel <= desiredLevel

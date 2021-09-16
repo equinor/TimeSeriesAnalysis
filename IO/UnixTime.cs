@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
+    ///<summary>
+    /// Utility class to work with unix time stamps
+    ///</summary>
+
     public class UnixTime
     {
         public static double GetNowUnixTime()//does not work properly, off by one hour

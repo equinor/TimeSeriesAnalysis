@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
 
     ///<summary>
@@ -115,7 +115,15 @@ namespace TimeSeriesAnalysis
             return time;
         }
 
+        static private string CreateCommentStr(string comment)
+        {
+            if (comment == null)
+                return "";
+            else
+                return ";comment=" + comment.Replace(" ", "_");
+        }
 
+        
         ///<summary>
         /// (deprecated)Plot one vector X, where the sampling time interval is dT_s. 
         ///</summary>
@@ -207,13 +215,7 @@ namespace TimeSeriesAnalysis
             }
         }
 
-        static private string CreateCommentStr(string comment)
-        {
-            if (comment == null)
-                return "";
-            else
-                return ";comment=" + comment.Replace(" ","_"); 
-        }
+
 
         ///<summary>
         /// (deprecated)Plot four vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
@@ -361,7 +363,7 @@ namespace TimeSeriesAnalysis
                 }
             }
         }
-
+        
 
 
         static private Process Start(string procname, string arguments, out bool returnValue, string comment = null)

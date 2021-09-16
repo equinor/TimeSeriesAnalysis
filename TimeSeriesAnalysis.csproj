@@ -125,7 +125,9 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Vector\Array2DExtensionMethods.cs" />
     <Compile Include="Vector\Matrix.cs" />
     <Compile Include="Vector\Vec.cs" />
+    <Compile Include="Vector\VecEnums.cs" />
     <Compile Include="Vector\VecExtensionMethods.cs" />
+    <Compile Include="Vector\VecGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nuget.config" />

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
     ///<summary>
     /// Version of Plot class where plots code can be Enabled()/Disabled() programatically.
@@ -131,5 +131,6 @@ namespace TimeSeriesAnalysis
                 plotAllOnLeftYaxis, useSubplots, comment, t0);
 
         }
+
     }
 }

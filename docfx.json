@@ -34,7 +34,7 @@
     "resource": [
       {
         "files": [
-          "images/**"
+          "articles/images/**"
         ]
       }
     ],
@@ -56,6 +56,11 @@
     "template": [
       "default"
     ],
+	"globalMetadata": {
+      "_appTitle": "TimeSeriesAnalysis reference documentation",
+      "_enableSearch": true
+    },
+	
     "postProcessors": [],
     "markdownEngineName": "markdig",
     "noLangKeyword": false,

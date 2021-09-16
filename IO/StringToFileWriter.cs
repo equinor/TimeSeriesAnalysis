@@ -5,9 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace TimeSeriesAnalysis
+namespace TimeSeriesAnalysis.Utility
 {
-        public class StringToFileWriter : IDisposable
+
+
+    ///<summary>
+    /// IO Utility class to write to file.
+    ///</summary>
+
+
+    public class StringToFileWriter : IDisposable
         {
             StreamWriter sw;
             System.IO.MemoryStream memStream;

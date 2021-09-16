@@ -308,157 +308,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Array2DExtensionMethods.WriteColumn
   nameWithType: Array2DExtensionMethods.WriteColumn
-- uid: TimeSeriesAnalysis.CSV
-  name: CSV
-  href: api/TimeSeriesAnalysis.CSV.html
-  commentId: T:TimeSeriesAnalysis.CSV
-  fullName: TimeSeriesAnalysis.CSV
-  nameWithType: CSV
-- uid: TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
-  name: LoadDataFromCSV(String, out Double[,], out String[], out String[,])
-  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_LoadDataFromCSV_System_String_System_Double_0__0____System_String____System_String_0__0____
-  commentId: M:TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
-  name.vb: LoadDataFromCSV(String, ByRef Double(,), ByRef String(), ByRef String(,))
-  fullName: TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String, out System.Double[,], out System.String[], out System.String[,])
-  fullName.vb: TimeSeriesAnalysis.CSV.LoadDataFromCSV(System.String, ByRef System.Double(,), ByRef System.String(), ByRef System.String(,))
-  nameWithType: CSV.LoadDataFromCSV(String, out Double[,], out String[], out String[,])
-  nameWithType.vb: CSV.LoadDataFromCSV(String, ByRef Double(,), ByRef String(), ByRef String(,))
-- uid: TimeSeriesAnalysis.CSV.LoadDataFromCSV*
-  name: LoadDataFromCSV
-  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_LoadDataFromCSV_
-  commentId: Overload:TimeSeriesAnalysis.CSV.LoadDataFromCSV
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.CSV.LoadDataFromCSV
-  nameWithType: CSV.LoadDataFromCSV
-- uid: TimeSeriesAnalysis.CSV.RobustParseDouble(System.String,System.Double@)
-  name: RobustParseDouble(String, out Double)
-  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_RobustParseDouble_System_String_System_Double__
-  commentId: M:TimeSeriesAnalysis.CSV.RobustParseDouble(System.String,System.Double@)
-  name.vb: RobustParseDouble(String, ByRef Double)
-  fullName: TimeSeriesAnalysis.CSV.RobustParseDouble(System.String, out System.Double)
-  fullName.vb: TimeSeriesAnalysis.CSV.RobustParseDouble(System.String, ByRef System.Double)
-  nameWithType: CSV.RobustParseDouble(String, out Double)
-  nameWithType.vb: CSV.RobustParseDouble(String, ByRef Double)
-- uid: TimeSeriesAnalysis.CSV.RobustParseDouble*
-  name: RobustParseDouble
-  href: api/TimeSeriesAnalysis.CSV.html#TimeSeriesAnalysis_CSV_RobustParseDouble_
-  commentId: Overload:TimeSeriesAnalysis.CSV.RobustParseDouble
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.CSV.RobustParseDouble
-  nameWithType: CSV.RobustParseDouble
-- uid: TimeSeriesAnalysis.FindValues
-  name: FindValues
-  href: api/TimeSeriesAnalysis.FindValues.html
-  commentId: T:TimeSeriesAnalysis.FindValues
-  fullName: TimeSeriesAnalysis.FindValues
-  nameWithType: FindValues
-- uid: TimeSeriesAnalysis.FindValues.BiggerOrEqual
-  name: BiggerOrEqual
-  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_BiggerOrEqual
-  commentId: F:TimeSeriesAnalysis.FindValues.BiggerOrEqual
-  fullName: TimeSeriesAnalysis.FindValues.BiggerOrEqual
-  nameWithType: FindValues.BiggerOrEqual
-- uid: TimeSeriesAnalysis.FindValues.BiggerThan
-  name: BiggerThan
-  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_BiggerThan
-  commentId: F:TimeSeriesAnalysis.FindValues.BiggerThan
-  fullName: TimeSeriesAnalysis.FindValues.BiggerThan
-  nameWithType: FindValues.BiggerThan
-- uid: TimeSeriesAnalysis.FindValues.Equal
-  name: Equal
-  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_Equal
-  commentId: F:TimeSeriesAnalysis.FindValues.Equal
-  fullName: TimeSeriesAnalysis.FindValues.Equal
-  nameWithType: FindValues.Equal
-- uid: TimeSeriesAnalysis.FindValues.NaN
-  name: NaN
-  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_NaN
-  commentId: F:TimeSeriesAnalysis.FindValues.NaN
-  fullName: TimeSeriesAnalysis.FindValues.NaN
-  nameWithType: FindValues.NaN
-- uid: TimeSeriesAnalysis.FindValues.NotNaN
-  name: NotNaN
-  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_NotNaN
-  commentId: F:TimeSeriesAnalysis.FindValues.NotNaN
-  fullName: TimeSeriesAnalysis.FindValues.NotNaN
-  nameWithType: FindValues.NotNaN
-- uid: TimeSeriesAnalysis.FindValues.SmallerOrEqual
-  name: SmallerOrEqual
-  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_SmallerOrEqual
-  commentId: F:TimeSeriesAnalysis.FindValues.SmallerOrEqual
-  fullName: TimeSeriesAnalysis.FindValues.SmallerOrEqual
-  nameWithType: FindValues.SmallerOrEqual
-- uid: TimeSeriesAnalysis.FindValues.SmallerThan
-  name: SmallerThan
-  href: api/TimeSeriesAnalysis.FindValues.html#TimeSeriesAnalysis_FindValues_SmallerThan
-  commentId: F:TimeSeriesAnalysis.FindValues.SmallerThan
-  fullName: TimeSeriesAnalysis.FindValues.SmallerThan
-  nameWithType: FindValues.SmallerThan
-- uid: TimeSeriesAnalysis.LogLine
-  name: LogLine
-  href: api/TimeSeriesAnalysis.LogLine.html
-  commentId: T:TimeSeriesAnalysis.LogLine
-  fullName: TimeSeriesAnalysis.LogLine
-  nameWithType: LogLine
-- uid: TimeSeriesAnalysis.LogLine.message
-  name: message
-  href: api/TimeSeriesAnalysis.LogLine.html#TimeSeriesAnalysis_LogLine_message
-  commentId: F:TimeSeriesAnalysis.LogLine.message
-  fullName: TimeSeriesAnalysis.LogLine.message
-  nameWithType: LogLine.message
-- uid: TimeSeriesAnalysis.LogLine.messageLevel
-  name: messageLevel
-  href: api/TimeSeriesAnalysis.LogLine.html#TimeSeriesAnalysis_LogLine_messageLevel
-  commentId: F:TimeSeriesAnalysis.LogLine.messageLevel
-  fullName: TimeSeriesAnalysis.LogLine.messageLevel
-  nameWithType: LogLine.messageLevel
-- uid: TimeSeriesAnalysis.LogLine.time
-  name: time
-  href: api/TimeSeriesAnalysis.LogLine.html#TimeSeriesAnalysis_LogLine_time
-  commentId: F:TimeSeriesAnalysis.LogLine.time
-  fullName: TimeSeriesAnalysis.LogLine.time
-  nameWithType: LogLine.time
-- uid: TimeSeriesAnalysis.LowPass
-  name: LowPass
-  href: api/TimeSeriesAnalysis.LowPass.html
-  commentId: T:TimeSeriesAnalysis.LowPass
-  fullName: TimeSeriesAnalysis.LowPass
-  nameWithType: LowPass
-- uid: TimeSeriesAnalysis.LowPass.#ctor(System.Double)
-  name: LowPass(Double)
-  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass__ctor_System_Double_
-  commentId: M:TimeSeriesAnalysis.LowPass.#ctor(System.Double)
-  fullName: TimeSeriesAnalysis.LowPass.LowPass(System.Double)
-  nameWithType: LowPass.LowPass(Double)
-- uid: TimeSeriesAnalysis.LowPass.#ctor*
-  name: LowPass
-  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass__ctor_
-  commentId: Overload:TimeSeriesAnalysis.LowPass.#ctor
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.LowPass.LowPass
-  nameWithType: LowPass.LowPass
-- uid: TimeSeriesAnalysis.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)
-  name: Filter(Double, Double, Int32, Boolean)
-  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_System_Double_System_Double_System_Int32_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)
-  fullName: TimeSeriesAnalysis.LowPass.Filter(System.Double, System.Double, System.Int32, System.Boolean)
-  nameWithType: LowPass.Filter(Double, Double, Int32, Boolean)
-- uid: TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32,System.Boolean)
-  name: Filter(Double[], Double, Int32, Boolean)
-  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_System_Double___System_Double_System_Int32_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32,System.Boolean)
-  name.vb: Filter(Double(), Double, Int32, Boolean)
-  fullName: TimeSeriesAnalysis.LowPass.Filter(System.Double[], System.Double, System.Int32, System.Boolean)
-  fullName.vb: TimeSeriesAnalysis.LowPass.Filter(System.Double(), System.Double, System.Int32, System.Boolean)
-  nameWithType: LowPass.Filter(Double[], Double, Int32, Boolean)
-  nameWithType.vb: LowPass.Filter(Double(), Double, Int32, Boolean)
-- uid: TimeSeriesAnalysis.LowPass.Filter*
-  name: Filter
-  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_
-  commentId: Overload:TimeSeriesAnalysis.LowPass.Filter
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.LowPass.Filter
-  nameWithType: LowPass.Filter
 - uid: TimeSeriesAnalysis.Matrix
   name: Matrix
   href: api/TimeSeriesAnalysis.Matrix.html
@@ -554,817 +403,908 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Matrix.ReplaceRow
   nameWithType: Matrix.ReplaceRow
-- uid: TimeSeriesAnalysis.MessageLevel
-  name: MessageLevel
-  href: api/TimeSeriesAnalysis.MessageLevel.html
-  commentId: T:TimeSeriesAnalysis.MessageLevel
-  fullName: TimeSeriesAnalysis.MessageLevel
-  nameWithType: MessageLevel
-- uid: TimeSeriesAnalysis.MessageLevel.error
-  name: error
-  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_error
-  commentId: F:TimeSeriesAnalysis.MessageLevel.error
-  fullName: TimeSeriesAnalysis.MessageLevel.error
-  nameWithType: MessageLevel.error
-- uid: TimeSeriesAnalysis.MessageLevel.fatal
-  name: fatal
-  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_fatal
-  commentId: F:TimeSeriesAnalysis.MessageLevel.fatal
-  fullName: TimeSeriesAnalysis.MessageLevel.fatal
-  nameWithType: MessageLevel.fatal
-- uid: TimeSeriesAnalysis.MessageLevel.info
-  name: info
-  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_info
-  commentId: F:TimeSeriesAnalysis.MessageLevel.info
-  fullName: TimeSeriesAnalysis.MessageLevel.info
-  nameWithType: MessageLevel.info
-- uid: TimeSeriesAnalysis.MessageLevel.warn
-  name: warn
-  href: api/TimeSeriesAnalysis.MessageLevel.html#TimeSeriesAnalysis_MessageLevel_warn
-  commentId: F:TimeSeriesAnalysis.MessageLevel.warn
-  fullName: TimeSeriesAnalysis.MessageLevel.warn
-  nameWithType: MessageLevel.warn
-- uid: TimeSeriesAnalysis.MovingAvg
+- uid: TimeSeriesAnalysis.Utility
+  name: TimeSeriesAnalysis.Utility
+  href: api/TimeSeriesAnalysis.Utility.html
+  commentId: N:TimeSeriesAnalysis.Utility
+  fullName: TimeSeriesAnalysis.Utility
+  nameWithType: TimeSeriesAnalysis.Utility
+- uid: TimeSeriesAnalysis.Utility.CSV
+  name: CSV
+  href: api/TimeSeriesAnalysis.Utility.CSV.html
+  commentId: T:TimeSeriesAnalysis.Utility.CSV
+  fullName: TimeSeriesAnalysis.Utility.CSV
+  nameWithType: CSV
+- uid: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
+  name: LoadDataFromCSV(String, out Double[,], out String[], out String[,])
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Double_0__0____System_String____System_String_0__0____
+  commentId: M:TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
+  name.vb: LoadDataFromCSV(String, ByRef Double(,), ByRef String(), ByRef String(,))
+  fullName: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String, out System.Double[,], out System.String[], out System.String[,])
+  fullName.vb: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String, ByRef System.Double(,), ByRef System.String(), ByRef System.String(,))
+  nameWithType: CSV.LoadDataFromCSV(String, out Double[,], out String[], out String[,])
+  nameWithType.vb: CSV.LoadDataFromCSV(String, ByRef Double(,), ByRef String(), ByRef String(,))
+- uid: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV*
+  name: LoadDataFromCSV
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_
+  commentId: Overload:TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV
+  nameWithType: CSV.LoadDataFromCSV
+- uid: TimeSeriesAnalysis.Utility.CSV.RobustParseDouble(System.String,System.Double@)
+  name: RobustParseDouble(String, out Double)
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_RobustParseDouble_System_String_System_Double__
+  commentId: M:TimeSeriesAnalysis.Utility.CSV.RobustParseDouble(System.String,System.Double@)
+  name.vb: RobustParseDouble(String, ByRef Double)
+  fullName: TimeSeriesAnalysis.Utility.CSV.RobustParseDouble(System.String, out System.Double)
+  fullName.vb: TimeSeriesAnalysis.Utility.CSV.RobustParseDouble(System.String, ByRef System.Double)
+  nameWithType: CSV.RobustParseDouble(String, out Double)
+  nameWithType.vb: CSV.RobustParseDouble(String, ByRef Double)
+- uid: TimeSeriesAnalysis.Utility.CSV.RobustParseDouble*
+  name: RobustParseDouble
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_RobustParseDouble_
+  commentId: Overload:TimeSeriesAnalysis.Utility.CSV.RobustParseDouble
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.CSV.RobustParseDouble
+  nameWithType: CSV.RobustParseDouble
+- uid: TimeSeriesAnalysis.Utility.LowPass
+  name: LowPass
+  href: api/TimeSeriesAnalysis.Utility.LowPass.html
+  commentId: T:TimeSeriesAnalysis.Utility.LowPass
+  fullName: TimeSeriesAnalysis.Utility.LowPass
+  nameWithType: LowPass
+- uid: TimeSeriesAnalysis.Utility.LowPass.#ctor(System.Double)
+  name: LowPass(Double)
+  href: api/TimeSeriesAnalysis.Utility.LowPass.html#TimeSeriesAnalysis_Utility_LowPass__ctor_System_Double_
+  commentId: M:TimeSeriesAnalysis.Utility.LowPass.#ctor(System.Double)
+  fullName: TimeSeriesAnalysis.Utility.LowPass.LowPass(System.Double)
+  nameWithType: LowPass.LowPass(Double)
+- uid: TimeSeriesAnalysis.Utility.LowPass.#ctor*
+  name: LowPass
+  href: api/TimeSeriesAnalysis.Utility.LowPass.html#TimeSeriesAnalysis_Utility_LowPass__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Utility.LowPass.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.LowPass.LowPass
+  nameWithType: LowPass.LowPass
+- uid: TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)
+  name: Filter(Double, Double, Int32, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.LowPass.html#TimeSeriesAnalysis_Utility_LowPass_Filter_System_Double_System_Double_System_Int32_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)
+  fullName: TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double, System.Double, System.Int32, System.Boolean)
+  nameWithType: LowPass.Filter(Double, Double, Int32, Boolean)
+- uid: TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double[],System.Double,System.Int32)
+  name: Filter(Double[], Double, Int32)
+  href: api/TimeSeriesAnalysis.Utility.LowPass.html#TimeSeriesAnalysis_Utility_LowPass_Filter_System_Double___System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double[],System.Double,System.Int32)
+  name.vb: Filter(Double(), Double, Int32)
+  fullName: TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double[], System.Double, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double(), System.Double, System.Int32)
+  nameWithType: LowPass.Filter(Double[], Double, Int32)
+  nameWithType.vb: LowPass.Filter(Double(), Double, Int32)
+- uid: TimeSeriesAnalysis.Utility.LowPass.Filter*
+  name: Filter
+  href: api/TimeSeriesAnalysis.Utility.LowPass.html#TimeSeriesAnalysis_Utility_LowPass_Filter_
+  commentId: Overload:TimeSeriesAnalysis.Utility.LowPass.Filter
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.LowPass.Filter
+  nameWithType: LowPass.Filter
+- uid: TimeSeriesAnalysis.Utility.MovingAvg
   name: MovingAvg
-  href: api/TimeSeriesAnalysis.MovingAvg.html
-  commentId: T:TimeSeriesAnalysis.MovingAvg
-  fullName: TimeSeriesAnalysis.MovingAvg
+  href: api/TimeSeriesAnalysis.Utility.MovingAvg.html
+  commentId: T:TimeSeriesAnalysis.Utility.MovingAvg
+  fullName: TimeSeriesAnalysis.Utility.MovingAvg
   nameWithType: MovingAvg
-- uid: TimeSeriesAnalysis.MovingAvg.#ctor(System.Int32)
+- uid: TimeSeriesAnalysis.Utility.MovingAvg.#ctor(System.Int32)
   name: MovingAvg(Int32)
-  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg__ctor_System_Int32_
-  commentId: M:TimeSeriesAnalysis.MovingAvg.#ctor(System.Int32)
-  fullName: TimeSeriesAnalysis.MovingAvg.MovingAvg(System.Int32)
+  href: api/TimeSeriesAnalysis.Utility.MovingAvg.html#TimeSeriesAnalysis_Utility_MovingAvg__ctor_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.MovingAvg.#ctor(System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.MovingAvg.MovingAvg(System.Int32)
   nameWithType: MovingAvg.MovingAvg(Int32)
-- uid: TimeSeriesAnalysis.MovingAvg.#ctor*
+- uid: TimeSeriesAnalysis.Utility.MovingAvg.#ctor*
   name: MovingAvg
-  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg__ctor_
-  commentId: Overload:TimeSeriesAnalysis.MovingAvg.#ctor
+  href: api/TimeSeriesAnalysis.Utility.MovingAvg.html#TimeSeriesAnalysis_Utility_MovingAvg__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Utility.MovingAvg.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.MovingAvg.MovingAvg
+  fullName: TimeSeriesAnalysis.Utility.MovingAvg.MovingAvg
   nameWithType: MovingAvg.MovingAvg
-- uid: TimeSeriesAnalysis.MovingAvg.Add(System.Double)
+- uid: TimeSeriesAnalysis.Utility.MovingAvg.Add(System.Double)
   name: Add(Double)
-  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg_Add_System_Double_
-  commentId: M:TimeSeriesAnalysis.MovingAvg.Add(System.Double)
-  fullName: TimeSeriesAnalysis.MovingAvg.Add(System.Double)
+  href: api/TimeSeriesAnalysis.Utility.MovingAvg.html#TimeSeriesAnalysis_Utility_MovingAvg_Add_System_Double_
+  commentId: M:TimeSeriesAnalysis.Utility.MovingAvg.Add(System.Double)
+  fullName: TimeSeriesAnalysis.Utility.MovingAvg.Add(System.Double)
   nameWithType: MovingAvg.Add(Double)
-- uid: TimeSeriesAnalysis.MovingAvg.Add*
+- uid: TimeSeriesAnalysis.Utility.MovingAvg.Add*
   name: Add
-  href: api/TimeSeriesAnalysis.MovingAvg.html#TimeSeriesAnalysis_MovingAvg_Add_
-  commentId: Overload:TimeSeriesAnalysis.MovingAvg.Add
+  href: api/TimeSeriesAnalysis.Utility.MovingAvg.html#TimeSeriesAnalysis_Utility_MovingAvg_Add_
+  commentId: Overload:TimeSeriesAnalysis.Utility.MovingAvg.Add
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.MovingAvg.Add
+  fullName: TimeSeriesAnalysis.Utility.MovingAvg.Add
   nameWithType: MovingAvg.Add
-- uid: TimeSeriesAnalysis.ParserFeedback
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback
   name: ParserFeedback
-  href: api/TimeSeriesAnalysis.ParserFeedback.html
-  commentId: T:TimeSeriesAnalysis.ParserFeedback
-  fullName: TimeSeriesAnalysis.ParserFeedback
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html
+  commentId: T:TimeSeriesAnalysis.Utility.ParserFeedback
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback
   nameWithType: ParserFeedback
-- uid: TimeSeriesAnalysis.ParserFeedback.#ctor(System.Boolean)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.#ctor(System.Boolean)
   name: ParserFeedback(Boolean)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback__ctor_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.#ctor(System.Boolean)
-  fullName: TimeSeriesAnalysis.ParserFeedback.ParserFeedback(System.Boolean)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback__ctor_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.#ctor(System.Boolean)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.ParserFeedback(System.Boolean)
   nameWithType: ParserFeedback.ParserFeedback(Boolean)
-- uid: TimeSeriesAnalysis.ParserFeedback.#ctor*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.#ctor*
   name: ParserFeedback
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback__ctor_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.#ctor
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.ParserFeedback
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.ParserFeedback
   nameWithType: ParserFeedback.ParserFeedback
-- uid: TimeSeriesAnalysis.ParserFeedback.AddError(System.String,System.String)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String,System.String)
   name: AddError(String, String)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddError_System_String_System_String_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddError(System.String,System.String)
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddError(System.String, System.String)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddError_System_String_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String,System.String)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String, System.String)
   nameWithType: ParserFeedback.AddError(String, String)
-- uid: TimeSeriesAnalysis.ParserFeedback.AddError*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddError*
   name: AddError
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddError_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddError
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddError_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.AddError
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddError
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddError
   nameWithType: ParserFeedback.AddError
-- uid: TimeSeriesAnalysis.ParserFeedback.AddFatalError(System.String,System.String)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String,System.String)
   name: AddFatalError(String, String)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddFatalError_System_String_System_String_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddFatalError(System.String,System.String)
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddFatalError(System.String, System.String)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddFatalError_System_String_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String,System.String)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String, System.String)
   nameWithType: ParserFeedback.AddFatalError(String, String)
-- uid: TimeSeriesAnalysis.ParserFeedback.AddFatalError*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError*
   name: AddFatalError
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddFatalError_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddFatalError
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddFatalError_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddFatalError
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError
   nameWithType: ParserFeedback.AddFatalError
-- uid: TimeSeriesAnalysis.ParserFeedback.AddInfo(System.String)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddInfo(System.String)
   name: AddInfo(String)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddInfo_System_String_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddInfo(System.String)
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddInfo(System.String)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddInfo_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddInfo(System.String)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddInfo(System.String)
   nameWithType: ParserFeedback.AddInfo(String)
-- uid: TimeSeriesAnalysis.ParserFeedback.AddInfo*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddInfo*
   name: AddInfo
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddInfo_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddInfo
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddInfo_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.AddInfo
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddInfo
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddInfo
   nameWithType: ParserFeedback.AddInfo
-- uid: TimeSeriesAnalysis.ParserFeedback.AddWarning(System.String)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddWarning(System.String)
   name: AddWarning(String)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddWarning_System_String_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.AddWarning(System.String)
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddWarning(System.String)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddWarning_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddWarning(System.String)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddWarning(System.String)
   nameWithType: ParserFeedback.AddWarning(String)
-- uid: TimeSeriesAnalysis.ParserFeedback.AddWarning*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddWarning*
   name: AddWarning
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_AddWarning_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.AddWarning
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddWarning_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.AddWarning
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.AddWarning
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddWarning
   nameWithType: ParserFeedback.AddWarning
-- uid: TimeSeriesAnalysis.ParserFeedback.Close
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.Close
   name: Close()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_Close
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.Close
-  fullName: TimeSeriesAnalysis.ParserFeedback.Close()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_Close
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.Close
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.Close()
   nameWithType: ParserFeedback.Close()
-- uid: TimeSeriesAnalysis.ParserFeedback.Close*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.Close*
   name: Close
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_Close_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.Close
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_Close_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.Close
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.Close
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.Close
   nameWithType: ParserFeedback.Close
-- uid: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile
   name: CloseCaseLogFile()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CloseCaseLogFile
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
-  fullName: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CloseCaseLogFile
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile()
   nameWithType: ParserFeedback.CloseCaseLogFile()
-- uid: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile*
   name: CloseCaseLogFile
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CloseCaseLogFile_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CloseCaseLogFile_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.CloseCaseLogFile
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile
   nameWithType: ParserFeedback.CloseCaseLogFile
-- uid: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile(System.String,System.Int32)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCaseLogFile(System.String,System.Int32)
   name: CreateCaseLogFile(String, Int32)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCaseLogFile_System_String_System_Int32_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile(System.String,System.Int32)
-  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile(System.String, System.Int32)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CreateCaseLogFile_System_String_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.CreateCaseLogFile(System.String,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCaseLogFile(System.String, System.Int32)
   nameWithType: ParserFeedback.CreateCaseLogFile(String, Int32)
-- uid: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCaseLogFile*
   name: CreateCaseLogFile
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCaseLogFile_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CreateCaseLogFile_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.CreateCaseLogFile
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCaseLogFile
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCaseLogFile
   nameWithType: ParserFeedback.CreateCaseLogFile
-- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonHTMLfile
   name: CreateCommonHTMLfile()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonHTMLfile
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
-  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CreateCommonHTMLfile
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonHTMLfile
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonHTMLfile()
   nameWithType: ParserFeedback.CreateCommonHTMLfile()
-- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonHTMLfile*
   name: CreateCommonHTMLfile
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonHTMLfile_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CreateCommonHTMLfile_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonHTMLfile
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonHTMLfile
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonHTMLfile
   nameWithType: ParserFeedback.CreateCommonHTMLfile
-- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile(System.String)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonLogFile(System.String)
   name: CreateCommonLogFile(String)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonLogFile_System_String_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile(System.String)
-  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile(System.String)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CreateCommonLogFile_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonLogFile(System.String)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonLogFile(System.String)
   nameWithType: ParserFeedback.CreateCommonLogFile(String)
-- uid: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonLogFile*
   name: CreateCommonLogFile
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_CreateCommonLogFile_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_CreateCommonLogFile_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonLogFile
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.CreateCommonLogFile
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.CreateCommonLogFile
   nameWithType: ParserFeedback.CreateCommonLogFile
-- uid: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput(System.Boolean)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput(System.Boolean)
   name: EnableConsoleOutput(Boolean)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_EnableConsoleOutput_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput(System.Boolean)
-  fullName: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput(System.Boolean)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_EnableConsoleOutput_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput(System.Boolean)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput(System.Boolean)
   nameWithType: ParserFeedback.EnableConsoleOutput(Boolean)
-- uid: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput*
   name: EnableConsoleOutput
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_EnableConsoleOutput_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_EnableConsoleOutput_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.EnableConsoleOutput
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput
   nameWithType: ParserFeedback.EnableConsoleOutput
-- uid: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetFirstErrorOrWarning
   name: GetFirstErrorOrWarning()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetFirstErrorOrWarning
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetFirstErrorOrWarning
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.GetFirstErrorOrWarning
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetFirstErrorOrWarning()
   nameWithType: ParserFeedback.GetFirstErrorOrWarning()
-- uid: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetFirstErrorOrWarning*
   name: GetFirstErrorOrWarning
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetFirstErrorOrWarning_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetFirstErrorOrWarning_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.GetFirstErrorOrWarning
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetFirstErrorOrWarning
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetFirstErrorOrWarning
   nameWithType: ParserFeedback.GetFirstErrorOrWarning
-- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.MessageLevel)
-  name: GetListOfAllLogLinesAtOrAboveLevel(MessageLevel)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrAboveLevel_TimeSeriesAnalysis_MessageLevel_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.MessageLevel)
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.MessageLevel)
-  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(MessageLevel)
-- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  name: GetListOfAllLogLinesAtOrAboveLevel(ParserfeedbackMessageLevel)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetListOfAllLogLinesAtOrAboveLevel_TimeSeriesAnalysis_Utility_ParserfeedbackMessageLevel_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel(ParserfeedbackMessageLevel)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel*
   name: GetListOfAllLogLinesAtOrAboveLevel
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrAboveLevel_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetListOfAllLogLinesAtOrAboveLevel_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
   nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrAboveLevel
-- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.MessageLevel)
-  name: GetListOfAllLogLinesAtOrBelowLevel(MessageLevel)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrBelowLevel_TimeSeriesAnalysis_MessageLevel_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.MessageLevel)
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.MessageLevel)
-  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(MessageLevel)
-- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  name: GetListOfAllLogLinesAtOrBelowLevel(ParserfeedbackMessageLevel)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetListOfAllLogLinesAtOrBelowLevel_TimeSeriesAnalysis_Utility_ParserfeedbackMessageLevel_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel(ParserfeedbackMessageLevel)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel*
   name: GetListOfAllLogLinesAtOrBelowLevel
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesAtOrBelowLevel_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetListOfAllLogLinesAtOrBelowLevel_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
   nameWithType: ParserFeedback.GetListOfAllLogLinesAtOrBelowLevel
-- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.MessageLevel)
-  name: GetListOfAllLogLinesOfLevel(MessageLevel)
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesOfLevel_TimeSeriesAnalysis_MessageLevel_
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.MessageLevel)
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.MessageLevel)
-  nameWithType: ParserFeedback.GetListOfAllLogLinesOfLevel(MessageLevel)
-- uid: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  name: GetListOfAllLogLinesOfLevel(ParserfeedbackMessageLevel)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetListOfAllLogLinesOfLevel_TimeSeriesAnalysis_Utility_ParserfeedbackMessageLevel_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesOfLevel(TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel)
+  nameWithType: ParserFeedback.GetListOfAllLogLinesOfLevel(ParserfeedbackMessageLevel)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesOfLevel*
   name: GetListOfAllLogLinesOfLevel
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetListOfAllLogLinesOfLevel_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetListOfAllLogLinesOfLevel_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesOfLevel
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetListOfAllLogLinesOfLevel
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetListOfAllLogLinesOfLevel
   nameWithType: ParserFeedback.GetListOfAllLogLinesOfLevel
-- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilename
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename
   name: GetLogFilename()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilename
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetLogFilename
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilename()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilename
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename()
   nameWithType: ParserFeedback.GetLogFilename()
-- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilename*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename*
   name: GetLogFilename
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilename_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetLogFilename
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilename_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilename
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename
   nameWithType: ParserFeedback.GetLogFilename
-- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath
   name: GetLogFilePath()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilePath
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilePath
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath()
   nameWithType: ParserFeedback.GetLogFilePath()
-- uid: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath*
   name: GetLogFilePath
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_GetLogFilePath_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilePath_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.GetLogFilePath
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath
   nameWithType: ParserFeedback.GetLogFilePath
-- uid: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.IsNumberOfErrorsAndWarningsZero
   name: IsNumberOfErrorsAndWarningsZero()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_IsNumberOfErrorsAndWarningsZero
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
-  fullName: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_IsNumberOfErrorsAndWarningsZero
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.IsNumberOfErrorsAndWarningsZero()
   nameWithType: ParserFeedback.IsNumberOfErrorsAndWarningsZero()
-- uid: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.IsNumberOfErrorsAndWarningsZero*
   name: IsNumberOfErrorsAndWarningsZero
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_IsNumberOfErrorsAndWarningsZero_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_IsNumberOfErrorsAndWarningsZero_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.IsNumberOfErrorsAndWarningsZero
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.IsNumberOfErrorsAndWarningsZero
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.IsNumberOfErrorsAndWarningsZero
   nameWithType: ParserFeedback.IsNumberOfErrorsAndWarningsZero
-- uid: TimeSeriesAnalysis.ParserFeedback.ResetCounters
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters
   name: ResetCounters()
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_ResetCounters
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.ResetCounters
-  fullName: TimeSeriesAnalysis.ParserFeedback.ResetCounters()
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_ResetCounters
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters()
   nameWithType: ParserFeedback.ResetCounters()
-- uid: TimeSeriesAnalysis.ParserFeedback.ResetCounters*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters*
   name: ResetCounters
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_ResetCounters_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.ResetCounters
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_ResetCounters_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.ResetCounters
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters
   nameWithType: ParserFeedback.ResetCounters
-- uid: TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String[])
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray(System.String[])
   name: SetCaseArray(String[])
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_SetCaseArray_System_String___
-  commentId: M:TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String[])
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_SetCaseArray_System_String___
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray(System.String[])
   name.vb: SetCaseArray(String())
-  fullName: TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String[])
-  fullName.vb: TimeSeriesAnalysis.ParserFeedback.SetCaseArray(System.String())
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray(System.String[])
+  fullName.vb: TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray(System.String())
   nameWithType: ParserFeedback.SetCaseArray(String[])
   nameWithType.vb: ParserFeedback.SetCaseArray(String())
-- uid: TimeSeriesAnalysis.ParserFeedback.SetCaseArray*
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray*
   name: SetCaseArray
-  href: api/TimeSeriesAnalysis.ParserFeedback.html#TimeSeriesAnalysis_ParserFeedback_SetCaseArray_
-  commentId: Overload:TimeSeriesAnalysis.ParserFeedback.SetCaseArray
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_SetCaseArray_
+  commentId: Overload:TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.ParserFeedback.SetCaseArray
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray
   nameWithType: ParserFeedback.SetCaseArray
-- uid: TimeSeriesAnalysis.Plot
+- uid: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine
+  name: ParserFeedbackLogLine
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.html
+  commentId: T:TimeSeriesAnalysis.Utility.ParserFeedbackLogLine
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine
+  nameWithType: ParserFeedbackLogLine
+- uid: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.message
+  name: message
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.html#TimeSeriesAnalysis_Utility_ParserFeedbackLogLine_message
+  commentId: F:TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.message
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.message
+  nameWithType: ParserFeedbackLogLine.message
+- uid: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.messageLevel
+  name: messageLevel
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.html#TimeSeriesAnalysis_Utility_ParserFeedbackLogLine_messageLevel
+  commentId: F:TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.messageLevel
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.messageLevel
+  nameWithType: ParserFeedbackLogLine.messageLevel
+- uid: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.time
+  name: time
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.html#TimeSeriesAnalysis_Utility_ParserFeedbackLogLine_time
+  commentId: F:TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.time
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.time
+  nameWithType: ParserFeedbackLogLine.time
+- uid: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel
+  name: ParserfeedbackMessageLevel
+  href: api/TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.html
+  commentId: T:TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel
+  fullName: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel
+  nameWithType: ParserfeedbackMessageLevel
+- uid: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.error
+  name: error
+  href: api/TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.html#TimeSeriesAnalysis_Utility_ParserfeedbackMessageLevel_error
+  commentId: F:TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.error
+  fullName: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.error
+  nameWithType: ParserfeedbackMessageLevel.error
+- uid: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.fatal
+  name: fatal
+  href: api/TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.html#TimeSeriesAnalysis_Utility_ParserfeedbackMessageLevel_fatal
+  commentId: F:TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.fatal
+  fullName: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.fatal
+  nameWithType: ParserfeedbackMessageLevel.fatal
+- uid: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.info
+  name: info
+  href: api/TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.html#TimeSeriesAnalysis_Utility_ParserfeedbackMessageLevel_info
+  commentId: F:TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.info
+  fullName: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.info
+  nameWithType: ParserfeedbackMessageLevel.info
+- uid: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.warn
+  name: warn
+  href: api/TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.html#TimeSeriesAnalysis_Utility_ParserfeedbackMessageLevel_warn
+  commentId: F:TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.warn
+  fullName: TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.warn
+  nameWithType: ParserfeedbackMessageLevel.warn
+- uid: TimeSeriesAnalysis.Utility.Plot
   name: Plot
-  href: api/TimeSeriesAnalysis.Plot.html
-  commentId: T:TimeSeriesAnalysis.Plot
-  fullName: TimeSeriesAnalysis.Plot
+  href: api/TimeSeriesAnalysis.Utility.Plot.html
+  commentId: T:TimeSeriesAnalysis.Utility.Plot
+  fullName: TimeSeriesAnalysis.Utility.Plot
   nameWithType: Plot
-- uid: TimeSeriesAnalysis.Plot.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot.Five(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot.Five(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot.Five(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.Five(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot.Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot.Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot.Five*
+- uid: TimeSeriesAnalysis.Utility.Plot.Five*
   name: Five
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Five_
-  commentId: Overload:TimeSeriesAnalysis.Plot.Five
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Five_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot.Five
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot.Five
+  fullName: TimeSeriesAnalysis.Utility.Plot.Five
   nameWithType: Plot.Five
-- uid: TimeSeriesAnalysis.Plot.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot.Four(System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot.Four(System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot.Four(System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.Four(System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot.Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot.Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot.Four*
+- uid: TimeSeriesAnalysis.Utility.Plot.Four*
   name: Four
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Four_
-  commentId: Overload:TimeSeriesAnalysis.Plot.Four
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Four_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot.Four
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot.Four
+  fullName: TimeSeriesAnalysis.Utility.Plot.Four
   nameWithType: Plot.Four
-- uid: TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
+- uid: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
   name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_
-  commentId: M:TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
   name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
-  fullName: TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
-  fullName.vb: TimeSeriesAnalysis.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
+  fullName: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
   nameWithType: Plot.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
   nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
-- uid: TimeSeriesAnalysis.Plot.FromList*
+- uid: TimeSeriesAnalysis.Utility.Plot.FromList*
   name: FromList
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_FromList_
-  commentId: Overload:TimeSeriesAnalysis.Plot.FromList
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot.FromList
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot.FromList
+  fullName: TimeSeriesAnalysis.Utility.Plot.FromList
   nameWithType: Plot.FromList
-- uid: TimeSeriesAnalysis.Plot.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
   name: One(Double[], Int32, String, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_One_System_Double___System_Int32_System_String_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_One_System_Double___System_Int32_System_String_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
   name.vb: One(Double(), Int32, String, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot.One(System.Double[], System.Int32, System.String, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot.One(System.Double(), System.Int32, System.String, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot.One(System.Double[], System.Int32, System.String, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.One(System.Double(), System.Int32, System.String, System.String, System.DateTime)
   nameWithType: Plot.One(Double[], Int32, String, String, DateTime)
   nameWithType.vb: Plot.One(Double(), Int32, String, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot.One*
+- uid: TimeSeriesAnalysis.Utility.Plot.One*
   name: One
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_One_
-  commentId: Overload:TimeSeriesAnalysis.Plot.One
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_One_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot.One
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot.One
+  fullName: TimeSeriesAnalysis.Utility.Plot.One
   nameWithType: Plot.One
-- uid: TimeSeriesAnalysis.Plot.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot.Six(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot.Six(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot.Six(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.Six(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot.Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot.Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot.Six*
+- uid: TimeSeriesAnalysis.Utility.Plot.Six*
   name: Six
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Six_
-  commentId: Overload:TimeSeriesAnalysis.Plot.Six
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Six_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot.Six
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot.Six
+  fullName: TimeSeriesAnalysis.Utility.Plot.Six
   nameWithType: Plot.Six
-- uid: TimeSeriesAnalysis.Plot.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot.Three(System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot.Three(System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot.Three(System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.Three(System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot.Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot.Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot.Three*
+- uid: TimeSeriesAnalysis.Utility.Plot.Three*
   name: Three
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Three_
-  commentId: Overload:TimeSeriesAnalysis.Plot.Three
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Three_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot.Three
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot.Three
+  fullName: TimeSeriesAnalysis.Utility.Plot.Three
   nameWithType: Plot.Three
-- uid: TimeSeriesAnalysis.Plot.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot.Two(System.Double[], System.Double[], System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot.Two(System.Double(), System.Double(), System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot.Two(System.Double[], System.Double[], System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.Two(System.Double(), System.Double(), System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot.Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot.Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot.Two*
+- uid: TimeSeriesAnalysis.Utility.Plot.Two*
   name: Two
-  href: api/TimeSeriesAnalysis.Plot.html#TimeSeriesAnalysis_Plot_Two_
-  commentId: Overload:TimeSeriesAnalysis.Plot.Two
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_Two_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot.Two
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot.Two
+  fullName: TimeSeriesAnalysis.Utility.Plot.Two
   nameWithType: Plot.Two
-- uid: TimeSeriesAnalysis.Plot4Test
+- uid: TimeSeriesAnalysis.Utility.Plot4Test
   name: Plot4Test
-  href: api/TimeSeriesAnalysis.Plot4Test.html
-  commentId: T:TimeSeriesAnalysis.Plot4Test
-  fullName: TimeSeriesAnalysis.Plot4Test
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html
+  commentId: T:TimeSeriesAnalysis.Utility.Plot4Test
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test
   nameWithType: Plot4Test
-- uid: TimeSeriesAnalysis.Plot4Test.#ctor(System.Boolean,System.Int32)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.#ctor(System.Boolean,System.Int32)
   name: Plot4Test(Boolean, Int32)
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test__ctor_System_Boolean_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Plot4Test.#ctor(System.Boolean,System.Int32)
-  fullName: TimeSeriesAnalysis.Plot4Test.Plot4Test(System.Boolean, System.Int32)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test__ctor_System_Boolean_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.#ctor(System.Boolean,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Plot4Test(System.Boolean, System.Int32)
   nameWithType: Plot4Test.Plot4Test(Boolean, Int32)
-- uid: TimeSeriesAnalysis.Plot4Test.#ctor*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.#ctor*
   name: Plot4Test
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.#ctor
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Plot4Test
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Plot4Test
   nameWithType: Plot4Test.Plot4Test
-- uid: TimeSeriesAnalysis.Plot4Test.Disable
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Disable
   name: Disable()
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Disable
-  commentId: M:TimeSeriesAnalysis.Plot4Test.Disable
-  fullName: TimeSeriesAnalysis.Plot4Test.Disable()
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Disable
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Disable
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Disable()
   nameWithType: Plot4Test.Disable()
-- uid: TimeSeriesAnalysis.Plot4Test.Disable*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Disable*
   name: Disable
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Disable_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Disable
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Disable_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Disable
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Disable
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Disable
   nameWithType: Plot4Test.Disable
-- uid: TimeSeriesAnalysis.Plot4Test.Enable
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Enable
   name: Enable()
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Enable
-  commentId: M:TimeSeriesAnalysis.Plot4Test.Enable
-  fullName: TimeSeriesAnalysis.Plot4Test.Enable()
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Enable
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Enable
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Enable()
   nameWithType: Plot4Test.Enable()
-- uid: TimeSeriesAnalysis.Plot4Test.Enable*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Enable*
   name: Enable
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Enable_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Enable
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Enable_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Enable
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Enable
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Enable
   nameWithType: Plot4Test.Enable
-- uid: TimeSeriesAnalysis.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot4Test.Five(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot4Test.Five(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot4Test.Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot4Test.Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot4Test.Five*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Five*
   name: Five
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Five_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Five
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Five_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Five
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Five
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Five
   nameWithType: Plot4Test.Five
-- uid: TimeSeriesAnalysis.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot4Test.Four(System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot4Test.Four(System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot4Test.Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot4Test.Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot4Test.Four*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Four*
   name: Four
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Four_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Four
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Four_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Four
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Four
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Four
   nameWithType: Plot4Test.Four
-- uid: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade
   name: GetNumberOfPlotsMade()
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_GetNumberOfPlotsMade
-  commentId: M:TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
-  fullName: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade()
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_GetNumberOfPlotsMade
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade()
   nameWithType: Plot4Test.GetNumberOfPlotsMade()
-- uid: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade*
   name: GetNumberOfPlotsMade
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_GetNumberOfPlotsMade_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_GetNumberOfPlotsMade_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.GetNumberOfPlotsMade
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade
   nameWithType: Plot4Test.GetNumberOfPlotsMade
-- uid: TimeSeriesAnalysis.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
   name: One(Double[], Int32, String, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_One_System_Double___System_Int32_System_String_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_One_System_Double___System_Int32_System_String_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
   name.vb: One(Double(), Int32, String, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot4Test.One(System.Double[], System.Int32, System.String, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot4Test.One(System.Double(), System.Int32, System.String, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double[], System.Int32, System.String, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double(), System.Int32, System.String, System.String, System.DateTime)
   nameWithType: Plot4Test.One(Double[], Int32, String, String, DateTime)
   nameWithType.vb: Plot4Test.One(Double(), Int32, String, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot4Test.One*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.One*
   name: One
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_One_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.One
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_One_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.One
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.One
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.One
   nameWithType: Plot4Test.One
-- uid: TimeSeriesAnalysis.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot4Test.Six(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot4Test.Six(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot4Test.Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot4Test.Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot4Test.Six*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Six*
   name: Six
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Six_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Six
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Six_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Six
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Six
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Six
   nameWithType: Plot4Test.Six
-- uid: TimeSeriesAnalysis.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot4Test.Three(System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot4Test.Three(System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot4Test.Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot4Test.Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot4Test.Three*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Three*
   name: Three
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Three_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Three
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Three_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Three
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Three
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Three
   nameWithType: Plot4Test.Three
-- uid: TimeSeriesAnalysis.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name: Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
   name.vb: Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Plot4Test.Two(System.Double[], System.Double[], System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Plot4Test.Two(System.Double(), System.Double(), System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double[], System.Double[], System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double(), System.Double(), System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
   nameWithType: Plot4Test.Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
   nameWithType.vb: Plot4Test.Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Plot4Test.Two*
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.Two*
   name: Two
-  href: api/TimeSeriesAnalysis.Plot4Test.html#TimeSeriesAnalysis_Plot4Test_Two_
-  commentId: Overload:TimeSeriesAnalysis.Plot4Test.Two
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Two_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Two
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Plot4Test.Two
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Two
   nameWithType: Plot4Test.Two
-- uid: TimeSeriesAnalysis.SignificantDigits
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits
   name: SignificantDigits
-  href: api/TimeSeriesAnalysis.SignificantDigits.html
-  commentId: T:TimeSeriesAnalysis.SignificantDigits
-  fullName: TimeSeriesAnalysis.SignificantDigits
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html
+  commentId: T:TimeSeriesAnalysis.Utility.SignificantDigits
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits
   nameWithType: SignificantDigits
-- uid: TimeSeriesAnalysis.SignificantDigits.DecimalSeparator
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.DecimalSeparator
   name: DecimalSeparator
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_DecimalSeparator
-  commentId: F:TimeSeriesAnalysis.SignificantDigits.DecimalSeparator
-  fullName: TimeSeriesAnalysis.SignificantDigits.DecimalSeparator
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_DecimalSeparator
+  commentId: F:TimeSeriesAnalysis.Utility.SignificantDigits.DecimalSeparator
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.DecimalSeparator
   nameWithType: SignificantDigits.DecimalSeparator
-- uid: TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32)
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double,System.Int32)
   name: Format(Double, Int32)
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_Format_System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32)
-  fullName: TimeSeriesAnalysis.SignificantDigits.Format(System.Double, System.Int32)
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_Format_System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double, System.Int32)
   nameWithType: SignificantDigits.Format(Double, Int32)
-- uid: TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32,System.Int32@)
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double,System.Int32,System.Int32@)
   name: Format(Double, Int32, out Int32)
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_Format_System_Double_System_Int32_System_Int32__
-  commentId: M:TimeSeriesAnalysis.SignificantDigits.Format(System.Double,System.Int32,System.Int32@)
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_Format_System_Double_System_Int32_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double,System.Int32,System.Int32@)
   name.vb: Format(Double, Int32, ByRef Int32)
-  fullName: TimeSeriesAnalysis.SignificantDigits.Format(System.Double, System.Int32, out System.Int32)
-  fullName.vb: TimeSeriesAnalysis.SignificantDigits.Format(System.Double, System.Int32, ByRef System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double, System.Int32, out System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double, System.Int32, ByRef System.Int32)
   nameWithType: SignificantDigits.Format(Double, Int32, out Int32)
   nameWithType.vb: SignificantDigits.Format(Double, Int32, ByRef Int32)
-- uid: TimeSeriesAnalysis.SignificantDigits.Format*
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.Format*
   name: Format
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_Format_
-  commentId: Overload:TimeSeriesAnalysis.SignificantDigits.Format
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_Format_
+  commentId: Overload:TimeSeriesAnalysis.Utility.SignificantDigits.Format
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SignificantDigits.Format
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.Format
   nameWithType: SignificantDigits.Format
-- uid: TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double,System.Double@,System.Int32@)
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat(System.Double,System.Double@,System.Int32@)
   name: GetSciFormat(Double, out Double, out Int32)
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_GetSciFormat_System_Double_System_Double__System_Int32__
-  commentId: M:TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double,System.Double@,System.Int32@)
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_GetSciFormat_System_Double_System_Double__System_Int32__
+  commentId: M:TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat(System.Double,System.Double@,System.Int32@)
   name.vb: GetSciFormat(Double, ByRef Double, ByRef Int32)
-  fullName: TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double, out System.Double, out System.Int32)
-  fullName.vb: TimeSeriesAnalysis.SignificantDigits.GetSciFormat(System.Double, ByRef System.Double, ByRef System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat(System.Double, out System.Double, out System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat(System.Double, ByRef System.Double, ByRef System.Int32)
   nameWithType: SignificantDigits.GetSciFormat(Double, out Double, out Int32)
   nameWithType.vb: SignificantDigits.GetSciFormat(Double, ByRef Double, ByRef Int32)
-- uid: TimeSeriesAnalysis.SignificantDigits.GetSciFormat*
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat*
   name: GetSciFormat
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_GetSciFormat_
-  commentId: Overload:TimeSeriesAnalysis.SignificantDigits.GetSciFormat
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_GetSciFormat_
+  commentId: Overload:TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SignificantDigits.GetSciFormat
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat
   nameWithType: SignificantDigits.GetSciFormat
-- uid: TimeSeriesAnalysis.SignificantDigits.sciToDouble(System.Double,System.Int32)
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble(System.Double,System.Int32)
   name: sciToDouble(Double, Int32)
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_sciToDouble_System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.SignificantDigits.sciToDouble(System.Double,System.Int32)
-  fullName: TimeSeriesAnalysis.SignificantDigits.sciToDouble(System.Double, System.Int32)
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_sciToDouble_System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble(System.Double, System.Int32)
   nameWithType: SignificantDigits.sciToDouble(Double, Int32)
-- uid: TimeSeriesAnalysis.SignificantDigits.sciToDouble*
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble*
   name: sciToDouble
-  href: api/TimeSeriesAnalysis.SignificantDigits.html#TimeSeriesAnalysis_SignificantDigits_sciToDouble_
-  commentId: Overload:TimeSeriesAnalysis.SignificantDigits.sciToDouble
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_sciToDouble_
+  commentId: Overload:TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SignificantDigits.sciToDouble
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble
   nameWithType: SignificantDigits.sciToDouble
-- uid: TimeSeriesAnalysis.SortType
-  name: SortType
-  href: api/TimeSeriesAnalysis.SortType.html
-  commentId: T:TimeSeriesAnalysis.SortType
-  fullName: TimeSeriesAnalysis.SortType
-  nameWithType: SortType
-- uid: TimeSeriesAnalysis.SortType.Ascending
-  name: Ascending
-  href: api/TimeSeriesAnalysis.SortType.html#TimeSeriesAnalysis_SortType_Ascending
-  commentId: F:TimeSeriesAnalysis.SortType.Ascending
-  fullName: TimeSeriesAnalysis.SortType.Ascending
-  nameWithType: SortType.Ascending
-- uid: TimeSeriesAnalysis.SortType.Descending
-  name: Descending
-  href: api/TimeSeriesAnalysis.SortType.html#TimeSeriesAnalysis_SortType_Descending
-  commentId: F:TimeSeriesAnalysis.SortType.Descending
-  fullName: TimeSeriesAnalysis.SortType.Descending
-  nameWithType: SortType.Descending
-- uid: TimeSeriesAnalysis.StringToFileWriter
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter
   name: StringToFileWriter
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html
-  commentId: T:TimeSeriesAnalysis.StringToFileWriter
-  fullName: TimeSeriesAnalysis.StringToFileWriter
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html
+  commentId: T:TimeSeriesAnalysis.Utility.StringToFileWriter
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter
   nameWithType: StringToFileWriter
-- uid: TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String)
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor(System.String)
   name: StringToFileWriter(String)
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter__ctor_System_String_
-  commentId: M:TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String)
-  fullName: TimeSeriesAnalysis.StringToFileWriter.StringToFileWriter(System.String)
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter__ctor_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor(System.String)
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.StringToFileWriter(System.String)
   nameWithType: StringToFileWriter.StringToFileWriter(String)
-- uid: TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String,System.Text.Encoding)
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor(System.String,System.Text.Encoding)
   name: StringToFileWriter(String, Encoding)
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter__ctor_System_String_System_Text_Encoding_
-  commentId: M:TimeSeriesAnalysis.StringToFileWriter.#ctor(System.String,System.Text.Encoding)
-  fullName: TimeSeriesAnalysis.StringToFileWriter.StringToFileWriter(System.String, System.Text.Encoding)
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter__ctor_System_String_System_Text_Encoding_
+  commentId: M:TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor(System.String,System.Text.Encoding)
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.StringToFileWriter(System.String, System.Text.Encoding)
   nameWithType: StringToFileWriter.StringToFileWriter(String, Encoding)
-- uid: TimeSeriesAnalysis.StringToFileWriter.#ctor*
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor*
   name: StringToFileWriter
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter__ctor_
-  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.#ctor
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.StringToFileWriter.StringToFileWriter
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.StringToFileWriter
   nameWithType: StringToFileWriter.StringToFileWriter
-- uid: TimeSeriesAnalysis.StringToFileWriter.Close
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.Close
   name: Close()
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Close
-  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Close
-  fullName: TimeSeriesAnalysis.StringToFileWriter.Close()
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_Close
+  commentId: M:TimeSeriesAnalysis.Utility.StringToFileWriter.Close
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Close()
   nameWithType: StringToFileWriter.Close()
-- uid: TimeSeriesAnalysis.StringToFileWriter.Close*
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.Close*
   name: Close
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Close_
-  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.Close
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_Close_
+  commentId: Overload:TimeSeriesAnalysis.Utility.StringToFileWriter.Close
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.StringToFileWriter.Close
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Close
   nameWithType: StringToFileWriter.Close
-- uid: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure(System.String)
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure(System.String)
   name: CreateDirectoryStructure(String)
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_CreateDirectoryStructure_System_String_
-  commentId: M:TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure(System.String)
-  fullName: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure(System.String)
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_CreateDirectoryStructure_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure(System.String)
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure(System.String)
   nameWithType: StringToFileWriter.CreateDirectoryStructure(String)
-- uid: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure*
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure*
   name: CreateDirectoryStructure
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_CreateDirectoryStructure_
-  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_CreateDirectoryStructure_
+  commentId: Overload:TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.StringToFileWriter.CreateDirectoryStructure
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure
   nameWithType: StringToFileWriter.CreateDirectoryStructure
-- uid: TimeSeriesAnalysis.StringToFileWriter.Dispose
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose
   name: Dispose()
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Dispose
-  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Dispose
-  fullName: TimeSeriesAnalysis.StringToFileWriter.Dispose()
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_Dispose
+  commentId: M:TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose()
   nameWithType: StringToFileWriter.Dispose()
-- uid: TimeSeriesAnalysis.StringToFileWriter.Dispose(System.Boolean)
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose(System.Boolean)
   name: Dispose(Boolean)
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Dispose_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Dispose(System.Boolean)
-  fullName: TimeSeriesAnalysis.StringToFileWriter.Dispose(System.Boolean)
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_Dispose_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose(System.Boolean)
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose(System.Boolean)
   nameWithType: StringToFileWriter.Dispose(Boolean)
-- uid: TimeSeriesAnalysis.StringToFileWriter.Dispose*
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose*
   name: Dispose
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Dispose_
-  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.Dispose
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_Dispose_
+  commentId: Overload:TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.StringToFileWriter.Dispose
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose
   nameWithType: StringToFileWriter.Dispose
-- uid: TimeSeriesAnalysis.StringToFileWriter.Write(System.String)
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.Write(System.String)
   name: Write(String)
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Write_System_String_
-  commentId: M:TimeSeriesAnalysis.StringToFileWriter.Write(System.String)
-  fullName: TimeSeriesAnalysis.StringToFileWriter.Write(System.String)
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_Write_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.StringToFileWriter.Write(System.String)
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Write(System.String)
   nameWithType: StringToFileWriter.Write(String)
-- uid: TimeSeriesAnalysis.StringToFileWriter.Write*
+- uid: TimeSeriesAnalysis.Utility.StringToFileWriter.Write*
   name: Write
-  href: api/TimeSeriesAnalysis.StringToFileWriter.html#TimeSeriesAnalysis_StringToFileWriter_Write_
-  commentId: Overload:TimeSeriesAnalysis.StringToFileWriter.Write
+  href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html#TimeSeriesAnalysis_Utility_StringToFileWriter_Write_
+  commentId: Overload:TimeSeriesAnalysis.Utility.StringToFileWriter.Write
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.StringToFileWriter.Write
+  fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Write
   nameWithType: StringToFileWriter.Write
-- uid: TimeSeriesAnalysis.UnixTime
+- uid: TimeSeriesAnalysis.Utility.UnixTime
   name: UnixTime
-  href: api/TimeSeriesAnalysis.UnixTime.html
-  commentId: T:TimeSeriesAnalysis.UnixTime
-  fullName: TimeSeriesAnalysis.UnixTime
+  href: api/TimeSeriesAnalysis.Utility.UnixTime.html
+  commentId: T:TimeSeriesAnalysis.Utility.UnixTime
+  fullName: TimeSeriesAnalysis.Utility.UnixTime
   nameWithType: UnixTime
-- uid: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp(System.Double)
+- uid: TimeSeriesAnalysis.Utility.UnixTime.ConvertFromUnixTimestamp(System.Double)
   name: ConvertFromUnixTimestamp(Double)
-  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertFromUnixTimestamp_System_Double_
-  commentId: M:TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp(System.Double)
-  fullName: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp(System.Double)
+  href: api/TimeSeriesAnalysis.Utility.UnixTime.html#TimeSeriesAnalysis_Utility_UnixTime_ConvertFromUnixTimestamp_System_Double_
+  commentId: M:TimeSeriesAnalysis.Utility.UnixTime.ConvertFromUnixTimestamp(System.Double)
+  fullName: TimeSeriesAnalysis.Utility.UnixTime.ConvertFromUnixTimestamp(System.Double)
   nameWithType: UnixTime.ConvertFromUnixTimestamp(Double)
-- uid: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp*
+- uid: TimeSeriesAnalysis.Utility.UnixTime.ConvertFromUnixTimestamp*
   name: ConvertFromUnixTimestamp
-  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertFromUnixTimestamp_
-  commentId: Overload:TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp
+  href: api/TimeSeriesAnalysis.Utility.UnixTime.html#TimeSeriesAnalysis_Utility_UnixTime_ConvertFromUnixTimestamp_
+  commentId: Overload:TimeSeriesAnalysis.Utility.UnixTime.ConvertFromUnixTimestamp
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.UnixTime.ConvertFromUnixTimestamp
+  fullName: TimeSeriesAnalysis.Utility.UnixTime.ConvertFromUnixTimestamp
   nameWithType: UnixTime.ConvertFromUnixTimestamp
-- uid: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp(System.DateTime)
+- uid: TimeSeriesAnalysis.Utility.UnixTime.ConvertToUnixTimestamp(System.DateTime)
   name: ConvertToUnixTimestamp(DateTime)
-  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertToUnixTimestamp_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp(System.DateTime)
-  fullName: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp(System.DateTime)
+  href: api/TimeSeriesAnalysis.Utility.UnixTime.html#TimeSeriesAnalysis_Utility_UnixTime_ConvertToUnixTimestamp_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Utility.UnixTime.ConvertToUnixTimestamp(System.DateTime)
+  fullName: TimeSeriesAnalysis.Utility.UnixTime.ConvertToUnixTimestamp(System.DateTime)
   nameWithType: UnixTime.ConvertToUnixTimestamp(DateTime)
-- uid: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp*
+- uid: TimeSeriesAnalysis.Utility.UnixTime.ConvertToUnixTimestamp*
   name: ConvertToUnixTimestamp
-  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_ConvertToUnixTimestamp_
-  commentId: Overload:TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp
+  href: api/TimeSeriesAnalysis.Utility.UnixTime.html#TimeSeriesAnalysis_Utility_UnixTime_ConvertToUnixTimestamp_
+  commentId: Overload:TimeSeriesAnalysis.Utility.UnixTime.ConvertToUnixTimestamp
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.UnixTime.ConvertToUnixTimestamp
+  fullName: TimeSeriesAnalysis.Utility.UnixTime.ConvertToUnixTimestamp
   nameWithType: UnixTime.ConvertToUnixTimestamp
-- uid: TimeSeriesAnalysis.UnixTime.GetNowUnixTime
+- uid: TimeSeriesAnalysis.Utility.UnixTime.GetNowUnixTime
   name: GetNowUnixTime()
-  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_GetNowUnixTime
-  commentId: M:TimeSeriesAnalysis.UnixTime.GetNowUnixTime
-  fullName: TimeSeriesAnalysis.UnixTime.GetNowUnixTime()
+  href: api/TimeSeriesAnalysis.Utility.UnixTime.html#TimeSeriesAnalysis_Utility_UnixTime_GetNowUnixTime
+  commentId: M:TimeSeriesAnalysis.Utility.UnixTime.GetNowUnixTime
+  fullName: TimeSeriesAnalysis.Utility.UnixTime.GetNowUnixTime()
   nameWithType: UnixTime.GetNowUnixTime()
-- uid: TimeSeriesAnalysis.UnixTime.GetNowUnixTime*
+- uid: TimeSeriesAnalysis.Utility.UnixTime.GetNowUnixTime*
   name: GetNowUnixTime
-  href: api/TimeSeriesAnalysis.UnixTime.html#TimeSeriesAnalysis_UnixTime_GetNowUnixTime_
-  commentId: Overload:TimeSeriesAnalysis.UnixTime.GetNowUnixTime
+  href: api/TimeSeriesAnalysis.Utility.UnixTime.html#TimeSeriesAnalysis_Utility_UnixTime_GetNowUnixTime_
+  commentId: Overload:TimeSeriesAnalysis.Utility.UnixTime.GetNowUnixTime
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.UnixTime.GetNowUnixTime
+  fullName: TimeSeriesAnalysis.Utility.UnixTime.GetNowUnixTime
   nameWithType: UnixTime.GetNowUnixTime
 - uid: TimeSeriesAnalysis.Vec
   name: Vec
@@ -1499,15 +1439,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Diff
   nameWithType: Vec.Diff
-- uid: TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.FindValues)
-  name: FindValues(Double[], Double, FindValues)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_FindValues_
-  commentId: M:TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.FindValues)
-  name.vb: FindValues(Double(), Double, FindValues)
-  fullName: TimeSeriesAnalysis.Vec.FindValues(System.Double[], System.Double, TimeSeriesAnalysis.FindValues)
-  fullName.vb: TimeSeriesAnalysis.Vec.FindValues(System.Double(), System.Double, TimeSeriesAnalysis.FindValues)
-  nameWithType: Vec.FindValues(Double[], Double, FindValues)
-  nameWithType.vb: Vec.FindValues(Double(), Double, FindValues)
+- uid: TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)
+  name: FindValues(Double[], Double, VectorFindValueType)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_
+  commentId: M:TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)
+  name.vb: FindValues(Double(), Double, VectorFindValueType)
+  fullName: TimeSeriesAnalysis.Vec.FindValues(System.Double[], System.Double, TimeSeriesAnalysis.VectorFindValueType)
+  fullName.vb: TimeSeriesAnalysis.Vec.FindValues(System.Double(), System.Double, TimeSeriesAnalysis.VectorFindValueType)
+  nameWithType: Vec.FindValues(Double[], Double, VectorFindValueType)
+  nameWithType.vb: Vec.FindValues(Double(), Double, VectorFindValueType)
 - uid: TimeSeriesAnalysis.Vec.FindValues*
   name: FindValues
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_
@@ -1547,22 +1487,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.InverseIndices
   nameWithType: Vec.InverseIndices
-- uid: TimeSeriesAnalysis.Vec.IsAllM9999(System.Double[])
-  name: IsAllM9999(Double[])
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllM9999_System_Double___
-  commentId: M:TimeSeriesAnalysis.Vec.IsAllM9999(System.Double[])
-  name.vb: IsAllM9999(Double())
-  fullName: TimeSeriesAnalysis.Vec.IsAllM9999(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Vec.IsAllM9999(System.Double())
-  nameWithType: Vec.IsAllM9999(Double[])
-  nameWithType.vb: Vec.IsAllM9999(Double())
-- uid: TimeSeriesAnalysis.Vec.IsAllM9999*
-  name: IsAllM9999
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllM9999_
-  commentId: Overload:TimeSeriesAnalysis.Vec.IsAllM9999
+- uid: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
+  name: IsAllNaN(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
+  name.vb: IsAllNaN(Double())
+  fullName: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double())
+  nameWithType: Vec.IsAllNaN(Double[])
+  nameWithType.vb: Vec.IsAllNaN(Double())
+- uid: TimeSeriesAnalysis.Vec.IsAllNaN*
+  name: IsAllNaN
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_
+  commentId: Overload:TimeSeriesAnalysis.Vec.IsAllNaN
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Vec.IsAllM9999
-  nameWithType: Vec.IsAllM9999
+  fullName: TimeSeriesAnalysis.Vec.IsAllNaN
+  nameWithType: Vec.IsAllNaN
 - uid: TimeSeriesAnalysis.Vec.IsAllValue(System.Double[],System.Double)
   name: IsAllValue(Double[], Double)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllValue_System_Double___System_Double_
@@ -2099,24 +2039,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec(Of T).ReplaceIndWithValuesPrior
   nameWithType: Vec<T>.ReplaceIndWithValuesPrior
   nameWithType.vb: Vec(Of T).ReplaceIndWithValuesPrior
-- uid: TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType)
-  name: Sort(T[], SortType)
-  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort__0___TimeSeriesAnalysis_SortType_
-  commentId: M:TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType)
-  name.vb: Sort(T(), SortType)
-  fullName: TimeSeriesAnalysis.Vec<T>.Sort(T[], TimeSeriesAnalysis.SortType)
-  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Sort(T(), TimeSeriesAnalysis.SortType)
-  nameWithType: Vec<T>.Sort(T[], SortType)
-  nameWithType.vb: Vec(Of T).Sort(T(), SortType)
-- uid: TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType,System.Int32[]@)
-  name: Sort(T[], SortType, out Int32[])
-  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort__0___TimeSeriesAnalysis_SortType_System_Int32____
-  commentId: M:TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.SortType,System.Int32[]@)
-  name.vb: Sort(T(), SortType, ByRef Int32())
-  fullName: TimeSeriesAnalysis.Vec<T>.Sort(T[], TimeSeriesAnalysis.SortType, out System.Int32[])
-  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Sort(T(), TimeSeriesAnalysis.SortType, ByRef System.Int32())
-  nameWithType: Vec<T>.Sort(T[], SortType, out Int32[])
-  nameWithType.vb: Vec(Of T).Sort(T(), SortType, ByRef Int32())
+- uid: TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.VectorSortType)
+  name: Sort(T[], VectorSortType)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort__0___TimeSeriesAnalysis_VectorSortType_
+  commentId: M:TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.VectorSortType)
+  name.vb: Sort(T(), VectorSortType)
+  fullName: TimeSeriesAnalysis.Vec<T>.Sort(T[], TimeSeriesAnalysis.VectorSortType)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Sort(T(), TimeSeriesAnalysis.VectorSortType)
+  nameWithType: Vec<T>.Sort(T[], VectorSortType)
+  nameWithType.vb: Vec(Of T).Sort(T(), VectorSortType)
+- uid: TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.VectorSortType,System.Int32[]@)
+  name: Sort(T[], VectorSortType, out Int32[])
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort__0___TimeSeriesAnalysis_VectorSortType_System_Int32____
+  commentId: M:TimeSeriesAnalysis.Vec`1.Sort(`0[],TimeSeriesAnalysis.VectorSortType,System.Int32[]@)
+  name.vb: Sort(T(), VectorSortType, ByRef Int32())
+  fullName: TimeSeriesAnalysis.Vec<T>.Sort(T[], TimeSeriesAnalysis.VectorSortType, out System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Sort(T(), TimeSeriesAnalysis.VectorSortType, ByRef System.Int32())
+  nameWithType: Vec<T>.Sort(T[], VectorSortType, out Int32[])
+  nameWithType.vb: Vec(Of T).Sort(T(), VectorSortType, ByRef Int32())
 - uid: TimeSeriesAnalysis.Vec`1.Sort*
   name: Sort
   href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Sort_
@@ -2214,3 +2154,69 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.VecExtensionMethods.ToString
   nameWithType: VecExtensionMethods.ToString
+- uid: TimeSeriesAnalysis.VectorFindValueType
+  name: VectorFindValueType
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html
+  commentId: T:TimeSeriesAnalysis.VectorFindValueType
+  fullName: TimeSeriesAnalysis.VectorFindValueType
+  nameWithType: VectorFindValueType
+- uid: TimeSeriesAnalysis.VectorFindValueType.BiggerOrEqual
+  name: BiggerOrEqual
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_BiggerOrEqual
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.BiggerOrEqual
+  fullName: TimeSeriesAnalysis.VectorFindValueType.BiggerOrEqual
+  nameWithType: VectorFindValueType.BiggerOrEqual
+- uid: TimeSeriesAnalysis.VectorFindValueType.BiggerThan
+  name: BiggerThan
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_BiggerThan
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.BiggerThan
+  fullName: TimeSeriesAnalysis.VectorFindValueType.BiggerThan
+  nameWithType: VectorFindValueType.BiggerThan
+- uid: TimeSeriesAnalysis.VectorFindValueType.Equal
+  name: Equal
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_Equal
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.Equal
+  fullName: TimeSeriesAnalysis.VectorFindValueType.Equal
+  nameWithType: VectorFindValueType.Equal
+- uid: TimeSeriesAnalysis.VectorFindValueType.NaN
+  name: NaN
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_NaN
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.NaN
+  fullName: TimeSeriesAnalysis.VectorFindValueType.NaN
+  nameWithType: VectorFindValueType.NaN
+- uid: TimeSeriesAnalysis.VectorFindValueType.NotNaN
+  name: NotNaN
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_NotNaN
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.NotNaN
+  fullName: TimeSeriesAnalysis.VectorFindValueType.NotNaN
+  nameWithType: VectorFindValueType.NotNaN
+- uid: TimeSeriesAnalysis.VectorFindValueType.SmallerOrEqual
+  name: SmallerOrEqual
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_SmallerOrEqual
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.SmallerOrEqual
+  fullName: TimeSeriesAnalysis.VectorFindValueType.SmallerOrEqual
+  nameWithType: VectorFindValueType.SmallerOrEqual
+- uid: TimeSeriesAnalysis.VectorFindValueType.SmallerThan
+  name: SmallerThan
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_SmallerThan
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.SmallerThan
+  fullName: TimeSeriesAnalysis.VectorFindValueType.SmallerThan
+  nameWithType: VectorFindValueType.SmallerThan
+- uid: TimeSeriesAnalysis.VectorSortType
+  name: VectorSortType
+  href: api/TimeSeriesAnalysis.VectorSortType.html
+  commentId: T:TimeSeriesAnalysis.VectorSortType
+  fullName: TimeSeriesAnalysis.VectorSortType
+  nameWithType: VectorSortType
+- uid: TimeSeriesAnalysis.VectorSortType.Ascending
+  name: Ascending
+  href: api/TimeSeriesAnalysis.VectorSortType.html#TimeSeriesAnalysis_VectorSortType_Ascending
+  commentId: F:TimeSeriesAnalysis.VectorSortType.Ascending
+  fullName: TimeSeriesAnalysis.VectorSortType.Ascending
+  nameWithType: VectorSortType.Ascending
+- uid: TimeSeriesAnalysis.VectorSortType.Descending
+  name: Descending
+  href: api/TimeSeriesAnalysis.VectorSortType.html#TimeSeriesAnalysis_VectorSortType_Descending
+  commentId: F:TimeSeriesAnalysis.VectorSortType.Descending
+  fullName: TimeSeriesAnalysis.VectorSortType.Descending
+  nameWithType: VectorSortType.Descending
