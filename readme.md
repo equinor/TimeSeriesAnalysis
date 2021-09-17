@@ -4,8 +4,9 @@
 ## Why?
 Because the final product of many enterprise time-series applications is *required* to be implemented in .NET, why not try to make development as streamlined as possible?
 Time-series analysis it typically done in languages like *Python*,*R* or *Matlab*, because high-level **toolboxes** support time-series analysis in these languages.
-Tasks like loading data from a file, fitting a model to data or plotting time-series can be accomplished in a single line of code in .NET with the tools in this class library.
-That may even mean that early research/prototyping/data analysis can *start* in .NET, which removes the step re-writing prototype code into .NET.  
+Tasks like loading data from a file, fitting a model to data or plotting time-series can be accomplished in a single line of code in .NET with the tools in this class library, just as you would do with one of those scripted languages.
+
+That may even mean that early research/prototyping/data analysis can *start* in .NET, which removes the step re-writing prototype code into .NET.
 
 ## But honestly, you know you can just do time-series analysis with standard statistical langauges *xyz*, right? 
 
