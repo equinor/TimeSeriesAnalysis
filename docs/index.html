@@ -73,23 +73,23 @@
 <h1 id="timeseriesanalysis-net-class-library">TimeSeriesAnalysis .NET class library</h1>
 
 <h2 id="at-a-glance">At a glance</h2>
-<p><em>TimeSeriesAnalysis</em> is a .NET class library for making it easy to work with time series in .NET language (mostly C#).
-It handles</p>
+<p><em>TimeSeriesAnalysis</em> is a .NET class library for making it easy to work with time series in <em>.NET</em> framework (written in <em>C#</em>).
+It handles typical tasks related to time-series analysis such as</p>
 <ul>
-<li>loading data from CSV</li>
+<li>loading time-series data from CSV-files</li>
 <li>manipulating time-series data as arrays and vectors</li>
-<li>filtering</li>
-<li>doing linear regression</li>
-<li>plotting times-series</li>
+<li>filtering out values by range, detecting and removing bad values</li>
+<li>fitting models to sets on time-series data(by linear regression)</li>
+<li>plotting times-series (in a browser window)</li>
 </ul>
-<p>The aim of this library is to make the process of working with time series as easy as possible,
-and the resulting workflow should be comparable to working in Matlab, Python or R.</p>
+<p><strong>The aim of this library is to make the process of working with time series as easy as possible,
+and the resulting workflow should be comparable to working in <em>Matlab</em>, <em>Python</em> or <em>R</em>.</strong></p>
 <p>This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform
 operations like adding, subtracting, multiplying with vectors and matrices, as well as typicall pre-processing tasks like selecting
 subsets of a larger dataset, removing spurious values, min/max range limits etc.</p>
-<p>The result is a that tasks that you would normally do in for instance Matlab due to the perceived simplicity offered by the language, can now be
-accomplished in about the same amount of code in C#/.NET. So the resulting code is in many was just as simple.</p>
-<p>The benefit of doing this in C#/.NET</p>
+<p>The result is a that tasks that you would normally do in for instance <em>Matlab</em> due to the perceived simplicity offered by the language, can now be
+accomplished in about the same amount of code in <em>C#/.NET</em>. So the resulting code is in many was just as simple.</p>
+<p>The benefit of doing this in <em>C#/.NET</em></p>
 <ul>
 <li>that you get the benefits of a compiled language,prototype code is written in a lanugage suitable for implementation, (unlike <em>Matlab</em> scripts). That means you avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses.</li>
 <li>the resulting code does not required a paid license to run, anybody can download a free copy of <em>VS Code</em> and re-compile the code,
@@ -97,8 +97,13 @@ without requiring a working license server, a correct number of licenses or enou
 <li>you can easily extend your code to for instance run in paralell using the <code>paralell.for</code> functionaliy freely available in .NET, wheres this functionality
 may require a very expensive toolbox in <em>Matlab</em> (<em>Paralell processing toolbox</em>).</li>
 </ul>
+<div class="NOTE">
+<h5>Note</h5>
 <p>Originally this code has been written with control-engineering in mind, as control engineers typically
-prefer compiled languages such as C# for code that is to be integrated in the control system.</p>
+prefer compiled languages such as C# for code that is to be <em>integrated in the control system</em>.
+Control systems are usually written in compiled languages in the C/C++/C# family, and the same is also true of other
+enterprise commercial software that deals heavily with time-series, such as dynamic simulators or condition-based monitoring systems.</p>
+</div>
 <h2 id="plotting-capabilities">Plotting capabilities</h2>
 <p>Plotting supports</p>
 <ul>
@@ -110,17 +115,25 @@ prefer compiled languages such as C# for code that is to be integrated in the co
 <li>ability to hover over trends to inspect values</li>
 <li>currently up to six trends can be plotted on a page in total(this can be increased if there is interest)</li>
 </ul>
-<p>The plotting leverages the javascript framework plot.ly. Some javascript extensions have been made to this toolbox to allow
+<p>The plotting leverages the javascript framework <a href="https://plotly.com/javascript/">plot.ly</a>. Some javascript extensions have been made to this toolbox to allow
 time-series to seemlessly be exported from your .NET code to the browser.</p>
+<p><a href="images/example_plotting.png">Example plot</a></p>
 <h2 id="install-instructions-in-browser-time-series-plotting">Install instructions: in-browser time-series plotting</h2>
-<p>The plotting in this package is based on the javacsript plotting library plot.ly., a copy of which is included.</p>
+<p>The plotting in this package is based on the javacsript plotting library plot.ly., a copy of the bundled minified javascript plot.ly package
+<code>plotly.min.js</code> is included for convenience, but other versions can also be downdloaded from the vendor site.</p>
 <p>The repo includes a folder &quot;www\plotly&quot; and for plotting to work you need to run an http-server such as Internet Information Services that
 in your broser serves up a folder on your computer as &quot;localhost&quot;.</p>
-<p>Copy the folder &quot;plotly&quot; into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
+<p>Copy the folder <code>plotly</code> into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
 such as &quot;c:\inetpub\plotly&quot; if  &quot;c:\inetpub&quot; is the folder that IIS is serving.</p>
-<p>Note that this repo includes some custom javascript code which wraps some plot.ly timeseries plotting functionality, so that a &quot;Plot(Var1)&quot; in C# can trigger
+<p>Note that this repo includes some custom javascript code which wraps some <code>plot.ly</code> timeseries plotting functionality, so that a &quot;Plot(Var1)&quot; in C# can trigger
 a browser to open with a time-series plot of &quot;Var1&quot;.</p>
 <p>Plotting works by launching a browser(chrome) and directing it to <code>http://localhost/plotly/index.html</code>, but all the low-level details are handled by the Plot class for you.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>You can use any http-server you like to serve up the javascript plotting files, and these files can be served from a
+http-server that you may already be running. Node.js for instance could be used in stead of IIS, many other alternatives exist.
+If you do not already run a http-server locally on your windows-machine,IIS may be easy to start with as it is bundled with your operating system.</p>
+</div>
 <h2 id="a-typical-use-case">A typical use-case</h2>
 <ul>
 <li>You may like to load data from a file into a 2D array for doubles and strings and an array of table headers using <code>CSV.loadDataFromCSV</code>.</li>

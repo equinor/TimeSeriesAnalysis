@@ -105,13 +105,13 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Filter\LowPass.cs" />
-    <Compile Include="Filter\MovingAvg.cs" />
-    <Compile Include="IO\CSV.cs" />
-    <Compile Include="IO\StringToFileWriter.cs" />
-    <Compile Include="IO\UnixTime.cs" />
-    <Compile Include="Plot\Plot.cs" />
-    <Compile Include="Plot\Plot4Test.cs" />
+    <Compile Include="Utility\LowPass.cs" />
+    <Compile Include="Utility\MovingAvg.cs" />
+    <Compile Include="Utility\CSV.cs" />
+    <Compile Include="Utility\StringToFileWriter.cs" />
+    <Compile Include="Utility\UnixTime.cs" />
+    <Compile Include="Utility\Plot.cs" />
+    <Compile Include="Utility\Plot4Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MatrixUnitTests.cs" />
     <Compile Include="Tests\PlotUnitTests.cs" />
@@ -121,14 +121,14 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Tests\VecUnitTests.cs" />
     <Compile Include="Utility\ParserFeedback.cs" />
     <Compile Include="Utility\SignificantDigit.cs" />
-    <Compile Include="Vector\Array2D.cs" />
-    <Compile Include="Vector\Array2DGeneric.cs" />
-    <Compile Include="Vector\Array2DExtensionMethods.cs" />
-    <Compile Include="Vector\Matrix.cs" />
-    <Compile Include="Vector\Vec.cs" />
-    <Compile Include="Vector\VecEnums.cs" />
-    <Compile Include="Vector\VecExtensionMethods.cs" />
-    <Compile Include="Vector\VecGeneric.cs" />
+    <Compile Include="TimeSeriesAnalysis\Array2D.cs" />
+    <Compile Include="TimeSeriesAnalysis\Array2DGeneric.cs" />
+    <Compile Include="TimeSeriesAnalysis\Array2DExtensionMethods.cs" />
+    <Compile Include="TimeSeriesAnalysis\Matrix.cs" />
+    <Compile Include="TimeSeriesAnalysis\Vec.cs" />
+    <Compile Include="TimeSeriesAnalysis\VecEnums.cs" />
+    <Compile Include="TimeSeriesAnalysis\VecExtensionMethods.cs" />
+    <Compile Include="TimeSeriesAnalysis\VecGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nuget.config" />

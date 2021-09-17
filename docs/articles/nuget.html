@@ -140,6 +140,10 @@ Also add the the url to the repository and some other info such as shown below:<
 <li><p>notice that you need to iterate the version number in your .csproj file every time you push a new version of the package.</p>
 </li>
 </ul>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Make sure that you do not check-in the nuget.config file you create, as it contains a <em>secret</em> token. Add nuget.config to your git ignore file.</p>
+</div>
 <h1 id="nuget-package-download-how-to">Nuget package download how-to</h1>
 <p>To use this nuget pacakge, you need to incldue the nuget.config file above in the solution that intends to pull down the package. You can then select github as
 the package source in Visual Studio &quot;Manage Nuget packages for Solution&quot;.</p>

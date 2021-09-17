@@ -330,7 +330,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/nuget.html",
-          "hash": "M+6XAUseDH1q3JvddCbFd0uxsB1ErqBbe3/+Wx2qkY4="
+          "hash": "8Y99RHHCrWXoXIh5cE/BhJgVGGvuSjLux+5DLo4s2Pg="
         }
       },
       "is_incremental": false,
@@ -349,12 +349,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "Ygm59SEHDsSdwrlh9Uih7E09yqd2nr9lU7jIZBLZgx4="
+          "hash": "O+9lY1mHa+uqIlmKn1qJmChz8Isj3aznzivSv4Q1s6g="
         }
       },
       "is_incremental": false,
@@ -407,7 +410,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 22,
-          "skipped_file_count": 20
+          "skipped_file_count": 13
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

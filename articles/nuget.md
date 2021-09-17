@@ -62,6 +62,10 @@ Also add the the url to the repository and some other info such as shown below:
 * notice that you need to iterate the version number in your .csproj file every time you push a new version of the package.
 
 
+> [!Warning]
+> Make sure that you do not check-in the nuget.config file you create, as it contains a *secret* token. Add nuget.config to your git ignore file.
+
+
 Nuget package download how-to
 =========================================
 
