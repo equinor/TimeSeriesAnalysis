@@ -5,11 +5,11 @@
 
 *TimeSeriesAnalysis* is a .NET class library for making it easy to work with time series in *.NET* framework (written in *C#*). 
 It handles typical tasks related to time-series analysis such as
-- loading time-series data from CSV-files
-- manipulating time-series data as arrays and vectors
+- loading time-series data from CSV-files,
+- manipulating time-series data as arrays and vectors,
 - filtering out values by range, detecting and removing bad values
-- fitting models to sets on time-series data(by linear regression)
-- plotting times-series (in a browser window)
+- fitting models to sets on time-series data(by linear regression), and
+- plotting times-series (in a browser window).
 
 **The aim of this library is to make the process of working with time series as easy as possible, 
 and the resulting workflow should be comparable to working in *Matlab*, *Python* or *R*.**
@@ -51,7 +51,7 @@ time-series to seemlessly be exported from your .NET code to the browser.
 
 Consider the unit-test ``PlotUnitTests.SubplotPositionWorksOk()``:
 
-The code 
+The code below is used to generate four "vectors", arrays of doubles, with a step change in each.
 ```
 public void SubplotPositionWorksOk()
 {
@@ -65,16 +65,20 @@ public void SubplotPositionWorksOk()
 		new DateTime(2020,1,1, 0,0,0), "Test_SubplotPositionWorksOk");
 }
 ```
+> [!Note]
+> Note how the ``Vec.Fill()`` an ``Vec.Concat`` of ``TimeSeriesAnalysis`` package is used in this example to create two vectors of a given
+> length and value and concatenate them in a single line of code.
 
-Generates the following interactive plot in a Chrome-window(this window pops up automatically):
+The above code generates the following interactive plot in a Chrome-window(this window pops up automatically):
 
 ![Example plot](articles/images/example_plotting.png)
 
 This plot has two *subplots*(one top, one buttom). Each subplot has both a left and a right axis: 
 the top subplot has axes ``y1`` and ``y2`` and the bottom subplot has axes ``y3`` and ``y4``. 
 
-By using the top left menu, it is possible to zoom and drag the plots, and the two subplots are *linked*,
+By using the top left menu, it is possible to *zoom* and *drag* the plots, and the two subplots are *linked*,
 meaning when you zoom in one of them, the x-axes of the other plot will zoom as well. 
+Moving the cursor over each plot allows the values to be browsed by an interactive ``scooter``.
 
 By clicking on the variable names in the *legend* on the top left, it is possible to disable plotting selected variables.
 

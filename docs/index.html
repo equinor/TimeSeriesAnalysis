@@ -76,11 +76,11 @@
 <p><em>TimeSeriesAnalysis</em> is a .NET class library for making it easy to work with time series in <em>.NET</em> framework (written in <em>C#</em>).
 It handles typical tasks related to time-series analysis such as</p>
 <ul>
-<li>loading time-series data from CSV-files</li>
-<li>manipulating time-series data as arrays and vectors</li>
+<li>loading time-series data from CSV-files,</li>
+<li>manipulating time-series data as arrays and vectors,</li>
 <li>filtering out values by range, detecting and removing bad values</li>
-<li>fitting models to sets on time-series data(by linear regression)</li>
-<li>plotting times-series (in a browser window)</li>
+<li>fitting models to sets on time-series data(by linear regression), and</li>
+<li>plotting times-series (in a browser window).</li>
 </ul>
 <p><strong>The aim of this library is to make the process of working with time series as easy as possible,
 and the resulting workflow should be comparable to working in <em>Matlab</em>, <em>Python</em> or <em>R</em>.</strong></p>
@@ -118,7 +118,7 @@ enterprise commercial software that deals heavily with time-series, such as dyna
 <p>The plotting leverages the javascript framework <a href="https://plotly.com/javascript/">plot.ly</a>. Some javascript extensions have been made to this toolbox to allow
 time-series to seemlessly be exported from your .NET code to the browser.</p>
 <p>Consider the unit-test <code>PlotUnitTests.SubplotPositionWorksOk()</code>:</p>
-<p>The code</p>
+<p>The code below is used to generate four &quot;vectors&quot;, arrays of doubles, with a step change in each.</p>
 <pre><code>public void SubplotPositionWorksOk()
 {
    double[] input2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 20), Vec&lt;double&gt;.Fill(2, 20));
@@ -131,12 +131,18 @@ time-series to seemlessly be exported from your .NET code to the browser.</p>
 		new DateTime(2020,1,1, 0,0,0), &quot;Test_SubplotPositionWorksOk&quot;);
 }
 </code></pre>
-<p>Generates the following interactive plot in a Chrome-window(this window pops up automatically):</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Note how the <code>Vec.Fill()</code> an <code>Vec.Concat</code> of <code>TimeSeriesAnalysis</code> package is used in this example to create two vectors of a given
+length and value and concatenate them in a single line of code.</p>
+</div>
+<p>The above code generates the following interactive plot in a Chrome-window(this window pops up automatically):</p>
 <p><img src="articles/images/example_plotting.png" alt="Example plot"></p>
 <p>This plot has two <em>subplots</em>(one top, one buttom). Each subplot has both a left and a right axis:
 the top subplot has axes <code>y1</code> and <code>y2</code> and the bottom subplot has axes <code>y3</code> and <code>y4</code>.</p>
-<p>By using the top left menu, it is possible to zoom and drag the plots, and the two subplots are <em>linked</em>,
-meaning when you zoom in one of them, the x-axes of the other plot will zoom as well.</p>
+<p>By using the top left menu, it is possible to <em>zoom</em> and <em>drag</em> the plots, and the two subplots are <em>linked</em>,
+meaning when you zoom in one of them, the x-axes of the other plot will zoom as well.
+Moving the cursor over each plot allows the values to be browsed by an interactive <code>scooter</code>.</p>
 <p>By clicking on the variable names in the <em>legend</em> on the top left, it is possible to disable plotting selected variables.</p>
 <div class="NOTE">
 <h5>Note</h5>
