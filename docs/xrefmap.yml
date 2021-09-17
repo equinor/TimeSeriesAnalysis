@@ -7,6 +7,28 @@ references:
   commentId: N:TimeSeriesAnalysis
   fullName: TimeSeriesAnalysis
   nameWithType: TimeSeriesAnalysis
+- uid: TimeSeriesAnalysis.Array2D
+  name: Array2D
+  href: api/TimeSeriesAnalysis.Array2D.html
+  commentId: T:TimeSeriesAnalysis.Array2D
+  fullName: TimeSeriesAnalysis.Array2D
+  nameWithType: Array2D
+- uid: TimeSeriesAnalysis.Array2D.GetColumnParsedAsDateTime(System.String[0:,0:],System.Int32,System.String)
+  name: GetColumnParsedAsDateTime(String[,], Int32, String)
+  href: api/TimeSeriesAnalysis.Array2D.html#TimeSeriesAnalysis_Array2D_GetColumnParsedAsDateTime_System_String_0__0___System_Int32_System_String_
+  commentId: M:TimeSeriesAnalysis.Array2D.GetColumnParsedAsDateTime(System.String[0:,0:],System.Int32,System.String)
+  name.vb: GetColumnParsedAsDateTime(String(,), Int32, String)
+  fullName: TimeSeriesAnalysis.Array2D.GetColumnParsedAsDateTime(System.String[,], System.Int32, System.String)
+  fullName.vb: TimeSeriesAnalysis.Array2D.GetColumnParsedAsDateTime(System.String(,), System.Int32, System.String)
+  nameWithType: Array2D.GetColumnParsedAsDateTime(String[,], Int32, String)
+  nameWithType.vb: Array2D.GetColumnParsedAsDateTime(String(,), Int32, String)
+- uid: TimeSeriesAnalysis.Array2D.GetColumnParsedAsDateTime*
+  name: GetColumnParsedAsDateTime
+  href: api/TimeSeriesAnalysis.Array2D.html#TimeSeriesAnalysis_Array2D_GetColumnParsedAsDateTime_
+  commentId: Overload:TimeSeriesAnalysis.Array2D.GetColumnParsedAsDateTime
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D.GetColumnParsedAsDateTime
+  nameWithType: Array2D.GetColumnParsedAsDateTime
 - uid: TimeSeriesAnalysis.Array2D`1
   name: Array2D<T>
   href: api/TimeSeriesAnalysis.Array2D-1.html

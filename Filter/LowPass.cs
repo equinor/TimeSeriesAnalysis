@@ -10,9 +10,6 @@ namespace TimeSeriesAnalysis.Utility
     ///<summary>
     /// Numerical low-pass filtering of time-series
     ///</summary>
-
-
-
     public class LowPass
     {
         private double timeBase_s;

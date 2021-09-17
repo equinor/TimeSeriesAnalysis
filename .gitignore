@@ -9,3 +9,5 @@ new 1.txt
 api/
 log.txt
 unittest.txt
+_site/articles/intro.html
+_site/articles/toc.html

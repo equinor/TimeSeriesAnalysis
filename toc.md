@@ -1,2 +1,3 @@
-# [Introduction](readme.html)
-# [API documentation](\api\TimeSeriesAnalysis.html)
+# [Introduction](index.html)
+# [Articles](./articles/)
+# [API documentation](./api/TimeSeriesAnalysis.html)

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | TimeSeriesAnalysis reference documentation </title>
+    <title>TimeSeriesAnalysis .NET class library | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="TimeSeriesAnalysis .NET class library | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="favicon.ico">
@@ -70,7 +70,74 @@
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+<h1 id="timeseriesanalysis-net-class-library">TimeSeriesAnalysis .NET class library</h1>
 
+<h2 id="at-a-glance">At a glance</h2>
+<p><em>TimeSeriesAnalysis</em> is a .NET class library for making it easy to work with time series in .NET language (mostly C#).
+It handles</p>
+<ul>
+<li>loading data from CSV</li>
+<li>manipulating time-series data as arrays and vectors</li>
+<li>filtering</li>
+<li>doing linear regression</li>
+<li>plotting times-series</li>
+</ul>
+<p>The aim of this library is to make the process of working with time series as easy as possible,
+and the resulting workflow should be comparable to working in Matlab, Python or R.</p>
+<p>This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform
+operations like adding, subtracting, multiplying with vectors and matrices, as well as typicall pre-processing tasks like selecting
+subsets of a larger dataset, removing spurious values, min/max range limits etc.</p>
+<p>The result is a that tasks that you would normally do in for instance Matlab due to the perceived simplicity offered by the language, can now be
+accomplished in about the same amount of code in C#/.NET. So the resulting code is in many was just as simple.</p>
+<p>The benefit of doing this in C#/.NET</p>
+<ul>
+<li>that you get the benefits of a compiled language,prototype code is written in a lanugage suitable for implementation, (unlike <em>Matlab</em> scripts). That means you avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses.</li>
+<li>the resulting code does not required a paid license to run, anybody can download a free copy of <em>VS Code</em> and re-compile the code,
+without requiring a working license server, a correct number of licenses or enough licenses.</li>
+<li>you can easily extend your code to for instance run in paralell using the <code>paralell.for</code> functionaliy freely available in .NET, wheres this functionality
+may require a very expensive toolbox in <em>Matlab</em> (<em>Paralell processing toolbox</em>).</li>
+</ul>
+<p>Originally this code has been written with control-engineering in mind, as control engineers typically
+prefer compiled languages such as C# for code that is to be integrated in the control system.</p>
+<h2 id="plotting-capabilities">Plotting capabilities</h2>
+<p>Plotting supports</p>
+<ul>
+<li>one or two subplots(stacked vertically)</li>
+<li>one or two y-axes on either subplot</li>
+<li>support for zooming in the plot,</li>
+<li>subplots x-axes are linked when zooming</li>
+<li>ability to turn trends on/off, which will cause auto-zoom to update</li>
+<li>ability to hover over trends to inspect values</li>
+<li>currently up to six trends can be plotted on a page in total(this can be increased if there is interest)</li>
+</ul>
+<p>The plotting leverages the javascript framework plot.ly. Some javascript extensions have been made to this toolbox to allow
+time-series to seemlessly be exported from your .NET code to the browser.</p>
+<h2 id="install-instructions-in-browser-time-series-plotting">Install instructions: in-browser time-series plotting</h2>
+<p>The plotting in this package is based on the javacsript plotting library plot.ly., a copy of which is included.</p>
+<p>The repo includes a folder &quot;www\plotly&quot; and for plotting to work you need to run an http-server such as Internet Information Services that
+in your broser serves up a folder on your computer as &quot;localhost&quot;.</p>
+<p>Copy the folder &quot;plotly&quot; into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
+such as &quot;c:\inetpub\plotly&quot; if  &quot;c:\inetpub&quot; is the folder that IIS is serving.</p>
+<p>Note that this repo includes some custom javascript code which wraps some plot.ly timeseries plotting functionality, so that a &quot;Plot(Var1)&quot; in C# can trigger
+a browser to open with a time-series plot of &quot;Var1&quot;.</p>
+<p>Plotting works by launching a browser(chrome) and directing it to <code>http://localhost/plotly/index.html</code>, but all the low-level details are handled by the Plot class for you.</p>
+<h2 id="a-typical-use-case">A typical use-case</h2>
+<ul>
+<li>You may like to load data from a file into a 2D array for doubles and strings and an array of table headers using <code>CSV.loadDataFromCSV</code>.</li>
+<li>the dates in the array can be parsed using <code>Array2D.GetColumnParsedAsDateTime()</code> (useful to find data sample time, and data time span, and selecting a subset timespan for analysis)</li>
+<li>use <code>Array2D.IndexOf()</code> on the header array to find the indices of variables in the CSV-file,</li>
+<li>use <code>Vec.GetColumn()</code> or <code>Vec.GetColumns()</code> to load data into 1D vectors or 2D arrays</li>
+<li>use <code>Vec.GetRowsAfterIndex()</code> to cut off a chunk of data the data</li>
+<li>use <code>Vec.FindValues()</code> to find values which are nan or out-of-range which are to be ignored in regression</li>
+<li>use <code>Matrix.Transpose()</code> to transpose matrix before regression as needed</li>
+<li>use <code>Vec.ReplaceIndWithValuesPrior()</code> to replace bad values with the prior value, this makes for nicer plots.</li>
+<li>if you want to multiply, divide, add or subtract or use min, max on the arrays retreived from the csv file, use <code>Vec.Add()</code>, <code>Vec.Sub</code>(), <code>Vec.Mult()</code> or <code>Vec.Div()</code></li>
+<li>you can do the above on rows of a 2d-matrix by using <code>Matrix.ReplaceRow()</code></li>
+<li>scaling of entire 2d-matrices can be done by <code>Matrix.Mult()</code></li>
+<li>Low-pass filtering on specific time-series can be done by <code>LowPass.Filter()</code>.</li>
+<li>to do regression, give the regressors to <code>Vec.Regress()</code>, along with the indices to ignore based on pre-processing, which returns the model output along with paramters and uncertainty</li>
+<li>finally, you can plot the resulting regression using <code>Plot.FromList</code>.</li>
+</ul>
 </article>
           </div>
           

@@ -9,7 +9,7 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis
 {
     ///<summary>
-    /// Utility functions and operations for treating 2D-arrays as mathetmatical matrices
+    ///Operations for treating 2D-arrays as mathetmatical matrices
     ///</summary>
 
     public static class Matrix
@@ -125,7 +125,6 @@ namespace TimeSeriesAnalysis
             }*/
 
             double[] returnVec = new double[matrix.GetNRows()];
-
 
             for (int curMatrixRow = 0; curMatrixRow < matrix.GetNRows(); curMatrixRow++)
             {

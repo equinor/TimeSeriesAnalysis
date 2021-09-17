@@ -62,20 +62,12 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Parses a columin in a 2d-array and returns the results as a vector of date-times.
-        /// For the format of dateFormat, see https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
+        /// Parses a column in a 2d-array and returns the results as a vector of date-times.
         ///</summary>
        
         static public DateTime[] GetColumnParsedAsDateTime(this string[,] matrix, int columnNumber, string dateFormat)
         {
-            string[] strArray = Array2D<string>.GetColumn(matrix, columnNumber);
-
-            List<DateTime> datetimes = new List<DateTime>();
-            for (int i= 0; i < strArray.Length; i++)
-            {
-                datetimes.Add(DateTime.ParseExact(strArray[i], dateFormat, CultureInfo.InvariantCulture));
-            }
-            return datetimes.ToArray();
+            return Array2D.GetColumnParsedAsDateTime(matrix, columnNumber, dateFormat);
         }
 
         ///<summary>

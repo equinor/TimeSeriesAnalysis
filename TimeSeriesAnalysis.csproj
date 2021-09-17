@@ -122,6 +122,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Utility\ParserFeedback.cs" />
     <Compile Include="Utility\SignificantDigit.cs" />
     <Compile Include="Vector\Array2D.cs" />
+    <Compile Include="Vector\Array2DGeneric.cs" />
     <Compile Include="Vector\Array2DExtensionMethods.cs" />
     <Compile Include="Vector\Matrix.cs" />
     <Compile Include="Vector\Vec.cs" />
