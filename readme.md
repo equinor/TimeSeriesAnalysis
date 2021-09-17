@@ -13,6 +13,9 @@ Yes and no. Most of the time each data point in a time-series is considered *sta
 
 But in some-applications the *transients* or *dynamics* of the process are visible in trends, in which case the data points are no longer independent, and in that case many standard statistical methods become invalid. This is often the case in time-series of for instance measured temperatures, pressures or flows, and analyzing such systems often requires filtering, or fitting models that include transient/dynamic terms. Models that include dynamic terms are key in dynamic simulation, and controlling such systems by means of automatic controllers such as PID-controllers is the domain of *control engineering*. 
 
+Fitting dynamic models to dynamic time-series is the domain of *system identification*, running models that include terms for transients and their interactions is the field of *dynamic simulation* and designing algorithms that influence the dynamics of such systems is the domain of *control theory*. 
+
+
 ## Documentation: Getting started, code examples and api reference documentation
 
 <a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>
