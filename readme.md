@@ -7,7 +7,7 @@ Time-series analysis it typically done in languages like *Python*,*R* or *Matlab
 Tasks like loading data from a file, fitting a model to data or plotting time-series can be accomplished in a single line of code in .NET with the tools in this class library.
 That may even mean that early research/prototyping/data analysis can *start* in .NET, which removes the step re-writing prototype code into .NET.  
 
-## But honestly, you know you can just do time-series analysis with pandas.dataframes in Python, right? That code can then be used as production code?
+## But honestly, you know you can just do time-series analysis with standard statistical langauges *xyz*, right? 
 
 Yes and no. Most of the time each data point in a time-series is considered *stationary*, in which case a time-series can be considered a table of independent data points, and standards statisical methods can be applied to time-series just as for any other statisical data. 
 
