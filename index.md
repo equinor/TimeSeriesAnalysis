@@ -49,7 +49,37 @@ Plotting supports
 The plotting leverages the javascript framework [plot.ly](https://plotly.com/javascript/). Some javascript extensions have been made to this toolbox to allow
 time-series to seemlessly be exported from your .NET code to the browser.
 
-[Example plot](images/example_plotting.png)
+Consider the unit-test ``PlotUnitTests.SubplotPositionWorksOk()``:
+
+The code 
+```
+public void SubplotPositionWorksOk()
+{
+   double[] input2 = Vec<double>.Concat(Vec<double>.Fill(0, 20), Vec<double>.Fill(2, 20));
+   double[] input1 = Vec<double>.Concat(Vec<double>.Fill(0, 10), Vec<double>.Fill(1, 30));
+   double[] input3 = Vec<double>.Concat(Vec<double>.Fill(0, 30), Vec<double>.Fill(1, 10));
+   double[] input4 = Vec<double>.Concat(Vec<double>.Fill(0, 35), Vec<double>.Fill(1, 5));
+
+   string plotURL = Plot.FromList(new List<double[]>{ input1,input2,input3,input4},
+		new List<string>{ "y1=input1","y2=input2","y3=input3","y4=input4"},1,"unit test", 
+		new DateTime(2020,1,1, 0,0,0), "Test_SubplotPositionWorksOk");
+}
+```
+
+Generates the following interactive plot in a Chrome-window(this window pops up automatically):
+
+![Example plot](articles/images/example_plotting.png)
+
+This plot has two *subplots*(one top, one buttom). Each subplot has both a left and a right axis: 
+the top subplot has axes ``y1`` and ``y2`` and the bottom subplot has axes ``y3`` and ``y4``. 
+
+By using the top left menu, it is possible to zoom and drag the plots, and the two subplots are *linked*,
+meaning when you zoom in one of them, the x-axes of the other plot will zoom as well. 
+
+By clicking on the variable names in the *legend* on the top left, it is possible to disable plotting selected variables.
+
+> [!Note]
+> Multiple plots will cause Chrome to display them in multiple tabs. A large number of figures can be generated and sorted in this way. 
 
 
 ## Install instructions: in-browser time-series plotting

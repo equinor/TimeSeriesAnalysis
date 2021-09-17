@@ -117,7 +117,31 @@ enterprise commercial software that deals heavily with time-series, such as dyna
 </ul>
 <p>The plotting leverages the javascript framework <a href="https://plotly.com/javascript/">plot.ly</a>. Some javascript extensions have been made to this toolbox to allow
 time-series to seemlessly be exported from your .NET code to the browser.</p>
-<p><a href="images/example_plotting.png">Example plot</a></p>
+<p>Consider the unit-test <code>PlotUnitTests.SubplotPositionWorksOk()</code>:</p>
+<p>The code</p>
+<pre><code>public void SubplotPositionWorksOk()
+{
+   double[] input2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 20), Vec&lt;double&gt;.Fill(2, 20));
+   double[] input1 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 10), Vec&lt;double&gt;.Fill(1, 30));
+   double[] input3 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 30), Vec&lt;double&gt;.Fill(1, 10));
+   double[] input4 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 35), Vec&lt;double&gt;.Fill(1, 5));
+
+   string plotURL = Plot.FromList(new List&lt;double[]&gt;{ input1,input2,input3,input4},
+		new List&lt;string&gt;{ &quot;y1=input1&quot;,&quot;y2=input2&quot;,&quot;y3=input3&quot;,&quot;y4=input4&quot;},1,&quot;unit test&quot;, 
+		new DateTime(2020,1,1, 0,0,0), &quot;Test_SubplotPositionWorksOk&quot;);
+}
+</code></pre>
+<p>Generates the following interactive plot in a Chrome-window(this window pops up automatically):</p>
+<p><img src="articles/images/example_plotting.png" alt="Example plot"></p>
+<p>This plot has two <em>subplots</em>(one top, one buttom). Each subplot has both a left and a right axis:
+the top subplot has axes <code>y1</code> and <code>y2</code> and the bottom subplot has axes <code>y3</code> and <code>y4</code>.</p>
+<p>By using the top left menu, it is possible to zoom and drag the plots, and the two subplots are <em>linked</em>,
+meaning when you zoom in one of them, the x-axes of the other plot will zoom as well.</p>
+<p>By clicking on the variable names in the <em>legend</em> on the top left, it is possible to disable plotting selected variables.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Multiple plots will cause Chrome to display them in multiple tabs. A large number of figures can be generated and sorted in this way.</p>
+</div>
 <h2 id="install-instructions-in-browser-time-series-plotting">Install instructions: in-browser time-series plotting</h2>
 <p>The plotting in this package is based on the javacsript plotting library plot.ly., a copy of the bundled minified javascript plot.ly package
 <code>plotly.min.js</code> is included for convenience, but other versions can also be downdloaded from the vendor site.</p>
