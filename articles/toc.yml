@@ -1,0 +1,5 @@
+- name: Setting up github as an in-house local nuget repository
+  href: nuget.md
+
+- name: Linear regression realistic example
+  href: example_linreg.md

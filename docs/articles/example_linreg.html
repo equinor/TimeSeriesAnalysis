@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Example : realistic linear regression | TimeSeriesAnalysis reference documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Example : realistic linear regression | TimeSeriesAnalysis reference documentation ">
+    <meta name="generator" content="docfx 2.58.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="example--realistic-linear-regression">Example : realistic linear regression</h1>
+
+<p>This example uses a ficticious csv-file example.csv, that has column headers
+&quot;Time&quot;,&quot;Var1&quot;,&quot;Var2&quot;,&quot;Var3&quot;,&quot;Var4,&quot;Var5&quot;,Var6&quot;,&quot;Var7&quot;.</p>
+<p>&quot;Var1&quot; is to be modelled by <code>Var2</code>-<code>Var6</code> as regressors, while Var7 is to be multiplied to <code>Var2</code>-<code>Var6</code>.
+The data contains some instances of <code>-9999</code> which indicates bad data, and this is removed in preprocessing.</p>
+<p>A low-pass filter is used to imitate a time-constant in the system by smoothing the model inputs.</p>
+<p>Only the data starting after a specific <code>t0</code> is to be used in the regression, so a subset of the raw data in the csv-file is
+given to regression.</p>
+<p>This example illustrates that by using the <code>TimeSeriesAnalysis</code> package, the complexity of the code required to do practical exploratory time-series
+analysis is comparable to what is normally accomplished by parsed languages such as Matlab, R or Python.</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using TimeSeriesAnalysis;
+
+namespace SubseaPALL
+{
+    class run
+    { 
+        public static void Main()
+        {
+            CSV.loadDataFromCSV(@&quot;C:\Appl\ex1\Data\example.csv&quot;, out double[,] data, out string[] variableNames,out string[,] stringData);
+            
+            int tInd = Array.IndexOf(variableNames, &quot;Time&quot;);
+            DateTime[] dateTimes = stringData.GetColumnParsedAsDateTime(tInd, &quot;yyyy-MM-dd HH:mm:ss&quot;);
+            TimeSpan span = dateTimes[1].Subtract(dateTimes[0]);
+            int dT_s = (int)span.TotalSeconds;
+
+            int t0Ind = 9476;// first instance
+
+            DateTime t0 = dateTimes.ElementAt(t0Ind);
+
+            int yInd  = Array.IndexOf(variableNames, &quot;var1&quot;);
+            //V1: use choke openings as inputs
+            int u1Ind, u2Ind, u3Ind, u4Ind, u5Ind;
+
+			u1Ind = Array.IndexOf(variableNames, &quot;var2&quot;);
+			u2Ind = Array.IndexOf(variableNames, &quot;var3&quot;);
+			u3Ind = Array.IndexOf(variableNames, &quot;var4&quot;);
+			u4Ind = Array.IndexOf(variableNames, &quot;var5&quot;);
+			u5Ind = Array.IndexOf(variableNames, &quot;var6&quot;);
+
+            int u6ind = Array.IndexOf(variableNames, &quot;var7&quot;);
+
+            int[] uIndArray = new int[] { u1Ind, u2Ind, u3Ind, u4Ind, u5Ind };
+
+            double[]  y_raw = data.GetColumn(yInd);
+            double[,] u_raw = data.GetColumns(uIndArray) ;
+            double[] u6_raw = data.GetColumn(u6ind);
+
+            // clip out desired chunk of data
+            double[] y = y_raw.GetRowsAfterIndex(t0Ind);
+            double[,] u = u_raw.GetRowsAfterIndex(t0Ind);
+            double[] z_topside = u6_raw.GetRowsAfterIndex(t0Ind);
+
+            // preprocessing - remove bad values
+            List&lt;int&gt; yIndToIgnoreRaw = new List&lt;int&gt;();
+            for (int colInd = 0; colInd &lt; u.GetNColumns(); colInd++)
+            {
+                List&lt;int&gt; badValInd = Vec.FindValues(u.GetColumn(colInd), -9999, FindValues.NaN);
+                yIndToIgnoreRaw.AddRange(badValInd);
+            }
+            yIndToIgnoreRaw.AddRange(Vec.FindValues(y, -9999, FindValues.NaN));
+            yIndToIgnoreRaw.AddRange(Vec.FindValues(z_topside, -9999, FindValues.NaN));
+            List&lt;int&gt; yIndToIgnore =(List&lt;int&gt;)yIndToIgnoreRaw.Distinct().ToList();
+
+            // do scaling, input trickery and then regress
+           
+            u = u.Transpose();
+
+            double[] y_plot = Vec.ReplaceIndWithValuesPrior(y, yIndToIgnore);// -9999 destroys plot
+            double[] u1_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(0), yIndToIgnore);// -9999 destroys plot
+            double[] u2_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(1), yIndToIgnore);// -9999 destroys plot
+            double[] u3_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(2), yIndToIgnore);// -9999 destroys plot
+            double[] u4_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(3), yIndToIgnore);// -9999 destroys plot
+            double[] u5_plot = Vec.ReplaceIndWithValuesPrior(u.GetRow(4), yIndToIgnore);// -9999 destroys plot
+            double[] u6_plot = Vec.ReplaceIndWithValuesPrior(z_topside, yIndToIgnore);// -9999 destroys plot
+
+            // temperature does not change much based on changes in the upper half of the range valve-opening rate, as flow rates also
+            // do not change that much (valve flow vs. choke opening is nonlinear)
+
+
+			double z_Max = 60;
+			double z_MaxTopside = 80;
+			u = Matrix.ReplaceRow(u,0, Vec.Min(u.GetRow(0), z_Max));
+			u = Matrix.ReplaceRow(u,1, Vec.Min(u.GetRow(1), z_Max));
+			u = Matrix.ReplaceRow(u,2, Vec.Min(u.GetRow(2), z_Max));
+			u = Matrix.ReplaceRow(u,3, Vec.Min(u.GetRow(3), z_Max));
+			u = Matrix.ReplaceRow(u,4, Vec.Min(u.GetRow(4), z_Max));
+			u = Matrix.Mult(u, 0.01);
+
+			z_topside = Vec.Mult(Vec.Min(z_topside, z_MaxTopside), 0.01);
+			z_topside = Vec.Mult(z_topside, 0.01);
+			u = Matrix.Mult(u, z_topside);
+
+			// lowpass filtering of inputs
+			double TimeConstant_s = 1800;//73.24
+
+			LowPass filter = new LowPass(TimeConstant_s);
+			u = Matrix.ReplaceRow(u, 0, filter.Filter(u.GetRow(0), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 1, filter.Filter(u.GetRow(1), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 2, filter.Filter(u.GetRow(2), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 3, filter.Filter(u.GetRow(3), TimeConstant_s));
+			u = Matrix.ReplaceRow(u, 4, filter.Filter(u.GetRow(4), TimeConstant_s));
+
+            if (u == null)
+            {
+                Console.WriteLine(&quot;u is null, something went wrong&quot;);
+                return;
+            }
+
+            var uJaggedArray = u.Convert2DtoJagged();
+            double[] parameters = Vec.Regress(y, uJaggedArray, yIndToIgnore.ToArray(), out _, out double[] y_mod,out double Rsq);
+
+            double[] e = Vec.Sub(y_plot, y_mod);
+
+            //present results
+            if (y_mod == null)
+            {
+                Console.WriteLine(&quot;something went wrong, regress returned null&quot;);
+            }
+            else
+            {
+                Plot.Six(u1_plot, u2_plot, u3_plot, u4_plot, u5_plot,u6_plot, dT_s,&quot;z_D1&quot;, &quot;z_D2&quot;, &quot;z_D3&quot;, &quot;z_D4&quot;,&quot;z_D5&quot;,&quot;z_topside&quot;,true,false,null,t0);
+                Plot.Two(y_plot, y_mod, dT_s, &quot;T_Dtopside(meas)&quot;, &quot;T_Dtopside(mod)&quot;,true,false,&quot;Rsq&quot;+Rsq.ToString(&quot;#.##&quot;),t0);
+                Plot.One(e,dT_s,&quot;avvik&quot;,null, t0);
+            }
+        }
+    }
+}
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
