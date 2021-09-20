@@ -38,14 +38,20 @@ namespace TimeSeriesAnalysis.Utility
                     exp = Int32.Parse(splitStr[1]);
                 }
             }
-            catch (Exception e)
+            catch 
             {
 
             }
 
         }
 
-        public static double sciToDouble(double coeff, int exp)
+        /// <summary>
+        /// Converts a scientific number on the format coeff*10^exp to a double
+        /// </summary>
+        /// <param name="coeff">coefficient</param>
+        /// <param name="exp">exponent</param>
+        /// <returns>converted double </returns>
+        public static double SciToDouble(double coeff, int exp)
         {
             string format = coeff + "E" + exp;
             return Double.Parse(format);
@@ -57,8 +63,7 @@ namespace TimeSeriesAnalysis.Utility
         ///</summary>
         public static double Format(double number, int digits)
         {
-            int exp;
-            return Format(number, digits, out exp);
+            return Format(number, digits, out _);
         }
         ///<summary>
         /// Rounds down to number of significant digits (26->20 if digits=1 for instance)
@@ -76,12 +81,12 @@ namespace TimeSeriesAnalysis.Utility
                 if (number > 0)
                 {
                     if (number < parsed)
-                        parsed = parsed - Math.Pow(10, exponent - digits + 1);
+                        parsed -= - Math.Pow(10, exponent - digits + 1);
                 }
                 else if (number < 0)
                 {
                     if (number > parsed)
-                        parsed = parsed + Math.Pow(10, exponent - digits + 1);
+                        parsed +=  Math.Pow(10, exponent - digits + 1);
                 }
                 return parsed;
             }

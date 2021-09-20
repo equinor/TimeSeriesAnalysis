@@ -1187,19 +1187,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.SignificantDigits.GetSciFormat
   nameWithType: SignificantDigits.GetSciFormat
-- uid: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble(System.Double,System.Int32)
-  name: sciToDouble(Double, Int32)
-  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_sciToDouble_System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble(System.Double,System.Int32)
-  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble(System.Double, System.Int32)
-  nameWithType: SignificantDigits.sciToDouble(Double, Int32)
-- uid: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble*
-  name: sciToDouble
-  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_sciToDouble_
-  commentId: Overload:TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.SciToDouble(System.Double,System.Int32)
+  name: SciToDouble(Double, Int32)
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_SciToDouble_System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.SignificantDigits.SciToDouble(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.SciToDouble(System.Double, System.Int32)
+  nameWithType: SignificantDigits.SciToDouble(Double, Int32)
+- uid: TimeSeriesAnalysis.Utility.SignificantDigits.SciToDouble*
+  name: SciToDouble
+  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_SciToDouble_
+  commentId: Overload:TimeSeriesAnalysis.Utility.SignificantDigits.SciToDouble
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.sciToDouble
-  nameWithType: SignificantDigits.sciToDouble
+  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.SciToDouble
+  nameWithType: SignificantDigits.SciToDouble
 - uid: TimeSeriesAnalysis.Utility.StringToFileWriter
   name: StringToFileWriter
   href: api/TimeSeriesAnalysis.Utility.StringToFileWriter.html

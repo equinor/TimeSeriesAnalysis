@@ -526,14 +526,14 @@ namespace TimeSeriesAnalysis
             out double[] Y_modelled, out double Rsq)
         {
             double[] weights = null;
-            bool areAllWeightsOne = true;
+         //   bool areAllWeightsOne = true;
             Rsq = 0;
             if (yIndToIgnore != null)
             {
                 weights = Vec<double>.Fill(1, Y.Length);
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
-                    areAllWeightsOne = false;
+           //         areAllWeightsOne = false;
                     int curInd = yIndToIgnore[i];
                     if (curInd >= 0 && curInd < weights.Length)
                         weights[curInd] = 0;
@@ -579,7 +579,7 @@ namespace TimeSeriesAnalysis
 
                 Rsq = RSquared(Y_modelled, Y, yIndToIgnore.ToList()) * 100;
 
-
+/*
                 // uncertainty estimation
                 if (false)// unceratinty does not take into account weights now?
                 {
@@ -609,10 +609,10 @@ namespace TimeSeriesAnalysis
                     {
                         param95prcConfInterval = null;
                     }
-                }
+                }*/
                 return Vec<double>.Concat(regression.Weights, regression.Intercept);
             }
-            catch (Exception e)
+            catch 
             {
                 return null;
             }
