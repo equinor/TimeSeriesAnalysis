@@ -66,7 +66,7 @@ public void SubplotPositionWorksOk()
 }
 ```
 > [!Note]
-> Note how the ``Vec.Fill()`` an ``Vec.Concat`` of ``TimeSeriesAnalysis`` package is used in this example to create two vectors of a given
+> Note how the ``Vec.Fill()`` an ``Vec.Concat()`` of ``TimeSeriesAnalysis`` package is used in this example to create two vectors of a given
 > length and value and concatenate them in a single line of code.
 
 The above code generates the following interactive plot in a Chrome-window(this window pops up automatically):
@@ -88,10 +88,12 @@ By clicking on the variable names in the *legend* on the top left, it is possibl
 
 ## Install instructions: in-browser time-series plotting
 
+*For time-series plot to work, you will need to run a http-server locally on your machine.*
+
 The plotting in this package is based on the javacsript plotting library plot.ly., a copy of the bundled minified javascript plot.ly package 
 ``plotly.min.js`` is included for convenience, but other versions can also be downdloaded from the vendor site.
 
-The repo includes a folder "www\plotly" and for plotting to work you need to run an http-server such as Internet Information Services that
+The repo includes a folder "www\plotly" and for plotting to work you need to run an http-server such as *Internet Information Services(ISS)* that
 in your broser serves up a folder on your computer as "localhost". 
 
 Copy the folder ``plotly`` into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),

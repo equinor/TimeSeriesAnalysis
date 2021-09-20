@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis.UnitTests
     {
 
         // nb only use even numbers
-        [TestCase]
+        [TestCase(Explicit =true, Reason= "opens Chrome window")]
 
 
         public void MaximumNumberOfPlotsIsObeyed()
@@ -28,7 +28,7 @@ namespace TimeSeriesAnalysis.UnitTests
             plot.One(input1.Mult(2), 10, "second plot"); 
             plot.One(input1.Mult(3), 10, "third plot");//should not be shown, maximum plots is two.
         }
-        [TestCase]
+        [TestCase(Explicit = true, Reason = "opens Chrome window")]
         public void SubplotPositionWorksOk()
         {
            double[] input1 = Vec<double>.Concat(Vec<double>.Fill(0, 10), Vec<double>.Fill(1, 30));

@@ -1,0 +1,13 @@
+build: 
+runs-on:windows-latest
+steps:
+- uses: actions/checkout@v2
+- name: Setup .NET
+- uses: actions/setup-dotnet@v1
+- name: Setup MSBuild Path
+  uses: microsoft/setup-msbuild@v1
+- name: Build
+  run:  msbuild.exe TimeSeriesAnalysis.sln
+- name: Test
+  run: packages\NUnit.ConsoleRunner.3.12.0\tools\nunit3-console.exe \bin\Debug\TimeSeriesAnalysis.dll
+

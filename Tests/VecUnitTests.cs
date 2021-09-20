@@ -154,9 +154,11 @@ namespace TimeSeriesAnalysis.UnitTests
             double[] X1 = { 1, 0, 1, 0, -1, 1, }; // gain:1
             double[] X2 = { 0, 0, 1, 2, -1, 0 };// gain:2
             double[][] X = { X1, X2 };
-            List<int> indicesToignore = new List<int>();
-            indicesToignore.Add(4);
-            double[] b = Vec.Regress(Y, X, indicesToignore.ToArray(), out _, out double[] yMod, out double Rsq);
+            List<int> indicesToignore = new List<int>
+            {
+                4
+            };
+            double[] b = Vec.Regress(Y, X, indicesToignore.ToArray(), out _, out double[] yMod, out double _);
             Assert.Less(Math.Abs(1 - b[0]), 0.001);
             Assert.Less(Math.Abs(2 - b[1]), 0.001);
             Assert.Less(Math.Abs(4 - yMod[4]), 0.0001);

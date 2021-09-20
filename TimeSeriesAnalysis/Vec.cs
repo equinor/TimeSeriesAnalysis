@@ -229,7 +229,9 @@ namespace TimeSeriesAnalysis
             }
             if (doNormalize)
             {
+#pragma warning disable IDE0054 // Use compound assignment
                 retVal = retVal / (N);
+#pragma warning restore IDE0054 // Use compound assignment
             }
             return retVal;
         }
@@ -252,7 +254,9 @@ namespace TimeSeriesAnalysis
             }
             if (doNormalize)
             {
+#pragma warning disable IDE0054 // Use compound assignment
                 retVal = retVal / (N);
+#pragma warning restore IDE0054 // Use compound assignment
             }
             return retVal;
         }

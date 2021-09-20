@@ -561,12 +561,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.ParserFeedback.ParserFeedback
   nameWithType: ParserFeedback.ParserFeedback
-- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String,System.String)
-  name: AddError(String, String)
-  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddError_System_String_System_String_
-  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String,System.String)
-  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String, System.String)
-  nameWithType: ParserFeedback.AddError(String, String)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String)
+  name: AddError(String)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddError_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String)
+  nameWithType: ParserFeedback.AddError(String)
 - uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddError*
   name: AddError
   href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddError_
@@ -574,12 +574,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddError
   nameWithType: ParserFeedback.AddError
-- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String,System.String)
-  name: AddFatalError(String, String)
-  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddFatalError_System_String_System_String_
-  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String,System.String)
-  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String, System.String)
-  nameWithType: ParserFeedback.AddFatalError(String, String)
+- uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String)
+  name: AddFatalError(String)
+  href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddFatalError_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String)
+  fullName: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String)
+  nameWithType: ParserFeedback.AddFatalError(String)
 - uid: TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError*
   name: AddFatalError
   href: api/TimeSeriesAnalysis.Utility.ParserFeedback.html#TimeSeriesAnalysis_Utility_ParserFeedback_AddFatalError_

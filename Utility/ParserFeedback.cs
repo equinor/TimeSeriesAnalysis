@@ -268,10 +268,12 @@ namespace TimeSeriesAnalysis.Utility
                     nLogMessages++;
                     DateTime timestamp = DateTime.Now;
 
-                    ParserFeedbackLogLine currentLogLine = new ParserFeedbackLogLine();
-                    currentLogLine.time = timestamp;
-                    currentLogLine.message = msgString;
-                    currentLogLine.messageLevel = msgLevel;
+                    ParserFeedbackLogLine currentLogLine = new ParserFeedbackLogLine
+                    {
+                        time = timestamp,
+                        message = msgString,
+                        messageLevel = msgLevel
+                    };
 
                     logList.Add(currentLogLine);
                     //message also output to console if appdebug==2
@@ -306,13 +308,13 @@ namespace TimeSeriesAnalysis.Utility
             }
         }
 
-        public void AddFatalError(string message, string attachment=null)
+        public void AddFatalError(string message)
         {
             nFatalErrors++;
-            StoreMessage("Fatal Error :" + message+ "\r\n"+ attachment, ParserfeedbackMessageLevel.fatal);
+            StoreMessage("Fatal Error :" + message+ "\r\n", ParserfeedbackMessageLevel.fatal);
         }
 
-        public void AddError(string message,string attachment=null)
+        public void AddError(string message)
         {
             nErrors++;
             StoreMessage("Error:" + message, ParserfeedbackMessageLevel.error);

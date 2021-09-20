@@ -14,6 +14,7 @@ namespace TimeSeriesAnalysis
     /// </summary>
     static public class Array2D
     {
+
         /// <summary>
         /// Parses a column of strings in an array/matrix of strings 
         /// </summary>

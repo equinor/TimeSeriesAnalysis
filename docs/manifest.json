@@ -102,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.ParserFeedback.html",
-          "hash": "++6pacWmCk/PHz25YoCr8ZGIAKSy08U8K+ZxulGEfEA="
+          "hash": "W6fPMDJ5opPGaXAmIkZxWH2XjVjFMdexzo6vZ36NWp4="
         }
       },
       "is_incremental": false,
@@ -365,7 +365,19 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "pVFToGJO50lIIVaRTF9bTMrPLF+GOLIZJ2C8k3g/G64="
+          "hash": "17oJWQlPzs6xVBdQCmTiHBGWfSzBf5AYDlcuyUd5H3k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "license.md",
+      "output": {
+        ".html": {
+          "relative_path": "license.html",
+          "hash": "XEQ/Bt/CZ+1oS1VsnVxx5GpO1pNys+AD3rwINFu/wdE="
         }
       },
       "is_incremental": false,
@@ -411,8 +423,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 6,
-          "skipped_file_count": 5
+          "total_file_count": 7,
+          "skipped_file_count": 7
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

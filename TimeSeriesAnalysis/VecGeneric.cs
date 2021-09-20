@@ -14,8 +14,6 @@ namespace TimeSeriesAnalysis
     /// <typeparam name="T"></typeparam>
     public static class Vec<T>
     {
-        private static int nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
-
         ///<summary>
         /// sort the vector vec acording to the sortType.
         ///</summary>

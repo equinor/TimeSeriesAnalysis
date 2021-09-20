@@ -133,7 +133,7 @@ time-series to seemlessly be exported from your .NET code to the browser.</p>
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Note how the <code>Vec.Fill()</code> an <code>Vec.Concat</code> of <code>TimeSeriesAnalysis</code> package is used in this example to create two vectors of a given
+<p>Note how the <code>Vec.Fill()</code> an <code>Vec.Concat()</code> of <code>TimeSeriesAnalysis</code> package is used in this example to create two vectors of a given
 length and value and concatenate them in a single line of code.</p>
 </div>
 <p>The above code generates the following interactive plot in a Chrome-window(this window pops up automatically):</p>
@@ -149,9 +149,10 @@ Moving the cursor over each plot allows the values to be browsed by an interacti
 <p>Multiple plots will cause Chrome to display them in multiple tabs. A large number of figures can be generated and sorted in this way.</p>
 </div>
 <h2 id="install-instructions-in-browser-time-series-plotting">Install instructions: in-browser time-series plotting</h2>
+<p><em>For time-series plot to work, you will need to run a http-server locally on your machine.</em></p>
 <p>The plotting in this package is based on the javacsript plotting library plot.ly., a copy of the bundled minified javascript plot.ly package
 <code>plotly.min.js</code> is included for convenience, but other versions can also be downdloaded from the vendor site.</p>
-<p>The repo includes a folder &quot;www\plotly&quot; and for plotting to work you need to run an http-server such as Internet Information Services that
+<p>The repo includes a folder &quot;www\plotly&quot; and for plotting to work you need to run an http-server such as <em>Internet Information Services(ISS)</em> that
 in your broser serves up a folder on your computer as &quot;localhost&quot;.</p>
 <p>Copy the folder <code>plotly</code> into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
 such as &quot;c:\inetpub\plotly&quot; if  &quot;c:\inetpub&quot; is the folder that IIS is serving.</p>
