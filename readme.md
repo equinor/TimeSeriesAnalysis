@@ -1,3 +1,8 @@
+
+![Build Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg)
+![Test Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/tests.yml/badge.svg)
+
+
 # TimeSeriesAnalysis
 *TimeSeriesAnalysis* is a toolbox that allows you to work .NET efficiently with time-series that may include *transients* or *dynamics*.
 
