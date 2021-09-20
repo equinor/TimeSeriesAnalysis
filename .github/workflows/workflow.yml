@@ -1,13 +1,29 @@
-build: 
-runs-on:windows-latest
-steps:
-- uses: actions/checkout@v2
-- name: Setup .NET
-- uses: actions/setup-dotnet@v1
-- name: Setup MSBuild Path
-  uses: microsoft/setup-msbuild@v1
-- name: Build
-  run:  msbuild.exe TimeSeriesAnalysis.sln
-- name: Test
-  run: packages\NUnit.ConsoleRunner.3.12.0\tools\nunit3-console.exe \bin\Debug\TimeSeriesAnalysis.dll
+name:[CI]
+
+on:[push]
+
+jobs:
+    build: 
+    
+    runs-on:windows-latest
+    
+    steps:
+    
+    - uses: actions/checkout@v2
+      name: Checkout code
+    
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1
+   
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+    
+    - name: Restore NuGet Packages
+      run: nuget restore TimeSeriesAnalysis.sln
+   
+    - name: Build 
+      run: msbuild TimeSeriesAnalysis.sln /p:Configuration=Debug
+
+    - name: Test
+      run: packages\NUnit.ConsoleRunner.3.12.0\tools\nunit3-console.exe \bin\Debug\TimeSeriesAnalysis.dll
 
