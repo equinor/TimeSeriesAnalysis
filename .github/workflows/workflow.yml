@@ -1,9 +1,9 @@
-name:workflow
+name: workflow
 on: [push]
 jobs:
     build: 
         name: Build
-        runs-on:windows-latest
+        runs-on: windows-latest
         steps:
             - uses: actions/checkout@v2
               name: Checkout code
