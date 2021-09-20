@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Matrix.html",
-          "hash": "op/HnHy1NVdcPZbzirOMNSz0JLRo/YJy0J609uR013Q="
+          "hash": "w5Ipz5WrctvrSXBiwY4EYonazkgdwMy35ykPtr2sRK0="
         }
       },
       "is_incremental": false,
@@ -361,6 +361,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "contributing.md",
+      "output": {
+        ".html": {
+          "relative_path": "contributing.html",
+          "hash": "WcdHW6ol6kYfOYkueiIZJustKjTBzaJQNNOKDGlOxWI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
@@ -372,24 +384,15 @@
       "version": ""
     },
     {
-      "type": "Conceptual",
-      "source_relative_path": "license.md",
-      "output": {
-        ".html": {
-          "relative_path": "license.html",
-          "hash": "XEQ/Bt/CZ+1oS1VsnVxx5GpO1pNys+AD3rwINFu/wdE="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "readme.md",
       "output": {
         ".html": {
           "relative_path": "readme.html",
-          "hash": "aWPba1jQ5nRZsG190jcCCidLEGOczNSt6xhbErOUtWs="
+          "hash": "l31JKzuGCO7dB4cOA628hIUoNDSCnC96C+VZEvOFG0M="
         }
       },
       "is_incremental": false,
@@ -430,7 +433,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 22,
-          "skipped_file_count": 22
+          "skipped_file_count": 21
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

@@ -40,11 +40,7 @@ namespace TimeSeriesAnalysis.Utility
         // which would spam server disks, this is a fail-safe
         const int MaxNumberOfErrorsToLog = 1000;
 
-        // retained variables for info to pass to slack
-        private string currentConfigFile = "";
-        private string  shortConfigFileName = "";
-        private string configModifiedDate = "";
-        // 
+       // 
 
         private bool doOutputAlsoToConsole = false;
 
@@ -52,10 +48,6 @@ namespace TimeSeriesAnalysis.Utility
         int nErrors;
         int nWarnings;
         int nInfo;
-
-        private int numberOfSlackErrorMessagesSent = 0;
-
-        int nLogMessages;
 
         private string loggDir                 = "log";
         private const  string loggName         = "ParserFeedback";
@@ -76,7 +68,6 @@ namespace TimeSeriesAnalysis.Utility
         public ParserFeedback(bool doOutputAlsoToConsole = false)
         {
             doOutputAlsoToConsole = false;
-            numberOfSlackErrorMessagesSent = 0;
             logList = new List<ParserFeedbackLogLine>();
             ResetCounters();
         }
@@ -243,12 +234,10 @@ namespace TimeSeriesAnalysis.Utility
 
         public void ResetCounters()
         {
-            numberOfSlackErrorMessagesSent = 0;
             nFatalErrors    = 0;
             nErrors         = 0;
             nWarnings       = 0;
             nInfo           = 0;
-            nLogMessages    = 0;
         }
 
         private void StoreMessage(string msgString, ParserfeedbackMessageLevel msgLevel)
@@ -265,7 +254,6 @@ namespace TimeSeriesAnalysis.Utility
                     doLog = false;
                 if (doLog)
                 {
-                    nLogMessages++;
                     DateTime timestamp = DateTime.Now;
 
                     ParserFeedbackLogLine currentLogLine = new ParserFeedbackLogLine

@@ -377,15 +377,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Matrix.Mult(System.Double(,), System.Double, System.Int32)
   nameWithType: Matrix.Mult(Double[,], Double, Int32)
   nameWithType.vb: Matrix.Mult(Double(,), Double, Int32)
-- uid: TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double[],System.Int32)
-  name: Mult(Double[,], Double[], Int32)
-  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_Mult_System_Double_0__0___System_Double___System_Int32_
-  commentId: M:TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double[],System.Int32)
-  name.vb: Mult(Double(,), Double(), Int32)
-  fullName: TimeSeriesAnalysis.Matrix.Mult(System.Double[,], System.Double[], System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Matrix.Mult(System.Double(,), System.Double(), System.Int32)
-  nameWithType: Matrix.Mult(Double[,], Double[], Int32)
-  nameWithType.vb: Matrix.Mult(Double(,), Double(), Int32)
+- uid: TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double[])
+  name: Mult(Double[,], Double[])
+  href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_Mult_System_Double_0__0___System_Double___
+  commentId: M:TimeSeriesAnalysis.Matrix.Mult(System.Double[0:,0:],System.Double[])
+  name.vb: Mult(Double(,), Double())
+  fullName: TimeSeriesAnalysis.Matrix.Mult(System.Double[,], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Matrix.Mult(System.Double(,), System.Double())
+  nameWithType: Matrix.Mult(Double[,], Double[])
+  nameWithType.vb: Matrix.Mult(Double(,), Double())
 - uid: TimeSeriesAnalysis.Matrix.Mult*
   name: Mult
   href: api/TimeSeriesAnalysis.Matrix.html#TimeSeriesAnalysis_Matrix_Mult_

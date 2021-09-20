@@ -108,6 +108,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Utility\LowPass.cs" />
     <Compile Include="Utility\MovingAvg.cs" />
     <Compile Include="Utility\CSV.cs" />

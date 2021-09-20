@@ -460,7 +460,7 @@ namespace TimeSeriesAnalysis
             {
                 if (!IsNaN(array1[i]))
                 {
-                    N = N + 1;
+                    N += 1;
                     retVal = retVal * (N - 1) / N + array1[i] * 1 / N;
                 }
             }
@@ -478,7 +478,7 @@ namespace TimeSeriesAnalysis
             {
                 if (IsNaN(array1[i]))
                     continue;
-                retVal = retVal + array1[i];
+                retVal += array1[i];
             }
             return retVal;
         }

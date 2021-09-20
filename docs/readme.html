@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | TimeSeriesAnalysis reference documentation </title>
+    <title>TimeSeriesAnalysis | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="TimeSeriesAnalysis | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="favicon.ico">
@@ -70,9 +70,30 @@
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+<h1 id="timeseriesanalysis">TimeSeriesAnalysis</h1>
 
-<p>TimeSeriesAnalysis :</p>
-<p><a href="https://stunning-fortnight-3ee29831.pages.github.io">TimeSeriesAnalysis reference documentation(Github pages)</a></p>
+<p><em>TimeSeriesAnalysis</em> is a toolbox that allows you to work .NET efficiently with time-series that may include <em>transients</em> or <em>dynamics</em>.</p>
+<h2 id="why">Why?</h2>
+<p>Because the final product of many enterprise time-series applications is <em>required</em> to be implemented in .NET, why not try to make development as streamlined as possible?
+Time-series analysis it typically done in languages like <em>Python</em>,<em>R</em> or <em>Matlab</em>, because high-level <strong>toolboxes</strong> support time-series analysis in these languages.
+Tasks like loading data from a file, fitting a model to data or plotting time-series can be accomplished in a single line of code in .NET with the tools in this class library, just as you would do with one of those scripted languages.</p>
+<p>That may even mean that early research/prototyping/data analysis can <em>start</em> in .NET, which removes the step re-writing prototype code into .NET.</p>
+<h2 id="but-honestly-you-know-you-can-just-do-time-series-analysis-with-standard-statistical-langauges-xyz-right">But honestly, you know you can just do time-series analysis with standard statistical langauges <em>xyz</em>, right?</h2>
+<p>Yes and no. Most of the time each data point in a time-series is considered <em>stationary</em>, in which case a time-series can be considered a table of independent data points, and standards statisical methods can be applied to time-series just as for any other statisical data.</p>
+<p>But in some-applications the <em>transients</em> or <em>dynamics</em> of the process are visible in trends, in which case the data points are no longer independent, and in that case many standard statistical methods become invalid. This is often the case in time-series of for instance measured temperatures, pressures or flows, and analyzing such systems often requires filtering, or fitting models that include transient/dynamic terms. Models that include dynamic terms are key in dynamic simulation, and controlling such systems by means of automatic controllers such as PID-controllers is the domain of <em>control engineering</em>.</p>
+<p>Fitting dynamic models to dynamic time-series is the domain of <em>system identification</em>, running models that include terms for transients and their interactions is the field of <em>dynamic simulation</em>, designing algorithms that influence the dynamics of such systems is the domain of <em>control systems</em> and designing algorithms which calculate unmeasured variables based on the available measurements is the topic of <em>estimation theory</em>.</p>
+<p>Dynamic simulators, control systems and estimators are almost exclusively implemented in the compiled languages like C/C++/C# in industry, which is what this toolbox attempts to address.</p>
+<h2 id="documentation-getting-started-code-examples-and-api-reference-documentation">Documentation: Getting started, code examples and api reference documentation</h2>
+<p><a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a></p>
+<h2 id="contributing">Contributing</h2>
+<p>This project welcomes contributions and suggestions.
+Please read <a href="contributing.html">CONTRIBUTING.md</a> for details on our code of conduct, and the process for submitting pull requests.</p>
+<h2 id="discussion-forum">Discussion forum</h2>
+<p>Questions related to TimeSeriesAnalysis can be posted in the <a href="https://github.com/equinor/TimeSeriesAnalysis/discussions">github discussion pages</a>.</p>
+<h2 id="authors-and-contact-persons">Authors and contact persons</h2>
+<p>Steinar Elgsæter</p>
+<h2 id="licence">Licence</h2>
+<p>TimeSeriesAnalysis is distributed under the <a href="LICENSE">MIT licence</a>.</p>
 </article>
           </div>
           

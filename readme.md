@@ -27,10 +27,10 @@ This project welcomes contributions and suggestions.
 Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests. 
 
 ## Discussion forum
-Questions related to TimeSeriesAnalysis can be posted in the github discussion pages.
+Questions related to TimeSeriesAnalysis can be posted in the [github discussion pages](https://github.com/equinor/TimeSeriesAnalysis/discussions).
 
 ## Authors and contact persons
 Steinar Elgsæter
 
 ## Licence
-TimeSeriesAnalysis is distributed under the [MIT licence](LICENSE.md).
+TimeSeriesAnalysis is distributed under the [MIT licence](LICENSE).
