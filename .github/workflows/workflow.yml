@@ -11,6 +11,8 @@ jobs:
               uses: microsoft/Setup-MSBuild@v1.0.3
             - name: Setup NuGet
               uses: NuGet/setup-nuget@v1.0.5
+            - name: Query nuget folders
+              run: nuget locals  
             - name: Restore NuGet Packages
               run: nuget restore TimeSeriesAnalysis.sln
             - name: Build 
