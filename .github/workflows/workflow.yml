@@ -16,4 +16,4 @@ jobs:
             - name: Build 
               run: msbuild TimeSeriesAnalysis.sln /p:Configuration=Debug
             - name: Test
-              run: packages\NUnit.ConsoleRunner.3.12.0\tools\nunit3-console.exe \bin\Debug\TimeSeriesAnalysis.dll
+              run: %userprofile%\.nuget\packages\NUnit.ConsoleRunner.3.12.0\tools\nunit3-console.exe \bin\Debug\TimeSeriesAnalysis.dll
