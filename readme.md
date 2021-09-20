@@ -24,7 +24,7 @@ Dynamic simulators, control systems and estimators are almost exclusively implem
 
 ## Contributing
 This project welcomes contributions and suggestions. 
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests. 
+Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests. 
 
 ## Discussion forum
 Questions related to TimeSeriesAnalysis can be posted in the github discussion pages.
@@ -33,4 +33,4 @@ Questions related to TimeSeriesAnalysis can be posted in the github discussion p
 Steinar Elgsæter
 
 ## Licence
-TimeSeriesAnalysis is distributed under the MIT licence.
+TimeSeriesAnalysis is distributed under the [MIT licence](LICENSE.md).

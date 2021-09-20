@@ -10,7 +10,7 @@ jobs:
             - name: Setup MSBuild Path
               uses: microsoft/Setup-MSBuild@v1.0.3
             - name: Setup NuGet
-              uses: NuGet/setup-nuget@v1.0.2
+              uses: NuGet/setup-nuget@v1.0.5
             - name: Restore NuGet Packages
               run: nuget restore TimeSeriesAnalysis.sln
             - name: Build 
