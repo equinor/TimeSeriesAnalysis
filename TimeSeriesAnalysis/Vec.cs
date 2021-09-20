@@ -500,9 +500,13 @@ namespace TimeSeriesAnalysis
 
 
 
-        ///<summary>
-        /// returns the parameters which best regress the two-dimensional array X into the vector Y. returns null if regression fails.
-        ///</summary>
+
+        /// <summary>
+        /// Linear regression: Fit a linear model to Y based on inputs X
+        /// </summary>
+        /// <param name="Y">one-dimensional vector/array of output paramters y that is to be modelled</param>
+        /// <param name="X">two-dimensonal array of input vectors X that are the inputs </param>
+        /// <returns> returns the parameters(one for each column in X and a bias term) which best regress the two-dimensional array X into the vector Y. Returns null if regression fails.</returns>
         public static double[] Regress(double[] Y, double[][] X)
         {
             return Regress(Y, X, null, out _, out _, out _, out _);
@@ -577,7 +581,15 @@ namespace TimeSeriesAnalysis
                     }
                 }
 
-                Rsq = RSquared(Y_modelled, Y, yIndToIgnore.ToList()) * 100;
+                if (yIndToIgnore != null)
+                {
+                    Rsq = RSquared(Y_modelled, Y, yIndToIgnore.ToList()) * 100;
+                }
+                else
+                {
+                    Rsq = RSquared(Y_modelled, Y) * 100;
+                }
+
 
 /*
                 // uncertainty estimation
@@ -612,7 +624,7 @@ namespace TimeSeriesAnalysis
                 }*/
                 return Vec<double>.Concat(regression.Weights, regression.Intercept);
             }
-            catch 
+            catch(Exception e) 
             {
                 return null;
             }
@@ -913,7 +925,9 @@ namespace TimeSeriesAnalysis
 
         }
 
-        ///<summary>
+
+
+        /// <summary>
         /// R-squared 
         /// R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent 
         /// variable that's explained by an independent variable or variables in a regression model. 
@@ -921,22 +935,24 @@ namespace TimeSeriesAnalysis
         /// dependent variable, R-squared explains to what extent the variance of one variable explains the
         /// variance of the second variable. So, if the R2 of a model is 0.50, then approximately 
         /// half of the observed variation can be explained by the model's inputs.
-        /// 
         /// </summary>
-
-        public static double RSquared(double[] array1, double[] array2, List<int> indToIgnoreExt=null)
+        /// <param name="vector1">first vector</param>
+        /// <param name="vector2">second vector</param>
+        /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
+        /// <returns>R2 squared, a value between -1 and 1. If an error occured,Double.PositiveInfinity is returned </returns>
+        public static double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt=null)
         {
-            if (array1 == null || array2 == null)
+            if (vector1 == null || vector2 == null)
                 return Double.PositiveInfinity;
 
-            double[] x_mod_int = new double[array1.Length];
-            double[] x_meas_int = new double[array2.Length];//
-            array1.CopyTo(x_mod_int, 0);
-            array2.CopyTo(x_meas_int, 0);
+            double[] x_mod_int = new double[vector1.Length];
+            double[] x_meas_int = new double[vector2.Length];//
+            vector1.CopyTo(x_mod_int, 0);
+            vector2.CopyTo(x_meas_int, 0);
 
             // protect r-squared from -9999 values.
-            List<int> minus9999ind = FindValues(array2, nanValue, TimeSeriesAnalysis.VectorFindValueType.Equal);
-            List<int> nanind = FindValues(array1, Double.NaN, TimeSeriesAnalysis.VectorFindValueType.NaN);
+            List<int> minus9999ind = FindValues(vector2, nanValue, TimeSeriesAnalysis.VectorFindValueType.Equal);
+            List<int> nanind = FindValues(vector1, Double.NaN, TimeSeriesAnalysis.VectorFindValueType.NaN);
             List<int> indToIgnoreInt = minus9999ind.Union(nanind).ToList();
 
             List<int> indToIgnore;

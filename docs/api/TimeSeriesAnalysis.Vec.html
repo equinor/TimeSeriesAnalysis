@@ -1493,7 +1493,7 @@ i.e. of the &quot;other vectors</p>
   
   <a id="TimeSeriesAnalysis_Vec_Regress_" data-uid="TimeSeriesAnalysis.Vec.Regress*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____" data-uid="TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][])">Regress(Double[], Double[][])</h4>
-  <div class="markdown level1 summary"><p>returns the parameters which best regress the two-dimensional array X into the vector Y. returns null if regression fails.</p>
+  <div class="markdown level1 summary"><p>Linear regression: Fit a linear model to Y based on inputs X</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1513,12 +1513,14 @@ i.e. of the &quot;other vectors</p>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">Y</span></td>
-        <td></td>
+        <td><p>one-dimensional vector/array of output paramters y that is to be modelled</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span>[][]</td>
         <td><span class="parametername">X</span></td>
-        <td></td>
+        <td><p>two-dimensonal array of input vectors X that are the inputs</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1533,7 +1535,8 @@ i.e. of the &quot;other vectors</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td></td>
+        <td><p>returns the parameters(one for each column in X and a bias term) which best regress the two-dimensional array X into the vector Y. Returns null if regression fails.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1747,7 +1750,7 @@ half of the observed variation can be explained by the model's inputs.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double RSquared(double[] array1, double[] array2, List&lt;int&gt; indToIgnoreExt = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static double RSquared(double[] vector1, double[] vector2, List&lt;int&gt; indToIgnoreExt = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1761,18 +1764,21 @@ half of the observed variation can be explained by the model's inputs.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">array1</span></td>
-        <td></td>
+        <td><span class="parametername">vector1</span></td>
+        <td><p>first vector</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">array2</span></td>
-        <td></td>
+        <td><span class="parametername">vector2</span></td>
+        <td><p>second vector</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
         <td><span class="parametername">indToIgnoreExt</span></td>
-        <td></td>
+        <td><p>optionally: indices to be ignored(for instance bad values)</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1787,7 +1793,8 @@ half of the observed variation can be explained by the model's inputs.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td></td>
+        <td><p>R2 squared, a value between -1 and 1. If an error occured,Double.PositiveInfinity is returned</p>
+</td>
       </tr>
     </tbody>
   </table>
