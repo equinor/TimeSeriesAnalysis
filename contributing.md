@@ -21,6 +21,12 @@ appreciated
 
 It will always be possible to add more functionality to the PID-controller, to accomodate different types of advanced control that it may not currently support.
 
+### Benchmarking and academic comparisons
+
+If you would like to compare and benchmar other methods in this project, such as the PID-controller or system identification, 
+ that would be much appreciated (even if the other methods you tried appear to be better). For academic use, this project could be used as a reference
+ for academics who are developing their own methods. 
+
 ### Bugfixes
 
 Any bugs you may find, you are encouraged to report using our issue tracker, and if you can propose a fix, that is much apperciatd

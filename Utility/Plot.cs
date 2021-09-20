@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis.Utility
     public class Plot
     {
         //TODO: this is not general - consider pointing to a virtual folder.
-        const string plotDataPath = @"C:\Appl\ProcessDataFramework\www\plotly\Data\";
+        const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data\";
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyPath = @"localhost\plotly\index.html";
 

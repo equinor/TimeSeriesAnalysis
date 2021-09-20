@@ -125,7 +125,8 @@ namespace TimeSeriesAnalysis.UnitTests
             Assert.Less(Math.Abs(1 - b[0]), 0.001);
             Assert.Less(Math.Abs(2 - b[1]), 0.001);
         }
-
+        
+        /*
         [Test]
         public void Regress_SingularMatrixCaught()
         {
@@ -135,16 +136,7 @@ namespace TimeSeriesAnalysis.UnitTests
             double[][] X = { X1, X2 };
             double[] b = Vec.Regress(Y, X);
         }
-
-        [Test]
-        public void Regress_RankDeficient()
-        {
-            double[] Y = { 1, 0, 1, 0 };
-            double[] X1 = { 1, 0, 1, 0 };
-            double[] X2 = { 0, 0, 0, 0 };
-            double[][] X = { X1, X2 };
-            double[] b = Vec.Regress(Y, X);
-        }
+        */
 
 
         [Test]

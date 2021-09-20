@@ -41,9 +41,7 @@ namespace TimeSeriesAnalysis.Utility
         {
             nSignals++;
             double a;
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
             double filteredSignal= signal;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
             if (FilterTc_s < 0.4 * this.timeBase_s)
                 a = 0;// (*/ if cutoff frequency is set close to sampling freq, the filter will fail fail - to - safe and just drop filtering*)
             else

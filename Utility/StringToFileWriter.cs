@@ -25,10 +25,12 @@ namespace TimeSeriesAnalysis.Utility
             public StringToFileWriter(string filename)
             {
                 memStream = new System.IO.MemoryStream();
-                //sw = new StreamWriter(memStream, Encoding.GetEncoding(1252));
-                sw = new StreamWriter(memStream, localEncoding);
-                sw.NewLine = "\r\n";
-                file = filename;
+            //sw = new StreamWriter(memStream, Encoding.GetEncoding(1252));
+            sw = new StreamWriter(memStream, localEncoding)
+            {
+                NewLine = "\r\n"
+            };
+            file = filename;
             }
 
             public StringToFileWriter(string filename, Encoding encoding)

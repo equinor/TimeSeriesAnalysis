@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Setting up plots | TimeSeriesAnalysis reference documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Setting up plots | TimeSeriesAnalysis reference documentation ">
+    <meta name="generator" content="docfx 2.58.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="setting-up-plots">Setting up plots</h2>
+
+<p>If you have set up plotting correctly, you should be able to run the &quot;PlotUnitTests&quot; test from the Test Explorer in Visual Studio and plots should appear in a new browser window.</p>
+<h3 id="chrome">Chrome</h3>
+<p>Currently, plotting requires Chrome,and the project expects Chrome to be installed in the folder <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code>.</p>
+<h3 id="running-a-local-http-server">Running a local HTTP-server</h3>
+<p>In Windows, if you are not already running a http-server, the easiest way to install one may be to install
+<code>Internet Information Services(IIS)</code>.
+This is done from <code>Control Panel-&gt;Windows Features</code> and selecting <code>Internet information Services</code> in the menu that appears (requires Administrator priveleges).</p>
+<p>If setting up a new server, it is advantageous to map the folder <code>c:\inetpub</code>.</p>
+<h3 id="serving-up-the-plotly-folder">Serving up the &quot;plotly&quot; folder</h3>
+<p>When running a local http-server for development, you will need to add the folder &quot;plotly&quot; to it.
+The preferable way to to this is to add a symbolic link to the <code>TimeSeriesAnalysis</code> folder rather than copying files, to allow for version control.</p>
+<p>Suppose that your <code>TimeSeriesAnalysis</code> source code is stored in <code>C:\appl\source\TimeSeriesAnalysis</code>, and that you are running an http-sever that is hosting
+the folder <code>C:\inetpub</code> to your <code>localhost</code>.</p>
+<p><em>In Windows</em>: Start a <code>command prompt</code>(cmd.exe) session in <code>Windows</code> with <strong>administrator privileges</strong> and give the following command:</p>
+<p><code>mklink /D c:\inetpub\wwwroot\plotly C:\appl\source\TimeSeriesAnalysis\www\plotly</code></p>
+<h3 id="linking-up-the-plotlydata-folder">Linking up the &quot;plotly/data&quot; folder</h3>
+<p>If your http-server is mapping &quot;c:\inetpub&quot;, then you will not need to do this step.
+<code>TimeSeriesAnalysis</code> will write data into <code>C:\inetpub\plotly\Data</code> and it will thus be
+found by the javascript browser-side code and run to display your plots.</p>
+<p><em>If</em> you are serving up another folder [PathXYZ] on your computer to localhost, and do not want to change this,
+you will have to make a symoblic link like so:</p>
+<p><code>mklink /D C:\inetpub\wwwroot\plotly\Data C:\[PathXYZ]\plotly\Data</code></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -47,7 +47,7 @@ namespace TimeSeriesAnalysis.Utility
         int nFatalErrors;
         int nErrors;
         int nWarnings;
-        int nInfo;
+      //  int nInfo;
 
         private string loggDir                 = "log";
         private const  string loggName         = "ParserFeedback";
@@ -63,7 +63,6 @@ namespace TimeSeriesAnalysis.Utility
 
         private List<ParserFeedbackLogLine> logList;
         private string[] caseArray;
-        private string[] eventArray;
 
         public ParserFeedback(bool doOutputAlsoToConsole = false)
         {
@@ -145,15 +144,7 @@ namespace TimeSeriesAnalysis.Utility
                 commonHTMLFile.WriteLine("<h1>\'" + caseName.Trim() + "\' case</h1>");
                 commonHTMLFile.WriteLine("<iframe src=\"" + loggName + "_" + caseName.Trim() + ".txt\"></iframe>\r\n");
             }
-            if(eventArray != null)
-            {
-                foreach (string eventName in eventArray)
-                {
-                    string parserFeedbackFileName = "..\\"+ eventName.Trim() + "\\ParserFeedback.txt";
-                    commonHTMLFile.WriteLine("<h1>\'" + eventName.Trim() + "\' event</h1>");
-                    commonHTMLFile.WriteLine("<iframe src=\"" + parserFeedbackFileName + "\"></iframe>\r\n");
-                }
-            }
+
             commonHTMLFile.Write(
                     "</body>\r\n" +
                     "</html>\r\n"
@@ -186,8 +177,10 @@ namespace TimeSeriesAnalysis.Utility
                     System.IO.File.Move(fullLogFileName, fullOldLogFileName);
                 commonFilestream = new FileStream(fullLogFileName, FileMode.Create, FileAccess.Write,
                 System.IO.FileShare.ReadWrite);
-                commonLogFile = new System.IO.StreamWriter(commonFilestream);
-                commonLogFile.AutoFlush = true;
+                commonLogFile = new System.IO.StreamWriter(commonFilestream)
+                {
+                    AutoFlush = true
+                };
             }
             catch (Exception e)
             {
@@ -223,8 +216,10 @@ namespace TimeSeriesAnalysis.Utility
                     System.IO.File.Move(fullLogFileName, fullOldLogFileName);
                 caseFilestream = new FileStream(fullLogFileName, FileMode.Create, FileAccess.Write,
                 System.IO.FileShare.ReadWrite);
-                caseLogFile = new System.IO.StreamWriter(caseFilestream);
-                caseLogFile.AutoFlush = true;
+                caseLogFile = new System.IO.StreamWriter(caseFilestream)
+                {
+                    AutoFlush = true
+                };
             }
             catch (Exception e)
             {
@@ -237,7 +232,6 @@ namespace TimeSeriesAnalysis.Utility
             nFatalErrors    = 0;
             nErrors         = 0;
             nWarnings       = 0;
-            nInfo           = 0;
         }
 
         private void StoreMessage(string msgString, ParserfeedbackMessageLevel msgLevel)
@@ -336,7 +330,6 @@ namespace TimeSeriesAnalysis.Utility
         ///</summary>
         public void AddInfo(string message)
         {
-            nInfo++;
             StoreMessage("Info:"+message, ParserfeedbackMessageLevel.info);
         }
 

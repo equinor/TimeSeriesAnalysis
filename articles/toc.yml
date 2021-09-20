@@ -1,3 +1,14 @@
+
+- name: Getting Started
+  href: getting_started.md
+  items:
+        - name: Setting up plots
+          href: plot_setup.md
+        - name: Setting up NuGet
+          href: nuget_setup.md
+        - name: Setting up and running unit tests
+          href: unit_tests.md
+
 - name: Setting up github as an in-house local nuget repository
   href: nuget.md
 

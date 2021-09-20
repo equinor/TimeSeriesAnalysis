@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis
     /// </summary>
     public static class Vec
     {
-        private static double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
+        private static readonly double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
 
         ///<summary>
         /// All checks for NaN will test both for Double.IsNan and if value== a specific "nan" value (-9999)
@@ -624,7 +624,7 @@ namespace TimeSeriesAnalysis
                 }*/
                 return Vec<double>.Concat(regression.Weights, regression.Intercept);
             }
-            catch(Exception e) 
+            catch 
             {
                 return null;
             }

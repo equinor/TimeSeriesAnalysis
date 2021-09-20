@@ -7,3 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>", Scope = "member", Target = "~M:TimeSeriesAnalysis.UnitTests.MatrixUnitTests.ReplaceRow")]
 [assembly: SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>", Scope = "member", Target = "~M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[][]@,System.Double[]@,System.Double@)~System.Double[]")]
+[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:TimeSeriesAnalysis.Utility.ParserFeedback.#ctor(System.Boolean)")]
+[assembly: SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>", Scope = "member", Target = "~M:TimeSeriesAnalysis.Utility.ParserFeedback.#ctor(System.Boolean)")]
+[assembly: SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>", Scope = "member", Target = "~M:TimeSeriesAnalysis.Utility.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)~System.Double")]
