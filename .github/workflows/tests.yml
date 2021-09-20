@@ -20,4 +20,4 @@ jobs:
             - name: Look for nuget global directory
               run: dir C:\Users\runneradmin\.nuget\packages\nunit.consolerunner            
             - name: Run tests
-              run: C:\Users\runneradmin\.nuget\packages\nunit.consolerunner\3.12.0\tools\nunit3-console.exe \bin\Debug\TimeSeriesAnalysis.dll
+              run: C:\Users\runneradmin\.nuget\packages\nunit.consolerunner\3.12.0\tools\nunit3-console.exe D:\a\TimeSeriesAnalysis\TimeSeriesAnalysis\bin\Debug\TimeSeriesAnalysis.dll
