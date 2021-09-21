@@ -8,7 +8,8 @@ namespace TimeSeriesAnalysis.Utility
 {
 
     ///<summary>
-    /// Numerical low-pass filtering of time-series
+    /// Numerical low-pass filtering of time-series.
+    /// This filter is in a simple recursive form that is suitable for implementation in a control system.
     ///</summary>
     public class LowPass
     {
@@ -16,8 +17,6 @@ namespace TimeSeriesAnalysis.Utility
         private double prevFilteredSignal;
         private double prevFilteredSignalOrder2;
         private Int64 nSignals = 0;
-        
-        
 
         /// <summary>
         /// Constructor

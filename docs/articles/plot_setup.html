@@ -80,6 +80,14 @@
 <h2 id="setting-up-plots">Setting up plots</h2>
 
 <p>If you have set up plotting correctly, you should be able to run the &quot;PlotUnitTests&quot; test from the Test Explorer in Visual Studio and plots should appear in a new browser window.</p>
+<p>For plotting to work you need four prerequisites</p>
+<ul>
+<li>Chrome must installed in <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code></li>
+<li>you need to be running a local http-server, with a subfolder <code>plotly</code> that contains the javscript files in the &quot;www\plotly&quot; subfolder in the TimeSeriesAnalysis repository</li>
+<li>the folder <code>C:\inetpub\wwwroot\plotly\Data</code> needs to exist on your computer, as data will be written in here</li>
+<li>the front-end javascript code needs to find the time-series data in csv-files in its <code>localhost\plotly\data</code> folder.</li>
+<li>(if your http-server is serving antoher folder than <code>C:\inetpub\wwwroot\</code> up on <code>localhost</code>, you need to use <code>mklink` to link this folder with the http-server's </code>[root]\plotly\data`` folder  )</li>
+</ul>
 <h3 id="chrome">Chrome</h3>
 <p>Currently, plotting requires Chrome,and the project expects Chrome to be installed in the folder <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code>.</p>
 <h3 id="running-a-local-http-server">Running a local HTTP-server</h3>
@@ -94,13 +102,23 @@ The preferable way to to this is to add a symbolic link to the <code>TimeSeriesA
 the folder <code>C:\inetpub</code> to your <code>localhost</code>.</p>
 <p><em>In Windows</em>: Start a <code>command prompt</code>(cmd.exe) session in <code>Windows</code> with <strong>administrator privileges</strong> and give the following command:</p>
 <p><code>mklink /D c:\inetpub\wwwroot\plotly C:\appl\source\TimeSeriesAnalysis\www\plotly</code></p>
-<h3 id="linking-up-the-plotlydata-folder">Linking up the &quot;plotly/data&quot; folder</h3>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Plotting using the<code>Plot</code> class will cause browser windows to open on <code>localhost\plotly\index.html</code>. This html-file expects to find javscript files
+<code>CsvToTable.js</code>, <code>plotlyInterface.js</code> and <code>vendor\plotly.min.js</code>. <code>vendor\plotly.min.js</code> is obtained from <a href="https://plotly.com/javascript/getting-started/">https://plotly.com/javascript/getting-started/</a>
+and you can swap the given file for other versions if needed.</p>
+</div>
+<h3 id="if-necessary-localhostplotlydata-needs-to-symbolically-linked-to--cinetpubwwwplotlydata-folder">If necessary <code>localhost\plotly\data</code> needs to symbolically linked to  <code>c:/inetpub/www/plotly/data</code> folder</h3>
 <p>If your http-server is mapping &quot;c:\inetpub&quot;, then you will not need to do this step.
 <code>TimeSeriesAnalysis</code> will write data into <code>C:\inetpub\plotly\Data</code> and it will thus be
 found by the javascript browser-side code and run to display your plots.</p>
 <p><em>If</em> you are serving up another folder [PathXYZ] on your computer to localhost, and do not want to change this,
 you will have to make a symoblic link like so:</p>
 <p><code>mklink /D C:\inetpub\wwwroot\plotly\Data C:\[PathXYZ]\plotly\Data</code></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>It is also possible to pass a custom <code>data</code> folder path to <code>Plot.FromList</code>.</p>
+</div>
 </article>
           </div>
           

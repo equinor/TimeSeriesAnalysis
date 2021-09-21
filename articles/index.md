@@ -12,21 +12,21 @@ It handles typical tasks related to time-series analysis such as
 - plotting times-series (in a browser window).
 
 **The aim of this library is to make the process of working with time series as easy as possible, 
-and the resulting workflow should be comparable to working in *Matlab*, *Python* or *R*.**
+and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*.**
 
 This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform 
-operations like adding, subtracting, multiplying with vectors and matrices, as well as typicall pre-processing tasks like selecting
+operations like adding, subtracting, multiplying with vectors and matrices, as well as typical pre-processing tasks like selecting
 subsets of a larger dataset, removing spurious values, min/max range limits etc. 
 
 The result is a that tasks that you would normally do in for instance *Matlab* due to the perceived simplicity offered by the language, can now be 
 accomplished in about the same amount of code in *C#/.NET*. So the resulting code is in many was just as simple.
 
 The benefit of doing this in *C#/.NET* 
-- that you get the benefits of a compiled language,prototype code is written in a lanugage suitable for implementation, (unlike *Matlab* scripts). That means you avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
+- that you get the benefits of a compiled language,prototype code is written in a language suitable for implementation, (unlike *Matlab* scripts). That means you avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
 - the resulting code does not required a paid license to run, anybody can download a free copy of *VS Code* and re-compile the code, 
 without requiring a working license server, a correct number of licenses or enough licenses. 
-- you can easily extend your code to for instance run in paralell using the ``paralell.for`` functionaliy freely available in .NET, wheres this functionality
-may require a very expensive toolbox in *Matlab* (*Paralell processing toolbox*).
+- you can easily extend your code to for instance run in parallel using the ``paralell.for`` functionality freely available in .NET, wheres this functionality
+may require a very expensive toolbox in *Matlab* (*Parallel processing toolbox*).
 
 
 > [!Note]
@@ -46,8 +46,8 @@ Plotting supports
 - ability to hover over trends to inspect values
 - currently up to six trends can be plotted on a page in total(this can be increased if there is interest)
 
-The plotting leverages the javascript framework [plot.ly](https://plotly.com/javascript/). Some javascript extensions have been made to this toolbox to allow
-time-series to seemlessly be exported from your .NET code to the browser.
+The plotting leverages the JavaScript framework [plot.ly](https://plotly.com/javascript/). Some JavaScript extensions have been made to this toolbox to allow
+time-series to seamlessly be exported from your .NET code to the browser.
 
 Consider the unit-test ``PlotUnitTests.SubplotPositionWorksOk()``:
 
@@ -71,9 +71,9 @@ public void SubplotPositionWorksOk()
 
 The above code generates the following interactive plot in a Chrome-window(this window pops up automatically):
 
-![Example plot](articles/images/example_plotting.png)
+![Example plot](images/example_plotting.png)
 
-This plot has two *subplots*(one top, one buttom). Each subplot has both a left and a right axis: 
+This plot has two *subplots*(one top, one bottom). Each subplot has both a left and a right axis: 
 the top subplot has axes ``y1`` and ``y2`` and the bottom subplot has axes ``y3`` and ``y4``. 
 
 By using the top left menu, it is possible to *zoom* and *drag* the plots, and the two subplots are *linked*,
@@ -84,33 +84,6 @@ By clicking on the variable names in the *legend* on the top left, it is possibl
 
 > [!Note]
 > Multiple plots will cause Chrome to display them in multiple tabs. A large number of figures can be generated and sorted in this way. 
-
-
-## Install instructions: in-browser time-series plotting
-
-*For time-series plot to work, you will need to run a http-server locally on your machine.*
-
-The plotting in this package is based on the javacsript plotting library plot.ly., a copy of the bundled minified javascript plot.ly package 
-``plotly.min.js`` is included for convenience, but other versions can also be downdloaded from the vendor site.
-
-The repo includes a folder "www\plotly" and for plotting to work you need to run an http-server such as *Internet Information Services(ISS)* that
-in your broser serves up a folder on your computer as "localhost". 
-
-Copy the folder ``plotly`` into the folder that for instance IIS is serveing where it can live along side other pages you may be serving up),
-such as "c:\inetpub\plotly" if  "c:\inetpub" is the folder that IIS is serving.
-
-Note that this repo includes some custom javascript code which wraps some ``plot.ly`` timeseries plotting functionality, so that a "Plot(Var1)" in C# can trigger
-a browser to open with a time-series plot of "Var1". 
-
-
-Plotting works by launching a browser(chrome) and directing it to ``http://localhost/plotly/index.html``, but all the low-level details are handled by the Plot class for you.
-
-
-
-> [!Note]
-> You can use any http-server you like to serve up the javascript plotting files, and these files can be served from a 
-> http-server that you may already be running. Node.js for instance could be used in stead of IIS, many other alternatives exist.
-> If you do not already run a http-server locally on your windows-machine,IIS may be easy to start with as it is bundled with your operating system. 
 
 
 

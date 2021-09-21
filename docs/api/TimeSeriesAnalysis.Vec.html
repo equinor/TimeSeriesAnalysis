@@ -1396,13 +1396,13 @@ i.e. of the &quot;other vectors</p>
   
   
   <a id="TimeSeriesAnalysis_Vec_Rand_" data-uid="TimeSeriesAnalysis.Vec.Rand*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Rand_System_Int32_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double)">Rand(Int32, Double, Double)</h4>
-  <div class="markdown level1 summary"><p>returns an array of size N of random numbers, the range of random numbers [0,1](can be overridden)</p>
+  <h4 id="TimeSeriesAnalysis_Vec_Rand_System_Int32_System_Double_System_Double_System_Nullable_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double,System.Nullable{System.Int32})">Rand(Int32, Double, Double, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Create a vector of random numbers</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Rand(int N, double minValue = 0, double maxValue = 1)</code></pre>
+    <pre><code class="lang-csharp hljs">public static double[] Rand(int N, double minValue = 0, double maxValue = 1, int? seed = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1417,17 +1417,26 @@ i.e. of the &quot;other vectors</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">N</span></td>
-        <td></td>
+        <td><p>the number of samples of the returned array</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">minValue</span></td>
-        <td></td>
+        <td><p>lower end of random number range</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">maxValue</span></td>
-        <td></td>
+        <td><p>higher end of random number range</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">seed</span></td>
+        <td><p>optionally, give in a seed number, this makes random sequence repeatable</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1442,7 +1451,8 @@ i.e. of the &quot;other vectors</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td></td>
+        <td><p>an array of size N of random numbers between minValue and maxValue</p>
+</td>
       </tr>
     </tbody>
   </table>

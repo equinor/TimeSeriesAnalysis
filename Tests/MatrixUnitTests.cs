@@ -55,7 +55,7 @@ namespace TimeSeriesAnalysis.UnitTests
             matrix = Matrix.ReplaceColumn(matrix, 1, new double[] { 10, 20,30 });
             Assert.AreEqual(new double[] { 10, 20,30 }, matrix.GetColumn(1));
 
-            matrix = Matrix.ReplaceColumn(matrix, 4 , new double[] { 10, 20,30 });
+       //     matrix = Matrix.ReplaceColumn(matrix, 4 , new double[] { 10, 20,30 });
 
         }
 

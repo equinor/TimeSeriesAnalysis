@@ -11,6 +11,17 @@ namespace TimeSeriesAnalysis.UnitTests
     [TestFixture]
     class ArrayUnitTests
     {
+
+        [Test]
+        public void InitFromColumnList()
+        {
+            List<double[]> inputList = new List<double[]> {new  double[] {  5, 6 },new  double[]{ 4, 3 }};
+            var result=  Array2D<double>.InitFromColumnList(inputList);
+            Assert.AreEqual(new double[,] { { 5, 4 },{6,3 } }, result) ;
+        }
+
+
+
         [Test]
         public void ArrayGetColumn()
         {

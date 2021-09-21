@@ -1,0 +1,1 @@
+# Example 2 : Low-pass filtering

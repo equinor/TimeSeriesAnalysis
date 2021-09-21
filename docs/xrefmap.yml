@@ -110,6 +110,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetRow
   nameWithType: Array2D<T>.GetRow
   nameWithType.vb: Array2D(Of T).GetRow
+- uid: TimeSeriesAnalysis.Array2D`1.InitFromColumnList(System.Collections.Generic.List{`0[]})
+  name: InitFromColumnList(List<T[]>)
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_InitFromColumnList_System_Collections_Generic_List__0____
+  commentId: M:TimeSeriesAnalysis.Array2D`1.InitFromColumnList(System.Collections.Generic.List{`0[]})
+  name.vb: InitFromColumnList(List(Of T()))
+  fullName: TimeSeriesAnalysis.Array2D<T>.InitFromColumnList(System.Collections.Generic.List<T[]>)
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).InitFromColumnList(System.Collections.Generic.List(Of T()))
+  nameWithType: Array2D<T>.InitFromColumnList(List<T[]>)
+  nameWithType.vb: Array2D(Of T).InitFromColumnList(List(Of T()))
+- uid: TimeSeriesAnalysis.Array2D`1.InitFromColumnList*
+  name: InitFromColumnList
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_InitFromColumnList_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.InitFromColumnList
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.InitFromColumnList
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).InitFromColumnList
+  nameWithType: Array2D<T>.InitFromColumnList
+  nameWithType.vb: Array2D(Of T).InitFromColumnList
 - uid: TimeSeriesAnalysis.Array2D`1.Transpose(`0[0:,0:])
   name: Transpose(T[,])
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Transpose__0_0__0___
@@ -425,6 +443,160 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Matrix.ReplaceRow
   nameWithType: Matrix.ReplaceRow
+- uid: TimeSeriesAnalysis.SysId
+  name: TimeSeriesAnalysis.SysId
+  href: api/TimeSeriesAnalysis.SysId.html
+  commentId: N:TimeSeriesAnalysis.SysId
+  fullName: TimeSeriesAnalysis.SysId
+  nameWithType: TimeSeriesAnalysis.SysId
+- uid: TimeSeriesAnalysis.SysId.ProcessModel
+  name: ProcessModel
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html
+  commentId: T:TimeSeriesAnalysis.SysId.ProcessModel
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel
+  nameWithType: ProcessModel
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.#ctor(TimeSeriesAnalysis.SysId.ProcessModelParamters)
+  name: ProcessModel(ProcessModelParamters)
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel__ctor_TimeSeriesAnalysis_SysId_ProcessModelParamters_
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessModel.#ctor(TimeSeriesAnalysis.SysId.ProcessModelParamters)
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.ProcessModel(TimeSeriesAnalysis.SysId.ProcessModelParamters)
+  nameWithType: ProcessModel.ProcessModel(ProcessModelParamters)
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.#ctor*
+  name: ProcessModel
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel__ctor_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModel.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.ProcessModel
+  nameWithType: ProcessModel.ProcessModel
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.InitSim(System.Double)
+  name: InitSim(Double)
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_InitSim_System_Double_
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessModel.InitSim(System.Double)
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.InitSim(System.Double)
+  nameWithType: ProcessModel.InitSim(Double)
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.InitSim*
+  name: InitSim
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_InitSim_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModel.InitSim
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.InitSim
+  nameWithType: ProcessModel.InitSim
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double[])
+  name: IterateSimulation(Double[])
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_IterateSimulation_System_Double___
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double[])
+  name.vb: IterateSimulation(Double())
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double())
+  nameWithType: ProcessModel.IterateSimulation(Double[])
+  nameWithType.vb: ProcessModel.IterateSimulation(Double())
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation*
+  name: IterateSimulation
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_IterateSimulation_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation
+  nameWithType: ProcessModel.IterateSimulation
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.Simulate(System.Double[0:,0:],System.Nullable{System.Double})
+  name: Simulate(Double[,], Nullable<Double>)
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_Simulate_System_Double_0__0___System_Nullable_System_Double__
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessModel.Simulate(System.Double[0:,0:],System.Nullable{System.Double})
+  name.vb: Simulate(Double(,), Nullable(Of Double))
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.Simulate(System.Double[,], System.Nullable<System.Double>)
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessModel.Simulate(System.Double(,), System.Nullable(Of System.Double))
+  nameWithType: ProcessModel.Simulate(Double[,], Nullable<Double>)
+  nameWithType.vb: ProcessModel.Simulate(Double(,), Nullable(Of Double))
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.Simulate*
+  name: Simulate
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_Simulate_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModel.Simulate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.Simulate
+  nameWithType: ProcessModel.Simulate
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters
+  name: ProcessModelParamters
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html
+  commentId: T:TimeSeriesAnalysis.SysId.ProcessModelParamters
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters
+  nameWithType: ProcessModelParamters
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias
+  name: Bias
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_Bias
+  commentId: P:TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias
+  nameWithType: ProcessModelParamters.Bias
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias*
+  name: Bias
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_Bias_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias
+  nameWithType: ProcessModelParamters.Bias
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain
+  name: ProcessGain
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain
+  commentId: P:TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain
+  nameWithType: ProcessModelParamters.ProcessGain
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain*
+  name: ProcessGain
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain
+  nameWithType: ProcessModelParamters.ProcessGain
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm
+  name: ProcessGain_CurvatureTerm
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain_CurvatureTerm
+  commentId: P:TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm
+  nameWithType: ProcessModelParamters.ProcessGain_CurvatureTerm
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm*
+  name: ProcessGain_CurvatureTerm
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain_CurvatureTerm_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm
+  nameWithType: ProcessModelParamters.ProcessGain_CurvatureTerm
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s
+  name: TimeConstant_s
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeConstant_s
+  commentId: P:TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s
+  nameWithType: ProcessModelParamters.TimeConstant_s
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s*
+  name: TimeConstant_s
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeConstant_s_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s
+  nameWithType: ProcessModelParamters.TimeConstant_s
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s
+  name: TimeDelay_s
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeDelay_s
+  commentId: P:TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s
+  nameWithType: ProcessModelParamters.TimeDelay_s
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s*
+  name: TimeDelay_s
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeDelay_s_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s
+  nameWithType: ProcessModelParamters.TimeDelay_s
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.u0
+  name: u0
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_u0
+  commentId: P:TimeSeriesAnalysis.SysId.ProcessModelParamters.u0
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.u0
+  nameWithType: ProcessModelParamters.u0
+- uid: TimeSeriesAnalysis.SysId.ProcessModelParamters.u0*
+  name: u0
+  href: api/TimeSeriesAnalysis.SysId.ProcessModelParamters.html#TimeSeriesAnalysis_SysId_ProcessModelParamters_u0_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModelParamters.u0
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModelParamters.u0
+  nameWithType: ProcessModelParamters.u0
 - uid: TimeSeriesAnalysis.Utility
   name: TimeSeriesAnalysis.Utility
   href: api/TimeSeriesAnalysis.Utility.html
@@ -1690,12 +1862,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Mult
   nameWithType: Vec.Mult
-- uid: TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double)
-  name: Rand(Int32, Double, Double)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Rand_System_Int32_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.Vec.Rand(System.Int32, System.Double, System.Double)
-  nameWithType: Vec.Rand(Int32, Double, Double)
+- uid: TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double,System.Nullable{System.Int32})
+  name: Rand(Int32, Double, Double, Nullable<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Rand_System_Int32_System_Double_System_Double_System_Nullable_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double,System.Nullable{System.Int32})
+  name.vb: Rand(Int32, Double, Double, Nullable(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.Rand(System.Int32, System.Double, System.Double, System.Nullable<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.Rand(System.Int32, System.Double, System.Double, System.Nullable(Of System.Int32))
+  nameWithType: Vec.Rand(Int32, Double, Double, Nullable<Int32>)
+  nameWithType.vb: Vec.Rand(Int32, Double, Double, Nullable(Of Int32))
 - uid: TimeSeriesAnalysis.Vec.Rand*
   name: Rand
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Rand_

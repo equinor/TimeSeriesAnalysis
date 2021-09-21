@@ -14,6 +14,41 @@ namespace TimeSeriesAnalysis
     ///</summary>
     public class Array2D<T>
     {
+        /// <summary>
+        /// Initializes a 2D array from a list of arrays representing each column in the array
+        /// </summary>
+        /// <param name="columnList"></param>
+        /// <returns>null if list columnList dimensions do not match</returns>
+        static public T[,] InitFromColumnList(List<T[]> columnList)
+        {
+            int nColumns = columnList.Count;
+            int nRows    = columnList.ElementAt(0).Length;
+            for (int k = 1; k < columnList.Count; k++)
+            {
+                if (columnList.ElementAt(k).Length != nRows)
+                {
+                    return null;
+                }
+            }
+
+            T[,] retArray = new T[nRows,nColumns];
+
+            for (int curRow = 0; curRow < nRows; curRow++)
+                for (int curCol = 0; curCol < nColumns; curCol++)
+                { 
+                    retArray[curRow,curCol] = columnList.ElementAt(curCol).ElementAt(curRow);
+                }
+
+            return retArray;
+        }
+
+
+
+
+
+
+
+
 
         ///<summary>
         /// returns the column of the matrix with the given index

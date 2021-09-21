@@ -25,8 +25,8 @@ Also add the the url to the repository and some other info such as shown below:
 	<description>todo</description> 
 ```	
 
-* reccomend adding in information to the AssemblyInfo.cs before starting.
-* a personal acceess token xxxxxxx needs to be generated for your user in github,and needs access to "read:packages", 
+* recommend adding in information to the AssemblyInfo.cs before starting.
+* a personal access token xxxxxxx needs to be generated for your user in github,and needs access to "read:packages", 
 "write:packages" and "repo".organization access (authorize with SSO ) and then press "authorize"
 * create a nuget.config file that defines "github" as a nuget destination:
 

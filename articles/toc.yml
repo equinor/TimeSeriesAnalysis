@@ -1,16 +1,32 @@
 
+- name: Introduction
+  href: index.md
+
+
 - name: Getting Started
   href: getting_started.md
   items:
-        - name: Setting up plots
-          href: plot_setup.md
+
         - name: Setting up NuGet
           href: nuget_setup.md
         - name: Setting up and running unit tests
           href: unit_tests.md
+        - name: Setting up plots
+          href: plot_setup.md
 
-- name: Setting up github as an in-house local nuget repository
-  href: nuget.md
+- name: Code examples
+  href: examples.md
+  items:
+
+        - name: 1. A "hello world" example
+          href: ex_hello_world.md
+        - name: 2. Linear regression example
+          href: ex_linreg.md
+        - name: 3. Fitting a dynamic model to transient data example
+          href: ex_sysid.md
+        - name: 4. Simulating PID-control
+          href: ex_pid.md
+
 
 - name: Linear regression realistic example
   href: example_linreg.md

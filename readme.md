@@ -25,7 +25,8 @@ Dynamic simulators, control systems and estimators are almost exclusively implem
 
 ## Documentation: Getting started, code examples and api reference documentation
 
-<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>
+:red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>** :red_circle:
+
 
 ## Contributing
 This project welcomes contributions and suggestions. 

@@ -85,10 +85,11 @@
 the expected output. Thus, unit tests are worth studying even for users who do not intend to write or modify unit tests.</p>
 </div>
 <p>Unit tests are implemented using NUnit 3.
-In <code>Visual Studio</code> you shoudl be able to browse the unit tests in the winow <code>Tests&gt;&gt;Test Exploer</code>. In the <code>Test Explorer</code> window, pressing <code>Run All tests</code> should cause
+In <code>Visual Studio</code> you should be able to browse the unit tests in the window <code>Tests&gt;&gt;Test Explorer</code>. In the <code>Test Explorer</code> window, pressing <code>Run All tests</code> should cause
 all tests to turn <code>green</code>.</p>
-<p>In some cases, it may be that the tests appear greyed or or with a blue excalamation point beside them. That indicate an issue with the installation of the <code>Nunit3TestAdapter</code>
-package through nuget, which is required for integration NUnit with Visual Studio.</p>
+<p>In some cases, it may be that the tests appear grayed or or with a blue exclamation point beside them. That indicate an issue with the installation of the <code>Nunit3TestAdapter</code>
+package through NuGet, which is required for integration NUnit with Visual Studio.</p>
+<p><img src="images/unit_test.png" alt="Test Explorer"></p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>If you want to submit a pull request for new functionality, writing a new a unit test is required.</p>
@@ -96,7 +97,7 @@ package through nuget, which is required for integration NUnit with Visual Studi
 <div class="NOTE">
 <h5>Note</h5>
 <p>Note that some tests related to plotting are <code>Explicit</code>, and will need be run one-by-one. This has been done this way as this tests require manual inspection, and to avoid
-drowing the user in plots when re-running unit tests.</p>
+drowning the user in plots when re-running unit tests.</p>
 </div>
 </article>
           </div>

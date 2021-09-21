@@ -483,12 +483,25 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        /// returns an array of size N of random numbers, the range of random numbers [0,1](can be overridden) 
-        ///</summary>
-        public static double[] Rand(int N, double minValue = 0, double maxValue = 1)
+        /// <summary>
+        /// Create a vector of random numbers
+        /// </summary>
+        /// <param name="N">the number of samples of the returned array</param>
+        /// <param name="minValue">lower end of random number range</param>
+        /// <param name="maxValue">higher end of random number range</param>
+        /// <param name="seed">optionally, give in a seed number, this makes random sequence repeatable</param>
+        /// <returns>an array of size N of random numbers between minValue and maxValue </returns>
+        public static double[] Rand(int N, double minValue = 0, double maxValue = 1,int? seed=null)
         {
-            Random rand = new Random();
+            Random rand = null;
+            if (seed.HasValue)
+            {
+                rand = new Random(seed.Value);
+            }
+            else
+            {
+                rand = new Random();
+            }
 
             double[] ret = new double[N];
             for (int i = 0; i < N; i++)
@@ -829,7 +842,7 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (!IsNaN(vec[i]))
+                    if (IsNaN(vec[i]))
                         indices.Add(i);
                 }
             }

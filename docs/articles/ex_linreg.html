@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Nuget package upload how-to | TimeSeriesAnalysis reference documentation </title>
+    <title>Example 2 : Linear regression example | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Nuget package upload how-to | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Example 2 : Linear regression example | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,76 +77,76 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="nuget-package-upload-how-to">Nuget package upload how-to</h1>
+<h1 id="example-2--linear-regression-example">Example 2 : Linear regression example</h1>
 
-<p>This is  .NET framework 4.6.1 class library published to github packages, by means of the following tutorial:
-<a href="https://github.community/t/publish-net-framework-nuget-package/3077/2">https://github.community/t/publish-net-framework-nuget-package/3077/2</a>
-and here:
-<a href="https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-msbuild">https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-msbuild</a></p>
-<p>Note that the steps here are somewhat different to most online tutorials which target .NET Core and use the &quot;dotnet&quot; CLI instead of &quot;nuget&quot; CLI.</p>
-<p>For future reference, this is the steps followed:</p>
-<ul>
-<li><p>make sure the classes you want to give access to are public.</p>
-</li>
-<li><p>the description that will be shown in nuget when downloading is pulled from <description></description> in the .csproj file beneath <propertygroup>. Consider adding it.
-Also add the the url to the repository and some other info such as shown below:<p>
-</propertygroup></li>
-</ul>
-<pre><code>    &lt;RepositoryUrl&gt;https://github.com/equinor/TimeSeriesAnalysis&lt;/RepositoryUrl&gt;
-    &lt;RepositoryType&gt;git&lt;/RepositoryType&gt;
-    &lt;GeneratePackageOnBuild&gt;true&lt;/GeneratePackageOnBuild&gt;
-    &lt;PackageOutputPath&gt;bin\debug\&lt;/PackageOutputPath&gt;
-    &lt;Version&gt;1.0.0&lt;/Version&gt;
-    &lt;Authors&gt;Steinar Elgsæter&lt;/Authors&gt;
-	&lt;description&gt;todo&lt;/description&gt; 
+<p>In this example, a synthetic dataset is created with the help of helper methods from <code>TimeSeriesAnalysis</code>,
+then <code>Vec.Regress</code> is used to do linear regression on the dataset to determine the parameters which
+best describe the relationship between inputs <code>u1,u2,u3</code> and output <code>y</code>.
+<code>Vec.Rand</code> is used to add noise to the dataset, <code>Vec.Mult</code> is used to multiply vector and scalars</p>
+<p>The code:</p>
+<pre><code>	[Test, Explicit]
+	public void ex2_linreg()
+	{
+		double[] true_gains = {1,2,3};
+		double true_bias = 5;
+		double noiseAmplitude = 0.1;
+
+		double[] u1 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 11),
+			Vec&lt;double&gt;.Fill(1, 50));
+		double[] u2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(1, 31),
+			Vec&lt;double&gt;.Fill(2, 30));
+		double[] u3 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(1, 21),
+			Vec&lt;double&gt;.Fill(-1, 40));
+
+		double[] y = new double[u1.Length];
+		double[] noise = Vec.Mult(Vec.Rand(u1.Length, -1,1,0),noiseAmplitude);
+		for (int k = 0; k &lt; u1.Length; k++)
+		{
+			y[k] = true_gains[0] * u1[k] 
+				+ true_gains[1] * u2[k] 
+				+ true_gains[2] * u3[k] 
+				+ true_bias + noise[k]; 
+		}
+
+		Plot.FromList(new List&lt;double[]&gt; { y, u1, u2, u3 }, 
+			new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot;, &quot;y3=u3&quot; }, 1);
+
+		double[][] U = new double[][] { u1, u2, u3 };
+
+		double[] estimated_parameters = Vec.Regress(y, U,null, out _, 
+			out double[] y_modelled, out double Rsq);
+
+		TestContext.WriteLine(Vec.ToString(estimated_parameters,3));
+		TestContext.WriteLine(SignificantDigits.Format(Rsq,3));
+
+		Plot.FromList(new List&lt;double[]&gt;() { y, y_modelled },
+			new List&lt;string&gt;() { &quot;y1=y_meas&quot;, &quot;y1=y_mod&quot; }, 1);
+	}
+
 </code></pre>
-<ul>
-<li>recommend adding in information to the AssemblyInfo.cs before starting.</li>
-<li>a personal access token xxxxxxx needs to be generated for your user in github,and needs access to &quot;read:packages&quot;,
-&quot;write:packages&quot; and &quot;repo&quot;.organization access (authorize with SSO ) and then press &quot;authorize&quot;</li>
-<li>create a nuget.config file that defines &quot;github&quot; as a nuget destination:</li>
-</ul>
-<pre><code class="lang-&lt;?xml">	&lt;configuration&gt;
-		&lt;packageSources&gt;
-			&lt;clear /&gt;
-			&lt;add key=&quot;github&quot; value=&quot;https://nuget.pkg.github.com/equinor/index.json&quot; /&gt;
-			&lt;add key=&quot;nuget&quot; value=&quot;https://api.nuget.org/v3/index.json&quot; /&gt;
-		&lt;/packageSources&gt;
-	 &lt;packageSourceCredentials&gt;
-			&lt;github&gt;
-				&lt;add key=&quot;Username&quot; value=&quot;yourgithubuser&quot; /&gt;
-				&lt;add key=&quot;ClearTextPassword&quot; value=xxxxxxx&quot; /&gt;
-			&lt;/github&gt;
-		&lt;/packageSourceCredentials&gt;
-&lt;/configuration&gt;
-</code></pre>
-<ul>
-<li><p>pacakges.nuget needs to be moved into project file *.csproj as <packagereference> items instead<p>
-</packagereference></li>
-<li><p>NuGet.Build.Tasks.Pack need to be added as a pacakage to project</p>
-</li>
-<li><p>need to download nuget.exe and use it to push generated .nupkg file</p>
-</li>
-<li><p>then to publish put the following two commands in a publish.bat file:</p>
-</li>
-</ul>
-<pre><code>	nuget setapikey xxxxxxxx -source &quot;github&quot;
-	nuget push bin\Debug\*.nupkg -source &quot;github&quot; -SkipDuplicate
-	pause
-</code></pre>
-<ul>
-<li><p>check that the script concludes with &quot;Your package was pushed&quot; and no error messages in yellow or red.</p>
-</li>
-<li><p>notice that you need to iterate the version number in your .csproj file every time you push a new version of the package.</p>
-</li>
-</ul>
-<div class="WARNING">
-<h5>Warning</h5>
-<p>Make sure that you do not check-in the nuget.config file you create, as it contains a <em>secret</em> token. Add nuget.config to your git ignore file.</p>
+<p>The dataset :</p>
+<p><img src="images/ex2_linreg_data.png" alt="Example 2 dataset"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The above is an example of how to plot time-series on multiple y-axes, which is extremely useful to visualize
+input/output relationships.</p>
 </div>
-<h1 id="nuget-package-download-how-to">Nuget package download how-to</h1>
-<p>To use this nuget pacakge, you need to incldue the nuget.config file above in the solution that intends to pull down the package. You can then select github as
-the package source in Visual Studio &quot;Manage Nuget packages for Solution&quot;.</p>
+<p>The resulting modeled <code>y_modelled</code> compared to <code>y</code>:</p>
+<p><img src="images/ex2_linreg_y.png" alt="Example 2 y"></p>
+<p>The estimated parameters (rounded to three significant digits) returned are:</p>
+<pre><code>[1.02;2.01;3.02;5.01]
+</code></pre>
+<p>which is very close to the <em>true</em> values:</p>
+<pre><code>[1;2;3;5]
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The returned vector of parameters will be slightly dependent on the <code>seed</code> number given to <code>Vec.Rand()</code>, but if the inputs <code>U</code>
+have enough <em>excitation</em>, the significance should be minimal.</p>
+</div>
+<p>The returned <em>Rsquare</em> is <code>99,9</code>, indicating that in this case the model describes variations in the dataset very well, as should be expected in this case,
+as we have generated the dataset from a linear model that has the same structure as that used by <code>Vec.Regress</code> with the same inputs, and all three inputs vary enough
+and interdependently of each other.</p>
 </article>
           </div>
           

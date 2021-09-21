@@ -23,27 +23,29 @@ namespace TimeSeriesAnalysis.Utility
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyPath = @"localhost\plotly\index.html";
 
-
-        ///<summary>
-        ///  Plot any number of variables,by giving values and names by lists (preferred)
-        ///  
-        ///  If you want to plot mutliple plots with the same variable names, 
-        ///  specify a unique casename for each plot.
-        ///  
-        ///  By setting doStartChrome to false, you can skip opening up chrome, the link to figure
-        ///   will instead be returned 
-        /// 
-        ///</summary>
-
-        public static string FromList(List<double[]> plotValue, List<string> plotNames,
+        /// <summary>
+        /// Time-series plotting in a pop-up browser window, based on plot.ly
+        /// </summary>
+        /// <param name="dataList">List of doubles, one entry for each time-series to be plotted</param>
+        /// <param name="plotNames">List of string  of unique names to describe each plot, prefixed by either "y1="(top left),"y2="(top right),"y3="(bottom left) 
+        /// or "y4="(bottom right) to denote what y-axis to plot the variable on</param>
+        /// <param name="dT_s">the time between data samples in seconds</param>
+        /// <param name="comment">a comment that is shown in the plot</param>
+        /// <param name="t0">the DateTime of the first data point </param>
+        /// <param name="caseName">give each plot a casename if creating multiple plots with the re-occurring variable names</param>
+        /// <param name="doStartChrome">By setting doStartChrome to false, you can skip opening up chrome, the link to figure
+        ///   will instead be returned </param>
+        /// <param name="customPlotDataPath">by overriding this variable, the data is written to another path than the default C:\inetpub\wwwroot\plotly\Data\ </param>
+        /// <returns>The url of the resulting plot is returned</returns>
+        public static string FromList(List<double[]> dataList, List<string> plotNames,
             int dT_s, string comment = null, DateTime t0 = new DateTime(),
             string caseName = "", bool doStartChrome = true, string customPlotDataPath = null)
         {
-            if (plotValue == null)
+            if (dataList == null)
                 return "";
             if (plotNames == null)
                 return "";
-            if (plotValue.Count() == 0)
+            if (dataList.Count() == 0)
                 return "";
             if (plotNames.Count() == 0)
                 return "";
@@ -51,7 +53,7 @@ namespace TimeSeriesAnalysis.Utility
             string command = @"-r " + plotlyPath + "#";
             string plotURL = ""; ;
 
-            var time = InitTimeList(t0, dT_s, plotValue.ElementAt(0).Count());
+            var time = InitTimeList(t0, dT_s, dataList.ElementAt(0).Count());
             /*for (int i = 0; i < plotValue.ElementAt(0).Length; i++)
             {
                 time.Add(time.Last().AddSeconds(dT_s));
@@ -65,7 +67,7 @@ namespace TimeSeriesAnalysis.Utility
                 plotURL += shortPPtagName;
                 if (j < plotNames.Count - 1)//dont add semicolon after last variable
                     plotURL += ";";
-                WriteSingleDataToCSV(time.ToArray(), plotValue.ElementAt(j), ppTagName, null, customPlotDataPath);
+                WriteSingleDataToCSV(time.ToArray(), dataList.ElementAt(j), ppTagName, null, customPlotDataPath);
                 j++;
             }
             plotURL += CreateCommentStr(comment);
@@ -366,7 +368,14 @@ namespace TimeSeriesAnalysis.Utility
         
 
 
-        static private Process Start(string procname, string arguments, out bool returnValue, string comment = null)
+        /// <summary>
+        /// Starts a process from an executable
+        /// </summary>
+        /// <param name="procname">path of executable</param>
+        /// <param name="arguments">arguemnts to be passed to executable via the command line</param>
+        /// <param name="returnValue"></param>
+        /// <returns>returns a the process object</returns>
+        static private Process Start(string procname, string arguments, out bool returnValue)
         {
             Process proc = new Process();
             proc.StartInfo.FileName = procname;
