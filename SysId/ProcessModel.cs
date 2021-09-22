@@ -27,6 +27,7 @@ namespace TimeSeriesAnalysis.SysId
         public ProcessModel(ProcessModelParamters modelParamters)
         {
             this.modelParameters = modelParamters;
+            this.lp = null;
         }
 
         public void InitSim(double dT_s)
@@ -34,7 +35,12 @@ namespace TimeSeriesAnalysis.SysId
             this.lp = new LowPass(dT_s);
         }
 
-        public double IterateSimulation(double[] inputsU)
+        /// <summary>
+        /// Iterates the process model state one time step, based on the inputs given
+        /// </summary>
+        /// <param name="inputsU">vector of inputs</param>
+        /// <returns>the updated process model output</returns>
+        public double Iterate(double[] inputsU)
         {
             double y_static = modelParameters.Bias;
             for (int curInput = 0; curInput < inputsU.Length; curInput++)
@@ -54,13 +60,29 @@ namespace TimeSeriesAnalysis.SysId
                 { 
                     //TODO
                 }
-
-    
             }
             double y = lp.Filter(y_static, modelParameters.TimeConstant_s);
+            // TODO: add time-delay
+
+
             return y;
         }
 
+        /// <summary>
+        /// Is the model static or dynamic?
+        /// </summary>
+        /// <returns>Returns true if the model is static(no time constant or time delay terms),otherwise false.</returns>
+        public bool IsModelStatic()
+        {
+           return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
+        }
+
+        /// <summary>
+        /// Simulates the process model over a period of time, based on a matrix of input vectors
+        /// </summary>
+        /// <param name="inputsU">a 2D matrix, where each column represents the intputs at each progressive time step to be simulated</param>
+        /// <param name="dT_s"> the time step in seconds of the simulation. This can be omitted if the model is static.
+        /// <returns>null in inputsU is null or if dT_s is not specified and the model is not static</returns>
         public double[] Simulate(double[,] inputsU, double? dT_s= null)
         {
             if (dT_s.HasValue)
@@ -69,12 +91,16 @@ namespace TimeSeriesAnalysis.SysId
             }
             if (inputsU == null)
                 return null;
-            this.lp = new LowPass(modelParameters.TimeConstant_s);
+            bool isModelStatic = modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
+            if (lp == null && !IsModelStatic())
+            {
+                return null;
+            }
             int N = inputsU.GetNRows();
             double[] output = new double[N];
             for (int rowIdx = 0; rowIdx < N; rowIdx++)
             {
-                output[rowIdx] = IterateSimulation(inputsU.GetRow(rowIdx));
+                output[rowIdx] = Iterate(inputsU.GetRow(rowIdx));
             }
             return output;
         }

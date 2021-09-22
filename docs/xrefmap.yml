@@ -481,22 +481,35 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.SysId.ProcessModel.InitSim
   nameWithType: ProcessModel.InitSim
-- uid: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double[])
-  name: IterateSimulation(Double[])
-  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_IterateSimulation_System_Double___
-  commentId: M:TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double[])
-  name.vb: IterateSimulation(Double())
-  fullName: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation(System.Double())
-  nameWithType: ProcessModel.IterateSimulation(Double[])
-  nameWithType.vb: ProcessModel.IterateSimulation(Double())
-- uid: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation*
-  name: IterateSimulation
-  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_IterateSimulation_
-  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.IsModelStatic
+  name: IsModelStatic()
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_IsModelStatic
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessModel.IsModelStatic
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.IsModelStatic()
+  nameWithType: ProcessModel.IsModelStatic()
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.IsModelStatic*
+  name: IsModelStatic
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_IsModelStatic_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModel.IsModelStatic
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.ProcessModel.IterateSimulation
-  nameWithType: ProcessModel.IterateSimulation
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.IsModelStatic
+  nameWithType: ProcessModel.IsModelStatic
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.Iterate(System.Double[])
+  name: Iterate(Double[])
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_Iterate_System_Double___
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessModel.Iterate(System.Double[])
+  name.vb: Iterate(Double())
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.Iterate(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessModel.Iterate(System.Double())
+  nameWithType: ProcessModel.Iterate(Double[])
+  nameWithType.vb: ProcessModel.Iterate(Double())
+- uid: TimeSeriesAnalysis.SysId.ProcessModel.Iterate*
+  name: Iterate
+  href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_Iterate_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessModel.Iterate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.ProcessModel.Iterate
+  nameWithType: ProcessModel.Iterate
 - uid: TimeSeriesAnalysis.SysId.ProcessModel.Simulate(System.Double[0:,0:],System.Nullable{System.Double})
   name: Simulate(Double[,], Nullable<Double>)
   href: api/TimeSeriesAnalysis.SysId.ProcessModel.html#TimeSeriesAnalysis_SysId_ProcessModel_Simulate_System_Double_0__0___System_Nullable_System_Double__
