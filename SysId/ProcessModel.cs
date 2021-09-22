@@ -27,7 +27,6 @@ namespace TimeSeriesAnalysis.SysId
         public ProcessModel(ProcessModelParamters modelParamters)
         {
             this.modelParameters = modelParamters;
-
         }
 
         public void InitSim(double dT_s)
@@ -50,6 +49,12 @@ namespace TimeSeriesAnalysis.SysId
                     y_static += modelParameters.ProcessGain[curInput] *
                             inputsU[curInput];
                 }
+
+                if (modelParameters.ProcessGain_CurvatureTerm != null)
+                { 
+                    //TODO
+                }
+
     
             }
             double y = lp.Filter(y_static, modelParameters.TimeConstant_s);

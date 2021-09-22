@@ -74,7 +74,7 @@ namespace TimeSeriesAnalysis.Examples
         [Test, Explicit]
         public void ex3_sysid()
         {
-            double dT_s = 1;
+            int dT_s = 1;
             ProcessModelParamters parameters = new ProcessModelParamters
             {
                 TimeConstant_s = 10,
@@ -89,6 +89,8 @@ namespace TimeSeriesAnalysis.Examples
                     Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
             double[] y_simulated = model.Simulate(U,dT_s);
+
+            Plot.FromList(new List<double[]> { y_simulated, u1, u2 }, new List<string> { "y1=ysim", "y3=u1", "y3=u2" }, dT_s);
 
 
         }
