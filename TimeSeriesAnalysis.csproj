@@ -130,11 +130,22 @@ This package is targeted toward control engineering where C# seems to be the de-
   <ItemGroup>
     <Compile Include="Examples\Examples.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="SysId\ProcessModel.cs" />
+    <Compile Include="SysId\DefaultModel\DefaultProcessModelParameters.cs" />
+    <Compile Include="SysId\Interfaces\IModelParameters.cs" />
+    <Compile Include="SysId\Interfaces\IProcessModel.cs" />
+    <Compile Include="SysId\Interfaces\IProcessModelIdentifier.cs" />
+    <Compile Include="SysId\ProcessDataSet.cs" />
+    <Compile Include="SysId\DefaultModel\DefaultProcessModel.cs" />
+    <Compile Include="SysId\DefaultModel\DefaultProcessModelIdentifier.cs" />
+    <Compile Include="SysId\ProcessIdentWarnings.cs" />
+    <Compile Include="SysId\ProcessSimulator.cs" />
+    <Compile Include="SysId\ProcessTimeDelayIdentifier.cs" />
+    <Compile Include="SysId\SysIdBadDataFinder.cs" />
     <Compile Include="Utility\LowPass.cs" />
     <Compile Include="Utility\MovingAvg.cs" />
     <Compile Include="Utility\CSV.cs" />
     <Compile Include="Utility\StringToFileWriter.cs" />
+    <Compile Include="Utility\TimeSerierHelper.cs" />
     <Compile Include="Utility\UnixTime.cs" />
     <Compile Include="Utility\Plot.cs" />
     <Compile Include="Utility\Plot4Test.cs" />

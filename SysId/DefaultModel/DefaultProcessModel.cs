@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,30 +8,44 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.SysId
 {
-    public class ProcessModelParamters
-    {
-        public double TimeConstant_s { get; set; } = 0;
-        public int TimeDelay_s { get; set; } = 0;
-        public double[] ProcessGain { get; set; } = null;
-        public double[] ProcessGain_CurvatureTerm { get; set; } = null;//TODO: nonlinear curvature term
-        public  double[] u0 { get; set; } = null;
-        public  double Bias { get; set; } = 0;
-    }
 
-    public class ProcessModel
+    public class DefaultProcessModel : IProcessModel
     {
-        private ProcessModelParamters modelParameters;
-        private LowPass lp;
+        private DefaultProcessModelParameters modelParameters;
+        private LowPass lowPass;
+        private double timeBase_s;
 
-        public ProcessModel(ProcessModelParamters modelParamters)
+
+        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s)
         {
-            this.modelParameters = modelParamters;
-            this.lp = null;
+            this.modelParameters = modelParameters;
+            this.timeBase_s = timeBase_s;
+            InitSim(timeBase_s);
         }
 
-        public void InitSim(double dT_s)
+        /// <summary>
+        /// Initalizer of model that for the given dataSet also creates the resulting y_sim
+        /// </summary>
+        /// <param name="modelParameters"></param>
+        /// <param name="dataSet"></param>
+        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, ProcessDataSet dataSet)
         {
-            this.lp = new LowPass(dT_s);
+            this.modelParameters = modelParameters;
+            InitSim(dataSet.TimeBase_s);
+        }
+
+
+
+
+        //  public DefaultProcessModelParameters GetModelParameters()
+        public IModelParameters GetModelParameters()
+        {
+            return modelParameters;
+        }
+
+        public void InitSim(double timeBase_s)
+        {
+            this.lowPass = new LowPass(timeBase_s);
         }
 
         /// <summary>
@@ -45,26 +58,24 @@ namespace TimeSeriesAnalysis.SysId
             double y_static = modelParameters.Bias;
             for (int curInput = 0; curInput < inputsU.Length; curInput++)
             {
-                if (modelParameters.u0 != null)
+                if (modelParameters.U0 != null)
                 {
-                    y_static += modelParameters.ProcessGain[curInput] *
-                        (inputsU[curInput] - modelParameters.u0[curInput]);
+                    y_static += modelParameters.ProcessGains[curInput] *
+                        (inputsU[curInput] - modelParameters.U0[curInput]);
                 }
                 else
                 {
-                    y_static += modelParameters.ProcessGain[curInput] *
+                    y_static += modelParameters.ProcessGains[curInput] *
                             inputsU[curInput];
                 }
 
-                if (modelParameters.ProcessGain_CurvatureTerm != null)
+                if (modelParameters.ProcessGainCurvatures != null)
                 { 
                     //TODO
                 }
             }
-            double y = lp.Filter(y_static, modelParameters.TimeConstant_s);
+            double y = lowPass.Filter(y_static, modelParameters.TimeConstant_s);
             // TODO: add time-delay
-
-
             return y;
         }
 
@@ -76,23 +87,22 @@ namespace TimeSeriesAnalysis.SysId
         {
            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
         }
-
+        /*
         /// <summary>
         /// Simulates the process model over a period of time, based on a matrix of input vectors
         /// </summary>
         /// <param name="inputsU">a 2D matrix, where each column represents the intputs at each progressive time step to be simulated</param>
-        /// <param name="dT_s"> the time step in seconds of the simulation. This can be omitted if the model is static.
+        /// <param name="timeBase_s"> the time step in seconds of the simulation. This can be omitted if the model is static.
         /// <returns>null in inputsU is null or if dT_s is not specified and the model is not static</returns>
-        public double[] Simulate(double[,] inputsU, double? dT_s= null)
+        public double[] Simulate(double[,] inputsU, double? timeBase_s= null)
         {
-            if (dT_s.HasValue)
+            if (timeBase_s.HasValue)
             {
-                InitSim(dT_s.Value);
+                InitSim(timeBase_s.Value);
             }
             if (inputsU == null)
                 return null;
-            bool isModelStatic = modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
-            if (lp == null && !IsModelStatic())
+            if (lowPass == null && !IsModelStatic())
             {
                 return null;
             }
@@ -104,7 +114,7 @@ namespace TimeSeriesAnalysis.SysId
             }
             return output;
         }
-
+        */
 
 
     }

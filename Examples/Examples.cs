@@ -15,7 +15,7 @@ namespace TimeSeriesAnalysis.Examples
     class Examples
     {
         [Test, Explicit]
-        public void ex1_hello_world()
+        public void Ex1_hello_world()
         {
             int dT_s = 1;
             double filterTc_s = 10;
@@ -33,7 +33,7 @@ namespace TimeSeriesAnalysis.Examples
 
 
         [Test, Explicit]
-        public void ex2_linreg()
+        public void Ex2_linreg()
         {
             double[] true_gains = {1,2,3};
             double true_bias = 5;
@@ -72,31 +72,42 @@ namespace TimeSeriesAnalysis.Examples
         }
 
         [Test, Explicit]
-        public void ex3_sysid()
+        public void Ex3_sysid()
         {
-            int dT_s = 1;
-            ProcessModelParamters parameters = new ProcessModelParamters
+            int timeBase_s = 1;
+            DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
             {
-                TimeConstant_s = 10,
-                ProcessGain = new double[] { 1, 2},
-                Bias = 10
+                TimeConstant_s = 0,
+                ProcessGains = new double[] { 1,2},
+                Bias = 0
             };
-            ProcessModel model = new ProcessModel(parameters);
+            DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
 
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 11),
                     Vec<double>.Fill(1, 50));
             double[] u2 = Vec<double>.Concat(Vec<double>.Fill(2, 31),
                     Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
-            double[] y_simulated = model.Simulate(U,dT_s);
 
-            Plot.FromList(new List<double[]> { y_simulated, u1, u2 }, new List<string> { "y1=ysim", "y3=u1", "y3=u2" }, dT_s);
+            ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
+            ProcessSimulator.EmulateYmeas(model, ref dataSet);
 
+            Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
+                new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s);
+
+            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
+            DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet);
+            ProcessSimulator.Simulate(identifiedModel, ref dataSet);
+
+            Plot.FromList(new List<double[]> { dataSet.Y_meas, dataSet.Y_sim },
+                new List<string> { "y1=y_meas", "y1=y_sim"}, timeBase_s);
+
+            Console.WriteLine(identifiedModel.ToString());
 
         }
 
         [Test, Explicit]
-        public void ex4_pid()
+        public void Ex4_pid()
         {
         }
 

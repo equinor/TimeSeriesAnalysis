@@ -493,7 +493,7 @@ namespace TimeSeriesAnalysis
         /// <returns>an array of size N of random numbers between minValue and maxValue </returns>
         public static double[] Rand(int N, double minValue = 0, double maxValue = 1,int? seed=null)
         {
-            Random rand = null;
+            Random rand;//= null;
             if (seed.HasValue)
             {
                 rand = new Random(seed.Value);
