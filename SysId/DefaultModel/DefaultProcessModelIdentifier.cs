@@ -309,7 +309,7 @@ namespace TimeSeriesAnalysis.SysId
                     {
                         a = param[0];
                     }
-                    double b = param[1];
+                    double[] b = Vec<double>.SubArray(param,1, param.Length-2);
                     if (a > 1)
                         a = 0;
                     //d_mod_cur = d;
@@ -324,7 +324,7 @@ namespace TimeSeriesAnalysis.SysId
                         timeConstant_s = dataSet.TimeBase_s / (1 / a - 1);
                     if (timeConstant_s < 0)
                         timeConstant_s = 0;
-                    processGains = b / (1 - a);
+                    processGains = Vec.Div(b,1-a); //b / (1 - a);
 
                     x_mod_cur = new double[x_mod_cur_raw.Length];
 
@@ -343,7 +343,7 @@ namespace TimeSeriesAnalysis.SysId
                                 x_mod_cur[i] += a * yprev[i];
                                 for (int curU = 0; curU < ucurList.Count; curU++)
                                 {
-                                    x_mod_cur[i] += b * (ucurList[curU][i] - u0[curU]);
+                                    x_mod_cur[i] += b[curU] * (ucurList[curU][i] - u0[curU]);
                                 }
                                 x_mod_cur[i] += param[2];
                             }
@@ -358,7 +358,7 @@ namespace TimeSeriesAnalysis.SysId
                                 x_mod_cur[i] += a * yprev[i];
                                 for (int curU = 0; curU < ucurList.Count; curU++)
                                 {
-                                    x_mod_cur[i] += b * (ucurList[curU][i] - u0[curU]);
+                                    x_mod_cur[i] += b[curU] * (ucurList[curU][i] - u0[curU]);
                                 }
                                 x_mod_cur[i] +=  param[2];
                             }
@@ -391,7 +391,7 @@ namespace TimeSeriesAnalysis.SysId
                 if (param != null)
                 {
                     timeConstant_s = 0;
-                    processGains = Vec<double>.SubArray(param, 0, param.Length - 1);//param[0];
+                    processGains = Vec<double>.SubArray(param, 0, param.Length - 2);//param[0];
                     bias = param.Last();// param[1];
                 }
             }

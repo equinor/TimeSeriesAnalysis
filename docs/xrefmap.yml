@@ -529,6 +529,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.SysId.DefaultProcessModel.Iterate
   nameWithType: DefaultProcessModel.Iterate
+- uid: TimeSeriesAnalysis.SysId.DefaultProcessModel.ToString
+  name: ToString()
+  href: api/TimeSeriesAnalysis.SysId.DefaultProcessModel.html#TimeSeriesAnalysis_SysId_DefaultProcessModel_ToString
+  commentId: M:TimeSeriesAnalysis.SysId.DefaultProcessModel.ToString
+  fullName: TimeSeriesAnalysis.SysId.DefaultProcessModel.ToString()
+  nameWithType: DefaultProcessModel.ToString()
+- uid: TimeSeriesAnalysis.SysId.DefaultProcessModel.ToString*
+  name: ToString
+  href: api/TimeSeriesAnalysis.SysId.DefaultProcessModel.html#TimeSeriesAnalysis_SysId_DefaultProcessModel_ToString_
+  commentId: Overload:TimeSeriesAnalysis.SysId.DefaultProcessModel.ToString
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.DefaultProcessModel.ToString
+  nameWithType: DefaultProcessModel.ToString
 - uid: TimeSeriesAnalysis.SysId.DefaultProcessModelIdentifier
   name: DefaultProcessModelIdentifier
   href: api/TimeSeriesAnalysis.SysId.DefaultProcessModelIdentifier.html
@@ -2156,6 +2169,31 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Diff
   nameWithType: Vec.Diff
+- uid: TimeSeriesAnalysis.Vec.Div(System.Double[],System.Double)
+  name: Div(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Div_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Div(System.Double[],System.Double)
+  name.vb: Div(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Div(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Div(System.Double(), System.Double)
+  nameWithType: Vec.Div(Double[], Double)
+  nameWithType.vb: Vec.Div(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.Div(System.Double[],System.Double[])
+  name: Div(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Div_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.Div(System.Double[],System.Double[])
+  name.vb: Div(Double(), Double())
+  fullName: TimeSeriesAnalysis.Vec.Div(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Div(System.Double(), System.Double())
+  nameWithType: Vec.Div(Double[], Double[])
+  nameWithType.vb: Vec.Div(Double(), Double())
+- uid: TimeSeriesAnalysis.Vec.Div*
+  name: Div
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Div_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Div
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Div
+  nameWithType: Vec.Div
 - uid: TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)
   name: FindValues(Double[], Double, VectorFindValueType)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_

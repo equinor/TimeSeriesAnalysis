@@ -77,7 +77,7 @@ namespace TimeSeriesAnalysis.Examples
             int timeBase_s = 1;
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
             {
-                TimeConstant_s = 0,
+                TimeConstant_s = 5,
                 ProcessGains = new double[] { 1,2},
                 Bias = 0
             };

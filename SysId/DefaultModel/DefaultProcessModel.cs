@@ -87,34 +87,34 @@ namespace TimeSeriesAnalysis.SysId
         {
            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
         }
-        /*
-        /// <summary>
-        /// Simulates the process model over a period of time, based on a matrix of input vectors
-        /// </summary>
-        /// <param name="inputsU">a 2D matrix, where each column represents the intputs at each progressive time step to be simulated</param>
-        /// <param name="timeBase_s"> the time step in seconds of the simulation. This can be omitted if the model is static.
-        /// <returns>null in inputsU is null or if dT_s is not specified and the model is not static</returns>
-        public double[] Simulate(double[,] inputsU, double? timeBase_s= null)
+
+        override public string ToString()
         {
-            if (timeBase_s.HasValue)
+            int sDigits = 3;
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("DefaultProcessModel");
+            sb.AppendLine("-------------------------");
+            sb.AppendLine("TimeConstant_s        : " +modelParameters.TimeConstant_s);
+            sb.AppendLine("TimeDelay_s           : " + modelParameters.TimeDelay_s);
+            sb.AppendLine("ProcessGains          : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
+            sb.AppendLine("ProcessGainCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
+            sb.AppendLine("Bias                  : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
+            sb.AppendLine("u0                    : " + Vec.ToString(modelParameters.U0,sDigits));
+            sb.AppendLine("-------------------------");
+            sb.AppendLine("fitting objective     : " + modelParameters.GetFittingObjFunVal() );
+            sb.AppendLine("fitting R2            : " + modelParameters.GetFittingR2());
+            foreach (var warning in modelParameters.GetWarningList())
+                sb.AppendLine("fitting warning                 :" + warning.ToString());
+            if (modelParameters.GetWarningList().Count == 0)
             {
-                InitSim(timeBase_s.Value);
+                sb.AppendLine("fitting                         : no error or warnings");
             }
-            if (inputsU == null)
-                return null;
-            if (lowPass == null && !IsModelStatic())
-            {
-                return null;
-            }
-            int N = inputsU.GetNRows();
-            double[] output = new double[N];
-            for (int rowIdx = 0; rowIdx < N; rowIdx++)
-            {
-                output[rowIdx] = Iterate(inputsU.GetRow(rowIdx));
-            }
-            return output;
+            return sb.ToString();
         }
-        */
+
+
+
 
 
     }
