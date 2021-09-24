@@ -260,7 +260,7 @@ namespace TimeSeriesAnalysis.SysId
                     {
                         phi_ols2D.WriteColumn(curIdx+1, Vec.Sub(ucurList[curIdx], u0[curIdx]));
                     }
-                    double[][] phi_ols = phi_ols2D.Convert2DtoJagged();
+                    double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
                     param = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), out param_95prcUnc,
                         out varCovarMatrix, out x_mod_cur_raw, out Rsq);
                 }
@@ -284,7 +284,7 @@ namespace TimeSeriesAnalysis.SysId
                     {
                         phi_ols2D.WriteColumn(curIdx + 1, Vec.Sub(ucurList[curIdx], u0[curIdx]));
                     }
-                    double[][] phi_ols = phi_ols2D.Convert2DtoJagged();
+                    double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
                     double[] Y_ols = ycur;// Vec.Sub(ycur, dcur);
                    
                     param = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), out param_95prcUnc,
@@ -317,7 +317,7 @@ namespace TimeSeriesAnalysis.SysId
                         a = 0;
                     //d_mod_cur = d;
                     // for clarity:
-                    bias = param[2];
+                    bias = param.Last();
                     // the estimation finds "a" in the difference equation 
                     // a = 1/(1 + Ts/Tc)
                     // so that 
@@ -424,8 +424,9 @@ namespace TimeSeriesAnalysis.SysId
             }
             else // able to identify
             {
-              //  if (dcur == null)
-                    y_mod_cur = x_mod_cur;
+                parameters.WasAbleToIdentify = true;
+                //  if (dcur == null)
+                y_mod_cur = x_mod_cur;
                 //    else
                 //       y_mod_cur = Vec.Add(x_mod_cur, dcur);
                 // note that y_mod is often shorter than y_meas, and these two vector may need to be synchronized, 

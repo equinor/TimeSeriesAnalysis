@@ -116,6 +116,14 @@ namespace TimeSeriesAnalysis.SysId
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("DefaultProcessModel");
             sb.AppendLine("-------------------------");
+            if (modelParameters.AbleToIdentify())
+            {
+                sb.AppendLine("ABLE to identify");
+            }
+            else
+            {
+                sb.AppendLine("---NOT able to identify---");
+            }
             sb.AppendLine("TimeConstant_s : " +modelParameters.TimeConstant_s);
             sb.AppendLine("TimeDelay_s : " + modelParameters.TimeDelay_s);
             sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));

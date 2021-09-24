@@ -39,10 +39,14 @@ namespace SysId.UnitTests
         {
             Assert.IsTrue(model.GetModelParameters().AbleToIdentify(),"should be able to identify model");
             Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == 0,"should give no warnings");
+
+            Console.WriteLine(model.ToString());
         }
 
-        [Test]
-        public void I1_Linear_Static()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(-1)]
+        public void I1_Linear_Static(double bias)
         {
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 11),
                 Vec<double>.Fill(1, 50));
@@ -53,14 +57,20 @@ namespace SysId.UnitTests
                 WasAbleToIdentify = true,
                 TimeConstant_s = 0,
                 ProcessGains = new double[] { 1 },
-                Bias = 0
+                Bias = bias
             };
             var model = CreateDataAndIdentify(parameters, U);
             DefaultAsserts(model);
+            double estGain = model.GetModelParameters().ProcessGains.ElementAt(0);
+            Assert.IsTrue(0.98< estGain  && estGain < 1.02,"estimated gains shoudl be close to actual gain");
+            Assert.IsTrue(model.GetModelParameters().TimeConstant_s < 0.1,"static data should give static model");
+            Assert.IsTrue(model.GetModelParameters().TimeDelay_s < 0.1, "static data should give static model");
         }
-        
-        [Test]
-        public void I2_Linear_Static()
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(-1)]
+        public void I2_Linear_Static(double bias)
         {
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 11),
                 Vec<double>.Fill(1, 50));
@@ -73,14 +83,18 @@ namespace SysId.UnitTests
                 WasAbleToIdentify = true,
                 TimeConstant_s = 0,
                 ProcessGains = new double[] { 1,2 },
-                Bias = 0
+                Bias = bias
             };
             var model = CreateDataAndIdentify(parameters,U);
             DefaultAsserts(model);
-          //  Assert.IsTrue(model.GetModelParameters().ProcessGains);
+            double[] estGains = model.GetModelParameters().ProcessGains;
+            Assert.IsTrue(0.98 < estGains[0] && estGains[0] < 1.02, "estimated gains should be close to actual gain");
+            Assert.IsTrue(1.98 < estGains[1] && estGains[1] < 2.02, "estimated gains should be close to actual gain");
+            Assert.IsTrue(model.GetModelParameters().TimeConstant_s < 0.1, "static data should give static model");
+            Assert.IsTrue(model.GetModelParameters().TimeDelay_s < 0.1, "static data should give static model");
 
-           // Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
-           //     new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s);
+            // Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
+            //     new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s);
         }
 
 
