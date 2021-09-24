@@ -435,11 +435,9 @@ namespace TimeSeriesAnalysis.SysId
                 parameters.TimeDelay_s = timeDelay_samples*dataSet.TimeBase_s;
                 parameters.TimeConstant_s = timeConstant_s;
                 parameters.Bias = bias;
-                parameters.ProcessGains = processGains ;//todo: add multipple process gains
+                parameters.ProcessGains = processGains ;
                 parameters.U0 = u0;
                 // TODO:add back uncertainty estimates
-
-
 
 
              /*   double objFunVal = Vec.SumOfSquareErr(y_mod_cur, ycur,-1);

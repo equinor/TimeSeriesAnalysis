@@ -18,9 +18,11 @@ namespace SysId.UnitTests
     /// </summary>
     class DefaultModel
     {
-        public DefaultProcessModel CreateDataAndIdentify(DefaultProcessModelParameters parameters, double[,] U ,int timeBase_s=1)
+        public DefaultProcessModel CreateDataAndIdentify(DefaultProcessModelParameters designParameters, double[,] U ,int timeBase_s=1)
         {
-            DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
+            designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
+
+            DefaultProcessModel model = new DefaultProcessModel(designParameters, timeBase_s);
 
             ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
             ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.EmulateYmeas(model, ref dataSet);
@@ -43,6 +45,13 @@ namespace SysId.UnitTests
             Console.WriteLine(model.ToString());
         }
 
+        // TODO: adding noise to datasets
+        // TODO: testing the uncertainty estimtates(after adding them back)
+        // TODO: testing the ability to automatically filter out bad input data
+        // TODO: test ability to identify time delay
+        // TODO: test ability to identify time constant
+        // TODO: test ability to identify process gain curvatures
+
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(-1)]
@@ -52,14 +61,13 @@ namespace SysId.UnitTests
                 Vec<double>.Fill(1, 50));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1 });
 
-            DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
+            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 0,
                 ProcessGains = new double[] { 1 },
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(parameters, U);
+            var model = CreateDataAndIdentify(designParameters, U);
             DefaultAsserts(model);
             double estGain = model.GetModelParameters().ProcessGains.ElementAt(0);
             Assert.IsTrue(0.98< estGain  && estGain < 1.02,"estimated gains shoudl be close to actual gain");
@@ -78,14 +86,13 @@ namespace SysId.UnitTests
                     Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
 
-            DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
+            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 0,
                 ProcessGains = new double[] { 1,2 },
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(parameters,U);
+            var model = CreateDataAndIdentify(designParameters,U);
             DefaultAsserts(model);
             double[] estGains = model.GetModelParameters().ProcessGains;
             Assert.IsTrue(0.98 < estGains[0] && estGains[0] < 1.02, "estimated gains should be close to actual gain");
