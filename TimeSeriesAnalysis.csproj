@@ -130,8 +130,9 @@ This package is targeted toward control engineering where C# seems to be the de-
   <ItemGroup>
     <Compile Include="Examples\Examples.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Tests\SysIDUnitTests.cs" />
     <Compile Include="SysId\DefaultModel\DefaultProcessModelParameters.cs" />
-    <Compile Include="SysId\Interfaces\IModelParameters.cs" />
+    <Compile Include="SysId\Interfaces\IProcessModelParameters.cs" />
     <Compile Include="SysId\Interfaces\IProcessModel.cs" />
     <Compile Include="SysId\Interfaces\IProcessModelIdentifier.cs" />
     <Compile Include="SysId\ProcessDataSet.cs" />
@@ -168,7 +169,6 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="TimeSeriesAnalysis\VecGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="nuget.config" />
     <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup />

@@ -9,13 +9,21 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.SysId
 {
 
-    public class DefaultProcessModel : IProcessModel
+    /// <summary>
+    /// Process model class for the "Default" process model. 
+    /// </summary>
+    public class DefaultProcessModel : IProcessModel<DefaultProcessModelParameters>
     {
         private DefaultProcessModelParameters modelParameters;
         private LowPass lowPass;
         private double timeBase_s;
+        public  ProcessDataSet FittedDataSet { get; set; }
 
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="modelParameters">model paramter object</param>
+        /// <param name="timeBase_s">the timebase in seconds, the time interval between samples and between calls to Iterate</param>
         public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s)
         {
             this.modelParameters = modelParameters;
@@ -34,15 +42,20 @@ namespace TimeSeriesAnalysis.SysId
             InitSim(dataSet.TimeBase_s);
         }
 
-
-
-
-        //  public DefaultProcessModelParameters GetModelParameters()
-        public IModelParameters GetModelParameters()
+        /// <summary>
+        /// Get the objet of model paramters contained in the model
+        /// </summary>
+        /// <returns>Model paramter object</returns>
+        //public IModelParameters GetModelParameters()
+        public DefaultProcessModelParameters GetModelParameters()
         {
             return modelParameters;
         }
 
+        /// <summary>
+        /// Initalize the process model with a sampling time
+        /// </summary>
+        /// <param name="timeBase_s">the timebase in seconds, the length of time between calls to Iterate(data sampling time interval)</param>
         public void InitSim(double timeBase_s)
         {
             this.lowPass = new LowPass(timeBase_s);
@@ -55,6 +68,9 @@ namespace TimeSeriesAnalysis.SysId
         /// <returns>the updated process model output</returns>
         public double Iterate(double[] inputsU)
         {
+            if (!modelParameters.AbleToIdentify())
+                return Double.NaN;
+
             double y_static = modelParameters.Bias;
             for (int curInput = 0; curInput < inputsU.Length; curInput++)
             {
@@ -88,6 +104,11 @@ namespace TimeSeriesAnalysis.SysId
            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
         }
 
+        /// <summary>
+        /// Create a nice human-readable summary of all the important data contained in the model object. 
+        /// This is especially useful for unit-testing and development.
+        /// </summary>
+        /// <returns></returns>
         override public string ToString()
         {
             int sDigits = 3;
@@ -95,20 +116,20 @@ namespace TimeSeriesAnalysis.SysId
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("DefaultProcessModel");
             sb.AppendLine("-------------------------");
-            sb.AppendLine("TimeConstant_s        : " +modelParameters.TimeConstant_s);
-            sb.AppendLine("TimeDelay_s           : " + modelParameters.TimeDelay_s);
-            sb.AppendLine("ProcessGains          : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
-            sb.AppendLine("ProcessGainCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
-            sb.AppendLine("Bias                  : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
-            sb.AppendLine("u0                    : " + Vec.ToString(modelParameters.U0,sDigits));
+            sb.AppendLine("TimeConstant_s : " +modelParameters.TimeConstant_s);
+            sb.AppendLine("TimeDelay_s : " + modelParameters.TimeDelay_s);
+            sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
+            sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
+            sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
+            sb.AppendLine("u0 : " + Vec.ToString(modelParameters.U0,sDigits));
             sb.AppendLine("-------------------------");
-            sb.AppendLine("fitting objective     : " + modelParameters.GetFittingObjFunVal() );
-            sb.AppendLine("fitting R2            : " + modelParameters.GetFittingR2());
+            sb.AppendLine("fitting objective : " + modelParameters.GetFittingObjFunVal() );
+            sb.AppendLine("fitting R2`: " + modelParameters.GetFittingR2());
             foreach (var warning in modelParameters.GetWarningList())
-                sb.AppendLine("fitting warning                 :" + warning.ToString());
+                sb.AppendLine("fitting warning :" + warning.ToString());
             if (modelParameters.GetWarningList().Count == 0)
             {
-                sb.AppendLine("fitting                         : no error or warnings");
+                sb.AppendLine("fitting : no error or warnings");
             }
             return sb.ToString();
         }

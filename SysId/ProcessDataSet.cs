@@ -24,14 +24,6 @@ namespace TimeSeriesAnalysis.SysId
 
         public DateTime t0;
 
-        /*
-        public ProcessDataSet(double[] y, double[,] U, DateTime[] times,string name=null)
-        {
-            this.y = y;
-            this.U = U;
-            this.times = times;
-            this.processName = name;
-        }*/
 
         public ProcessDataSet(double[] y_meas, double[,] U, int timeBase_s, string name=null)
         {
@@ -41,6 +33,10 @@ namespace TimeSeriesAnalysis.SysId
             this.ProcessName = name;
         }
 
+        /// <summary>
+        /// Get the  number of data points in the dataset
+        /// </summary>
+        /// <returns>the number of data points</returns>
         public int GetNumDataPoints()
         {
             return U.GetNRows();

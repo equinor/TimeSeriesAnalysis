@@ -30,7 +30,7 @@ namespace TimeSeriesAnalysis.SysId
 
         /// <summary>
         /// Get the bad value indices AND the indices trailing them. 
-        /// This is useful when considering difference equations that require the values both at index k and k-1 to 
+        /// This is useful when considering difference equations that require the values both at index <c>k</c> and <c>k-1</c> to 
         /// perform identification.
         /// </summary>
         /// <param name="inData"></param>

@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis.SysId
     /// This model class is sufficent for most real-world dynamic systems, yet also introduces the fewest possible 
     /// paramters to describe the system in an attempt to avoiding over-fitting/over-parametrization
     /// </summary>
-    public class DefaultProcessModelIdentifier: IProcessModelIdentifier<DefaultProcessModel>
+    public class DefaultProcessModelIdentifier: IProcessModelIdentifier<DefaultProcessModel, DefaultProcessModelParameters>
     {
         private double badValueIndicatingValue = -9999;//TODO: move to other class
 
@@ -36,7 +36,7 @@ namespace TimeSeriesAnalysis.SysId
         public DefaultProcessModel Identify(ref ProcessDataSet dataSet)
         {
             bool doNonzeroU0 = true;// should be: true
-            bool doUseDynamicModel = false;// should be:true
+            bool doUseDynamicModel = true;// should be:true
             bool doEstimateTimeDelay = false; // should be:true
             double FilterTc_s = 0;
             bool assumeThatYkminusOneApproxXkminusOne = true;
@@ -93,8 +93,11 @@ namespace TimeSeriesAnalysis.SysId
             // END While loop 
             /////////////////////////////////////////////////////////////////
 
-            return new DefaultProcessModel(modelParameters, dataSet);
+            var model = new DefaultProcessModel(modelParameters, dataSet);
+            ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.Simulate(model, ref dataSet);
+            model.FittedDataSet = dataSet;
 
+            return model;
         }
 
 

@@ -13,9 +13,9 @@ Tasks like loading data from a file, fitting a model to data or plotting time-se
 
 That may even mean that early research/prototyping/data analysis can *start* in .NET, which removes the step re-writing prototype code into .NET.
 
-## But honestly, you know you can just do time-series analysis with standard statistical langauges *xyz*, right? 
+## But honestly, you know you can just do time-series analysis with standard statistical languages *xyz*, right? 
 
-Yes and no. Most of the time each data point in a time-series is considered *stationary*, in which case a time-series can be considered a table of independent data points, and standards statisical methods can be applied to time-series just as for any other statisical data. 
+Yes and no. Most of the time each data point in a time-series is considered *stationary*, in which case a time-series can be considered a table of independent data points, and standards statistical methods can be applied to time-series just as for any other statistical data. 
 
 But in some-applications the *transients* or *dynamics* of the process are visible in trends, in which case the data points are no longer independent, and in that case many standard statistical methods become invalid. This is often the case in time-series of for instance measured temperatures, pressures or flows, and analyzing such systems often requires filtering, or fitting models that include transient/dynamic terms. Models that include dynamic terms are key in dynamic simulation, and controlling such systems by means of automatic controllers such as PID-controllers is the domain of *control engineering*. 
 
@@ -23,7 +23,7 @@ Fitting dynamic models to dynamic time-series is the domain of *system identific
 
 Dynamic simulators, control systems and estimators are almost exclusively implemented in the compiled languages like C/C++/C# in industry, which is what this toolbox attempts to address. 
 
-## Documentation: Getting started, code examples and api reference documentation
+## Documentation: Getting started, code examples and API reference documentation
 
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>** :red_circle:
 
@@ -38,5 +38,5 @@ Questions related to TimeSeriesAnalysis can be posted in the [github discussion 
 ## Authors and contact persons
 Steinar Elgsæter
 
-## Licence
-TimeSeriesAnalysis is distributed under the [MIT licence](LICENSE).
+## License
+TimeSeriesAnalysis is distributed under the [MIT license](LICENSE).

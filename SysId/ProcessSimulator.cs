@@ -15,7 +15,7 @@ namespace TimeSeriesAnalysis.SysId
     /// This class relies on depencency injection and interfaces, so that the 
     /// the specifics of how models outputs are calculated should be encapsulated in the passed model objects.
     /// </summary>
-    public class ProcessSimulator
+    public class ProcessSimulator<T1,T2> where T1:IProcessModel<T2> where T2:IProcessModelParameters
     {
         /// <summary>
         /// Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for  
@@ -23,7 +23,7 @@ namespace TimeSeriesAnalysis.SysId
         /// </summary>
         /// <param name="model"></param>
         /// <param name="processDataSet"></param>
-        static public void EmulateYmeas(IProcessModel model,
+        static public void EmulateYmeas(T1 model,
             ref ProcessDataSet processDataSet)
         {
             Simulate(model,ref processDataSet,true);
@@ -34,9 +34,10 @@ namespace TimeSeriesAnalysis.SysId
         /// written back to processDataSet.ySim
         /// </summary>
         /// <param name="model">model paramters</param>
-        /// <param name="processDataSet">dataset containing the inputs U to be simulated</param>
-        /// <param name="writeResultToYmeasInsteadOfYsim">if true, output is written to ymeas instead of ysim</param>
-        static public void Simulate(IProcessModel model,
+        /// <param name="processDataSet">dataset containing the inputs <c>U</c> to be simulated</param>
+        /// <param name="writeResultToYmeasInsteadOfYsim">if <c>true</c>, output is written to <c>processDataSet.ymeas</c> instead of <c>processDataSet.ysim</c></param>
+        /// <returns>Returns  <c>true</c> if able to simulate, <c>false</c>> otherwise.</returns> 
+        static public bool Simulate(T1 model,
             ref ProcessDataSet processDataSet,
             bool writeResultToYmeasInsteadOfYsim = false)
         {
@@ -54,7 +55,10 @@ namespace TimeSeriesAnalysis.SysId
             {
                 processDataSet.Y_sim = output;
             }
-            return;
+            if (Vec.ContainsBadData(output))
+                return false;
+            else 
+                return true;
         }
     }
 }

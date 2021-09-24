@@ -879,19 +879,26 @@ namespace TimeSeriesAnalysis
             }
         }
 
-        ///<summary>
-        /// replaces all the vaules in array with indices in indList NaN
-        ///</summary>
+
+        /// <summary>
+        /// Replace certain values in an array with a new value. 
+        /// </summary>
+        /// <param name="array">the array to be replaces</param>
+        /// <param name="indList">list of all the indices of all data points in array to be replaced</param>
+        /// <param name="valueToReplaceWith">the new value to use in place of old values.</param>
+        /// <returns>A copy of the original array with the values repalced as specified</returns>
         public static double[] ReplaceIndWithValue(double[] array, List<int> indList,
             double valueToReplaceWith)
         {
             int[] vecInd = indList.ToArray();
+            double[] outArray = new double[array.Length] ;
+            array.CopyTo(outArray,0);
             for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
             {
                 int curVecInd = vecInd[curIndInd];
                 if (curVecInd > 0)
                 {
-                    array[curVecInd] = valueToReplaceWith;
+                    outArray[curVecInd] = valueToReplaceWith;
                 }
             }
             return array;
@@ -916,7 +923,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        ///  The sum of absolute errors (|a1-a2|) between array1 and array2
+        ///  The sum of absolute errors <c>(|a1-a2|)</c> between <c>array1</c> and <c>array2</c>
         ///</summary>
         public static double SumOfAbsErr(double[] array1, double[] array2, int indexOffset = -1)
         {
@@ -939,27 +946,27 @@ namespace TimeSeriesAnalysis
                 return 0;
         }
         ///<summary>
-        ///  The sum of absolute errors (a1-a2)^2 between array1 and array2
+        ///  The sum of square errors <c>(a1-a2)^2</c> between <c>array1</c> and <c>array2</c>
         ///</summary>
-        public static double SumOfSquareErr(double[] ymod, double[] ymeas, int ymodOffset = -1, bool divByN = true)
+        public static double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, bool divByN = true)
         {
-            if (ymod.Count() < ymeas.Count())
+            if (array1.Count() < array2.Count())
                 return Double.NaN;
 
             if (ymodOffset == -1)
             {
-                ymodOffset = ymeas.Count() - ymod.Count();
+                ymodOffset = array2.Count() - array1.Count();
             }
             double ret = 0;
             int nGoodValues = 0;
-            for (int i = ymodOffset; i < ymeas.Count(); i++)
+            for (int i = ymodOffset; i < array2.Count(); i++)
             {
-                if (IsNaN(ymeas[i]) || IsNaN(ymod[i]) )
+                if (IsNaN(array2[i]) || IsNaN(array1[i]) )
                 {
                     continue;
                 }
                 nGoodValues++;
-                ret += Math.Pow(ymeas[i] - ymod[i - ymodOffset], 2);
+                ret += Math.Pow(array2[i] - array1[i - ymodOffset], 2);
             }
             if (divByN && nGoodValues > 0)
                 return ret / nGoodValues;
@@ -1006,13 +1013,14 @@ namespace TimeSeriesAnalysis
         /// variable that's explained by an independent variable or variables in a regression model. 
         /// Whereas correlation explains the strength of the relationship between an independent and 
         /// dependent variable, R-squared explains to what extent the variance of one variable explains the
-        /// variance of the second variable. So, if the R2 of a model is 0.50, then approximately 
+        /// variance of the second variable. So, if the R2 of a model is <c>0.50</c>, then approximately 
         /// half of the observed variation can be explained by the model's inputs.
         /// </summary>
         /// <param name="vector1">first vector</param>
         /// <param name="vector2">second vector</param>
         /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
-        /// <returns>R2 squared, a value between -1 and 1. If an error occured,Double.PositiveInfinity is returned </returns>
+        /// <returns>R2 squared, a value between <c>-1</c> and <c>1</c>. If an error occured, 
+        /// <c>Double.PositiveInfinity</c> is returned </returns>
         public static double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt=null)
         {
             if (vector1 == null || vector2 == null)

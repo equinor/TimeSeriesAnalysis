@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.SysId
 {
-    public interface IProcessModel
+
+    /// <summary>
+    /// Generic interface of process model 
+    /// </summary>
+    /// <typeparam name="T">The process model parameters class</typeparam>
+    public interface IProcessModel<T> where T : IProcessModelParameters
     {
         double Iterate(double[] inputsU);
 
         // TODO: possibly add that a model should have a method that returns its step response
 
-        IModelParameters GetModelParameters();
+        T GetModelParameters();
 
     }
 }

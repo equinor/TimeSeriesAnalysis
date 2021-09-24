@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.SysId
 {
-    public interface IModelParameters
+    public interface IProcessModelParameters
     {
         /*the model paramters class is intended to be a data-class that contains 
          - model parameters

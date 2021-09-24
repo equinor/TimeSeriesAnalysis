@@ -474,6 +474,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.SysId.DefaultProcessModel.DefaultProcessModel
   nameWithType: DefaultProcessModel.DefaultProcessModel
+- uid: TimeSeriesAnalysis.SysId.DefaultProcessModel.FittedDataSet
+  name: FittedDataSet
+  href: api/TimeSeriesAnalysis.SysId.DefaultProcessModel.html#TimeSeriesAnalysis_SysId_DefaultProcessModel_FittedDataSet
+  commentId: P:TimeSeriesAnalysis.SysId.DefaultProcessModel.FittedDataSet
+  fullName: TimeSeriesAnalysis.SysId.DefaultProcessModel.FittedDataSet
+  nameWithType: DefaultProcessModel.FittedDataSet
+- uid: TimeSeriesAnalysis.SysId.DefaultProcessModel.FittedDataSet*
+  name: FittedDataSet
+  href: api/TimeSeriesAnalysis.SysId.DefaultProcessModel.html#TimeSeriesAnalysis_SysId_DefaultProcessModel_FittedDataSet_
+  commentId: Overload:TimeSeriesAnalysis.SysId.DefaultProcessModel.FittedDataSet
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.DefaultProcessModel.FittedDataSet
+  nameWithType: DefaultProcessModel.FittedDataSet
 - uid: TimeSeriesAnalysis.SysId.DefaultProcessModel.GetModelParameters
   name: GetModelParameters()
   href: api/TimeSeriesAnalysis.SysId.DefaultProcessModel.html#TimeSeriesAnalysis_SysId_DefaultProcessModel_GetModelParameters
@@ -765,112 +778,121 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.SysId.DefaultProcessModelParameters.WasAbleToIdentify
   nameWithType: DefaultProcessModelParameters.WasAbleToIdentify
-- uid: TimeSeriesAnalysis.SysId.IModelParameters
-  name: IModelParameters
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html
-  commentId: T:TimeSeriesAnalysis.SysId.IModelParameters
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters
-  nameWithType: IModelParameters
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.AbleToIdentify
-  name: AbleToIdentify()
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_AbleToIdentify
-  commentId: M:TimeSeriesAnalysis.SysId.IModelParameters.AbleToIdentify
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.AbleToIdentify()
-  nameWithType: IModelParameters.AbleToIdentify()
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.AbleToIdentify*
-  name: AbleToIdentify
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_AbleToIdentify_
-  commentId: Overload:TimeSeriesAnalysis.SysId.IModelParameters.AbleToIdentify
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.AbleToIdentify
-  nameWithType: IModelParameters.AbleToIdentify
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.AddWarning(TimeSeriesAnalysis.SysId.ProcessIdentWarnings)
-  name: AddWarning(ProcessIdentWarnings)
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_AddWarning_TimeSeriesAnalysis_SysId_ProcessIdentWarnings_
-  commentId: M:TimeSeriesAnalysis.SysId.IModelParameters.AddWarning(TimeSeriesAnalysis.SysId.ProcessIdentWarnings)
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.AddWarning(TimeSeriesAnalysis.SysId.ProcessIdentWarnings)
-  nameWithType: IModelParameters.AddWarning(ProcessIdentWarnings)
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.AddWarning*
-  name: AddWarning
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_AddWarning_
-  commentId: Overload:TimeSeriesAnalysis.SysId.IModelParameters.AddWarning
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.AddWarning
-  nameWithType: IModelParameters.AddWarning
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingObjFunVal
-  name: GetFittingObjFunVal()
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_GetFittingObjFunVal
-  commentId: M:TimeSeriesAnalysis.SysId.IModelParameters.GetFittingObjFunVal
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingObjFunVal()
-  nameWithType: IModelParameters.GetFittingObjFunVal()
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingObjFunVal*
-  name: GetFittingObjFunVal
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_GetFittingObjFunVal_
-  commentId: Overload:TimeSeriesAnalysis.SysId.IModelParameters.GetFittingObjFunVal
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingObjFunVal
-  nameWithType: IModelParameters.GetFittingObjFunVal
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingR2
-  name: GetFittingR2()
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_GetFittingR2
-  commentId: M:TimeSeriesAnalysis.SysId.IModelParameters.GetFittingR2
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingR2()
-  nameWithType: IModelParameters.GetFittingR2()
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingR2*
-  name: GetFittingR2
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_GetFittingR2_
-  commentId: Overload:TimeSeriesAnalysis.SysId.IModelParameters.GetFittingR2
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.GetFittingR2
-  nameWithType: IModelParameters.GetFittingR2
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.GetWarningList
-  name: GetWarningList()
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_GetWarningList
-  commentId: M:TimeSeriesAnalysis.SysId.IModelParameters.GetWarningList
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.GetWarningList()
-  nameWithType: IModelParameters.GetWarningList()
-- uid: TimeSeriesAnalysis.SysId.IModelParameters.GetWarningList*
-  name: GetWarningList
-  href: api/TimeSeriesAnalysis.SysId.IModelParameters.html#TimeSeriesAnalysis_SysId_IModelParameters_GetWarningList_
-  commentId: Overload:TimeSeriesAnalysis.SysId.IModelParameters.GetWarningList
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.IModelParameters.GetWarningList
-  nameWithType: IModelParameters.GetWarningList
-- uid: TimeSeriesAnalysis.SysId.IProcessModel
-  name: IProcessModel
-  href: api/TimeSeriesAnalysis.SysId.IProcessModel.html
-  commentId: T:TimeSeriesAnalysis.SysId.IProcessModel
-  fullName: TimeSeriesAnalysis.SysId.IProcessModel
-  nameWithType: IProcessModel
-- uid: TimeSeriesAnalysis.SysId.IProcessModel.GetModelParameters
+- uid: TimeSeriesAnalysis.SysId.IProcessModel`1
+  name: IProcessModel<T>
+  href: api/TimeSeriesAnalysis.SysId.IProcessModel-1.html
+  commentId: T:TimeSeriesAnalysis.SysId.IProcessModel`1
+  name.vb: IProcessModel(Of T)
+  fullName: TimeSeriesAnalysis.SysId.IProcessModel<T>
+  fullName.vb: TimeSeriesAnalysis.SysId.IProcessModel(Of T)
+  nameWithType: IProcessModel<T>
+  nameWithType.vb: IProcessModel(Of T)
+- uid: TimeSeriesAnalysis.SysId.IProcessModel`1.GetModelParameters
   name: GetModelParameters()
-  href: api/TimeSeriesAnalysis.SysId.IProcessModel.html#TimeSeriesAnalysis_SysId_IProcessModel_GetModelParameters
-  commentId: M:TimeSeriesAnalysis.SysId.IProcessModel.GetModelParameters
-  fullName: TimeSeriesAnalysis.SysId.IProcessModel.GetModelParameters()
-  nameWithType: IProcessModel.GetModelParameters()
-- uid: TimeSeriesAnalysis.SysId.IProcessModel.GetModelParameters*
+  href: api/TimeSeriesAnalysis.SysId.IProcessModel-1.html#TimeSeriesAnalysis_SysId_IProcessModel_1_GetModelParameters
+  commentId: M:TimeSeriesAnalysis.SysId.IProcessModel`1.GetModelParameters
+  fullName: TimeSeriesAnalysis.SysId.IProcessModel<T>.GetModelParameters()
+  fullName.vb: TimeSeriesAnalysis.SysId.IProcessModel(Of T).GetModelParameters()
+  nameWithType: IProcessModel<T>.GetModelParameters()
+  nameWithType.vb: IProcessModel(Of T).GetModelParameters()
+- uid: TimeSeriesAnalysis.SysId.IProcessModel`1.GetModelParameters*
   name: GetModelParameters
-  href: api/TimeSeriesAnalysis.SysId.IProcessModel.html#TimeSeriesAnalysis_SysId_IProcessModel_GetModelParameters_
-  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModel.GetModelParameters
+  href: api/TimeSeriesAnalysis.SysId.IProcessModel-1.html#TimeSeriesAnalysis_SysId_IProcessModel_1_GetModelParameters_
+  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModel`1.GetModelParameters
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.IProcessModel.GetModelParameters
-  nameWithType: IProcessModel.GetModelParameters
-- uid: TimeSeriesAnalysis.SysId.IProcessModel.Iterate(System.Double[])
+  fullName: TimeSeriesAnalysis.SysId.IProcessModel<T>.GetModelParameters
+  fullName.vb: TimeSeriesAnalysis.SysId.IProcessModel(Of T).GetModelParameters
+  nameWithType: IProcessModel<T>.GetModelParameters
+  nameWithType.vb: IProcessModel(Of T).GetModelParameters
+- uid: TimeSeriesAnalysis.SysId.IProcessModel`1.Iterate(System.Double[])
   name: Iterate(Double[])
-  href: api/TimeSeriesAnalysis.SysId.IProcessModel.html#TimeSeriesAnalysis_SysId_IProcessModel_Iterate_System_Double___
-  commentId: M:TimeSeriesAnalysis.SysId.IProcessModel.Iterate(System.Double[])
+  href: api/TimeSeriesAnalysis.SysId.IProcessModel-1.html#TimeSeriesAnalysis_SysId_IProcessModel_1_Iterate_System_Double___
+  commentId: M:TimeSeriesAnalysis.SysId.IProcessModel`1.Iterate(System.Double[])
   name.vb: Iterate(Double())
-  fullName: TimeSeriesAnalysis.SysId.IProcessModel.Iterate(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.SysId.IProcessModel.Iterate(System.Double())
-  nameWithType: IProcessModel.Iterate(Double[])
-  nameWithType.vb: IProcessModel.Iterate(Double())
-- uid: TimeSeriesAnalysis.SysId.IProcessModel.Iterate*
+  fullName: TimeSeriesAnalysis.SysId.IProcessModel<T>.Iterate(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.SysId.IProcessModel(Of T).Iterate(System.Double())
+  nameWithType: IProcessModel<T>.Iterate(Double[])
+  nameWithType.vb: IProcessModel(Of T).Iterate(Double())
+- uid: TimeSeriesAnalysis.SysId.IProcessModel`1.Iterate*
   name: Iterate
-  href: api/TimeSeriesAnalysis.SysId.IProcessModel.html#TimeSeriesAnalysis_SysId_IProcessModel_Iterate_
-  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModel.Iterate
+  href: api/TimeSeriesAnalysis.SysId.IProcessModel-1.html#TimeSeriesAnalysis_SysId_IProcessModel_1_Iterate_
+  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModel`1.Iterate
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.IProcessModel.Iterate
-  nameWithType: IProcessModel.Iterate
+  fullName: TimeSeriesAnalysis.SysId.IProcessModel<T>.Iterate
+  fullName.vb: TimeSeriesAnalysis.SysId.IProcessModel(Of T).Iterate
+  nameWithType: IProcessModel<T>.Iterate
+  nameWithType.vb: IProcessModel(Of T).Iterate
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters
+  name: IProcessModelParameters
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html
+  commentId: T:TimeSeriesAnalysis.SysId.IProcessModelParameters
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters
+  nameWithType: IProcessModelParameters
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.AbleToIdentify
+  name: AbleToIdentify()
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_AbleToIdentify
+  commentId: M:TimeSeriesAnalysis.SysId.IProcessModelParameters.AbleToIdentify
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.AbleToIdentify()
+  nameWithType: IProcessModelParameters.AbleToIdentify()
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.AbleToIdentify*
+  name: AbleToIdentify
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_AbleToIdentify_
+  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModelParameters.AbleToIdentify
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.AbleToIdentify
+  nameWithType: IProcessModelParameters.AbleToIdentify
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.AddWarning(TimeSeriesAnalysis.SysId.ProcessIdentWarnings)
+  name: AddWarning(ProcessIdentWarnings)
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_AddWarning_TimeSeriesAnalysis_SysId_ProcessIdentWarnings_
+  commentId: M:TimeSeriesAnalysis.SysId.IProcessModelParameters.AddWarning(TimeSeriesAnalysis.SysId.ProcessIdentWarnings)
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.AddWarning(TimeSeriesAnalysis.SysId.ProcessIdentWarnings)
+  nameWithType: IProcessModelParameters.AddWarning(ProcessIdentWarnings)
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.AddWarning*
+  name: AddWarning
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_AddWarning_
+  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModelParameters.AddWarning
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.AddWarning
+  nameWithType: IProcessModelParameters.AddWarning
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingObjFunVal
+  name: GetFittingObjFunVal()
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_GetFittingObjFunVal
+  commentId: M:TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingObjFunVal
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingObjFunVal()
+  nameWithType: IProcessModelParameters.GetFittingObjFunVal()
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingObjFunVal*
+  name: GetFittingObjFunVal
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_GetFittingObjFunVal_
+  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingObjFunVal
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingObjFunVal
+  nameWithType: IProcessModelParameters.GetFittingObjFunVal
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingR2
+  name: GetFittingR2()
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_GetFittingR2
+  commentId: M:TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingR2
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingR2()
+  nameWithType: IProcessModelParameters.GetFittingR2()
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingR2*
+  name: GetFittingR2
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_GetFittingR2_
+  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingR2
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetFittingR2
+  nameWithType: IProcessModelParameters.GetFittingR2
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetWarningList
+  name: GetWarningList()
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_GetWarningList
+  commentId: M:TimeSeriesAnalysis.SysId.IProcessModelParameters.GetWarningList
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetWarningList()
+  nameWithType: IProcessModelParameters.GetWarningList()
+- uid: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetWarningList*
+  name: GetWarningList
+  href: api/TimeSeriesAnalysis.SysId.IProcessModelParameters.html#TimeSeriesAnalysis_SysId_IProcessModelParameters_GetWarningList_
+  commentId: Overload:TimeSeriesAnalysis.SysId.IProcessModelParameters.GetWarningList
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.SysId.IProcessModelParameters.GetWarningList
+  nameWithType: IProcessModelParameters.GetWarningList
 - uid: TimeSeriesAnalysis.SysId.ProcessDataSet
   name: ProcessDataSet
   href: api/TimeSeriesAnalysis.SysId.ProcessDataSet.html
@@ -1076,44 +1098,51 @@ references:
   commentId: F:TimeSeriesAnalysis.SysId.ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
   fullName: TimeSeriesAnalysis.SysId.ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
   nameWithType: ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
-- uid: TimeSeriesAnalysis.SysId.ProcessSimulator
-  name: ProcessSimulator
-  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator.html
-  commentId: T:TimeSeriesAnalysis.SysId.ProcessSimulator
-  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator
-  nameWithType: ProcessSimulator
-- uid: TimeSeriesAnalysis.SysId.ProcessSimulator.EmulateYmeas(TimeSeriesAnalysis.SysId.IProcessModel,TimeSeriesAnalysis.SysId.ProcessDataSet@)
-  name: EmulateYmeas(IProcessModel, ref ProcessDataSet)
-  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator.html#TimeSeriesAnalysis_SysId_ProcessSimulator_EmulateYmeas_TimeSeriesAnalysis_SysId_IProcessModel_TimeSeriesAnalysis_SysId_ProcessDataSet__
-  commentId: M:TimeSeriesAnalysis.SysId.ProcessSimulator.EmulateYmeas(TimeSeriesAnalysis.SysId.IProcessModel,TimeSeriesAnalysis.SysId.ProcessDataSet@)
-  name.vb: EmulateYmeas(IProcessModel, ByRef ProcessDataSet)
-  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator.EmulateYmeas(TimeSeriesAnalysis.SysId.IProcessModel, ref TimeSeriesAnalysis.SysId.ProcessDataSet)
-  fullName.vb: TimeSeriesAnalysis.SysId.ProcessSimulator.EmulateYmeas(TimeSeriesAnalysis.SysId.IProcessModel, ByRef TimeSeriesAnalysis.SysId.ProcessDataSet)
-  nameWithType: ProcessSimulator.EmulateYmeas(IProcessModel, ref ProcessDataSet)
-  nameWithType.vb: ProcessSimulator.EmulateYmeas(IProcessModel, ByRef ProcessDataSet)
-- uid: TimeSeriesAnalysis.SysId.ProcessSimulator.EmulateYmeas*
+- uid: TimeSeriesAnalysis.SysId.ProcessSimulator`2
+  name: ProcessSimulator<T1, T2>
+  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator-2.html
+  commentId: T:TimeSeriesAnalysis.SysId.ProcessSimulator`2
+  name.vb: ProcessSimulator(Of T1, T2)
+  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator<T1, T2>
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessSimulator(Of T1, T2)
+  nameWithType: ProcessSimulator<T1, T2>
+  nameWithType.vb: ProcessSimulator(Of T1, T2)
+- uid: TimeSeriesAnalysis.SysId.ProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.SysId.ProcessDataSet@)
+  name: EmulateYmeas(T1, ref ProcessDataSet)
+  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator-2.html#TimeSeriesAnalysis_SysId_ProcessSimulator_2_EmulateYmeas__0_TimeSeriesAnalysis_SysId_ProcessDataSet__
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.SysId.ProcessDataSet@)
+  name.vb: EmulateYmeas(T1, ByRef ProcessDataSet)
+  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator<T1, T2>.EmulateYmeas(T1, ref TimeSeriesAnalysis.SysId.ProcessDataSet)
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef TimeSeriesAnalysis.SysId.ProcessDataSet)
+  nameWithType: ProcessSimulator<T1, T2>.EmulateYmeas(T1, ref ProcessDataSet)
+  nameWithType.vb: ProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef ProcessDataSet)
+- uid: TimeSeriesAnalysis.SysId.ProcessSimulator`2.EmulateYmeas*
   name: EmulateYmeas
-  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator.html#TimeSeriesAnalysis_SysId_ProcessSimulator_EmulateYmeas_
-  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessSimulator.EmulateYmeas
+  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator-2.html#TimeSeriesAnalysis_SysId_ProcessSimulator_2_EmulateYmeas_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessSimulator`2.EmulateYmeas
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator.EmulateYmeas
-  nameWithType: ProcessSimulator.EmulateYmeas
-- uid: TimeSeriesAnalysis.SysId.ProcessSimulator.Simulate(TimeSeriesAnalysis.SysId.IProcessModel,TimeSeriesAnalysis.SysId.ProcessDataSet@,System.Boolean)
-  name: Simulate(IProcessModel, ref ProcessDataSet, Boolean)
-  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator.html#TimeSeriesAnalysis_SysId_ProcessSimulator_Simulate_TimeSeriesAnalysis_SysId_IProcessModel_TimeSeriesAnalysis_SysId_ProcessDataSet__System_Boolean_
-  commentId: M:TimeSeriesAnalysis.SysId.ProcessSimulator.Simulate(TimeSeriesAnalysis.SysId.IProcessModel,TimeSeriesAnalysis.SysId.ProcessDataSet@,System.Boolean)
-  name.vb: Simulate(IProcessModel, ByRef ProcessDataSet, Boolean)
-  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator.Simulate(TimeSeriesAnalysis.SysId.IProcessModel, ref TimeSeriesAnalysis.SysId.ProcessDataSet, System.Boolean)
-  fullName.vb: TimeSeriesAnalysis.SysId.ProcessSimulator.Simulate(TimeSeriesAnalysis.SysId.IProcessModel, ByRef TimeSeriesAnalysis.SysId.ProcessDataSet, System.Boolean)
-  nameWithType: ProcessSimulator.Simulate(IProcessModel, ref ProcessDataSet, Boolean)
-  nameWithType.vb: ProcessSimulator.Simulate(IProcessModel, ByRef ProcessDataSet, Boolean)
-- uid: TimeSeriesAnalysis.SysId.ProcessSimulator.Simulate*
+  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator<T1, T2>.EmulateYmeas
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessSimulator(Of T1, T2).EmulateYmeas
+  nameWithType: ProcessSimulator<T1, T2>.EmulateYmeas
+  nameWithType.vb: ProcessSimulator(Of T1, T2).EmulateYmeas
+- uid: TimeSeriesAnalysis.SysId.ProcessSimulator`2.Simulate(`0,TimeSeriesAnalysis.SysId.ProcessDataSet@,System.Boolean)
+  name: Simulate(T1, ref ProcessDataSet, Boolean)
+  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator-2.html#TimeSeriesAnalysis_SysId_ProcessSimulator_2_Simulate__0_TimeSeriesAnalysis_SysId_ProcessDataSet__System_Boolean_
+  commentId: M:TimeSeriesAnalysis.SysId.ProcessSimulator`2.Simulate(`0,TimeSeriesAnalysis.SysId.ProcessDataSet@,System.Boolean)
+  name.vb: Simulate(T1, ByRef ProcessDataSet, Boolean)
+  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator<T1, T2>.Simulate(T1, ref TimeSeriesAnalysis.SysId.ProcessDataSet, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessSimulator(Of T1, T2).Simulate(T1, ByRef TimeSeriesAnalysis.SysId.ProcessDataSet, System.Boolean)
+  nameWithType: ProcessSimulator<T1, T2>.Simulate(T1, ref ProcessDataSet, Boolean)
+  nameWithType.vb: ProcessSimulator(Of T1, T2).Simulate(T1, ByRef ProcessDataSet, Boolean)
+- uid: TimeSeriesAnalysis.SysId.ProcessSimulator`2.Simulate*
   name: Simulate
-  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator.html#TimeSeriesAnalysis_SysId_ProcessSimulator_Simulate_
-  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessSimulator.Simulate
+  href: api/TimeSeriesAnalysis.SysId.ProcessSimulator-2.html#TimeSeriesAnalysis_SysId_ProcessSimulator_2_Simulate_
+  commentId: Overload:TimeSeriesAnalysis.SysId.ProcessSimulator`2.Simulate
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator.Simulate
-  nameWithType: ProcessSimulator.Simulate
+  fullName: TimeSeriesAnalysis.SysId.ProcessSimulator<T1, T2>.Simulate
+  fullName.vb: TimeSeriesAnalysis.SysId.ProcessSimulator(Of T1, T2).Simulate
+  nameWithType: ProcessSimulator<T1, T2>.Simulate
+  nameWithType.vb: ProcessSimulator(Of T1, T2).Simulate
 - uid: TimeSeriesAnalysis.Utility
   name: TimeSeriesAnalysis.Utility
   href: api/TimeSeriesAnalysis.Utility.html

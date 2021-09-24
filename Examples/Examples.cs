@@ -77,6 +77,7 @@ namespace TimeSeriesAnalysis.Examples
             int timeBase_s = 1;
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
             {
+                WasAbleToIdentify = true,
                 TimeConstant_s = 5,
                 ProcessGains = new double[] { 1,2},
                 Bias = 0
@@ -90,20 +91,19 @@ namespace TimeSeriesAnalysis.Examples
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
             ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
-            ProcessSimulator.EmulateYmeas(model, ref dataSet);
+            ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.EmulateYmeas(model, ref dataSet);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s);
 
             DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet);
-            ProcessSimulator.Simulate(identifiedModel, ref dataSet);
-
-            Plot.FromList(new List<double[]> { dataSet.Y_meas, dataSet.Y_sim },
+    
+            Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas, 
+                identifiedModel.FittedDataSet.Y_sim },
                 new List<string> { "y1=y_meas", "y1=y_sim"}, timeBase_s);
 
             Console.WriteLine(identifiedModel.ToString());
-
         }
 
         [Test, Explicit]

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.SysId
 {
-    interface IProcessModelIdentifier<T> where T:IProcessModel
+    interface IProcessModelIdentifier<T1,T2> where T1: IProcessModel<T2> where T2: IProcessModelParameters
     {
-        T Identify(ref ProcessDataSet dataSet);
+        T1 Identify(ref ProcessDataSet dataSet);
 
     }
 }

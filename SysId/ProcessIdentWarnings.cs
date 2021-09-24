@@ -5,7 +5,10 @@
     /// </summary>
     public enum ProcessIdentWarnings
     {
-        Nothing = 0,
+        /// <summary>
+        /// 
+        /// </summary>
+        Nothing = 0, 
         DataSetVeryShortComparedtoTMax = 1,
         RegressionProblemFailedToYieldSolution = 2,
         TimeDelayAtMaximumConstraint = 3,

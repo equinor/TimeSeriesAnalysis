@@ -5,7 +5,7 @@ namespace TimeSeriesAnalysis.SysId
     /// <summary>
     /// Parameters data class of the "Default" process model 
     /// </summary>
-    public class DefaultProcessModelParameters : IModelParameters
+    public class DefaultProcessModelParameters : IProcessModelParameters
     {
         public double TimeConstant_s { get; set; } = 0;
         public int TimeDelay_s { get; set; } = 0;
