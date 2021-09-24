@@ -4,29 +4,21 @@
 
 
 # TimeSeriesAnalysis
-*TimeSeriesAnalysis* is a toolbox that allows you to work .NET efficiently with time-series that may include *transients* or *dynamics*.
+*TimeSeriesAnalysis* is a class library that allows you to work .NET efficiently with time-series that may include *transients* or *dynamics*.
 
 ## Why?
-Because the final product of many enterprise time-series applications is *required* to be implemented in .NET, why not try to make development as streamlined as possible?
-Time-series analysis it typically done in languages like *Python*,*R* or *Matlab*, because high-level **toolboxes** support time-series analysis in these languages.
-Tasks like loading data from a file, fitting a model to data or plotting time-series can be accomplished in a single line of code in .NET with the tools in this class library, just as you would do with one of those scripted languages.
+Because the final product of many enterprise time-series applications(like control algorithms or dynamic simulators) is *required* to be implemented in .NET, why not create a toolbox streamline such development as much possible? With good tooling, it may even be possible to *start* early research/prototyping/data analysis directly in .NET, removing the need to port code later.
 
-That may even mean that early research/prototyping/data analysis can *start* in .NET, which removes the step re-writing prototype code into .NET.
+## In a rush: getting started
 
-## But honestly, you know you can just do time-series analysis with standard statistical langauges *xyz*, right? 
-
-Yes and no. Most of the time each data point in a time-series is considered *stationary*, in which case a time-series can be considered a table of independent data points, and standards statisical methods can be applied to time-series just as for any other statisical data. 
-
-But in some-applications the *transients* or *dynamics* of the process are visible in trends, in which case the data points are no longer independent, and in that case many standard statistical methods become invalid. This is often the case in time-series of for instance measured temperatures, pressures or flows, and analyzing such systems often requires filtering, or fitting models that include transient/dynamic terms. Models that include dynamic terms are key in dynamic simulation, and controlling such systems by means of automatic controllers such as PID-controllers is the domain of *control engineering*. 
-
-Fitting dynamic models to dynamic time-series is the domain of *system identification*, running models that include terms for transients and their interactions is the field of *dynamic simulation*, designing algorithms that influence the dynamics of such systems is the domain of *control systems* and designing algorithms which calculate unmeasured variables based on the available measurements is the topic of *estimation theory*.
-
-Dynamic simulators, control systems and estimators are almost exclusively implemented in the compiled languages like C/C++/C# in industry, which is what this toolbox attempts to address. 
+- check out the repository 
+- build. (Developed with ``Visual Studio 2019``)
+- open ``Test Explorer`` and read/run unit tests too examine capability and API of the class library
+- did not work? Please refer to the detailed ``Getting started`` chapter in the documentation below.
 
 ## Documentation: Getting started, code examples and api reference documentation
 
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>** :red_circle:
-
 
 ## Contributing
 This project welcomes contributions and suggestions. 
