@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TimeSeriesAnalysis.SysId
+namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// Parameters data class of the "Default" process model 

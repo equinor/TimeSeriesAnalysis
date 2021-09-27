@@ -8,7 +8,7 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 
 
-namespace TimeSeriesAnalysis.SysId
+namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// Simulate any process model that has implemented the IProcessModel interface. 

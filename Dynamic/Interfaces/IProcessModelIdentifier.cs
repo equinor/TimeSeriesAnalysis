@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeSeriesAnalysis.SysId
+namespace TimeSeriesAnalysis.Dynamic
 {
     interface IProcessModelIdentifier<T1,T2> where T1: IProcessModel<T2> where T2: IProcessModelParameters
     {

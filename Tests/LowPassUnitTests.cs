@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 using TimeSeriesAnalysis;
 
-using TimeSeriesAnalysis.Utility;
+using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.UnitTests
 {

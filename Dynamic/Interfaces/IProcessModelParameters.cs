@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeSeriesAnalysis.SysId
+namespace TimeSeriesAnalysis.Dynamic
 {
     public interface IProcessModelParameters
     {

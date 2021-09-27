@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.SysId
+namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
