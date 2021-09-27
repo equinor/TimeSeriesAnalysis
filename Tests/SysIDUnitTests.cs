@@ -8,9 +8,9 @@ using NUnit.Framework;
 
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
-using TimeSeriesAnalysis.SysId;
+using TimeSeriesAnalysis.Dynamic;
 
-namespace SysId.UnitTests
+namespace DefaultModel.UnitTests
 {
     /// <summary>
     /// DefaultModel unit tests

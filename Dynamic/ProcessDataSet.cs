@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.SysId
+namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// The data for a porition of a process, containg only one output and one or multiple inputs that influence it
