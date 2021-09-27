@@ -39,9 +39,9 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns the column of a 2d-array of doubles corresponding to columnIndex(starts at zero)
         ///</summary>
-        static public double[] GetColumn(this double[,] matrix, int columnNumber)
+        static public double[] GetColumn(this double[,] matrix, int columnIndex)
         {
-            return Array2D<double>.GetColumn(matrix, columnNumber);
+            return Array2D<double>.GetColumn(matrix, columnIndex);
         }
 
         ///<summary>

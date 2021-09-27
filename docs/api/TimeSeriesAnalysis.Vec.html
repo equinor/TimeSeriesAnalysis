@@ -539,6 +539,106 @@ for instance on</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Vec_Div_" data-uid="TimeSeriesAnalysis.Vec.Div*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Div_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Vec.Div(System.Double[],System.Double)">Div(Double[], Double)</h4>
+  <div class="markdown level1 summary"><p>Divides an vector by a scalar value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double[] Div(double[] vector, double scalar)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">vector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">scalar</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><p>an vector of values representing the array didived by a scalar.
+In case of NaN inputs or divide-by-zero NaN elements are returned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_Div_" data-uid="TimeSeriesAnalysis.Vec.Div*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Div_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Vec.Div(System.Double[],System.Double[])">Div(Double[], Double[])</h4>
+  <div class="markdown level1 summary"><p>Divides two vectors of equal length</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double[] Div(double[] vector1, double[] vector2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">vector1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">vector2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><p>an vector of values representing the array didived by a scalar.
+In case of NaN inputs or divide-by-zero NaN elements are returned</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Vec_FindValues_" data-uid="TimeSeriesAnalysis.Vec.FindValues*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_" data-uid="TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)">FindValues(Double[], Double, VectorFindValueType)</h4>
   <div class="markdown level1 summary"><p>return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
@@ -1696,7 +1796,7 @@ uncertainties in parameters, covariance matrix, modelled output y and R-squared 
   
   <a id="TimeSeriesAnalysis_Vec_ReplaceIndWithValue_" data-uid="TimeSeriesAnalysis.Vec.ReplaceIndWithValue*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_ReplaceIndWithValue_System_Double___System_Collections_Generic_List_System_Int32__System_Double_" data-uid="TimeSeriesAnalysis.Vec.ReplaceIndWithValue(System.Double[],System.Collections.Generic.List{System.Int32},System.Double)">ReplaceIndWithValue(Double[], List&lt;Int32&gt;, Double)</h4>
-  <div class="markdown level1 summary"><p>replaces all the vaules in array with indices in indList NaN</p>
+  <div class="markdown level1 summary"><p>Replace certain values in an array with a new value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1716,17 +1816,20 @@ uncertainties in parameters, covariance matrix, modelled output y and R-squared 
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">array</span></td>
-        <td></td>
+        <td><p>the array to be replaces</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
         <td><span class="parametername">indList</span></td>
-        <td></td>
+        <td><p>list of all the indices of all data points in array to be replaced</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">valueToReplaceWith</span></td>
-        <td></td>
+        <td><p>the new value to use in place of old values.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1741,7 +1844,8 @@ uncertainties in parameters, covariance matrix, modelled output y and R-squared 
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td></td>
+        <td><p>A copy of the original array with the values repalced as specified</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1754,7 +1858,7 @@ R-squared (R2) is a statistical measure that represents the proportion of the va
 variable that's explained by an independent variable or variables in a regression model.
 Whereas correlation explains the strength of the relationship between an independent and
 dependent variable, R-squared explains to what extent the variance of one variable explains the
-variance of the second variable. So, if the R2 of a model is 0.50, then approximately
+variance of the second variable. So, if the R2 of a model is <code>0.50</code>, then approximately
 half of the observed variation can be explained by the model's inputs.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1803,7 +1907,8 @@ half of the observed variation can be explained by the model's inputs.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><p>R2 squared, a value between -1 and 1. If an error occured,Double.PositiveInfinity is returned</p>
+        <td><p>R2 squared, a value between <code>-1</code> and <code>1</code>. If an error occured,
+<code>Double.PositiveInfinity</code> is returned</p>
 </td>
       </tr>
     </tbody>
@@ -2133,7 +2238,7 @@ half of the observed variation can be explained by the model's inputs.</p>
   
   <a id="TimeSeriesAnalysis_Vec_SumOfAbsErr_" data-uid="TimeSeriesAnalysis.Vec.SumOfAbsErr*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_SumOfAbsErr_System_Double___System_Double___System_Int32_" data-uid="TimeSeriesAnalysis.Vec.SumOfAbsErr(System.Double[],System.Double[],System.Int32)">SumOfAbsErr(Double[], Double[], Int32)</h4>
-  <div class="markdown level1 summary"><p>The sum of absolute errors (|a1-a2|) between array1 and array2</p>
+  <div class="markdown level1 summary"><p>The sum of absolute errors <code>(|a1-a2|)</code> between <code>array1</code> and <code>array2</code></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2240,12 +2345,12 @@ this normalization can be turned off</p>
   
   <a id="TimeSeriesAnalysis_Vec_SumOfSquareErr_" data-uid="TimeSeriesAnalysis.Vec.SumOfSquareErr*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_SumOfSquareErr_System_Double___System_Double___System_Int32_System_Boolean_" data-uid="TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double[],System.Int32,System.Boolean)">SumOfSquareErr(Double[], Double[], Int32, Boolean)</h4>
-  <div class="markdown level1 summary"><p>The sum of absolute errors (a1-a2)^2 between array1 and array2</p>
+  <div class="markdown level1 summary"><p>The sum of square errors <code>(a1-a2)^2</code> between <code>array1</code> and <code>array2</code></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double SumOfSquareErr(double[] ymod, double[] ymeas, int ymodOffset = -1, bool divByN = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, bool divByN = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2259,12 +2364,12 @@ this normalization can be turned off</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">ymod</span></td>
+        <td><span class="parametername">array1</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">ymeas</span></td>
+        <td><span class="parametername">array2</span></td>
         <td></td>
       </tr>
       <tr>

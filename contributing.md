@@ -1,8 +1,9 @@
 # Contributing
 
 This project welcomes contributions and suggestions. 
+We believe in collaboration. Collaboration with developers and users, vendors and educational institutions, partners and competitors. Within and outside our industry.
 
-When contributing to this repository, please first discuss the change you wish to make via issue, or by the github discussions forum,
+When contributing to this repository, please first discuss the change you wish to make via issue, or by the GitHub discussions forum,
 or any other method with the owners of this repository before making a change.
 
 ## What kind of contributions?
@@ -15,7 +16,10 @@ are appreciated.
 ### Expanding on the (dynamic) system-identification tool set 
 
 Do you have a great idea for how better to identify models for dynamic systems? If you would like to contribute your own method into the tool set, that sort of method is much
-appreciated
+appreciated. 
+
+This library was initially developed with the ``DefaultProcessModel`` in mind, but is should be possible to extend the library with other process model parametrization.
+To do so, you should replicate how the ``DefautlProcessModel`` has been implemented, and your model classes should implement the interfaces specified.
 
 ### Expanding on the capability of the PID-controller 
 

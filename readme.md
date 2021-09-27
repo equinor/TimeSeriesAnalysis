@@ -16,7 +16,7 @@ Because the final product of many enterprise time-series applications(like contr
 - open ``Test Explorer`` and read/run unit tests too examine capability and API of the class library
 - did not work? Please refer to the detailed ``Getting started`` chapter in the documentation below.
 
-## Documentation: Getting started, code examples and api reference documentation
+## Documentation: Getting started, code examples and API reference documentation
 
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>** :red_circle:
 
@@ -30,5 +30,5 @@ Questions related to TimeSeriesAnalysis can be posted in the [github discussion 
 ## Authors and contact persons
 Steinar Elgsæter
 
-## Licence
-TimeSeriesAnalysis is distributed under the [MIT licence](LICENSE).
+## License
+TimeSeriesAnalysis is distributed under the [MIT license](LICENSE).
