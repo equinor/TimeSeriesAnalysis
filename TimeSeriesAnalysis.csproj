@@ -30,7 +30,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.29</Version>
+    <Version>1.0.30</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 .NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 
@@ -146,7 +146,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Utility\MovingAvg.cs" />
     <Compile Include="Utility\CSV.cs" />
     <Compile Include="Utility\StringToFileWriter.cs" />
-    <Compile Include="Utility\TimeSerierHelper.cs" />
+    <Compile Include="Utility\TimeSeriesCreator.cs" />
     <Compile Include="Utility\UnixTime.cs" />
     <Compile Include="Utility\Plot.cs" />
     <Compile Include="Utility\Plot4Test.cs" />

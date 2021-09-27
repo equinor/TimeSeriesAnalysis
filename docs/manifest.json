@@ -258,7 +258,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.Plot4Test.html",
-          "hash": "K4MOPzIkOXps5WylNLFLQoPB2cq+SWHeMVjdtif5PVk="
+          "hash": "aZlz/+WCYbIK6JZ5KQDKKtYAU1Y/WH5vcrFLXpoL6zg="
         }
       },
       "is_incremental": false,
@@ -290,11 +290,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Utility.TimeSerierHelper.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Utility.TimeSerierHelper.html",
-          "hash": "JNPF6mfKaiKijwf6Ax5am83YgcgKk91y4AEffR8d7Lo="
+          "relative_path": "api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html",
+          "hash": "tOw56mW0khd/f7nBLYs0eno0IiwpGFCc8YZWPY5p/Fg="
         }
       },
       "is_incremental": false,
@@ -318,7 +318,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.html",
-          "hash": "nvf1wSvT5LiytFKubMhy+RoPNOkyuD6cfAcm/W3nW8g="
+          "hash": "xmII6dRynsaycdWOX9K1zLHRkJzNvoROEoMAkD710IY="
         }
       },
       "is_incremental": false,
@@ -414,7 +414,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "iylNk7As920Hk/ozBhgbVd84WCebLwHuGESKs9710cA="
+          "hash": "7LnHCDLo1VQXkdiGqAzfxlah6OnLkQ+a6TSWA5+XcPc="
         }
       },
       "is_incremental": false,

@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis.Utility
                 return false;
         }
 
-
+        /*
         ///<summary>
         /// Plot one vector X, where the sampling time interval is dT_s. 
         ///</summary>
@@ -129,8 +129,24 @@ namespace TimeSeriesAnalysis.Utility
             if (DetermineIfToPlot())
                 Plot.Six(V1, V2, V3, V4, V5, V6, dT_s, tagNameV1, tagNameV2, tagNameV3, tagNameV4, tagNameV5, tagNameV6,
                 plotAllOnLeftYaxis, useSubplots, comment, t0);
+        }
+*/
+        /// <summary>
+        /// Wrapper for Plot.FromList that 
+        /// </summary>
+        /// <returns></returns>
+        public string FromList(List<double[]> dataList, List<string> plotNames,
+            int dT_s, string comment = null, DateTime t0 = new DateTime(),
+            string caseName = "", bool doStartChrome = true, string customPlotDataPath = null)
+        {
+            if (DetermineIfToPlot())
+            {
+                return Plot.FromList(dataList, plotNames, dT_s, comment, t0, caseName, doStartChrome,
+                    customPlotDataPath);
+            }
+            else
+                return null;
 
         }
-
     }
 }

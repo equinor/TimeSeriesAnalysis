@@ -186,14 +186,14 @@ a maximum number of plots is set, override as needed.</p>
   </div>
   
   
-  <a id="TimeSeriesAnalysis_Utility_Plot4Test_Five_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Five*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_Plot4Test_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)">Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)</h4>
-  <div class="markdown level1 summary"><p>Plot five vectors V1,V2,V3,V4,V5 where the sampling time interval is dT_s.</p>
+  <a id="TimeSeriesAnalysis_Utility_Plot4Test_FromList_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.FromList*"></a>
+  <h4 id="TimeSeriesAnalysis_Utility_Plot4Test_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)">FromList(List&lt;Double[]&gt;, List&lt;String&gt;, Int32, String, DateTime, String, Boolean, String)</h4>
+  <div class="markdown level1 summary"><p>Wrapper for Plot.FromList that</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Five(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, int dT_s, string tagNameV1 = &quot;Var1&quot;, string tagNameV2 = &quot;Var2&quot;, string tagNameV3 = &quot;Var3&quot;, string tagNameV4 = &quot;Var4&quot;, string tagNameV5 = &quot;Var5&quot;, bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = default(DateTime))</code></pre>
+    <pre><code class="lang-csharp hljs">public string FromList(List&lt;double[]&gt; dataList, List&lt;string&gt; plotNames, int dT_s, string comment = null, DateTime t0 = default(DateTime), string caseName = &quot;&quot;, bool doStartChrome = true, string customPlotDataPath = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -206,68 +206,18 @@ a maximum number of plots is set, override as needed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V1</span></td>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Double</span>[]&gt;</td>
+        <td><span class="parametername">dataList</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V4</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V5</span></td>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">plotNames</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">dT_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV4</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV5</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">plotAllOnLeftYaxis</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">useSubplots</span></td>
         <td></td>
       </tr>
       <tr>
@@ -278,94 +228,36 @@ a maximum number of plots is set, override as needed.</p>
       <tr>
         <td><span class="xref">System.DateTime</span></td>
         <td><span class="parametername">t0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">caseName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doStartChrome</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">customPlotDataPath</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_Plot4Test_Four_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Four*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_Plot4Test_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)">Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)</h4>
-  <div class="markdown level1 summary"><p>Plot three vectors V1,V2,V3,V4 where the sampling time interval is dT_s.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Four(double[] V1, double[] V2, double[] V3, double[] V4, int dT_s, string tagNameV1 = &quot;Var1&quot;, string tagNameV2 = &quot;Var2&quot;, string tagNameV3 = &quot;Var3&quot;, string tagNameV4 = &quot;Var4&quot;, bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = default(DateTime))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V4</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">dT_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV4</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">plotAllOnLeftYaxis</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">useSubplots</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">comment</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td><span class="parametername">t0</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -391,308 +283,6 @@ a maximum number of plots is set, override as needed.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_Plot4Test_One_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.One*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_Plot4Test_One_System_Double___System_Int32_System_String_System_String_System_DateTime_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)">One(Double[], Int32, String, String, DateTime)</h4>
-  <div class="markdown level1 summary"><p>Plot one vector X, where the sampling time interval is dT_s.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void One(double[] X, int dT_s, string tagName = &quot;Var1&quot;, string comment = null, DateTime t0 = default(DateTime))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">X</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">dT_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagName</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">comment</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td><span class="parametername">t0</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_Plot4Test_Six_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Six*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_Plot4Test_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)">Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)</h4>
-  <div class="markdown level1 summary"><p>Plot six vectors V1,V2,V3,V4 where the sampling time interval is dT_s.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Six(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, double[] V6, int dT_s, string tagNameV1 = &quot;Var1&quot;, string tagNameV2 = &quot;Var2&quot;, string tagNameV3 = &quot;Var3&quot;, string tagNameV4 = &quot;Var4&quot;, string tagNameV5 = &quot;Var5&quot;, string tagNameV6 = &quot;Var6&quot;, bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = default(DateTime))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V4</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V5</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V6</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">dT_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV4</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV5</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV6</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">plotAllOnLeftYaxis</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">useSubplots</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">comment</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td><span class="parametername">t0</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_Plot4Test_Three_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Three*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_Plot4Test_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)">Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)</h4>
-  <div class="markdown level1 summary"><p>Plot three vectors V1, V2, V3 where the sampling time interval is dT_s.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Three(double[] V1, double[] V2, double[] V3, int dT_s, string tagNameV1 = &quot;Var1&quot;, string tagNameV2 = &quot;Var2&quot;, string tagNameV3 = &quot;Var3&quot;, bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = default(DateTime))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">dT_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV3</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">plotAllOnLeftYaxis</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">useSubplots</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">comment</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td><span class="parametername">t0</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_Plot4Test_Two_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Two*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_Plot4Test_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_" data-uid="TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)">Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)</h4>
-  <div class="markdown level1 summary"><p>Plot two vectors V1 and V2, where the sampling time interval is dT_s.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Two(double[] V1, double[] V2, int dT_s, string tagNameV1 = &quot;Var1&quot;, string tagNameV2 = &quot;Var2&quot;, bool plotAllVarsOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = default(DateTime))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">V2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">dT_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">tagNameV2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">plotAllVarsOnLeftYaxis</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">useSubplots</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">comment</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td><span class="parametername">t0</span></td>
         <td></td>
       </tr>
     </tbody>

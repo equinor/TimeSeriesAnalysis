@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Utility
 {
-    public class TimeSerierHelper
+    public class TimeSeriesCreator
     {
         static public DateTime[] CreateTimeSeries(DateTime t0, int dT_s, int N)
         {

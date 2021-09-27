@@ -1746,38 +1746,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.Plot4Test.Enable
   nameWithType: Plot4Test.Enable
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name: Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Five_System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name.vb: Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Five(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  nameWithType: Plot4Test.Five(Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  nameWithType.vb: Plot4Test.Five(Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Five*
-  name: Five
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Five_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Five
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
+  name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
+  name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
+  nameWithType: Plot4Test.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
+  nameWithType.vb: Plot4Test.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.FromList*
+  name: FromList
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_FromList_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.FromList
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Five
-  nameWithType: Plot4Test.Five
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name: Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Four_System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name.vb: Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Four(System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  nameWithType: Plot4Test.Four(Double[], Double[], Double[], Double[], Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-  nameWithType.vb: Plot4Test.Four(Double(), Double(), Double(), Double(), Int32, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Four*
-  name: Four
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Four_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Four
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Four
-  nameWithType: Plot4Test.Four
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.FromList
+  nameWithType: Plot4Test.FromList
 - uid: TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade
   name: GetNumberOfPlotsMade()
   href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_GetNumberOfPlotsMade
@@ -1791,70 +1775,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade
   nameWithType: Plot4Test.GetNumberOfPlotsMade
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
-  name: One(Double[], Int32, String, String, DateTime)
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_One_System_Double___System_Int32_System_String_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double[],System.Int32,System.String,System.String,System.DateTime)
-  name.vb: One(Double(), Int32, String, String, DateTime)
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double[], System.Int32, System.String, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.One(System.Double(), System.Int32, System.String, System.String, System.DateTime)
-  nameWithType: Plot4Test.One(Double[], Int32, String, String, DateTime)
-  nameWithType.vb: Plot4Test.One(Double(), Int32, String, String, DateTime)
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.One*
-  name: One
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_One_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.One
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.One
-  nameWithType: Plot4Test.One
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name: Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Six_System_Double___System_Double___System_Double___System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name.vb: Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Six(System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  nameWithType: Plot4Test.Six(Double[], Double[], Double[], Double[], Double[], Double[], Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-  nameWithType.vb: Plot4Test.Six(Double(), Double(), Double(), Double(), Double(), Double(), Int32, String, String, String, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Six*
-  name: Six
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Six_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Six
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Six
-  nameWithType: Plot4Test.Six
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name: Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Three_System_Double___System_Double___System_Double___System_Int32_System_String_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double[],System.Double[],System.Double[],System.Int32,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name.vb: Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double[], System.Double[], System.Double[], System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Three(System.Double(), System.Double(), System.Double(), System.Int32, System.String, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  nameWithType: Plot4Test.Three(Double[], Double[], Double[], Int32, String, String, String, Boolean, Boolean, String, DateTime)
-  nameWithType.vb: Plot4Test.Three(Double(), Double(), Double(), Int32, String, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Three*
-  name: Three
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Three_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Three
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Three
-  nameWithType: Plot4Test.Three
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name: Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Two_System_Double___System_Double___System_Int32_System_String_System_String_System_Boolean_System_Boolean_System_String_System_DateTime_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double[],System.Double[],System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.String,System.DateTime)
-  name.vb: Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double[], System.Double[], System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.Two(System.Double(), System.Double(), System.Int32, System.String, System.String, System.Boolean, System.Boolean, System.String, System.DateTime)
-  nameWithType: Plot4Test.Two(Double[], Double[], Int32, String, String, Boolean, Boolean, String, DateTime)
-  nameWithType.vb: Plot4Test.Two(Double(), Double(), Int32, String, String, Boolean, Boolean, String, DateTime)
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.Two*
-  name: Two
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_Two_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Plot4Test.Two
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.Two
-  nameWithType: Plot4Test.Two
 - uid: TimeSeriesAnalysis.Utility.SignificantDigits
   name: SignificantDigits
   href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html
@@ -2001,25 +1921,25 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Write
   nameWithType: StringToFileWriter.Write
-- uid: TimeSeriesAnalysis.Utility.TimeSerierHelper
-  name: TimeSerierHelper
-  href: api/TimeSeriesAnalysis.Utility.TimeSerierHelper.html
-  commentId: T:TimeSeriesAnalysis.Utility.TimeSerierHelper
-  fullName: TimeSeriesAnalysis.Utility.TimeSerierHelper
-  nameWithType: TimeSerierHelper
-- uid: TimeSeriesAnalysis.Utility.TimeSerierHelper.CreateTimeSeries(System.DateTime,System.Int32,System.Int32)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator
+  name: TimeSeriesCreator
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html
+  commentId: T:TimeSeriesAnalysis.Utility.TimeSeriesCreator
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator
+  nameWithType: TimeSeriesCreator
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries(System.DateTime,System.Int32,System.Int32)
   name: CreateTimeSeries(DateTime, Int32, Int32)
-  href: api/TimeSeriesAnalysis.Utility.TimeSerierHelper.html#TimeSeriesAnalysis_Utility_TimeSerierHelper_CreateTimeSeries_System_DateTime_System_Int32_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Utility.TimeSerierHelper.CreateTimeSeries(System.DateTime,System.Int32,System.Int32)
-  fullName: TimeSeriesAnalysis.Utility.TimeSerierHelper.CreateTimeSeries(System.DateTime, System.Int32, System.Int32)
-  nameWithType: TimeSerierHelper.CreateTimeSeries(DateTime, Int32, Int32)
-- uid: TimeSeriesAnalysis.Utility.TimeSerierHelper.CreateTimeSeries*
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_CreateTimeSeries_System_DateTime_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries(System.DateTime,System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries(System.DateTime, System.Int32, System.Int32)
+  nameWithType: TimeSeriesCreator.CreateTimeSeries(DateTime, Int32, Int32)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries*
   name: CreateTimeSeries
-  href: api/TimeSeriesAnalysis.Utility.TimeSerierHelper.html#TimeSeriesAnalysis_Utility_TimeSerierHelper_CreateTimeSeries_
-  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSerierHelper.CreateTimeSeries
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_CreateTimeSeries_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.TimeSerierHelper.CreateTimeSeries
-  nameWithType: TimeSerierHelper.CreateTimeSeries
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries
+  nameWithType: TimeSeriesCreator.CreateTimeSeries
 - uid: TimeSeriesAnalysis.Utility.UnixTime
   name: UnixTime
   href: api/TimeSeriesAnalysis.Utility.UnixTime.html
