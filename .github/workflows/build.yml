@@ -18,12 +18,14 @@ jobs:
             - name: Build 
               run: msbuild TimeSeriesAnalysis.sln /p:Configuration=Debug
             - name: Publish
-              uses: rohith/publish-nuget@v2
-              with:
-                PROJECT_FILE_PATH: TimeSeriesAnalysis.csproj
-                TAG_COMMIT: true
-                TAG_FORMAT: v*
-                NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-                NUGET_SOURCE: https://nuget.pkg.github.com/equinor/
-                # NUGET_SOURCE: https://api.nuget.org
+              run: nuget setapikey ${{secrets.NUGET_API_KEY}} -source https://nuget.pkg.github.com/equinor/
+              run: nuget push bin\Debug\*.nupkg -source https://nuget.pkg.github.com/equinor/ -SkipDuplicate
+            #- name: Publish
+            #  uses: rohith/publish-nuget@v2
+            #  with:
+            #    PROJECT_FILE_PATH: TimeSeriesAnalysis.csproj
+            #    TAG_COMMIT: true
+            #    TAG_FORMAT: v*
+            #    NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+            #    NUGET_SOURCE: https://nuget.pkg.github.com/equinor/
                 
