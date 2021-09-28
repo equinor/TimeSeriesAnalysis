@@ -32,3 +32,4 @@ Steinar Elgsæter
 
 ## License
 TimeSeriesAnalysis is distributed under the [MIT license](LICENSE).
+
