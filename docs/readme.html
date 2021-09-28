@@ -74,17 +74,16 @@
 <p><img src="https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg?branch=master" alt="Build Status">
 <img src="https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/tests.yml/badge.svg?branch=master" alt="Test Status"></p>
 <h1 id="timeseriesanalysis">TimeSeriesAnalysis</h1>
-<p><em>TimeSeriesAnalysis</em> is a toolbox that allows you to work .NET efficiently with time-series that may include <em>transients</em> or <em>dynamics</em>.</p>
+<p><em>TimeSeriesAnalysis</em> is a class library that allows you to work .NET efficiently with time-series that may include <em>transients</em> or <em>dynamics</em>.</p>
 <h2 id="why">Why?</h2>
-<p>Because the final product of many enterprise time-series applications is <em>required</em> to be implemented in .NET, why not try to make development as streamlined as possible?
-Time-series analysis it typically done in languages like <em>Python</em>,<em>R</em> or <em>Matlab</em>, because high-level <strong>toolboxes</strong> support time-series analysis in these languages.
-Tasks like loading data from a file, fitting a model to data or plotting time-series can be accomplished in a single line of code in .NET with the tools in this class library, just as you would do with one of those scripted languages.</p>
-<p>That may even mean that early research/prototyping/data analysis can <em>start</em> in .NET, which removes the step re-writing prototype code into .NET.</p>
-<h2 id="but-honestly-you-know-you-can-just-do-time-series-analysis-with-standard-statistical-languages-xyz-right">But honestly, you know you can just do time-series analysis with standard statistical languages <em>xyz</em>, right?</h2>
-<p>Yes and no. Most of the time each data point in a time-series is considered <em>stationary</em>, in which case a time-series can be considered a table of independent data points, and standards statistical methods can be applied to time-series just as for any other statistical data.</p>
-<p>But in some-applications the <em>transients</em> or <em>dynamics</em> of the process are visible in trends, in which case the data points are no longer independent, and in that case many standard statistical methods become invalid. This is often the case in time-series of for instance measured temperatures, pressures or flows, and analyzing such systems often requires filtering, or fitting models that include transient/dynamic terms. Models that include dynamic terms are key in dynamic simulation, and controlling such systems by means of automatic controllers such as PID-controllers is the domain of <em>control engineering</em>.</p>
-<p>Fitting dynamic models to dynamic time-series is the domain of <em>system identification</em>, running models that include terms for transients and their interactions is the field of <em>dynamic simulation</em>, designing algorithms that influence the dynamics of such systems is the domain of <em>control systems</em> and designing algorithms which calculate unmeasured variables based on the available measurements is the topic of <em>estimation theory</em>.</p>
-<p>Dynamic simulators, control systems and estimators are almost exclusively implemented in the compiled languages like C/C++/C# in industry, which is what this toolbox attempts to address.</p>
+<p>Because the final product of many enterprise time-series applications(like control algorithms or dynamic simulators) is <em>required</em> to be implemented in .NET, why not create a toolbox streamline such development as much possible? With good tooling, it may even be possible to <em>start</em> early research/prototyping/data analysis directly in .NET, removing the need to port code later.</p>
+<h2 id="in-a-rush-getting-started">In a rush: getting started</h2>
+<ul>
+<li>check out the repository</li>
+<li>build. (Developed with <code>Visual Studio 2019</code>)</li>
+<li>open <code>Test Explorer</code> and read/run unit tests too examine capability and API of the class library</li>
+<li>did not work? Please refer to the detailed <code>Getting started</code> chapter in the documentation below.</li>
+</ul>
 <h2 id="documentation-getting-started-code-examples-and-api-reference-documentation">Documentation: Getting started, code examples and API reference documentation</h2>
 <p>🔴 <strong><a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a></strong> 🔴</p>
 <h2 id="contributing">Contributing</h2>

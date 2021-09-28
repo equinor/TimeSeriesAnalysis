@@ -61,13 +61,12 @@ namespace TimeSeriesAnalysis.Examples
 
             double[][] U = new double[][] { u1, u2, u3 };
 
-            double[] estimated_parameters = Vec.Regress(y, U,null, out _, 
-                out double[] y_modelled, out double Rsq);
+            var results = Vec.Regress(y, U);
 
-            TestContext.WriteLine(Vec.ToString(estimated_parameters,3));
-            TestContext.WriteLine(SignificantDigits.Format(Rsq,3));
+            TestContext.WriteLine(Vec.ToString(results.param, 3));
+            TestContext.WriteLine(SignificantDigits.Format(results.Rsq, 3));
 
-            Plot.FromList(new List<double[]>() { y, y_modelled },
+            Plot.FromList(new List<double[]>() { y, results.Y_modelled },
                 new List<string>() { "y1=y_meas", "y1=y_mod" }, 1);
         }
 

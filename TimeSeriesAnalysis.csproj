@@ -143,6 +143,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Examples\Examples.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Tests\SysIDUnitTests.cs" />
+    <Compile Include="TimeSeriesAnalysis\RegressionResults.cs" />
     <Compile Include="Utility\MovingAvg.cs" />
     <Compile Include="Utility\CSV.cs" />
     <Compile Include="Utility\StringToFileWriter.cs" />

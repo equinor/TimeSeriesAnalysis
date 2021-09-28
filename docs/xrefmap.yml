@@ -553,19 +553,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.Bias
   nameWithType: DefaultProcessModelParameters.Bias
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingR2
-  name: FittingR2
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_FittingR2
-  commentId: P:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingR2
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingR2
-  nameWithType: DefaultProcessModelParameters.FittingR2
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingR2*
-  name: FittingR2
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_FittingR2_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingR2
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingObjFunVal
+  name: FittingObjFunVal
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_FittingObjFunVal
+  commentId: P:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingObjFunVal
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingObjFunVal
+  nameWithType: DefaultProcessModelParameters.FittingObjFunVal
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingObjFunVal*
+  name: FittingObjFunVal
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_FittingObjFunVal_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingObjFunVal
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingR2
-  nameWithType: DefaultProcessModelParameters.FittingR2
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingObjFunVal
+  nameWithType: DefaultProcessModelParameters.FittingObjFunVal
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingRsq
+  name: FittingRsq
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_FittingRsq
+  commentId: P:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingRsq
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingRsq
+  nameWithType: DefaultProcessModelParameters.FittingRsq
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingRsq*
+  name: FittingRsq
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_FittingRsq_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingRsq
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.FittingRsq
+  nameWithType: DefaultProcessModelParameters.FittingRsq
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.GetFittingObjFunVal
   name: GetFittingObjFunVal()
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_GetFittingObjFunVal
@@ -1184,6 +1197,116 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Matrix.ReplaceRow
   nameWithType: Matrix.ReplaceRow
+- uid: TimeSeriesAnalysis.RegressionResults
+  name: RegressionResults
+  href: api/TimeSeriesAnalysis.RegressionResults.html
+  commentId: T:TimeSeriesAnalysis.RegressionResults
+  fullName: TimeSeriesAnalysis.RegressionResults
+  nameWithType: RegressionResults
+- uid: TimeSeriesAnalysis.RegressionResults.#ctor
+  name: RegressionResults()
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults__ctor
+  commentId: M:TimeSeriesAnalysis.RegressionResults.#ctor
+  fullName: TimeSeriesAnalysis.RegressionResults.RegressionResults()
+  nameWithType: RegressionResults.RegressionResults()
+- uid: TimeSeriesAnalysis.RegressionResults.#ctor*
+  name: RegressionResults
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults__ctor_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.RegressionResults
+  nameWithType: RegressionResults.RegressionResults
+- uid: TimeSeriesAnalysis.RegressionResults.ableToIdentify
+  name: ableToIdentify
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_ableToIdentify
+  commentId: P:TimeSeriesAnalysis.RegressionResults.ableToIdentify
+  fullName: TimeSeriesAnalysis.RegressionResults.ableToIdentify
+  nameWithType: RegressionResults.ableToIdentify
+- uid: TimeSeriesAnalysis.RegressionResults.ableToIdentify*
+  name: ableToIdentify
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_ableToIdentify_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.ableToIdentify
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.ableToIdentify
+  nameWithType: RegressionResults.ableToIdentify
+- uid: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
+  name: objectiveFunctionValue
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue
+  commentId: P:TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
+  fullName: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
+  nameWithType: RegressionResults.objectiveFunctionValue
+- uid: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue*
+  name: objectiveFunctionValue
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
+  nameWithType: RegressionResults.objectiveFunctionValue
+- uid: TimeSeriesAnalysis.RegressionResults.param
+  name: param
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param
+  commentId: P:TimeSeriesAnalysis.RegressionResults.param
+  fullName: TimeSeriesAnalysis.RegressionResults.param
+  nameWithType: RegressionResults.param
+- uid: TimeSeriesAnalysis.RegressionResults.param*
+  name: param
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.param
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.param
+  nameWithType: RegressionResults.param
+- uid: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
+  name: param95prcConfInterval
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param95prcConfInterval
+  commentId: P:TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
+  fullName: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
+  nameWithType: RegressionResults.param95prcConfInterval
+- uid: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval*
+  name: param95prcConfInterval
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param95prcConfInterval_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
+  nameWithType: RegressionResults.param95prcConfInterval
+- uid: TimeSeriesAnalysis.RegressionResults.Rsq
+  name: Rsq
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Rsq
+  commentId: P:TimeSeriesAnalysis.RegressionResults.Rsq
+  fullName: TimeSeriesAnalysis.RegressionResults.Rsq
+  nameWithType: RegressionResults.Rsq
+- uid: TimeSeriesAnalysis.RegressionResults.Rsq*
+  name: Rsq
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Rsq_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.Rsq
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.Rsq
+  nameWithType: RegressionResults.Rsq
+- uid: TimeSeriesAnalysis.RegressionResults.varCovarMatrix
+  name: varCovarMatrix
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_varCovarMatrix
+  commentId: P:TimeSeriesAnalysis.RegressionResults.varCovarMatrix
+  fullName: TimeSeriesAnalysis.RegressionResults.varCovarMatrix
+  nameWithType: RegressionResults.varCovarMatrix
+- uid: TimeSeriesAnalysis.RegressionResults.varCovarMatrix*
+  name: varCovarMatrix
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_varCovarMatrix_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.varCovarMatrix
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.varCovarMatrix
+  nameWithType: RegressionResults.varCovarMatrix
+- uid: TimeSeriesAnalysis.RegressionResults.Y_modelled
+  name: Y_modelled
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Y_modelled
+  commentId: P:TimeSeriesAnalysis.RegressionResults.Y_modelled
+  fullName: TimeSeriesAnalysis.RegressionResults.Y_modelled
+  nameWithType: RegressionResults.Y_modelled
+- uid: TimeSeriesAnalysis.RegressionResults.Y_modelled*
+  name: Y_modelled
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Y_modelled_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.Y_modelled
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.Y_modelled
+  nameWithType: RegressionResults.Y_modelled
 - uid: TimeSeriesAnalysis.Utility
   name: TimeSeriesAnalysis.Utility
   href: api/TimeSeriesAnalysis.Utility.html
@@ -2404,33 +2527,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Range
   nameWithType: Vec.Range
-- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][])
-  name: Regress(Double[], Double[][])
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____
-  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][])
-  name.vb: Regress(Double(), Double()())
-  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][])
-  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()())
-  nameWithType: Vec.Regress(Double[], Double[][])
-  nameWithType.vb: Vec.Regress(Double(), Double()())
-- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[]@,System.Double@)
-  name: Regress(Double[], Double[][], Int32[], out Double[], out Double[], out Double)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___System_Double____System_Double____System_Double__
-  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[]@,System.Double@)
-  name.vb: Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double(), ByRef Double)
-  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][], System.Int32[], out System.Double[], out System.Double[], out System.Double)
-  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32(), ByRef System.Double(), ByRef System.Double(), ByRef System.Double)
-  nameWithType: Vec.Regress(Double[], Double[][], Int32[], out Double[], out Double[], out Double)
-  nameWithType.vb: Vec.Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double(), ByRef Double)
-- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[][]@,System.Double[]@,System.Double@)
-  name: Regress(Double[], Double[][], Int32[], out Double[], out Double[][], out Double[], out Double)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___System_Double____System_Double______System_Double____System_Double__
-  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Double[]@,System.Double[][]@,System.Double[]@,System.Double@)
-  name.vb: Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double()(), ByRef Double(), ByRef Double)
-  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][], System.Int32[], out System.Double[], out System.Double[][], out System.Double[], out System.Double)
-  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32(), ByRef System.Double(), ByRef System.Double()(), ByRef System.Double(), ByRef System.Double)
-  nameWithType: Vec.Regress(Double[], Double[][], Int32[], out Double[], out Double[][], out Double[], out Double)
-  nameWithType.vb: Vec.Regress(Double(), Double()(), Int32(), ByRef Double(), ByRef Double()(), ByRef Double(), ByRef Double)
+- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[])
+  name: Regress(Double[], Double[][], Int32[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___
+  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[])
+  name.vb: Regress(Double(), Double()(), Int32())
+  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][], System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32())
+  nameWithType: Vec.Regress(Double[], Double[][], Int32[])
+  nameWithType.vb: Vec.Regress(Double(), Double()(), Int32())
 - uid: TimeSeriesAnalysis.Vec.Regress*
   name: Regress
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_
@@ -2593,15 +2698,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double(), System.Double, System.Boolean)
   nameWithType: Vec.SumOfSquareErr(Double[], Double, Boolean)
   nameWithType.vb: Vec.SumOfSquareErr(Double(), Double, Boolean)
-- uid: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double[],System.Int32,System.Boolean)
-  name: SumOfSquareErr(Double[], Double[], Int32, Boolean)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfSquareErr_System_Double___System_Double___System_Int32_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double[],System.Int32,System.Boolean)
-  name.vb: SumOfSquareErr(Double(), Double(), Int32, Boolean)
-  fullName: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[], System.Double[], System.Int32, System.Boolean)
-  fullName.vb: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double(), System.Double(), System.Int32, System.Boolean)
-  nameWithType: Vec.SumOfSquareErr(Double[], Double[], Int32, Boolean)
-  nameWithType.vb: Vec.SumOfSquareErr(Double(), Double(), Int32, Boolean)
+- uid: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double[],System.Int32,System.Boolean,System.Collections.Generic.List{System.Int32})
+  name: SumOfSquareErr(Double[], Double[], Int32, Boolean, List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfSquareErr_System_Double___System_Double___System_Int32_System_Boolean_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[],System.Double[],System.Int32,System.Boolean,System.Collections.Generic.List{System.Int32})
+  name.vb: SumOfSquareErr(Double(), Double(), Int32, Boolean, List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double[], System.Double[], System.Int32, System.Boolean, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.SumOfSquareErr(System.Double(), System.Double(), System.Int32, System.Boolean, System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.SumOfSquareErr(Double[], Double[], Int32, Boolean, List<Int32>)
+  nameWithType.vb: Vec.SumOfSquareErr(Double(), Double(), Int32, Boolean, List(Of Int32))
 - uid: TimeSeriesAnalysis.Vec.SumOfSquareErr*
   name: SumOfSquareErr
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_SumOfSquareErr_

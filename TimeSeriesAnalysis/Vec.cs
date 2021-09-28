@@ -748,7 +748,11 @@ namespace TimeSeriesAnalysis
         }
 
 
+        /*{
 
+
+
+        }
 
         /// <summary>
         /// Linear regression: Fit a linear model to Y based on inputs X
@@ -777,16 +781,33 @@ namespace TimeSeriesAnalysis
         public static double[] Regress(double[] Y, double[][] X, int[] yIndToIgnore,
             out double[] param95prcConfInterval, out double[][] varCovarMatrix,
             out double[] Y_modelled, out double Rsq)
+            */
+
+
+
+
+
+        /// <summary>
+        /// Linear regression
+        /// </summary>
+        /// <param name="Y">vector of responve variable values (to be modelled)</param>
+        /// <param name="X">matrix of of mainpulated values/independent values/regressors used to explain Y</param>
+        /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
+        /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
+        /// some statistics on the fit and uncertainty thereof.</returns>
+        public static RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null)
         {
+            MultipleLinearRegression regression;
+            double[][] X_T = Accord.Math.Matrix.Transpose(X);
+
+            int theta_Length = X_T[0].Length + 1;
+            RegressionResults results = new RegressionResults();
             double[] weights = null;
-         //   bool areAllWeightsOne = true;
-            Rsq = 0;
             if (yIndToIgnore != null)
             {
                 weights = Vec<double>.Fill(1, Y.Length);
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
-           //         areAllWeightsOne = false;
                     int curInd = yIndToIgnore[i];
                     if (curInd >= 0 && curInd < weights.Length)
                         weights[curInd] = 0;
@@ -798,20 +819,13 @@ namespace TimeSeriesAnalysis
                 IsRobust = false // to use SVD or not.
             };
 
-            MultipleLinearRegression regression;
-            double[][] X_T = Accord.Math.Matrix.Transpose(X);
-
-            int theta_Length = X_T[0].Length + 1;
-            param95prcConfInterval = null;
-            Y_modelled = null;
-            varCovarMatrix = new double[theta_Length][];
             //TODO: try to catch rank deficient or singular X instead of generating exception.
             try
             {
                 // note: weights have no effect prior to accord 3.7.0 
                 regression = accordFittingAlgo.Learn(X_T, Y, weights);
                 // modelled Y
-                Y_modelled = regression.Transform(X_T);
+                results.Y_modelled = regression.Transform(X_T);
                 if (yIndToIgnore != null)
                 {
                     double lastIgnoredInd = -1;
@@ -820,62 +834,73 @@ namespace TimeSeriesAnalysis
                     {
                         int curInd = yIndToIgnore[i];
                         if (curInd == lastIgnoredInd + 1)
-                            Y_modelled[yIndToIgnore[i]] = lastGoodValue;
+                        {
+                            results.Y_modelled[yIndToIgnore[i]] = lastGoodValue;
+                        }
                         else
                         {
                             lastIgnoredInd = curInd;
-                            lastGoodValue = Y_modelled[yIndToIgnore[i] - 1];
-                            Y_modelled[yIndToIgnore[i]] = lastGoodValue;
+                            lastGoodValue = results.Y_modelled[yIndToIgnore[i] - 1];
+                            results.Y_modelled[yIndToIgnore[i]] = lastGoodValue;
                         }
                     }
                 }
 
                 if (yIndToIgnore != null)
                 {
-                    Rsq = RSquared(Y_modelled, Y, yIndToIgnore.ToList()) * 100;
+                    results.Rsq = RSquared(results.Y_modelled, Y, yIndToIgnore.ToList()) * 100;
                 }
                 else
                 {
-                    Rsq = RSquared(Y_modelled, Y) * 100;
+                    results.Rsq = RSquared(results.Y_modelled, Y) * 100;
                 }
-
-
-/*
-                // uncertainty estimation
-                if (false)// unceratinty does not take into account weights now?
+                List<int> yIndToIgnoreList=null;
+                if (yIndToIgnore != null)
                 {
-                    //start: estimating uncertainty
-                    try
-                    {
-                        double[][] informationMatrix = accordFittingAlgo.GetInformationMatrix();// this should already include weights
-                        double mse = 0;
-                        if (areAllWeightsOne)
-                            mse = regression.GetStandardError(X_T, Y);
-                        else
-                            mse = regression.GetStandardError(X_T, Mult(weights, Y));
-                        double[] SE = regression.GetStandardErrors(mse, informationMatrix);
+                    yIndToIgnoreList = yIndToIgnore.ToList();
+                }
+                results.objectiveFunctionValue = Vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
-                        for (int i = 0; i < theta_Length; i++)
-                        {
-                            varCovarMatrix[i] = new double[theta_Length];
-                            for (int j = 0; j < theta_Length; j++)
-                            {
-                                varCovarMatrix[i][j] = mse * Math.Sqrt(Math.Abs(informationMatrix[i][j]));
-                            }
-                        }
-                        param95prcConfInterval = Mult(SE, 1.96);
-                    }
+                results.param = Vec<double>.Concat(regression.Weights, regression.Intercept);
 
-                    catch (Exception e)
-                    {
-                        param95prcConfInterval = null;
-                    }
-                }*/
-                return Vec<double>.Concat(regression.Weights, regression.Intercept);
+                /*
+                                // uncertainty estimation
+                                if (false)// unceratinty does not take into account weights now?
+                                {
+                                    //start: estimating uncertainty
+                                    try
+                                    {
+                                        double[][] informationMatrix = accordFittingAlgo.GetInformationMatrix();// this should already include weights
+                                        double mse = 0;
+                                        if (areAllWeightsOne)
+                                            mse = regression.GetStandardError(X_T, Y);
+                                        else
+                                            mse = regression.GetStandardError(X_T, Mult(weights, Y));
+                                        double[] SE = regression.GetStandardErrors(mse, informationMatrix);
+
+                                        for (int i = 0; i < theta_Length; i++)
+                                        {
+                                            varCovarMatrix[i] = new double[theta_Length];
+                                            for (int j = 0; j < theta_Length; j++)
+                                            {
+                                                varCovarMatrix[i][j] = mse * Math.Sqrt(Math.Abs(informationMatrix[i][j]));
+                                            }
+                                        }
+                                        param95prcConfInterval = Mult(SE, 1.96);
+                                    }
+
+                                    catch (Exception e)
+                                    {
+                                        param95prcConfInterval = null;
+                                    }
+                                }*/
+                results.ableToIdentify = true;
+                return results;
             }
-            catch 
+            catch (Exception e)
             {
-                return null;
+                results.ableToIdentify = false;
+                return results;
             }
         }
 
@@ -945,10 +970,23 @@ namespace TimeSeriesAnalysis
             else
                 return 0;
         }
-        ///<summary>
-        ///  The sum of square errors <c>(a1-a2)^2</c> between <c>array1</c> and <c>array2</c>
-        ///</summary>
-        public static double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, bool divByN = true)
+
+
+
+
+
+
+        /// <summary>
+        ///  The sum of square errors <c>(a1-a2)^2</c> between <c>array1</c> and <c>array2</c>.
+        /// </summary>
+        /// <param name="array1"></param>
+        /// <param name="array2"></param>
+        /// <param name="ymodOffset"></param>
+        /// <param name="divByN">if true, the result is normalized by the number of good values </param>
+        /// <param name="indToIgnore">optionally a list of indices of <c>array1</c> to ignore</param>
+        /// <returns></returns>
+        public static double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, 
+            bool divByN = true, List<int> indToIgnore=null)
         {
             if (array1.Count() < array2.Count())
                 return Double.NaN;
@@ -961,9 +999,14 @@ namespace TimeSeriesAnalysis
             int nGoodValues = 0;
             for (int i = ymodOffset; i < array2.Count(); i++)
             {
-                if (IsNaN(array2[i]) || IsNaN(array1[i]) )
+                if (IsNaN(array2[i]) || IsNaN(array1[i - ymodOffset]) )
                 {
                     continue;
+                }
+                if (indToIgnore != null)
+                {
+                    if (indToIgnore.Contains(i))
+                        continue;
                 }
                 nGoodValues++;
                 ret += Math.Pow(array2[i] - array1[i - ymodOffset], 2);

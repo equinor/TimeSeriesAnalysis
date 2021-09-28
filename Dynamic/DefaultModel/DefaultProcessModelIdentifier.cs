@@ -50,7 +50,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 u0 = dataSet.GetAverageU();
             }
 
-            ProcessTimeDelayIdentifier processTimeDelayIdentifyObj = new ProcessTimeDelayIdentifier(dataSet.TimeBase_s, maxExpectedTc_s);
+            ProcessTimeDelayIdentifier processTimeDelayIdentifyObj =
+                new ProcessTimeDelayIdentifier(dataSet.TimeBase_s, maxExpectedTc_s);
 
             /////////////////////////////////////////////////////////////////
             // BEGIN WHILE loop to model process for different time delays               
@@ -106,10 +107,7 @@ namespace TimeSeriesAnalysis.Dynamic
             bool useDynamicModel, double FilterTc_s, double[] u0, bool assumeThatYkminusOneApproxXkminusOne/*,
             ref ProcessIdResults result,*/ /*ref ProcessTimeDelayIdentifier processTimeDelayIdentifyObj*/)
         {
-            double Rsq = Double.NaN;
-
             double[]  ycur, yprev = null, /*dcur,*/ dprev = null;
-
             List<double[]> ucurList = new List<double[]>();
 
             int idxEnd = dataSet.Y_meas.Length - 1;
@@ -193,9 +191,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     yprev[Math.Min(yprev.Length - 1, indYprevBad[i])] = 0;
             }
 
-            double timeConstant_s = Double.NaN,/* processGains = Double.NaN,*/ bias = Double.NaN;
-
+            double timeConstant_s = Double.NaN, bias = Double.NaN;
             double[] processGains = Vec<double>.Fill(Double.NaN,ucurList.Count);
+
+            RegressionResults regResults = new RegressionResults();
 
             if (useDynamicModel)
             {
@@ -261,8 +260,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         phi_ols2D.WriteColumn(curIdx+1, Vec.Sub(ucurList[curIdx], u0[curIdx]));
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
-                    param = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), out param_95prcUnc,
-                        out varCovarMatrix, out x_mod_cur_raw, out Rsq);
+                    regResults = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
                 }
                 // ----------------- v2 -----------
                 // APPROXIMATE x[k-1] = y[k-1]-d[k-1]
@@ -286,9 +284,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
                     double[] Y_ols = ycur;// Vec.Sub(ycur, dcur);
-                   
-                    param = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), out param_95prcUnc,
-                        out varCovarMatrix, out x_mod_cur_raw, out Rsq);
+
+                    regResults = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
                 }
                 /*     if (param != null)
                      {
@@ -297,27 +294,27 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 //
 
-                if (param == null)
+                if (regResults.param == null)
                 {
                     Debug.WriteLine("Vec.Regress returned null - dynamic");
                 }
-                if (param != null)
+                if (regResults.param != null)
                 {
                     double a;
                     if (assumeThatYkminusOneApproxXkminusOne)
                     {
-                        a = param[0] + 1;
+                        a = regResults.param[0] + 1;
                     }
                     else
                     {
-                        a = param[0];
+                        a = regResults.param[0];
                     }
-                    double[] b = Vec<double>.SubArray(param,1, param.Length-2);
+                    double[] b = Vec<double>.SubArray(regResults.param,1, regResults.param.Length-2);
                     if (a > 1)
                         a = 0;
                     //d_mod_cur = d;
                     // for clarity:
-                    bias = param.Last();
+                    bias = regResults.param.Last();
                     // the estimation finds "a" in the difference equation 
                     // a = 1/(1 + Ts/Tc)
                     // so that 
@@ -383,40 +380,34 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 double[][] inputs = inputs2D.Transpose().Convert2DtoJagged();
                 double[] Y_ols = ycur;// Vec.Sub(ycur, dcur);
-                
-                param = Vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray(),
-                    out param_95prcUnc, out varCovarMatrix, out x_mod_cur, out Rsq);
+
+                regResults = Vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray());
                 timeConstant_s = 0;
-                if (param == null)
+                if (regResults.param == null)
                 {
                     Debug.WriteLine("Vec.Regress returned null - dynamic");
                 }
-                if (param != null)
+                if (regResults.param != null)
                 {
                     timeConstant_s = 0;
                     processGains = Vec<double>.SubArray(param, 0, param.Length - 2);//param[0];
                     bias = param.Last();// param[1];
                 }
             }
-
-            //
-
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters();
-
 
             // Vec.Regress can return very large values if y is noisy and u is stationary. 
             // in these cases varCovarMatrix is null
             const double maxAbsValueRegression = 10000;
 
-
-            if (param == null)
+            if (regResults.param == null || !regResults.ableToIdentify)
             {
                 parameters.WasAbleToIdentify = false;
                 //processTimeDelayIdentifyObj.AddFailedRun(y_mod_cur, x_mod_cur, dcur, Rsq);
                 parameters.AddWarning(ProcessIdentWarnings.RegressionProblemFailedToYieldSolution);
                 return parameters;
             }
-            else if (Math.Abs(param[1]) > maxAbsValueRegression)
+            else if (Math.Abs(regResults.param[1]) > maxAbsValueRegression)
             {
                 parameters.WasAbleToIdentify = false;
                 parameters.AddWarning(ProcessIdentWarnings.NotPossibleToIdentify);
@@ -439,6 +430,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 // TODO:add back uncertainty estimates
 
+                parameters.FittingRsq = regResults.Rsq;
+                parameters.FittingObjFunVal = regResults.objectiveFunctionValue;
 
              /*   double objFunVal = Vec.SumOfSquareErr(y_mod_cur, ycur,-1);
                 processTimeDelayIdentifyObj.AddSuccessfulRun(objFunVal, processGain, timeConstant_s, bias, Rsq, y_mod_cur, x_mod_cur, dcur);

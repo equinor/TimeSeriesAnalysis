@@ -15,18 +15,19 @@ namespace TimeSeriesAnalysis.Dynamic
         public  double Bias { get; set; } = 0;
 
         public bool WasAbleToIdentify { get; set; }
-        public double FittingR2 { get; set; }
+        public double FittingRsq { get; set; }
+        public double FittingObjFunVal { get; set; }
 
         private List<ProcessIdentWarnings> errorsAndWarningMessages;
 
         public double GetFittingR2()
         {
-            return FittingR2;
+            return FittingRsq;
         }
 
         public double GetFittingObjFunVal()
         {
-            return FittingR2;
+            return FittingObjFunVal;
         }
 
         public bool AbleToIdentify()

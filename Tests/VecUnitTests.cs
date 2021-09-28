@@ -1,10 +1,7 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using TimeSeriesAnalysis;
 
 namespace TimeSeriesAnalysis.UnitTests
 {
@@ -118,14 +115,18 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] Y = { 1, 0, 3, 4, 2 };
             double[] X1 = { 1, 0, 1, 0,2 }; // gain:1
-            double[] X2 = { 0, 0, 1, 2,0 };// gain:2
+            double[] X2 = { 0, 0, 1, 2, 0 };// gain:2
             double[][] X = { X1, X2 };
-            double[] b = Vec.Regress(Y, X);
-            Assert.IsNotNull(b);
-            Assert.Less(Math.Abs(1 - b[0]), 0.001);
-            Assert.Less(Math.Abs(2 - b[1]), 0.001);
+            var results = Vec.Regress(Y, X);
+            Assert.IsNotNull(results);
+            Assert.IsTrue(results.ableToIdentify);
+            Assert.Less(Math.Abs(1 - results.param[0]), 0.001,"gain paramter should be correct");
+            Assert.Less(Math.Abs(2 - results.param[1]), 0.001, "gain paramter should be correct");
+            Assert.Less(Math.Abs(results.param[2]), 0.001, "bias should be close to zero");
+            Assert.Less(results.objectiveFunctionValue, 0.001,"obj function value should be close to zero");
+            Assert.Greater(results.Rsq, 99, "Rsqured should be close to 100");
         }
-        
+
         /*
         [Test]
         public void Regress_SingularMatrixCaught()
@@ -134,7 +135,7 @@ namespace TimeSeriesAnalysis.UnitTests
             double[] X1 = { 1, 0, 1, 0 };
             double[] X2 = { 1, 0, 1, 0 };
             double[][] X = { X1, X2 };
-            double[] b = Vec.Regress(Y, X);
+            var results = Vec.Regress(Y, X);
         }
         */
 
@@ -150,12 +151,12 @@ namespace TimeSeriesAnalysis.UnitTests
             {
                 4
             };
-            double[] b = Vec.Regress(Y, X, indicesToignore.ToArray(), out _, out double[] yMod, out double _);
-            Assert.Less(Math.Abs(1 - b[0]), 0.001);
-            Assert.Less(Math.Abs(2 - b[1]), 0.001);
-            Assert.Less(Math.Abs(4 - yMod[4]), 0.0001);
+            var results= Vec.Regress(Y, X, indicesToignore.ToArray());
+            Assert.Less(Math.Abs(1 - results.param[0]), 0.001);
+            Assert.Less(Math.Abs(2 - results.param[1]), 0.001);
+            Assert.Less(Math.Abs(4 - results.Y_modelled[4]), 0.0001);
 
-            //   Assert.Greater(Rsq, 99);
+             Assert.Greater(results.Rsq, 99);
         }
 
         [Test]
@@ -317,28 +318,25 @@ namespace TimeSeriesAnalysis.UnitTests
         }
 
 
+        [TestCase(null,ExpectedResult = 4)]
+        [TestCase(new int[] { 1 },ExpectedResult = 4 )]
+        //[TestCase(null, -1, ExpectedResult = 2)]
+        //[TestCase(new int[] { 1 },-1, ExpectedResult = 2)]
 
-        [Test]
-        public void SumOfSquareErrors()
+        public double SumOfSquareErrors(int[] indToIgnoreArray)
         {
-            double[] vec1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            double[] vec2 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            vec1 = Vec.Add(vec1, 2);
+            double[] vec1 = { 0, Double.NaN, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            double[] vec2 = Vec.Add(vec1, 2); ;
 
-            double sumAbsErr = Vec.SumOfSquareErr(vec1, vec2);
-            Assert.AreEqual(4, sumAbsErr);
+            List<int> indToIgnoreList=null;
+            if (indToIgnoreArray != null)
+            {
+                indToIgnoreList = indToIgnoreArray.ToList();
+            }
+            double sumAbsErr = Vec.SumOfSquareErr(vec1, vec2, 0, true, indToIgnoreList);
+            return sumAbsErr;
         }
 
-        [Test]
-        public void SumOfSquareErrors_IgnoresNaN()
-        {
-            double[] vec1 = { 0, 1, 2, 3, 4, Double.NaN, 6, 7, 8, 9, 10 };
-            double[] vec2 = { 0, 1, 2, Double.NaN, 4, 5, 6, 7, 8, 9, 10 };
-            vec1 = Vec.Add(vec1, 2);
-
-            double sumAbsErr = Vec.SumOfSquareErr(vec1, vec2);
-            Assert.AreEqual(4, sumAbsErr);
-        }
 
         [Test]
         public void SerializeAndDeserialize_works()

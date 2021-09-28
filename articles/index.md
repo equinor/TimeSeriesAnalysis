@@ -12,7 +12,7 @@ It handles typical tasks related to time-series analysis such as
 - plotting times-series (in a browser window).
 
 **The aim of this library is to make the process of working with time series as easy as possible, 
-and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*.**
+and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*, but in a language that pre-compiles code rather than interpreting, and has static typing and strong typing.**
 
 This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform 
 operations like adding, subtracting, multiplying with vectors and matrices, as well as typical pre-processing tasks like selecting
