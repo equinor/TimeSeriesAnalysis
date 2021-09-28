@@ -24,6 +24,6 @@ jobs:
                 TAG_COMMIT: true
                 TAG_FORMAT: v*
                 NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-                NUGET_SOURCE: https://nuget.pkg.github.com/equinor/index.json
+                NUGET_SOURCE: https://nuget.pkg.github.com/equinor/
                 # NUGET_SOURCE: https://api.nuget.org
                 
