@@ -30,7 +30,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.31</Version>
+    <Version>1.0.32</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 .NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 
