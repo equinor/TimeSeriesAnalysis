@@ -37,7 +37,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             bool doNonzeroU0 = true;// should be: true
             bool doUseDynamicModel = true;// should be:true
-            bool doEstimateTimeDelay = false; // should be:true
+            bool doEstimateTimeDelay = true; // should be:true
             double FilterTc_s = 0;
             bool assumeThatYkminusOneApproxXkminusOne = true;
 
@@ -84,7 +84,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doEstimateTimeDelay == false)
                     continueIncreasingTimeDelayEst = false;
                 if (modelParams.GetWarningList().Contains(ProcessIdentWarnings.NotPossibleToIdentify))
-                    return new DefaultProcessModel(modelParams, dataSet);
+                    continueIncreasingTimeDelayEst = false;// in some cases id. can fail at high time-delays, but good models may still exist.
+             //       return new DefaultProcessModel(modelParams, dataSet);
             }
 
             // the the time delay which caused the smallest object function value

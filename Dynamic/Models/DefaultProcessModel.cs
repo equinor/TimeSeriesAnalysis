@@ -147,8 +147,8 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
             sb.AppendLine("u0 : " + Vec.ToString(modelParameters.U0,sDigits));
             sb.AppendLine("-------------------------");
-            sb.AppendLine("fitting objective : " + modelParameters.GetFittingObjFunVal() );
-            sb.AppendLine("fitting R2`: " + modelParameters.GetFittingR2());
+            sb.AppendLine("fitting objective : " + SignificantDigits.Format(modelParameters.GetFittingObjFunVal(),4) );
+            sb.AppendLine("fitting R2`: " + SignificantDigits.Format(modelParameters.GetFittingR2(), 4) );
             foreach (var warning in modelParameters.GetWarningList())
                 sb.AppendLine("fitting warning :" + warning.ToString());
             if (modelParameters.GetWarningList().Count == 0)

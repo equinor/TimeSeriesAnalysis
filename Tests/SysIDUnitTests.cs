@@ -91,8 +91,9 @@ namespace DefaultModel.UnitTests
         [TestCase(1, 0, 0, Category = "Static")]
         [TestCase(0,10, 0, Category = "Dynamic")]
         [TestCase(1,10, 0, Category = "Dynamic")]
-       // [TestCase(0, 0, 5, Category = "TimeDelayed")]
-       // [TestCase(1, 0, 10, Category = "TimeDelayed")]
+        [TestCase(0, 0, 2, Category = "TimeDelayed")]
+        [TestCase(0, 0, 5, Category = "TimeDelayed")]
+        //[TestCase(1, 0, 10, Category = "TimeDelayed")]
 
 
 
@@ -112,7 +113,7 @@ namespace DefaultModel.UnitTests
             var model = CreateDataAndIdentify(designParameters, U);
             DefaultAsserts(model);
             double estGain = model.GetModelParameters().ProcessGains.ElementAt(0);
-            Assert.IsTrue(0.98< estGain  && estGain < 1.02,"estimated gains shoudl be close to actual gain");
+            Assert.IsTrue(0.98< estGain  && estGain < 1.02,"estimated gains should be close to actual gain");
             Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeConstant_s - timeConstant_s) < 0.1,
                 "static data should give static model");
             Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeDelay_s - timeDelay_s) < 0.1, 
@@ -120,11 +121,14 @@ namespace DefaultModel.UnitTests
             Assert.IsTrue(model.GetModelParameters().GetFittingR2() > 99,"Rsq shoudl be very close to 100");
         }
 
-        [TestCase(0,0,Category="Static")]
-        [TestCase(1,0,Category="Static")]
-        [TestCase(0,15,Category="Dynamic")]
-        [TestCase(1,15,Category="Dynamic")]
-        public void I2_Linear(double bias, double timeConstant_s)
+        [TestCase(0,0,0,Category="Static")]
+        [TestCase(1,0,0, Category ="Static")]
+        [TestCase(0,15,0, Category ="Dynamic")]
+        [TestCase(1,15,0, Category ="Dynamic")]
+        [TestCase(1, 0, 2, Category = "TimeDelayed")]
+     //    [TestCase(1, 0, 5, Category = "TimeDelayed")]//TODO:not working
+
+        public void I2_Linear(double bias, double timeConstant_s, int timeDelay_s)
         {
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 11),
                 Vec<double>.Fill(1, 50));
@@ -135,6 +139,7 @@ namespace DefaultModel.UnitTests
             DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
             {
                 TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
                 ProcessGains = new double[] { 1,2 },
                 Bias = bias
             };
@@ -143,9 +148,9 @@ namespace DefaultModel.UnitTests
             double[] estGains = model.GetModelParameters().ProcessGains;
             Assert.IsTrue(0.98 < estGains[0] && estGains[0] < 1.02, "estimated gains should be close to actual gain");
             Assert.IsTrue(1.98 < estGains[1] && estGains[1] < 2.02, "estimated gains should be close to actual gain");
-            Assert.IsTrue(model.GetModelParameters().TimeConstant_s - timeConstant_s < 0.1, 
+            Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeConstant_s - timeConstant_s )< 0.1, 
                 "timeconstant should be close to actual tc");
-            Assert.IsTrue(model.GetModelParameters().TimeDelay_s < 0.1, "time delay should be zero");
+            Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeDelay_s - timeDelay_s )< 0.1, "time delay should be zero");
         }
 
         [TestCase(0, 0, Category = "Static")]

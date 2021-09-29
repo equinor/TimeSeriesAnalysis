@@ -325,7 +325,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             //  Vec.Min(objctFunVal.ToArray(), out int objFunBestTimeDelayIdx);
             var objR2List = GetR2List();
-            Vec.Min(objR2List.ToArray(),out int objFunBestTimeDelayIdx);
+            Vec.Max(objR2List.ToArray(),out int objFunBestTimeDelayIdx);
 
             // TODO: consider re-introducing rankng by uncertainty in a generic way.
 
