@@ -1,4 +1,4 @@
-# Example 3 : Fitting a dynamic model to transient data example
+# Example 4 : Fitting a dynamic model to transient data example
 
 ```
 	public void ex3_sysid()

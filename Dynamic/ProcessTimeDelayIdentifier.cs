@@ -33,7 +33,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private const int minTimeDelayIts = 5;
         private int maxExpectedTimeDelay_samples;
 
-        private List<IProcessModelParameters> modelRuns;
+        private List<IFittedProcessModelParameters> modelRuns;
 
         /*
         List<double> ProcessGainEst;
@@ -60,7 +60,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public ProcessTimeDelayIdentifier(double TimeBase_s, double maxExpectedTc_s)
         {
             this.TimeBase_s = TimeBase_s;
-            modelRuns = new List<IProcessModelParameters>();
+            modelRuns = new List<IFittedProcessModelParameters>();
 
             /*
             ProcessGainEst = new List<double>();
@@ -105,7 +105,7 @@ namespace TimeSeriesAnalysis.Dynamic
             RsqList.Add(Rsq);
         }*/
 
-        public void AddRun(IProcessModelParameters modelParameters)
+        public void AddRun(IFittedProcessModelParameters modelParameters)
         {
             modelRuns.Add(modelParameters);
         }
@@ -346,7 +346,7 @@ namespace TimeSeriesAnalysis.Dynamic
             return bestTimeDelayIdx;
         }
 
-        public IProcessModelParameters GetRun(int runIndex)
+        public IFittedProcessModelParameters GetRun(int runIndex)
         {
             return modelRuns.ElementAt(runIndex);
         }

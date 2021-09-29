@@ -9,7 +9,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
     ///<summary>
     /// Numerical low-pass filtering of time-series.
-    /// This filter is in a simple recursive form that is suitable for implementation in a control system.
+    /// This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
+    /// requires litte memory and computation. This filter is causal, meaning that is does not use
+    /// for calcuating the filtered value at time <c>k</c> does not use future values such as <c>k+1</c>, but 
+    /// this is at the expense of introducing a time-shift (or phase-shift if thinking in the frequncy-domain.)
     ///</summary>
     public class LowPass
     {

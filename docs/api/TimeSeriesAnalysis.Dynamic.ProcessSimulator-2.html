@@ -182,14 +182,15 @@ testing and validation.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_2_Simulate_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.Simulate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_2_Simulate__0_TimeSeriesAnalysis_Dynamic_ProcessDataSet__System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.Simulate(`0,TimeSeriesAnalysis.Dynamic.ProcessDataSet@,System.Boolean)">Simulate(T1, ref ProcessDataSet, Boolean)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_2_Simulate__0_TimeSeriesAnalysis_Dynamic_ProcessDataSet__System_Boolean_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.Simulate(`0,TimeSeriesAnalysis.Dynamic.ProcessDataSet@,System.Boolean,System.Boolean)">Simulate(T1, ref ProcessDataSet, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Simulates the output of the model based on the processDataSet provided, by default the output is
-written back to <code>processDataSet.Y_sim</code> or <code>processDataSet.Y_meas</code></p>
+written back to <code>processDataSet.Y_sim</code> or <code>processDataSet.Y_meas</code>
+By default this method adds to <code>Y_sim</code> o <code>Y_meas</code> if they already contain values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool Simulate(T1 model, ref ProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool Simulate(T1 model, ref ProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -217,6 +218,12 @@ written back to <code>processDataSet.Y_sim</code> or <code>processDataSet.Y_meas
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">writeResultToYmeasInsteadOfYsim</span></td>
         <td><p>if <code>true</code>, output is written to <code>processDataSet.ymeas</code> instead of <code>processDataSet.ysim</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doOverwriteY</span></td>
+        <td><p>(default is false)if <code>true</code>, output overwrites any datay in <code>processDataSet.ymeas</code> or <code>processDataSet.ysim</code></p>
 </td>
       </tr>
     </tbody>

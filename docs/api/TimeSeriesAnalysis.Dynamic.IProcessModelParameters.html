@@ -83,7 +83,13 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters" class="text-break">Interface IProcessModelParameters
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>This is a simplified interface that is inherited by IFittedProcessModelParamters.
+It is made to logically separate the interfaces of model paramters that were determined by fitting, and
+those that are simply hard-coded either from a priori process knowledge or as example systems developed during
+unit-testing.</p>
+<p>The <code>ProcessSimulator</code> class should expected models with paramters that derive from this base interface, be they
+fitted or apriori.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
@@ -91,141 +97,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IProcessModelParameters</code></pre>
   </div>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_AbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.AbleToIdentify*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_AbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.AbleToIdentify">AbleToIdentify()</h4>
-  <div class="markdown level1 summary"><p>Aks if model was able to be identified or not</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool AbleToIdentify()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>true, if the model identification was able to successfully decide on a set of parameters, otherwise false</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_AddWarning_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.AddWarning*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_AddWarning_TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.AddWarning(TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings)">AddWarning(ProcessIdentWarnings)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void AddWarning(ProcessIdentWarnings warnings)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html">ProcessIdentWarnings</a></td>
-        <td><span class="parametername">warnings</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_GetFittingObjFunVal_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.GetFittingObjFunVal*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_GetFittingObjFunVal" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.GetFittingObjFunVal">GetFittingObjFunVal()</h4>
-  <div class="markdown level1 summary"><p>An objective function value that describes the fit of the model to the fitting dataset
-(useful when ranking models, for instance when determining time delay)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">double GetFittingObjFunVal()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_GetFittingR2_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.GetFittingR2*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_GetFittingR2" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.GetFittingR2">GetFittingR2()</h4>
-  <div class="markdown level1 summary"><p>The root-mean-square of the fit of the model to the fitting dataset
-(useful when ranking models, for instance when determining time delay)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">double GetFittingR2()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_GetWarningList_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.GetWarningList*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelParameters_GetWarningList" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.GetWarningList">GetWarningList()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">List&lt;ProcessIdentWarnings&gt; GetWarningList()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html">ProcessIdentWarnings</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
           

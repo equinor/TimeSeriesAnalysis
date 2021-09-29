@@ -33,7 +33,7 @@ namespace DefaultModel.UnitTests
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 31),
                 Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1});
-            ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
+            ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
             bool ret  = ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
                 Simulate(model, ref dataSet);
 
@@ -59,7 +59,7 @@ namespace DefaultModel.UnitTests
 
             DefaultProcessModel model = new DefaultProcessModel(designParameters, timeBase_s);
 
-            ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
+            ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
             ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.EmulateYmeas(model, ref dataSet);
 
             DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
@@ -81,19 +81,18 @@ namespace DefaultModel.UnitTests
             Console.WriteLine(model.ToString());
         }
 
+        // TODO: test ability to identify time delay
         // TODO: adding noise to datasets
         // TODO: testing the uncertainty estimtates(after adding them back)
         // TODO: testing the ability to automatically filter out bad input data
-        // TODO: test ability to identify time delay
-        // TODO: test ability to identify time constant
         // TODO: test ability to identify process gain curvatures
 
         [TestCase(0, 0, 0, Category = "Static")]
         [TestCase(1, 0, 0, Category = "Static")]
         [TestCase(0,10, 0, Category = "Dynamic")]
         [TestCase(1,10, 0, Category = "Dynamic")]
-        [TestCase(0, 0, 5, Category = "TimeDelayed")]
-        [TestCase(1, 0, 10, Category = "TimeDelayed")]
+       // [TestCase(0, 0, 5, Category = "TimeDelayed")]
+       // [TestCase(1, 0, 10, Category = "TimeDelayed")]
 
 
 

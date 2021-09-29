@@ -5,10 +5,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Parameters data class of the "Default" process model 
     /// </summary>
-    public class DefaultProcessModelParameters : IProcessModelParameters
+    public class DefaultProcessModelParameters : IFittedProcessModelParameters
     {
         public double TimeConstant_s { get; set; } = 0;
-        public int TimeDelay_s { get; set; } = 0;
+        public double TimeDelay_s { get; set; } = 0;
         public double[] ProcessGains { get; set; } = null;
         public double[] ProcessGainCurvatures { get; set; } = null;
         public  double[] U0 { get; set; } = null;

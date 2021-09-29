@@ -128,15 +128,18 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dynamic\DefaultModel\DefaultProcessModel.cs" />
-    <Compile Include="Dynamic\DefaultModel\DefaultProcessModelIdentifier.cs" />
-    <Compile Include="Dynamic\DefaultModel\DefaultProcessModelParameters.cs" />
+    <Compile Include="Dynamic\Models\DefaultProcessModel.cs" />
+    <Compile Include="Dynamic\Models\DefaultProcessModelIdentifier.cs" />
+    <Compile Include="Dynamic\Models\DefaultProcessModelParameters.cs" />
     <Compile Include="Dynamic\Filters\BandPass.cs" />
     <Compile Include="Dynamic\Filters\HighPass.cs" />
     <Compile Include="Dynamic\Interfaces\IProcessModel.cs" />
     <Compile Include="Dynamic\Interfaces\IProcessModelIdentifier.cs" />
-    <Compile Include="Dynamic\Interfaces\IProcessModelParameters.cs" />
+    <Compile Include="Dynamic\Interfaces\IFittedProcessModelParameters.cs" />
     <Compile Include="Dynamic\Filters\LowPass.cs" />
+    <Compile Include="Dynamic\Interfaces\IProcessModelParameters.cs" />
+    <Compile Include="Dynamic\Models\SinusModel.cs" />
+    <Compile Include="Dynamic\Models\SinusModelParameters.cs" />
     <Compile Include="Dynamic\ProcessDataSet.cs" />
     <Compile Include="Dynamic\ProcessIdentWarnings.cs" />
     <Compile Include="Dynamic\ProcessSimulator.cs" />

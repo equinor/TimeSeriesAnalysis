@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Example 4 : Fitting a dynamic model to transient data example | TimeSeriesAnalysis reference documentation </title>
+    <title>Class SinusModelParameters
+   | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Example 4 : Fitting a dynamic model to transient data example | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Class SinusModelParameters
+   | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -76,38 +78,109 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-<h1 id="example-4--fitting-a-dynamic-model-to-transient-data-example">Example 4 : Fitting a dynamic model to transient data example</h1>
-
-<pre><code>	public void ex3_sysid()
-	{
-		int timeBase_s = 1;
-		DefaultProcessModelParamters parameters = new DefaultProcessModelParamters
-		{
-			TimeConstant_s = 10,
-			ProcessGains = new double[] { 1, 2},
-			Bias = 10
-		};
-		DefaultProcessModel model = new DefaultProcessModel(parameters);
-
-		double[] u1 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 11),
-				Vec&lt;double&gt;.Fill(1, 50));
-		double[] u2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(2, 31),
-				Vec&lt;double&gt;.Fill(1, 30));
-		double[,] U = Array2D&lt;double&gt;.InitFromColumnList(new List&lt;double[]&gt;{u1 ,u2});
-
-		ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
-		ProcessSimulator.EmulateYmeas(model, ref dataSet);
-
-		Plot.FromList(new List&lt;double[]&gt; { dataSet.y_meas, u1, u2 },
-			new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s);
-
-		DefaultProcessModel identifiedModel = DefaultProcessModelIdentifier.Identify(ref dataSet);
-
-		Plot.FromList(new List&lt;double[]&gt; { dataSet.y_meas, dataSet.y_sim },
-			new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_sim&quot;}, timeBase_s);
-	}
-</code></pre>
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.SinusModelParameters">
+  
+  
+  <h1 id="TimeSeriesAnalysis_Dynamic_SinusModelParameters" data-uid="TimeSeriesAnalysis.Dynamic.SinusModelParameters" class="text-break">Class SinusModelParameters
+  </h1>
+  <div class="markdown level0 summary"><p>Parameters belonging to the <code>SinusModel</code> class.
+Note that this class implements the <code>IProcessModelParameters</code> as it is not intended to be
+fitted against data, but is useful more as a signal generator for testing.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">SinusModelParameters</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.html">IProcessModelParameters</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
+  <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
+  <h5 id="TimeSeriesAnalysis_Dynamic_SinusModelParameters_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SinusModelParameters : IProcessModelParameters</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_SinusModelParameters_amplitude" data-uid="TimeSeriesAnalysis.Dynamic.SinusModelParameters.amplitude">amplitude</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double amplitude</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_SinusModelParameters_period_s" data-uid="TimeSeriesAnalysis.Dynamic.SinusModelParameters.period_s">period_s</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double period_s</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.html">IProcessModelParameters</a>
+  </div>
 </article>
           </div>
           

@@ -13,10 +13,17 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <typeparam name="T">The process model parameters class</typeparam>
     public interface IProcessModel<T> where T : IProcessModelParameters
     {
+        /// <summary>
+        /// Iterate the process model one timestep forward
+        /// </summary>
+        /// <param name="inputsU">a 2d array of inputs, one row for each time step, or <c>null</c> if model is autonomous</param>
+        /// <returns>the value of the output y of the process model at the new time step</returns>
         double Iterate(double[] inputsU);
 
-        // TODO: possibly add that a model should have a method that returns its step response
-
+        /// <summary>
+        /// Get the model parameters
+        /// </summary>
+        /// <returns>the paramters objet of the model</returns>
         T GetModelParameters();
 
     }

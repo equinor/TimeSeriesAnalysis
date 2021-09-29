@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    interface IProcessModelIdentifier<T1,T2> where T1: IProcessModel<T2> where T2: IProcessModelParameters
+    interface IProcessModelIdentifier<T1,T2> where T1: IProcessModel<T2> where T2: IFittedProcessModelParameters
     {
         T1 Identify(ref ProcessDataSet dataSet);
 

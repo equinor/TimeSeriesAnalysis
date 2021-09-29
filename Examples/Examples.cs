@@ -71,14 +71,39 @@ namespace TimeSeriesAnalysis.Examples
         }
 
         [Test, Explicit]
-        public void Ex3_sysid()
+        public void Ex3_filters()
+        {
+            double timeBase_s = 1;
+            int nStepsDuration = 2000;
+            var sinus1 = new SinusModel(new SinusModelParameters 
+                { amplitude = 10, period_s = 400 },timeBase_s);
+            var sinus2 = new SinusModel(new SinusModelParameters 
+                { amplitude = 1, period_s = 25 }, timeBase_s);
+
+            var dataset = new ProcessDataSet(timeBase_s, nStepsDuration);
+            ProcessSimulator<SinusModel, SinusModelParameters>.Simulate(sinus1, ref dataset);
+            ProcessSimulator<SinusModel, SinusModelParameters>.Simulate(sinus2, ref dataset);
+
+            var lpFilter = new LowPass(timeBase_s);
+            var lpFiltered = lpFilter.Filter(dataset.Y_sim,40,1);
+
+            var hpFilter = new HighPass(timeBase_s);
+            var hpFiltered = hpFilter.Filter(dataset.Y_sim,3,1);
+
+            Plot.FromList(new List<double[]> { dataset.Y_sim, lpFiltered, hpFiltered },
+                new List<string> { "y1=y","y3=y_lowpass","y3=y_highpass" }, (int)timeBase_s);
+        }
+
+
+        [Test, Explicit]
+        public void Ex4_sysid()
         {
             int timeBase_s = 1;
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 5,
-                ProcessGains = new double[] { 1,2},
+                ProcessGains = new double[] {1,2},
                 Bias = 0
             };
             DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
@@ -89,7 +114,7 @@ namespace TimeSeriesAnalysis.Examples
                     Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
-            ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
+            ProcessDataSet dataSet = new ProcessDataSet(timeBase_s,U);
             ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.EmulateYmeas(model, ref dataSet);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
@@ -106,7 +131,7 @@ namespace TimeSeriesAnalysis.Examples
         }
 
         [Test, Explicit]
-        public void Ex4_pid()
+        public void Ex5_pid()
         {
         }
 

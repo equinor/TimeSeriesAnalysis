@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// A high-pass recursive time-series filter.
-    /// Internally the filter is based on LowPass.
+    /// A high-pass recursive time-series filter based on <c>LowPass</c>.
+    /// 
+    /// This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
+    /// requires litte memory and computation. This filter is causal, meaning that is does not use
+    /// for calcuating the filtered value at time <c>k</c> does not use future values such as <c>k+1</c>, but 
+    /// this is at the expense of introducing a time-shift (or phase-shift if thinking in the frequncy-domain.)
+    /// 
     /// </summary>
     public class HighPass
     {

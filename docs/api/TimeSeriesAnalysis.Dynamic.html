@@ -88,7 +88,12 @@
     <h3 id="classes">Classes
   </h3>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.BandPass.html">BandPass</a></h4>
-      <section></section>
+      <section><p>Numerical band-pass filter based on <code>LowPass</code></p>
+<p>This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients,
+requires litte memory and computation. This filter is causal, meaning that is does not use
+for calcuating the filtered value at time <code>k</code> does not use future values such as <code>k+1</code>, but
+this is at the expense of introducing a time-shift (or phase-shift if thinking in the frequncy-domain.)</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html">DefaultProcessModel</a></h4>
       <section><p>Process model class for the &quot;Default&quot; process model.</p>
 </section>
@@ -102,12 +107,18 @@ paramters to describe the system in an attempt to avoiding over-fitting/over-par
       <section><p>Parameters data class of the &quot;Default&quot; process model</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.HighPass.html">HighPass</a></h4>
-      <section><p>A high-pass recursive time-series filter.
-Internally the filter is based on LowPass.</p>
+      <section><p>A high-pass recursive time-series filter based on <code>LowPass</code>.</p>
+<p>This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients,
+requires litte memory and computation. This filter is causal, meaning that is does not use
+for calcuating the filtered value at time <code>k</code> does not use future values such as <code>k+1</code>, but
+this is at the expense of introducing a time-shift (or phase-shift if thinking in the frequncy-domain.)</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a></h4>
       <section><p>Numerical low-pass filtering of time-series.
-This filter is in a simple recursive form that is suitable for implementation in a control system.</p>
+This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients,
+requires litte memory and computation. This filter is causal, meaning that is does not use
+for calcuating the filtered value at time <code>k</code> does not use future values such as <code>k+1</code>, but
+this is at the expense of introducing a time-shift (or phase-shift if thinking in the frequncy-domain.)</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.MovingAvg.html">MovingAvg</a></h4>
       <section><p>Moving-average filter of time-series</p>
@@ -120,17 +131,34 @@ This filter is in a simple recursive form that is suitable for implementation in
 This class relies on depencency injection and interfaces, so that the
 the specifics of how models outputs are calculated should be encapsulated in the passed model objects.</p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SinusModel.html">SinusModel</a></h4>
+      <section><p>A model of a sinusioid.
+This class is mainly intended for testing.</p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SinusModelParameters.html">SinusModelParameters</a></h4>
+      <section><p>Parameters belonging to the <code>SinusModel</code> class.
+Note that this class implements the <code>IProcessModelParameters</code> as it is not intended to be
+fitted against data, but is useful more as a signal generator for testing.</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeDelay.html">TimeDelay</a></h4>
       <section><p>Delays a signal by a specific number of time steps, keeping an internal buffer of delayed values
 between iterations.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.IFittedProcessModelParameters.html">IFittedProcessModelParameters</a></h4>
+      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModel-1.html">IProcessModel&lt;T&gt;</a></h4>
       <section><p>Generic interface of process model</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.html">IProcessModelParameters</a></h4>
-      <section></section>
+      <section><p>This is a simplified interface that is inherited by IFittedProcessModelParamters.
+It is made to logically separate the interfaces of model paramters that were determined by fitting, and
+those that are simply hard-coded either from a priori process knowledge or as example systems developed during
+unit-testing.</p>
+<p>The <code>ProcessSimulator</code> class should expected models with paramters that derive from this base interface, be they
+fitted or apriori.</p>
+</section>
     <h3 id="enums">Enums
   </h3>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html">ProcessIdentWarnings</a></h4>

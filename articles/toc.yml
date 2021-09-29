@@ -22,11 +22,19 @@
           href: ex_hello_world.md
         - name: 2. Linear regression example
           href: ex_linreg.md
-        - name: 3. Fitting a dynamic model to transient data example
+        - name: 3. Filtering
+          href: ex_filtering.md
+        - name: 4. Fitting a dynamic model to transient data example
           href: ex_sysid.md
-        - name: 4. Simulating PID-control
+        - name: 5. Simulating PID-control
           href: ex_pid.md
 
+- name: System identification
+  href: sysid.md
+  items:
+
+        - name: The "default model"
+          href: sysid_defaultmodel.md
 
 - name: Glossary of terms used
   href: glossary.md

@@ -20,27 +20,45 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double[,] U { get;}
 
-        public int TimeBase_s { get; set; }
+        public int NumDataPoints { get; }
+
+        public double TimeBase_s { get; set; }
 
         public DateTime t0;
 
 
-        public ProcessDataSet(double[] y_meas, double[,] U, int timeBase_s, string name=null)
+
+        /// <summary>
+        /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, rand walks or other disturbancs.
+        /// </summary>
+        /// <param name="timeBase_s">the time base in seconds</param>
+        /// <param name="numDataPoints">the desired nubmer of datapoints of the dataset</param>
+        /// <param name="name">optional internal name of dataset</param>
+        public ProcessDataSet(double timeBase_s, int numDataPoints, string name = null)
         {
-            this.Y_meas = y_meas;
-            this.U = U;
+            this.NumDataPoints = numDataPoints;
+            this.Y_meas = null;
+            this.U = null;
             this.TimeBase_s = timeBase_s;
             this.ProcessName = name;
         }
 
         /// <summary>
-        /// Get the  number of data points in the dataset
+        /// Constructor for dta set with inputs <c>U</c>, i.e. where a relationship that at least partially explains <c>y_meas</c> is konwn
         /// </summary>
-        /// <returns>the number of data points</returns>
-        public int GetNumDataPoints()
+        /// <param name="timeBase_s">the time base in seconds</param>
+        /// <param name="U">The number of rows of the 2D-array U determines the duration dataset</param>
+        /// <param name="y_meas">the measured output of the system, can be null </param>
+        /// <param name="name">optional internal name of dataset</param>
+        public ProcessDataSet(double timeBase_s, double[,] U, double[] y_meas= null, string name=null)
         {
-            return U.GetNRows();
+            this.Y_meas = y_meas;
+            NumDataPoints = U.GetNRows();
+            this.U = U;
+            this.TimeBase_s = timeBase_s;
+            this.ProcessName = name;
         }
+
 
         /// <summary>
         /// Get the time spanned by the dataset
@@ -50,7 +68,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (Times == null)
             {
-                return new TimeSpan(0, 0, (int)Math.Ceiling((double)GetNumDataPoints() * TimeBase_s));
+                return new TimeSpan(0, 0, (int)Math.Ceiling((double)NumDataPoints * TimeBase_s));
             }
             else
             {
@@ -64,6 +82,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns null if it was not possible to calculate averages</returns>
         public double[] GetAverageU()
         {
+            if (U == null)
+            {
+                return null;
+            }
             List<double> averages = new List<double>();
 
             for (int i = 0; i < U.GetNColumns(); i++)

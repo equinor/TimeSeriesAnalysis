@@ -83,8 +83,11 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_HighPass" data-uid="TimeSeriesAnalysis.Dynamic.HighPass" class="text-break">Class HighPass
   </h1>
-  <div class="markdown level0 summary"><p>A high-pass recursive time-series filter.
-Internally the filter is based on LowPass.</p>
+  <div class="markdown level0 summary"><p>A high-pass recursive time-series filter based on <code>LowPass</code>.</p>
+<p>This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients,
+requires litte memory and computation. This filter is causal, meaning that is does not use
+for calcuating the filtered value at time <code>k</code> does not use future values such as <code>k+1</code>, but
+this is at the expense of introducing a time-shift (or phase-shift if thinking in the frequncy-domain.)</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">

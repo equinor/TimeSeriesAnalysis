@@ -48,6 +48,8 @@ namespace TimeSeriesAnalysis.Utility
                 return "";
             if (plotNames.Count() == 0)
                 return "";
+            if (dataList.ElementAt(0).Count()==0)
+                return "";
 
             string command = @"-r " + plotlyPath + "#";
             string plotURL = ""; ;

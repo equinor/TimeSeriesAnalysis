@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Example 2 : Low-pass filtering | TimeSeriesAnalysis reference documentation </title>
+    <title>Example 3 : Filtering | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Example 2 : Low-pass filtering | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Example 3 : Filtering | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,8 +77,45 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="example-2--low-pass-filtering">Example 2 : Low-pass filtering</h1>
+<h1 id="example-3--filtering">Example 3 : Filtering</h1>
 
+<p><code>TimeSeriesAnalysis</code> includes basic recursive filtering through the classes <code>LowPass</code>, <code>HighPass</code> and <code>BandPass</code>.</p>
+<p>To illustrate their capabilities, we create an artificial dataset which is made of two sinusoids <code>sinus1</code> and <code>sinus2</code>of different amplitudes and
+frequencies. Sinuses are implemented in the built in <code>SinusModel</code> class, and can be simulated by <code>ProcessSimulator</code>.
+The two sinues are added together by calling <code>ProcessSimulator.Simulate()</code> twice on the same <code>ProcessDataSet</code>.</p>
+<p>Now, we want to define a <code>LowPass</code> and <code>HighPass</code> filter that can separate out the high-frequency and low-frequency sinuses, and this
+is mainly a matter of choosing appropriate filter time constants of either filter.</p>
+<p><code>sinus1</code> has an period of <code>400</code> seconds, and thus goes from maximum to minimum amplitude in about <code>~200</code> seconds.
+Remembering that a first-order system by rule-of-thumb will take about 5 time-constants to implement 99% of a change,
+motivates a time constant of <code>200/5=40</code> seconds for the low-pass filter.</p>
+<p>By a similar logic,as <code>sinus2</code> has a period of <code>25</code> seconds will go from maximum to minimum amplitude in about 12 seconcds,
+thus motivating a filter time-constant of about ~`3`` seconds.</p>
+<pre><code>public void Ex3_filters()
+{
+    double timeBase_s = 1;
+        int nStepsDuration = 2000;
+    var sinus1 = new SinusModel(new SinusModelParameters 
+        { amplitude = 10, period_s = 400 },timeBase_s);
+    var sinus2 = new SinusModel(new SinusModelParameters 
+       { amplitude = 1, period_s = 25 }, timeBase_s);
+
+    var dataset = new ProcessDataSet(timeBase_s, nStepsDuration);
+    ProcessSimulator&lt;SinusModel, SinusModelParameters&gt;.Simulate(sinus1, ref dataset);
+    ProcessSimulator&lt;SinusModel, SinusModelParameters&gt;.Simulate(sinus2, ref dataset);
+
+    var lpFilter = new LowPass(timeBase_s);
+    var lpFiltered = lpFilter.Filter(dataset.Y_sim,40,1);
+
+    var hpFilter = new HighPass(timeBase_s);
+    var hpFiltered = hpFilter.Filter(dataset.Y_sim,3,1);
+
+    Plot.FromList(new List&lt;double[]&gt; { dataset.Y_sim, lpFiltered, hpFiltered },
+         new List&lt;string&gt; { &quot;y1=y&quot;,&quot;y3=y_lowpass&quot;,&quot;y3=y_highpass&quot; }, (int)timeBase_s);
+ }
+</code></pre>
+<p>Running the above code results in the below plot. Notice how the two filtered time-series <code>y_lowpass</code>
+and <code>y_highpass</code> approximate the high-frequency and low-frequency component of the original combined <code>y</code>.</p>
+<p><img src="images/ex3_filters.png" alt="Example 3"></p>
 </article>
           </div>
           

@@ -126,12 +126,13 @@
   
   
   <a id="TimeSeriesAnalysis_Dynamic_ProcessDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ProcessDataSet__ctor_System_Double___System_Double_0__0___System_Int32_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.#ctor(System.Double[],System.Double[0:,0:],System.Int32,System.String)">ProcessDataSet(Double[], Double[,], Int32, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ProcessDataSet__ctor_System_Double_System_Double_0__0___System_Double___System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.#ctor(System.Double,System.Double[0:,0:],System.Double[],System.String)">ProcessDataSet(Double, Double[,], Double[], String)</h4>
+  <div class="markdown level1 summary"><p>Constructor for dta set with inputs <code>U</code>, i.e. where a relationship that at least partially explains <code>y_meas</code> is konwn</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ProcessDataSet(double[] y_meas, double[, ] U, int timeBase_s, string name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public ProcessDataSet(double timeBase_s, double[, ] U, double[] y_meas = null, string name = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,24 +145,69 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">y_meas</span></td>
-        <td></td>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
+        <td><p>the time base in seconds</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span>[,]</td>
         <td><span class="parametername">U</span></td>
-        <td></td>
+        <td><p>The number of rows of the 2D-array U determines the duration dataset</p>
+</td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td></td>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">y_meas</span></td>
+        <td><p>the measured output of the system, can be null</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>optional internal name of dataset</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ProcessDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ProcessDataSet__ctor_System_Double_System_Int32_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.#ctor(System.Double,System.Int32,System.String)">ProcessDataSet(Double, Int32, String)</h4>
+  <div class="markdown level1 summary"><p>Constructor for data set without inputs - for &quot;autonomous&quot; processes such as sinusoids, rand walks or other disturbancs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProcessDataSet(double timeBase_s, int numDataPoints, string name = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
+        <td><p>the time base in seconds</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">numDataPoints</span></td>
+        <td><p>the desired nubmer of datapoints of the dataset</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>optional internal name of dataset</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -195,6 +241,31 @@
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_ProcessDataSet_NumDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.NumDataPoints*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ProcessDataSet_NumDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.NumDataPoints">NumDataPoints</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int NumDataPoints { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_ProcessDataSet_ProcessName_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.ProcessName*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ProcessDataSet_ProcessName" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.ProcessName">ProcessName</h4>
   <div class="markdown level1 summary"></div>
@@ -226,7 +297,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TimeBase_s { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double TimeBase_s { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,7 +309,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -369,33 +440,6 @@
         <td><span class="xref">System.Double</span>[]</td>
         <td><p>an array of averages, each corrsponding to one column of U.
 Returns null if it was not possible to calculate averages</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_ProcessDataSet_GetNumDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.GetNumDataPoints*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ProcessDataSet_GetNumDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.ProcessDataSet.GetNumDataPoints">GetNumDataPoints()</h4>
-  <div class="markdown level1 summary"><p>Get the  number of data points in the dataset</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetNumDataPoints()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><p>the number of data points</p>
 </td>
       </tr>
     </tbody>

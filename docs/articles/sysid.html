@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Example 4 : Fitting a dynamic model to transient data example | TimeSeriesAnalysis reference documentation </title>
+    <title> | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Example 4 : Fitting a dynamic model to transient data example | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content=" | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,37 +77,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="example-4--fitting-a-dynamic-model-to-transient-data-example">Example 4 : Fitting a dynamic model to transient data example</h1>
 
-<pre><code>	public void ex3_sysid()
-	{
-		int timeBase_s = 1;
-		DefaultProcessModelParamters parameters = new DefaultProcessModelParamters
-		{
-			TimeConstant_s = 10,
-			ProcessGains = new double[] { 1, 2},
-			Bias = 10
-		};
-		DefaultProcessModel model = new DefaultProcessModel(parameters);
-
-		double[] u1 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 11),
-				Vec&lt;double&gt;.Fill(1, 50));
-		double[] u2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(2, 31),
-				Vec&lt;double&gt;.Fill(1, 30));
-		double[,] U = Array2D&lt;double&gt;.InitFromColumnList(new List&lt;double[]&gt;{u1 ,u2});
-
-		ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
-		ProcessSimulator.EmulateYmeas(model, ref dataSet);
-
-		Plot.FromList(new List&lt;double[]&gt; { dataSet.y_meas, u1, u2 },
-			new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s);
-
-		DefaultProcessModel identifiedModel = DefaultProcessModelIdentifier.Identify(ref dataSet);
-
-		Plot.FromList(new List&lt;double[]&gt; { dataSet.y_meas, dataSet.y_sim },
-			new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_sim&quot;}, timeBase_s);
-	}
-</code></pre>
 </article>
           </div>
           
