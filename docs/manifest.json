@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html",
-          "hash": "KmhnbOfJIsuvGSHKx3LABsgfQ1Sn0+swXevKIR64qz0="
+          "hash": "JkFRAbLGmzmCkIYcltX52f1oAZ94jVg3UD8PlguP2Zs="
         }
       },
       "is_incremental": false,
@@ -150,7 +150,19 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessSimulator-2.html",
-          "hash": "NmUmVKppI0EQCfF3DiVORlmdNCVXm/kAtrTLAPEnCtU="
+          "hash": "npAFDDAdvfd79Pqi1a3S1As6fL+ONgYPW+ETZkFgg/c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.TimeDelay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.TimeDelay.html",
+          "hash": "iSbwr/GFhGUBBXQxOyA+VDw/3ImSobZ3DrSwoOWT8ac="
         }
       },
       "is_incremental": false,
@@ -162,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "POaMElmA6QzwiYqeHmgIvA7MWN3ZRbrRf0ilvclXCdQ="
+          "hash": "Ka6/ojvdJl3jyQ0882nmlyfSOrGOSIMIz7LGIVtKWnQ="
         }
       },
       "is_incremental": false,
@@ -426,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "eXWOlVCYPcdKOjFlVffOo6NAys1Thts76qTX6Kqeutw="
+          "hash": "3h/Z6qn+vbtBUt5j90LNs4VL6DrsCAezis3eSIPRTtU="
         }
       },
       "is_incremental": false,
@@ -601,7 +613,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/index.html",
-          "hash": "LLiBpSNsWX1JY8mxTzRsaP/yrwSj03aCerVMPeZ/nZ4="
+          "hash": "rOz5chLa8p2B3GrXzbIXWBCDf7b12CwmbFlY6EcfBHc="
         }
       },
       "is_incremental": false,
@@ -740,7 +752,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 33,
+          "total_file_count": 34,
           "skipped_file_count": 33
         },
         "ResourceDocumentProcessor": {

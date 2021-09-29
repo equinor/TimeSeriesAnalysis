@@ -31,12 +31,12 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Simulates the output of the model based on the processDataSet provided, by default the output is
-        /// written back to processDataSet.ySim
+        /// written back to <c>processDataSet.Y_sim</c> or <c>processDataSet.Y_meas</c>
         /// </summary>
         /// <param name="model">model paramters</param>
         /// <param name="processDataSet">dataset containing the inputs <c>U</c> to be simulated</param>
         /// <param name="writeResultToYmeasInsteadOfYsim">if <c>true</c>, output is written to <c>processDataSet.ymeas</c> instead of <c>processDataSet.ysim</c></param>
-        /// <returns>Returns  <c>true</c> if able to simulate, <c>false</c>> otherwise.</returns> 
+        /// <returns>Returns  <c>true</c> if able to simulate, <c>false</c> otherwise.</returns> 
         static public bool Simulate(T1 model,
             ref ProcessDataSet processDataSet,
             bool writeResultToYmeasInsteadOfYsim = false)

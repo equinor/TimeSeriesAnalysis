@@ -22,11 +22,11 @@ The result is a that tasks that you would normally do in for instance *Matlab* d
 accomplished in about the same amount of code in *C#/.NET*. So the resulting code is in many was just as simple.
 
 The benefit of doing this in *C#/.NET* 
-- that you get the benefits of a compiled language,prototype code is written in a language suitable for implementation, (unlike *Matlab* scripts). That means you avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
-- the resulting code does not required a paid license to run, anybody can download a free copy of *VS Code* and re-compile the code, 
-without requiring a working license server, a correct number of licenses or enough licenses. 
+- that you get the benefits of a compiled type strict language,prototype code is written in a language suitable for implementation, (unlike a prototype in some script languages). In some cases this may that you can avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
+- the resulting code does not required a paid license to run.
 - you can easily extend your code to for instance run in parallel using the ``paralell.for`` functionality freely available in .NET, wheres this functionality
-may require a very expensive toolbox in *Matlab* (*Parallel processing toolbox*).
+may require a very expensive toolbox in a script language.
+
 
 
 > [!Note]

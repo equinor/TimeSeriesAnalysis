@@ -1102,6 +1102,38 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator(Of T1, T2).Simulate
   nameWithType: ProcessSimulator<T1, T2>.Simulate
   nameWithType.vb: ProcessSimulator(Of T1, T2).Simulate
+- uid: TimeSeriesAnalysis.Dynamic.TimeDelay
+  name: TimeDelay
+  href: api/TimeSeriesAnalysis.Dynamic.TimeDelay.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.TimeDelay
+  fullName: TimeSeriesAnalysis.Dynamic.TimeDelay
+  nameWithType: TimeDelay
+- uid: TimeSeriesAnalysis.Dynamic.TimeDelay.#ctor(System.Double,System.Double)
+  name: TimeDelay(Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeDelay.html#TimeSeriesAnalysis_Dynamic_TimeDelay__ctor_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeDelay.#ctor(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeDelay.TimeDelay(System.Double, System.Double)
+  nameWithType: TimeDelay.TimeDelay(Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.TimeDelay.#ctor*
+  name: TimeDelay
+  href: api/TimeSeriesAnalysis.Dynamic.TimeDelay.html#TimeSeriesAnalysis_Dynamic_TimeDelay__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeDelay.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeDelay.TimeDelay
+  nameWithType: TimeDelay.TimeDelay
+- uid: TimeSeriesAnalysis.Dynamic.TimeDelay.Delay(System.Double)
+  name: Delay(Double)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeDelay.html#TimeSeriesAnalysis_Dynamic_TimeDelay_Delay_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeDelay.Delay(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeDelay.Delay(System.Double)
+  nameWithType: TimeDelay.Delay(Double)
+- uid: TimeSeriesAnalysis.Dynamic.TimeDelay.Delay*
+  name: Delay
+  href: api/TimeSeriesAnalysis.Dynamic.TimeDelay.html#TimeSeriesAnalysis_Dynamic_TimeDelay_Delay_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeDelay.Delay
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeDelay.Delay
+  nameWithType: TimeDelay.Delay
 - uid: TimeSeriesAnalysis.Matrix
   name: Matrix
   href: api/TimeSeriesAnalysis.Matrix.html

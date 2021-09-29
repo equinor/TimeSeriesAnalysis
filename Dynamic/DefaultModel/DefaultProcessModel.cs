@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,9 @@ namespace TimeSeriesAnalysis.Dynamic
         private DefaultProcessModelParameters modelParameters;
         private LowPass lowPass;
         private double timeBase_s;
+        private TimeDelay delayObj;
+
+
         public  ProcessDataSet FittedDataSet { get; set; }
 
         /// <summary>
@@ -59,6 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public void InitSim(double timeBase_s)
         {
             this.lowPass = new LowPass(timeBase_s);
+            this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
         }
 
         /// <summary>
@@ -72,6 +77,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return Double.NaN;
 
             double y_static = modelParameters.Bias;
+
             for (int curInput = 0; curInput < inputsU.Length; curInput++)
             {
                 if (modelParameters.U0 != null)
@@ -91,9 +97,19 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             double y = lowPass.Filter(y_static, modelParameters.TimeConstant_s);
-            // TODO: add time-delay
-            return y;
+            if (modelParameters.TimeDelay_s <= 0)
+            {
+                return y;
+            }
+            else
+            {
+                return delayObj.Delay(y);
+            }
         }
+
+
+    
+
 
         /// <summary>
         /// Is the model static or dynamic?
