@@ -131,10 +131,12 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Dynamic\DefaultModel\DefaultProcessModel.cs" />
     <Compile Include="Dynamic\DefaultModel\DefaultProcessModelIdentifier.cs" />
     <Compile Include="Dynamic\DefaultModel\DefaultProcessModelParameters.cs" />
+    <Compile Include="Dynamic\Filters\BandPass.cs" />
+    <Compile Include="Dynamic\Filters\HighPass.cs" />
     <Compile Include="Dynamic\Interfaces\IProcessModel.cs" />
     <Compile Include="Dynamic\Interfaces\IProcessModelIdentifier.cs" />
     <Compile Include="Dynamic\Interfaces\IProcessModelParameters.cs" />
-    <Compile Include="Dynamic\LowPass.cs" />
+    <Compile Include="Dynamic\Filters\LowPass.cs" />
     <Compile Include="Dynamic\ProcessDataSet.cs" />
     <Compile Include="Dynamic\ProcessIdentWarnings.cs" />
     <Compile Include="Dynamic\ProcessSimulator.cs" />
@@ -145,7 +147,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Tests\SysIDUnitTests.cs" />
     <Compile Include="TimeSeriesAnalysis\RegressionResults.cs" />
-    <Compile Include="Utility\MovingAvg.cs" />
+    <Compile Include="Dynamic\Filters\MovingAvg.cs" />
     <Compile Include="Utility\CSV.cs" />
     <Compile Include="Utility\StringToFileWriter.cs" />
     <Compile Include="Utility\TimeSeriesCreator.cs" />

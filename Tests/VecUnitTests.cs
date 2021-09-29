@@ -110,10 +110,13 @@ namespace TimeSeriesAnalysis.UnitTests
             Assert.AreEqual(cov1, cov2);
         }
 
-        [Test]
-        public void Regress_givesCorrectValue()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(-1)]
+
+        public void Regress_givesCorrectValue(double bias)
         {
-            double[] Y = { 1, 0, 3, 4, 2 };
+            double[] Y = Vec.Add(new double[]{ 1, 0, 3, 4, 2 },bias);
             double[] X1 = { 1, 0, 1, 0,2 }; // gain:1
             double[] X2 = { 0, 0, 1, 2, 0 };// gain:2
             double[][] X = { X1, X2 };
@@ -122,7 +125,8 @@ namespace TimeSeriesAnalysis.UnitTests
             Assert.IsTrue(results.ableToIdentify);
             Assert.Less(Math.Abs(1 - results.param[0]), 0.001,"gain paramter should be correct");
             Assert.Less(Math.Abs(2 - results.param[1]), 0.001, "gain paramter should be correct");
-            Assert.Less(Math.Abs(results.param[2]), 0.001, "bias should be close to zero");
+            Assert.Less(Math.Abs(results.param[2] - bias), 0.001, "bias paramter should be correct");
+            Assert.Less(Math.Abs(results.Bias- bias), 0.001, "bias should be close to true");
             Assert.Less(results.objectiveFunctionValue, 0.001,"obj function value should be close to zero");
             Assert.Greater(results.Rsq, 99, "Rsqured should be close to 100");
         }

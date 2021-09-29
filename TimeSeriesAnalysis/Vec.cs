@@ -193,7 +193,7 @@ namespace TimeSeriesAnalysis
         {
             double[] ucur = Vec<double>.SubArray(array, 1);
             double[] uprev = Vec<double>.SubArray(array, 0, array.Length - 2);
-            double[] uDiff = Sub(ucur, uprev);
+            double[] uDiff = Subtract(ucur, uprev);
             return Vec<double>.Concat(new double[] { 0 }, uDiff);
         }
 
@@ -610,7 +610,7 @@ namespace TimeSeriesAnalysis
         /// elementwise  multiplication of array1 and array2, assuming they are same size
         ///</summary>
 
-        public static double[] Mult(double[] array1, double[] array2)
+        public static double[] Multiply(double[] array1, double[] array2)
         {
             if (array1 == null)
                 return null;
@@ -628,73 +628,6 @@ namespace TimeSeriesAnalysis
                     retVal[i] = nanValue;
                 else
                     retVal[i] = array1[i] * array2[i];
-            }
-            return retVal;
-        }
-
-        ///<summary>
-        /// elementwise  subtraction of array1 and array2, assuming they are same size
-        ///</summary>
-
-        public static double[] Sub(double[] array1, double[] array2)
-        {
-            if (array1 == null || array2 == null)
-                return null;
-
-            double[] retVal = new double[array1.Length];
-
-            for (int i = 0; i < array1.Length; i++)
-            {
-                if (IsNaN(array1[i]) || IsNaN(array2[i]))
-                    retVal[i] = nanValue;
-                else
-                    retVal[i] = array1[i] - array2[i];
-            }
-            return retVal;
-        }
-        ///<summary>
-        /// elementwise subtraction of val2 from array1
-        ///</summary>
-        public static double[] Sub(double[] array1, double val2)
-        {
-            if (array1 == null)
-                return null;
-            double[] retVal = new double[array1.Length];
-            for (int i = 0; i < array1.Length; i++)
-            {
-                if (IsNaN(array1[i]))
-                    continue;
-                retVal[i] = array1[i] - val2;
-            }
-            return retVal;
-        }
-
-
-        ///<summary>
-        ///  Returns range of an array, the difference between minimum and maximum
-        ///</summary>
-        public static double Range(double[] array)
-        {
-            double range = Max(array) - Min(array);
-
-            return range;
-        }
-
-
-        ///<summary>
-        /// subtracts val2 from array2 elements
-        ///</summary>
-        public static int[] Sub(int[] array1, int val2)
-        {
-            if (array1 == null)
-                return null;
-            int[] retVal = new int[array1.Length];
-
-            for (int i = 0; i < array1.Length; i++)
-            {
-                if (IsNaN(array1[i]))
-                    continue;
-                retVal[i] = array1[i] - val2;
             }
             return retVal;
         }
@@ -718,6 +651,25 @@ namespace TimeSeriesAnalysis
             }
             return retVal;
         }
+
+        ///<summary>
+        ///  Returns range of an array, the difference between minimum and maximum
+        ///</summary>
+        public static double Range(double[] array)
+        {
+            double range = Max(array) - Min(array);
+
+            return range;
+        }
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Create a vector of random numbers
@@ -861,6 +813,7 @@ namespace TimeSeriesAnalysis
                 }
                 results.objectiveFunctionValue = Vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
+                results.Bias = regression.Intercept;
                 results.param = Vec<double>.Concat(regression.Weights, regression.Intercept);
 
                 /*
@@ -929,6 +882,61 @@ namespace TimeSeriesAnalysis
             return array;
         }
 
+        ///<summary>
+        /// elementwise  subtraction of array1 and array2, assuming they are same size
+        ///</summary>
+
+        public static double[] Subtract(double[] array1, double[] array2)
+        {
+            if (array1 == null || array2 == null)
+                return null;
+
+            double[] retVal = new double[array1.Length];
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (IsNaN(array1[i]) || IsNaN(array2[i]))
+                    retVal[i] = nanValue;
+                else
+                    retVal[i] = array1[i] - array2[i];
+            }
+            return retVal;
+        }
+        ///<summary>
+        /// elementwise subtraction of val2 from array1
+        ///</summary>
+        public static double[] Subtract(double[] array1, double val2)
+        {
+            if (array1 == null)
+                return null;
+            double[] retVal = new double[array1.Length];
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (IsNaN(array1[i]))
+                    continue;
+                retVal[i] = array1[i] - val2;
+            }
+            return retVal;
+        }
+
+        ///<summary>
+        /// subtracts val2 from array2 elements
+        ///</summary>
+        public static int[] Subtract(int[] array1, int val2)
+        {
+            if (array1 == null)
+                return null;
+            int[] retVal = new int[array1.Length];
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (IsNaN(array1[i]))
+                    continue;
+                retVal[i] = array1[i] - val2;
+            }
+            return retVal;
+        }
+
 
         ///<summary>
         /// returns the sum of array1
@@ -970,10 +978,6 @@ namespace TimeSeriesAnalysis
             else
                 return 0;
         }
-
-
-
-
 
 
         /// <summary>
@@ -1100,9 +1104,14 @@ namespace TimeSeriesAnalysis
 
 
 
+
         /// <summary>
         ///  serializes a single vector/array to a file for persistent storage to a human-readable text format
+        /// Vector data can then be retreived by companion method <c>Deserialize</c>
         /// </summary>
+        /// <param name="vector">vector to be written to afile</param>
+        /// <param name="fileName">the file name (or path) of the file to which the vector is to serialized to</param>
+        /// <returns></returns>
         static public bool Serialize(double[] vector, string fileName)
         {
             using (StringToFileWriter writer = new StringToFileWriter(fileName))

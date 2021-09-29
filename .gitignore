@@ -6,7 +6,6 @@ nuget.config
 nuget.exe
 publish.bat
 new 1.txt
-api/
 log.txt
 unittest.txt
 _site/articles/intro.html

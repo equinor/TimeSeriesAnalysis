@@ -8,6 +8,13 @@ namespace TimeSeriesAnalysis.Utility
 {
     public class TimeSeriesCreator
     {
+        /// <summary>
+        /// Create an array of DateTimes starting at <c>t0</c> of length N and with sampling interval <c>dT_s</c>
+        /// </summary>
+        /// <param name="t0">first datetime in the array to be created</param>
+        /// <param name="dT_s">sampling internval</param>
+        /// <param name="N">number of desired data points</param>
+        /// <returns></returns>
         static public DateTime[] CreateTimeSeries(DateTime t0, int dT_s, int N)
         {
             List<DateTime> times = new List<DateTime>();

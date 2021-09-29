@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double timeBase_s;
         private double prevFilteredSignal;
         private double prevFilteredSignalOrder2;
-        private Int64 nSignals = 0;
+        private int nSignals = 0;
 
         /// <summary>
         /// Constructor
@@ -33,12 +33,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="signal">data point</param>
         /// <param name="FilterTc_s">filter time constant in seconds</param>
-        /// <param name="order">filter order, eitehr 1 or 2 is supported</param>
+        /// <param name="order">filter order, either 1 or 2 is supported</param>
         /// <param name="doReset">usually false, setting to true causes filter to reset to the value of signal</param>
         /// <returns></returns>
         public double Filter(double signal, double FilterTc_s, int order=1, bool doReset = false)
         {
-            nSignals++;
+            if (nSignals < 2)
+            {
+                nSignals++;
+            }
             double a;
             double filteredSignal= signal;
             if (FilterTc_s < 0.4 * this.timeBase_s)

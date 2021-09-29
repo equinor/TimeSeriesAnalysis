@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class StringToFileWriter
+    <title>Class ProcessModelParamters
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class StringToFileWriter
+    <meta name="title" content="Class ProcessModelParamters
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,25 +78,17 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters">
   
   
-  <h1 id="TimeSeriesAnalysis_Utility_StringToFileWriter" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter" class="text-break">Class StringToFileWriter
+  <h1 id="TimeSeriesAnalysis_SysId_ProcessModelParamters" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters" class="text-break">Class ProcessModelParamters
   </h1>
-  <div class="markdown level0 summary"><p>IO Utility class to write to file that implements IDisposable interface.
-Suggest to use this objects of this class within the <code>using</code> keyword
-so that file-resources are automatically freed in case your code is terminated before
-it has completed.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">StringToFileWriter</span></div>
-  </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><span class="xref">System.IDisposable</span></div>
+    <div class="level1"><span class="xref">ProcessModelParamters</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -122,180 +114,164 @@ it has completed.</p>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Utility.html">TimeSeriesAnalysis.Utility</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.SysId.html">TimeSeriesAnalysis.SysId</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Utility_StringToFileWriter_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_SysId_ProcessModelParamters_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StringToFileWriter : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class ProcessModelParamters</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="properties">Properties
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Utility_StringToFileWriter__ctor_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_StringToFileWriter__ctor_System_String_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor(System.String)">StringToFileWriter(String)</h4>
+  <a id="TimeSeriesAnalysis_SysId_ProcessModelParamters_Bias_" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias*"></a>
+  <h4 id="TimeSeriesAnalysis_SysId_ProcessModelParamters_Bias" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.Bias">Bias</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StringToFileWriter(string filename)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Bias { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">filename</span></td>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Utility_StringToFileWriter__ctor_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_StringToFileWriter__ctor_System_String_System_Text_Encoding_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.#ctor(System.String,System.Text.Encoding)">StringToFileWriter(String, Encoding)</h4>
+  <a id="TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain_" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain*"></a>
+  <h4 id="TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain">ProcessGain</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StringToFileWriter(string filename, Encoding encoding)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] ProcessGain { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">filename</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Text.Encoding</span></td>
-        <td><span class="parametername">encoding</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_StringToFileWriter_Close_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Close*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_StringToFileWriter_Close" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Close">Close()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Close()</code></pre>
-  </div>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_StringToFileWriter_CreateDirectoryStructure_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_StringToFileWriter_CreateDirectoryStructure_System_String_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.CreateDirectoryStructure(System.String)">CreateDirectoryStructure(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void CreateDirectoryStructure(string FilePath)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">FilePath</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Utility_StringToFileWriter_Dispose_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_StringToFileWriter_Dispose" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose">Dispose()</h4>
+  <a id="TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain_CurvatureTerm_" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm*"></a>
+  <h4 id="TimeSeriesAnalysis_SysId_ProcessModelParamters_ProcessGain_CurvatureTerm" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.ProcessGain_CurvatureTerm">ProcessGain_CurvatureTerm</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] ProcessGain_CurvatureTerm { get; set; }</code></pre>
   </div>
-  
-  
-  <a id="TimeSeriesAnalysis_Utility_StringToFileWriter_Dispose_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_StringToFileWriter_Dispose_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">disposing</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Utility_StringToFileWriter_Write_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Write*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_StringToFileWriter_Write_System_String_" data-uid="TimeSeriesAnalysis.Utility.StringToFileWriter.Write(System.String)">Write(String)</h4>
+  <a id="TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeConstant_s_" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s*"></a>
+  <h4 id="TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeConstant_s" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeConstant_s">TimeConstant_s</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Write(string text)</code></pre>
+    <pre><code class="lang-csharp hljs">public double TimeConstant_s { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">text</span></td>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">System.IDisposable</span>
+  
+  
+  <a id="TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeDelay_s_" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s*"></a>
+  <h4 id="TimeSeriesAnalysis_SysId_ProcessModelParamters_TimeDelay_s" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.TimeDelay_s">TimeDelay_s</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TimeDelay_s { get; set; }</code></pre>
   </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_SysId_ProcessModelParamters_u0_" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.u0*"></a>
+  <h4 id="TimeSeriesAnalysis_SysId_ProcessModelParamters_u0" data-uid="TimeSeriesAnalysis.SysId.ProcessModelParamters.u0">u0</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] u0 { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

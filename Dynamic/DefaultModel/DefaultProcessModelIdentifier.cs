@@ -152,8 +152,8 @@ namespace TimeSeriesAnalysis.Dynamic
             yIndicesToIgnore = yIndicesToIgnore.Union(indYcurBad).ToList();
             yIndicesToIgnore.Sort();
 
-            double[] param = null, param_95prcUnc = null;
-            double[][] varCovarMatrix = null;
+           // double[] param = null, param_95prcUnc = null;
+            //double[][] varCovarMatrix = null;
             double[] x_mod_cur = null, y_mod_cur = null;
 
             if (FilterTc_s > 0)
@@ -248,7 +248,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // y[k]-y[k-1]-d[k]=(a-1)*y[k-1] + b*u (RESULTING FORMUALE TO BE IDENTIFIED)
                 if (assumeThatYkminusOneApproxXkminusOne)
                 {
-                    double[] deltaY = Vec.Sub(ycur, yprev);
+                    double[] deltaY = Vec.Subtract(ycur, yprev);
                     double[] phi1_ols = yprev;
                     double[] Y_ols = deltaY;//Vec.Sub(deltaY, dcur);
                     //  double[] phi2_ols = Vec.Sub(ucur, u0);
@@ -257,7 +257,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
                     {
-                        phi_ols2D.WriteColumn(curIdx+1, Vec.Sub(ucurList[curIdx], u0[curIdx]));
+                        phi_ols2D.WriteColumn(curIdx+1, Vec.Subtract(ucurList[curIdx], u0[curIdx]));
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
                     regResults = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
@@ -273,14 +273,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 // y[k]-d[k]=a*(y[k-1]-d[k-1])+ b*u[k] + q
                 else
                 {
-                    double[] phi1_ols = Vec.Sub(yprev, dprev);
+                    double[] phi1_ols = Vec.Subtract(yprev, dprev);
                     //double[] phi2_ols = Vec.Sub(ucur, u0);
                     //double[][] phi_ols = { phi1_ols, phi2_ols };
                     double[,] phi_ols2D = new double[ycur.Length, ucurList.Count + 1];
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
                     {
-                        phi_ols2D.WriteColumn(curIdx + 1, Vec.Sub(ucurList[curIdx], u0[curIdx]));
+                        phi_ols2D.WriteColumn(curIdx + 1, Vec.Subtract(ucurList[curIdx], u0[curIdx]));
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
                     double[] Y_ols = ycur;// Vec.Sub(ycur, dcur);
@@ -345,7 +345,7 @@ namespace TimeSeriesAnalysis.Dynamic
                                 {
                                     x_mod_cur[i] += b[curU] * (ucurList[curU][i] - u0[curU]);
                                 }
-                                x_mod_cur[i] += param[2];
+                                x_mod_cur[i] += regResults.Bias;
                             }
                             else
                             {
@@ -360,7 +360,7 @@ namespace TimeSeriesAnalysis.Dynamic
                                 {
                                     x_mod_cur[i] += b[curU] * (ucurList[curU][i] - u0[curU]);
                                 }
-                                x_mod_cur[i] +=  param[2];
+                                x_mod_cur[i] += regResults.Bias;
                             }
                         }
                         else
@@ -376,7 +376,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[,] inputs2D = new double[ycur.Length, ucurList.Count];
                 for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
                 {
-                    inputs2D.WriteColumn(curIdx, Vec.Sub(ucurList[curIdx], u0[curIdx]));
+                    inputs2D.WriteColumn(curIdx, Vec.Subtract(ucurList[curIdx], u0[curIdx]));
                 }
                 double[][] inputs = inputs2D.Transpose().Convert2DtoJagged();
                 double[] Y_ols = ycur;// Vec.Sub(ycur, dcur);
@@ -390,8 +390,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (regResults.param != null)
                 {
                     timeConstant_s = 0;
-                    processGains = Vec<double>.SubArray(param, 0, param.Length - 2);//param[0];
-                    bias = param.Last();// param[1];
+                    processGains = Vec<double>.SubArray(regResults.param, 0, regResults.param.Length - 2);//param[0];
+                    bias = regResults.Bias;
                 }
             }
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters();

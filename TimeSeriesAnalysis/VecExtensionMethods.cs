@@ -28,7 +28,7 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public static double[] Sub(this double[] array1, double[] array2)
         {
-            return Vec.Sub(array1, array2);
+            return Vec.Subtract(array1, array2);
         }
 
         ///<comment>

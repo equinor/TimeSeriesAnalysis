@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeSeriesAnalysis.Utility
+namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     ///  Moving-average filter of time-series

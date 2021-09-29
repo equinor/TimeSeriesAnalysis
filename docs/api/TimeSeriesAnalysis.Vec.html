@@ -1447,14 +1447,14 @@ i.e. of the &quot;other vectors</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_Mult_" data-uid="TimeSeriesAnalysis.Vec.Mult*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Mult_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Vec.Mult(System.Double[],System.Double[])">Mult(Double[], Double[])</h4>
+  <a id="TimeSeriesAnalysis_Vec_Multiply_" data-uid="TimeSeriesAnalysis.Vec.Multiply*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Multiply_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Vec.Multiply(System.Double[],System.Double[])">Multiply(Double[], Double[])</h4>
   <div class="markdown level1 summary"><p>elementwise  multiplication of array1 and array2, assuming they are same size</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Mult(double[] array1, double[] array2)</code></pre>
+    <pre><code class="lang-csharp hljs">public static double[] Multiply(double[] array1, double[] array2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1868,7 +1868,8 @@ half of the observed variation can be explained by the model's inputs.</p>
   
   <a id="TimeSeriesAnalysis_Vec_Serialize_" data-uid="TimeSeriesAnalysis.Vec.Serialize*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_Serialize_System_Double___System_String_" data-uid="TimeSeriesAnalysis.Vec.Serialize(System.Double[],System.String)">Serialize(Double[], String)</h4>
-  <div class="markdown level1 summary"><p>serializes a single vector/array to a file for persistent storage to a human-readable text format</p>
+  <div class="markdown level1 summary"><p>serializes a single vector/array to a file for persistent storage to a human-readable text format
+Vector data can then be retreived by companion method <code>Deserialize</code></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1888,12 +1889,14 @@ half of the observed variation can be explained by the model's inputs.</p>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">vector</span></td>
-        <td></td>
+        <td><p>vector to be written to afile</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">fileName</span></td>
-        <td></td>
+        <td><p>the file name (or path) of the file to which the vector is to serialized to</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1914,14 +1917,14 @@ half of the observed variation can be explained by the model's inputs.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_Sub_" data-uid="TimeSeriesAnalysis.Vec.Sub*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Sub_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Vec.Sub(System.Double[],System.Double)">Sub(Double[], Double)</h4>
+  <a id="TimeSeriesAnalysis_Vec_Subtract_" data-uid="TimeSeriesAnalysis.Vec.Subtract*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Subtract_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Vec.Subtract(System.Double[],System.Double)">Subtract(Double[], Double)</h4>
   <div class="markdown level1 summary"><p>elementwise subtraction of val2 from array1</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Sub(double[] array1, double val2)</code></pre>
+    <pre><code class="lang-csharp hljs">public static double[] Subtract(double[] array1, double val2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1962,14 +1965,14 @@ half of the observed variation can be explained by the model's inputs.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_Sub_" data-uid="TimeSeriesAnalysis.Vec.Sub*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Sub_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Vec.Sub(System.Double[],System.Double[])">Sub(Double[], Double[])</h4>
+  <a id="TimeSeriesAnalysis_Vec_Subtract_" data-uid="TimeSeriesAnalysis.Vec.Subtract*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Subtract_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Vec.Subtract(System.Double[],System.Double[])">Subtract(Double[], Double[])</h4>
   <div class="markdown level1 summary"><p>elementwise  subtraction of array1 and array2, assuming they are same size</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Sub(double[] array1, double[] array2)</code></pre>
+    <pre><code class="lang-csharp hljs">public static double[] Subtract(double[] array1, double[] array2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2010,14 +2013,14 @@ half of the observed variation can be explained by the model's inputs.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_Sub_" data-uid="TimeSeriesAnalysis.Vec.Sub*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Sub_System_Int32___System_Int32_" data-uid="TimeSeriesAnalysis.Vec.Sub(System.Int32[],System.Int32)">Sub(Int32[], Int32)</h4>
+  <a id="TimeSeriesAnalysis_Vec_Subtract_" data-uid="TimeSeriesAnalysis.Vec.Subtract*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Subtract_System_Int32___System_Int32_" data-uid="TimeSeriesAnalysis.Vec.Subtract(System.Int32[],System.Int32)">Subtract(Int32[], Int32)</h4>
   <div class="markdown level1 summary"><p>subtracts val2 from array2 elements</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int[] Sub(int[] array1, int val2)</code></pre>
+    <pre><code class="lang-csharp hljs">public static int[] Subtract(int[] array1, int val2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

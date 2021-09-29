@@ -50,6 +50,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.BandPass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.BandPass.html",
+          "hash": "lpAXPt2aEbqGR11uFq9rSAfEn/ME4ZCyQm0pg8cQFz0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.yml",
       "output": {
         ".html": {
@@ -86,6 +98,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.HighPass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.HighPass.html",
+          "hash": "scNt+J6xtaerQvAEdmsR2tM0WlkP7v1469x70KEVkWo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.yml",
       "output": {
         ".html": {
@@ -114,7 +138,19 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.LowPass.html",
-          "hash": "2E1tPdA+lRuNoauo3iTnxDWXKS4odcG/+yWZT6A6XU0="
+          "hash": "YHFseWZX9/1nEuCcTYMcKX+Djm5ca3vclwChSpUmkTg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.MovingAvg.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.MovingAvg.html",
+          "hash": "UMUj7dZ/MNhi5PU/ldhst3hPhvpbVGuXBM069JnrQI4="
         }
       },
       "is_incremental": false,
@@ -174,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "Ka6/ojvdJl3jyQ0882nmlyfSOrGOSIMIz7LGIVtKWnQ="
+          "hash": "QzNklZtrzeFGNKE2oJ53T0rARdJ8oCPBpgCAS/sRebY="
         }
       },
       "is_incremental": false,
@@ -198,7 +234,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.RegressionResults.html",
-          "hash": "vV67dPfIw7lKk8quf/WsVQTLkGa2blhidjiDHvWDf+M="
+          "hash": "WYMWaatofXsfi5zPe2rsczijJm3mDDS7okflUl0BFt0="
         }
       },
       "is_incremental": false,
@@ -211,18 +247,6 @@
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.CSV.html",
           "hash": "JaHk7BvzeEbqf62T+edKj52AnZqoLO2O89UWv14YC6s="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Utility.MovingAvg.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Utility.MovingAvg.html",
-          "hash": "XLJ97IgEPszRYQyoLClsyxUx/2MTYPWyxDhHyycS0ZQ="
         }
       },
       "is_incremental": false,
@@ -306,7 +330,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.StringToFileWriter.html",
-          "hash": "cdch2blOKUJ5JyZNNCDhgOzb/eEJMpkvVR+auoFKBJ8="
+          "hash": "EU0wsJZP8Zx00OTT8iJte0drywS6iSGEx2BIJZmX9g8="
         }
       },
       "is_incremental": false,
@@ -318,7 +342,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html",
-          "hash": "tOw56mW0khd/f7nBLYs0eno0IiwpGFCc8YZWPY5p/Fg="
+          "hash": "M1bnUB14bZUoiJVlksBEAWDWD22u8G8fvEiMMcNOAi4="
         }
       },
       "is_incremental": false,
@@ -342,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.html",
-          "hash": "WshTHgV2o2fIRr4wSFdYjW2Fog58pnmow3ICvpy1MJA="
+          "hash": "rmGrB2Gvtul9bSxKSfWg+SGk+0zFo0+lRBupF/gsqic="
         }
       },
       "is_incremental": false,
@@ -366,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Vec.html",
-          "hash": "/pHkoz0ino9I/d+U0+IodQ6FYFfpulMGMSqin/vKWxk="
+          "hash": "gefPe62jX4a9ebnzCqrkOx+vm5BMuYUDbhdKdWNorsk="
         }
       },
       "is_incremental": false,
@@ -438,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "3h/Z6qn+vbtBUt5j90LNs4VL6DrsCAezis3eSIPRTtU="
+          "hash": "sviKBKjKg//rR4mBr2HD/zQER0iXOXE/U3TPEjyYCCo="
         }
       },
       "is_incremental": false,
@@ -546,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/glossary.html",
-          "hash": "riEpB4jhW6ZqDqq3zLoDssdsxdcfNZIAsFynuyxEo34="
+          "hash": "K2b1rUtNyCzVP2Q9cA4NaAFC1UPnfxo/bfDk0dPVmHo="
         }
       },
       "is_incremental": false,
@@ -752,8 +776,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 34,
-          "skipped_file_count": 33
+          "total_file_count": 36,
+          "skipped_file_count": 35
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

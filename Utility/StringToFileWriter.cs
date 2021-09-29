@@ -10,9 +10,11 @@ namespace TimeSeriesAnalysis.Utility
 
 
     ///<summary>
-    /// IO Utility class to write to file.
+    /// IO Utility class to write to file that implements IDisposable interface. 
+    /// Suggest to use this objects of this class within the <c>using</c> keyword
+    /// so that file-resources are automatically freed in case your code is terminated before
+    /// it has completed. 
     ///</summary>
-
 
     public class StringToFileWriter : IDisposable
         {
@@ -20,12 +22,10 @@ namespace TimeSeriesAnalysis.Utility
             System.IO.MemoryStream memStream;
             string file;
             Encoding localEncoding = Encoding.UTF8;
-            //Encoding localEncoding = Encoding.Unicode;        
-
+ 
             public StringToFileWriter(string filename)
             {
                 memStream = new System.IO.MemoryStream();
-            //sw = new StreamWriter(memStream, Encoding.GetEncoding(1252));
             sw = new StreamWriter(memStream, localEncoding)
             {
                 NewLine = "\r\n"
@@ -37,7 +37,6 @@ namespace TimeSeriesAnalysis.Utility
             {
                 localEncoding = encoding;
                 memStream = new System.IO.MemoryStream();
-                //sw = new StreamWriter(memStream, Encoding.GetEncoding(1252));
                 sw = new StreamWriter(memStream, localEncoding);
                 file = filename;
             }
@@ -52,14 +51,10 @@ namespace TimeSeriesAnalysis.Utility
                 sw.Flush();
                 memStream.Position = 0;
 
-                //StreamReader srCppModel = new StreamReader(memStream, System.Text.Encoding.GetEncoding(1252));
-
-                string binPath = System.IO.Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath);
+                   string binPath = System.IO.Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath);
                 binPath = binPath.Replace("file:\\", "");
 
-                //StreamReader sr = new StreamReader(memStream, System.Text.Encoding.GetEncoding(1252));
                 StreamReader sr = new StreamReader(memStream, localEncoding);
-
                 string result = sr.ReadToEnd();
 
                 sw.Close();
@@ -113,8 +108,6 @@ namespace TimeSeriesAnalysis.Utility
                     {
 
                     }
-
-
                 }
                 // free native resources
             }

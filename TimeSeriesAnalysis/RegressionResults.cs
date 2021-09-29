@@ -29,6 +29,8 @@ namespace TimeSeriesAnalysis
         public double[] param95prcConfInterval { get; set; }
         public double[][] varCovarMatrix { get; set; }
         public double[] Y_modelled { get; set; }
+        public double Bias { get; set; } 
+
 
         public bool ableToIdentify { get; set; }
 

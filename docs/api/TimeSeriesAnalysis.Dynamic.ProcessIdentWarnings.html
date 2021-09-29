@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace TimeSeriesAnalysis.Utility
+    <title>Enum ProcessIdentWarnings
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace TimeSeriesAnalysis.Utility
+    <meta name="title" content="Enum ProcessIdentWarnings
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,51 +78,83 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Utility">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings">
   
-  <h1 id="TimeSeriesAnalysis_Utility" data-uid="TimeSeriesAnalysis.Utility" class="text-break">Namespace TimeSeriesAnalysis.Utility
+  
+  <h1 id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings" data-uid="TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings" class="text-break">Enum ProcessIdentWarnings
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Enum of recognized warning or error states during identification of process model</p>
+</div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
+  <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
+  <h5 id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum ProcessIdentWarnings</code></pre>
+  </div>
+  <h3 id="fields">Fields
   </h3>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.CSV.html">CSV</a></h4>
-      <section><p>IO Utility class for loading time-series data from a plain text comma-separated variable(CSV) file</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.ParserFeedback.html">ParserFeedback</a></h4>
-      <section></section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.Plot.html">Plot</a></h4>
-      <section><p>Static methods for plotting one or more time-series across one or more y-axes and one or more subplots.
-If you sometimes need to disable plots (for instance if plotting code is included in unit tests) see Plot4Test</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.Plot4Test.html">Plot4Test</a></h4>
-      <section><p>Version of Plot class where plots code can be Enabled()/Disabled() programatically.
-This allows you to keep all your &quot;Plot&quot; calls in your unit tests and turn them on as needed to
-debug a single test, while avoid being overwhelmed with plots if for instance re-running all unit tests.</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.SignificantDigits.html">SignificantDigits</a></h4>
-      <section><p>Utility class to round double variables to a given nubmer of signficant digits.</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.StringToFileWriter.html">StringToFileWriter</a></h4>
-      <section><p>IO Utility class to write to file that implements IDisposable interface.
-Suggest to use this objects of this class within the <code>using</code> keyword
-so that file-resources are automatically freed in case your code is terminated before
-it has completed.</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.TimeSeriesCreator.html">TimeSeriesCreator</a></h4>
-      <section></section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.UnixTime.html">UnixTime</a></h4>
-      <section><p>Utility class to work with unix time stamps</p>
-</section>
-    <h3 id="structs">Structs
-  </h3>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.html">ParserFeedbackLogLine</a></h4>
-      <section></section>
-    <h3 id="enums">Enums
-  </h3>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.html">ParserfeedbackMessageLevel</a></h4>
-      <section></section>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_DataSetVeryShortComparedtoTMax">DataSetVeryShortComparedtoTMax</td>
+        <td><p>The dataset is time span is very short compared to the maximal time-constant given as input to the algorithm</p>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_Nothing">Nothing</td>
+        <td><p>No errors or warnings</p>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_NotPossibleToIdentify">NotPossibleToIdentify</td>
+        <td><p>It was not possible to identify the</p>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_RegressionProblemFailedToYieldSolution">RegressionProblemFailedToYieldSolution</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeConstantEstimateNotConsistent">TimeConstantEstimateNotConsistent</td>
+        <td><p>Time constant estimates vary significantly across dataset, indicating that something is wrong</p>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeConstantEstimateTooBig">TimeConstantEstimateTooBig</td>
+        <td><p>Estimation returned an enourmous time constant, this is an indication of something is wrong</p>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeConstantNotIdentifiable">TimeConstantNotIdentifiable</td>
+        <td><p>Time constant is not identifiable from dataset</p>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeDelayAtMaximumConstraint">TimeDelayAtMaximumConstraint</td>
+        <td><p>The time delay which gave the lowest objective function is the biggest allowed time delay</p>
+<ul>
+<li>consider increasing this limit or if something is wrong</li>
+</ul>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty">TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty</td>
+        <td><p>When considering different time delays internally, you expect the &quot;best&quot; to have both
+the lowest objective functino <em>and</em> the lowest paramter uncertainty</p>
+<ul>
+<li>but for some reason this is not the case</li>
+</ul>
+</td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
 </article>
           </div>
           
