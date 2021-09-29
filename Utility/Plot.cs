@@ -18,7 +18,6 @@ namespace TimeSeriesAnalysis.Utility
 
     public class Plot
     {
-        //TODO: this is not general - consider pointing to a virtual folder.
         const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data\";
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyPath = @"localhost\plotly\index.html";
@@ -81,8 +80,6 @@ namespace TimeSeriesAnalysis.Utility
 
         }
 
-
-
         ///<summary>
         /// Remove illegal characters from tagName.
         ///</summary>
@@ -125,7 +122,7 @@ namespace TimeSeriesAnalysis.Utility
                 return ";comment=" + comment.Replace(" ", "_");
         }
 
-        
+        /*
         ///<summary>
         /// (deprecated)Plot one vector X, where the sampling time interval is dT_s. 
         ///</summary>
@@ -365,7 +362,7 @@ namespace TimeSeriesAnalysis.Utility
                 }
             }
         }
-        
+        */
 
 
         /// <summary>
