@@ -24,7 +24,7 @@ The result is a that tasks that you would normally do in for instance *Matlab* d
 
 The benefit of doing this in *C#/.NET* 
 - that you get the benefits of a compiled type strict language, by writing your prototype code directly a language suitable for implementation, (unlike a prototype in some script languages). In some cases this may that you can avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
-- the resulting code does not required a paid license to run.
+- the resulting code does not require a paid license to run.
 - you can easily extend your code to for instance run in parallel using the ``paralell.for`` functionality freely available in .NET, wheres this functionality may require a very expensive toolbox in a script language.
 
 > [!Note]
