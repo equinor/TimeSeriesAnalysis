@@ -20,6 +20,10 @@ Because the final product of many enterprise time-series applications(like contr
 
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>** :red_circle:
 
+## Roadmap
+
+Currently in versions ``1.x``, the development focuses on creating small-scale "building blocks", modeling components such as individual PID-controllers and small-scale process models. Toward version ``2.x`` the plan is to build on top the established building blocks to expand into more *automated* modeling and analysis of *large-scale* systems (connecting sub-systems together), to build **"digital twins"** of larger parts of process plants based on **data mining**. 
+
 ## Contributing
 This project welcomes contributions and suggestions. 
 Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests. 

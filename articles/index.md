@@ -14,7 +14,7 @@ It handles typical tasks related to time-series analysis such as
 - *dynamic simulation* of systems that may include interatctions with *PID-controllers* (the library includes a reference PID-controller implementation).
 
 **The aim of this library is to make the process of working with time series as easy as possible, 
-and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*.
+and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*.**
 
 This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform 
 operations like adding, subtracting, multiplying with vectors and matrices, as well as typical pre-processing tasks like selecting
@@ -28,11 +28,12 @@ The benefit of doing this in *C#/.NET*
 - you can easily extend your code to for instance run in parallel using the ``paralell.for`` functionality freely available in .NET, wheres this functionality may require a very expensive toolbox in a script language.
 
 > [!Note]
-> Originally this code has been written with control-engineering in mind, as control engineers typically 
+> Originally this code has been written with automation/control-engineering in mind, as control engineers typically 
 > prefer compiled languages such as C# for code that is to be *integrated in the control system*. 
 > Control systems are usually written in compiled languages in the C/C++/C# family, and the same is also true of other
 > enterprise commercial software that deals heavily with time-series, such as dynamic simulators or condition-based monitoring systems. 
-
+>
+> This repository could be a toolbox for building **Advanced analytics** tools as part of Industry 4.0
 
 ## Plotting capabilities
 
