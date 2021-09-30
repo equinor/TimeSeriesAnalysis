@@ -86,13 +86,22 @@ So a sampling frequency of <code>10 Hz</code>, would mean a sampling time/time b
 <p>A <code>linear</code> system refers to a system that can be described by a linear differential equation, i.e. its states are
 linear in the dependent variables <code>u</code>.</p>
 <p>A nonlinear is system is any system that is not linear.</p>
-<p>Example: If <code>x</code> is the systme state, then
+<p>Example: If <code>x</code> is the system state, then
 <code>dx/dt = b * u</code> is <em>linear</em> while <code>x = b * u + c * u^2</code> is <em>non-linear</em></p>
 <h3 id="state-of-a-system"><em>State</em> of a system</h3>
+<p>So the state of a system is the values of a set of variables that together define the current condition of the system
+uniequly. Often in system identfication the system state is referred to as <code>x</code>. Note that the output <code>y</code> is not neccesarily  the same as the state. If the system is described by the differential equation, then the state <code>x</code>
+is the solution of this equation set.</p>
 <h3 id="steady-state-versus-transient"><em>Steady-state</em> versus <em>transient</em></h3>
+<p><code>Steady-state</code> in a differential equation is the condition that the differential terms are zero, so that the system remains at rest.</p>
 <h3 id="static-versus-dynamic"><em>Static</em> versus <em>dynamic</em></h3>
+<p>A model is termed <code>static</code> if any changes in inputs fully propagete immediately the outputs.
+So a static model is a model with no <code>transients</code>, and thus has no time-constant or time-delay terms.</p>
 <h3 id="working-point-and-local-models"><em>Working point</em> and <em>local</em> models</h3>
+<p>Any nonlinear system can be approximated as linear around a <em>working point</em>. So a <em>local</em> model in this context
+is a model that is intended to mainly approximate the actual system close to a given value <code>u0</code> of the manipulated variables. Depending on the degree of non-linearity, the working range aroundt the working point that the model is useful for will vary.</p>
 <h3 id="tuning-dataset-versus-validation-dataset"><em>Tuning dataset</em> versus <em>validation dataset</em></h3>
+<p>The <code>tuning dataset</code>, also referred to as the <code>fitted dataset</code> is the actual set of data that the model was fitted against. It is common practice in system identifiation to evaluate models <em>not on the fit to the tuning set but on a fresh set of data</em>, and this fresh data set used for evaluation is referred to as the <em>validation dataset</em>.</p>
 </article>
           </div>
           

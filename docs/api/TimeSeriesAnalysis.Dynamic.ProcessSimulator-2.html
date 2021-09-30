@@ -122,6 +122,7 @@ the specifics of how models outputs are calculated should be encapsulated in the
   <h5 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_2_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class ProcessSimulator&lt;T1, T2&gt;
+
     where T1 : IProcessModel&lt;T2&gt; where T2 : IProcessModelParameters</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>

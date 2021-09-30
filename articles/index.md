@@ -89,27 +89,4 @@ By clicking on the variable names in the *legend* on the top left, it is possibl
 
 
 
-## A typical use-case
-
-* You may like to load data from a file into a 2D array for doubles and strings and an array of table headers using ``CSV.loadDataFromCSV``.  
-* the dates in the array can be parsed using ``Array2D.GetColumnParsedAsDateTime()`` (useful to find data sample time, and data time span, and selecting a subset timespan for analysis)
-* use ``Array2D.IndexOf()`` on the header array to find the indices of variables in the CSV-file, 
-* use ``Vec.GetColumn()`` or ``Vec.GetColumns()`` to load data into 1D vectors or 2D arrays
-* use ``Vec.GetRowsAfterIndex()`` to cut off a chunk of data the data 
-* use ``Vec.FindValues()`` to find values which are nan or out-of-range which are to be ignored in regression 
-* use ``Matrix.Transpose()`` to transpose matrix before regression as needed
-* use ``Vec.ReplaceIndWithValuesPrior()`` to replace bad values with the prior value, this makes for nicer plots. 
-* if you want to multiply, divide, add or subtract or use min, max on the arrays retreived from the csv file, use ``Vec.Add()``, ``Vec.Sub``(), ``Vec.Mult()`` or ``Vec.Div()``
-* you can do the above on rows of a 2d-matrix by using ``Matrix.ReplaceRow()``
-* scaling of entire 2d-matrices can be done by ``Matrix.Mult()``
-* Low-pass filtering on specific time-series can be done by ``LowPass.Filter()``.
-* to do regression, give the regressors to ``Vec.Regress()``, along with the indices to ignore based on pre-processing, which returns the model output along with paramters and uncertainty
-* finally, you can plot the resulting regression using ``Plot.FromList``.  
-
-
-
-
-
-
-
 
