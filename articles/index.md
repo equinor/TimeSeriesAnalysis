@@ -5,29 +5,27 @@
 
 *TimeSeriesAnalysis* is a .NET class library for making it easy to work with time series in *.NET* framework (written in *C#*). 
 It handles typical tasks related to time-series analysis such as
-- loading time-series data from CSV-files,
-- manipulating time-series data as arrays and vectors,
-- filtering out values by range, detecting and removing bad values
-- fitting models to sets on time-series data(by linear regression), and
-- plotting times-series (in a browser window).
+- *loading* time-series data from CSV-files,
+- *manipulating* time-series data as arrays and vectors,
+- *filtering* out values by range, detecting and removing bad values, smoothing
+- *fitting static models* to time-series data by linear regression(based on ``Accord.NET``), 
+- *fitting dynamic models* to time-series by custom methods that build on linear regression, and
+- *plotting* times-series (in a browser window with ``plot.ly``).
+- *dynamic simulation* of systems that may include interatctions with *PID-controllers* (the library includes a reference PID-controller implementation).
 
 **The aim of this library is to make the process of working with time series as easy as possible, 
-and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*, but in a language that pre-compiles code rather than interpreting, and has static typing and strong typing.**
+and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*.
 
 This means that you can treat time series as vectors and matrices easily, without worrying about the arrays underneath, and perform 
 operations like adding, subtracting, multiplying with vectors and matrices, as well as typical pre-processing tasks like selecting
 subsets of a larger dataset, removing spurious values, min/max range limits etc. 
 
-The result is a that tasks that you would normally do in for instance *Matlab* due to the perceived simplicity offered by the language, can now be 
-accomplished in about the same amount of code in *C#/.NET*. So the resulting code is in many was just as simple.
+The result is a that tasks that you would normally do in for instance *Matlab* due to the perceived simplicity offered by the language, can now be accomplished in about the same amount of code in *C#/.NET*. 
 
 The benefit of doing this in *C#/.NET* 
-- that you get the benefits of a compiled type strict language,prototype code is written in a language suitable for implementation, (unlike a prototype in some script languages). In some cases this may that you can avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
+- that you get the benefits of a compiled type strict language, by writing your prototype code directly a language suitable for implementation, (unlike a prototype in some script languages). In some cases this may that you can avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses. 
 - the resulting code does not required a paid license to run.
-- you can easily extend your code to for instance run in parallel using the ``paralell.for`` functionality freely available in .NET, wheres this functionality
-may require a very expensive toolbox in a script language.
-
-
+- you can easily extend your code to for instance run in parallel using the ``paralell.for`` functionality freely available in .NET, wheres this functionality may require a very expensive toolbox in a script language.
 
 > [!Note]
 > Originally this code has been written with control-engineering in mind, as control engineers typically 
@@ -62,8 +60,8 @@ public void SubplotPositionWorksOk()
    double[] input4 = Vec<double>.Concat(Vec<double>.Fill(0, 35), Vec<double>.Fill(1, 5));
 
    string plotURL = Plot.FromList(new List<double[]>{ input1,input2,input3,input4},
-		new List<string>{ "y1=input1","y2=input2","y3=input3","y4=input4"},1,"unit test", 
-		new DateTime(2020,1,1, 0,0,0), "Test_SubplotPositionWorksOk");
+		new List<string>{ "y1=input1","y2=input2","y3=input3","y4=input4"},1,
+		"unit test",new DateTime(2020,1,1, 0,0,0), "Test_SubplotPositionWorksOk");
 }
 ```
 > [!Note]

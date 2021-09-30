@@ -53,12 +53,13 @@ namespace DefaultModel.UnitTests
     /// </summary>
     class DefaultModel_Identification
     {
+        double timeBase_s;
         public DefaultProcessModel CreateDataAndIdentify(DefaultProcessModelParameters designParameters, double[,] U ,int timeBase_s=1)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
             DefaultProcessModel model = new DefaultProcessModel(designParameters, timeBase_s);
-
+            this.timeBase_s = timeBase_s;
             ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
             ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.EmulateYmeas(model, ref dataSet);
 
@@ -151,6 +152,13 @@ namespace DefaultModel.UnitTests
             Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeConstant_s - timeConstant_s )< 0.1, 
                 "timeconstant should be close to actual tc");
             Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeDelay_s - timeDelay_s )< 0.1, "time delay should be zero");
+
+            //Plot.FromList(new List<double[]> {model.FittedDataSet.Y_meas, model.FittedDataSet.Y_meas, u1,u2 }
+            //    ,new List<string> {"y1=y_meas","y1=y_sim","y3=u1","y3=u2"}, (int)timeBase_s);
+
+            //Console.WriteLine(model.ToString());
+
+
         }
 
         [TestCase(0, 0, Category = "Static")]

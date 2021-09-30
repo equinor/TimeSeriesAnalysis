@@ -79,34 +79,41 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="example-4--fitting-a-dynamic-model-to-transient-data-example">Example 4 : Fitting a dynamic model to transient data example</h1>
 
-<pre><code>	public void ex3_sysid()
+<pre><code>public void Ex4_sysid()
+{
+	int timeBase_s = 1;
+	DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
 	{
-		int timeBase_s = 1;
-		DefaultProcessModelParamters parameters = new DefaultProcessModelParamters
-		{
-			TimeConstant_s = 10,
-			ProcessGains = new double[] { 1, 2},
-			Bias = 10
-		};
-		DefaultProcessModel model = new DefaultProcessModel(parameters);
+		WasAbleToIdentify = true,
+		TimeConstant_s = 15,
+		ProcessGains = new double[] {1,2},
+		TimeDelay_s = 5,
+		Bias = 5
+	};
+	DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
 
-		double[] u1 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 11),
-				Vec&lt;double&gt;.Fill(1, 50));
-		double[] u2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(2, 31),
-				Vec&lt;double&gt;.Fill(1, 30));
-		double[,] U = Array2D&lt;double&gt;.InitFromColumnList(new List&lt;double[]&gt;{u1 ,u2});
+	double[] u1 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 11),
+			Vec&lt;double&gt;.Fill(1, 50));
+	double[] u2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(2, 31),
+			Vec&lt;double&gt;.Fill(1, 30));
+	double[,] U = Array2D&lt;double&gt;.InitFromColumnList(new List&lt;double[]&gt;{u1 ,u2});
 
-		ProcessDataSet dataSet = new ProcessDataSet(null, U, timeBase_s);
-		ProcessSimulator.EmulateYmeas(model, ref dataSet);
+	ProcessDataSet dataSet = new ProcessDataSet(timeBase_s,U);
+	ProcessSimulator&lt;DefaultProcessModel,DefaultProcessModelParameters&gt;.
+		EmulateYmeas(model, ref dataSet);
 
-		Plot.FromList(new List&lt;double[]&gt; { dataSet.y_meas, u1, u2 },
-			new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s);
+	Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_meas, u1, u2 },
+		new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s);
 
-		DefaultProcessModel identifiedModel = DefaultProcessModelIdentifier.Identify(ref dataSet);
+	DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
+	DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet);
 
-		Plot.FromList(new List&lt;double[]&gt; { dataSet.y_meas, dataSet.y_sim },
-			new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_sim&quot;}, timeBase_s);
-	}
+	Plot.FromList(new List&lt;double[]&gt; { identifiedModel.FittedDataSet.Y_meas, 
+		identifiedModel.FittedDataSet.Y_sim },
+		new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_sim&quot;}, timeBase_s);
+
+	Console.WriteLine(identifiedModel.ToString());
+}
 </code></pre>
 </article>
           </div>

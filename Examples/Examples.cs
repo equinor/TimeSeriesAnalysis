@@ -102,9 +102,10 @@ namespace TimeSeriesAnalysis.Examples
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
-                TimeConstant_s = 5,
+                TimeConstant_s = 15,
                 ProcessGains = new double[] {1,2},
-                Bias = 0
+                TimeDelay_s = 5,
+                Bias = 5
             };
             DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
 
@@ -115,7 +116,8 @@ namespace TimeSeriesAnalysis.Examples
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
             ProcessDataSet dataSet = new ProcessDataSet(timeBase_s,U);
-            ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.EmulateYmeas(model, ref dataSet);
+            ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
+                EmulateYmeas(model, ref dataSet);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s);
