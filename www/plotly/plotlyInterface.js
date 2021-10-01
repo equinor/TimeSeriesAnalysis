@@ -98,14 +98,22 @@ function makePlotlyPlotFromCSV(hash)
     for (let i=0; i<storageObj.csvnames.length; i++)
     {
         let csvname = storageObj.csvnames[i];
-        Plotly.d3.csv("data//"+csvname+".csv",  
-            function(data)
-            {
-                console.log(csvname+ "read" );
-                csvCallBackFunction(data,csvname,storageObj.addData,storageObj); 
-                var hasAllArrived = callbackCreatePlotIfAllDataIsHere(storageObj);
-            }
-        );
+		try
+		{
+			Plotly.d3.csv("data//"+csvname+".csv",  
+				function(data)
+				{
+					console.log(csvname+ "read" );
+					csvCallBackFunction(data,csvname,storageObj.addData,storageObj); 
+					var hasAllArrived = callbackCreatePlotIfAllDataIsHere(storageObj);
+				}
+			);
+		}
+		catch(error) 
+		{
+			console.log("an error occurred attempting to read file data//"+csvname );
+		}	
+		
     }
     // this will not work, as we need to wait for asynchronous filereader to finsish reading csv...
   // makePlotlyPlotFromCSV_inner(storageObj.get())

@@ -20,6 +20,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double timeBase_s;
         private TimeDelay delayObj;
 
+        private bool isFirstIteration;
 
         public  ProcessDataSet FittedDataSet { get; set; }
 
@@ -64,6 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.lowPass = new LowPass(timeBase_s);
             this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
+            this.isFirstIteration = true;
         }
 
         /// <summary>
@@ -96,7 +98,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     //TODO
                 }
             }
-            double y = lowPass.Filter(y_static, modelParameters.TimeConstant_s);
+            // nb! if first iteration, start model at steady-state
+            double y = lowPass.Filter(y_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
+            isFirstIteration = false;
             if (modelParameters.TimeDelay_s <= 0)
             {
                 return y;
@@ -105,6 +109,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return delayObj.Delay(y);
             }
+ 
         }
 
 
@@ -140,7 +145,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("---NOT able to identify---");
             }
-            sb.AppendLine("TimeConstant_s : " +modelParameters.TimeConstant_s);
+            sb.AppendLine("TimeConstant_s : " + SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits));
             sb.AppendLine("TimeDelay_s : " + modelParameters.TimeDelay_s);
             sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
             sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
@@ -148,13 +153,16 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("u0 : " + Vec.ToString(modelParameters.U0,sDigits));
             sb.AppendLine("-------------------------");
             sb.AppendLine("fitting objective : " + SignificantDigits.Format(modelParameters.GetFittingObjFunVal(),4) );
-            sb.AppendLine("fitting R2`: " + SignificantDigits.Format(modelParameters.GetFittingR2(), 4) );
+            sb.AppendLine("fitting R2: " + SignificantDigits.Format(modelParameters.GetFittingR2(), 4) );
             foreach (var warning in modelParameters.GetWarningList())
                 sb.AppendLine("fitting warning :" + warning.ToString());
             if (modelParameters.GetWarningList().Count == 0)
             {
                 sb.AppendLine("fitting : no error or warnings");
             }
+            sb.AppendLine("solver:"+modelParameters.SolverID);
+
+
             return sb.ToString();
         }
 

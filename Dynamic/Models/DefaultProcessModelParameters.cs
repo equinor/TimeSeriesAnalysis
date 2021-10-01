@@ -7,6 +7,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class DefaultProcessModelParameters : IFittedProcessModelParameters
     {
+        public string SolverID;
+
         public double TimeConstant_s { get; set; } = 0;
         public double TimeDelay_s { get; set; } = 0;
         public double[] ProcessGains { get; set; } = null;

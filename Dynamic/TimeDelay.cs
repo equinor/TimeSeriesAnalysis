@@ -42,15 +42,16 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a version of <c>inputSignal</c> that is delayed</returns>
         public double Delay(double inputSignal)
         {
-            delaySignalCounter++;
+          
             // handle first nBufferSize timesteps differently
             if (delaySignalCounter < nBufferSize)
             {
                 delayBuffer[delayBufferPosition] = inputSignal;
+                delaySignalCounter++;
                 delayBufferPosition++;
                 return inputSignal;
             }
-            if (delayBufferPosition >= nBufferSize - 1)
+            if (delayBufferPosition >= nBufferSize -1)
             {
                 delayBufferPosition = 0;
             }

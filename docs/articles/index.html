@@ -89,7 +89,7 @@ It handles typical tasks related to time-series analysis such as</p>
 <li><em>fitting static models</em> to time-series data by linear regression(based on <code>Accord.NET</code>),</li>
 <li><em>fitting dynamic models</em> to time-series by custom methods that build on linear regression, and</li>
 <li><em>plotting</em> times-series (in a browser window with <code>plot.ly</code>).</li>
-<li><em>dynamic simulation</em> of systems that may include interatctions with <em>PID-controllers</em> (the library includes a reference PID-controller implementation).</li>
+<li><em>dynamic simulation</em> of systems that may include interactions with <em>PID-controllers</em> (the library includes a reference PID-controller implementation).</li>
 </ul>
 <p><strong>The aim of this library is to make the process of working with time series as easy as possible,
 and the resulting work flow should be comparable to working in <em>Matlab</em>, <em>Python</em> or <em>R</em>.</strong></p>
@@ -100,19 +100,18 @@ subsets of a larger dataset, removing spurious values, min/max range limits etc.
 <p>The benefit of doing this in <em>C#/.NET</em></p>
 <ul>
 <li>that you get the benefits of a compiled type strict language, by writing your prototype code directly a language suitable for implementation, (unlike a prototype in some script languages). In some cases this may that you can avoid introducing Matlab code generator toolboxes which act as complex black-boxes, and often require expensive licenses.</li>
-<li>the resulting code does not required a paid license to run.</li>
+<li>the resulting code does not require a paid license to run.</li>
 <li>you can easily extend your code to for instance run in parallel using the <code>paralell.for</code> functionality freely available in .NET, wheres this functionality may require a very expensive toolbox in a script language.</li>
 </ul>
+<h2 id="plotting-capabilities">Plotting capabilities</h2>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Originally this code has been written with automation/control-engineering in mind, as control engineers typically
-prefer compiled languages such as C# for code that is to be <em>integrated in the control system</em>.
-Control systems are usually written in compiled languages in the C/C++/C# family, and the same is also true of other
-enterprise commercial software that deals heavily with time-series, such as dynamic simulators or condition-based monitoring systems.</p>
-<p>This repository could be a toolbox for building <strong>Advanced analytics</strong> tools as part of Industry 4.0</p>
+<p>This library is written to support test-driven development(TDD) of algorithms based on time-series,
+and to support the TDD workflow, it supports time-series plotting. This feature is extremely useful to
+visualize the results of of unit tests or acceptance tests, and this helps enormously with debugging.
+The unit tests of this repository, give an example of how you can use these plotting capabilities for your own testing.</p>
 </div>
-<h2 id="plotting-capabilities">Plotting capabilities</h2>
-<p>Plotting supports</p>
+<p>Plotting features supported</p>
 <ul>
 <li>one or two subplots(stacked vertically)</li>
 <li>one or two y-axes on either subplot</li>
@@ -122,7 +121,8 @@ enterprise commercial software that deals heavily with time-series, such as dyna
 <li>ability to hover over trends to inspect values</li>
 <li>currently up to six trends can be plotted on a page in total(this can be increased if there is interest)</li>
 </ul>
-<p>The plotting leverages the JavaScript framework <a href="https://plotly.com/javascript/">plot.ly</a>. Some JavaScript extensions have been made to this toolbox to allow
+<p>The plotting leverages the JavaScript framework <a href="https://plotly.com/javascript/">plot.ly</a>.
+Some JavaScript extensions have been made to this toolbox to allow
 time-series to seamlessly be exported from your .NET code to the browser.</p>
 <p>Consider the unit-test <code>PlotUnitTests.SubplotPositionWorksOk()</code>:</p>
 <p>The code below is used to generate four &quot;vectors&quot;, arrays of doubles, with a step change in each.</p>

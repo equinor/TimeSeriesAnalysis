@@ -11,7 +11,7 @@ It handles typical tasks related to time-series analysis such as
 - *fitting static models* to time-series data by linear regression(based on ``Accord.NET``), 
 - *fitting dynamic models* to time-series by custom methods that build on linear regression, and
 - *plotting* times-series (in a browser window with ``plot.ly``).
-- *dynamic simulation* of systems that may include interatctions with *PID-controllers* (the library includes a reference PID-controller implementation).
+- *dynamic simulation* of systems that may include interactions with *PID-controllers* (the library includes a reference PID-controller implementation).
 
 **The aim of this library is to make the process of working with time series as easy as possible, 
 and the resulting work flow should be comparable to working in *Matlab*, *Python* or *R*.**
@@ -27,17 +27,16 @@ The benefit of doing this in *C#/.NET*
 - the resulting code does not require a paid license to run.
 - you can easily extend your code to for instance run in parallel using the ``paralell.for`` functionality freely available in .NET, wheres this functionality may require a very expensive toolbox in a script language.
 
-> [!Note]
-> Originally this code has been written with automation/control-engineering in mind, as control engineers typically 
-> prefer compiled languages such as C# for code that is to be *integrated in the control system*. 
-> Control systems are usually written in compiled languages in the C/C++/C# family, and the same is also true of other
-> enterprise commercial software that deals heavily with time-series, such as dynamic simulators or condition-based monitoring systems. 
->
-> This repository could be a toolbox for building **Advanced analytics** tools as part of Industry 4.0
 
 ## Plotting capabilities
 
-Plotting supports
+> [!Note]
+> This library is written to support test-driven development(TDD) of algorithms based on time-series, 
+> and to support the TDD workflow, it supports time-series plotting. This feature is extremely useful to 
+> visualize the results of of unit tests or acceptance tests, and this helps enormously with debugging.
+> The unit tests of this repository, give an example of how you can use these plotting capabilities for your own testing.
+
+Plotting features supported
 - one or two subplots(stacked vertically)
 - one or two y-axes on either subplot
 - support for zooming in the plot, 
@@ -46,7 +45,8 @@ Plotting supports
 - ability to hover over trends to inspect values
 - currently up to six trends can be plotted on a page in total(this can be increased if there is interest)
 
-The plotting leverages the JavaScript framework [plot.ly](https://plotly.com/javascript/). Some JavaScript extensions have been made to this toolbox to allow
+The plotting leverages the JavaScript framework [plot.ly](https://plotly.com/javascript/). 
+Some JavaScript extensions have been made to this toolbox to allow
 time-series to seamlessly be exported from your .NET code to the browser.
 
 Consider the unit-test ``PlotUnitTests.SubplotPositionWorksOk()``:

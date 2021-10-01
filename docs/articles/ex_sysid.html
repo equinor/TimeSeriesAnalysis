@@ -115,6 +115,33 @@
 	Console.WriteLine(identifiedModel.ToString());
 }
 </code></pre>
+<p>The first plot shows the dataset, showing inputs<code>u1</code>, <code>u2</code> and output <code>y</code>:</p>
+<p><img src="images/ex4_dataset.png" alt="Example 4:dataset"></p>
+<p><strong>Notice of the time-delay and time-constant are clearly visible in this dataset</strong>.
+The resulting fit between model and dataset is shown below. <em>The two time-series are virtually identical</em>.</p>
+<p><img src="images/ex4_results.png" alt="Example 4:output"></p>
+<p>The resulting console output gives more detail on the parameters found:</p>
+<pre><code>DefaultProcessModel
+-------------------------
+ABLE to identify
+TimeConstant_s : 15
+TimeDelay_s : 5
+ProcessGains : [1;2.01]
+ProcessCurvatures : null
+Bias : 8,85
+u0 : [0.821;1.52]
+-------------------------
+fitting objective : 1,273E-29
+fitting R2: 100
+fitting : no error or warnings
+solver:v1.Dynamic	
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Notice how the R-squared is <code>100</code>, indicating a perfect match, and that the fitting objective function is
+<strong>extremly low</strong>,
+which also indicate a very good match. Of course, on real-world datasets these two metrics will not be quite as good.</p>
+</div>
 </article>
           </div>
           

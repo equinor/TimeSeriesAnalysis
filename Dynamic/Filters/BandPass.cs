@@ -20,10 +20,10 @@ namespace TimeSeriesAnalysis.Dynamic
         LowPass lp;
         HighPass hp;
 
-
         public BandPass(double TimeBase_s)
         {
             this.lp = new LowPass(TimeBase_s);
+            this.hp = new HighPass(TimeBase_s);
         }
 
 

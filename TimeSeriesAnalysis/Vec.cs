@@ -850,7 +850,7 @@ namespace TimeSeriesAnalysis
                 results.ableToIdentify = true;
                 return results;
             }
-            catch (Exception e)
+            catch 
             {
                 results.ableToIdentify = false;
                 return results;
