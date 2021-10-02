@@ -88,14 +88,17 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             // the the time delay which caused the smallest object function value
-            int bestTimeDelayIdx = processTimeDelayIdentifyObj.ChooseBestTimeDelay();
+            int bestTimeDelayIdx = processTimeDelayIdentifyObj.ChooseBestTimeDelay(
+                out List<ProcessTimeDelayIdentWarnings> timeDelayWarnings);
             DefaultProcessModelParameters modelParameters =
                 (DefaultProcessModelParameters)processTimeDelayIdentifyObj.GetRun(bestTimeDelayIdx);
+            modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
             // END While loop 
             /////////////////////////////////////////////////////////////////
 
             var model = new DefaultProcessModel(modelParameters, dataSet);
-            ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(model, ref dataSet);
+            ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
+                model, ref dataSet);
             model.FittedDataSet = dataSet;
 
             return model;

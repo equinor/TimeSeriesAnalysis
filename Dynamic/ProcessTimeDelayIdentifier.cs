@@ -35,97 +35,22 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private List<IFittedProcessModelParameters> modelRuns;
 
-        /*
-        List<double> ProcessGainEst;
-        List<double> TimeConstantEst;
-        List<double> BiasEst;
-
-        List<double> ProcessGainEstUnc;
-        List<double> TimeConstantEstUnc;
-        List<double> BiasEstUnc;
-
-        List<double> ProcessGainEstUnc_prc;
-        List<double> TimeConstantEstUnc_prc;
-        List<double> objctFunVal;
-
-        List<double[]> y_mod;
-        List<double[]> x_mod;
-        List<double[]> d_mod;
-
-        List<double> RsqList;
-
-        double u0;*/
-
 
         public ProcessTimeDelayIdentifier(double TimeBase_s, double maxExpectedTc_s)
         {
             this.TimeBase_s = TimeBase_s;
             modelRuns = new List<IFittedProcessModelParameters>();
 
-            /*
-            ProcessGainEst = new List<double>();
-            TimeConstantEst = new List<double>();
-            BiasEst = new List<double>();
-
-            ProcessGainEstUnc = new List<double>();
-            TimeConstantEstUnc = new List<double>();
-            BiasEstUnc = new List<double>();
-
-            ProcessGainEstUnc_prc = new List<double>();
-            TimeConstantEstUnc_prc = new List<double>();
-            objctFunVal = new List<double>();
-
-            y_mod = new List<double[]>();
-            x_mod = new List<double[]>();
-            d_mod = new List<double[]>();
-
-            RsqList = new List<double>();
-            */
             this.maxExpectedTimeDelay_samples = Math.Max((int)Math.Floor(maxExpectedTc_s / TimeBase_s), minTimeDelayIts);
 
         }
-        /*
-        public void SetU0(double u0)
-        {
-            this.u0 = u0;
-        }*/
 
-        /*
-        public void AddFailedRun(Double[] y_mod_cur, Double[] x_mod_cur, Double[] d_mod_cur, double Rsq)
-        {
-            TimeConstantEst.Add(Double.NaN);
-            ProcessGainEst.Add(Double.NaN);
-            ProcessGainEstUnc.Add(Double.NaN);
-            TimeConstantEstUnc.Add(Double.NaN);
-            objctFunVal.Add(Double.NaN);
-            BiasEst.Add(Double.NaN);
-            y_mod.Add(y_mod_cur);
-            x_mod.Add(x_mod_cur);
-            d_mod.Add(d_mod_cur);
-            RsqList.Add(Rsq);
-        }*/
 
         public void AddRun(IFittedProcessModelParameters modelParameters)
         {
             modelRuns.Add(modelParameters);
         }
 
-
-/*
-        public void AddSuccessfulRun(/*double objFunVal, double ProcessGain, double Tcest, double bias,
-            double Rsq, Double[] y_mod_cur, Double[] x_mod_cur, Double[] d_mod_cur)
-        {
-            
-            TimeConstantEst.Add(Tcest);
-            ProcessGainEst.Add(ProcessGain);
-            BiasEst.Add(bias);
-            y_mod.Add(y_mod_cur);
-            x_mod.Add(x_mod_cur);
-            d_mod.Add(d_mod_cur);
-            RsqList.Add(Rsq);
-            objctFunVal.Add(objFunVal);
-        }
-            */
 
         /*
         public void AddUncertaintyEstiamtes(bool useDynamicModel, double[] param,
@@ -316,17 +241,63 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Chooses between all the stored model runs,the model which seems the best.
         /// </summary>
         /// <returns>Index of best time delay model</returns>
-        public int ChooseBestTimeDelay()
+        public int ChooseBestTimeDelay(out List<ProcessTimeDelayIdentWarnings> warnings)
         {
             int bestTimeDelayIdx;
+            warnings = new List<ProcessTimeDelayIdentWarnings>();
 
             // one issue is that if time delay is increasing, the ymod becomes shorter,
             // so this needs to be objective function either normalized or excluding the first few points.
 
-            //  Vec.Min(objctFunVal.ToArray(), out int objFunBestTimeDelayIdx);
-            var objR2List = GetR2List();
-            Vec.Max(objR2List.ToArray(),out int objFunBestTimeDelayIdx);
+            //
+            // R-squared analysis
+            //
+            int R2BestTimeDelayIdx;
+            { 
+                var objR2List = GetR2List();
+                Vec<double>.Sort(objR2List.ToArray(), VectorSortType.Descending, out int[] sortedIndices);
+                R2BestTimeDelayIdx = sortedIndices[0];
+                // the solution space should be "concave", so there should not be several local minimia
+                // as you compare R2list for different time delays-that has happended but indicates something
+                // is wrong. 
+                int R2distanceToRunnerUp = Math.Abs(sortedIndices[1] - sortedIndices[0]);
+                if (R2distanceToRunnerUp > 1)
+                {
+                    warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace);
+                }
 
+                double R2valueDiffToRunnerUp = objR2List[sortedIndices[0]] - objR2List[sortedIndices[1]];
+                if (R2valueDiffToRunnerUp < 0.1)
+                {
+                    warnings.Add(ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima);
+                }
+            }
+            //
+            // objective function value analysis
+            //
+            {
+                var objObjFunList = GetObjFunValList();
+                Vec<double>.Sort(objObjFunList.ToArray(), VectorSortType.Descending, out int[] objFunSortedIndices);
+                // int objFunBestTimeDelayIdx = objFunSortedIndices[0];
+                // the solution space should be "concave", so there should not be several local minimia
+                // as you compare R2list for different time delays-that has happended but indicates something
+                // is wrong. 
+                int objFunDistanceToRunnerUp = Math.Abs(objFunSortedIndices[1] - objFunSortedIndices[0]);
+                if (objFunDistanceToRunnerUp > 1)
+                {
+                    warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace);
+                }
+                double ObjFunvalueDiffToRunnerUp = objObjFunList[objFunSortedIndices[0]] 
+                    - objObjFunList[objFunSortedIndices[1]];
+                if (ObjFunvalueDiffToRunnerUp <= 0.0001)
+                {
+                    warnings.Add(ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima);
+                }
+            }
+
+            //
+            // paramter uncertatinty value analysis
+            //
             // TODO: consider re-introducing rankng by uncertainty in a generic way.
 
             /*
@@ -341,7 +312,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else*/// fallback: use just lowest objective function
             {
-                bestTimeDelayIdx = objFunBestTimeDelayIdx;
+                bestTimeDelayIdx = R2BestTimeDelayIdx;
             }
             return bestTimeDelayIdx;
         }

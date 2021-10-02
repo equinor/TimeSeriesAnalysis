@@ -21,6 +21,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double FittingObjFunVal { get; set; }
 
         private List<ProcessIdentWarnings> errorsAndWarningMessages;
+        internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
 
         public double GetFittingR2()
         {

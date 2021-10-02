@@ -141,6 +141,7 @@ This package is targeted toward control engineering where C# seems to be the de-
     <Compile Include="Dynamic\Models\SinusModel.cs" />
     <Compile Include="Dynamic\Models\SinusModelParameters.cs" />
     <Compile Include="Dynamic\ProcessDataSet.cs" />
+    <Compile Include="Dynamic\ProcessTimeDelayIdentWarnings.cs" />
     <Compile Include="Dynamic\ProcessIdentWarnings.cs" />
     <Compile Include="Dynamic\ProcessSimulator.cs" />
     <Compile Include="Dynamic\ProcessTimeDelayIdentifier.cs" />

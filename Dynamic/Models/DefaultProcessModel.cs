@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using System.Text;
@@ -22,7 +23,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private bool isFirstIteration;
 
-        public  ProcessDataSet FittedDataSet { get; set; }
+        public  ProcessDataSet FittedDataSet { get; internal set; }
+        public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
         /// <summary>
         /// Constructor
@@ -109,8 +111,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return delayObj.Delay(y);
             }
- 
-        }
+         }
 
 
     
@@ -160,8 +161,14 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("fitting : no error or warnings");
             }
-            sb.AppendLine("solver:"+modelParameters.SolverID);
+            foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
+                sb.AppendLine("time delay est. warning :" + warning.ToString());
+            if (modelParameters.GetWarningList().Count == 0)
+            {
+                sb.AppendLine("time delay est : no error or warnings");
+            }
 
+            sb.AppendLine("solver:"+modelParameters.SolverID);
 
             return sb.ToString();
         }

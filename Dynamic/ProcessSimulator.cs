@@ -23,10 +23,21 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="model"></param>
         /// <param name="processDataSet"></param>
+        /// <param name="noiseAmplitude">optionally adds noise to the "measured" y (for testing purposes)</param>
         static public void EmulateYmeas(T1 model,
-            ref ProcessDataSet processDataSet)
+            ref ProcessDataSet processDataSet, double noiseAmplitude=0)
         {
             Simulate(model,ref processDataSet,true);
+
+            if (noiseAmplitude > 0)
+            {
+                Random rand = new Random();
+
+                for (int k = 0; k < processDataSet.NumDataPoints; k++)
+                {
+                    processDataSet.Y_meas[k] += (rand.NextDouble()-0.5)*2* noiseAmplitude;
+                }
+            }
         }
 
         /// <summary>

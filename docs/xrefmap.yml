@@ -488,6 +488,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate
   nameWithType: DefaultProcessModel.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.TimeDelayEstWarnings
+  name: TimeDelayEstWarnings
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_TimeDelayEstWarnings
+  commentId: P:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.TimeDelayEstWarnings
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.TimeDelayEstWarnings
+  nameWithType: DefaultProcessModel.TimeDelayEstWarnings
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.TimeDelayEstWarnings*
+  name: TimeDelayEstWarnings
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_TimeDelayEstWarnings_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.TimeDelayEstWarnings
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.TimeDelayEstWarnings
+  nameWithType: DefaultProcessModel.TimeDelayEstWarnings
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.ToString
   name: ToString()
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_ToString
@@ -1198,15 +1211,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator(Of T1, T2)
   nameWithType: ProcessSimulator<T1, T2>
   nameWithType.vb: ProcessSimulator(Of T1, T2)
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.Dynamic.ProcessDataSet@)
-  name: EmulateYmeas(T1, ref ProcessDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_2_EmulateYmeas__0_TimeSeriesAnalysis_Dynamic_ProcessDataSet__
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.Dynamic.ProcessDataSet@)
-  name.vb: EmulateYmeas(T1, ByRef ProcessDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator<T1, T2>.EmulateYmeas(T1, ref TimeSeriesAnalysis.Dynamic.ProcessDataSet)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef TimeSeriesAnalysis.Dynamic.ProcessDataSet)
-  nameWithType: ProcessSimulator<T1, T2>.EmulateYmeas(T1, ref ProcessDataSet)
-  nameWithType.vb: ProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef ProcessDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.Dynamic.ProcessDataSet@,System.Double)
+  name: EmulateYmeas(T1, ref ProcessDataSet, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_2_EmulateYmeas__0_TimeSeriesAnalysis_Dynamic_ProcessDataSet__System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.Dynamic.ProcessDataSet@,System.Double)
+  name.vb: EmulateYmeas(T1, ByRef ProcessDataSet, Double)
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator<T1, T2>.EmulateYmeas(T1, ref TimeSeriesAnalysis.Dynamic.ProcessDataSet, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef TimeSeriesAnalysis.Dynamic.ProcessDataSet, System.Double)
+  nameWithType: ProcessSimulator<T1, T2>.EmulateYmeas(T1, ref ProcessDataSet, Double)
+  nameWithType.vb: ProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef ProcessDataSet, Double)
 - uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator`2.EmulateYmeas*
   name: EmulateYmeas
   href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_2_EmulateYmeas_
@@ -1242,6 +1255,42 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator(Of T1, T2).Simulate
   nameWithType: ProcessSimulator<T1, T2>.Simulate
   nameWithType.vb: ProcessSimulator(Of T1, T2).Simulate
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
+  name: ProcessTimeDelayIdentWarnings
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
+  nameWithType: ProcessTimeDelayIdentWarnings
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace
+  name: NonConvexObjectiveFunctionSolutionSpace
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_NonConvexObjectiveFunctionSolutionSpace
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace
+  nameWithType: ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace
+  name: NonConvexRsquaredSolutionSpace
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_NonConvexRsquaredSolutionSpace
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace
+  nameWithType: ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.Nothing
+  name: Nothing
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_Nothing
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.Nothing
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.Nothing
+  nameWithType: ProcessTimeDelayIdentWarnings.Nothing
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima
+  name: NoUniqueObjectiveFunctionMinima
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_NoUniqueObjectiveFunctionMinima
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima
+  nameWithType: ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima
+  name: NoUniqueRsquaredMinima
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_NoUniqueRsquaredMinima
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima
+  nameWithType: ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima
 - uid: TimeSeriesAnalysis.Dynamic.SinusModel
   name: SinusModel
   href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html
