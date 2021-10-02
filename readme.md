@@ -4,7 +4,9 @@
 
 
 # TimeSeriesAnalysis
-*TimeSeriesAnalysis* is a class library that allows you to work .NET efficiently with time-series that may include *transients* or *dynamics*.
+*TimeSeriesAnalysis* is a class library that allows you to work efficiently with time-series 
+in .NET that may include *transients* or *dynamics*, including identification of dynamic models,
+dynamic simulation, filtering and PID-control. The aim of the library is to support mining of time-series data for advanced analytics. 
 
 ## Why?
 Because the final product of many enterprise time-series applications(like control algorithms or dynamic simulators) is *required* to be implemented in .NET, why not create a toolbox streamline such development as much possible? With good tooling, it may even be possible to *start* early research/prototyping/data analysis directly in .NET, removing the need to port code later.
@@ -22,7 +24,11 @@ Because the final product of many enterprise time-series applications(like contr
 
 ## Roadmap
 
-Currently in versions ``1.x``, the development focuses on creating small-scale "building blocks", modeling components such as individual PID-controllers and small-scale process models. Toward version ``2.x`` the plan is to build on top the established building blocks to expand into more *automated* modeling and analysis of *large-scale* systems (connecting sub-systems together), to build **"digital twins"** of larger parts of process plants based on **data mining**. 
+Currently in versions ``1.x``, the development focuses on creating small-scale "building blocks", 
+modeling components such as individual PID-controllers and small-scale process models.
+ Toward version ``2.x`` the plan is to build on top the established building blocks to expand 
+ into more *automated* modeling and analysis of *large-scale* systems (connecting sub-systems together), 
+ to build **"digital twins"** of larger parts of process plants based on **data mining**. 
 
 ## Contributing
 This project welcomes contributions and suggestions. 

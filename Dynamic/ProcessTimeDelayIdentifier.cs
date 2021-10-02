@@ -296,7 +296,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             //
-            // paramter uncertatinty value analysis
+            // parameter uncertatinty value analysis
             //
             // TODO: consider re-introducing rankng by uncertainty in a generic way.
 

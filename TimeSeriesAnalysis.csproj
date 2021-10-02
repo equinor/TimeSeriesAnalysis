@@ -33,13 +33,9 @@
     <Version>1.0.33</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
-.NET assembly for working with time-series, including loading data from csv-file, preprocessing, cutting and shaping data as vectors or matrices, filtering, regression and plotting. 
-
-The aim is to make the C# time series analysis workflow as easy as working in Matlab, R or Python, but with the benefit of having a compiled version of your resulting algorithm. 
-
-The package uses plot.ly for plotting and Accord.NET for math.   
-
-This package is targeted toward control engineering where C# seems to be the de-facto industry standard for sharing algorithms with vendors and implementing them in advanced control, but could also be used for exploratory data analysis if you want to avoid using Matlab, R or Python.
+TimeSeriesAnalysis is a class library that allows you to work efficiently with time-series 
+in .NET that may include transients or dynamics, including an identification of dynamic models,
+dynamic simulation, filtering and PID-control.The aim of the library is to support mining of time-series data for advanced analytics. 
 </Description>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
