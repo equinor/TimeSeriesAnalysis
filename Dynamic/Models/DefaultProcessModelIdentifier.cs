@@ -58,6 +58,7 @@ namespace TimeSeriesAnalysis.Dynamic
             bool continueIncreasingTimeDelayEst = true;
             int timeDelayIdx = 0;
             DefaultProcessModelParameters modelParams;
+            
             while (continueIncreasingTimeDelayEst)
             {
                 // for a dynamic model y will depend on yprev
@@ -73,7 +74,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 // logic to deal with while loop
                 timeDelayIdx++;
                 processTimeDelayIdentifyObj.AddRun(modelParams);
-                continueIncreasingTimeDelayEst = processTimeDelayIdentifyObj.DetermineIfContinueIncreasingTimeDelay(timeDelayIdx);
+                continueIncreasingTimeDelayEst = processTimeDelayIdentifyObj.
+                    DetermineIfContinueIncreasingTimeDelay(timeDelayIdx);
                 // fail-to-safe
                 if (timeDelayIdx * dataSet.TimeBase_s > maxExpectedTc_s)
                 {
@@ -85,6 +87,18 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (modelParams.GetWarningList().Contains(ProcessIdentWarnings.NotPossibleToIdentify))
                     continueIncreasingTimeDelayEst = false;// in some cases id. can fail at high time-delays, but good models may still exist.
                                                            //       return new DefaultProcessModel(modelParams, dataSet);
+
+                // use for debugging
+                bool doDebugPlotting = false;//should normally be false.
+                if (doDebugPlotting)
+                { 
+                    var debugModel = new DefaultProcessModel(modelParams, dataSet);
+                    var y_sim = ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
+                        debugModel, dataSet);
+                    Plot.FromList(new List<double[]> {y_sim,dataSet.Y_meas},new List<string> { "y1=ysim", "y1=ymeas" },
+                        (int)dataSet.TimeBase_s, "iteration:"+ timeDelayIdx,default,"debug_it_" + timeDelayIdx);
+                }
+           
             }
 
             // the the time delay which caused the smallest object function value
@@ -96,6 +110,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // END While loop 
             /////////////////////////////////////////////////////////////////
 
+           
             var model = new DefaultProcessModel(modelParameters, dataSet);
             ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
                 model, ref dataSet);
