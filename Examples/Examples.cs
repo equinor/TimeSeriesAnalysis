@@ -20,8 +20,7 @@ namespace TimeSeriesAnalysis.Examples
             int dT_s = 1;
             double filterTc_s = 10;
 
-            double[] input = Vec<double>.Concat(Vec<double>.Fill(0, 11),
-                Vec<double>.Fill(1, 50));
+            double[] input = TimeSeriesCreator.Step(11, 60, 0, 1);
 
             LowPass lp = new LowPass(dT_s);
             var output = lp.Filter(input, filterTc_s);
@@ -39,12 +38,9 @@ namespace TimeSeriesAnalysis.Examples
             double true_bias = 5;
             double noiseAmplitude = 0.1;
 
-            double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 11),
-                Vec<double>.Fill(1, 50));
-            double[] u2 = Vec<double>.Concat(Vec<double>.Fill(1, 31),
-                Vec<double>.Fill(2, 30));
-            double[] u3 = Vec<double>.Concat(Vec<double>.Fill(1, 21),
-                Vec<double>.Fill(-1, 40));
+            double[] u1 = TimeSeriesCreator.Step(11, 61, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(31, 61, 1, 2);
+            double[] u3 = TimeSeriesCreator.Step(21, 61, 1,-1);
 
             double[] y = new double[u1.Length];
             double[] noise = Vec.Mult(Vec.Rand(u1.Length, -1,1,0),noiseAmplitude);
@@ -99,6 +95,7 @@ namespace TimeSeriesAnalysis.Examples
         public void Ex4_sysid()
         {
             int timeBase_s = 1;
+            double noiseAmplitude = 0.05;
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
@@ -109,27 +106,35 @@ namespace TimeSeriesAnalysis.Examples
             };
             DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
 
-            double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 11),
-                    Vec<double>.Fill(1, 50));
-            double[] u2 = Vec<double>.Concat(Vec<double>.Fill(2, 31),
-                    Vec<double>.Fill(1, 30));
+            double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
             ProcessDataSet dataSet = new ProcessDataSet(timeBase_s,U);
             ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
-                EmulateYmeas(model, ref dataSet);
+                EmulateYmeas(model, ref dataSet, noiseAmplitude);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
-                new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s);
+                new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s,"ex4_data");
 
             DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet);
     
             Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas, 
                 identifiedModel.FittedDataSet.Y_sim },
-                new List<string> { "y1=y_meas", "y1=y_sim"}, timeBase_s);
+                new List<string> { "y1=y_meas", "y1=y_sim"}, timeBase_s, "ex4_results");
 
             Console.WriteLine(identifiedModel.ToString());
+
+            // compare dynamic to static identification
+            var regResults = Vec.Regress(dataSet.Y_meas, U);
+            Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas,
+                identifiedModel.FittedDataSet.Y_sim,regResults.Y_modelled },
+                new List<string> { "y1=y_meas", "y1=y_dynamic","y1=y_static" }, timeBase_s,
+                 "ex4_static_vs_dynamic");
+
+            Console.WriteLine("static model gains:" + Vec.ToString(regResults.Gains,3));
+
         }
 
         [Test, Explicit]

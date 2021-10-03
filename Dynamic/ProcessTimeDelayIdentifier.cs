@@ -206,15 +206,23 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get R2 of all runs so far in an array
+        /// Get R2 of all runs so far in an array, 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>array or R-squared values, with Nan if any runs have failed</returns>
         private double[] GetR2List()
         {
             List<double> objR2List = new List<double>();
             for (int i = 0; i < modelRuns.Count; i++)
             {
-                objR2List.Add(modelRuns[i].GetFittingR2());
+                if (modelRuns[i].AbleToIdentify())
+                {
+                    objR2List.Add(modelRuns[i].GetFittingR2());
+                }
+                else
+                {
+                    objR2List.Add(Double.NaN);
+                }
+
             }
             return objR2List.ToArray();
         }
@@ -222,18 +230,23 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Get objective functions valueof all runs so far in an array
         /// </summary>
-        /// <returns></returns>
+        /// <returns>array of objective function values, nan for failed runs</returns>
         private double[] GetObjFunValList()
         {
             List<double> objFunValList = new List<double>();
             for (int i = 0; i < modelRuns.Count; i++)
             {
-                objFunValList.Add(modelRuns[i].GetFittingObjFunVal());
+                if (modelRuns[i].AbleToIdentify())
+                {
+                    objFunValList.Add(modelRuns[i].GetFittingObjFunVal());
+                }
+                else
+                {
+                    objFunValList.Add(Double.NaN);
+                }
             }
             return objFunValList.ToArray();
         }
-
-
 
 
 
@@ -265,7 +278,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace);
                 }
-
+                if (objR2List.Contains(Double.NaN))
+                {
+                    warnings.Add(ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution);
+                }
                 double R2valueDiffToRunnerUp = objR2List[sortedIndices[0]] - objR2List[sortedIndices[1]];
                 if (R2valueDiffToRunnerUp < 0.1)
                 {

@@ -55,10 +55,13 @@ namespace TimeSeriesAnalysis.Utility
             string plotURL = ""; ;
 
             var time = InitTimeList(t0, dT_s, dataList.ElementAt(0).Count());
-            /*for (int i = 0; i < plotValue.ElementAt(0).Length; i++)
+
+
+            if ((caseName == null || caseName == "") && comment != null)
             {
-                time.Add(time.Last().AddSeconds(dT_s));
-            }*/
+                caseName = comment;
+            }
+            caseName = caseName.Replace("(", "").Replace(")", "").Replace(" ","") ;
 
             int j = 0;
             foreach (string plotName in plotNames)

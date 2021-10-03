@@ -127,11 +127,22 @@ namespace TimeSeriesAnalysis
         {
             return matrix.GetLength(1);
         }
+
+        static public int GetNColumns(this double[][] matrix)
+        {
+            return matrix.ElementAt(0).GetLength(0);
+        }
+
         ///<summary>
         /// Return the number of rows of a 2d-matrix
         ///</summary>
 
         static public int GetNRows(this double[,] matrix)
+        {
+            return matrix.GetLength(0);
+        }
+
+        static public int GetNRows(this double[][] matrix)
         {
             return matrix.GetLength(0);
         }

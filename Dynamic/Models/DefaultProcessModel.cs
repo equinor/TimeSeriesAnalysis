@@ -146,8 +146,9 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("---NOT able to identify---");
             }
-            sb.AppendLine("TimeConstant_s : " + SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits));
-            sb.AppendLine("TimeDelay_s : " + modelParameters.TimeDelay_s);
+            sb.AppendLine("TimeConstant : " + 
+                SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec");
+            sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s + " sec");
             sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
             sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));

@@ -225,6 +225,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetColumns
   nameWithType: Array2DExtensionMethods.GetColumns
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double[][])
+  name: GetNColumns(Double[][])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNColumns_System_Double_____
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double[][])
+  name.vb: GetNColumns(Double()())
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double[][])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double()())
+  nameWithType: Array2DExtensionMethods.GetNColumns(Double[][])
+  nameWithType.vb: Array2DExtensionMethods.GetNColumns(Double()())
 - uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns(System.Double[0:,0:])
   name: GetNColumns(Double[,])
   href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNColumns_System_Double_0__0___
@@ -241,6 +250,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetNColumns
   nameWithType: Array2DExtensionMethods.GetNColumns
+- uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double[][])
+  name: GetNRows(Double[][])
+  href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNRows_System_Double_____
+  commentId: M:TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double[][])
+  name.vb: GetNRows(Double()())
+  fullName: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double[][])
+  fullName.vb: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double()())
+  nameWithType: Array2DExtensionMethods.GetNRows(Double[][])
+  nameWithType.vb: Array2DExtensionMethods.GetNRows(Double()())
 - uid: TimeSeriesAnalysis.Array2DExtensionMethods.GetNRows(System.Double[0:,0:])
   name: GetNRows(Double[,])
   href: api/TimeSeriesAnalysis.Array2DExtensionMethods.html#TimeSeriesAnalysis_Array2DExtensionMethods_GetNRows_System_Double_0__0___
@@ -1291,6 +1309,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima
   fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima
   nameWithType: ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
+  name: SomeModelRunsFailedToFindSolution
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_SomeModelRunsFailedToFindSolution
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
+  nameWithType: ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
 - uid: TimeSeriesAnalysis.Dynamic.SinusModel
   name: SinusModel
   href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html
@@ -1529,6 +1553,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.Bias
   nameWithType: RegressionResults.Bias
+- uid: TimeSeriesAnalysis.RegressionResults.Gains
+  name: Gains
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Gains
+  commentId: P:TimeSeriesAnalysis.RegressionResults.Gains
+  fullName: TimeSeriesAnalysis.RegressionResults.Gains
+  nameWithType: RegressionResults.Gains
+- uid: TimeSeriesAnalysis.RegressionResults.Gains*
+  name: Gains
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Gains_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.Gains
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.Gains
+  nameWithType: RegressionResults.Gains
 - uid: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
   name: objectiveFunctionValue
   href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue
@@ -2235,6 +2272,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries
   nameWithType: TimeSeriesCreator.CreateTimeSeries
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step(System.Int32,System.Int32,System.Double,System.Double)
+  name: Step(Int32, Int32, Double, Double)
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Step_System_Int32_System_Int32_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step(System.Int32,System.Int32,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step(System.Int32, System.Int32, System.Double, System.Double)
+  nameWithType: TimeSeriesCreator.Step(Int32, Int32, Double, Double)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step*
+  name: Step
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Step_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step
+  nameWithType: TimeSeriesCreator.Step
 - uid: TimeSeriesAnalysis.Utility.UnixTime
   name: UnixTime
   href: api/TimeSeriesAnalysis.Utility.UnixTime.html
@@ -2715,6 +2765,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32())
   nameWithType: Vec.Regress(Double[], Double[][], Int32[])
   nameWithType.vb: Vec.Regress(Double(), Double()(), Int32())
+- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[0:,0:],System.Int32[])
+  name: Regress(Double[], Double[,], Int32[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_0__0___System_Int32___
+  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[0:,0:],System.Int32[])
+  name.vb: Regress(Double(), Double(,), Int32())
+  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[,], System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double(,), System.Int32())
+  nameWithType: Vec.Regress(Double[], Double[,], Int32[])
+  nameWithType.vb: Vec.Regress(Double(), Double(,), Int32())
 - uid: TimeSeriesAnalysis.Vec.Regress*
   name: Regress
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_

@@ -1629,7 +1629,65 @@ i.e. of the &quot;other vectors</p>
       <tr>
         <td><span class="xref">System.Double</span>[][]</td>
         <td><span class="parametername">X</span></td>
-        <td><p>matrix of of mainpulated values/independent values/regressors used to explain Y</p>
+        <td><p>jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td><span class="parametername">yIndToIgnore</span></td>
+        <td><p>(optional) a list of the indices of values in Y to ignore in regression. By default it is <code>null</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></td>
+        <td><p>an object of the <code>RegressionResult</code> class with the paramters, as well as
+some statistics on the fit and uncertainty thereof.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_Regress_" data-uid="TimeSeriesAnalysis.Vec.Regress*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_0__0___System_Int32___" data-uid="TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[0:,0:],System.Int32[])">Regress(Double[], Double[,], Int32[])</h4>
+  <div class="markdown level1 summary"><p>Linear regression</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RegressionResults Regress(double[] Y, double[, ] X, int[] yIndToIgnore = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">Y</span></td>
+        <td><p>vector of responve variable values (to be modelled)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[,]</td>
+        <td><span class="parametername">X</span></td>
+        <td><p>2D matrix of of mainpulated values/independent values/regressors used to explain Y</p>
 </td>
       </tr>
       <tr>

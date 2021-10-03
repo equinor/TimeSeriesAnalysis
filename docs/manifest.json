@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Array2DExtensionMethods.html",
-          "hash": "QHuraMhT7ER4CUaAp/CfrrBB0dMT7urEb4hjf8/ml2U="
+          "hash": "DipHVP264yGD71qh7amUHKtVOOwb0P9tHIfYxBhpS+c="
         }
       },
       "is_incremental": false,
@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html",
-          "hash": "fOdEKFVFuEcGFv+ikK0e+7EoNTiY2aZlF4zjOGjz+LE="
+          "hash": "H7pBkrsr+MRdt77t3KrQx1GxwZDe+4Hh55dP5zcDpi4="
         }
       },
       "is_incremental": false,
@@ -282,7 +282,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.RegressionResults.html",
-          "hash": "WYMWaatofXsfi5zPe2rsczijJm3mDDS7okflUl0BFt0="
+          "hash": "ldBeNoZBNEWXpjIHsOCic+vnK4IsOHnQFKlcy0hhmOI="
         }
       },
       "is_incremental": false,
@@ -390,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html",
-          "hash": "M1bnUB14bZUoiJVlksBEAWDWD22u8G8fvEiMMcNOAi4="
+          "hash": "lphVv9j5PvDKGYmQIkbZ3CL4VsflF4yFhr2sP31PG4M="
         }
       },
       "is_incremental": false,
@@ -438,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Vec.html",
-          "hash": "gefPe62jX4a9ebnzCqrkOx+vm5BMuYUDbhdKdWNorsk="
+          "hash": "R+cMlVmo8kHUHpkug7kywWqnUWOZiNcYHpOGpf8P99k="
         }
       },
       "is_incremental": false,
@@ -570,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/ex_sysid.html",
-          "hash": "aJyczfCHPrwTs0gJzXVgGhptXdAWpa3GoExJ0JWNNvI="
+          "hash": "+j1Fi45tZc1ULHC4T+yB6vfH33ztxePGal+745MTuDo="
         }
       },
       "is_incremental": false,
@@ -685,6 +685,17 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/ex4_results.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ex4_statvsdyn.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ex4_statvsdyn.png"
         }
       },
       "is_incremental": false,
@@ -876,7 +887,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 20,
-          "skipped_file_count": 20
+          "skipped_file_count": 19
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

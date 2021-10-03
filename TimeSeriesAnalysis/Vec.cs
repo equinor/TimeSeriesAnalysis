@@ -734,23 +734,45 @@ namespace TimeSeriesAnalysis
             out double[] param95prcConfInterval, out double[][] varCovarMatrix,
             out double[] Y_modelled, out double Rsq)
             */
+        /// <summary>
+        /// Linear regression
+        /// </summary>
+        /// <param name="Y">vector of responve variable values (to be modelled)</param>
+        /// <param name="X">2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
+        /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
+        /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
+        /// some statistics on the fit and uncertainty thereof.</returns>
 
+        public static RegressionResults Regress(double[] Y, double[,] X, int[] yIndToIgnore = null)
+        {
 
-
-
+            return Regress(Y,X.Convert2DtoJagged(),yIndToIgnore);
+        }
 
         /// <summary>
         /// Linear regression
         /// </summary>
         /// <param name="Y">vector of responve variable values (to be modelled)</param>
-        /// <param name="X">matrix of of mainpulated values/independent values/regressors used to explain Y</param>
+        /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
         public static RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null)
         {
             MultipleLinearRegression regression;
-            double[][] X_T = Accord.Math.Matrix.Transpose(X);
+            double[][] X_T;
+            if (X.GetNColumns() > X.GetNRows())
+            {
+                //  Accord.Math.Matrix.
+                X_T = Accord.Math.Matrix.Transpose(X);
+            }
+            else
+            {
+                X_T = X;
+            }
+            
+            
+            //double[][] X_T = Accord.Math.Matrix.Transpose(X);
 
             int theta_Length = X_T[0].Length + 1;
             RegressionResults results = new RegressionResults();
@@ -814,6 +836,7 @@ namespace TimeSeriesAnalysis
                 results.objectiveFunctionValue = Vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
                 results.Bias = regression.Intercept;
+                results.Gains = regression.Weights;
                 results.param = Vec<double>.Concat(regression.Weights, regression.Intercept);
 
                 /*

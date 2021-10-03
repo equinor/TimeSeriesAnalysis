@@ -32,7 +32,13 @@
         /// </summary>
         NonConvexObjectiveFunctionSolutionSpace = 4,
 
-
+        /// <summary>
+        /// Warning that some of the model runs (i.e. for certain time delays) failed to yield a solution.
+        /// This could be because there is very little information in the dataset, and if most of the information is
+        /// at the very start this warning can arise as to test longer and longer time delays, a shorter and shorter
+        /// portion of the dataset is used(some data at the very start needs to be "cut off")
+        /// </summary>
+        SomeModelRunsFailedToFindSolution = 5,
 
 
 

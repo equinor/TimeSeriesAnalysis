@@ -84,8 +84,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 if (doEstimateTimeDelay == false)
                     continueIncreasingTimeDelayEst = false;
-                if (modelParams.GetWarningList().Contains(ProcessIdentWarnings.NotPossibleToIdentify))
-                    continueIncreasingTimeDelayEst = false;// in some cases id. can fail at high time-delays, but good models may still exist.
+              //  if (modelParams.GetWarningList().Contains(ProcessIdentWarnings.NotPossibleToIdentify))
+                //    continueIncreasingTimeDelayEst = false;// in some cases id. can fail at high time-delays, but good models may still exist.
                                                            //       return new DefaultProcessModel(modelParams, dataSet);
 
                 // use for debugging
@@ -98,7 +98,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     Plot.FromList(new List<double[]> {y_sim,dataSet.Y_meas},new List<string> { "y1=ysim", "y1=ymeas" },
                         (int)dataSet.TimeBase_s, "iteration:"+ timeDelayIdx,default,"debug_it_" + timeDelayIdx);
                 }
-           
             }
 
             // the the time delay which caused the smallest object function value
@@ -109,7 +108,6 @@ namespace TimeSeriesAnalysis.Dynamic
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
             // END While loop 
             /////////////////////////////////////////////////////////////////
-
            
             var model = new DefaultProcessModel(modelParameters, dataSet);
             ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
