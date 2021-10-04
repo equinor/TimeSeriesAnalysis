@@ -58,7 +58,7 @@ namespace DefaultModel.UnitTests
         double timeBase_s=1;
         public DefaultProcessModel CreateDataAndIdentify(
             DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
-            double noiseAmplitude = 0, bool addInBadDataToYmeas = false)
+            double noiseAmplitude = 0, bool addInBadDataToYmeas = false, double badValueId = Double.NaN)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
@@ -74,11 +74,11 @@ namespace DefaultModel.UnitTests
                 for (int i = 0; i< dataSet.Y_meas.Length; i++)
                 {
                     if((double)i / addBadDataEveryNthPoint == Math.Floor((double)i / addBadDataEveryNthPoint))
-                        dataSet.Y_meas[i] = Double.NaN ;
+                        dataSet.Y_meas[i] = badValueId;
                 }
             }
 
-            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
+            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier(badValueId);
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0);
 
             return identifiedModel;
@@ -120,19 +120,21 @@ namespace DefaultModel.UnitTests
 
         }
 
-        [TestCase]
-        public void BadValuesInUandY_DoesNotDestroyResult(double bias=2, double timeConstant_s=10, int timeDelay_s=5)
+        [TestCase(Double.NaN)]
+        [TestCase(-9999)]
+        [TestCase(-99.215)]
+        public void BadValuesInUandY_DoesNotDestroyResult(double badValueId, double bias=2, double timeConstant_s=10, int timeDelay_s=5)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(40, 100, 0, 1);
             // add in some "bad" data points
-            u1[5] = Double.NaN;
-            u1[45] = Double.NaN;
-            u1[75] = Double.NaN;
-            u2[7] = Double.NaN;
-            u2[34] = Double.NaN;
-            u2[55] = Double.NaN;
+            u1[5] = badValueId;
+            u1[45] = badValueId;
+            u1[75] = badValueId;
+            u2[7] = badValueId;
+            u2[34] = badValueId;
+            u2[55] = badValueId;
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
 
             bool addInBadDataToYmeas = true;
@@ -145,7 +147,7 @@ namespace DefaultModel.UnitTests
                 U0 = Vec<double>.Fill(1, 2),
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude,addInBadDataToYmeas);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude,addInBadDataToYmeas, badValueId);
 
             plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
@@ -167,11 +169,7 @@ namespace DefaultModel.UnitTests
         {
             double noiseAmplitude = 0.00;
 
-            // step very early in the dataset(causes issues with time delay estimation)
-            // double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 11),
-            //     Vec<double>.Fill(1, 50));
             double[] u1 = TimeSeriesCreator.Step(40, 100, 0, 1);
-
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1 });
 
             DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters

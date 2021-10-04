@@ -538,12 +538,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier
   nameWithType: DefaultProcessModelIdentifier
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor
-  name: DefaultProcessModelIdentifier()
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier__ctor
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.DefaultProcessModelIdentifier()
-  nameWithType: DefaultProcessModelIdentifier.DefaultProcessModelIdentifier()
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor(System.Double)
+  name: DefaultProcessModelIdentifier(Double)
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier__ctor_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.DefaultProcessModelIdentifier(System.Double)
+  nameWithType: DefaultProcessModelIdentifier.DefaultProcessModelIdentifier(Double)
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor*
   name: DefaultProcessModelIdentifier
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier__ctor_
@@ -2542,15 +2542,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.InverseIndices
   nameWithType: Vec.InverseIndices
-- uid: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
-  name: IsAllNaN(Double[])
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___
-  commentId: M:TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
-  name.vb: IsAllNaN(Double())
-  fullName: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double())
-  nameWithType: Vec.IsAllNaN(Double[])
-  nameWithType.vb: Vec.IsAllNaN(Double())
+- uid: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[],System.Double)
+  name: IsAllNaN(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[],System.Double)
+  name.vb: IsAllNaN(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double(), System.Double)
+  nameWithType: Vec.IsAllNaN(Double[], Double)
+  nameWithType.vb: Vec.IsAllNaN(Double(), Double)
 - uid: TimeSeriesAnalysis.Vec.IsAllNaN*
   name: IsAllNaN
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_

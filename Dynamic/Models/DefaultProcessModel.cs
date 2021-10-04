@@ -150,7 +150,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec");
             sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s + " sec");
             sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
-            sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
+            if (modelParameters.ProcessGainCurvatures == null)
+            {
+                sb.AppendLine("ProcessCurvatures : " + "not implemented");
+            }
+            else
+            {
+                sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
+            }
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
             sb.AppendLine("u0 : " + Vec.ToString(modelParameters.U0,sDigits));
             sb.AppendLine("-------------------------");

@@ -20,10 +20,15 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class DefaultProcessModelIdentifier : IProcessModelIdentifier<DefaultProcessModel, DefaultProcessModelParameters>
     {
-        private double badValueIndicatingValue = -9999;//TODO: move to other class
+        private double badValueIndicatingValue;
 
-        public DefaultProcessModelIdentifier()
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="badValueIndicatingValue">A value other than Double.NaN that is to be consdiered equvivalent to NaN and ignored in all inputs</param>
+        public DefaultProcessModelIdentifier(double badValueIndicatingValue = -9999)
         {
+            this.badValueIndicatingValue = badValueIndicatingValue;
         }
 
 
@@ -84,9 +89,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 if (doEstimateTimeDelay == false)
                     continueIncreasingTimeDelayEst = false;
-              //  if (modelParams.GetWarningList().Contains(ProcessIdentWarnings.NotPossibleToIdentify))
-                //    continueIncreasingTimeDelayEst = false;// in some cases id. can fail at high time-delays, but good models may still exist.
-                                                           //       return new DefaultProcessModel(modelParams, dataSet);
 
                 // use for debugging
                 bool doDebugPlotting = false;//should normally be false.
@@ -164,17 +166,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 //    dcur = Vec<double>.SubArray(distEstResult.dest_f1, idxStart, idxEnd);
             }
 
-
             var indUbad = new List<int>();
             for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
             {
-                indUbad.Union(SysIdBadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx)).ToList());
+                indUbad = indUbad.Union(SysIdBadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx), badValueIndicatingValue)).ToList();
             }
             List<int> indYcurBad = Vec.FindValues(ycur, badValueIndicatingValue, VectorFindValueType.NaN);
 
             List<int> yIndicesToIgnore = new List<int>();
             // the above code misses the special case that y_prev[0] is bad, as it only looks at y_cur
-            if (Double.IsNaN(yprev[0]))// TODO:what about badvalueindicatingvalue
+            if (Double.IsNaN(yprev[0])|| yprev[0] == badValueIndicatingValue)
             {
                 yIndicesToIgnore.Add(0);
             }

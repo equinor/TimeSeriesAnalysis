@@ -20,9 +20,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inData"></param>
         /// <returns></returns>
-        static public List<int> GetAllBadIndices(double[] inData)
+        static public List<int> GetAllBadIndices(double[] inData, double badValueIndicatingValue = -9999)
         {
-            List<int> badValueIndices = GetBadValueIndices(inData);
+            List<int> badValueIndices = GetBadValueIndices(inData, badValueIndicatingValue);
             //   List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
             List<int> badIndices = badValueIndices;
             return badIndices;
@@ -35,9 +35,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inData"></param>
         /// <returns></returns>
-        static public List<int> GetAllBadIndicesPlussNext(double[] inData)
+        static public List<int> GetAllBadIndicesPlussNext(double[] inData, double badValueIndicatingValue = -9999)
         {
-            return Vec.AppendTrailingIndices(GetAllBadIndices(inData));
+            return Vec.AppendTrailingIndices(GetAllBadIndices(inData, badValueIndicatingValue));
         }
 
         static public List<int> GetBadValueIndices(double[] inData, double badValueIndicatingValue=-9999)

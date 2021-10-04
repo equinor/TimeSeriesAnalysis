@@ -19,7 +19,10 @@ namespace TimeSeriesAnalysis
     public static class Vec
     {
         // methods ordered alphabetically
-        private static readonly double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
+        //  private static readonly double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
+
+        private static readonly double valuteToReturnElementIsNaN = Double.NaN;//-9999;// so fi an element is either NaN or "-9999", what value shoudl a calculation return?
+        private static readonly double nanValue = -9999;// an input value that is to be considrered "NaN" 
 
         ///<summary>
         /// returns an array where each value is the absolute value of array1
@@ -33,7 +36,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]))
-                    retVal[i] = nanValue;
+                    retVal[i] = valuteToReturnElementIsNaN;
                 else
                     retVal[i] = Math.Abs(array1[i]);
             }
@@ -52,7 +55,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]))
-                    retVal[i] = nanValue;
+                    retVal[i] = valuteToReturnElementIsNaN;
                 else
                 {
                     retVal[i] = array1[i] + array2[i];
@@ -73,7 +76,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]))
-                    retVal[i] = (int)nanValue;
+                    retVal[i] = (int)valuteToReturnElementIsNaN;
                 else
                     retVal[i] = array1[i] + val2;
             }
@@ -91,7 +94,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]))
-                    retVal[i] = nanValue;
+                    retVal[i] = valuteToReturnElementIsNaN;
                 else
                     retVal[i] = array1[i] + val2;
             }
@@ -211,7 +214,7 @@ namespace TimeSeriesAnalysis
             {
                 if (IsNaN(vector[i]) || scalar == 0)
                 {
-                    outArray[i] = double.NaN;
+                    outArray[i] = valuteToReturnElementIsNaN;
                 }
                 else
                 {
@@ -236,7 +239,7 @@ namespace TimeSeriesAnalysis
             {
                 if (IsNaN(vector1[i]) || IsNaN(vector2[i])|| vector2[i]==0)
                 {
-                    outArray[i] = double.NaN;
+                    outArray[i] = valuteToReturnElementIsNaN;
                 }
                 else
                 {
@@ -301,7 +304,7 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (IsNaN(vec[i]))
+                    if (IsNaN(vec[i])|| vec[i] == value)
                         indices.Add(i);
                 }
             }
@@ -385,7 +388,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// Returns true if all elements in array are "-9999" or Double.NaN
         ///</summary>
-        public static bool IsAllNaN(double[] array)
+        public static bool IsAllNaN(double[] array, double nanValue = -9999)
         {
             int count = 0;
             while (array[count] == nanValue && count < array.Length - 1)
@@ -406,7 +409,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// All checks for NaN will test both for Double.IsNan and if value== a specific "nan" value (-9999)
         ///</summary>
-        static private bool IsNaN(double value)
+        static private bool IsNaN(double value, double nanValue = -9999)
         {
             if (double.IsNaN(value) || value == nanValue)
                 return true;
@@ -599,7 +602,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]))
-                    retVal[i] = nanValue;
+                    retVal[i] = valuteToReturnElementIsNaN;
                 else
                     retVal[i] = array1[i] * val2;
             }
@@ -625,7 +628,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]) || IsNaN(array2[i]))
-                    retVal[i] = nanValue;
+                    retVal[i] = valuteToReturnElementIsNaN;
                 else
                     retVal[i] = array1[i] * array2[i];
             }
@@ -933,7 +936,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]) || IsNaN(array2[i]))
-                    retVal[i] = nanValue;
+                    retVal[i] = valuteToReturnElementIsNaN;
                 else
                     retVal[i] = array1[i] - array2[i];
             }
