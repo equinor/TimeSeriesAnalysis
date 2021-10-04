@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | TimeSeriesAnalysis reference documentation </title>
+    <title>The default model | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="The default model | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,7 +77,68 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+<h1 id="the-default-model">The default model</h1>
 
+<p>The &quot;default&quot; model in this library is inteded to be a model that can describe most average process systems.
+It aims to <em>avoid over-paramterization</em>, as this is known to cause issues on real-world datasets with limited excitation.</p>
+<p>As a design chokce, the model has built in support for <em>explicitly treating</em> <strong>measured/modelled external disturbances</strong>, for use in analysis of closed-loop systems.</p>
+<p>The model is on the form</p>
+<pre><code>y[k] = x[k] + d[k]
+</code></pre>
+<p>where <code>x[k]</code> is the <em>state</em> at time <code>k</code>, <code>d[k]</code> is an <em>external disturbance</em> at time <code>k</code>.</p>
+<p>furthermore the <em>state</em> <code>x[k]</code> is modelled as</p>
+<pre><code>x[k] = a•x[k-1] + b•(u[k-td]-u0) + q		(linear in u)
+</code></pre>
+<p>or optionally as</p>
+<pre><code>x[k] = a•x[k-1] + b•(u[k-t_d]-u_0) + c•(u[k-t_d]-u_0)^2 + q	(non-linear in u)
+</code></pre>
+<p>where <code>t_d</code> here denotes the time-delay in samples.</p>
+<p>The model</p>
+<ul>
+<li>is a <code>difference model</code> as <code>x[k]</code> depends on the previous value <code>x[k-1]</code>.</li>
+<li>is <code>local</code> as the terms <code>b</code> and optionally <code>c</code> apply locally around the operating point <code>u0</code>.</li>
+</ul>
+<p>The above shows the model for a single input <code>u</code>, but the model excepts any number of inputs, so in the case of two inputs <code>u1</code> and <code>u2</code> for instance</p>
+<pre><code>x[k] = a•x[k-1] + b1•(u1[k-t_d]-u_10)+ b2•(u2[k-t_d]-u_20) + q		(linear in u)
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>All inputs in the same model by design share the same dynamic parameters <code>a</code> and <code>t_d</code>. If multiple inputs act on a single output <code>y</code> with different
+dyanmics, then this should be modlelled by two or more separate &quot;default models&quot; that are then added together - in identification the input of other
+sub-models can be accounted for by the disturbance-term <code>d</code></p>
+</div>
+<p>The paramter <code>a</code> in the above equation shoul always be between <code>[0;0.9999]</code> .
+It is related to the <em>time-constant</em> <code>Tc</code> by the equation</p>
+<pre><code>a = 1/(1+Ts/Tc)
+</code></pre>
+<p>where <code>Ts</code> is the <em>sampling time</em>, so that</p>
+<pre><code>Tc = Ts/(1/a-1)
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The time-constant is far easier to interpret intuitivly, and is much easier to relate to PID-controller terms or filters than <code>a</code> directly.</p>
+</div>
+<h2 id="solver">Solver</h2>
+<p>Determining <code>[a,b,c,q,t_d]</code> can be expressed as a <strong>linear mixed-integer</strong> problem.
+If the intenger term <code>t_d</code> is given, then determing the <em>continous paramters</em> <code>[a,b,c,q]</code> is a <em>linear</em> optimizaion problem.</p>
+<p>The solver <code>DefaultProcessModelIdentifier</code> takes a <em>sequential</em> approach to solving the parameter estimation problem.
+It solves for the continous paramters starting at zero time delay and then for increasing time-delays, until the logic determines that
+attempting to solve for larger time delays is not neccessary. The solver then selects the <code>best</code> time delay and the associated continous paramters.
+This logic is implemented in the class <code>ProcessTimeDelayIdentifier</code>.</p>
+<p>Because the optimization problem of finding <code>[a,b,c,q,t]</code> requires solving a difference equation and the solver looks at difference between subsequent datapoints, the formulation favors estimating <code>[a,b,c,]</code>, but at the expense of the value of the bias <code>q</code>. Thus once the parameters <code>[a,b,c,]</code> which express the dynamics are found, the bias <code>q</code> is found in a subsequent calculation to minimize the overall diference between measured and modelled outputs <code>y</code>.</p>
+<p>The flow of the solver is as below:</p>
+<ul>
+<li>start at zero time delay <code>t_d</code>,</li>
+<li>while( <code>TimeDelay</code> object says to continue ),
+<ul>
+<li>Solve for <code>[a,b,c,]</code> for a given <code>t_d</code>,</li>
+<li>for a given <code>[a,c,d,t_q]</code> find <code>q</code>,</li>
+<li>save the model run in <code>TimeDelay</code> class object, and</li>
+<li>increase time delay.</li>
+</ul>
+</li>
+<li><code>TimeDelay</code> object chooses the best model run out of all the saved runs.</li>
+</ul>
 </article>
           </div>
           

@@ -3,10 +3,7 @@
 
 ## At a glance
 
-**TimeSeriesAnalysis is a class library that allows you to work efficiently with time-series 
-in .NET that may include *transients* or *dynamics*, including identification of dynamic models,
-dynamic simulation, filtering and PID-control. The aim of the library is to support
- mining of time-series data for advanced analytics.**
+**TimeSeriesAnalysis is a library intended to support efficient test-driven development of time-series-based algorithms. Studying data with transients/dynamics, through dynamic model identification, dynamic simulation, filtering and PID-control is supported. The library aims to support mining of time-series data for advanced analytics.**
 
 *TimeSeriesAnalysis* is a .NET class library for making it easy to work with time series in *.NET* framework (written in *C#*). 
 It handles typical tasks related to time-series analysis such as

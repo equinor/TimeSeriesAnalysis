@@ -91,14 +91,14 @@ motivates a time constant of <code>200/5=40</code> seconds for the low-pass filt
 <p>By a similar logic,as <code>sinus2</code> has a period of <code>25</code> seconds will go from maximum to minimum amplitude in about 12 seconcds,
 thus motivating a filter time-constant of about <code>~3</code> seconds.</p>
 <p>The example code(runnable through the <code>Test Explorer</code>):</p>
-<pre><code>public void Ex3_filters()
+<pre><code class="lang-csharp" name="Examples">public void Ex3_filters()
 {
     double timeBase_s = 1;
-        int nStepsDuration = 2000;
+    int nStepsDuration = 2000;
     var sinus1 = new SinusModel(new SinusModelParameters 
         { amplitude = 10, period_s = 400 },timeBase_s);
     var sinus2 = new SinusModel(new SinusModelParameters 
-       { amplitude = 1, period_s = 25 }, timeBase_s);
+        { amplitude = 1, period_s = 25 }, timeBase_s);
 
     var dataset = new ProcessDataSet(timeBase_s, nStepsDuration);
     ProcessSimulator&lt;SinusModel, SinusModelParameters&gt;.Simulate(sinus1, ref dataset);
@@ -111,8 +111,8 @@ thus motivating a filter time-constant of about <code>~3</code> seconds.</p>
     var hpFiltered = hpFilter.Filter(dataset.Y_sim,3,1);
 
     Plot.FromList(new List&lt;double[]&gt; { dataset.Y_sim, lpFiltered, hpFiltered },
-         new List&lt;string&gt; { &quot;y1=y&quot;,&quot;y3=y_lowpass&quot;,&quot;y3=y_highpass&quot; }, (int)timeBase_s);
- }
+        new List&lt;string&gt; { &quot;y1=y&quot;,&quot;y3=y_lowpass&quot;,&quot;y3=y_highpass&quot; }, (int)timeBase_s);
+}
 </code></pre>
 <p>Running the above code results in the below plot.</p>
 <p>In the top plot <code>y</code> that is two sinusoids overlayed.</p>

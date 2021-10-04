@@ -36,5 +36,9 @@
         - name: The "default model"
           href: sysid_defaultmodel.md
 
+
 - name: Glossary 
   href: glossary.md
+
+- name: License 
+  href: license.md

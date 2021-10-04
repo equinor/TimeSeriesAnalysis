@@ -57,8 +57,8 @@ namespace DefaultModel.UnitTests
         static Plot4Test plot = new Plot4Test(doPlotting);
         double timeBase_s=1;
         public DefaultProcessModel CreateDataAndIdentify(
-            DefaultProcessModelParameters designParameters, double[,] U , double timeBase_s,
-            double noiseAmplitude=0)
+            DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
+            double noiseAmplitude = 0, bool addInBadDataToYmeas = false)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
@@ -67,6 +67,16 @@ namespace DefaultModel.UnitTests
             ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
             ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
                 EmulateYmeas(model,  ref dataSet, noiseAmplitude);
+
+            if (addInBadDataToYmeas)
+            {
+                int addBadDataEveryNthPoint = 20;
+                for (int i = 0; i< dataSet.Y_meas.Length; i++)
+                {
+                    if((double)i / addBadDataEveryNthPoint == Math.Floor((double)i / addBadDataEveryNthPoint))
+                        dataSet.Y_meas[i] = Double.NaN ;
+                }
+            }
 
             DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0);
@@ -110,10 +120,40 @@ namespace DefaultModel.UnitTests
 
         }
 
+        [TestCase]
+        public void BadData_DoesNotAffectResult(double bias=2, double timeConstant_s=10, int timeDelay_s=5)
+        {
+            double noiseAmplitude = 0.01;
+            double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(40, 100, 0, 1);
+            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
 
-        // TODO: adding noise to datasets
-        // TODO: testing the uncertainty estimtates(after adding them back)
-        // TODO: testing the ability to automatically filter out bad input data
+            // add in some "bad" data points
+            u1[5] = Double.NaN;
+            u1[45] = Double.NaN;
+            u1[75] = Double.NaN;
+            u2[7] = Double.NaN;
+            u2[34] = Double.NaN;
+            u2[55] = Double.NaN;
+            bool addInBadDataToYmeas = true;
+
+            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                ProcessGains = new double[] { 1, 2 },
+                U0 = Vec<double>.Fill(1, 2),
+                Bias = bias
+            };
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude,addInBadDataToYmeas);
+
+            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2 },
+                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
+
+            DefaultAsserts(model, designParameters);
+        }
+
+        // TODO: testing the uncertainty estimates(after adding them back)
         // TODO(lowest pri): test ability to identify process gain curvatures
         [TestCase( 0, 0, 0,  Category = "Static")]
         [TestCase(21, 0, 0,  Category = "Static")]

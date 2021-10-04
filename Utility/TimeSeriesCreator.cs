@@ -15,7 +15,7 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="dT_s">sampling internval</param>
         /// <param name="N">number of desired data points</param>
         /// <returns></returns>
-        static public DateTime[] CreateTimeSeries(DateTime t0, int dT_s, int N)
+        static public DateTime[] CreateDateStampArray(DateTime t0, int dT_s, int N)
         {
             List<DateTime> times = new List<DateTime>();
             DateTime curTime = t0;

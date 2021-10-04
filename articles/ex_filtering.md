@@ -17,30 +17,7 @@ By a similar logic,as ``sinus2`` has a period of ``25`` seconds will go from max
 thus motivating a filter time-constant of about ``~3`` seconds.
 
 The example code(runnable through the ``Test Explorer``):
-```
-public void Ex3_filters()
-{
-    double timeBase_s = 1;
-        int nStepsDuration = 2000;
-    var sinus1 = new SinusModel(new SinusModelParameters 
-        { amplitude = 10, period_s = 400 },timeBase_s);
-    var sinus2 = new SinusModel(new SinusModelParameters 
-       { amplitude = 1, period_s = 25 }, timeBase_s);
-
-    var dataset = new ProcessDataSet(timeBase_s, nStepsDuration);
-    ProcessSimulator<SinusModel, SinusModelParameters>.Simulate(sinus1, ref dataset);
-    ProcessSimulator<SinusModel, SinusModelParameters>.Simulate(sinus2, ref dataset);
-
-    var lpFilter = new LowPass(timeBase_s);
-    var lpFiltered = lpFilter.Filter(dataset.Y_sim,40,1);
-
-    var hpFilter = new HighPass(timeBase_s);
-    var hpFiltered = hpFilter.Filter(dataset.Y_sim,3,1);
-
-    Plot.FromList(new List<double[]> { dataset.Y_sim, lpFiltered, hpFiltered },
-         new List<string> { "y1=y","y3=y_lowpass","y3=y_highpass" }, (int)timeBase_s);
- }
-```
+[!code-csharp[Examples](../Examples/Examples.cs?name=ex_3)]
 
 Running the above code results in the below plot. 
 

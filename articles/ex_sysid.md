@@ -13,42 +13,9 @@ In this case the "true" *time-delay* of ``5`` seconds, *time-constant* of ``15``
 *The aim of this example is to see how closely the ``DefaultProcessModelIdentifier`` is able to estimate these values.*
 
 The code to create the dataset, do the identification and create the plots is shown below:
-```
-public void Ex4_sysid()
-{
-            int timeBase_s = 1;
-            double noiseAmplitude = 0.05;
-            DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
-            {
-                WasAbleToIdentify = true,
-                TimeConstant_s = 15,
-                ProcessGains = new double[] {1,2},
-                TimeDelay_s = 5,
-                Bias = 5
-            };
-            DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
 
-            double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
-            double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
+[!code-csharp[Examples](../Examples/Examples.cs?name=ex_4)]
 
-            ProcessDataSet dataSet = new ProcessDataSet(timeBase_s,U);
-            ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
-                EmulateYmeas(model, ref dataSet, noiseAmplitude);
-
-            Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
-                new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s,"ex4_data");
-
-            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
-            DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet);
-    
-            Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas, 
-                identifiedModel.FittedDataSet.Y_sim },
-                new List<string> { "y1=y_meas", "y1=y_sim"}, timeBase_s, "ex4_results");
-
-            Console.WriteLine(identifiedModel.ToString());
-}
-```
 The first plot shows the dataset, showing inputs``u1``, ``u2`` and output ``y``:
 
 ![Example 4:dataset](./images/ex4_dataset.png)
@@ -116,7 +83,7 @@ the estimate ``[0.958;1.96]`` of the dynamic identification(true values: ``[1;2]
 >dynamic identification:
 > **If your data is dynamic/transient, using dynamic identification will result in better estimates, 
 > *also for stationary terms*. This means that even if you are only intrested in the static gains of a system, 
-> you would benefit from estimates gains using dynamic identification.** 
+> you would benefit from estimataing gains using dynamic identification if your data has visible transients.** 
   
 
 	

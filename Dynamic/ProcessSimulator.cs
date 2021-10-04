@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         /// <summary>
         /// Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for  
-        /// testing and validation.
+        /// testing/test driven development.
         /// </summary>
         /// <param name="model"></param>
         /// <param name="processDataSet"></param>
@@ -31,7 +31,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (noiseAmplitude > 0)
             {
-                Random rand = new Random();
+                // use a specific seed here, to avoid potential issues with "random unit tests" and not-repeatable
+                // errors.
+                Random rand = new Random(1232);
 
                 for (int k = 0; k < processDataSet.NumDataPoints; k++)
                 {

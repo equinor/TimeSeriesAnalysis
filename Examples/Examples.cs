@@ -15,6 +15,7 @@ namespace TimeSeriesAnalysis.Examples
     class Examples
     {
         [Test, Explicit]
+        #region ex_1
         public void Ex1_hello_world()
         {
             int dT_s = 1;
@@ -29,9 +30,10 @@ namespace TimeSeriesAnalysis.Examples
                 new List<string> { "y1=V1_input","y1=V2_output"}, dT_s, "ex1_hello_world",
                 new DateTime(2020, 1, 1, 0, 0, 0));
         }
-
+        #endregion
 
         [Test, Explicit]
+        #region ex_2
         public void Ex2_linreg()
         {
             double[] true_gains = {1,2,3};
@@ -65,8 +67,10 @@ namespace TimeSeriesAnalysis.Examples
             Plot.FromList(new List<double[]>() { y, results.Y_modelled },
                 new List<string>() { "y1=y_meas", "y1=y_mod" }, 1);
         }
+        #endregion
 
         [Test, Explicit]
+        #region ex_3
         public void Ex3_filters()
         {
             double timeBase_s = 1;
@@ -89,9 +93,10 @@ namespace TimeSeriesAnalysis.Examples
             Plot.FromList(new List<double[]> { dataset.Y_sim, lpFiltered, hpFiltered },
                 new List<string> { "y1=y","y3=y_lowpass","y3=y_highpass" }, (int)timeBase_s);
         }
-
+        #endregion
 
         [Test, Explicit]
+        #region ex_4
         public void Ex4_sysid()
         {
             int timeBase_s = 1;
@@ -134,14 +139,14 @@ namespace TimeSeriesAnalysis.Examples
                  "ex4_static_vs_dynamic");
 
             Console.WriteLine("static model gains:" + Vec.ToString(regResults.Gains,3));
-
         }
-
+        #endregion
         [Test, Explicit]
+        #region ex_5
         public void Ex5_pid()
         {
         }
-
+        #endregion
 
 
 

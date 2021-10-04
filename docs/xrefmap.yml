@@ -2259,19 +2259,19 @@ references:
   commentId: T:TimeSeriesAnalysis.Utility.TimeSeriesCreator
   fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator
   nameWithType: TimeSeriesCreator
-- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries(System.DateTime,System.Int32,System.Int32)
-  name: CreateTimeSeries(DateTime, Int32, Int32)
-  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_CreateTimeSeries_System_DateTime_System_Int32_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries(System.DateTime,System.Int32,System.Int32)
-  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries(System.DateTime, System.Int32, System.Int32)
-  nameWithType: TimeSeriesCreator.CreateTimeSeries(DateTime, Int32, Int32)
-- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries*
-  name: CreateTimeSeries
-  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_CreateTimeSeries_
-  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray(System.DateTime,System.Int32,System.Int32)
+  name: CreateDateStampArray(DateTime, Int32, Int32)
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_CreateDateStampArray_System_DateTime_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray(System.DateTime,System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray(System.DateTime, System.Int32, System.Int32)
+  nameWithType: TimeSeriesCreator.CreateDateStampArray(DateTime, Int32, Int32)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray*
+  name: CreateDateStampArray
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_CreateDateStampArray_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateTimeSeries
-  nameWithType: TimeSeriesCreator.CreateTimeSeries
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray
+  nameWithType: TimeSeriesCreator.CreateDateStampArray
 - uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step(System.Int32,System.Int32,System.Double,System.Double)
   name: Step(Int32, Int32, Double, Double)
   href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Step_System_Int32_System_Int32_System_Double_System_Double_

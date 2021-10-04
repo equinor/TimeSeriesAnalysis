@@ -80,22 +80,20 @@
 <h1 id="example-1--a-simple-hello-world">Example 1 : A simple &quot;hello world&quot;</h1>
 
 <p>Consider the example <code>ex1_hello_world</code> in <code>Examples.cs</code>:</p>
-<pre><code>        [Test, Explicit]
-        public void ex1_hello_world()
-        {
-            int dT_s = 1;
-            double filterTc_s = 10;
+<pre><code class="lang-csharp" name="Examples">public void Ex1_hello_world()
+{
+    int dT_s = 1;
+    double filterTc_s = 10;
 
-            double[] input = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 11),
-                Vec&lt;double&gt;.Fill(1, 50));
+    double[] input = TimeSeriesCreator.Step(11, 60, 0, 1);
 
-            LowPass lp = new LowPass(dT_s);
-            var output = lp.Filter(input, filterTc_s);
+    LowPass lp = new LowPass(dT_s);
+    var output = lp.Filter(input, filterTc_s);
 
-            Plot.FromList(new List&lt;double[]&gt; { input, output},
-                new List&lt;string&gt; { &quot;y1=input&quot;,&quot;y1=output&quot;}, dT_s, &quot;ex1_hello_world&quot;,
-                new DateTime(2020, 1, 1, 0, 0, 0));
-        }
+    Plot.FromList(new List&lt;double[]&gt; { input, output},
+        new List&lt;string&gt; { &quot;y1=V1_input&quot;,&quot;y1=V2_output&quot;}, dT_s, &quot;ex1_hello_world&quot;,
+        new DateTime(2020, 1, 1, 0, 0, 0));
+}
 </code></pre>
 <p>Which when run should creates the following plot.</p>
 <p><img src="images/ex1_hello_world.png" alt="Example 1:hello world"></p>

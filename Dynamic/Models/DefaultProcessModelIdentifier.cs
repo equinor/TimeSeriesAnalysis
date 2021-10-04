@@ -138,7 +138,6 @@ namespace TimeSeriesAnalysis.Dynamic
             if (useDynamicModel)
             {
                 solverID += "Dynamic";
-                //   int idxStart = timeDelay_samples + 1;
                 //ucur = Vec<double>.SubArray(dataSet.U, idxStart - timeDelay_samples, idxEnd - timeDelay_samples);
                 for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
@@ -157,8 +156,6 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 solverID += "Static";
-                //  int idxStart = 0;
-                //   ucur = Vec<double>.SubArray(dataSet.U, idxStart - timeDelay_samples, idxEnd - timeDelay_samples);
                 for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
                     ucurList.Add(Vec<double>.SubArray(dataSet.U.GetColumn(colIdx), idxStart - timeDelay_samples, idxEnd - timeDelay_samples));
@@ -167,19 +164,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 //    dcur = Vec<double>.SubArray(distEstResult.dest_f1, idxStart, idxEnd);
             }
 
-            //TODO: add back indUbad;
-            //    List<int> indUbad = SysIdBadDataFinder.GetAllBadIndicesPlussNext(dataSet.U());
+
+            var indUbad = new List<int>();
+            for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
+            {
+                indUbad.Union(SysIdBadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx)).ToList());
+            }
             List<int> indYcurBad = Vec.FindValues(ycur, badValueIndicatingValue, VectorFindValueType.NaN);
             List<int> indYprevBad = Vec.Add(indYcurBad.ToArray(), 1).ToList();
 
             List<int> yIndicesToIgnore = new List<int>();
-            //      yIndicesToIgnore = yIndicesToIgnore.Union(indUbad).ToList();
+            yIndicesToIgnore = yIndicesToIgnore.Union(indUbad).ToList();
             yIndicesToIgnore = yIndicesToIgnore.Union(indYcurBad).ToList();
             yIndicesToIgnore.Sort();
 
-            // double[] param = null, param_95prcUnc = null;
-            //double[][] varCovarMatrix = null;
-            double[] x_mod_cur = null, y_mod_cur = null;
+
 
             if (FilterTc_s > 0)
             {
@@ -216,11 +215,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     yprev[Math.Min(yprev.Length - 1, indYprevBad[i])] = 0;
             }
 
-            double timeConstant_s = Double.NaN, bias = Double.NaN;
+
+            RegressionResults regResults;// = new RegressionResults();
+            double timeConstant_s = Double.NaN;
             double[] processGains = Vec<double>.Fill(Double.NaN, ucurList.Count);
-
-            RegressionResults regResults = new RegressionResults();
-
+            double[] x_mod_cur = null, y_mod_cur = null;
             if (useDynamicModel)
             {
                 // Tc *xdot = x[k-1] + B*u[k-1]
@@ -276,8 +275,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     double[] deltaY = Vec.Subtract(ycur, yprev);
                     double[] phi1_ols = yprev;
                     double[] Y_ols = deltaY;//Vec.Sub(deltaY, dcur);
-                    //  double[] phi2_ols = Vec.Sub(ucur, u0);
-                    //           double[][] phi_ols = { phi1_ols, phi2_ols };
                     double[,] phi_ols2D = new double[ycur.Length, ucurList.Count + 1];
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
@@ -333,7 +330,6 @@ namespace TimeSeriesAnalysis.Dynamic
                         a = 0;
                     //d_mod_cur = d;
                     // for clarity:
-                    bias = regResults.Bias;
 
                     // the estimation finds "a" in the difference equation 
                     // a = 1/(1 + Ts/Tc)
@@ -346,7 +342,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         timeConstant_s = 0;
                     if (timeConstant_s < 0)
                         timeConstant_s = 0;
-                    processGains = Vec.Div(b, 1 - a); //b / (1 - a);
+                    processGains = Vec.Div(b, 1 - a); 
 
                     x_mod_cur = new double[x_mod_cur_raw.Length];
 
@@ -413,7 +409,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     timeConstant_s = 0;
                     processGains = Vec<double>.SubArray(regResults.param, 0, regResults.param.Length - 2);//param[0];
-                    bias = regResults.Bias;
                 }
             }
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters();
@@ -455,13 +450,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 double? recalcBias = ReEstimateBias(dataSet, parameters);
                 if (recalcBias.HasValue)
                 {
-                    bias = recalcBias.Value;
+                    parameters.Bias = recalcBias.Value;
                 }
                 else
                 {//consider adding a warning here.
-                    bias = regResults.param.Last();
+                    parameters.Bias = regResults.param.Last();
                 }
-                parameters.Bias = bias;
                 // TODO:add back uncertainty estimates
 
                 parameters.FittingRsq = regResults.Rsq;

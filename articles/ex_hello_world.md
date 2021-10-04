@@ -2,24 +2,7 @@
 
 Consider the example ``ex1_hello_world`` in ``Examples.cs``:
 
-```
-        [Test, Explicit]
-        public void ex1_hello_world()
-        {
-            int dT_s = 1;
-            double filterTc_s = 10;
-
-            double[] input = Vec<double>.Concat(Vec<double>.Fill(0, 11),
-                Vec<double>.Fill(1, 50));
-
-            LowPass lp = new LowPass(dT_s);
-            var output = lp.Filter(input, filterTc_s);
-
-            Plot.FromList(new List<double[]> { input, output},
-                new List<string> { "y1=input","y1=output"}, dT_s, "ex1_hello_world",
-                new DateTime(2020, 1, 1, 0, 0, 0));
-        }
-```
+[!code-csharp[Examples](../Examples/Examples.cs?name=ex_1)]
 
 Which when run should creates the following plot.
 
