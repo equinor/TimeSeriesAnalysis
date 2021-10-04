@@ -148,8 +148,8 @@ namespace TimeSeriesAnalysis.UnitTests
         public void Regress_IgnoreIndices()
         {
             double[] Y = { 1, 0, 3, 4, -9999, 1 };
-            double[] X1 = { 1, 0, 1, 0, -1, 1, }; // gain:1
-            double[] X2 = { 0, 0, 1, 2, -1, 0 };// gain:2
+            double[] X1 = { 1, 0, 1, 0, -9999, 1, }; // gain:1
+            double[] X2 = { 0, 0, 1, 2, -9999, 0 };// gain:2
             double[][] X = { X1, X2 };
             List<int> indicesToignore = new List<int>
             {

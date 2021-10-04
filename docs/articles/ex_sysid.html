@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Example 4 : Fitting a dynamic model to transient data example | TimeSeriesAnalysis reference documentation </title>
+    <title>Example 4 : Fitting a dynamic model to transient data | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Example 4 : Fitting a dynamic model to transient data example | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Example 4 : Fitting a dynamic model to transient data | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,7 +77,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="example-4--fitting-a-dynamic-model-to-transient-data-example">Example 4 : Fitting a dynamic model to transient data example</h1>
+<h1 id="example-4--fitting-a-dynamic-model-to-transient-data">Example 4 : Fitting a dynamic model to transient data</h1>
 
 <p><strong>In this example, it is shown how to use the built-in dynamic identification algorithm
 to find a dynamic model to describe a measured time-series depening on multiple inputs.</strong></p>
@@ -177,10 +177,10 @@ Console.WriteLine(&quot;static model gains:&quot; + Vec.ToString(regResults.Gain
 <p>The resulting plot, which compares the dynamic and static models is shown below:</p>
 <p><img src="images/ex4_statvsdyn.png" alt="Example 4:output"></p>
 <p>The model gains of the static model is <code>[0.69;1.29]</code>, which is not quite as close as
-the estimate <code>[0.958;1.96]</code> of the dynamic identification(true values: <code>[1;2]</code>).</p>
+the estimate <code>[0.958;1.96]</code> of the dynamic identification to the true values: <code>[1;2]</code>.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>This example illustrates an extremely important but slightly subtle lesson about the utiilty of
+<p>This example illustrates an extremely important but slightly subtle lesson about the utility of
 dynamic identification:
 <strong>If your data is dynamic/transient, using dynamic identification will result in better estimates,
 <em>also for stationary terms</em>. This means that even if you are only intrested in the static gains of a system,

@@ -40,5 +40,12 @@
 - name: Glossary 
   href: glossary.md
 
+- name: Dependencies
+  href: dependencies.md
+  items:
+        - name: Accord.NET 
+          href: accord.md
+
+
 - name: License 
   href: license.md

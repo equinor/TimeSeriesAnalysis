@@ -1184,6 +1184,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.NotPossibleToIdentify
   fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.NotPossibleToIdentify
   nameWithType: ProcessIdentWarnings.NotPossibleToIdentify
+- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ReEstimateBiasFailed
+  name: ReEstimateBiasFailed
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_ReEstimateBiasFailed
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ReEstimateBiasFailed
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ReEstimateBiasFailed
+  nameWithType: ProcessIdentWarnings.ReEstimateBiasFailed
 - uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.RegressionProblemFailedToYieldSolution
   name: RegressionProblemFailedToYieldSolution
   href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_RegressionProblemFailedToYieldSolution

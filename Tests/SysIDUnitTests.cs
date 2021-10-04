@@ -121,13 +121,11 @@ namespace DefaultModel.UnitTests
         }
 
         [TestCase]
-        public void BadData_DoesNotAffectResult(double bias=2, double timeConstant_s=10, int timeDelay_s=5)
+        public void BadValuesInUandY_DoesNotDestroyResult(double bias=2, double timeConstant_s=10, int timeDelay_s=5)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(40, 100, 0, 1);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
-
             // add in some "bad" data points
             u1[5] = Double.NaN;
             u1[45] = Double.NaN;
@@ -135,6 +133,8 @@ namespace DefaultModel.UnitTests
             u2[7] = Double.NaN;
             u2[34] = Double.NaN;
             u2[55] = Double.NaN;
+            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
+
             bool addInBadDataToYmeas = true;
 
             DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters

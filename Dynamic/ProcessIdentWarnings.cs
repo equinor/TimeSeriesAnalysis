@@ -51,6 +51,13 @@
         /// <summary>
         /// Estimation returned an enourmous time constant, this is an indication of something is wrong
         /// </summary>
-        TimeConstantEstimateTooBig = 8
+        TimeConstantEstimateTooBig = 8,
+        
+        /// <summary>
+        /// Re-estimating bias method returned null, so the bias from the intial estimation is used, be careful the bias 
+        /// estimate may be off!
+        /// </summary>
+        ReEstimateBiasFailed = 9
+
     }
 }

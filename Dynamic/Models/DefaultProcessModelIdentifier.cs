@@ -138,10 +138,10 @@ namespace TimeSeriesAnalysis.Dynamic
             if (useDynamicModel)
             {
                 solverID += "Dynamic";
-                //ucur = Vec<double>.SubArray(dataSet.U, idxStart - timeDelay_samples, idxEnd - timeDelay_samples);
                 for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
-                    ucurList.Add(Vec<double>.SubArray(dataSet.U.GetColumn(colIdx), idxStart - timeDelay_samples, idxEnd - timeDelay_samples));
+                    ucurList.Add(Vec<double>.SubArray(dataSet.U.GetColumn(colIdx), 
+                        idxStart - timeDelay_samples, idxEnd - timeDelay_samples));
                 }
                 ycur = Vec<double>.SubArray(dataSet.Y_meas, idxStart, idxEnd);
                 yprev = Vec<double>.SubArray(dataSet.Y_meas, idxStart - 1, idxEnd - 1);
@@ -171,14 +171,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 indUbad.Union(SysIdBadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx)).ToList());
             }
             List<int> indYcurBad = Vec.FindValues(ycur, badValueIndicatingValue, VectorFindValueType.NaN);
-            List<int> indYprevBad = Vec.Add(indYcurBad.ToArray(), 1).ToList();
 
             List<int> yIndicesToIgnore = new List<int>();
+            // the above code misses the special case that y_prev[0] is bad, as it only looks at y_cur
+            if (Double.IsNaN(yprev[0]))// TODO:what about badvalueindicatingvalue
+            {
+                yIndicesToIgnore.Add(0);
+            }
             yIndicesToIgnore = yIndicesToIgnore.Union(indUbad).ToList();
-            yIndicesToIgnore = yIndicesToIgnore.Union(indYcurBad).ToList();
+            yIndicesToIgnore = yIndicesToIgnore.Union(Vec.AppendTrailingIndices(indYcurBad)).ToList(); 
             yIndicesToIgnore.Sort();
-
-
 
             if (FilterTc_s > 0)
             {
@@ -188,33 +190,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 ycur = yLp.Filter(ycur, FilterTc_s);//todo:disturbance
                 yprev = yLpPrev.Filter(yprev, FilterTc_s);//todo:disturbance
             }
-
-            // try to "set to zero" instad of sending -9999 into regression and relying on weighting.
-            // not 
-            for (int i = 0; i < indYcurBad.Count(); i++)
-            {
-                ycur[indYcurBad[i]] = 0;
-                for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
-                {
-                    ucurList.ElementAt(curIdx)[indYcurBad[i]] = 0;
-                }
-            }
-            // todo: add back
-            /*
-            for (int i = 0; i < indUbad.Count(); i++)
-            {
-                ycur[indUbad[i]] = 0;
-                ucur[indUbad[i]] = 0;
-                if (yprev != null)
-                    yprev[indUbad[i]] = 0;
-            }*/
-
-            for (int i = 0; i < indYcurBad.Count(); i++)
-            {
-                if (yprev != null)
-                    yprev[Math.Min(yprev.Length - 1, indYprevBad[i])] = 0;
-            }
-
 
             RegressionResults regResults;// = new RegressionResults();
             double timeConstant_s = Double.NaN;
@@ -257,7 +232,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 // to guess at the process disturbances :
 
-
                 // either you need to subtract d for Y or you need to add it to Ymod
 
                 double[] x_mod_cur_raw = new double[0];
@@ -296,8 +270,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                 {
                     double[] phi1_ols = Vec.Subtract(yprev, dprev);
-                    //double[] phi2_ols = Vec.Sub(ucur, u0);
-                    //double[][] phi_ols = { phi1_ols, phi2_ols };
                     double[,] phi_ols2D = new double[ycur.Length, ucurList.Count + 1];
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
@@ -310,10 +282,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     regResults = Vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
                 }
 
-                if (regResults.param == null)
-                {
-                    Debug.WriteLine("Vec.Regress returned null - dynamic");
-                }
                 if (regResults.param != null)
                 {
                     double a;
@@ -329,7 +297,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (a > 1)
                         a = 0;
                     //d_mod_cur = d;
-                    // for clarity:
 
                     // the estimation finds "a" in the difference equation 
                     // a = 1/(1 + Ts/Tc)
@@ -342,55 +309,59 @@ namespace TimeSeriesAnalysis.Dynamic
                         timeConstant_s = 0;
                     if (timeConstant_s < 0)
                         timeConstant_s = 0;
-                    processGains = Vec.Div(b, 1 - a); 
+                    processGains = Vec.Div(b,1-a); 
 
                     x_mod_cur = new double[x_mod_cur_raw.Length];
 
-                    // TODO: does not work, unsure why.
-                    //x_mod_cur = Vec.Add(ProcessModel.GetModelX_withoutBias(ucur, u0, timeBase_s,
-                    //    timeConstant_s, processGain, timeDelay_samples), bias);
-
-                    for (int i = 0; i < x_mod_cur.Count(); i++)
+                    for (int curTidx = 0; curTidx < x_mod_cur.Count(); curTidx++)
                     {
-                        // todo:add back bad value check!
-                        //if (ucur[i] != badValueIndicatingValue)
-                        if (true)
+                        if (assumeThatYkminusOneApproxXkminusOne)
                         {
-                            if (assumeThatYkminusOneApproxXkminusOne)
+                            x_mod_cur[curTidx] += a * yprev[curTidx];
+                            for (int curUidx = 0; curUidx < ucurList.Count; curUidx++)
                             {
-                                x_mod_cur[i] += a * yprev[i];
-                                for (int curU = 0; curU < ucurList.Count; curU++)
+                                double curUval = ucurList[curUidx][curTidx];
+                                if (Double.IsNaN(curUidx))
                                 {
-                                    x_mod_cur[i] += b[curU] * (ucurList[curU][i] - u0[curU]);
+                                    x_mod_cur[curTidx] = x_mod_cur[curTidx - 1];
                                 }
-                                x_mod_cur[i] += regResults.Bias;
+                                else
+                                {
+
+                                    x_mod_cur[curTidx] += b[curUidx] * (curUval - u0[curUidx]);
+                                }
                             }
-                            else
-                            {
-                                /* if (i == 0)
-                                {
-                                    double x_start = b/(1-a)*(ucur[i]-u0);
-                                    x_mod_cur[i] = a * x_start + b * (ucur[i] - u0) + param[2];
-                                }
-                                else*/
-                                x_mod_cur[i] += a * yprev[i];
-                                for (int curU = 0; curU < ucurList.Count; curU++)
-                                {
-                                    x_mod_cur[i] += b[curU] * (ucurList[curU][i] - u0[curU]);
-                                }
-                                x_mod_cur[i] += regResults.Bias;
-                            }
+                            x_mod_cur[curTidx] += regResults.Bias;
                         }
                         else
-                            x_mod_cur[i] = x_mod_cur[i - 1];
-                    }
+                        {
+                            /* if (i == 0)
+                            {
+                                double x_start = b/(1-a)*(ucur[i]-u0);
+                                x_mod_cur[i] = a * x_start + b * (ucur[i] - u0) + param[2];
+                            }
+                            else*/
+                            x_mod_cur[curTidx] += a * yprev[curTidx];
+                            for (int curUidx = 0; curUidx < ucurList.Count; curUidx++)
+                            {
+                                double curUval = ucurList[curUidx][curTidx];
+                                if (Double.IsNaN(curUidx))
+                                {
+                                    x_mod_cur[curTidx] = x_mod_cur[curTidx - 1];
+                                }
+                                else
+                                {
+                                    x_mod_cur[curTidx] += b[curUidx] * (curUval - u0[curUidx]);
+                                }
+                            }
+                            x_mod_cur[curTidx] += regResults.Bias;
+                        }//endif
+                    }//enfor
                 }
             }
             else//static model
             {
                 // y[k] = Kc*u[k]+ P0
-                //double[] X_ols = Vec.Sub(ucur, u0);
-                //double[][] inputs = { X_ols };
                 double[,] inputs2D = new double[ycur.Length, ucurList.Count];
                 for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
                 {
@@ -401,24 +372,18 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 regResults = Vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray());
                 timeConstant_s = 0;
-                if (regResults.param == null)
-                {
-                    Debug.WriteLine("Vec.Regress returned null - dynamic");
-                }
                 if (regResults.param != null)
                 {
-                    timeConstant_s = 0;
                     processGains = Vec<double>.SubArray(regResults.param, 0, regResults.param.Length - 2);//param[0];
                 }
             }
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters();
+            parameters.SolverID = solverID;
 
             // Vec.Regress can return very large values if y is noisy and u is stationary. 
             // in these cases varCovarMatrix is null
+
             const double maxAbsValueRegression = 10000;
-
-            parameters.SolverID = solverID;
-
             if (regResults.param == null || !regResults.ableToIdentify)
             {
                 parameters.WasAbleToIdentify = false;
@@ -453,14 +418,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.Bias = recalcBias.Value;
                 }
                 else
-                {//consider adding a warning here.
+                {
+                    parameters.AddWarning(ProcessIdentWarnings.ReEstimateBiasFailed);
                     parameters.Bias = regResults.param.Last();
                 }
                 // TODO:add back uncertainty estimates
 
                 parameters.FittingRsq = regResults.Rsq;
                 parameters.FittingObjFunVal = regResults.objectiveFunctionValue;
-
                 return parameters;
             }
         }
