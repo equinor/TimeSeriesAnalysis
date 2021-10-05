@@ -50,7 +50,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void Mean_isOk()
         {
             double[] vec = Vec<double>.Fill(10, 1);
-            double mean = Vec.Mean(vec).Value;
+            double mean = (new Vec()).Mean(vec).Value;
             Assert.AreEqual(10, mean);
         }
 
@@ -58,7 +58,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void Var_ZeroForConstantVector()
         {
             double[] vec = Vec<double>.Fill(10, 1);
-            double var = Vec.Var(vec);
+            double var = (new Vec()).Var(vec);
             Assert.AreEqual(0, var);
         }
 
@@ -96,7 +96,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec1 = Vec<double>.Fill(2,10);
             double[] vec2 = Vec<double>.Fill(1,10);
-            double cov = Vec.Cov(vec1, vec2);
+            double cov = (new Vec()).Cov(vec1, vec2);
             Assert.AreEqual(0, cov);
         }
 
@@ -105,8 +105,8 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec1 = Vec.Rand(10);
             double[] vec2 = Vec.Rand(10);
-            double cov1 = Vec.Cov(vec1, vec2);
-            double cov2 = Vec.Cov(vec2, vec1);
+            double cov1 = (new Vec()).Cov(vec1, vec2);
+            double cov2 = (new Vec()).Cov(vec2, vec1);
             Assert.AreEqual(cov1, cov2);
         }
 
@@ -116,11 +116,11 @@ namespace TimeSeriesAnalysis.UnitTests
 
         public void Regress_givesCorrectValue(double bias)
         {
-            double[] Y = Vec.Add(new double[]{ 1, 0, 3, 4, 2 },bias);
+            double[] Y = (new Vec()).Add(new double[]{ 1, 0, 3, 4, 2 },bias);
             double[] X1 = { 1, 0, 1, 0,2 }; // gain:1
             double[] X2 = { 0, 0, 1, 2, 0 };// gain:2
             double[][] X = { X1, X2 };
-            var results = Vec.Regress(Y, X);
+            var results = (new Vec()).Regress(Y, X);
             Assert.IsNotNull(results);
             Assert.IsTrue(results.ableToIdentify);
             Assert.Less(Math.Abs(1 - results.param[0]), 0.001,"gain paramter should be correct");
@@ -155,7 +155,7 @@ namespace TimeSeriesAnalysis.UnitTests
             {
                 4
             };
-            var results= Vec.Regress(Y, X, indicesToignore.ToArray());
+            var results= (new Vec()).Regress(Y, X, indicesToignore.ToArray());
             Assert.Less(Math.Abs(1 - results.param[0]), 0.001);
             Assert.Less(Math.Abs(2 - results.param[1]), 0.001);
             Assert.Less(Math.Abs(4 - results.Y_modelled[4]), 0.0001);
@@ -167,15 +167,15 @@ namespace TimeSeriesAnalysis.UnitTests
         public void ContainsM9999()
         {
             double[] Y1 = { 1, 0, -9999, 0 };
-            bool contM9999 = Vec.ContainsBadData(Y1);
+            bool contM9999 = (new Vec()).ContainsBadData(Y1);
             Assert.IsTrue(contM9999);
 
             double[] Y2 = { 1, 0, 0, -9999 };
-            contM9999 = Vec.ContainsBadData(Y2);
+            contM9999 = (new Vec()).ContainsBadData(Y2);
             Assert.IsTrue(contM9999);
 
             double[] Y3 = { 1, 0, 0, 9999 };
-            contM9999 = Vec.ContainsBadData(Y3);
+            contM9999 = (new Vec()).ContainsBadData(Y3);
             Assert.IsFalse(contM9999);
         }
 
@@ -184,7 +184,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_BiggerThan()
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            List<int> vecResult = Vec.FindValues(vec, 6, VectorFindValueType.BiggerThan);
+            List<int> vecResult = (new Vec()).FindValues(vec, 6, VectorFindValueType.BiggerThan);
             List<int> vecExpt = new List<int>() { 7, 8, 9, 10 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -193,7 +193,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_SmallerThan()
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            List<int> vecResult = Vec.FindValues(vec, 6, VectorFindValueType.SmallerThan);
+            List<int> vecResult = (new Vec()).FindValues(vec, 6, VectorFindValueType.SmallerThan);
             List<int> vecExpt = new List<int> { 0, 1, 2, 3, 4, 5 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_Equal()
         {
             double[] vec = { 0, 1, 2, 3, 4, -9999, 6, 7, 8, -9999, 10 };
-            List<int> vecResult = Vec.FindValues(vec, -9999, VectorFindValueType.Equal);
+            List<int> vecResult = (new Vec()).FindValues(vec, -9999, VectorFindValueType.Equal);
             List<int> vecExpt = new List<int> {5,9 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -224,7 +224,7 @@ namespace TimeSeriesAnalysis.UnitTests
         public void FindValues_NotNan()
         {
             double[] vec = { 0, 1, 2, 3, 4, -9999, 6, 7, 8, -9999, 10 };
-            List<int> vecResult = Vec.FindValues(vec, -9999, VectorFindValueType.NotNaN);
+            List<int> vecResult = (new Vec()).FindValues(vec, -9999, VectorFindValueType.NotNaN);
             List<int> vecExpt = new List<int> { 0, 1,2,3,4,6,7,8,10 };
             Assert.AreEqual(vecExpt, vecResult);
         }
@@ -284,9 +284,9 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             double[] vec2 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            vec1 = Vec.Add(vec1, 1);
+            vec1 = (new Vec()).Add(vec1, 1);
 
-            double sumAbsErr = Vec.SumOfAbsErr(vec1,vec2);
+            double sumAbsErr = (new Vec()).SumOfAbsErr(vec1,vec2);
             Assert.AreEqual(1, sumAbsErr);
         }
 
@@ -295,9 +295,9 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             double[] vec2 = { 0, 1, 2, 3, Double.NaN, 5, 6, 7, 8, 9, 10 };
-            vec1 = Vec.Add(vec1, 1);
+            vec1 = (new Vec()).Add(vec1, 1);
 
-            double sumAbsErr = Vec.SumOfAbsErr(vec1, vec2);
+            double sumAbsErr = (new Vec()).SumOfAbsErr(vec1, vec2);
             Assert.AreEqual(1, sumAbsErr);
         }
 
@@ -306,7 +306,7 @@ namespace TimeSeriesAnalysis.UnitTests
         {
             double[] vec1 = { 0, 1, 2, 3,};
             double[] vec2 = { 2, 2, 2, 2 };
-            double[] vecres = Vec.Max(vec1,vec2);
+            double[] vecres = (new Vec()).Max(vec1,vec2);
 
             Assert.AreEqual( new double[]{2,2,2,3 }, vecres);
         }
@@ -330,14 +330,14 @@ namespace TimeSeriesAnalysis.UnitTests
         public double SumOfSquareErrors(int[] indToIgnoreArray)
         {
             double[] vec1 = { 0, Double.NaN, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            double[] vec2 = Vec.Add(vec1, 2); ;
+            double[] vec2 = (new Vec()).Add(vec1, 2); ;
 
             List<int> indToIgnoreList=null;
             if (indToIgnoreArray != null)
             {
                 indToIgnoreList = indToIgnoreArray.ToList();
             }
-            double sumAbsErr = Vec.SumOfSquareErr(vec1, vec2, 0, true, indToIgnoreList);
+            double sumAbsErr = (new Vec()).SumOfSquareErr(vec1, vec2, 0, true, indToIgnoreList);
             return sumAbsErr;
         }
 

@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         static public List<int> GetBadValueIndices(double[] inData, double badValueIndicatingValue=-9999)
         {
-            List<int> badIndices = Vec.FindValues(inData, badValueIndicatingValue, VectorFindValueType.NaN);
+            List<int> badIndices = (new Vec()).FindValues(inData, badValueIndicatingValue, VectorFindValueType.NaN);
            // List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
             return badIndices;
         }

@@ -23,6 +23,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private bool isFirstIteration;
 
+        private double[] lastGoodValuesOfU;
+
+
         public  ProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
@@ -33,9 +36,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="timeBase_s">the timebase in seconds, the time interval between samples and between calls to Iterate</param>
         public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s)
         {
-            this.modelParameters = modelParameters;
-            this.timeBase_s = timeBase_s;
-            InitSim(timeBase_s);
+            InitSim(timeBase_s,modelParameters);
         }
 
         /// <summary>
@@ -45,8 +46,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         public DefaultProcessModel(DefaultProcessModelParameters modelParameters, ProcessDataSet dataSet)
         {
-            this.modelParameters = modelParameters;
-            InitSim(dataSet.TimeBase_s);
+            InitSim(dataSet.TimeBase_s, modelParameters);
         }
 
         /// <summary>
@@ -63,8 +63,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Initalize the process model with a sampling time
         /// </summary>
         /// <param name="timeBase_s">the timebase in seconds, the length of time between calls to Iterate(data sampling time interval)</param>
-        public void InitSim(double timeBase_s)
+        public void InitSim(double timeBase_s, DefaultProcessModelParameters modelParameters)
         {
+            this.modelParameters = modelParameters;
+            this.lastGoodValuesOfU =Vec<double>.Fill(Double.NaN,modelParameters.ProcessGains.Length);
+            this.timeBase_s = timeBase_s;
             this.lowPass = new LowPass(timeBase_s);
             this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
             this.isFirstIteration = true;
@@ -74,8 +77,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Iterates the process model state one time step, based on the inputs given
         /// </summary>
         /// <param name="inputsU">vector of inputs</param>
-        /// <returns>the updated process model output</returns>
-        public double Iterate(double[] inputsU)
+        /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
+        /// <returns>the updated process model output
+        ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
+        ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
+        /// </returns>
+        public double Iterate(double[] inputsU, double badValueIndicator=-9999)
         {
             if (!modelParameters.AbleToIdentify())
                 return Double.NaN;
@@ -84,15 +91,24 @@ namespace TimeSeriesAnalysis.Dynamic
 
             for (int curInput = 0; curInput < inputsU.Length; curInput++)
             {
+                double curUvalue = inputsU[curInput];
+                if (Double.IsNaN(inputsU[curInput]) || inputsU[curInput] == badValueIndicator)
+                {
+                    curUvalue = lastGoodValuesOfU[curInput];
+                }
+                else
+                {
+                    lastGoodValuesOfU[curInput] = inputsU[curInput];
+                }
                 if (modelParameters.U0 != null)
                 {
                     y_static += modelParameters.ProcessGains[curInput] *
-                        (inputsU[curInput] - modelParameters.U0[curInput]);
+                        (curUvalue - modelParameters.U0[curInput]);
                 }
                 else
                 {
                     y_static += modelParameters.ProcessGains[curInput] *
-                            inputsU[curInput];
+                            curUvalue;
                 }
 
                 if (modelParameters.ProcessGainCurvatures != null)
@@ -100,6 +116,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     //TODO
                 }
             }
+
             // nb! if first iteration, start model at steady-state
             double y = lowPass.Filter(y_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
@@ -163,15 +180,19 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("-------------------------");
             sb.AppendLine("fitting objective : " + SignificantDigits.Format(modelParameters.GetFittingObjFunVal(),4) );
             sb.AppendLine("fitting R2: " + SignificantDigits.Format(modelParameters.GetFittingR2(), 4) );
+            sb.AppendLine("fitting data points: " + modelParameters.NFittingTotalDataPoints + " of which " + modelParameters.NFittingBadDataPoints +" were excluded");
             foreach (var warning in modelParameters.GetWarningList())
                 sb.AppendLine("fitting warning :" + warning.ToString());
             if (modelParameters.GetWarningList().Count == 0)
             {
                 sb.AppendLine("fitting : no error or warnings");
             }
+          
+
+
             foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
                 sb.AppendLine("time delay est. warning :" + warning.ToString());
-            if (modelParameters.GetWarningList().Count == 0)
+            if (modelParameters.TimeDelayEstimationWarnings.Count == 0)
             {
                 sb.AppendLine("time delay est : no error or warnings");
             }

@@ -17,11 +17,18 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class HighPass
     {
-        LowPass lp;
+        private LowPass lp;
+        private double nanValue;
 
-        public HighPass(double TimeBase_s)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="TimeBase_s">time base/sampling time in seconds of data to be fed filter</param>
+        /// <param name="nanValue">value of input signal to be ignored/treated as NaN</param>
+        public HighPass(double TimeBase_s, double nanValue=-9999)
         {
-            this.lp = new LowPass(TimeBase_s);
+            this.nanValue = nanValue;
+            this.lp = new LowPass(TimeBase_s, nanValue);
         }
 
         /// <summary>
@@ -46,7 +53,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a vector of the filtered time-series</returns>
         public double[] Filter(double[] signal, double FilterTc_s, int order = 1)
         {
-            return Vec.Subtract(signal,lp.Filter(signal,FilterTc_s,order)); 
+            return (new Vec(nanValue)).Subtract(signal,lp.Filter(signal,FilterTc_s,order)); 
         }
 
 

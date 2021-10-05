@@ -45,7 +45,7 @@ namespace TimeSeriesAnalysis.Examples
             double[] u3 = TimeSeriesCreator.Step(21, 61, 1,-1);
 
             double[] y = new double[u1.Length];
-            double[] noise = Vec.Mult(Vec.Rand(u1.Length, -1,1,0),noiseAmplitude);
+            double[] noise = (new Vec()).Mult(Vec.Rand(u1.Length, -1,1,0),noiseAmplitude);
             for (int k = 0; k < u1.Length; k++)
             {
                 y[k] = true_gains[0] * u1[k] 
@@ -59,7 +59,7 @@ namespace TimeSeriesAnalysis.Examples
 
             double[][] U = new double[][] { u1, u2, u3 };
 
-            var results = Vec.Regress(y, U);
+            var results = (new Vec()).Regress(y, U);
 
             TestContext.WriteLine(Vec.ToString(results.param, 3));
             TestContext.WriteLine(SignificantDigits.Format(results.Rsq, 3));
@@ -132,7 +132,7 @@ namespace TimeSeriesAnalysis.Examples
             Console.WriteLine(identifiedModel.ToString());
 
             // compare dynamic to static identification
-            var regResults = Vec.Regress(dataSet.Y_meas, U);
+            var regResults = (new Vec()).Regress(dataSet.Y_meas, U);
             Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas,
                 identifiedModel.FittedDataSet.Y_sim,regResults.Y_modelled },
                 new List<string> { "y1=y_meas", "y1=y_dynamic","y1=y_static" }, timeBase_s,

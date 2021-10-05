@@ -32,7 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic
             return parameters;
         }
 
-        public double Iterate(double[] inputsU)
+        public double Iterate(double[] inputsU,double badValueIndicator=-9999)
         {
             double amplitude     = parameters.amplitude;
             double sinusPeriod_s = parameters.period_s;

@@ -18,7 +18,8 @@ namespace TimeSeriesAnalysis
             objectiveFunctionValue = Double.PositiveInfinity;
             param95prcConfInterval = null;
             Y_modelled = null;
-            varCovarMatrix = null;// new double[thetaLength][];
+            varCovarMatrix = null;
+            NfittingBadDataPoints = 0;
         }
         /// <summary>
         /// R2-root-means-squared between Y and Y_modelled for the tuning dataset(a value between 0 and 100, higher is better)
@@ -33,6 +34,11 @@ namespace TimeSeriesAnalysis
         public double[] Gains { get; set; }
 
         public bool ableToIdentify { get; set; }
+
+        public int NfittingBadDataPoints { get; set; }
+        public int NfittingTotalDataPoints { get; set; }
+        
+
 
     }
 }

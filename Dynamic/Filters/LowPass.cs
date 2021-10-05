@@ -22,15 +22,17 @@ namespace TimeSeriesAnalysis.Dynamic
         private double prevFilteredSignal;
         private double prevFilteredSignalOrder2;
         private int nSignals = 0;
+        private double nanValue;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="TimeBase_s">The time base, the time interval between each time step of the dataset, in seconds</param>
-        public LowPass(double TimeBase_s)
+        public LowPass(double TimeBase_s, double nanValue = -9999)
         {
             this.timeBase_s = TimeBase_s;
             this.nSignals = 0;
+            this.nanValue = nanValue;
         }
 
         /// <summary>
@@ -59,7 +61,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 a = 0;// turn off filter if 
             }
 
-            if (Double.IsNaN(this.prevFilteredSignal) || Double.IsInfinity(this.prevFilteredSignal) || prevFilteredSignal == -9999)
+            if (Double.IsNaN(this.prevFilteredSignal) || Double.IsInfinity(this.prevFilteredSignal) 
+                || prevFilteredSignal == nanValue)
                 filteredSignal = signal;
             else
             {

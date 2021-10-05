@@ -17,13 +17,20 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class BandPass
     {
-        LowPass lp;
-        HighPass hp;
+        private LowPass lp;
+        private HighPass hp;
+        private double nanValue;
 
-        public BandPass(double TimeBase_s)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TimeBase_s"></param>
+        /// <param name="nanValue">value to be treated as NaN</param>
+        public BandPass(double TimeBase_s, double nanValue=-9999)
         {
-            this.lp = new LowPass(TimeBase_s);
-            this.hp = new HighPass(TimeBase_s);
+            this.lp = new LowPass(TimeBase_s, nanValue);
+            this.hp = new HighPass(TimeBase_s, nanValue);
+            this.nanValue = nanValue;
         }
 
 
@@ -51,7 +58,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a vector of the filtered time-series</returns>
         public double[] Filter(double[] signal, double lpFilterTc_s,double hpFilterTc_s, int order = 1)
         {
-            return Vec.Subtract(Vec.Subtract(signal, lp.Filter(signal, lpFilterTc_s, order)),
+            return (new Vec(nanValue)).Subtract((new Vec(nanValue)).Subtract(signal, lp.Filter(signal, lpFilterTc_s, order)),
                 hp.Filter(signal,hpFilterTc_s,order));
         }
 

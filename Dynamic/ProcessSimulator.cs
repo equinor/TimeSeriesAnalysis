@@ -57,14 +57,15 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
-                    output[rowIdx] = model.Iterate(processDataSet.U.GetRow(rowIdx));
+                    output[rowIdx] = model.Iterate(processDataSet.U.GetRow(rowIdx), 
+                        processDataSet.BadValueIndicatingValue);
                 }
             }
             else
             {
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
-                    output[rowIdx] = model.Iterate(null);
+                    output[rowIdx] = model.Iterate(null, processDataSet.BadValueIndicatingValue);
                 }
             }
             return output;
@@ -86,6 +87,8 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var output = Simulate(model, processDataSet);
 
+            var vec = new Vec(processDataSet.BadValueIndicatingValue);
+
             if (writeResultToYmeasInsteadOfYsim)
             {
                 if (processDataSet.Y_meas == null|| doOverwriteY)
@@ -94,7 +97,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    processDataSet.Y_meas = Vec.Add(processDataSet.Y_meas, output);
+                    processDataSet.Y_meas = vec.Add(processDataSet.Y_meas, output);
                 }
             }
             else
@@ -105,11 +108,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    processDataSet.Y_sim = Vec.Add(processDataSet.Y_sim, output);
+                    processDataSet.Y_sim = vec.Add(processDataSet.Y_sim, output);
                 }
 
             }
-            if (Vec.ContainsBadData(output))
+            if (vec.ContainsBadData(output))
                 return false;
             else 
                 return true;

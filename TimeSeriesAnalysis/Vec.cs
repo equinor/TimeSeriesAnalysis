@@ -16,18 +16,31 @@ namespace TimeSeriesAnalysis
     /// Utility functions and operations for treating arrays as mathetmatical vectors
     /// This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec<T>)
     /// </summary>
-    public static class Vec
+    public class Vec
     {
-        // methods ordered alphabetically
-        //  private static readonly double nanValue = -9999;// sometimes a special number is used to denote "NaN", -9999 is used in Sigma
+        private  double valuteToReturnElementIsNaN;// so fi an element is either NaN or "-9999", what value shoudl a calculation return?
+        private double nanValue;// an input value that is to be considrered "NaN" 
 
-        private static readonly double valuteToReturnElementIsNaN = Double.NaN;//-9999;// so fi an element is either NaN or "-9999", what value shoudl a calculation return?
-        private static readonly double nanValue = -9999;// an input value that is to be considrered "NaN" 
+        /// <summary>
+        /// Constructor
+        /// 
+        /// </summary>
+        /// <param name="nanValue">inputs values matching this value are treated as "NaN" 
+        /// and are excluded from all calculations</param>
+        /// <param name="valuteToReturnElementIsNaN">value to return in elementwise calculations to indiate Nan output</param>
+        public Vec(double nanValue = -9999, double valuteToReturnElementIsNaN = Double.NaN)
+        {
+            this.nanValue = nanValue;
+            this.valuteToReturnElementIsNaN = valuteToReturnElementIsNaN;
+        }
+
+        //  Methods should be sorted alphateically
+
 
         ///<summary>
         /// returns an array where each value is the absolute value of array1
         ///</summary>
-        public static double[] Abs(double[] array1)
+        public double[] Abs(double[] array1)
         {
             if (array1 == null)
                 return null;
@@ -46,7 +59,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns an array which is the elementwise addition of array1 and array2 
         ///</summary>
-        public static double[] Add(double[] array1, double[] array2)
+        public double[] Add(double[] array1, double[] array2)
         {
 
             if (array1 == null || array2 == null)
@@ -68,7 +81,7 @@ namespace TimeSeriesAnalysis
         /// elementwise addition of val2 to array1
         ///</summary>
 
-        public static int[] Add(int[] array1, int val2)
+        public int[] Add(int[] array1, int val2)
         {
             if (array1 == null)
                 return null;
@@ -86,7 +99,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// elementwise addition of val2 to array1
         ///</summary>
-        public static double[] Add(double[] array1, double val2)
+        public double[] Add(double[] array1, double val2)
         {
             if (array1 == null)
                 return null;
@@ -108,7 +121,7 @@ namespace TimeSeriesAnalysis
         ///  for instance on 
         /// 
         /// </summary>
-        public static List<int> AppendTrailingIndices(List<int> indiceArray)
+        static public List<int> AppendTrailingIndices(List<int> indiceArray)
         {
             List<int> appendedIndiceArray = new List<int>(indiceArray);
             List<int> indicesToAdd = new List<int>();
@@ -128,7 +141,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// Returns true f array contains a "-9999" or NaN indicating missing data
         ///</summary>
-        public static bool ContainsBadData(double[] x)
+        public bool ContainsBadData(double[] x)
         {
             bool doesContainBadData = false;
             for (int i = 0; i < x.Length; i++)
@@ -144,7 +157,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  returns the co-variance of two arrays(interpreted as "vectors")
         ///</summary>
-        public static double Cov(double[] array1, double[] array2, bool doNormalize = false)
+        public double Cov(double[] array1, double[] array2, bool doNormalize = false)
         {
             double retVal = 0;
             double avg1 = Mean(array1).Value;
@@ -192,7 +205,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns an array of the difference between every neighbhoring item in array
         ///</summary>
-        public static double[] Diff(double[] array)
+        public  double[] Diff(double[] array)
         {
             double[] ucur = Vec<double>.SubArray(array, 1);
             double[] uprev = Vec<double>.SubArray(array, 0, array.Length - 2);
@@ -207,7 +220,7 @@ namespace TimeSeriesAnalysis
         /// <param name="scalar"></param>
         /// <returns>an vector of values representing the array didived by a scalar. 
         /// In case of NaN inputs or divide-by-zero NaN elements are returned.  </returns>
-        public static double[] Div(double[] vector, double scalar)
+        public double[] Div(double[] vector, double scalar)
         {
             double[] outArray = new double[vector.Length];
             for (int i = 0; i < vector.Length; i++)
@@ -231,7 +244,7 @@ namespace TimeSeriesAnalysis
         /// <param name="vector2"></param>
         /// <returns>an vector of values representing the array didived by a scalar. 
         /// In case of NaN inputs or divide-by-zero NaN elements are returned</returns>
-        public static double[] Div(double[] vector1, double[] vector2)
+        public double[] Div(double[] vector1, double[] vector2)
         {
             int N = Math.Min(vector1.Length, vector2.Length);
             double[] outArray = new double[N];
@@ -256,7 +269,7 @@ namespace TimeSeriesAnalysis
         /// return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
         /// Also capable of finding NaN values
         ///</summary>
-        public static List<int> FindValues(double[] vec, double value, VectorFindValueType type)
+        public List<int> FindValues(double[] vec, double value, VectorFindValueType type)
         {
             List<int> indices = new List<int>();
 
@@ -388,10 +401,10 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// Returns true if all elements in array are "-9999" or Double.NaN
         ///</summary>
-        public static bool IsAllNaN(double[] array, double nanValue = -9999)
+        public bool IsAllNaN(double[] array)
         {
             int count = 0;
-            while (array[count] == nanValue && count < array.Length - 1)
+            while (IsNaN(array[count]) && count < array.Length - 1)
             {
                 count++;
             }
@@ -409,7 +422,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// All checks for NaN will test both for Double.IsNan and if value== a specific "nan" value (-9999)
         ///</summary>
-        static private bool IsNaN(double value, double nanValue = -9999)
+        private bool IsNaN(double value)
         {
             if (double.IsNaN(value) || value == nanValue)
                 return true;
@@ -420,7 +433,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns maximum value of two array as new array 
         ///</summary>
-        public static double[] Max(double[] array1, double[] array2)
+        public double[] Max(double[] array1, double[] array2)
         {
             double[] retVal = new double[array1.Length];
 
@@ -437,7 +450,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns maximum value of array between indices startInd and endInd
         ///</summary>
-        public static double Max(double[] array, int startInd, int endInd)
+        public double Max(double[] array, int startInd, int endInd)
         {
             double maxVal = double.MinValue;
             for (int i = startInd; i < endInd; i++)
@@ -456,7 +469,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns minimum value of two array as new array 
         ///</summary>
-        public static double[] Min(double[] array1, double[] array2)
+        static public double[] Min(double[] array1, double[] array2)
         {
             double[] retVal = new double[array1.Length];
 
@@ -474,7 +487,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns maximum value of array and index of maximum value 
         ///</summary>
-        public static double Max(double[] array, out int ind)
+        public double Max(double[] array, out int ind)
         {
             ind = 0;
             double maxVal = double.MinValue;
@@ -495,7 +508,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns element-wise minimum of array element and value
         ///</summary>
-        public static double[] Min(double[] array, double value)
+        public double[] Min(double[] array, double value)
         {
             double[] retArray = new double[array.Length];
             for (int i = 0; i < array.Length; i++)
@@ -518,7 +531,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns element-wise maximum of array element and value
         ///</summary>
-        public static double[] Max(double[] array, double value)
+        public double[] Max(double[] array, double value)
         {
             double[] retArray = new double[array.Length];
             for (int i = 0; i < array.Length; i++)
@@ -543,7 +556,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns minimum value of array and index of maximum value 
         ///</summary>
-        public static double Min(double[] array, out int ind)
+        public double Min(double[] array, out int ind)
         {
             ind = 0;
             double minVal = double.MaxValue;
@@ -565,13 +578,13 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public static double Min(double[] array)
         {
-            return Min(array, out _);
+            return (new Vec()).Min(array, out _);
         }
 
         ///<summary>
         ///  Returns maximum value of array 
         ///</summary>
-        public static double Max(double[] array)
+        public double Max(double[] array)
         {
             return Max(array, out _);
         }
@@ -593,7 +606,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// elementwise multipliation of val2 to array1
         ///</summary>
-        public static double[] Mult(double[] array1, double val2)
+        public double[] Mult(double[] array1, double val2)
         {
             if (array1 == null)
                 return null;
@@ -613,7 +626,7 @@ namespace TimeSeriesAnalysis
         /// elementwise  multiplication of array1 and array2, assuming they are same size
         ///</summary>
 
-        public static double[] Multiply(double[] array1, double[] array2)
+        public double[] Multiply(double[] array1, double[] array2)
         {
             if (array1 == null)
                 return null;
@@ -638,7 +651,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns the mean value of array1
         ///</summary>
-        public static double? Mean(double[] array1)
+        public double? Mean(double[] array1)
         {
             if (array1 == null)
                 return null;
@@ -658,19 +671,12 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  Returns range of an array, the difference between minimum and maximum
         ///</summary>
-        public static double Range(double[] array)
+        public double Range(double[] array)
         {
             double range = Max(array) - Min(array);
 
             return range;
         }
-
-
-
-
-
-
-
 
 
 
@@ -746,9 +752,8 @@ namespace TimeSeriesAnalysis
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
 
-        public static RegressionResults Regress(double[] Y, double[,] X, int[] yIndToIgnore = null)
+        public RegressionResults Regress(double[] Y, double[,] X, int[] yIndToIgnore = null)
         {
-
             return Regress(Y,X.Convert2DtoJagged(),yIndToIgnore);
         }
 
@@ -760,11 +765,9 @@ namespace TimeSeriesAnalysis
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
-        public static RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null)
+        public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null)
         {
-            
             bool doInterpolateYforBadIndices = true;
-
             MultipleLinearRegression regression;
             double[][] X_T;
             if (X.GetNColumns() > X.GetNRows())
@@ -776,7 +779,6 @@ namespace TimeSeriesAnalysis
             {
                 X_T = X;
             }
-                       
             // weight-to-zero all indices which are to be ignored!
             double[] weights = null;
             if (yIndToIgnore != null)
@@ -786,18 +788,30 @@ namespace TimeSeriesAnalysis
                 {
                     int curInd = yIndToIgnore[i];
                     if (curInd >= 0 && curInd < weights.Length)
+                    {
                         weights[curInd] = 0;
-
+                    }
                     // set Y and X_T to zero for values that are bad
                     // the weight do not always appear to work, sometimes the accord
                     // solver just returns "null" and hard to know why, and this is a
                     // workaround
-                    Y[curInd] = 0;
-                    for (int curX = 0; curX < X_T[curInd].Count(); curX++)
+                    if (curInd < Y.Length)
                     {
-                        X_T[curInd][curX] = 0; 
+                        Y[curInd] = 0;
+                        for (int curX = 0; curX < X_T[curInd].Count(); curX++)
+                        {
+                            X_T[curInd][curX] = 0;
+                        }
                     }
                 }
+            }
+
+            bool doDebug = false;
+            if (doDebug)
+            {
+                Plot.FromList(new List<double[]> {Y, Array2D<double>.GetColumn(X_T,0),
+                    Array2D<double>.GetColumn(X_T,1) },
+                    new List<string> { "y1=Y","y3=u1", "y3=u2" },1,null,default,"regresstest");
             }
 
             OrdinaryLeastSquares accordFittingAlgo = new OrdinaryLeastSquares()
@@ -810,6 +824,15 @@ namespace TimeSeriesAnalysis
             {
                 // note: weights have no effect prior to accord 3.7.0 
                 regression = accordFittingAlgo.Learn(X_T, Y, weights);
+                if (yIndToIgnore == null)
+                {
+                    results.NfittingBadDataPoints = 0;
+                }
+                else
+                {
+                    results.NfittingBadDataPoints = yIndToIgnore.Length;
+                }
+                results.NfittingTotalDataPoints = Y.Length;
                 // modelled Y
                 results.Y_modelled = regression.Transform(X_T);
                 if (yIndToIgnore != null)
@@ -850,7 +873,7 @@ namespace TimeSeriesAnalysis
                 {
                     yIndToIgnoreList = yIndToIgnore.ToList();
                 }
-                results.objectiveFunctionValue = Vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
+                results.objectiveFunctionValue = (new Vec()).SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
                 results.Bias = regression.Intercept;
                 results.Gains = regression.Weights;
@@ -926,7 +949,7 @@ namespace TimeSeriesAnalysis
         /// elementwise  subtraction of array1 and array2, assuming they are same size
         ///</summary>
 
-        public static double[] Subtract(double[] array1, double[] array2)
+        public double[] Subtract(double[] array1, double[] array2)
         {
             if (array1 == null || array2 == null)
                 return null;
@@ -945,7 +968,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// elementwise subtraction of val2 from array1
         ///</summary>
-        public static double[] Subtract(double[] array1, double val2)
+        public double[] Subtract(double[] array1, double val2)
         {
             if (array1 == null)
                 return null;
@@ -962,7 +985,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// subtracts val2 from array2 elements
         ///</summary>
-        public static int[] Subtract(int[] array1, int val2)
+        public int[] Subtract(int[] array1, int val2)
         {
             if (array1 == null)
                 return null;
@@ -981,7 +1004,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns the sum of array1
         ///</summary>
-        public static double? Sum(double[] array1)
+        public double? Sum(double[] array1)
         {
             if (array1 == null)
                 return null;
@@ -998,7 +1021,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  The sum of absolute errors <c>(|a1-a2|)</c> between <c>array1</c> and <c>array2</c>
         ///</summary>
-        public static double SumOfAbsErr(double[] array1, double[] array2, int indexOffset = -1)
+        public double SumOfAbsErr(double[] array1, double[] array2, int indexOffset = -1)
         {
             int nGoodValues = 0;
             if (indexOffset == -1)
@@ -1008,7 +1031,7 @@ namespace TimeSeriesAnalysis
             double ret = 0;
             for (int i = indexOffset; i < array2.Count(); i++)
             {
-                if (Double.IsNaN(array2[i]) || Double.IsNaN(array1[i]) || array2[i] == nanValue || array1[i] == nanValue)
+                if ( IsNaN(array2[i]) || IsNaN(array1[i]) )
                     continue;
                 nGoodValues++;
                 ret += Math.Abs(array2[i] - array1[i - indexOffset]);
@@ -1029,7 +1052,7 @@ namespace TimeSeriesAnalysis
         /// <param name="divByN">if true, the result is normalized by the number of good values </param>
         /// <param name="indToIgnore">optionally a list of indices of <c>array1</c> to ignore</param>
         /// <returns></returns>
-        public static double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, 
+        public double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, 
             bool divByN = true, List<int> indToIgnore=null)
         {
             if (array1.Count() < array2.Count())
@@ -1081,7 +1104,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// sum of square error of the vector compared to itself
         ///</summary>
-        public static double SelfSumOfSquareErr(double[] vec)
+        public double SelfSumOfSquareErr(double[] vec)
         {
             return SumOfSquareErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
@@ -1089,7 +1112,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// sum of absolute error of the vector compared to itself
         ///</summary>
-        public static double SelfSumOfAbsErr(double[] vec)
+        public double SelfSumOfAbsErr(double[] vec)
         {
             return SumOfAbsErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
@@ -1108,7 +1131,7 @@ namespace TimeSeriesAnalysis
         /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
         /// <returns>R2 squared, a value between <c>-1</c> and <c>1</c>. If an error occured, 
         /// <c>Double.PositiveInfinity</c> is returned </returns>
-        public static double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt=null)
+        public double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt=null)
         {
             if (vector1 == null || vector2 == null)
                 return Double.PositiveInfinity;
@@ -1194,7 +1217,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         ///  returns the variance of the array (always apositive number)
         ///</summary>
-        public static double Var(double[] array1, bool doNormalize = false)
+        public double Var(double[] array1, bool doNormalize = false)
         {
             double retVal = 0;
             double avg = Mean(array1).Value;
@@ -1208,9 +1231,7 @@ namespace TimeSeriesAnalysis
             }
             if (doNormalize)
             {
-#pragma warning disable IDE0054 // Use compound assignment
                 retVal = retVal / (N);
-#pragma warning restore IDE0054 // Use compound assignment
             }
             return retVal;
         }
@@ -1225,7 +1246,6 @@ namespace TimeSeriesAnalysis
             c.Sort();
             return c;
         }
-
 
     }
 }

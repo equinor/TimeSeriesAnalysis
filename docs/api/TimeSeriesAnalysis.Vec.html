@@ -118,8 +118,46 @@
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
   <h5 id="TimeSeriesAnalysis_Vec_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class Vec</code></pre>
+    <pre><code class="lang-csharp hljs">public class Vec</code></pre>
   </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec__ctor_" data-uid="TimeSeriesAnalysis.Vec.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec__ctor_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Vec.#ctor(System.Double,System.Double)">Vec(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vec(double nanValue = -9999, double valuteToReturnElementIsNaN = NaN)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">nanValue</span></td>
+        <td><p>inputs values matching this value are treated as &quot;NaN&quot;
+and are excluded from all calculations</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">valuteToReturnElementIsNaN</span></td>
+        <td><p>value to return in elementwise calculations to indiate Nan output</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -131,7 +169,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Abs(double[] array1)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Abs(double[] array1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,7 +212,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Add(double[] array1, double val2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Add(double[] array1, double val2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,7 +260,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Add(double[] array1, double[] array2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Add(double[] array1, double[] array2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,7 +308,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int[] Add(int[] array1, int val2)</code></pre>
+    <pre><code class="lang-csharp hljs">public int[] Add(int[] array1, int val2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -364,7 +402,7 @@ for instance on</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool ContainsBadData(double[] x)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ContainsBadData(double[] x)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -407,7 +445,7 @@ for instance on</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Cov(double[] array1, double[] array2, bool doNormalize = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Cov(double[] array1, double[] array2, bool doNormalize = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -503,7 +541,7 @@ for instance on</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Diff(double[] array)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Diff(double[] array)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -546,7 +584,7 @@ for instance on</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Div(double[] vector, double scalar)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Div(double[] vector, double scalar)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -596,7 +634,7 @@ In case of NaN inputs or divide-by-zero NaN elements are returned.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Div(double[] vector1, double[] vector2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Div(double[] vector1, double[] vector2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -647,7 +685,7 @@ Also capable of finding NaN values</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static List&lt;int&gt; FindValues(double[] vec, double value, VectorFindValueType type)</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;int&gt; FindValues(double[] vec, double value, VectorFindValueType type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -791,13 +829,13 @@ i.e. of the &quot;other vectors</p>
   
   
   <a id="TimeSeriesAnalysis_Vec_IsAllNaN_" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[],System.Double)">IsAllNaN(Double[], Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])">IsAllNaN(Double[])</h4>
   <div class="markdown level1 summary"><p>Returns true if all elements in array are &quot;-9999&quot; or Double.NaN</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsAllNaN(double[] array, double nanValue = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsAllNaN(double[] array)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -812,11 +850,6 @@ i.e. of the &quot;other vectors</p>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">array</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">nanValue</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -941,7 +974,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Max(double[] array)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Max(double[] array)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -984,7 +1017,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Max(double[] array, double value)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Max(double[] array, double value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1032,7 +1065,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Max(double[] array1, double[] array2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Max(double[] array1, double[] array2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1080,7 +1113,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Max(double[] array, int startInd, int endInd)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Max(double[] array, int startInd, int endInd)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1133,7 +1166,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Max(double[] array, out int ind)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Max(double[] array, out int ind)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1181,7 +1214,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double? Mean(double[] array1)</code></pre>
+    <pre><code class="lang-csharp hljs">public double? Mean(double[] array1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1267,7 +1300,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Min(double[] array, double value)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Min(double[] array, double value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1363,7 +1396,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Min(double[] array, out int ind)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Min(double[] array, out int ind)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1411,7 +1444,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Mult(double[] array1, double val2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Mult(double[] array1, double val2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1459,7 +1492,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Multiply(double[] array1, double[] array2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Multiply(double[] array1, double[] array2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1570,7 +1603,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Range(double[] array)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Range(double[] array)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1613,7 +1646,7 @@ i.e. of the &quot;other vectors</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1671,7 +1704,7 @@ some statistics on the fit and uncertainty thereof.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static RegressionResults Regress(double[] Y, double[, ] X, int[] yIndToIgnore = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public RegressionResults Regress(double[] Y, double[, ] X, int[] yIndToIgnore = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1792,7 +1825,7 @@ half of the observed variation can be explained by the model's inputs.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double RSquared(double[] vector1, double[] vector2, List&lt;int&gt; indToIgnoreExt = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public double RSquared(double[] vector1, double[] vector2, List&lt;int&gt; indToIgnoreExt = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1850,7 +1883,7 @@ half of the observed variation can be explained by the model's inputs.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double SelfSumOfAbsErr(double[] vec)</code></pre>
+    <pre><code class="lang-csharp hljs">public double SelfSumOfAbsErr(double[] vec)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1893,7 +1926,7 @@ half of the observed variation can be explained by the model's inputs.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double SelfSumOfSquareErr(double[] vec)</code></pre>
+    <pre><code class="lang-csharp hljs">public double SelfSumOfSquareErr(double[] vec)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1987,7 +2020,7 @@ Vector data can then be retreived by companion method <code>Deserialize</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Subtract(double[] array1, double val2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Subtract(double[] array1, double val2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2035,7 +2068,7 @@ Vector data can then be retreived by companion method <code>Deserialize</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Subtract(double[] array1, double[] array2)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Subtract(double[] array1, double[] array2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2083,7 +2116,7 @@ Vector data can then be retreived by companion method <code>Deserialize</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int[] Subtract(int[] array1, int val2)</code></pre>
+    <pre><code class="lang-csharp hljs">public int[] Subtract(int[] array1, int val2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2131,7 +2164,7 @@ Vector data can then be retreived by companion method <code>Deserialize</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double? Sum(double[] array1)</code></pre>
+    <pre><code class="lang-csharp hljs">public double? Sum(double[] array1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2174,7 +2207,7 @@ Vector data can then be retreived by companion method <code>Deserialize</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double SumOfAbsErr(double[] array1, double[] array2, int indexOffset = -1)</code></pre>
+    <pre><code class="lang-csharp hljs">public double SumOfAbsErr(double[] array1, double[] array2, int indexOffset = -1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2281,7 +2314,7 @@ this normalization can be turned off</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, bool divByN = true, List&lt;int&gt; indToIgnore = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, bool divByN = true, List&lt;int&gt; indToIgnore = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2446,7 +2479,7 @@ this normalization can be turned off</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Var(double[] array1, bool doNormalize = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Var(double[] array1, bool doNormalize = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

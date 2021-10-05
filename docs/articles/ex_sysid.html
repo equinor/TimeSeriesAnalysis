@@ -124,7 +124,7 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
         Console.WriteLine(identifiedModel.ToString());
 
         // compare dynamic to static identification
-        var regResults = Vec.Regress(dataSet.Y_meas, U);
+        var regResults = (new Vec()).Regress(dataSet.Y_meas, U);
         Plot.FromList(new List&lt;double[]&gt; { identifiedModel.FittedDataSet.Y_meas,
             identifiedModel.FittedDataSet.Y_sim,regResults.Y_modelled },
             new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_dynamic&quot;,&quot;y1=y_static&quot; }, timeBase_s,

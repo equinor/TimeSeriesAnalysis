@@ -156,38 +156,16 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (timeDelayIdx < minTimeDelayIts)
                 return true;
-            /*
-            //indicates a rank deficient problem
-            if (objctFunVal.Count() < timeDelayIdx)
-            {
-                return false;
-            }
-
-            bool continueIncreasingTimeDelayEst = true;
-            bool isObjFunDecreasing = objctFunVal.ElementAt(timeDelayIdx - 2) > objctFunVal.ElementAt(timeDelayIdx - 1);
-
-            double prevProcessGainUncPrc = ProcessGainEstUnc.ElementAt(timeDelayIdx - 2) / ProcessGainEst.ElementAt(timeDelayIdx - 2);
-            double curProcessGainUncPrc = ProcessGainEstUnc.ElementAt(timeDelayIdx - 1) / ProcessGainEst.ElementAt(timeDelayIdx - 1);
-            bool isProcessGainUncDecreasing = prevProcessGainUncPrc > curProcessGainUncPrc;
-
-            double prevProcessTimeConstncPrc = TimeConstantEstUnc.ElementAt(timeDelayIdx - 2) / TimeConstantEst.ElementAt(timeDelayIdx - 2);
-            double curProcessTimeConstUncPrc = TimeConstantEstUnc.ElementAt(timeDelayIdx - 1) / TimeConstantEst.ElementAt(timeDelayIdx - 1);
-            bool isProcessTimeConstantnUncDecreasing = prevProcessTimeConstncPrc > curProcessTimeConstUncPrc;
-
-
-            if (isObjFunDecreasing || isProcessGainUncDecreasing || isProcessTimeConstantnUncDecreasing)
-                */
-
 
             var objFunVals = GetObjFunValList();
             bool isObjFunDecreasing = objFunVals.ElementAt(objFunVals.Length - 2) < objFunVals.ElementAt(objFunVals.Length-1);
 
             var r2Vals = GetR2List();
-            bool isParameterUncertaintyDecreasing = r2Vals.ElementAt(r2Vals.Length - 2) < r2Vals.ElementAt(r2Vals.Length - 1); ;
+            bool isR2Decreasing = r2Vals.ElementAt(r2Vals.Length - 2) < r2Vals.ElementAt(r2Vals.Length - 1); ;
 
             bool continueIncreasingTimeDelayEst;// = true;
 
-            if (isObjFunDecreasing || isParameterUncertaintyDecreasing)
+            if (isObjFunDecreasing || isR2Decreasing)
             {
                 if (timeDelayIdx < maxExpectedTimeDelay_samples)
                 {
@@ -314,7 +292,7 @@ namespace TimeSeriesAnalysis.Dynamic
             //
             // parameter uncertatinty value analysis
             //
-            // TODO: consider re-introducing rankng by uncertainty in a generic way.
+            // TODO: consider re-introducing ranking by uncertainty in a generic way.
 
             /*
             // v1: use uncertainty to choose time delay
@@ -337,51 +315,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return modelRuns.ElementAt(runIndex);
         }
-
-
-
-
-        /*
-        public ProcessIdResults ExtractResult(int bestTimeDelayIdx, ProcessDataSet dataSet, ref ProcessIdResults result)
-        {
-            result.SetU0(u0);
-
-            // ProcessIdResults result = new ProcessIdResults(TimeBase_s);
-            // fill result in full-size vector
-            result.processGain = ProcessGainEst.ElementAt(bestTimeDelayIdx);
-            result.timeConstant_s = TimeConstantEst.ElementAt(bestTimeDelayIdx);
-            result.timeDelay_s = bestTimeDelayIdx * TimeBase_s;
-            result.timeDelay_samples = bestTimeDelayIdx;
-            result.ProcessGainUnc = ProcessGainEstUnc.ElementAt(bestTimeDelayIdx);
-            result.TimeConstantUnc_s = TimeConstantEstUnc.ElementAt(bestTimeDelayIdx);
-            result.bias = BiasEst.ElementAt(bestTimeDelayIdx);
-            result.TimeDelayUnc_s = 0;
-            result.objFunVal = objctFunVal.ElementAt(bestTimeDelayIdx);
-            if (y_mod.ElementAt(bestTimeDelayIdx) == null)
-            {
-                result.modelledY = null;
-                result.modelledD = null;
-            }
-            else
-            {
-                int nInitalValuesToFill = dataSet.y_meas.Length - y_mod.ElementAt(bestTimeDelayIdx).Length;// TODO:-1?
-                result.modelledY = Vec<double>.Concat(Vec<double>.Fill(Double.NaN, nInitalValuesToFill), y_mod.ElementAt(bestTimeDelayIdx));//nb! this will only work if only a single model is found.
-                nInitalValuesToFill = dataSet.y_meas.Length - d_mod.ElementAt(bestTimeDelayIdx).Length;
-                double modelledDYFillValue = d_mod.ElementAt(bestTimeDelayIdx)[nInitalValuesToFill];
-                result.modelledD = Vec<double>.Concat(Vec<double>.Fill(modelledDYFillValue, nInitalValuesToFill), d_mod.ElementAt(bestTimeDelayIdx));
-                double modelledXYFillValue = x_mod.ElementAt(bestTimeDelayIdx)[nInitalValuesToFill];
-                result.modelledX = Vec<double>.Concat(Vec<double>.Fill(modelledXYFillValue, nInitalValuesToFill), x_mod.ElementAt(bestTimeDelayIdx));
-            }
-
-            result.GoodnessOfFit_prc = Vec.RSquared(result.modelledY, dataSet.y_meas) * 100;
-
-            return result;
-
-        }
-        */
-
-
-
 
     }
 }

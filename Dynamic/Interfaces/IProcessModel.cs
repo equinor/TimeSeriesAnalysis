@@ -17,8 +17,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Iterate the process model one timestep forward
         /// </summary>
         /// <param name="inputsU">a 2d array of inputs, one row for each time step, or <c>null</c> if model is autonomous</param>
+        /// <param name="badValueIndicator">is a special reserverd value of inputs U that is to be treated as NaN</param>
         /// <returns>the value of the output y of the process model at the new time step</returns>
-        double Iterate(double[] inputsU);
+        double Iterate(double[] inputsU, double badValueIndicator=-9999);
 
         /// <summary>
         /// Get the model parameters

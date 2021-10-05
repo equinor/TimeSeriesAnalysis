@@ -18,25 +18,25 @@ namespace TimeSeriesAnalysis
         ///<comment>
         /// Add scalar to vector
         ///</summary>
-        public static double[] Add(this double[] array, double scalar)
+        public static double[] Add(this double[] array, double scalar, double nanValue = -9999)
         {
-            return Vec.Add(array, scalar);
+            return (new Vec(nanValue)).Add(array, scalar);
         }
 
         ///<comment>
         /// elementwise subtraction of two arrays of same size
         ///</summary>
-        public static double[] Sub(this double[] array1, double[] array2)
+        public static double[] Sub(this double[] array1, double[] array2, double nanValue=-9999)
         {
-            return Vec.Subtract(array1, array2);
+            return (new Vec(nanValue)).Subtract(array1, array2);
         }
 
         ///<comment>
         /// Multiply vector by a scalar
         ///</summary>
-        public static double[] Mult(this double[] array, double scalar)
+        public static double[] Mult(this double[] array, double scalar, double nanValue = -9999)
         {
-            return Vec.Mult(array,scalar);
+            return (new Vec(nanValue)).Mult(array,scalar);
         }
 
         ///<comment>

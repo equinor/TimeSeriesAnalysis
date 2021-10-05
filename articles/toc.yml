@@ -32,6 +32,10 @@
 - name: System identification
   href: sysid.md
   items:
+        - name: Founding principles
+          href: principles.md
+
+
 
         - name: The "default model"
           href: sysid_defaultmodel.md
@@ -45,6 +49,9 @@
   items:
         - name: Accord.NET 
           href: accord.md
+
+- name: Contributing 
+  href: ../contributing.md
 
 
 - name: License 

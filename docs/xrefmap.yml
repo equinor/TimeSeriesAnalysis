@@ -56,6 +56,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Convert2DtoJagged
   nameWithType: Array2D<T>.Convert2DtoJagged
   nameWithType.vb: Array2D(Of T).Convert2DtoJagged
+- uid: TimeSeriesAnalysis.Array2D`1.GetColumn(`0[][],System.Int32)
+  name: GetColumn(T[][], Int32)
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumn__0_____System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2D`1.GetColumn(`0[][],System.Int32)
+  name.vb: GetColumn(T()(), Int32)
+  fullName: TimeSeriesAnalysis.Array2D<T>.GetColumn(T[][], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).GetColumn(T()(), System.Int32)
+  nameWithType: Array2D<T>.GetColumn(T[][], Int32)
+  nameWithType.vb: Array2D(Of T).GetColumn(T()(), Int32)
 - uid: TimeSeriesAnalysis.Array2D`1.GetColumn(`0[0:,0:],System.Int32)
   name: GetColumn(T[,], Int32)
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumn__0_0__0___System_Int32_
@@ -378,12 +387,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.BandPass
   fullName: TimeSeriesAnalysis.Dynamic.BandPass
   nameWithType: BandPass
-- uid: TimeSeriesAnalysis.Dynamic.BandPass.#ctor(System.Double)
-  name: BandPass(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.BandPass.html#TimeSeriesAnalysis_Dynamic_BandPass__ctor_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.BandPass.#ctor(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.BandPass.BandPass(System.Double)
-  nameWithType: BandPass.BandPass(Double)
+- uid: TimeSeriesAnalysis.Dynamic.BandPass.#ctor(System.Double,System.Double)
+  name: BandPass(Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.BandPass.html#TimeSeriesAnalysis_Dynamic_BandPass__ctor_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.BandPass.#ctor(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.BandPass.BandPass(System.Double, System.Double)
+  nameWithType: BandPass.BandPass(Double, Double)
 - uid: TimeSeriesAnalysis.Dynamic.BandPass.#ctor*
   name: BandPass
   href: api/TimeSeriesAnalysis.Dynamic.BandPass.html#TimeSeriesAnalysis_Dynamic_BandPass__ctor_
@@ -464,12 +473,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetModelParameters
   nameWithType: DefaultProcessModel.GetModelParameters
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double)
-  name: InitSim(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_InitSim_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double)
-  nameWithType: DefaultProcessModel.InitSim(Double)
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double,TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters)
+  name: InitSim(Double, DefaultProcessModelParameters)
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_InitSim_System_Double_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double,TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters)
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double, TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters)
+  nameWithType: DefaultProcessModel.InitSim(Double, DefaultProcessModelParameters)
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim*
   name: InitSim
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_InitSim_
@@ -490,15 +499,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.IsModelStatic
   nameWithType: DefaultProcessModel.IsModelStatic
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double[])
-  name: Iterate(Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_Iterate_System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double[])
-  name.vb: Iterate(Double())
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double())
-  nameWithType: DefaultProcessModel.Iterate(Double[])
-  nameWithType.vb: DefaultProcessModel.Iterate(Double())
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double[],System.Double)
+  name: Iterate(Double[], Double)
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_Iterate_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double[],System.Double)
+  name.vb: Iterate(Double(), Double)
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate(System.Double(), System.Double)
+  nameWithType: DefaultProcessModel.Iterate(Double[], Double)
+  nameWithType.vb: DefaultProcessModel.Iterate(Double(), Double)
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate*
   name: Iterate
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_Iterate_
@@ -538,12 +547,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier
   nameWithType: DefaultProcessModelIdentifier
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor(System.Double)
-  name: DefaultProcessModelIdentifier(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier__ctor_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.DefaultProcessModelIdentifier(System.Double)
-  nameWithType: DefaultProcessModelIdentifier.DefaultProcessModelIdentifier(Double)
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor
+  name: DefaultProcessModelIdentifier()
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.DefaultProcessModelIdentifier()
+  nameWithType: DefaultProcessModelIdentifier.DefaultProcessModelIdentifier()
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.#ctor*
   name: DefaultProcessModelIdentifier
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier__ctor_
@@ -690,6 +699,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.GetWarningList
   nameWithType: DefaultProcessModelParameters.GetWarningList
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingBadDataPoints
+  name: NFittingBadDataPoints
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_NFittingBadDataPoints
+  commentId: P:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingBadDataPoints
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingBadDataPoints
+  nameWithType: DefaultProcessModelParameters.NFittingBadDataPoints
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingBadDataPoints*
+  name: NFittingBadDataPoints
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_NFittingBadDataPoints_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingBadDataPoints
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingBadDataPoints
+  nameWithType: DefaultProcessModelParameters.NFittingBadDataPoints
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingTotalDataPoints
+  name: NFittingTotalDataPoints
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_NFittingTotalDataPoints
+  commentId: P:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingTotalDataPoints
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingTotalDataPoints
+  nameWithType: DefaultProcessModelParameters.NFittingTotalDataPoints
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingTotalDataPoints*
+  name: NFittingTotalDataPoints
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_NFittingTotalDataPoints_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingTotalDataPoints
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.NFittingTotalDataPoints
+  nameWithType: DefaultProcessModelParameters.NFittingTotalDataPoints
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.ProcessGainCurvatures
   name: ProcessGainCurvatures
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_ProcessGainCurvatures
@@ -780,12 +815,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.HighPass
   fullName: TimeSeriesAnalysis.Dynamic.HighPass
   nameWithType: HighPass
-- uid: TimeSeriesAnalysis.Dynamic.HighPass.#ctor(System.Double)
-  name: HighPass(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.HighPass.html#TimeSeriesAnalysis_Dynamic_HighPass__ctor_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.HighPass.#ctor(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.HighPass.HighPass(System.Double)
-  nameWithType: HighPass.HighPass(Double)
+- uid: TimeSeriesAnalysis.Dynamic.HighPass.#ctor(System.Double,System.Double)
+  name: HighPass(Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.HighPass.html#TimeSeriesAnalysis_Dynamic_HighPass__ctor_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.HighPass.#ctor(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.HighPass.HighPass(System.Double, System.Double)
+  nameWithType: HighPass.HighPass(Double, Double)
 - uid: TimeSeriesAnalysis.Dynamic.HighPass.#ctor*
   name: HighPass
   href: api/TimeSeriesAnalysis.Dynamic.HighPass.html#TimeSeriesAnalysis_Dynamic_HighPass__ctor_
@@ -912,15 +947,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).GetModelParameters
   nameWithType: IProcessModel<T>.GetModelParameters
   nameWithType.vb: IProcessModel(Of T).GetModelParameters
-- uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.Iterate(System.Double[])
-  name: Iterate(Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_Iterate_System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.IProcessModel`1.Iterate(System.Double[])
-  name.vb: Iterate(Double())
-  fullName: TimeSeriesAnalysis.Dynamic.IProcessModel<T>.Iterate(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).Iterate(System.Double())
-  nameWithType: IProcessModel<T>.Iterate(Double[])
-  nameWithType.vb: IProcessModel(Of T).Iterate(Double())
+- uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.Iterate(System.Double[],System.Double)
+  name: Iterate(Double[], Double)
+  href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_Iterate_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.IProcessModel`1.Iterate(System.Double[],System.Double)
+  name.vb: Iterate(Double(), Double)
+  fullName: TimeSeriesAnalysis.Dynamic.IProcessModel<T>.Iterate(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).Iterate(System.Double(), System.Double)
+  nameWithType: IProcessModel<T>.Iterate(Double[], Double)
+  nameWithType.vb: IProcessModel(Of T).Iterate(Double(), Double)
 - uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.Iterate*
   name: Iterate
   href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_Iterate_
@@ -942,12 +977,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.LowPass
   fullName: TimeSeriesAnalysis.Dynamic.LowPass
   nameWithType: LowPass
-- uid: TimeSeriesAnalysis.Dynamic.LowPass.#ctor(System.Double)
-  name: LowPass(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.LowPass.html#TimeSeriesAnalysis_Dynamic_LowPass__ctor_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.LowPass.#ctor(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.LowPass.LowPass(System.Double)
-  nameWithType: LowPass.LowPass(Double)
+- uid: TimeSeriesAnalysis.Dynamic.LowPass.#ctor(System.Double,System.Double)
+  name: LowPass(Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.LowPass.html#TimeSeriesAnalysis_Dynamic_LowPass__ctor_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.LowPass.#ctor(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.LowPass.LowPass(System.Double, System.Double)
+  nameWithType: LowPass.LowPass(Double, Double)
 - uid: TimeSeriesAnalysis.Dynamic.LowPass.#ctor*
   name: LowPass
   href: api/TimeSeriesAnalysis.Dynamic.LowPass.html#TimeSeriesAnalysis_Dynamic_LowPass__ctor_
@@ -1037,6 +1072,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ProcessDataSet.ProcessDataSet
   nameWithType: ProcessDataSet.ProcessDataSet
+- uid: TimeSeriesAnalysis.Dynamic.ProcessDataSet.BadValueIndicatingValue
+  name: BadValueIndicatingValue
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessDataSet.html#TimeSeriesAnalysis_Dynamic_ProcessDataSet_BadValueIndicatingValue
+  commentId: P:TimeSeriesAnalysis.Dynamic.ProcessDataSet.BadValueIndicatingValue
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessDataSet.BadValueIndicatingValue
+  nameWithType: ProcessDataSet.BadValueIndicatingValue
+- uid: TimeSeriesAnalysis.Dynamic.ProcessDataSet.BadValueIndicatingValue*
+  name: BadValueIndicatingValue
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessDataSet.html#TimeSeriesAnalysis_Dynamic_ProcessDataSet_BadValueIndicatingValue_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessDataSet.BadValueIndicatingValue
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessDataSet.BadValueIndicatingValue
+  nameWithType: ProcessDataSet.BadValueIndicatingValue
 - uid: TimeSeriesAnalysis.Dynamic.ProcessDataSet.GetAverageU
   name: GetAverageU()
   href: api/TimeSeriesAnalysis.Dynamic.ProcessDataSet.html#TimeSeriesAnalysis_Dynamic_ProcessDataSet_GetAverageU
@@ -1353,15 +1401,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.SinusModel.GetModelParameters
   nameWithType: SinusModel.GetModelParameters
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[])
-  name: Iterate(Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel_Iterate_System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[])
-  name.vb: Iterate(Double())
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double())
-  nameWithType: SinusModel.Iterate(Double[])
-  nameWithType.vb: SinusModel.Iterate(Double())
+- uid: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[],System.Double)
+  name: Iterate(Double[], Double)
+  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel_Iterate_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[],System.Double)
+  name.vb: Iterate(Double(), Double)
+  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double(), System.Double)
+  nameWithType: SinusModel.Iterate(Double[], Double)
+  nameWithType.vb: SinusModel.Iterate(Double(), Double)
 - uid: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate*
   name: Iterate
   href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel_Iterate_
@@ -1572,6 +1620,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.Gains
   nameWithType: RegressionResults.Gains
+- uid: TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints
+  name: NfittingBadDataPoints
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_NfittingBadDataPoints
+  commentId: P:TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints
+  fullName: TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints
+  nameWithType: RegressionResults.NfittingBadDataPoints
+- uid: TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints*
+  name: NfittingBadDataPoints
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_NfittingBadDataPoints_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints
+  nameWithType: RegressionResults.NfittingBadDataPoints
+- uid: TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints
+  name: NfittingTotalDataPoints
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_NfittingTotalDataPoints
+  commentId: P:TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints
+  fullName: TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints
+  nameWithType: RegressionResults.NfittingTotalDataPoints
+- uid: TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints*
+  name: NfittingTotalDataPoints
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_NfittingTotalDataPoints_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints
+  nameWithType: RegressionResults.NfittingTotalDataPoints
 - uid: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
   name: objectiveFunctionValue
   href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue
@@ -2342,6 +2416,19 @@ references:
   commentId: T:TimeSeriesAnalysis.Vec
   fullName: TimeSeriesAnalysis.Vec
   nameWithType: Vec
+- uid: TimeSeriesAnalysis.Vec.#ctor(System.Double,System.Double)
+  name: Vec(Double, Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec__ctor_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.#ctor(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Vec.Vec(System.Double, System.Double)
+  nameWithType: Vec.Vec(Double, Double)
+- uid: TimeSeriesAnalysis.Vec.#ctor*
+  name: Vec
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Vec.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Vec
+  nameWithType: Vec.Vec
 - uid: TimeSeriesAnalysis.Vec.Abs(System.Double[])
   name: Abs(Double[])
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Abs_System_Double___
@@ -2542,15 +2629,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.InverseIndices
   nameWithType: Vec.InverseIndices
-- uid: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[],System.Double)
-  name: IsAllNaN(Double[], Double)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___System_Double_
-  commentId: M:TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[],System.Double)
-  name.vb: IsAllNaN(Double(), Double)
-  fullName: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[], System.Double)
-  fullName.vb: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double(), System.Double)
-  nameWithType: Vec.IsAllNaN(Double[], Double)
-  nameWithType.vb: Vec.IsAllNaN(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
+  name: IsAllNaN(Double[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___
+  commentId: M:TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
+  name.vb: IsAllNaN(Double())
+  fullName: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double())
+  nameWithType: Vec.IsAllNaN(Double[])
+  nameWithType.vb: Vec.IsAllNaN(Double())
 - uid: TimeSeriesAnalysis.Vec.IsAllNaN*
   name: IsAllNaN
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_
@@ -3146,15 +3233,15 @@ references:
   commentId: T:TimeSeriesAnalysis.VecExtensionMethods
   fullName: TimeSeriesAnalysis.VecExtensionMethods
   nameWithType: VecExtensionMethods
-- uid: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[],System.Double)
-  name: Add(Double[], Double)
-  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Add_System_Double___System_Double_
-  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[],System.Double)
-  name.vb: Add(Double(), Double)
-  fullName: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[], System.Double)
-  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double(), System.Double)
-  nameWithType: VecExtensionMethods.Add(Double[], Double)
-  nameWithType.vb: VecExtensionMethods.Add(Double(), Double)
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[],System.Double,System.Double)
+  name: Add(Double[], Double, Double)
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Add_System_Double___System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[],System.Double,System.Double)
+  name.vb: Add(Double(), Double, Double)
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double[], System.Double, System.Double)
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Add(System.Double(), System.Double, System.Double)
+  nameWithType: VecExtensionMethods.Add(Double[], Double, Double)
+  nameWithType.vb: VecExtensionMethods.Add(Double(), Double, Double)
 - uid: TimeSeriesAnalysis.VecExtensionMethods.Add*
   name: Add
   href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Add_
@@ -3162,15 +3249,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.VecExtensionMethods.Add
   nameWithType: VecExtensionMethods.Add
-- uid: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[],System.Double)
-  name: Mult(Double[], Double)
-  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Mult_System_Double___System_Double_
-  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[],System.Double)
-  name.vb: Mult(Double(), Double)
-  fullName: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[], System.Double)
-  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double(), System.Double)
-  nameWithType: VecExtensionMethods.Mult(Double[], Double)
-  nameWithType.vb: VecExtensionMethods.Mult(Double(), Double)
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[],System.Double,System.Double)
+  name: Mult(Double[], Double, Double)
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Mult_System_Double___System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[],System.Double,System.Double)
+  name.vb: Mult(Double(), Double, Double)
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double[], System.Double, System.Double)
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Mult(System.Double(), System.Double, System.Double)
+  nameWithType: VecExtensionMethods.Mult(Double[], Double, Double)
+  nameWithType.vb: VecExtensionMethods.Mult(Double(), Double, Double)
 - uid: TimeSeriesAnalysis.VecExtensionMethods.Mult*
   name: Mult
   href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Mult_
@@ -3178,15 +3265,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.VecExtensionMethods.Mult
   nameWithType: VecExtensionMethods.Mult
-- uid: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[],System.Double[])
-  name: Sub(Double[], Double[])
-  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Sub_System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[],System.Double[])
-  name.vb: Sub(Double(), Double())
-  fullName: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double(), System.Double())
-  nameWithType: VecExtensionMethods.Sub(Double[], Double[])
-  nameWithType.vb: VecExtensionMethods.Sub(Double(), Double())
+- uid: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[],System.Double[],System.Double)
+  name: Sub(Double[], Double[], Double)
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Sub_System_Double___System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[],System.Double[],System.Double)
+  name.vb: Sub(Double(), Double(), Double)
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double[], System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.Sub(System.Double(), System.Double(), System.Double)
+  nameWithType: VecExtensionMethods.Sub(Double[], Double[], Double)
+  nameWithType.vb: VecExtensionMethods.Sub(Double(), Double(), Double)
 - uid: TimeSeriesAnalysis.VecExtensionMethods.Sub*
   name: Sub
   href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_Sub_

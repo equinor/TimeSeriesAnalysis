@@ -58,27 +58,40 @@ namespace DefaultModel.UnitTests
         double timeBase_s=1;
         public DefaultProcessModel CreateDataAndIdentify(
             DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
-            double noiseAmplitude = 0, bool addInBadDataToYmeas = false, double badValueId = Double.NaN)
+            double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
             DefaultProcessModel model = new DefaultProcessModel(designParameters, timeBase_s);
             this.timeBase_s = timeBase_s;
             ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
+            dataSet.BadValueIndicatingValue = badValueId;
             ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
                 EmulateYmeas(model,  ref dataSet, noiseAmplitude);
 
-            if (addInBadDataToYmeas)
+
+            if (addInBadDataToYmeasAndU)
             {
-                int addBadDataEveryNthPoint = 20;
-                for (int i = 0; i< dataSet.Y_meas.Length; i++)
+                int addBadYDataEveryNthPoint = 20;
+                int addBadUDataEveryNthPoint = 25;
+
+                for (int curU = 0; curU < dataSet.U.GetNColumns(); curU++)
                 {
-                    if((double)i / addBadDataEveryNthPoint == Math.Floor((double)i / addBadDataEveryNthPoint))
+                    int t_offset = (int)Math.Floor((double)(addBadUDataEveryNthPoint / (curU + 2)));
+                    int curT = t_offset;
+                    //  for (int curT = t_offset; curT < dataSet.U.GetNRows(); curT+= addBadUDataEveryNthPoint)
+                    {
+                        dataSet.U[curT, curU] = badValueId;
+                    }
+                }
+
+                for (int i = 0; i< dataSet.Y_meas.Length; i+= addBadYDataEveryNthPoint )
+                {
                         dataSet.Y_meas[i] = badValueId;
                 }
             }
 
-            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier(badValueId);
+            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0);
 
             return identifiedModel;
@@ -126,15 +139,9 @@ namespace DefaultModel.UnitTests
         public void BadValuesInUandY_DoesNotDestroyResult(double badValueId, double bias=2, double timeConstant_s=10, int timeDelay_s=5)
         {
             double noiseAmplitude = 0.01;
-            double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
-            double[] u2 = TimeSeriesCreator.Step(40, 100, 0, 1);
-            // add in some "bad" data points
-            u1[5] = badValueId;
-            u1[45] = badValueId;
-            u1[75] = badValueId;
-            u2[7] = badValueId;
-            u2[34] = badValueId;
-            u2[55] = badValueId;
+            double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step( 80, 300, 1, 3);
+
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
 
             bool addInBadDataToYmeas = true;

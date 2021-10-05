@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Example 2 : Linear regression example | TimeSeriesAnalysis reference documentation </title>
+    <title>&quot;Founding&quot; principles | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Example 2 : Linear regression example | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="&quot;Founding&quot; principles | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,70 +77,14 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="example-2--linear-regression-example">Example 2 : Linear regression example</h1>
+<h1 id="founding-principles">&quot;Founding&quot; principles</h1>
 
-<p>In this example, a synthetic dataset is created with the help of helper methods from <code>TimeSeriesAnalysis</code>,
-then <code>Vec.Regress</code> is used to do linear regression on the dataset to determine the parameters which
-best describe the relationship between inputs <code>u1,u2,u3</code> and output <code>y</code>.
-<code>Vec.Rand</code> is used to add noise to the dataset, <code>Vec.Mult</code> is used to multiply vector and scalars</p>
-<p>The code:</p>
-<pre><code class="lang-csharp" name="Examples">public void Ex2_linreg()
-{
-    double[] true_gains = {1,2,3};
-    double true_bias = 5;
-    double noiseAmplitude = 0.1;
-
-    double[] u1 = TimeSeriesCreator.Step(11, 61, 0, 1);
-    double[] u2 = TimeSeriesCreator.Step(31, 61, 1, 2);
-    double[] u3 = TimeSeriesCreator.Step(21, 61, 1,-1);
-
-    double[] y = new double[u1.Length];
-    double[] noise = (new Vec()).Mult(Vec.Rand(u1.Length, -1,1,0),noiseAmplitude);
-    for (int k = 0; k &lt; u1.Length; k++)
-    {
-        y[k] = true_gains[0] * u1[k] 
-            + true_gains[1] * u2[k] 
-            + true_gains[2] * u3[k] 
-            + true_bias + noise[k]; 
-    }
-
-    Plot.FromList(new List&lt;double[]&gt; { y, u1, u2, u3 }, 
-        new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot;, &quot;y3=u3&quot; }, 1);
-
-    double[][] U = new double[][] { u1, u2, u3 };
-
-    var results = (new Vec()).Regress(y, U);
-
-    TestContext.WriteLine(Vec.ToString(results.param, 3));
-    TestContext.WriteLine(SignificantDigits.Format(results.Rsq, 3));
-
-    Plot.FromList(new List&lt;double[]&gt;() { y, results.Y_modelled },
-        new List&lt;string&gt;() { &quot;y1=y_meas&quot;, &quot;y1=y_mod&quot; }, 1);
-}
-</code></pre>
-<p>The dataset :</p>
-<p><img src="images/ex2_linreg_data.png" alt="Example 2 dataset"></p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>The above is an example of how to plot time-series on multiple y-axes, which is extremely useful to visualize
-input/output relationships.</p>
-</div>
-<p>The resulting modeled <code>y_modelled</code> compared to <code>y</code>:</p>
-<p><img src="images/ex2_linreg_y.png" alt="Example 2 y"></p>
-<p>The estimated parameters (rounded to three significant digits) returned are:</p>
-<pre><code>[1.02;2.01;3.02;5.01]
-</code></pre>
-<p>which is very close to the <em>true</em> values:</p>
-<pre><code>[1;2;3;5]
-</code></pre>
-<div class="NOTE">
-<h5>Note</h5>
-<p>The returned vector of parameters will be slightly dependent on the <code>seed</code> number given to <code>Vec.Rand()</code>, but if the inputs <code>U</code>
-have enough <em>excitation</em>, the significance should be minimal.</p>
-</div>
-<p>The returned <em>Rsquare</em> is <code>99,9</code>, indicating that in this case the model describes variations in the dataset very well, as should be expected in this case,
-as we have generated the dataset from a linear model that has the same structure as that used by <code>Vec.Regress</code> with the same inputs, and all three inputs vary enough
-and interdependently of each other.</p>
+<p>This class library is built on the following principles/assertions:</p>
+<ul>
+<li>most time-series are <em>not</em> designed for identification, and may have less than ideal amount of excitation, hence
+<strong>handling parameter uncertainty</strong> and <strong>avoiding over-parametrization</strong> are important,</li>
+<li>almost all systems are actually <strong>nonlinear</strong>, many but not all can be considered <strong>locally linear</strong>,</li>
+</ul>
 </article>
           </div>
           

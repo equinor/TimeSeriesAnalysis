@@ -53,7 +53,6 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns the column of the matrix with the given index
         ///</summary>
-
         static public T[] GetColumn(T[,] matrix, int columnNumber)
         {
             if (matrix == null)
@@ -64,6 +63,28 @@ namespace TimeSeriesAnalysis
                 return Enumerable.Range(0, matrix.GetLength(0))
                         .Select(x => matrix[x, columnNumber])
                         .ToArray();
+            }
+            else
+                return null;
+        }
+
+        ///<summary>
+        /// returns the column of the matrix with the given index
+        ///</summary>
+        static public T[] GetColumn(T[][] matrix, int columnNumber)
+        {
+            if (matrix == null)
+                return null;
+
+            List<T> retList = new List<T>();
+
+            if (columnNumber < matrix[0].GetLength(0))
+            {
+                for (int i = 0; i < matrix.GetLength(0);i++)
+                {
+                    retList.Add(matrix[i][columnNumber]);
+                }
+                return retList.ToArray() ;
             }
             else
                 return null;

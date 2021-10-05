@@ -19,6 +19,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool WasAbleToIdentify { get; set; }
         public double FittingRsq { get; set; }
         public double FittingObjFunVal { get; set; }
+        public double NFittingBadDataPoints { get; set; }
+        public double NFittingTotalDataPoints { get; set; }
 
         private List<ProcessIdentWarnings> errorsAndWarningMessages;
         internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;

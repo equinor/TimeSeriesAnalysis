@@ -26,15 +26,19 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public DateTime t0;
 
-
-
         /// <summary>
-        /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, rand walks or other disturbancs.
+        /// Some systems for storing data do not support "NaN", but instead some other magic 
+        /// value is reserved for indicating that a value is bad or missing. 
         /// </summary>
-        /// <param name="timeBase_s">the time base in seconds</param>
-        /// <param name="numDataPoints">the desired nubmer of datapoints of the dataset</param>
-        /// <param name="name">optional internal name of dataset</param>
-        public ProcessDataSet(double timeBase_s, int numDataPoints, string name = null)
+        public double  BadValueIndicatingValue{ get; set; } = -9999;
+
+    /// <summary>
+    /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, rand walks or other disturbancs.
+    /// </summary>
+    /// <param name="timeBase_s">the time base in seconds</param>
+    /// <param name="numDataPoints">the desired nubmer of datapoints of the dataset</param>
+    /// <param name="name">optional internal name of dataset</param>
+    public ProcessDataSet(double timeBase_s, int numDataPoints, string name = null)
         {
             this.NumDataPoints = numDataPoints;
             this.Y_meas = null;
@@ -90,7 +94,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             for (int i = 0; i < U.GetNColumns(); i++)
             {
-                double? avg = Vec.Mean(U.GetColumn(i));
+                double? avg = (new Vec()).Mean(U.GetColumn(i));
                 if (!avg.HasValue)
                     return null;
                 averages.Add(avg.Value);
