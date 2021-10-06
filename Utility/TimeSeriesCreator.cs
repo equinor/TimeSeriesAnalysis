@@ -27,6 +27,26 @@ namespace TimeSeriesAnalysis.Utility
             return times.ToArray();
         }
 
+        static public double[] Sinus(double amplitude, double sinusPeriod_s, int dT_s, int N)
+        {
+            List<double> list = new List<double>();
+
+            for (int i = 0; i < N; i++)
+            {
+                double newVal = amplitude *
+                    Math.Sin((i * dT_s) / sinusPeriod_s * Math.PI * 2);
+                list.Add(newVal);
+            }
+            return list.ToArray();
+
+
+        }
+
+
+
+
+
+
         /// <summary>
         /// Create a step change vector of a given length <c>N</c> starting at value 
         /// <c>val1</c> and ending at <c>val2</c>, step occuring at index <c>stepStartIdx</c>

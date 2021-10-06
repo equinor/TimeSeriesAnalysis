@@ -1369,72 +1369,6 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
   fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
   nameWithType: ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel
-  name: SinusModel
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.SinusModel
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel
-  nameWithType: SinusModel
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel.#ctor(TimeSeriesAnalysis.Dynamic.SinusModelParameters,System.Double)
-  name: SinusModel(SinusModelParameters, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel__ctor_TimeSeriesAnalysis_Dynamic_SinusModelParameters_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.SinusModel.#ctor(TimeSeriesAnalysis.Dynamic.SinusModelParameters,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.SinusModel(TimeSeriesAnalysis.Dynamic.SinusModelParameters, System.Double)
-  nameWithType: SinusModel.SinusModel(SinusModelParameters, Double)
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel.#ctor*
-  name: SinusModel
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.SinusModel.#ctor
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.SinusModel
-  nameWithType: SinusModel.SinusModel
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel.GetModelParameters
-  name: GetModelParameters()
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel_GetModelParameters
-  commentId: M:TimeSeriesAnalysis.Dynamic.SinusModel.GetModelParameters
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.GetModelParameters()
-  nameWithType: SinusModel.GetModelParameters()
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel.GetModelParameters*
-  name: GetModelParameters
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel_GetModelParameters_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.SinusModel.GetModelParameters
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.GetModelParameters
-  nameWithType: SinusModel.GetModelParameters
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[],System.Double)
-  name: Iterate(Double[], Double)
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel_Iterate_System_Double___System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[],System.Double)
-  name.vb: Iterate(Double(), Double)
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double[], System.Double)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate(System.Double(), System.Double)
-  nameWithType: SinusModel.Iterate(Double[], Double)
-  nameWithType.vb: SinusModel.Iterate(Double(), Double)
-- uid: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate*
-  name: Iterate
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModel.html#TimeSeriesAnalysis_Dynamic_SinusModel_Iterate_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.SinusModel.Iterate
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModel.Iterate
-  nameWithType: SinusModel.Iterate
-- uid: TimeSeriesAnalysis.Dynamic.SinusModelParameters
-  name: SinusModelParameters
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModelParameters.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.SinusModelParameters
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModelParameters
-  nameWithType: SinusModelParameters
-- uid: TimeSeriesAnalysis.Dynamic.SinusModelParameters.amplitude
-  name: amplitude
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModelParameters.html#TimeSeriesAnalysis_Dynamic_SinusModelParameters_amplitude
-  commentId: F:TimeSeriesAnalysis.Dynamic.SinusModelParameters.amplitude
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModelParameters.amplitude
-  nameWithType: SinusModelParameters.amplitude
-- uid: TimeSeriesAnalysis.Dynamic.SinusModelParameters.period_s
-  name: period_s
-  href: api/TimeSeriesAnalysis.Dynamic.SinusModelParameters.html#TimeSeriesAnalysis_Dynamic_SinusModelParameters_period_s
-  commentId: F:TimeSeriesAnalysis.Dynamic.SinusModelParameters.period_s
-  fullName: TimeSeriesAnalysis.Dynamic.SinusModelParameters.period_s
-  nameWithType: SinusModelParameters.period_s
 - uid: TimeSeriesAnalysis.Dynamic.TimeDelay
   name: TimeDelay
   href: api/TimeSeriesAnalysis.Dynamic.TimeDelay.html
@@ -2352,6 +2286,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray
   nameWithType: TimeSeriesCreator.CreateDateStampArray
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Sinus(System.Double,System.Double,System.Int32,System.Int32)
+  name: Sinus(Double, Double, Int32, Int32)
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Sinus_System_Double_System_Double_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Sinus(System.Double,System.Double,System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Sinus(System.Double, System.Double, System.Int32, System.Int32)
+  nameWithType: TimeSeriesCreator.Sinus(Double, Double, Int32, Int32)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Sinus*
+  name: Sinus
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Sinus_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Sinus
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Sinus
+  nameWithType: TimeSeriesCreator.Sinus
 - uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step(System.Int32,System.Int32,System.Double,System.Double)
   name: Step(Int32, Int32, Double, Double)
   href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Step_System_Int32_System_Int32_System_Double_System_Double_

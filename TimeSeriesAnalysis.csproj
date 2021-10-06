@@ -134,8 +134,6 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\Interfaces\IFittedProcessModelParameters.cs" />
     <Compile Include="Dynamic\Filters\LowPass.cs" />
     <Compile Include="Dynamic\Interfaces\IProcessModelParameters.cs" />
-    <Compile Include="Dynamic\Models\SinusModel.cs" />
-    <Compile Include="Dynamic\Models\SinusModelParameters.cs" />
     <Compile Include="Dynamic\ProcessDataSet.cs" />
     <Compile Include="Dynamic\ProcessTimeDelayIdentWarnings.cs" />
     <Compile Include="Dynamic\ProcessIdentWarnings.cs" />

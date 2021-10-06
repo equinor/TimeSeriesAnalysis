@@ -73,25 +73,21 @@ namespace TimeSeriesAnalysis.Examples
         #region ex_3
         public void Ex3_filters()
         {
-            double timeBase_s = 1;
+            int timeBase_s = 1;
             int nStepsDuration = 2000;
-            var sinus1 = new SinusModel(new SinusModelParameters 
-                { amplitude = 10, period_s = 400 },timeBase_s);
-            var sinus2 = new SinusModel(new SinusModelParameters 
-                { amplitude = 1, period_s = 25 }, timeBase_s);
 
-            var dataset = new ProcessDataSet(timeBase_s, nStepsDuration);
-            ProcessSimulator<SinusModel, SinusModelParameters>.Simulate(sinus1, ref dataset);
-            ProcessSimulator<SinusModel, SinusModelParameters>.Simulate(sinus2, ref dataset);
-
+            var sinus1 = TimeSeriesCreator.Sinus(10, 400, timeBase_s, nStepsDuration);
+            var sinus2 = TimeSeriesCreator.Sinus( 1,  25, timeBase_s, nStepsDuration);
+            var y_sim = (new Vec()).Add(sinus1,sinus2);
+       
             var lpFilter = new LowPass(timeBase_s);
-            var lpFiltered = lpFilter.Filter(dataset.Y_sim,40,1);
+            var lpFiltered = lpFilter.Filter(y_sim, 40,1);
 
             var hpFilter = new HighPass(timeBase_s);
-            var hpFiltered = hpFilter.Filter(dataset.Y_sim,3,1);
+            var hpFiltered = hpFilter.Filter(y_sim, 3,1);
 
-            Plot.FromList(new List<double[]> { dataset.Y_sim, lpFiltered, hpFiltered },
-                new List<string> { "y1=y","y3=y_lowpass","y3=y_highpass" }, (int)timeBase_s);
+            Plot.FromList(new List<double[]> { y_sim, lpFiltered, hpFiltered },
+                new List<string> { "y1=y","y3=y_lowpass","y3=y_highpass" }, timeBase_s);
         }
         #endregion
 

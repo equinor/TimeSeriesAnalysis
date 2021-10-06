@@ -13,6 +13,9 @@
           href: unit_tests.md
         - name: Setting up plots
           href: plot_setup.md
+        - name: Calling on this library from Matlab or Python
+          href: other_languages.md 
+          
 
 - name: Code examples
   href: examples.md
@@ -32,14 +35,11 @@
 - name: System identification
   href: sysid.md
   items:
-        - name: Founding principles
+        - name: Design principles
           href: principles.md
-
-
 
         - name: The "default model"
           href: sysid_defaultmodel.md
-
 
 - name: Glossary 
   href: glossary.md

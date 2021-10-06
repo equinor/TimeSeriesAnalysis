@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>&quot;Founding&quot; principles | TimeSeriesAnalysis reference documentation </title>
+    <title>Design principles | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="&quot;Founding&quot; principles | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Design principles | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,13 +77,15 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="founding-principles">&quot;Founding&quot; principles</h1>
+<h1 id="design-principles">Design principles</h1>
 
 <p>This class library is built on the following principles/assertions:</p>
 <ul>
 <li>most time-series are <em>not</em> designed for identification, and may have less than ideal amount of excitation, hence
 <strong>handling parameter uncertainty</strong> and <strong>avoiding over-parametrization</strong> are important,</li>
 <li>almost all systems are actually <strong>nonlinear</strong>, many but not all can be considered <strong>locally linear</strong>,</li>
+<li>real-world data will contain bad data points that need to be <strong>filtered</strong> out , and you may need to manually remove further non-representative data.
+Espeically for recursive models, a single spurious value can destroy an entire model run, thus the tooling need to support cleaning data to avoid garbage getting into models.</li>
 </ul>
 </article>
           </div>

@@ -22,6 +22,12 @@ Because the final product of many enterprise time-series applications(like contr
 
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>** :red_circle:
 
+## But I prefer working with time-series in Matlab or Python
+
+Not to fear, ``Matlab`` supports importing ``.NET`` assemblies(*.dlls) through the built-in ``[NET.addAssembly()](https://se.mathworks.com/help/matlab/ref/net.addassembly.html)`` command.
+There is a package for  ``Python`` called [Python.Net](http://pythonnet.github.io/)
+that allows you to access the methods in this library.
+
 ## Roadmap
 
 Currently in versions ``1.x``, the development focuses on creating small-scale "building blocks", 
