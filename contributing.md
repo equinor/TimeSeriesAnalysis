@@ -3,8 +3,24 @@
 This project welcomes contributions and suggestions. 
 We believe in collaboration. Collaboration with developers and users, vendors and educational institutions, partners and competitors. Within and outside our industry.
 
-When contributing to this repository, please first discuss the change you wish to make via issue, or by the GitHub discussions forum,
-or any other method with the owners of this repository before making a change.
+## Contribution code-of-conduct
+
+1. When contributing to this repository, please **first discuss the change you wish to make** via issue, or by the GitHub discussions forum,
+or any other method with the owners of this repository **before** making a change.
+2. **Proposed code changes to this project should be submitted for review as pull requests.**
+
+### Pull request
+
+Requirements for pull requests:
+- pull request should only address a single feature/issue,
+- all existing tests should pass,
+- any new feature should be supported by at least one new unit test, that both shows that the new feature works and documents how to use the new feature,
+- consider using ``TestCase`` to re-run a new unit test for more than one set of input parameters (remember: testing edge-cases and testing the negative.)
+- the submitter must be available for questions of the reviewer, and 
+- for complex methods such as those related to filtering, dynamic models or PID-control, unit tests should use the ``Plot4Test`` class to plot the time-series that illustrate
+the test data sets used and the results of any new calculation. It is much easier to understand capability visually both for code review but also for other users. 
+Code to plot the time-series should be available in the code, but should either be disabled with logic by default or commented out, this is to avoid swamping the user with plots 
+if re-running all tests.
 
 ## Avoiding feature-creep: not an encyclopedia of every possible method
 
@@ -24,13 +40,15 @@ Take for instance **file input**: Time-series can be stored on file in *endless*
 To keep things simple and maintainable, adding file drivers is something we would like to keep outside of the repository (even though we have broken our own rule and added 
 support for comma-separated-variable files). 
 
-The same goes for other areas than file IO. **Filters** for instance, they are many different ways to make a filter, but this repository is not an encyclopedia of every possible such methods. 
+The same goes for other areas than file IO. **Filters** for instance, they are many different ways to make a filter, but this repository is not an encyclopedia of every possible such method. 
 
 It is hard to give absolute rules, but some guidelines to consider before proposing to add new functionality to this class library:
 - If the functionality is useful on its won, could the functionality instead be a stand-alone repository and ``NuGet`` package?
 - If the stand-alone functionality *already exists* on ``NuGet`` in another repository, it is probably better for users to just pull in that package.
 - If the new feature does a task like process modeling, filtering or PID-control in a different way than what the repository already does, there should be a clear benefit of the 
 new approach in terms of *performance* or *features*.
+- This repository is aimed toward **industrial applications**, so esoteric methods(i.e. of specicial, rare or unusual interest) 
+that have academic interest but lack proven practical benefit on real-world data from real-world systems are better left outside this package.
 - If the new feature *builds on top* of existing functionality it could be interesting to add in, but only if it is 
 	- **generally applicable methodology** with 
 	- **practical and industrial** use-cases.
@@ -75,16 +93,4 @@ To do so, you should replicate how the ``DefaultProcessModel`` has been implemen
 
 In general, this class library is intended to be applied to industrial data where excitation may be less-than-ideal. For that reason the focus should be on parametric identification, **not** non-parametric
 models like Finite-Impulse Repsonse(FIR) models.
-
-## Pull request
-
-**Proposed code changes to this project should be submitted for review as pull requests.**
-
-Requirements for pull requests:
-- pull request should only address a single feature/issue
-- all existing tests should pass
-- any new feature should be supported by at least one new unit tests, that both shows that the new feature works and documents how to use the new feature
-- be available for questions of the reviewer.
-- for complex methods such as those related to filtering, dynamic models or PID-control, unit tests should use the ``Plot`` class to plot the time-series that illustrate
-the test data sets used and the results of any new calculation. It is much easier to understand capability visually both for code review but also for other users.
 

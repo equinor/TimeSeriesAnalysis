@@ -45,19 +45,29 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Version of Simulate that outputs the simulated Y directly
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="processDataSet"></param>
-        /// <returns></returns>
+        /// <param name="model">model object to simulate</param>
+        /// <param name="processDataSet">dataset to simulate over(inputs U and optionally a disturbance)</param>
+        /// <returns>returns the simulated <c>y_sim</c> that internally is the states + <c>Disturbance</c> if set in
+        /// <c>processDataSet</c></returns>
         static public double[] Simulate(T1 model, ProcessDataSet processDataSet)
         {
-            int N = processDataSet.NumDataPoints;
-            double[] output = new double[N];
+            int N  = processDataSet.NumDataPoints;
+            double[] y_sim  = Vec<double>.Fill(0,N);
+
+            if (processDataSet.Disturbance != null)
+            {
+                for (int rowIdx = 0; rowIdx < N; rowIdx++)
+                {
+                    y_sim[rowIdx] += processDataSet.Disturbance[rowIdx];
+                }
+            }
 
             if (processDataSet.U != null)
             {
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
-                    output[rowIdx] = model.Iterate(processDataSet.U.GetRow(rowIdx), 
+
+                    y_sim[rowIdx] += model.Iterate(processDataSet.U.GetRow(rowIdx), 
                         processDataSet.BadValueIndicatingValue);
                 }
             }
@@ -65,10 +75,11 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
-                    output[rowIdx] = model.Iterate(null, processDataSet.BadValueIndicatingValue);
+
+                    y_sim[rowIdx] += model.Iterate(null, processDataSet.BadValueIndicatingValue);
                 }
             }
-            return output;
+            return y_sim;
         }
 
         /// <summary>

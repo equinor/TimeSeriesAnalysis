@@ -56,8 +56,8 @@ namespace DefaultModel.UnitTests
         static bool doPlotting = false;
         static Plot4Test plot = new Plot4Test(doPlotting);
         double timeBase_s=1;
-        public DefaultProcessModel CreateDataAndIdentify(
-            DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
+
+        public ProcessDataSet CreateDataSet (DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
@@ -66,9 +66,8 @@ namespace DefaultModel.UnitTests
             this.timeBase_s = timeBase_s;
             ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
             dataSet.BadValueIndicatingValue = badValueId;
-            ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
-                EmulateYmeas(model,  ref dataSet, noiseAmplitude);
-
+            ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
+                EmulateYmeas(model, ref dataSet, noiseAmplitude);
 
             if (addInBadDataToYmeasAndU)
             {
@@ -85,16 +84,30 @@ namespace DefaultModel.UnitTests
                     }
                 }
 
-                for (int i = 0; i< dataSet.Y_meas.Length; i+= addBadYDataEveryNthPoint )
+                for (int i = 0; i < dataSet.Y_meas.Length; i += addBadYDataEveryNthPoint)
                 {
-                        dataSet.Y_meas[i] = badValueId;
+                    dataSet.Y_meas[i] = badValueId;
                 }
             }
 
+            return dataSet;
+        }
+
+        public DefaultProcessModel Identify(ProcessDataSet dataSet, DefaultProcessModelParameters designParameters)
+        {
             DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0);
-
             return identifiedModel;
+        }
+
+
+        public DefaultProcessModel CreateDataAndIdentify(
+            DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
+            double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
+        {
+            var dataSet = CreateDataSet(designParameters,U,timeBase_s, noiseAmplitude, 
+                addInBadDataToYmeasAndU, badValueId);
+            return Identify(dataSet, designParameters);
         }
 
         /// <summary>
@@ -224,8 +237,41 @@ namespace DefaultModel.UnitTests
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
 
             DefaultAsserts(model, designParameters);
-
         }
+
+        [TestCase(1, 0, 2, Category = "TimeDelay")]
+        [TestCase(1, 15, 2, Category = "Dynamic")]//TODO: does not work
+        public void ExcludeDisturbance_I2_Linear(double bias, double timeConstant_s, int timeDelay_s)
+        {
+            double noiseAmplitude = 0.01;
+            double[] u1 = TimeSeriesCreator.Step(60, 100, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(40, 100, 1, 0);
+            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
+
+            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                ProcessGains = new double[] { 1, 2 },
+                U0 = Vec<double>.Fill(1, 2),
+                Bias = bias
+            };
+            var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
+            // introduce disturbance signal in y
+            var sin_amplitude = 0.1;
+            var sin_period_s = 30;
+            var disturbance = TimeSeriesCreator.Sinus(sin_amplitude, sin_period_s,(int)timeBase_s,U.GetNRows());
+            dataSet.Y_meas = (new Vec()).Add(dataSet.Y_meas,disturbance);
+            dataSet.Disturbance = disturbance;
+            var model = Identify(dataSet, designParameters);
+
+            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2, disturbance },
+                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y4=dist" }, (int)timeBase_s,"excl_disturbance");
+
+            DefaultAsserts(model, designParameters);
+        }
+
+
 
         [TestCase(0, 0, Category = "Static")]
         [TestCase(1, 0, Category = "Static")]

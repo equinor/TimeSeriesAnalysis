@@ -1085,6 +1085,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ProcessDataSet.BadValueIndicatingValue
   nameWithType: ProcessDataSet.BadValueIndicatingValue
+- uid: TimeSeriesAnalysis.Dynamic.ProcessDataSet.Disturbance
+  name: Disturbance
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessDataSet.html#TimeSeriesAnalysis_Dynamic_ProcessDataSet_Disturbance
+  commentId: P:TimeSeriesAnalysis.Dynamic.ProcessDataSet.Disturbance
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessDataSet.Disturbance
+  nameWithType: ProcessDataSet.Disturbance
+- uid: TimeSeriesAnalysis.Dynamic.ProcessDataSet.Disturbance*
+  name: Disturbance
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessDataSet.html#TimeSeriesAnalysis_Dynamic_ProcessDataSet_Disturbance_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessDataSet.Disturbance
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessDataSet.Disturbance
+  nameWithType: ProcessDataSet.Disturbance
 - uid: TimeSeriesAnalysis.Dynamic.ProcessDataSet.GetAverageU
   name: GetAverageU()
   href: api/TimeSeriesAnalysis.Dynamic.ProcessDataSet.html#TimeSeriesAnalysis_Dynamic_ProcessDataSet_GetAverageU

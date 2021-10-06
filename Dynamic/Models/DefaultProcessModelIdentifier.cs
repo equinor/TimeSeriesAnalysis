@@ -41,8 +41,8 @@ namespace TimeSeriesAnalysis.Dynamic
             bool doNonzeroU0 = true;// should be: true
             bool doUseDynamicModel = true;// should be:true
             bool doEstimateTimeDelay = true; // should be:true
-            double FilterTc_s = 0;
-            bool assumeThatYkminusOneApproxXkminusOne = true;
+            double FilterTc_s = 0;// experimental: by default set to zero.
+            bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
             double maxExpectedTc_s = dataSet.GetTimeSpan().TotalSeconds / 4;
             if (u0 == null)
             {
@@ -64,11 +64,10 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 // for a dynamic model y will depend on yprev
                 // therefore it is difficult to have ycur the same length as ymeas
-                /*continueIncreasingTimeDelayEst = */
                 modelParams =
                    EstimateProcessForAGivenTimeDelay
                    (timeDelayIdx, dataSet, doUseDynamicModel,
-                   FilterTc_s, u0, assumeThatYkminusOneApproxXkminusOne/*ref result, ref processTimeDelayIdentifyObj*/);
+                   FilterTc_s, u0, assumeThatYkminusOneApproxXkminusOne);
 
                 if (!continueIncreasingTimeDelayEst)
                     continue;
@@ -116,15 +115,14 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        private DefaultProcessModelParameters EstimateProcessForAGivenTimeDelay(int timeDelay_samples,
-            ProcessDataSet dataSet,
-            /* DisturbanceIdResult distEstResult,*/
-            bool useDynamicModel, double FilterTc_s, double[] u0, bool assumeThatYkminusOneApproxXkminusOne/*,
-            ref ProcessIdResults result,*/ /*ref ProcessTimeDelayIdentifier processTimeDelayIdentifyObj*/)
+        private DefaultProcessModelParameters EstimateProcessForAGivenTimeDelay
+            (int timeDelay_samples, ProcessDataSet dataSet,
+            bool useDynamicModel, double FilterTc_s, double[] u0, bool assumeThatYkminusOneApproxXkminusOne
+            )
         {
             Vec vec = new Vec(dataSet.BadValueIndicatingValue);
 
-            double[] ycur, yprev = null, /*dcur,*/ dprev = null;
+            double[] ycur, yprev = null, dcur, dprev = null;
             List<double[]> ucurList = new List<double[]>();
 
             string solverID = "";
@@ -145,13 +143,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 ycur = Vec<double>.SubArray(dataSet.Y_meas, idxStart, idxEnd);
                 yprev = Vec<double>.SubArray(dataSet.Y_meas, idxStart - 1, idxEnd - 1);
-                //    dcur = null;
-                //   dprev = null;
-                /*if (distEstResult != null)
+                dcur = null;
+                dprev = null;
+                if (dataSet.Disturbance != null)
                 {
-                    dcur = Vec<double>.SubArray(distEstResult.dest_f1, idxStart, idxEnd);
-                    dprev = Vec<double>.SubArray(distEstResult.dest_f1, idxStart - 1, idxEnd - 1);
-                }*/
+                    dcur = Vec<double>.SubArray(dataSet.Disturbance, idxStart, idxEnd);
+                    dprev = Vec<double>.SubArray(dataSet.Disturbance, idxStart - 1, idxEnd - 1);
+                }
             }
             else
             {
@@ -162,7 +160,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         idxStart - timeDelay_samples, idxEnd - timeDelay_samples));
                 }
                 ycur = Vec<double>.SubArray(dataSet.Y_meas, idxStart, idxEnd);
-                //    dcur = Vec<double>.SubArray(distEstResult.dest_f1, idxStart, idxEnd);
+                dcur = Vec<double>.SubArray(dataSet.Disturbance, idxStart, idxEnd);
             }
 
             var indUbad = new List<int>();
@@ -245,11 +243,20 @@ namespace TimeSeriesAnalysis.Dynamic
                 // y[k]-a*y[k-1]-(1-a)*y[k-1]-d[k]=-(1-a)*y[k-1]+ b*u    (subtract -(1-a)y[k-1] on both sides)
                 // y[k]-y[k-1]-d[k]=-(1-a)*y[k-1] b*u 
                 // y[k]-y[k-1]-d[k]=(a-1)*y[k-1] + b*u (RESULTING FORMUALE TO BE IDENTIFIED)
+                // note that the above is not completely correct, model appears better if 
+                // subtracting  Y_ols = vec.Subtract(deltaY, vec.Subtract(dcur,dprev));
+                // rather than //Y_ols = vec.Subtract(deltaY, dcur);
                 if (assumeThatYkminusOneApproxXkminusOne)
                 {
                     double[] deltaY = vec.Subtract(ycur, yprev);
                     double[] phi1_ols = yprev;
-                    double[] Y_ols = deltaY;//Vec.Sub(deltaY, dcur);
+                    double[] Y_ols = deltaY;
+                    if (dcur != null && dprev!= null)
+                    {
+                        phi1_ols = vec.Subtract(yprev, dprev);
+                        //Y_ols = vec.Subtract(deltaY, dcur);
+                        Y_ols = vec.Subtract(deltaY, vec.Subtract(dcur,dprev));
+                    }
                     double[,] phi_ols2D = new double[ycur.Length, ucurList.Count + 1];
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
@@ -278,8 +285,11 @@ namespace TimeSeriesAnalysis.Dynamic
                         phi_ols2D.WriteColumn(curIdx + 1, vec.Subtract(ucurList[curIdx], u0[curIdx]));
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
-                    double[] Y_ols = ycur;// Vec.Sub(ycur, dcur);
-
+                    double[] Y_ols = ycur;
+                    if (dcur != null)
+                    {
+                        vec.Subtract(ycur, dcur);
+                    }
                     regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
                 }
 
@@ -310,8 +320,9 @@ namespace TimeSeriesAnalysis.Dynamic
                         timeConstant_s = 0;
                     if (timeConstant_s < 0)
                         timeConstant_s = 0;
-                    processGains = vec.Div(b,1-a); 
+                    processGains = vec.Div(b,1-a);
 
+                    #region move to DefaultProcessModel.cs
                     x_mod_cur = new double[x_mod_cur_raw.Length];
 
                     for (int curTidx = 0; curTidx < x_mod_cur.Count(); curTidx++)
@@ -358,6 +369,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             x_mod_cur[curTidx] += regResults.Bias;
                         }//endif
                     }//enfor
+                    #endregion
                 }
             }
             else//static model
@@ -369,13 +381,16 @@ namespace TimeSeriesAnalysis.Dynamic
                     inputs2D.WriteColumn(curIdx, vec.Subtract(ucurList[curIdx], u0[curIdx]));
                 }
                 double[][] inputs = inputs2D.Transpose().Convert2DtoJagged();
-                double[] Y_ols = ycur;// Vec.Sub(ycur, dcur);
-
+                double[] Y_ols = ycur;
+                if (dcur != null)
+                {
+                    Y_ols = vec.Subtract(ycur, dcur);
+                }
                 regResults = vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray());
                 timeConstant_s = 0;
                 if (regResults.param != null)
                 {
-                    processGains = Vec<double>.SubArray(regResults.param, 0, regResults.param.Length - 2);//param[0];
+                    processGains = Vec<double>.SubArray(regResults.param, 0, regResults.param.Length - 2);
                 }
             }
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters();
@@ -388,7 +403,6 @@ namespace TimeSeriesAnalysis.Dynamic
             if (regResults.param == null || !regResults.ableToIdentify)
             {
                 parameters.WasAbleToIdentify = false;
-                //processTimeDelayIdentifyObj.AddFailedRun(y_mod_cur, x_mod_cur, dcur, Rsq);
                 parameters.AddWarning(ProcessIdentWarnings.RegressionProblemFailedToYieldSolution);
                 return parameters;
             }
@@ -401,13 +415,6 @@ namespace TimeSeriesAnalysis.Dynamic
             else // able to identify
             {
                 parameters.WasAbleToIdentify = true;
-                //  if (dcur == null)
-                y_mod_cur = x_mod_cur;
-                //    else
-                //       y_mod_cur = Vec.Add(x_mod_cur, dcur);
-                // note that y_mod is often shorter than y_meas, and these two vector may need to be synchronized, 
-                // this is very important to identify the correct dynamics. 
-
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.TimeBase_s;
                 parameters.TimeConstant_s = timeConstant_s;
                 parameters.ProcessGains = processGains;
@@ -432,6 +439,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return parameters;
             }
         }
+        // 
         // bias is not always accurate for dynamic model identification 
         // as it is as "difference equation" that matches the changes in the 
         //

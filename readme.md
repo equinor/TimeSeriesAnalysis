@@ -24,7 +24,7 @@ Because the final product of many enterprise time-series applications(like contr
 
 ## But I prefer working with time-series in Matlab or Python
 
-Not to fear, ``Matlab`` supports importing ``.NET`` assemblies(*.dlls) through the built-in ``[NET.addAssembly()](https://se.mathworks.com/help/matlab/ref/net.addassembly.html)`` command.
+Not to fear, ``Matlab`` supports importing ``.NET`` assemblies(*.dlls) through the built-in [NET.addAssembly()](https://se.mathworks.com/help/matlab/ref/net.addassembly.html) command.
 There is a package for  ``Python`` called [Python.Net](http://pythonnet.github.io/)
 that allows you to access the methods in this library.
 
@@ -40,11 +40,9 @@ modeling components such as individual PID-controllers and small-scale process m
 This project welcomes contributions and suggestions. 
 Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests. 
 
-## Discussion forum
-Questions related to TimeSeriesAnalysis can be posted in the [github discussion pages](https://github.com/equinor/TimeSeriesAnalysis/discussions).
-
-## Authors and contact persons
-Steinar Elgsæter
+## Discussion forum and contact person
+The contact person for this repository is Steinar Elgsæter, please post any question you may have related to TimeSeriesAnalysis 
+in the [github discussion pages](https://github.com/equinor/TimeSeriesAnalysis/discussions).
 
 ## License
 TimeSeriesAnalysis is distributed under the [MIT license](LICENSE).

@@ -27,6 +27,14 @@ namespace TimeSeriesAnalysis.Utility
             return times.ToArray();
         }
 
+        /// <summary>
+        /// Create an array representing a sinus
+        /// </summary>
+        /// <param name="amplitude">amplitud of sinus</param>
+        /// <param name="sinusPeriod_s">time for a complete 360 degree period of the sinus in seconds</param>
+        /// <param name="dT_s">the timebase</param>
+        /// <param name="N">number of desired data point in return array</param>
+        /// <returns>an array continaing the specified sinus</returns>
         static public double[] Sinus(double amplitude, double sinusPeriod_s, int dT_s, int N)
         {
             List<double> list = new List<double>();

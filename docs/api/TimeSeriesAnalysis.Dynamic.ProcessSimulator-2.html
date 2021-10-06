@@ -209,12 +209,14 @@ testing/test driven development.</p>
       <tr>
         <td><span class="xref">T1</span></td>
         <td><span class="parametername">model</span></td>
-        <td></td>
+        <td><p>model object to simulate</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessDataSet.html">ProcessDataSet</a></td>
         <td><span class="parametername">processDataSet</span></td>
-        <td></td>
+        <td><p>dataset to simulate over(inputs U and optionally a disturbance)</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -229,7 +231,9 @@ testing/test driven development.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td></td>
+        <td><p>returns the simulated <code>y_sim</code> that internally is the states + <code>Disturbance</code> if set in
+<code>processDataSet</code></p>
+</td>
       </tr>
     </tbody>
   </table>

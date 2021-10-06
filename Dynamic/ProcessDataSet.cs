@@ -18,6 +18,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[] Y_meas { get; set; }
         public double[] Y_sim { get; set; }//TODO: add support for multiple y_sim
 
+        public double[] Disturbance { get; set; } //additive _output_ disturbance (Y_meas = Y_sim+Disturbance ideally)
+
         public double[,] U { get;}
 
         public int NumDataPoints { get; }

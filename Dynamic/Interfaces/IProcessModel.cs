@@ -18,7 +18,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputsU">a 2d array of inputs, one row for each time step, or <c>null</c> if model is autonomous</param>
         /// <param name="badValueIndicator">is a special reserverd value of inputs U that is to be treated as NaN</param>
-        /// <returns>the value of the output y of the process model at the new time step</returns>
+        /// <returns>the value of the state x of the process model at the new time step(be aware that if a disturbance is defined, 
+        /// they need ot be added to states to get <c>y_sim</c>) </returns>
         double Iterate(double[] inputsU, double badValueIndicator=-9999);
 
         /// <summary>
