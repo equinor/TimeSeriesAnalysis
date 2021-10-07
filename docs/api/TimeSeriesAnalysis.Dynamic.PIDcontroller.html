@@ -1,0 +1,816 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PIDcontroller
+   | TimeSeriesAnalysis reference documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PIDcontroller
+   | TimeSeriesAnalysis reference documentation ">
+    <meta name="generator" content="docfx 2.58.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller">
+  
+  
+  <h1 id="TimeSeriesAnalysis_Dynamic_PIDcontroller" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller" class="text-break">Class PIDcontroller
+  </h1>
+  <div class="markdown level0 summary"><p>Proporitional-Integral-Derivative controller that supports</p>
+<ul>
+<li>first and second order low pass filtering of process variable</li>
+<li>anti-windup</li>
+<li>bumpless transfer between auto and manual mode</li>
+<li>feedforward</li>
+<li>scaling of input and output values</li>
+<li>gain scheduling of Kp</li>
+<li>gain scheduling of Ti</li>
+<li>&quot;kicking&quot; as is usually applied to compressor recycling controllers/anti-surge</li>
+<li>min select/max select (also referred to as high select or low select: (multiple pid-controllers controlling the same output switch between auto and tracking mode)</li>
+</ul>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">PIDcontroller</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
+  <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
+  <h5 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PIDcontroller</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller__ctor_System_Double_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor(System.Double,System.Double,System.Double,System.Double)">PIDcontroller(Double, Double, Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PIDcontroller(double TimeBase_s, double Kp = 1, double Ti = 50, double Td = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">TimeBase_s</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">Kp</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">Ti</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">Td</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetControllerStatus_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetControllerStatus" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus">GetControllerStatus()</h4>
+  <div class="markdown level1 summary"><p>Returns a status code, to determine if controller is in manual, auto or in tracking(relevant for split range controllers.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PidStatus GetControllerStatus()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidStatus.html">PidStatus</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTimeBase_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTimeBase" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase">GetTimeBase()</h4>
+  <div class="markdown level1 summary"><p>Sets the length of time in seconds between each iteration of the controller, i.e. the &quot;clock time&quot; or &quot;time base&quot;.
+This is very important to set correctly for the controller to function properly. Normally the clock time is set only once during intalization.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetTimeBase()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingCutoff_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingCutoff" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff">GetTrackingCutoff()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetTrackingCutoff()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingOffset_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingOffset" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset">GetTrackingOffset()</h4>
+  <div class="markdown level1 summary"><p>Returns the tracking offset of the controller, the offset that a non-active controller will add or subtract from its
+output when inactive in a split range control scheme</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetTrackingOffset()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUIfInAuto_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUIfInAuto" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto">GetUIfInAuto()</h4>
+  <div class="markdown level1 summary"><p>Returns the value of the output u that the controller would give if it was in auto.
+This is useful when considering turning on a controller that is in manual to see that the controller gives a sensible output.
+Call &quot;iterate&quot; first to update the internals of the controller.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetUIfInAuto()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUWithoutTracking_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUWithoutTracking" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking">GetUWithoutTracking()</h4>
+  <div class="markdown level1 summary"><p>Split range controllers add an offset to the output u for inactive or &quot;tracking&quot; controllers.
+This function returns the &quot;raw&quot; u without tracking, which can be useful for initalizing simulations with split range control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetUWithoutTracking()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double_System_Double_System_Nullable_System_Double__System_Nullable_System_Double__" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double})">Iterate(Double, Double, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Calculates the next u[k] output of the controller given the most recent process value and setpoint value, and optionally also
+including the tracking signal (only applicable if this is a split range controller) and optionally the gainScehduling variable if controller is to gain-schedule</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Iterate(double y_process_abs, double y_set_abs, double? uTrackSignal = null, double? gainSchedulingVariable = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">y_process_abs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">y_set_abs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">uTrackSignal</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">gainSchedulingVariable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double___System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double[],System.Double[],System.Double[])">Iterate(Double[], Double[], Double[])</h4>
+  <div class="markdown level1 summary"><p>Calculates an entire output vector u given vector of processes and setpoints (and optionally a tracking signal for split range)
+This method is useful for back-testing against historic data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] Iterate(double[] y_process_abs, double[] y_set_abs, double[] uTrackSignal = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">y_process_abs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">y_set_abs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">uTrackSignal</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAntiSurgeParams_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAntiSurgeParams_TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams)">SetAntiSurgeParams(PIDAntiSurgeParams)</h4>
+  <div class="markdown level1 summary"><p>Sets the anti-surge &quot;kick&quot; paramters of the controller</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetAntiSurgeParams(PIDAntiSurgeParams antiSurgeParams)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html">PIDAntiSurgeParams</a></td>
+        <td><span class="parametername">antiSurgeParams</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAutoMode_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAutoMode" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode">SetAutoMode()</h4>
+  <div class="markdown level1 summary"><p>Set the control to autoamtic mode (i.e. u varies based on inputs and settings) (use SetManualMode to switch back)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetAutoMode()</code></pre>
+  </div>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetKp_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetKp_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp(System.Double)">SetKp(Double)</h4>
+  <div class="markdown level1 summary"><p>Sets the Proportional gain(P) of the controller</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetKp(double Kp)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">Kp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualMode_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualMode" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode">SetManualMode()</h4>
+  <div class="markdown level1 summary"><p>Set the control to manual mode (i.e. constant u). Will cause a bumpless transfer.(use SetAutoMode to switch back)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetManualMode()</code></pre>
+  </div>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualOutput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualOutput_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput(System.Double)">SetManualOutput(Double)</h4>
+  <div class="markdown level1 summary"><p>Set the manual output of the model (will only be used if set)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetManualOutput(double uManual)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">uManual</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetScaling_TimeSeriesAnalysis_Dynamic_PIDscaling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling(TimeSeriesAnalysis.Dynamic.PIDscaling)">SetScaling(PIDscaling)</h4>
+  <div class="markdown level1 summary"><p>Gives a PIDscaling object that specifies how input and output is to be scaled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetScaling(PIDscaling pidScaling)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDscaling.html">PIDscaling</a></td>
+        <td><span class="parametername">pidScaling</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTd_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTd_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd(System.Double)">SetTd(Double)</h4>
+  <div class="markdown level1 summary"><p>Sets the differential(D) time contant of the controller in seconds</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetTd(double Td_seconds)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">Td_seconds</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTi_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTi_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi(System.Double)">SetTi(Double)</h4>
+  <div class="markdown level1 summary"><p>Sets the Integral(I) time contant of the controller in seconds</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetTi(double Ti_seconds)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">Ti_seconds</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTrackingOffset_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTrackingOffset_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset(System.Double,System.Double)">SetTrackingOffset(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Set the offset that is to be added or subtracte to a split range controller that is inactive or tracking.
+If this value is above zero, then the controller is MIN SELECT, if this value is negative then the controller is assumed MAX SELECT</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetTrackingOffset(double uTrackingOffset, double uTrackingCutoff = 0.5)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">uTrackingOffset</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">uTrackingCutoff</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetU0ForPcontrol_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetU0ForPcontrol_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol(System.Double)">SetU0ForPcontrol(Double)</h4>
+  <div class="markdown level1 summary"><p>For proportional-only controllers (P-controllers), a u0 offset to be added to u is specified by this method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetU0ForPcontrol(double u0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">u0</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetYFilter_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetYFilter_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter(System.Double,System.Int32)">SetYFilter(Double, Int32)</h4>
+  <div class="markdown level1 summary"><p>Sets the filter time constant in seconds and the filter order (1. or 2. order supported) of low-pass filter to be applied to the process
+measurement y</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetYFilter(double filterTimeConstant_s, int filterOrder = 1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">filterTimeConstant_s</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">filterOrder</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_WarmStart_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart(System.Double,System.Double,System.Double)">WarmStart(Double, Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Initalizes the controller internal state(integral term) to be steady at the given process value and output value,
+useful to avoid bumps when staring controller</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WarmStart(double y_process_abs, double y_set_abs, double u_abs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">y_process_abs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">y_set_abs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">u_abs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

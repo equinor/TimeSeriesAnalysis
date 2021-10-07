@@ -22,9 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private TimeDelay delayObj;
 
         private bool isFirstIteration;
-
         private double[] lastGoodValuesOfU;
-
 
         public  ProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }

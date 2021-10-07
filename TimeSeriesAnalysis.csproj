@@ -134,6 +134,16 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\Interfaces\IFittedProcessModelParameters.cs" />
     <Compile Include="Dynamic\Filters\LowPass.cs" />
     <Compile Include="Dynamic\Interfaces\IProcessModelParameters.cs" />
+    <Compile Include="Dynamic\Models\PIDModel.cs" />
+    <Compile Include="Dynamic\Models\PIDModelParameters.cs" />
+    <Compile Include="Dynamic\PID\PIDAntiSurgeParams.cs" />
+    <Compile Include="Dynamic\PID\PIDcontroller.cs" />
+    <Compile Include="Dynamic\PID\PIDgainScheduling.cs" />
+    <Compile Include="Dynamic\PID\PIDscaling.cs" />
+    <Compile Include="Dynamic\PID\PIDsim.cs" />
+    <Compile Include="Dynamic\PID\PIDsimDisturbance.cs" />
+    <Compile Include="Dynamic\PID\PIDsimProcessParams.cs" />
+    <Compile Include="Dynamic\PID\PIDtuning.cs" />
     <Compile Include="Dynamic\ProcessDataSet.cs" />
     <Compile Include="Dynamic\ProcessTimeDelayIdentWarnings.cs" />
     <Compile Include="Dynamic\ProcessIdentWarnings.cs" />
@@ -143,6 +153,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\TimeDelay.cs" />
     <Compile Include="Examples\Examples.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Tests\PIDTests.cs" />
     <Compile Include="Tests\SysIDUnitTests.cs" />
     <Compile Include="TimeSeriesAnalysis\RegressionResults.cs" />
     <Compile Include="Dynamic\Filters\MovingAvg.cs" />

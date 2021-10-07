@@ -41,6 +41,14 @@
         - name: The "default model"
           href: sysid_defaultmodel.md
 
+
+- name: Dynamic simulation
+  href: dynsim.md
+
+
+- name: PID control
+  href: pidcontrol.md
+
 - name: Glossary 
   href: glossary.md
 

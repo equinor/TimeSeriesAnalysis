@@ -10,7 +10,7 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 
-namespace DefaultModel.UnitTests
+namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
 {
 
     class DefaultModel_Simulation

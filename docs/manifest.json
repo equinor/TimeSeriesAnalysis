@@ -170,6 +170,117 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html",
+          "hash": "wfyshEFswaB5m+YcB+YhnjITnJsJPwtBKGF7p4ab8v8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDcontroller.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html",
+          "hash": "/gkEdEYw/buqV0P1i/+ML5Tp50849v6qxsOaUkqqJwQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html",
+          "hash": "cXQJREl2qJEa8wmIKvD2DYQaorZI5kYQhs/71lhcF7k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDscaling.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDscaling.html",
+          "hash": "cqtncLWH5T8zD5AQKP2kp4rc2QR1nGHNr41OhxyytEI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDsim.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDsim.html",
+          "hash": "R9jbVCp2nGiYBj220SRcr2yIN+5Us8rlclSCCR+xouI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDsimDisturbance.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDsimDisturbance.html",
+          "hash": "7kX7dzT7yDOcbFl+hVa/XE6K3/8W5y4B3JIQogNsvLc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDsimProcessParams.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDsimProcessParams.html",
+          "hash": "ODkZc7W5fJ+ocGc3qIsnkoJjPZULhLMV4R+LAqRwk0E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDtuning.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDtuning.html",
+          "hash": "eKaHhvE3Iw2L9DVzDGGCwtiLFtBe7LQiwW+WAgCBh2o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidStatus.html",
+          "hash": "1PD180pWkESIUn0pdIU9/Qiym+yaenRLHaDyFPVnKSw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessDataSet.yml",
       "output": {
         ".html": {
@@ -234,7 +345,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "uWjILOJsGAmRPI77GzVOXO55e7FM8m0FtjjDnCsd4YE="
+          "hash": "pCoTcFrEq7VzmXBrpapgLNROdKZjk5XmD0txA+9J+Ao="
         }
       },
       "is_incremental": false,
@@ -486,7 +597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Kq/SA54/qtNLerwijpfrAt62uWmiJEIvEDRA8+SgES4="
+          "hash": "BTvP7yTz3kj/jG/li1UxZTV5J2qrkHGXFPkC2G2/i/I="
         }
       },
       "is_incremental": false,
@@ -511,6 +622,18 @@
         ".html": {
           "relative_path": "articles/dependencies.html",
           "hash": "NqBDnt3Hi/FFHxnpqIoha5ABiaoG1FbWYxq92JHdBk0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/dynsim.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/dynsim.html",
+          "hash": "AO04H7rh/jPaLDRbW7UT21AqAYAa3rCXZnfOQru4HEs="
         }
       },
       "is_incremental": false,
@@ -714,6 +837,94 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/fig_feedbackprocesses.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/fig_feedbackprocesses.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/fig_nonpidprocess.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/fig_nonpidprocess.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/fig_pidprocess.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/fig_pidprocess.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/fig_process.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/fig_process.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/fig_serialprocesses.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/fig_serialprocesses.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/fig_subprocess.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/fig_subprocess.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pid_feedforward.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pid_feedforward.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pid_select.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pid_select.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/unit_test.png",
       "output": {
         "resource": {
@@ -797,6 +1008,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/pidcontrol.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/pidcontrol.html",
+          "hash": "SXCkhHhFztUVN8kwQMno7EQ9ea1mULHSwXFh5PcXxlU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/plot_setup.md",
       "output": {
         ".html": {
@@ -849,7 +1072,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "GHqJa1K7VBuFEzJm9+GOgcPg68dLZGXLeVsHp6lQ7ek="
+          "hash": "cKP0bzS4w7olAi3gBGXJVY+4F7Uk6dlbuVEax555RSI="
         }
       },
       "is_incremental": false,
@@ -922,14 +1145,14 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 25,
-          "skipped_file_count": 25
+          "total_file_count": 27,
+          "skipped_file_count": 27
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 38,
-          "skipped_file_count": 38
+          "total_file_count": 47,
+          "skipped_file_count": 47
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
