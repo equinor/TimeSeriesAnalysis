@@ -79,13 +79,20 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="design-principles">Design principles</h1>
 
+<h2 id="system-identification">System identification</h2>
 <p>This class library is built on the following principles/assertions:</p>
 <ul>
 <li>most time-series are <em>not</em> designed for identification, and may have less than ideal amount of excitation, hence
 <strong>handling parameter uncertainty</strong> and <strong>avoiding over-parametrization</strong> are important,</li>
 <li>almost all systems are actually <strong>nonlinear</strong>, many but not all can be considered <strong>locally linear</strong>,</li>
 <li>real-world data will contain bad data points that need to be <strong>filtered</strong> out , and you may need to manually remove further non-representative data.
-Espeically for recursive models, a single spurious value can destroy an entire model run, thus the tooling need to support cleaning data to avoid garbage getting into models.</li>
+Especially for recursive models, a single spurious value can destroy an entire model run, thus the tooling need to support cleaning data to avoid garbage getting into models.</li>
+<li>expect <em>parameter uncertainty</em>, treat it explicitly.</li>
+</ul>
+<h2 id="code-design">Code design</h2>
+<ul>
+<li>use <em>dependency injection</em>, <em>generics</em> and <em>interfaces</em> to make the process model easily replaceable - if you provide a new process model that implements the correct interfaces, it should immediately be compatible with re-usable functionality such as PID-control or simulation.</li>
+<li>do not use inheritance - this kind of code is hard to understand for others.</li>
 </ul>
 </article>
           </div>

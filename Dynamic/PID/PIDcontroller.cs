@@ -11,22 +11,26 @@ namespace TimeSeriesAnalysis.Dynamic
 
     public enum PidStatus { MANUAL=0, AUTO=1, TRACKING=2  };
 
-
-
     /// <summary>
-    /// Proporitional-Integral-Derivative controller that supports 
+    /// Proporitional-Integral-Derivative(PID) controller that supports 
     /// - first and second order low pass filtering of process variable
     /// - anti-windup 
     /// - bumpless transfer between auto and manual mode
+    /// - "warmstarting" -bumpless startup
     /// - feedforward 
     /// - scaling of input and output values 
     /// - gain scheduling of Kp
     /// - gain scheduling of Ti
     /// - "kicking" as is usually applied to compressor recycling controllers/anti-surge
     /// - min select/max select (also referred to as high select or low select: (multiple pid-controllers controlling the same output switch between auto and tracking mode)
+    ///
+    /// By design decision, this class should be kept relativly simple in terms of coding pattersn, so that it is possible to 
+    /// hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc).
     /// </summary>
     public class PIDcontroller
     {
+        private double nanValue = -9999; 
+
         private double TimeBase_s;
         private double Ti, Kp, Td;
         private double y_FilterTconst_s;
@@ -56,8 +60,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Constructor
         /// </summary>
-        public PIDcontroller(double TimeBase_s, double Kp=1, double Ti=50, double Td=0)
+        public PIDcontroller(double TimeBase_s, double Kp=1, double Ti=50, double Td=0, double nanValue=-9999)
         {
+            this.nanValue = nanValue;
             this.pidScaling = new PIDscaling();
             this.TimeBase_s = TimeBase_s;
 
@@ -87,14 +92,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Set the gain scheduling of the controller (by default controller has no gain-scheduling)
         /// Re-calling this setter to update gain-scheduling
         /// </summary>
-        void SetGainScehduling(PIDgainScheduling gainSchedulingObj)
+        public void SetGainScehduling(PIDgainScheduling gainSchedulingObj)
         {
             this.gsObj = gainSchedulingObj;
         }
         /// <summary>
-        /// Gett the gain scheduling settings of the controller
+        /// Get the gain scheduling settings of the controller
         /// </summary>
-        PIDgainScheduling GetGainScehduling(PIDgainScheduling gainSchedulingObj)
+        public PIDgainScheduling GetGainScehduling(PIDgainScheduling gainSchedulingObj)
         {
             return this.gsObj;
         }
@@ -118,6 +123,17 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return this.TimeBase_s;
         }
+
+        /// <summary>
+        /// Get the object that contains scaling information 
+        /// </summary>
+
+        public PIDscaling GetScaling()
+        {
+            return this.pidScaling;
+        }
+
+
 
         /// <summary>
         /// Sets the anti-surge "kick" paramters of the controller
@@ -255,9 +271,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (isInAuto == false)
                 return u_prev;
-            if (y_process_abs == -9999)// protect from Sigmas internal error identifier
+            if (y_process_abs == nanValue || Double.IsNaN(y_process_abs))
                 return u_prev;
-            if (y_set_abs == -9999)// protect from Sigmas internal error identifier
+            if (y_set_abs == nanValue || Double.IsNaN(y_set_abs))
                 return u_prev;
 
             // gain-scehduling

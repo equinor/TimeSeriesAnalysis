@@ -30,7 +30,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.37</Version>
+    <Version>1.0.38</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 TimeSeriesAnalysis is a class library that allows you to work efficiently with time-series 
@@ -140,14 +140,12 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\PID\PIDcontroller.cs" />
     <Compile Include="Dynamic\PID\PIDgainScheduling.cs" />
     <Compile Include="Dynamic\PID\PIDscaling.cs" />
-    <Compile Include="Dynamic\PID\PIDsim.cs" />
-    <Compile Include="Dynamic\PID\PIDsimDisturbance.cs" />
-    <Compile Include="Dynamic\PID\PIDsimProcessParams.cs" />
     <Compile Include="Dynamic\PID\PIDtuning.cs" />
-    <Compile Include="Dynamic\ProcessDataSet.cs" />
+    <Compile Include="Dynamic\SubProcessDataSetWarnings.cs" />
+    <Compile Include="Dynamic\SubProcessDataSet.cs" />
     <Compile Include="Dynamic\ProcessTimeDelayIdentWarnings.cs" />
     <Compile Include="Dynamic\ProcessIdentWarnings.cs" />
-    <Compile Include="Dynamic\ProcessSimulator.cs" />
+    <Compile Include="Dynamic\SubProcessSimulator.cs" />
     <Compile Include="Dynamic\ProcessTimeDelayIdentifier.cs" />
     <Compile Include="Dynamic\SysIdBadDataFinder.cs" />
     <Compile Include="Dynamic\TimeDelay.cs" />

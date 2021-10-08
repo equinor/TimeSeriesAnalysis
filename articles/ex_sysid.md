@@ -3,10 +3,13 @@
 **In this example, it is shown how to use the built-in dynamic identification algorithm
 to find a dynamic model to describe a measured time-series depening on multiple inputs.**
 
+This example considers an "open-loop" subprocess as shown below:
+![Example 5 result](images/fig_nonpidprocess.png).
+
 A synthetic dataset with two inputs ``u1`` and ``u2`` is created using ``ProcessSimulator``
 and the ``DefaultProcessModel`` (the output ``y_meas`` depends linearly on the two inputs), and noise
 is added to the data. The advantage of a synthetic dataset is that we know the true underlying
-paramters, which is very useful for testing and validating methods.
+parameters, which is very useful for testing and validating methods.
 In this case the "true" *time-delay* of ``5`` seconds, *time-constant* of ``15`` seconds and *process gains*
 ``{1,2}`` are chosen.
 
@@ -22,7 +25,7 @@ The first plot shows the dataset, showing inputs``u1``, ``u2`` and output ``y``:
 
 **Notice of the time-delay and time-constant are clearly visible in this dataset**. 
 The resulting fit between model and dataset is shown below. The two time-series are virtually identical, except that
-the modelled output does not have any noise.
+the modeled output does not have any noise.
 
 ![Example 4:output](./images/ex4_results.png)
 

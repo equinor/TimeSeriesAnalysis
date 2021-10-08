@@ -162,13 +162,13 @@
   
   
   <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_TimeSeriesAnalysis_Dynamic_ProcessDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,TimeSeriesAnalysis.Dynamic.ProcessDataSet)">DefaultProcessModel(DefaultProcessModelParameters, ProcessDataSet)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_TimeSeriesAnalysis_Dynamic_SubProcessDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,TimeSeriesAnalysis.Dynamic.SubProcessDataSet)">DefaultProcessModel(DefaultProcessModelParameters, SubProcessDataSet)</h4>
   <div class="markdown level1 summary"><p>Initalizer of model that for the given dataSet also creates the resulting y_sim</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultProcessModel(DefaultProcessModelParameters modelParameters, ProcessDataSet dataSet)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultProcessModel(DefaultProcessModelParameters modelParameters, SubProcessDataSet dataSet)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -186,7 +186,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessDataSet.html">ProcessDataSet</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></td>
         <td><span class="parametername">dataSet</span></td>
         <td></td>
       </tr>
@@ -202,7 +202,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ProcessDataSet FittedDataSet { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public SubProcessDataSet FittedDataSet { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -214,7 +214,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessDataSet.html">ProcessDataSet</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -270,6 +270,53 @@
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html">DefaultProcessModelParameters</a></td>
         <td><p>Model paramter object</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32)">GetSteadyStateInput(Double, Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? GetSteadyStateInput(double y0, int inputIdx = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">y0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">inputIdx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -380,7 +427,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><p>the updated process model output
+        <td><p>the updated process model state(x) - the output without any output noise or disturbance.
 NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
 If some data points in U inputsU are NaN or equal to <code>badValueIndicator</code>, the last good value is returned</p>
 </td>

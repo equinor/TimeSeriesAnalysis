@@ -36,7 +36,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="u0">Optionally sets the local working point for the inputs
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <returns> returning the model parameters </returns>
-        public DefaultProcessModel Identify(ref ProcessDataSet dataSet, double[] u0 = null)
+        public DefaultProcessModel Identify(ref SubProcessDataSet dataSet, double[] u0 = null)
         {
             bool doNonzeroU0 = true;// should be: true
             bool doUseDynamicModel = true;// should be:true
@@ -90,8 +90,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doDebugPlotting)
                 { 
                     var debugModel = new DefaultProcessModel(modelParams, dataSet);
-                    var y_sim = ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
-                        debugModel, dataSet);
+                    var y_sim = SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
+                        debugModel, ref dataSet);
                     Plot.FromList(new List<double[]> {y_sim,dataSet.Y_meas},new List<string> { "y1=ysim", "y1=ymeas" },
                         (int)dataSet.TimeBase_s, "iteration:"+ timeDelayIdx,default,"debug_it_" + timeDelayIdx);
                 }
@@ -107,7 +107,7 @@ namespace TimeSeriesAnalysis.Dynamic
             /////////////////////////////////////////////////////////////////
            
             var model = new DefaultProcessModel(modelParameters, dataSet);
-            ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
+            SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
                 model, ref dataSet);
             model.FittedDataSet = dataSet;
 
@@ -116,11 +116,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         private DefaultProcessModelParameters EstimateProcessForAGivenTimeDelay
-            (int timeDelay_samples, ProcessDataSet dataSet,
+            (int timeDelay_samples, SubProcessDataSet dataSet,
             bool useDynamicModel, double FilterTc_s, double[] u0, bool assumeThatYkminusOneApproxXkminusOne
             )
         {
-            Vec vec = new Vec(dataSet.BadValueIndicatingValue);
+            Vec vec = new Vec(dataSet.BadDataID);
 
             double[] ycur, yprev = null, dcur, dprev = null;
             List<double[]> ucurList = new List<double[]>();
@@ -145,10 +145,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 yprev = Vec<double>.SubArray(dataSet.Y_meas, idxStart - 1, idxEnd - 1);
                 dcur = null;
                 dprev = null;
-                if (dataSet.Disturbance != null)
+                if (dataSet.D != null)
                 {
-                    dcur = Vec<double>.SubArray(dataSet.Disturbance, idxStart, idxEnd);
-                    dprev = Vec<double>.SubArray(dataSet.Disturbance, idxStart - 1, idxEnd - 1);
+                    dcur = Vec<double>.SubArray(dataSet.D, idxStart, idxEnd);
+                    dprev = Vec<double>.SubArray(dataSet.D, idxStart - 1, idxEnd - 1);
                 }
             }
             else
@@ -160,20 +160,20 @@ namespace TimeSeriesAnalysis.Dynamic
                         idxStart - timeDelay_samples, idxEnd - timeDelay_samples));
                 }
                 ycur = Vec<double>.SubArray(dataSet.Y_meas, idxStart, idxEnd);
-                dcur = Vec<double>.SubArray(dataSet.Disturbance, idxStart, idxEnd);
+                dcur = Vec<double>.SubArray(dataSet.D, idxStart, idxEnd);
             }
 
             var indUbad = new List<int>();
             for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
             {
                 indUbad = indUbad.Union(SysIdBadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx),
-                    dataSet.BadValueIndicatingValue)).ToList();
+                    dataSet.BadDataID)).ToList();
             }
-            List<int> indYcurBad = vec.FindValues(ycur, dataSet.BadValueIndicatingValue, VectorFindValueType.NaN);
+            List<int> indYcurBad = vec.FindValues(ycur, dataSet.BadDataID, VectorFindValueType.NaN);
 
             List<int> yIndicesToIgnore = new List<int>();
             // the above code misses the special case that y_prev[0] is bad, as it only looks at y_cur
-            if (Double.IsNaN(yprev[0])|| yprev[0] == dataSet.BadValueIndicatingValue)
+            if (Double.IsNaN(yprev[0])|| yprev[0] == dataSet.BadDataID)
             {
                 yIndicesToIgnore.Add(0);
             }
@@ -443,13 +443,13 @@ namespace TimeSeriesAnalysis.Dynamic
         // bias is not always accurate for dynamic model identification 
         // as it is as "difference equation" that matches the changes in the 
         //
-        private double? ReEstimateBias(ProcessDataSet dataSet, DefaultProcessModelParameters parameters)
+        private double? ReEstimateBias(SubProcessDataSet dataSet, DefaultProcessModelParameters parameters)
         {
             parameters.Bias = 0;
-            double nanValue = dataSet.BadValueIndicatingValue;
+            double nanValue = dataSet.BadDataID;
             var model = new DefaultProcessModel(parameters, dataSet.TimeBase_s);
-            var y_sim = ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
-                Simulate(model, dataSet);
+            var y_sim = SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
+                Simulate(model, ref dataSet);
 
             double[] diff = (new Vec(nanValue)).Subtract(dataSet.Y_meas, y_sim);
 

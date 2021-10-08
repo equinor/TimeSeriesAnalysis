@@ -18,16 +18,16 @@ namespace TimeSeriesAnalysis.Examples
         #region ex_1
         public void Ex1_hello_world()
         {
-            int dT_s = 1;
+            int timeBase_s = 1;
             double filterTc_s = 10;
 
             double[] input = TimeSeriesCreator.Step(11, 60, 0, 1);
 
-            LowPass lp = new LowPass(dT_s);
+            LowPass lp = new LowPass(timeBase_s);
             var output = lp.Filter(input, filterTc_s);
 
             Plot.FromList(new List<double[]> { input, output},
-                new List<string> { "y1=V1_input","y1=V2_output"}, dT_s, "ex1_hello_world",
+                new List<string> { "y1=V1_input","y1=V2_output"}, timeBase_s, "ex1_hello_world",
                 new DateTime(2020, 1, 1, 0, 0, 0));
         }
         #endregion
@@ -97,7 +97,7 @@ namespace TimeSeriesAnalysis.Examples
         {
             int timeBase_s = 1;
             double noiseAmplitude = 0.05;
-            DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
+            var parameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 15,
@@ -105,21 +105,21 @@ namespace TimeSeriesAnalysis.Examples
                 TimeDelay_s = 5,
                 Bias = 5
             };
-            DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
+            var model = new DefaultProcessModel(parameters, timeBase_s);
 
             double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
-            ProcessDataSet dataSet = new ProcessDataSet(timeBase_s,U);
-            ProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
+            var dataSet = new SubProcessDataSet(timeBase_s,U);
+            SubProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
                 EmulateYmeas(model, ref dataSet, noiseAmplitude);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s,"ex4_data");
 
-            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
-            DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet);
+            var modelId = new DefaultProcessModelIdentifier();
+            var identifiedModel = modelId.Identify(ref dataSet);
     
             Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas, 
                 identifiedModel.FittedDataSet.Y_sim },
@@ -137,10 +137,39 @@ namespace TimeSeriesAnalysis.Examples
             Console.WriteLine("static model gains:" + Vec.ToString(regResults.Gains,3));
         }
         #endregion
+
+
+
         [Test, Explicit]
         #region ex_5
-        public void Ex5_pid()
+        public void Ex5_pid_sim()
         {
+            int timeBase_s = 1;
+            int N = 500;
+            var modelParameters = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 10,
+                ProcessGains = new double[] { 1 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+            var processModel = new DefaultProcessModel(modelParameters, timeBase_s);
+            var pidParameters = new PIDModelParameters()
+            {
+                Kp = 0.5,
+                Ti_s = 20
+            };
+            var pid = new PIDModel(pidParameters, timeBase_s);
+            var dataSet = new SubProcessDataSet(timeBase_s,N);
+            dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
+            dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N); 
+            SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
+                CoSimulateProcessAndPID(processModel, pid, ref dataSet);
+
+            Plot.FromList(new List<double[]> { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
+                new List<string> { "y1=y_sim", "y3=u_pid","y2=disturbance" }, 
+                timeBase_s, "ex5_results");
         }
         #endregion
 

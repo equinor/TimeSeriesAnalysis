@@ -24,7 +24,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool isFirstIteration;
         private double[] lastGoodValuesOfU;
 
-        public  ProcessDataSet FittedDataSet { get; internal set; }
+        public  SubProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
-        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, ProcessDataSet dataSet)
+        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, SubProcessDataSet dataSet)
         {
             InitSim(dataSet.TimeBase_s, modelParameters);
         }
@@ -56,6 +56,21 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return modelParameters;
         }
+
+        public double? GetSteadyStateInput(double y0, int inputIdx=0)
+        {
+            // x = G*(u-u0)+bias ==>
+            // y (approx) x
+            // u =  (y-bias)/G+ u0 
+            double u0;
+            u0 = (y0 - modelParameters.Bias) / modelParameters.ProcessGains[inputIdx];
+            if (modelParameters.U0 != null)
+            {
+                u0 += modelParameters.U0[inputIdx];
+            }
+            return u0;
+        }
+
 
         /// <summary>
         /// Initalize the process model with a sampling time
@@ -76,7 +91,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputsU">vector of inputs</param>
         /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
-        /// <returns>the updated process model output
+        /// <returns>the updated process model state(x) - the output without any output noise or disturbance.
         ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
         ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
         /// </returns>
@@ -85,7 +100,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (!modelParameters.AbleToIdentify())
                 return Double.NaN;
 
-            double y_static = modelParameters.Bias;
+            double x_static = modelParameters.Bias;
 
             for (int curInput = 0; curInput < inputsU.Length; curInput++)
             {
@@ -100,37 +115,32 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 if (modelParameters.U0 != null)
                 {
-                    y_static += modelParameters.ProcessGains[curInput] *
+                    x_static += modelParameters.ProcessGains[curInput] *
                         (curUvalue - modelParameters.U0[curInput]);
                 }
                 else
                 {
-                    y_static += modelParameters.ProcessGains[curInput] *
+                    x_static += modelParameters.ProcessGains[curInput] *
                             curUvalue;
                 }
 
                 if (modelParameters.ProcessGainCurvatures != null)
-                { 
+                {
                     //TODO
                 }
             }
-
             // nb! if first iteration, start model at steady-state
-            double y = lowPass.Filter(y_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
+            double x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
             if (modelParameters.TimeDelay_s <= 0)
             {
-                return y;
+                return x_dynamic;
             }
             else
             {
-                return delayObj.Delay(y);
+                return delayObj.Delay(x_dynamic);
             }
          }
-
-
-    
-
 
         /// <summary>
         /// Is the model static or dynamic?

@@ -81,10 +81,12 @@
 
 <p><strong>In this example, it is shown how to use the built-in dynamic identification algorithm
 to find a dynamic model to describe a measured time-series depening on multiple inputs.</strong></p>
+<p>This example considers an &quot;open-loop&quot; subprocess as shown below:
+<img src="images/fig_nonpidprocess.png" alt="Example 5 result">.</p>
 <p>A synthetic dataset with two inputs <code>u1</code> and <code>u2</code> is created using <code>ProcessSimulator</code>
 and the <code>DefaultProcessModel</code> (the output <code>y_meas</code> depends linearly on the two inputs), and noise
 is added to the data. The advantage of a synthetic dataset is that we know the true underlying
-paramters, which is very useful for testing and validating methods.
+parameters, which is very useful for testing and validating methods.
 In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds, <em>time-constant</em> of <code>15</code> seconds and <em>process gains</em>
 <code>{1,2}</code> are chosen.</p>
 <p><em>The aim of this example is to see how closely the <code>DefaultProcessModelIdentifier</code> is able to estimate these values.</em></p>
@@ -93,7 +95,7 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
     {
         int timeBase_s = 1;
         double noiseAmplitude = 0.05;
-        DefaultProcessModelParameters parameters = new DefaultProcessModelParameters
+        var parameters = new DefaultProcessModelParameters
         {
             WasAbleToIdentify = true,
             TimeConstant_s = 15,
@@ -101,21 +103,21 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
             TimeDelay_s = 5,
             Bias = 5
         };
-        DefaultProcessModel model = new DefaultProcessModel(parameters, timeBase_s);
+        var model = new DefaultProcessModel(parameters, timeBase_s);
 
         double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
         double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
         double[,] U = Array2D&lt;double&gt;.InitFromColumnList(new List&lt;double[]&gt;{u1 ,u2});
 
-        ProcessDataSet dataSet = new ProcessDataSet(timeBase_s,U);
-        ProcessSimulator&lt;DefaultProcessModel,DefaultProcessModelParameters&gt;.
+        var dataSet = new SubProcessDataSet(timeBase_s,U);
+        SubProcessSimulator&lt;DefaultProcessModel,DefaultProcessModelParameters&gt;.
             EmulateYmeas(model, ref dataSet, noiseAmplitude);
 
         Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_meas, u1, u2 },
             new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s,&quot;ex4_data&quot;);
 
-        DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
-        DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet);
+        var modelId = new DefaultProcessModelIdentifier();
+        var identifiedModel = modelId.Identify(ref dataSet);
 
         Plot.FromList(new List&lt;double[]&gt; { identifiedModel.FittedDataSet.Y_meas, 
             identifiedModel.FittedDataSet.Y_sim },
@@ -137,7 +139,7 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
 <p><img src="images/ex4_dataset.png" alt="Example 4:dataset"></p>
 <p><strong>Notice of the time-delay and time-constant are clearly visible in this dataset</strong>.
 The resulting fit between model and dataset is shown below. The two time-series are virtually identical, except that
-the modelled output does not have any noise.</p>
+the modeled output does not have any noise.</p>
 <p><img src="images/ex4_results.png" alt="Example 4:output"></p>
 <p>The resulting console output gives more detail on the parameters found:</p>
 <pre><code>DefaultProcessModel

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Utility
 {
-    public class TimeSeriesCreator
+    /// <summary>
+    /// Class for static methods create different types of time-series for testing.
+    /// </summary>
+    static public class TimeSeriesCreator
     {
         /// <summary>
         /// Create an array of DateTimes starting at <c>t0</c> of length N and with sampling interval <c>dT_s</c>
@@ -74,6 +77,16 @@ namespace TimeSeriesAnalysis.Utility
                 Vec<double>.Fill(val2, N2));
         }
 
-
+        /// <summary>
+        /// Creates a vector of a constant value
+        /// </summary>
+        /// <param name="value">constant value of timne-series</param>
+        /// <param name="N">number of data points of time-series</param>
+        /// <returns></returns>
+        internal static double[] Constant(int value, int N)
+        {
+            //(wrapper for Vec.Fill, added for code readability)
+            return Vec<double>.Fill(value,N);
+        }
     }
 }

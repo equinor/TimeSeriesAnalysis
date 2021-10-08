@@ -9,7 +9,7 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Dynamic.PIDTests
 {
 
-
+    /*
 
     [TestFixture]
     class PIDTests
@@ -82,7 +82,7 @@ namespace TimeSeriesAnalysis.Dynamic.PIDTests
 
             Assert.AreEqual(yset,ymeas,"no disturbance-> warmup should cause PID-controller to be completely stable in equilibirum at its startup value");
         }
-        */
+        
 
 
         [TestCase(30,29)]
@@ -203,13 +203,13 @@ namespace TimeSeriesAnalysis.Dynamic.PIDTests
         }
 
 
+    
 
 
 
 
 
 
-
-    }
+    }*/
 }
 

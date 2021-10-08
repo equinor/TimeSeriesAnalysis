@@ -33,12 +33,12 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 31),
                 Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1});
-            ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
-            bool ret  = ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
+            SubProcessDataSet dataSet = new SubProcessDataSet(timeBase_s, U);
+            var ret  = SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
                 Simulate(model, ref dataSet);
 
          ///   Plot.FromList(new List<double[]>{ dataSet.Y_sim,u1},new List<string>{"y1=ymeas ","y3=u1"}, timeBase_s);
-            Assert.IsTrue(ret);
+            Assert.IsNotNull(ret);
             Assert.IsTrue(dataSet.Y_sim[30+ timeDelay_s] == 0,"step should not arrive at y_sim too early");
             Assert.IsTrue(dataSet.Y_sim[31+ timeDelay_s] == 1, "steps should be delayed exactly timeDelay_s later  ");
         }
@@ -57,16 +57,16 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         static Plot4Test plot = new Plot4Test(doPlotting);
         double timeBase_s=1;
 
-        public ProcessDataSet CreateDataSet (DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
+        public SubProcessDataSet CreateDataSet (DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
             DefaultProcessModel model = new DefaultProcessModel(designParameters, timeBase_s);
             this.timeBase_s = timeBase_s;
-            ProcessDataSet dataSet = new ProcessDataSet(timeBase_s, U);
-            dataSet.BadValueIndicatingValue = badValueId;
-            ProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
+            SubProcessDataSet dataSet = new SubProcessDataSet(timeBase_s, U);
+            dataSet.BadDataID = badValueId;
+            SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
                 EmulateYmeas(model, ref dataSet, noiseAmplitude);
 
             if (addInBadDataToYmeasAndU)
@@ -93,7 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             return dataSet;
         }
 
-        public DefaultProcessModel Identify(ProcessDataSet dataSet, DefaultProcessModelParameters designParameters)
+        public DefaultProcessModel Identify(SubProcessDataSet dataSet, DefaultProcessModelParameters designParameters)
         {
             DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0);
@@ -262,7 +262,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             var sin_period_s = 30;
             var disturbance = TimeSeriesCreator.Sinus(sin_amplitude, sin_period_s,(int)timeBase_s,U.GetNRows());
             dataSet.Y_meas = (new Vec()).Add(dataSet.Y_meas,disturbance);
-            dataSet.Disturbance = disturbance;
+            dataSet.D = disturbance;
             var model = Identify(dataSet, designParameters);
 
             plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2, disturbance },
