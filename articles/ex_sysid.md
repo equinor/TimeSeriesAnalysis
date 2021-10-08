@@ -1,7 +1,7 @@
 # Example 4 : Fitting a dynamic model to transient data 
 
 **In this example, it is shown how to use the built-in dynamic identification algorithm
-to find a dynamic model to describe a measured time-series depening on multiple inputs.**
+to find a dynamic model to describe a measured time-series depending on multiple inputs.**
 
 This example considers an "open-loop" subprocess as shown below:
 ![Example 5 result](images/fig_nonpidprocess.png).
@@ -85,8 +85,8 @@ the estimate ``[0.958;1.96]`` of the dynamic identification to the true values: 
 > This example illustrates an extremely important but slightly subtle lesson about the utility of
 >dynamic identification:
 > **If your data is dynamic/transient, using dynamic identification will result in better estimates, 
-> *also for stationary terms*. This means that even if you are only intrested in the static gains of a system, 
-> you would benefit from estimataing gains using dynamic identification if your data has visible transients.** 
+> *also for stationary terms*. This means that even if you are only interested in the static gains of a system, 
+> you would benefit from estimating gains using dynamic identification if your data has visible transients.** 
   
 
 	

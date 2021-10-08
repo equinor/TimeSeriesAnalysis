@@ -136,6 +136,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\Interfaces\IProcessModelParameters.cs" />
     <Compile Include="Dynamic\Models\PIDModel.cs" />
     <Compile Include="Dynamic\Models\PIDModelParameters.cs" />
+    <Compile Include="Dynamic\MultiProcessSimulator.cs" />
     <Compile Include="Dynamic\PID\PIDAntiSurgeParams.cs" />
     <Compile Include="Dynamic\PID\PIDcontroller.cs" />
     <Compile Include="Dynamic\PID\PIDgainScheduling.cs" />

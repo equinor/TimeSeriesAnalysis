@@ -86,6 +86,7 @@
   <div class="markdown level0 summary"><p>Simulate any subprocess model that has implemented the IProcessModel interface.
 This class relies on depencency injection and interfaces, so that the
 the specifics of how models outputs are calculated should be encapsulated in the passed model objects.</p>
+<p>This class should not be static, as it is to be used as a type for MultiProcessSimulator</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -121,7 +122,7 @@ the specifics of how models outputs are calculated should be encapsulated in the
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
   <h5 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class SubProcessSimulator&lt;T1, T2&gt;
+    <pre><code class="lang-csharp hljs">public class SubProcessSimulator&lt;T1, T2&gt;
     where T1 : IProcessModel&lt;T2&gt; where T2 : IProcessModelParameters</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
@@ -143,18 +144,17 @@ the specifics of how models outputs are calculated should be encapsulated in the
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_CoSimulateProcessAndPID_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_CoSimulateProcessAndPID__0_TimeSeriesAnalysis_Dynamic_PIDModel_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID(`0,TimeSeriesAnalysis.Dynamic.PIDModel,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean)">CoSimulateProcessAndPID(T1, PIDModel, ref SubProcessDataSet, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Co-simulate a process model and pid-controller</p>
-</div>
+  <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2__ctor__0_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.#ctor(`0)">SubProcessSimulator(T1)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool CoSimulateProcessAndPID(T1 model, PIDModel pid, ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public SubProcessSimulator(T1 model)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -169,9 +169,33 @@ the specifics of how models outputs are calculated should be encapsulated in the
       <tr>
         <td><span class="xref">T1</span></td>
         <td><span class="parametername">model</span></td>
-        <td><p>the process model object, to be simulated</p>
-</td>
+        <td></td>
       </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_CoSimulateProcessAndPID_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_CoSimulateProcessAndPID_TimeSeriesAnalysis_Dynamic_PIDModel_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID(TimeSeriesAnalysis.Dynamic.PIDModel,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean)">CoSimulateProcessAndPID(PIDModel, ref SubProcessDataSet, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Co-simulate a process model and pid-controller</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CoSimulateProcessAndPID(PIDModel pid, ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a></td>
         <td><span class="parametername">pid</span></td>
@@ -213,14 +237,14 @@ instead of <code>processDataSet.Y_sim</code></p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_EmulateYmeas_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_EmulateYmeas__0_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double)">EmulateYmeas(T1, ref SubProcessDataSet, Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_EmulateYmeas_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double)">EmulateYmeas(ref SubProcessDataSet, Double)</h4>
   <div class="markdown level1 summary"><p>Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for<br>
 testing/test driven development.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void EmulateYmeas(T1 model, ref SubProcessDataSet processDataSet, double noiseAmplitude = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public void EmulateYmeas(ref SubProcessDataSet processDataSet, double noiseAmplitude = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,11 +256,6 @@ testing/test driven development.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><span class="xref">T1</span></td>
-        <td><span class="parametername">model</span></td>
-        <td></td>
-      </tr>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></td>
         <td><span class="parametername">processDataSet</span></td>
@@ -253,7 +272,7 @@ testing/test driven development.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_Simulate_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_Simulate__0_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate(`0,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean,System.Boolean)">Simulate(T1, ref SubProcessDataSet, Boolean, Boolean)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_Simulate_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean,System.Boolean)">Simulate(ref SubProcessDataSet, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Simulates the output of the model based on the processDataSet.U provided, by default the output is
 written back to <code>processDataSet.Y_sim</code> or <code>processDataSet.Y_meas</code>
 By default this method adds to <code>Y_sim</code> o <code>Y_meas</code> if they already contain values.</p>
@@ -261,7 +280,7 @@ By default this method adds to <code>Y_sim</code> o <code>Y_meas</code> if they 
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double[] Simulate(T1 model, ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Simulate(ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -273,12 +292,6 @@ By default this method adds to <code>Y_sim</code> o <code>Y_meas</code> if they 
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><span class="xref">T1</span></td>
-        <td><span class="parametername">model</span></td>
-        <td><p>model paramters</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></td>
         <td><span class="parametername">processDataSet</span></td>

@@ -34,8 +34,8 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1});
             SubProcessDataSet dataSet = new SubProcessDataSet(timeBase_s, U);
-            var ret  = SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
-                Simulate(model, ref dataSet);
+            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
+            var ret  = simulator.Simulate(ref dataSet);
 
          ///   Plot.FromList(new List<double[]>{ dataSet.Y_sim,u1},new List<string>{"y1=ymeas ","y3=u1"}, timeBase_s);
             Assert.IsNotNull(ret);
@@ -66,8 +66,8 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             this.timeBase_s = timeBase_s;
             SubProcessDataSet dataSet = new SubProcessDataSet(timeBase_s, U);
             dataSet.BadDataID = badValueId;
-            SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
-                EmulateYmeas(model, ref dataSet, noiseAmplitude);
+            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
+            simulator.EmulateYmeas(ref dataSet, noiseAmplitude);
 
             if (addInBadDataToYmeasAndU)
             {

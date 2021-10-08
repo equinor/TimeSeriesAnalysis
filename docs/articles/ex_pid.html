@@ -103,9 +103,9 @@
     var pid = new PIDModel(pidParameters, timeBase_s);
     var dataSet = new SubProcessDataSet(timeBase_s,N);
     dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
-    dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N); 
-    SubProcessSimulator&lt;DefaultProcessModel, DefaultProcessModelParameters&gt;.
-        CoSimulateProcessAndPID(processModel, pid, ref dataSet);
+    dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
+    var simulator = new SubProcessSimulator&lt;DefaultProcessModel, DefaultProcessModelParameters&gt;(processModel);
+    simulator. CoSimulateProcessAndPID( pid, ref dataSet);
 
     Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
         new List&lt;string&gt; { &quot;y1=y_sim&quot;, &quot;y3=u_pid&quot;,&quot;y2=disturbance&quot; }, 

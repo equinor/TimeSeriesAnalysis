@@ -166,6 +166,7 @@ This class should acta as a wrapper for PIDcontroller class.</p>
       <section><p>Simulate any subprocess model that has implemented the IProcessModel interface.
 This class relies on depencency injection and interfaces, so that the
 the specifics of how models outputs are calculated should be encapsulated in the passed model objects.</p>
+<p>This class should not be static, as it is to be used as a type for MultiProcessSimulator</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeDelay.html">TimeDelay</a></h4>
       <section><p>Delays a signal by a specific number of time steps, keeping an internal buffer of delayed values

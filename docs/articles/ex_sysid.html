@@ -110,8 +110,8 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
         double[,] U = Array2D&lt;double&gt;.InitFromColumnList(new List&lt;double[]&gt;{u1 ,u2});
 
         var dataSet = new SubProcessDataSet(timeBase_s,U);
-        SubProcessSimulator&lt;DefaultProcessModel,DefaultProcessModelParameters&gt;.
-            EmulateYmeas(model, ref dataSet, noiseAmplitude);
+        var simulator = new SubProcessSimulator&lt;DefaultProcessModel, DefaultProcessModelParameters&gt;(model);
+        simulator.EmulateYmeas(ref dataSet, noiseAmplitude);
 
         Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_meas, u1, u2 },
             new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s,&quot;ex4_data&quot;);

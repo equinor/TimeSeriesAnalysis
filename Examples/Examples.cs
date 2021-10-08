@@ -112,8 +112,8 @@ namespace TimeSeriesAnalysis.Examples
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
             var dataSet = new SubProcessDataSet(timeBase_s,U);
-            SubProcessSimulator<DefaultProcessModel,DefaultProcessModelParameters>.
-                EmulateYmeas(model, ref dataSet, noiseAmplitude);
+            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
+            simulator.EmulateYmeas(ref dataSet, noiseAmplitude);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s,"ex4_data");
@@ -163,9 +163,9 @@ namespace TimeSeriesAnalysis.Examples
             var pid = new PIDModel(pidParameters, timeBase_s);
             var dataSet = new SubProcessDataSet(timeBase_s,N);
             dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
-            dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N); 
-            SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
-                CoSimulateProcessAndPID(processModel, pid, ref dataSet);
+            dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
+            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(processModel);
+            simulator. CoSimulateProcessAndPID( pid, ref dataSet);
 
             Plot.FromList(new List<double[]> { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
                 new List<string> { "y1=y_sim", "y3=u_pid","y2=disturbance" }, 
@@ -173,7 +173,40 @@ namespace TimeSeriesAnalysis.Examples
         }
         #endregion
 
+        [Test, Explicit]
+        #region ex_6
+        public void Ex6_pid_sim_improved()
+        {
+            int timeBase_s = 1;
+            int N = 500;
+            var modelParameters = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 10,
+                ProcessGains = new double[] { 1 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+            var processModel = new DefaultProcessModel(modelParameters, timeBase_s);
+            var pidParameters = new PIDModelParameters()
+            {
+                Kp = 0.5,
+                Ti_s = 20
+            };
+            var pidModel = new PIDModel(pidParameters, timeBase_s);
+            var dataSet = new SubProcessDataSet(timeBase_s, N);
+            dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
+            dataSet.Y_setpoint = TimeSeriesCreator.Constant(50, N);
+            var multiSim   = new MultiProcessSimulator
+                (new List<IProcessModel<IProcessModelParameters>>
+                    { (IProcessModel<IProcessModelParameters>)processModel, (IProcessModel<IProcessModelParameters>)pidModel} );
+            multiSim.SimulateAll();//TODO:work in progress- how to pass data back and forth trough datasets here???
 
+            Plot.FromList(new List<double[]> { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
+                new List<string> { "y1=y_sim", "y3=u_pid", "y2=disturbance" },
+                timeBase_s, "ex6_results");
+        }
+        #endregion
 
 
 

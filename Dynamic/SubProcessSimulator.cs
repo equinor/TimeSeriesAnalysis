@@ -16,9 +16,18 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Simulate any subprocess model that has implemented the IProcessModel interface. 
     /// This class relies on depencency injection and interfaces, so that the 
     /// the specifics of how models outputs are calculated should be encapsulated in the passed model objects.
+    /// 
+    /// This class should not be static, as it is to be used as a type for MultiProcessSimulator
+    /// 
     /// </summary>
-    static public class SubProcessSimulator<T1,T2> where T1:IProcessModel<T2> where T2:IProcessModelParameters
+    public class SubProcessSimulator<T1,T2> where T1:IProcessModel<T2> where T2:IProcessModelParameters
     {
+        T1 model;
+        public SubProcessSimulator(T1 model)
+        {
+            this.model = model;
+        }
+
         /// <summary>
         /// Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for  
         /// testing/test driven development.
@@ -26,10 +35,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="model"></param>
         /// <param name="processDataSet"></param>
         /// <param name="noiseAmplitude">optionally adds noise to the "measured" y (for testing purposes)</param>
-        static public void EmulateYmeas(T1 model,
-            ref SubProcessDataSet processDataSet, double noiseAmplitude=0)
+        public void EmulateYmeas(ref SubProcessDataSet processDataSet, double noiseAmplitude=0)
         {
-            Simulate(model,ref processDataSet,true);
+            Simulate(ref processDataSet,true);
             if (noiseAmplitude > 0)
             {
                 // use a specific seed here, to avoid potential issues with "random unit tests" and not-repeatable
@@ -47,15 +55,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Co-simulate a process model and pid-controller
         /// </summary>
-        /// <param name="model">the process model object, to be simulated</param>
-        /// <param name="pid">the </param>
+          /// <param name="pid">the </param>
         /// <param name="processDataSet">the process will read the <c>.Disturbance</c> and <c>.TimeBase_s</c>, 
         /// and write simulated inputs to <c>.U</c> and <c>.Y_sim</c></param>
         /// <param name="writeResultToYmeasInsteadOfYsim">write data to <c>processDataSet.Y_meas</c> 
         /// instead of <c>processDataSet.Y_sim</c></param>
         /// <returns>Returns true if able to simulate, otherwise false (simulation is written into processDataSet )</returns>
-        static public bool CoSimulateProcessAndPID
-            (T1 model, PIDModel pid, ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
+        public bool CoSimulateProcessAndPID
+            ( PIDModel pid, ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
         {
             if (processDataSet.Y_setpoint == null)
             {
@@ -136,13 +143,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// written back to <c>processDataSet.Y_sim</c> or <c>processDataSet.Y_meas</c>
         /// By default this method adds to <c>Y_sim</c> o <c>Y_meas</c> if they already contain values.
         /// </summary>
-        /// <param name="model">model paramters</param>
         /// <param name="processDataSet">dataset containing the inputs <c>U</c> to be simulated</param>
         /// <param name="writeResultToYmeasInsteadOfYsim">if <c>true</c>, output is written to <c>processDataSet.ymeas</c> instead of <c>processDataSet.ysim</c></param>
         /// <param name="doOverwriteY">(default is false)if <c>true</c>, output overwrites any data in <c>processDataSet.ymeas</c> or <c>processDataSet.ysim</c></param>
         /// <returns>Returns  the simulate y if able to simulate,otherwise null</returns> 
-        static public double[] Simulate(T1 model,
-            ref SubProcessDataSet processDataSet,
+        public double[] Simulate(ref SubProcessDataSet processDataSet,
             bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY=false)
         {
             int N = processDataSet.NumDataPoints;

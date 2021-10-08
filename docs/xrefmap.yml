@@ -2402,15 +2402,32 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2)
   nameWithType: SubProcessSimulator<T1, T2>
   nameWithType.vb: SubProcessSimulator(Of T1, T2)
-- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID(`0,TimeSeriesAnalysis.Dynamic.PIDModel,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean)
-  name: CoSimulateProcessAndPID(T1, PIDModel, ref SubProcessDataSet, Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_CoSimulateProcessAndPID__0_TimeSeriesAnalysis_Dynamic_PIDModel_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID(`0,TimeSeriesAnalysis.Dynamic.PIDModel,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean)
-  name.vb: CoSimulateProcessAndPID(T1, PIDModel, ByRef SubProcessDataSet, Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.CoSimulateProcessAndPID(T1, TimeSeriesAnalysis.Dynamic.PIDModel, ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).CoSimulateProcessAndPID(T1, TimeSeriesAnalysis.Dynamic.PIDModel, ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean)
-  nameWithType: SubProcessSimulator<T1, T2>.CoSimulateProcessAndPID(T1, PIDModel, ref SubProcessDataSet, Boolean)
-  nameWithType.vb: SubProcessSimulator(Of T1, T2).CoSimulateProcessAndPID(T1, PIDModel, ByRef SubProcessDataSet, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.#ctor(`0)
+  name: SubProcessSimulator(T1)
+  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2__ctor__0_
+  commentId: M:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.#ctor(`0)
+  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.SubProcessSimulator(T1)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).SubProcessSimulator(T1)
+  nameWithType: SubProcessSimulator<T1, T2>.SubProcessSimulator(T1)
+  nameWithType.vb: SubProcessSimulator(Of T1, T2).SubProcessSimulator(T1)
+- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.#ctor*
+  name: SubProcessSimulator
+  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.SubProcessSimulator
+  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).SubProcessSimulator
+  nameWithType: SubProcessSimulator<T1, T2>.SubProcessSimulator
+  nameWithType.vb: SubProcessSimulator(Of T1, T2).SubProcessSimulator
+- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID(TimeSeriesAnalysis.Dynamic.PIDModel,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean)
+  name: CoSimulateProcessAndPID(PIDModel, ref SubProcessDataSet, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_CoSimulateProcessAndPID_TimeSeriesAnalysis_Dynamic_PIDModel_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID(TimeSeriesAnalysis.Dynamic.PIDModel,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean)
+  name.vb: CoSimulateProcessAndPID(PIDModel, ByRef SubProcessDataSet, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.CoSimulateProcessAndPID(TimeSeriesAnalysis.Dynamic.PIDModel, ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).CoSimulateProcessAndPID(TimeSeriesAnalysis.Dynamic.PIDModel, ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean)
+  nameWithType: SubProcessSimulator<T1, T2>.CoSimulateProcessAndPID(PIDModel, ref SubProcessDataSet, Boolean)
+  nameWithType.vb: SubProcessSimulator(Of T1, T2).CoSimulateProcessAndPID(PIDModel, ByRef SubProcessDataSet, Boolean)
 - uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.CoSimulateProcessAndPID*
   name: CoSimulateProcessAndPID
   href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_CoSimulateProcessAndPID_
@@ -2420,15 +2437,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).CoSimulateProcessAndPID
   nameWithType: SubProcessSimulator<T1, T2>.CoSimulateProcessAndPID
   nameWithType.vb: SubProcessSimulator(Of T1, T2).CoSimulateProcessAndPID
-- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double)
-  name: EmulateYmeas(T1, ref SubProcessDataSet, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_EmulateYmeas__0_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas(`0,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double)
-  name.vb: EmulateYmeas(T1, ByRef SubProcessDataSet, Double)
-  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.EmulateYmeas(T1, ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double)
-  nameWithType: SubProcessSimulator<T1, T2>.EmulateYmeas(T1, ref SubProcessDataSet, Double)
-  nameWithType.vb: SubProcessSimulator(Of T1, T2).EmulateYmeas(T1, ByRef SubProcessDataSet, Double)
+- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double)
+  name: EmulateYmeas(ref SubProcessDataSet, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_EmulateYmeas_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double)
+  name.vb: EmulateYmeas(ByRef SubProcessDataSet, Double)
+  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.EmulateYmeas(ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).EmulateYmeas(ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double)
+  nameWithType: SubProcessSimulator<T1, T2>.EmulateYmeas(ref SubProcessDataSet, Double)
+  nameWithType.vb: SubProcessSimulator(Of T1, T2).EmulateYmeas(ByRef SubProcessDataSet, Double)
 - uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.EmulateYmeas*
   name: EmulateYmeas
   href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_EmulateYmeas_
@@ -2438,15 +2455,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).EmulateYmeas
   nameWithType: SubProcessSimulator<T1, T2>.EmulateYmeas
   nameWithType.vb: SubProcessSimulator(Of T1, T2).EmulateYmeas
-- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate(`0,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean,System.Boolean)
-  name: Simulate(T1, ref SubProcessDataSet, Boolean, Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_Simulate__0_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate(`0,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean,System.Boolean)
-  name.vb: Simulate(T1, ByRef SubProcessDataSet, Boolean, Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.Simulate(T1, ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean, System.Boolean)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).Simulate(T1, ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean, System.Boolean)
-  nameWithType: SubProcessSimulator<T1, T2>.Simulate(T1, ref SubProcessDataSet, Boolean, Boolean)
-  nameWithType.vb: SubProcessSimulator(Of T1, T2).Simulate(T1, ByRef SubProcessDataSet, Boolean, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean,System.Boolean)
+  name: Simulate(ref SubProcessDataSet, Boolean, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_Simulate_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean,System.Boolean)
+  name.vb: Simulate(ByRef SubProcessDataSet, Boolean, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.SubProcessSimulator<T1, T2>.Simulate(ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.SubProcessSimulator(Of T1, T2).Simulate(ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Boolean, System.Boolean)
+  nameWithType: SubProcessSimulator<T1, T2>.Simulate(ref SubProcessDataSet, Boolean, Boolean)
+  nameWithType.vb: SubProcessSimulator(Of T1, T2).Simulate(ByRef SubProcessDataSet, Boolean, Boolean)
 - uid: TimeSeriesAnalysis.Dynamic.SubProcessSimulator`2.Simulate*
   name: Simulate
   href: api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html#TimeSeriesAnalysis_Dynamic_SubProcessSimulator_2_Simulate_

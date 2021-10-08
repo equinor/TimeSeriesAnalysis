@@ -90,8 +90,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doDebugPlotting)
                 { 
                     var debugModel = new DefaultProcessModel(modelParams, dataSet);
-                    var y_sim = SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
-                        debugModel, ref dataSet);
+                    var sim = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(debugModel);
+                    var y_sim = sim.Simulate(ref dataSet);
                     Plot.FromList(new List<double[]> {y_sim,dataSet.Y_meas},new List<string> { "y1=ysim", "y1=ymeas" },
                         (int)dataSet.TimeBase_s, "iteration:"+ timeDelayIdx,default,"debug_it_" + timeDelayIdx);
                 }
@@ -107,8 +107,8 @@ namespace TimeSeriesAnalysis.Dynamic
             /////////////////////////////////////////////////////////////////
            
             var model = new DefaultProcessModel(modelParameters, dataSet);
-            SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.Simulate(
-                model, ref dataSet);
+            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
+            simulator.Simulate(ref dataSet);
             model.FittedDataSet = dataSet;
 
             return model;
@@ -448,13 +448,11 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.Bias = 0;
             double nanValue = dataSet.BadDataID;
             var model = new DefaultProcessModel(parameters, dataSet.TimeBase_s);
-            var y_sim = SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>.
-                Simulate(model, ref dataSet);
+            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
+            var y_sim = simulator.Simulate(ref dataSet);
 
             double[] diff = (new Vec(nanValue)).Subtract(dataSet.Y_meas, y_sim);
-
             double? bias = (new Vec(nanValue)).Mean(diff) ;
-
             return bias;
         }
     }
