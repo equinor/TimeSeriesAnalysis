@@ -82,12 +82,42 @@
 <h2 id="python">Python</h2>
 <p>There is a package for <code>Python</code> called <a href="http://pythonnet.github.io/">Python.Net</a>
 that allows you to access the methods in this library.</p>
-<h2 id="matlab">Matlab</h2>
-<p><code>Matlab</code> supports importing <code>.NET</code> assemblies(*.dlls) through the built-in <a href="https://se.mathworks.com/help/matlab/ref/net.addassembly.html">NET.addAssembly()</a> command.</p>
+<h2 id="matlab">MatLab</h2>
+<p><code>MatLab</code> supports importing <code>.NET</code> assemblies(*.dlls) through the built-in <a href="https://se.mathworks.com/help/matlab/ref/net.addassembly.html">NET.addAssembly()</a> command.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Once an assembly is loaded in <code>MatLab</code>, it cannot be unloaded except by restarting the program.</p>
 </div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Not all .NET features are supported in <code>MatLab</code> a list of limitiations is given in
+<a href="https://se.mathworks.com/help/matlab/matlab_external/limitations-to-net-support.html">https://se.mathworks.com/help/matlab/matlab_external/limitations-to-net-support.html</a></p>
+</div>
+<p>Step-by-step:</p>
+<ul>
+<li>Take a complete build of <code>TimeSeriesAnalyis.dll</code> and accompanying assemblies such as <code>Accord.NET</code> <code>*.dlls</code> and copy into your <code>MatLab</code> working directory such as <code>C:\Appl\OneDrive\Documents\MATLAB</code> (either build yourself or copy pre-built zip-file from <a href="https://github.com/equinor/TimeSeriesAnalysis/releases/">https://github.com/equinor/TimeSeriesAnalysis/releases/</a> and unzip.)</li>
+<li>load the assembly with <code>NET.addAssembly()</code>:</li>
+<li>import the methods of the .NET assembly using the <code>MatLab</code> command <code>import</code></li>
+<li>you can now directly call methods in the &quot;TimeSeriesAnalysis&quot; namespace (consult the API reference)</li>
+</ul>
+<p><em>A simple &quot;hello-world&quot; example:</em></p>
+<pre><code>NET.addAssembly('C:\Appl\OneDrive\Documents\MATLAB\TimeSeriesAnalysis.dll')
+import TimeSeriesAnalysis.*
+results = Vec.Add([1 2],[3 4])
+</code></pre>
+<p>will give as a result a <code>Double[]</code>
+where</p>
+<pre><code>&gt;&gt; result(1)
+
+ans =
+
+     4
+&gt;&gt; result(2)
+
+ans =
+
+     6
+</code></pre>
 </article>
           </div>
           
