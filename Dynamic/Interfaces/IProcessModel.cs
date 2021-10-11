@@ -32,13 +32,24 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         double? GetSteadyStateInput(double y0, int inputIdx=0);
 
-
-
         /// <summary>
         /// Get the model parameters
         /// </summary>
         /// <returns>the paramters objet of the model</returns>
         T GetModelParameters();
+
+        /// <summary>
+        /// Returns the type of process model
+        /// </summary>
+        /// <returns></returns>
+        ProcessModelType GetProcessModelType();
+
+        /// <summary>
+        /// An string that IDs what the model outputs to. 
+        /// Typically this can be to a signal tag name, but it can be any unique string.
+        /// </summary>
+        /// <returns></returns>
+        string GetOutputID();
 
     }
 }

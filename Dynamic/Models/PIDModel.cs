@@ -15,9 +15,11 @@ namespace TimeSeriesAnalysis.Dynamic
         int timeBase_s;
         PIDModelParameters pidParameters;
         PIDcontroller pid;
+        string outputID;
 
-        public PIDModel(PIDModelParameters pidParameters, int timeBase_s)
+        public PIDModel(PIDModelParameters pidParameters, int timeBase_s, string outputID="not_named")
         {
+            this.outputID       = outputID;
             this.timeBase_s     = timeBase_s;
             this.pidParameters  = pidParameters;
             pid                 = new PIDcontroller(timeBase_s,pidParameters.Kp, 
@@ -32,6 +34,17 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             //pid.SetGainScehduling(pidParameters.GainScheduling);
             pid.SetAntiSurgeParams(pidParameters.AntiSugeParams);
+        }
+
+
+        public ProcessModelType GetProcessModelType()
+        {
+            return ProcessModelType.PID;
+        }
+
+        public string GetOutputID()
+        {
+            return outputID;
         }
 
         /// <summary>

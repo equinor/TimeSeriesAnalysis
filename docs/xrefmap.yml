@@ -428,12 +428,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.DefaultProcessModel
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel
   nameWithType: DefaultProcessModel
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,System.Double)
-  name: DefaultProcessModel(DefaultProcessModelParameters, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.DefaultProcessModel(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters, System.Double)
-  nameWithType: DefaultProcessModel.DefaultProcessModel(DefaultProcessModelParameters, Double)
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,System.Double,System.String)
+  name: DefaultProcessModel(DefaultProcessModelParameters, Double, String)
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_System_Double_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,System.Double,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.DefaultProcessModel(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters, System.Double, System.String)
+  nameWithType: DefaultProcessModel.DefaultProcessModel(DefaultProcessModelParameters, Double, String)
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,TimeSeriesAnalysis.Dynamic.SubProcessDataSet)
   name: DefaultProcessModel(DefaultProcessModelParameters, SubProcessDataSet)
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_TimeSeriesAnalysis_Dynamic_SubProcessDataSet_
@@ -473,6 +473,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetModelParameters
   nameWithType: DefaultProcessModel.GetModelParameters
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID
+  name: GetOutputID()
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetOutputID
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID()
+  nameWithType: DefaultProcessModel.GetOutputID()
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID*
+  name: GetOutputID
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetOutputID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID
+  nameWithType: DefaultProcessModel.GetOutputID
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType
+  name: GetProcessModelType()
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetProcessModelType
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType()
+  nameWithType: DefaultProcessModel.GetProcessModelType()
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType*
+  name: GetProcessModelType
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetProcessModelType_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType
+  nameWithType: DefaultProcessModel.GetProcessModelType
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32)
   name: GetSteadyStateInput(Double, Int32)
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_System_Double_System_Int32_
@@ -528,6 +554,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.Iterate
   nameWithType: DefaultProcessModel.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType(TimeSeriesAnalysis.Dynamic.ProcessModelType)
+  name: SetProcessModelType(ProcessModelType)
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ProcessModelType_
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType(TimeSeriesAnalysis.Dynamic.ProcessModelType)
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType(TimeSeriesAnalysis.Dynamic.ProcessModelType)
+  nameWithType: DefaultProcessModel.SetProcessModelType(ProcessModelType)
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType*
+  name: SetProcessModelType
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetProcessModelType_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType
+  nameWithType: DefaultProcessModel.SetProcessModelType
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.TimeDelayEstWarnings
   name: TimeDelayEstWarnings
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_TimeDelayEstWarnings
@@ -960,6 +999,40 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).GetModelParameters
   nameWithType: IProcessModel<T>.GetModelParameters
   nameWithType.vb: IProcessModel(Of T).GetModelParameters
+- uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetOutputID
+  name: GetOutputID()
+  href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_GetOutputID
+  commentId: M:TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetOutputID
+  fullName: TimeSeriesAnalysis.Dynamic.IProcessModel<T>.GetOutputID()
+  fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).GetOutputID()
+  nameWithType: IProcessModel<T>.GetOutputID()
+  nameWithType.vb: IProcessModel(Of T).GetOutputID()
+- uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetOutputID*
+  name: GetOutputID
+  href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_GetOutputID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetOutputID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.IProcessModel<T>.GetOutputID
+  fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).GetOutputID
+  nameWithType: IProcessModel<T>.GetOutputID
+  nameWithType.vb: IProcessModel(Of T).GetOutputID
+- uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetProcessModelType
+  name: GetProcessModelType()
+  href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_GetProcessModelType
+  commentId: M:TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetProcessModelType
+  fullName: TimeSeriesAnalysis.Dynamic.IProcessModel<T>.GetProcessModelType()
+  fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).GetProcessModelType()
+  nameWithType: IProcessModel<T>.GetProcessModelType()
+  nameWithType.vb: IProcessModel(Of T).GetProcessModelType()
+- uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetProcessModelType*
+  name: GetProcessModelType
+  href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_GetProcessModelType_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetProcessModelType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.IProcessModel<T>.GetProcessModelType
+  fullName.vb: TimeSeriesAnalysis.Dynamic.IProcessModel(Of T).GetProcessModelType
+  nameWithType: IProcessModel<T>.GetProcessModelType
+  nameWithType.vb: IProcessModel(Of T).GetProcessModelType
 - uid: TimeSeriesAnalysis.Dynamic.IProcessModel`1.GetSteadyStateInput(System.Double,System.Int32)
   name: GetSteadyStateInput(Double, Int32)
   href: api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html#TimeSeriesAnalysis_Dynamic_IProcessModel_1_GetSteadyStateInput_System_Double_System_Int32_
@@ -1552,12 +1625,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.PIDModel
   fullName: TimeSeriesAnalysis.Dynamic.PIDModel
   nameWithType: PIDModel
-- uid: TimeSeriesAnalysis.Dynamic.PIDModel.#ctor(TimeSeriesAnalysis.Dynamic.PIDModelParameters,System.Int32)
-  name: PIDModel(PIDModelParameters, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel__ctor_TimeSeriesAnalysis_Dynamic_PIDModelParameters_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.#ctor(TimeSeriesAnalysis.Dynamic.PIDModelParameters,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.PIDModel(TimeSeriesAnalysis.Dynamic.PIDModelParameters, System.Int32)
-  nameWithType: PIDModel.PIDModel(PIDModelParameters, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.#ctor(TimeSeriesAnalysis.Dynamic.PIDModelParameters,System.Int32,System.String)
+  name: PIDModel(PIDModelParameters, Int32, String)
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel__ctor_TimeSeriesAnalysis_Dynamic_PIDModelParameters_System_Int32_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.#ctor(TimeSeriesAnalysis.Dynamic.PIDModelParameters,System.Int32,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.PIDModel(TimeSeriesAnalysis.Dynamic.PIDModelParameters, System.Int32, System.String)
+  nameWithType: PIDModel.PIDModel(PIDModelParameters, Int32, String)
 - uid: TimeSeriesAnalysis.Dynamic.PIDModel.#ctor*
   name: PIDModel
   href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel__ctor_
@@ -1578,6 +1651,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetModelParameters
   nameWithType: PIDModel.GetModelParameters
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputID
+  name: GetOutputID()
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetOutputID
+  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputID
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputID()
+  nameWithType: PIDModel.GetOutputID()
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputID*
+  name: GetOutputID
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetOutputID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputID
+  nameWithType: PIDModel.GetOutputID
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetProcessModelType
+  name: GetProcessModelType()
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetProcessModelType
+  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.GetProcessModelType
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetProcessModelType()
+  nameWithType: PIDModel.GetProcessModelType()
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetProcessModelType*
+  name: GetProcessModelType
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetProcessModelType_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDModel.GetProcessModelType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetProcessModelType
+  nameWithType: PIDModel.GetProcessModelType
 - uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double,System.Int32)
   name: GetSteadyStateInput(Double, Int32)
   href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_System_Double_System_Int32_
@@ -2117,6 +2216,36 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
   fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
   nameWithType: ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
+- uid: TimeSeriesAnalysis.Dynamic.ProcessModelType
+  name: ProcessModelType
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessModelType.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.ProcessModelType
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType
+  nameWithType: ProcessModelType
+- uid: TimeSeriesAnalysis.Dynamic.ProcessModelType.Disturbance
+  name: Disturbance
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessModelType.html#TimeSeriesAnalysis_Dynamic_ProcessModelType_Disturbance
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.Disturbance
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.Disturbance
+  nameWithType: ProcessModelType.Disturbance
+- uid: TimeSeriesAnalysis.Dynamic.ProcessModelType.PID
+  name: PID
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessModelType.html#TimeSeriesAnalysis_Dynamic_ProcessModelType_PID
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.PID
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.PID
+  nameWithType: ProcessModelType.PID
+- uid: TimeSeriesAnalysis.Dynamic.ProcessModelType.SubProcess
+  name: SubProcess
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessModelType.html#TimeSeriesAnalysis_Dynamic_ProcessModelType_SubProcess
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.SubProcess
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.SubProcess
+  nameWithType: ProcessModelType.SubProcess
+- uid: TimeSeriesAnalysis.Dynamic.ProcessModelType.UnTyped
+  name: UnTyped
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessModelType.html#TimeSeriesAnalysis_Dynamic_ProcessModelType_UnTyped
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.UnTyped
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.UnTyped
+  nameWithType: ProcessModelType.UnTyped
 - uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
   name: ProcessTimeDelayIdentWarnings
   href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html

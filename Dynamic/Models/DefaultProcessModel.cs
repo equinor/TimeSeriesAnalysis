@@ -27,15 +27,50 @@ namespace TimeSeriesAnalysis.Dynamic
         public  SubProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
+        private ProcessModelType processModelType = ProcessModelType.UnTyped;
+        private string outputID="not_named";
+
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="modelParameters">model paramter object</param>
-        /// <param name="timeBase_s">the timebase in seconds, the time interval between samples and between calls to Iterate</param>
-        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s)
+        /// <param name="timeBase_s">the timebase in seconds, the time interval between samples 
+        /// and between calls to Iterate</param>
+        /// <param name="outputID">a unique string that identifies the position of the output in the 
+        /// process(such as a signal tag)</param>
+
+        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s,
+            string outputID="not_named")
         {
+            this.outputID = outputID;
             InitSim(timeBase_s,modelParameters);
         }
+
+        /// <summary>
+        /// Set the type of the process model
+        /// </summary>
+        /// <returns></returns>
+        public void SetProcessModelType(ProcessModelType newType)
+        {
+             processModelType = newType;
+        }
+
+        /// <summary>
+        /// Get the type of the process model
+        /// </summary>
+        /// <returns></returns>
+        public ProcessModelType GetProcessModelType()
+        {
+            return processModelType;
+        }
+
+
+        public string GetOutputID()
+        {
+            return outputID;        
+        }
+
 
         /// <summary>
         /// Initalizer of model that for the given dataSet also creates the resulting y_sim

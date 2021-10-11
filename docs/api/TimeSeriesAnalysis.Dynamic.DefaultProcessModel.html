@@ -127,13 +127,13 @@
   
   
   <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,System.Double)">DefaultProcessModel(DefaultProcessModelParameters, Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel__ctor_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_System_Double_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.#ctor(TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters,System.Double,System.String)">DefaultProcessModel(DefaultProcessModelParameters, Double, String)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s, string outputID = &quot;not_named&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,7 +154,15 @@
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">timeBase_s</span></td>
-        <td><p>the timebase in seconds, the time interval between samples and between calls to Iterate</p>
+        <td><p>the timebase in seconds, the time interval between samples
+and between calls to Iterate</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">outputID</span></td>
+        <td><p>a unique string that identifies the position of the output in the
+process(such as a signal tag)</p>
 </td>
       </tr>
     </tbody>
@@ -270,6 +278,57 @@
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html">DefaultProcessModelParameters</a></td>
         <td><p>Model paramter object</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetOutputID_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetOutputID" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID">GetOutputID()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetOutputID()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetProcessModelType" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType">GetProcessModelType()</h4>
+  <div class="markdown level1 summary"><p>Get the type of the process model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProcessModelType GetProcessModelType()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessModelType.html">ProcessModelType</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -431,6 +490,34 @@
 NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
 If some data points in U inputsU are NaN or equal to <code>badValueIndicator</code>, the last good value is returned</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType(TimeSeriesAnalysis.Dynamic.ProcessModelType)">SetProcessModelType(ProcessModelType)</h4>
+  <div class="markdown level1 summary"><p>Set the type of the process model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetProcessModelType(ProcessModelType newType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessModelType.html">ProcessModelType</a></td>
+        <td><span class="parametername">newType</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
