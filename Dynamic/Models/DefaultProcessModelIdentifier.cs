@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// This model class is sufficent for most real-world dynamic systems, yet also introduces the fewest possible 
     /// paramters to describe the system in an attempt to avoiding over-fitting/over-parametrization
     /// </summary>
-    public class DefaultProcessModelIdentifier : IProcessModelIdentifier<DefaultProcessModel, DefaultProcessModelParameters>
+    public class DefaultProcessModelIdentifier 
     {
         /// <summary>
         /// Default Constructor
@@ -90,7 +90,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doDebugPlotting)
                 { 
                     var debugModel = new DefaultProcessModel(modelParams, dataSet);
-                    var sim = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(debugModel);
+                    var sim = new SubProcessSimulator(debugModel);
                     var y_sim = sim.Simulate(ref dataSet);
                     Plot.FromList(new List<double[]> {y_sim,dataSet.Y_meas},new List<string> { "y1=ysim", "y1=ymeas" },
                         (int)dataSet.TimeBase_s, "iteration:"+ timeDelayIdx,default,"debug_it_" + timeDelayIdx);
@@ -107,8 +107,8 @@ namespace TimeSeriesAnalysis.Dynamic
             /////////////////////////////////////////////////////////////////
            
             var model = new DefaultProcessModel(modelParameters, dataSet);
-            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
-            simulator.Simulate(ref dataSet);
+            var simulator = new SubProcessSimulator(model);
+            simulator.Simulate(ref dataSet,default,true);// overwrite any y_sim
             model.FittedDataSet = dataSet;
 
             return model;
@@ -448,7 +448,7 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.Bias = 0;
             double nanValue = dataSet.BadDataID;
             var model = new DefaultProcessModel(parameters, dataSet.TimeBase_s);
-            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
+            var simulator = new SubProcessSimulator((IProcessModelSimulate)model);
             var y_sim = simulator.Simulate(ref dataSet);
 
             double[] diff = (new Vec(nanValue)).Subtract(dataSet.Y_meas, y_sim);

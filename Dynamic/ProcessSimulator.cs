@@ -9,19 +9,20 @@ namespace TimeSeriesAnalysis.Dynamic
     class ProcessSimulator
     {
         int timeBase_s;
-        List<IProcessModel<IProcessModelParameters>> processModelList;
-        Dictionary<string, IProcessModel<IProcessModelParameters>> modelDict;
+        List<IProcessModelSimulate> processModelList;
+        Dictionary<string, IProcessModelSimulate> modelDict;
 
-        public ProcessSimulator(int timeBase_s,List<IProcessModel<IProcessModelParameters>> list=null)
+        public ProcessSimulator(int timeBase_s,List<IProcessModelSimulate> 
+            processModelList = null)
         {
             this.timeBase_s = timeBase_s;
-            if (list == null)
+            if (processModelList == null)
             {
-                processModelList = new List<IProcessModel<IProcessModelParameters>>();
+                processModelList = new List<IProcessModelSimulate>();
             }
-            modelDict = new Dictionary<string, IProcessModel<IProcessModelParameters>>();
+            modelDict = new Dictionary<string, IProcessModelSimulate>();
             // create a unique model ID for each model
-            foreach (IProcessModel<IProcessModelParameters> model in processModelList)
+            foreach (IProcessModelSimulate model in processModelList)
             {
                 int? number = null;
                 string modelNumberSuffix = "";
@@ -71,15 +72,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 model.Iterate(inputsU);
             }*/
 
-            for (int stepIdx = 0; stepIdx < N; stepIdx++)
+            for (int timeIdx = 0; timeIdx < N; timeIdx++)
             {
-                for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
+                for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                 {
-                    var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
+                    var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
                     string[] inputIDs = model.GetInputIDs();
-                    double[] inputsU = simData.GetData(inputIDs, stepIdx);
+                    double[] inputsU = simData.GetData(inputIDs, timeIdx);
                     double output = model.Iterate(inputsU);
-                    simData.AddDataPoint(model.GetOutputID(),stepIdx,output);
+                    simData.AddDataPoint(model.GetOutputID(),timeIdx,output);
                 }
             }
             return true;
@@ -88,7 +89,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private List<string> SubSimulatorSimulationOrder()
         {
-            return null;//TODO
+            //TODO: as of now there is no ordering of models by causality, this method is a stub
+            return modelDict.Keys.ToList();
         }
 
 

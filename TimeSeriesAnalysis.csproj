@@ -124,16 +124,14 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dynamic\Interfaces\ModelParametersFit.cs" />
     <Compile Include="Dynamic\Models\DefaultProcessModel.cs" />
     <Compile Include="Dynamic\Models\DefaultProcessModelIdentifier.cs" />
     <Compile Include="Dynamic\Models\DefaultProcessModelParameters.cs" />
     <Compile Include="Dynamic\Filters\BandPass.cs" />
     <Compile Include="Dynamic\Filters\HighPass.cs" />
-    <Compile Include="Dynamic\Interfaces\IProcessModel.cs" />
-    <Compile Include="Dynamic\Interfaces\IProcessModelIdentifier.cs" />
-    <Compile Include="Dynamic\Interfaces\IFittedProcessModelParameters.cs" />
+    <Compile Include="Dynamic\Interfaces\IProcessModelSimulate.cs" />
     <Compile Include="Dynamic\Filters\LowPass.cs" />
-    <Compile Include="Dynamic\Interfaces\IProcessModelParameters.cs" />
     <Compile Include="Dynamic\Models\PIDModel.cs" />
     <Compile Include="Dynamic\Models\PIDModelParameters.cs" />
     <Compile Include="Dynamic\Models\ProcessModelType.cs" />

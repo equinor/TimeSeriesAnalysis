@@ -112,7 +112,7 @@ namespace TimeSeriesAnalysis.Examples
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
             var dataSet = new SubProcessDataSet(timeBase_s,U);
-            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(model);
+            var simulator = new SubProcessSimulator(model);
             simulator.EmulateYmeas(ref dataSet, noiseAmplitude);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
@@ -164,8 +164,8 @@ namespace TimeSeriesAnalysis.Examples
             var dataSet = new SubProcessDataSet(timeBase_s,N);
             dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
             dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
-            var simulator = new SubProcessSimulator<DefaultProcessModel, DefaultProcessModelParameters>(processModel);
-            simulator. CoSimulateProcessAndPID( pid, ref dataSet);
+            var simulator = new SubProcessSimulator(processModel);
+            simulator.CoSimulateProcessAndPID( pid, ref dataSet);
 
             Plot.FromList(new List<double[]> { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
                 new List<string> { "y1=y_sim", "y3=u_pid","y2=disturbance" }, 
@@ -179,7 +179,8 @@ namespace TimeSeriesAnalysis.Examples
         {
             int timeBase_s = 1;
             int N = 500;
-            var modelParameters = new DefaultProcessModelParameters
+
+            DefaultProcessModelParameters modelParameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
@@ -187,20 +188,25 @@ namespace TimeSeriesAnalysis.Examples
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            var processModel = new DefaultProcessModel(modelParameters, timeBase_s);
+            DefaultProcessModel processModel 
+                = new DefaultProcessModel(modelParameters, timeBase_s,"SubProcess1");
+            
             var pidParameters = new PIDModelParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pidModel = new PIDModel(pidParameters, timeBase_s);
-            var multiSim = new ProcessSimulator
-                (timeBase_s,new List<IProcessModel<IProcessModelParameters>>
-                    { (IProcessModel<IProcessModelParameters>)processModel, (IProcessModel<IProcessModelParameters>)pidModel} );
+            var pidModel = new PIDModel(pidParameters, timeBase_s,"SubProcess1_PID");
+
+            var modelList = new List<IProcessModelSimulate> { processModel, pidModel};
+
+            var multiSim = new ProcessSimulator (timeBase_s, modelList);
 
             TimeSeriesDataSet externalSignals = new TimeSeriesDataSet(timeBase_s);
-            externalSignals.AddTimeSeries(processModel.GetID(), SignalType.Process_Distubance_D, TimeSeriesCreator.Step(N / 4, N, 0, 1));
-            externalSignals.AddTimeSeries(pidModel.GetID(), SignalType.PID_Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
+            externalSignals.AddTimeSeries(processModel.GetID(),
+                SignalType.Process_Distubance_D, TimeSeriesCreator.Step(N / 4, N, 0, 1));
+            externalSignals.AddTimeSeries(pidModel.GetID(), 
+                SignalType.PID_Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
 
             multiSim.Simulate(externalSignals, out TimeSeriesDataSet simData);
 

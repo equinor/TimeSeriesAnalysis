@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html",
-          "hash": "W+61w/ZAI/ZYzBLE/I1nqXqLfiVKU3qjyXJuGht1KSA="
+          "hash": "abt9lAP22xRBEva2ndYO4L2+d+HYRPoV+ARhFE30T7A="
         }
       },
       "is_incremental": false,
@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html",
-          "hash": "hc4/DRo1K1cjefGJbE+GXtPyZvcqia2bP1vQYAk7E9g="
+          "hash": "lDHt2UVnysWD62F/dIOkDfgklrNDTbCiqXbYhK20pMI="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html",
-          "hash": "KOf7mwq5U7pzH4DM8qQShf9NOFIcXX/Q5Wz8/TPWM9M="
+          "hash": "niX8GQ0ChwqwxoqIHj2z1jbSsD29fwzjeW6lgd/zoIM="
         }
       },
       "is_incremental": false,
@@ -110,35 +110,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.IFittedProcessModelParameters.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.IFittedProcessModelParameters.html",
-          "hash": "1cY01ZEBzmPd5PkUHZnYXVVLtkBsFRIhQQ3xSIhSRQI="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html",
-          "hash": "ZVhUHzY0XWn/R6cY2/HAqI3fatpDYj6eIHy87wTp4gw="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModelParameters.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModelParameters.html",
-          "hash": "2zHLBYsuAKMBcQdyHRfeYT0jghccRqi5p4qfB13elqk="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.html",
+          "hash": "CVTNhWnJpL7l5IWdwx8XuPvz3Vtkb+yMZWTDG+iAfkw="
         }
       },
       "is_incremental": false,
@@ -151,6 +127,18 @@
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.LowPass.html",
           "hash": "XKYI1pMo9KNQA1EKIK4UabcNEa14J9UGHnleDtD20yY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.ModelParametersFit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.ModelParametersFit.html",
+          "hash": "043xKbFsLfR3lLq6gyJqZiVIGlDWW4gA2mBCFeRAkRg="
         }
       },
       "is_incremental": false,
@@ -186,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDModel.html",
-          "hash": "0+/dGKHfOn/2cU/7a6TWce7Byz7raDVKSU6jqhOrLO0="
+          "hash": "zdmtc5uA+ymZYm36+R2td0jgcmNKbfOSKWzn8D4CxaI="
         }
       },
       "is_incremental": false,
@@ -198,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDModelParameters.html",
-          "hash": "zBcLS1SjKmOYDl/P01nFIiUDBdRwqg03U2pIBQG28BY="
+          "hash": "FXZyeGvFx3N0kbVag6H4Fy9kyhi+ztNkj6PIyyCBGEU="
         }
       },
       "is_incremental": false,
@@ -338,11 +326,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html",
-          "hash": "+DsmpLJQlk52d8p2f9cGjeJLRdkmJN1kimt756yNT8A="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.SubProcessSimulator.html",
+          "hash": "xH0RsIsEzj6aGHBK7LGKb6px9XZSNXk1lh8kMs2Wf7E="
         }
       },
       "is_incremental": false,
@@ -378,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "g6X9+fvczyIH8TXkUQ+DQkPeRIrlc5WGIQC0jq5Ezy0="
+          "hash": "Afj73PHMcgkXCcEY7i/uTrdLvRgsBxMrpVQpCNiFfjQ="
         }
       },
       "is_incremental": false,
@@ -630,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "56/c4nNsCdsQtd1ToJjpjxze0F4l8cTqm0ZL5azyU/w="
+          "hash": "RlngDcGbLpfxvj8AXtKcaoEOWJ1qmXw6Pzw9WCayApU="
         }
       },
       "is_incremental": false,
@@ -714,7 +702,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/ex_pid.html",
-          "hash": "RSvMu6ytPaDLsr0z+Z2zA1O/zZS6hK5PehDnhcx+vA4="
+          "hash": "FRHaPPwUdbU2ZzP8G7r5NYrAU0HDFUhpB71AHW/j36s="
         }
       },
       "is_incremental": false,
@@ -726,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/ex_sysid.html",
-          "hash": "JHcYUw/0dnu0VOs84aEFYYQSl50US+I5RujwrrGanGQ="
+          "hash": "a/nAfWqoua/KsiJXTPObyrLFGM6HQVdj0pyVCgycO5A="
         }
       },
       "is_incremental": false,
@@ -1207,8 +1195,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 50,
-          "skipped_file_count": 46
+          "total_file_count": 49,
+          "skipped_file_count": 49
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

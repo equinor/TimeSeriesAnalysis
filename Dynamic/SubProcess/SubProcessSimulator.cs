@@ -20,10 +20,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// This class should not be static, as it is to be used as a type for MultiProcessSimulator
     /// 
     /// </summary>
-    public class SubProcessSimulator<T1,T2> where T1:IProcessModel<T2> where T2:IProcessModelParameters
+    public class SubProcessSimulator
     {
-        T1 model;
-        public SubProcessSimulator(T1 model)
+        IProcessModelSimulate model;
+        public SubProcessSimulator(IProcessModelSimulate model)
         {
             this.model = model;
         }

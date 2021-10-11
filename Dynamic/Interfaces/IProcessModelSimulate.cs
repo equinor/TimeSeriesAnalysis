@@ -8,10 +8,10 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
-    /// Generic interface of process model 
+    /// Generic interface of process model (interface for simulation)
     /// </summary>
     /// <typeparam name="T">The process model parameters class</typeparam>
-    public interface IProcessModel<T> where T : IProcessModelParameters
+    public interface IProcessModelSimulate
     {
         /// <summary>
         /// Iterate the process model one timestep forward
@@ -35,8 +35,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Get the model parameters
         /// </summary>
-        /// <returns>the paramters objet of the model</returns>
-        T GetModelParameters();
+        /// <returns>the paramters object of the model</returns>
+       // object GetModelParameters();
 
         /// <summary>
         /// Returns the type of process model

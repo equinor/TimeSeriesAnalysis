@@ -121,6 +121,8 @@ for calcuating the filtered value at time <code>k</code> it does not use future 
 this is at the expense of introducing a time-shift/phase-shift.</p>
 <p>///</p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelParametersFit.html">ModelParametersFit</a></h4>
+      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.MovingAvg.html">MovingAvg</a></h4>
       <section><p>Moving-average filter of time-series</p>
 </section>
@@ -162,7 +164,7 @@ This class should acta as a wrapper for PIDcontroller class.</p>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></h4>
       <section><p>The data for a porition of a process, containg only one output and one or multiple inputs that influence it</p>
 </section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessSimulator-2.html">SubProcessSimulator&lt;T1, T2&gt;</a></h4>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.html">SubProcessSimulator</a></h4>
       <section><p>Simulate any subprocess model that has implemented the IProcessModel interface.
 This class relies on depencency injection and interfaces, so that the
 the specifics of how models outputs are calculated should be encapsulated in the passed model objects.</p>
@@ -177,18 +179,8 @@ between iterations.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.IFittedProcessModelParameters.html">IFittedProcessModelParameters</a></h4>
-      <section></section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModel-1.html">IProcessModel&lt;T&gt;</a></h4>
-      <section><p>Generic interface of process model</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModelParameters.html">IProcessModelParameters</a></h4>
-      <section><p>This is a simplified interface that is inherited by IFittedProcessModelParamters.
-It is made to logically separate the interfaces of model paramters that were determined by fitting, and
-those that are simply hard-coded either from a priori process knowledge or as example systems developed during
-unit-testing.</p>
-<p>The <code>ProcessSimulator</code> class should expected models with paramters that derive from this base interface, be they
-fitted or apriori.</p>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.html">IProcessModelSimulate</a></h4>
+      <section><p>Generic interface of process model (interface for simulation)</p>
 </section>
     <h3 id="enums">Enums
   </h3>

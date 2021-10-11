@@ -14,7 +14,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Process model class for the "Default" process model. 
     /// </summary>
-    public class DefaultProcessModel : IProcessModel<DefaultProcessModelParameters>
+    public class DefaultProcessModel : IProcessModelSimulate
     {
         private DefaultProcessModelParameters modelParameters;
         private LowPass lowPass;
@@ -24,7 +24,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool isFirstIteration;
         private double[] lastGoodValuesOfU;
 
-        public  SubProcessDataSet FittedDataSet { get; internal set; }
+        public SubProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
         private ProcessModelType processModelType = ProcessModelType.UnTyped;
@@ -262,8 +262,6 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("fitting : no error or warnings");
             }
-          
-
 
             foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
                 sb.AppendLine("time delay est. warning :" + warning.ToString());

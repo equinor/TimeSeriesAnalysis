@@ -10,12 +10,12 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Model of PID-controller
     /// This class should acta as a wrapper for PIDcontroller class.
     /// </summary>
-    public class PIDModel : IProcessModel<PIDModelParameters>
+    public class PIDModel : IProcessModelSimulate
     {
         int timeBase_s;
         PIDModelParameters pidParameters;
         PIDcontroller pid;
-    //    string outputID;
+
         string ID;
         string[] inputIDs;
         string outputID;
