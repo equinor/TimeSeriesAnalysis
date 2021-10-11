@@ -194,15 +194,20 @@ namespace TimeSeriesAnalysis.Examples
                 Ti_s = 20
             };
             var pidModel = new PIDModel(pidParameters, timeBase_s);
-            var dataSet = new SubProcessDataSet(timeBase_s, N);
-            dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
-            dataSet.Y_setpoint = TimeSeriesCreator.Constant(50, N);
-            var multiSim   = new MultiProcessSimulator
-                (new List<IProcessModel<IProcessModelParameters>>
+            var multiSim = new ProcessSimulator
+                (timeBase_s,new List<IProcessModel<IProcessModelParameters>>
                     { (IProcessModel<IProcessModelParameters>)processModel, (IProcessModel<IProcessModelParameters>)pidModel} );
-            multiSim.SimulateAll();//TODO:work in progress- how to pass data back and forth trough datasets here???
 
-            Plot.FromList(new List<double[]> { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
+            TimeSeriesDataSet externalSignals = new TimeSeriesDataSet(timeBase_s);
+            externalSignals.AddTimeSeries(processModel.GetID(), SignalType.Process_Distubance_D, TimeSeriesCreator.Step(N / 4, N, 0, 1));
+            externalSignals.AddTimeSeries(pidModel.GetID(), SignalType.PID_Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
+
+            multiSim.Simulate(externalSignals, out TimeSeriesDataSet simData);
+
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel.GetID(),SignalType.Process_Output_Y_sim),
+                simData.GetValues(pidModel.GetID(),SignalType.PID_Setpoint_Yset),
+                simData.GetValues(processModel.GetID(),SignalType.Process_Distubance_D)},
                 new List<string> { "y1=y_sim", "y3=u_pid", "y2=disturbance" },
                 timeBase_s, "ex6_results");
         }

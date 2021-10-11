@@ -28,7 +28,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
         private ProcessModelType processModelType = ProcessModelType.UnTyped;
-        private string outputID="not_named";
+        private string ID="not_named";
 
 
         /// <summary>
@@ -37,13 +37,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="modelParameters">model paramter object</param>
         /// <param name="timeBase_s">the timebase in seconds, the time interval between samples 
         /// and between calls to Iterate</param>
-        /// <param name="outputID">a unique string that identifies the position of the output in the 
-        /// process(such as a signal tag)</param>
+        /// <param name="ID">a unique string that identifies this model in larger process models</param>
 
         public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s,
-            string outputID="not_named")
+            string ID="not_named")
         {
-            this.outputID = outputID;
+            this.ID = ID;
             InitSim(timeBase_s,modelParameters);
         }
 
@@ -66,9 +65,9 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        public string GetOutputID()
+        public string GetID()
         {
-            return outputID;        
+            return ID;        
         }
 
 

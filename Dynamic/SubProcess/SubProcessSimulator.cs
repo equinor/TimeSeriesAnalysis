@@ -104,7 +104,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 u = umin + (umax-umin)/2;
             }
 
-
             for (int rowIdx = 0; rowIdx < N; rowIdx++)
             {
                 if (Double.IsNaN(u))

@@ -49,7 +49,16 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Typically this can be to a signal tag name, but it can be any unique string.
         /// </summary>
         /// <returns></returns>
-        string GetOutputID();
+      //  string GetOutputID();
+
+
+        /// <summary>
+        /// An unique name of the process model
+        /// </summary>
+        /// <returns></returns>
+        string GetID();
+
+
 
     }
 }
