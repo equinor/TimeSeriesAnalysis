@@ -17,6 +17,8 @@ namespace TimeSeriesAnalysis.Dynamic
         PIDcontroller pid;
     //    string outputID;
         string ID;
+        string[] inputIDs;
+        string outputID;
 
         public PIDModel(PIDModelParameters pidParameters, int timeBase_s, string ID="not_named")
         {
@@ -42,15 +44,32 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return ProcessModelType.PID;
         }
-        /*
+        
+
         public string GetOutputID()
         {
             return outputID;
-        }*/
+        }
+
+        public void SetOutputID(string outputID)
+        {
+            this.outputID = outputID;
+        }
 
         public string GetID()
         {
             return ID;
+        }
+
+
+        public void SetInputIDs(string measuredY_IDstring, string setPoint_IDstring)
+        {
+            inputIDs = new string[] { measuredY_IDstring, setPoint_IDstring };
+        }
+
+        public string[] GetInputIDs()
+        {
+            return inputIDs;
         }
 
 

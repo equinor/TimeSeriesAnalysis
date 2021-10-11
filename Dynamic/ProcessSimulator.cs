@@ -48,7 +48,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 modelDict.Add(modelID,model);
             }
         }
-
+        // TODO: need to call "SetInputIDs" and "SetOutputID" for every model somehow...
+        //
         public bool Simulate(TimeSeriesDataSet externalInputSignals, out TimeSeriesDataSet simData)
         {
             int? N = externalInputSignals.GetLength();
@@ -75,9 +76,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
                 {
                     var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
-                    string[] inputIDs = model.GetModelInputIDs();
+                    string[] inputIDs = model.GetInputIDs();
                     double[] inputsU = simData.GetData(inputIDs, stepIdx);
-                    model.Iterate(inputsU);
+                    double output = model.Iterate(inputsU);
+                    simData.AddDataPoint(model.GetOutputID(),stepIdx,output);
                 }
             }
             return true;

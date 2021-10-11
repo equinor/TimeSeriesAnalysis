@@ -10,8 +10,6 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
 
-
-
     /// <summary>
     /// The data for a porition of a process, containg only one output and one or multiple inputs that influence it
     /// </summary>
@@ -48,7 +46,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public double  BadDataID{ get; set; } = -9999;
 
     /// <summary>
-    /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, rand walks or other disturbancs.
+    /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, 
+    /// rand walks or other disturbancs.
     /// </summary>
     /// <param name="timeBase_s">the time base in seconds</param>
     /// <param name="numDataPoints">the desired nubmer of datapoints of the dataset</param>
@@ -64,7 +63,8 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Constructor for dta set with inputs <c>U</c>, i.e. where a relationship that at least partially explains <c>y_meas</c> is konwn
+        /// Constructor for dta set with inputs <c>U</c>, i.e. where a relationship 
+        /// that at least partially explains <c>y_meas</c> is konwn
         /// </summary>
         /// <param name="timeBase_s">the time base in seconds</param>
         /// <param name="U">The number of rows of the 2D-array U determines the duration dataset</param>
@@ -96,7 +96,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
         /// <summary>
-        /// Get the average value of each input in the dataset. This is useful when defining model local around a working point.
+        /// Get the average value of each input in the dataset. 
+        /// This is useful when defining model local around a working point.
         /// </summary>
         /// <returns>an array of averages, each corrsponding to one column of U. 
         /// Returns null if it was not possible to calculate averages</returns>

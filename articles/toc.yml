@@ -2,11 +2,9 @@
 - name: Introduction
   href: index.md
 
-
 - name: Getting Started
   href: getting_started.md
   items:
-
         - name: Setting up NuGet
           href: nuget_setup.md
         - name: Setting up and running unit tests
@@ -20,7 +18,6 @@
 - name: Code examples
   href: examples.md
   items:
-
         - name: 1. A "hello world" example
           href: ex_hello_world.md
         - name: 2. Linear regression example
@@ -44,11 +41,9 @@
 
 - name: Dynamic simulation
   href: dynsim.md
-
-        - name: Multi-process(large-scale) simulations
+  items:
+        - name: Multiprocess (large-scale) simulations
           href: multiprocesssim.md
-
-
 
 - name: PID control
   href: pidcontrol.md

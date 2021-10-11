@@ -43,6 +43,25 @@ namespace TimeSeriesAnalysis.Dynamic
             AddSet(inputDataSet); 
         }
 
+        public bool AddDataPoint(string signalID, int idx, double value)
+        {
+            if (dataset.ContainsKey(signalID))
+            {
+                if (dataset[signalID].Length >idx)
+                {
+                    dataset[signalID][idx] = value;
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            else
+                return false;
+        
+        }
+
+
         public bool AddSet(TimeSeriesDataSet inputDataSet)
         {
             foreach (string signalName in inputDataSet.GetSignalNames())

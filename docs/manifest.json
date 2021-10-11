@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html",
-          "hash": "fNEG7s2Vx0+mcILIyjAX8bPzCkN5iagxjlyIh39SCaA="
+          "hash": "W+61w/ZAI/ZYzBLE/I1nqXqLfiVKU3qjyXJuGht1KSA="
         }
       },
       "is_incremental": false,
@@ -126,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.IProcessModel-1.html",
-          "hash": "LPxgI48Izzcut/Qi5cpUdAUrEOQNB6k3ch6ipLx/V2E="
+          "hash": "ZVhUHzY0XWn/R6cY2/HAqI3fatpDYj6eIHy87wTp4gw="
         }
       },
       "is_incremental": false,
@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDModel.html",
-          "hash": "0+22kyRFm4cSSwehbo6oLpfZALxbd4XcsnlNRJiYFq0="
+          "hash": "0+/dGKHfOn/2cU/7a6TWce7Byz7raDVKSU6jqhOrLO0="
         }
       },
       "is_incremental": false,
@@ -302,11 +302,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.SignalType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.SignalType.html",
+          "hash": "3EJ5pU+l1Nhja45Pt4Szgx9tsuRuiVD68I0ycCpafm4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.SubProcessDataSet.yml",
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html",
-          "hash": "wTJlr8SjePAmQEmUoBSoQb3FcAWNkTkOEIWD01ySn5w="
+          "hash": "IJKaVSOwiov74gkJ9sJJyLM1lgJ4E9qAFWcUIpajCYw="
         }
       },
       "is_incremental": false,
@@ -350,11 +362,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html",
+          "hash": "sX/8mguBGvUF/0CVkfEoB/BGBtbT+35nEmTsmV12fXE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.yml",
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "4TVOVXy4jZTro5Phf8u2SRibe9kzIKi+d0yF941uYlw="
+          "hash": "g6X9+fvczyIH8TXkUQ+DQkPeRIrlc5WGIQC0jq5Ezy0="
         }
       },
       "is_incremental": false,
@@ -606,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "EjkdFsk7r4VujOZNBkKWMJ7kEq2Xa/WRNOTkMR2X7iM="
+          "hash": "56/c4nNsCdsQtd1ToJjpjxze0F4l8cTqm0ZL5azyU/w="
         }
       },
       "is_incremental": false,
@@ -992,6 +1016,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/multiprocesssim.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/multiprocesssim.html",
+          "hash": "M/hh/+JC9ENGsbGoScZ3bDLahgn9ZHR9YC2qobOCLdc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/nuget.md",
       "output": {
         ".html": {
@@ -1092,7 +1128,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "aCH7/KXL+KhHwqYmpLBqDGUHUdKW7cn0GxRqk5NvsLs="
+          "hash": "tEwd1QlHLebhh9LtEPvSHWI1YKGCvVBQdZmIGSYjVog="
         }
       },
       "is_incremental": false,
@@ -1131,7 +1167,7 @@
       "output": {
         ".html": {
           "relative_path": "readme.html",
-          "hash": "BCSabvHhq3lbsiacJ6PReiOrOjmTGhZO76cTQNm3MM0="
+          "hash": "QbwAbWgBIzKFJeOaBbhQw73v28V13L/Cwsi/Y8MeqCo="
         }
       },
       "is_incremental": false,
@@ -1165,14 +1201,14 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 27,
-          "skipped_file_count": 26
+          "total_file_count": 28,
+          "skipped_file_count": 28
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 48,
-          "skipped_file_count": 45
+          "total_file_count": 50,
+          "skipped_file_count": 46
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

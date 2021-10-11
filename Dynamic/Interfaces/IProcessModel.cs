@@ -44,12 +44,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         ProcessModelType GetProcessModelType();
 
+
         /// <summary>
-        /// An string that IDs what the model outputs to. 
-        /// Typically this can be to a signal tag name, but it can be any unique string.
+        /// Return the tag names or unique identifier of each of the variables that 
+        /// "Iterate()" expects
         /// </summary>
         /// <returns></returns>
-      //  string GetOutputID();
+        string[] GetInputIDs();
+
+        string GetOutputID();
 
 
         /// <summary>

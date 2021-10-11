@@ -29,7 +29,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private ProcessModelType processModelType = ProcessModelType.UnTyped;
         private string ID="not_named";
-
+        private string[] inputIDs;
+        private string outputID;
 
         /// <summary>
         /// Constructor
@@ -64,12 +65,44 @@ namespace TimeSeriesAnalysis.Dynamic
             return processModelType;
         }
 
+        /// <summary>
+        /// Set the stringIDs of the one or more manipulated variables <c>U</c> that enter model
+        /// </summary>
+        /// <param name="manipulatedVariablesU_stringIDs"></param>
+        public void SetInputIDs(string[] manipulatedVariablesU_stringIDs)
+        {
+            inputIDs = manipulatedVariablesU_stringIDs;
+        }
 
+        /// <summary>
+        /// Get the type of the process model
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetInputIDs()
+        {
+            return inputIDs;
+        }
+
+        public void SetOutputID(string outputID)
+        {
+            this.outputID = outputID;
+        }
+
+        public string GetOutputID()
+        {
+            return outputID;
+        }
+
+
+
+        /// <summary>
+        /// Get the ID string of this model
+        /// </summary>
+        /// <returns></returns>
         public string GetID()
         {
             return ID;        
         }
-
 
         /// <summary>
         /// Initalizer of model that for the given dataSet also creates the resulting y_sim
