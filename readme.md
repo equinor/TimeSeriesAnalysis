@@ -35,6 +35,8 @@ modeling components such as individual PID-controllers and small-scale process m
  Toward version ``2.x`` the plan is to build on top the established building blocks to expand 
  into more *automated* modeling and analysis of *large-scale* systems (connecting sub-systems together), 
  to build **"digital twins"** of larger parts of process plants based on **data mining**. 
+The toolbox aims for models are ``grey-box`` rather than ``black-box``, 
+models should be human-configurable and human-readable so that data mining can be combined with human insight.
 
 ## Contributing
 This project welcomes contributions and suggestions. 

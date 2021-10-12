@@ -8,7 +8,7 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
-    /// Generic interface of process model (interface for simulation)
+    /// Generic interface of process model (interface for ProcessSimulator to connect submodels and iterate simulation)
     /// </summary>
     /// <typeparam name="T">The process model parameters class</typeparam>
     public interface IProcessModelSimulate
@@ -53,6 +53,13 @@ namespace TimeSeriesAnalysis.Dynamic
         string[] GetInputIDs();
 
         string GetOutputID();
+
+        void SetOutputID(string outputID);
+
+        void SetInputIDs(string[] manipulatedVariablesU_stringIDs, int? index=null);
+
+
+        int GetNumberOfInputs();
 
 
         /// <summary>

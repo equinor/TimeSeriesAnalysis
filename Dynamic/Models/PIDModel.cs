@@ -132,5 +132,18 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return pidParameters;
         }
+
+        /// <summary>
+        /// Get number of inputs (between 2 and 4)
+        /// first input is always ymeas, second input is y_setpoint, optionally, 
+        /// input 3 is track signal and input 4 is gain scheduling variable
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfInputs()
+        {
+            int nInputs = 2;
+            return nInputs;// TODO:generalize
+        }
+
     }
 }

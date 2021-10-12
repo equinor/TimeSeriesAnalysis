@@ -49,8 +49,48 @@ namespace TimeSeriesAnalysis.Dynamic
                 modelDict.Add(modelID,model);
             }
         }
-        // TODO: need to call "SetInputIDs" and "SetOutputID" for every model somehow...
-        //
+
+        /// <summary>
+        /// Connect two submodels
+        /// </summary>
+        /// <param name="upstreamModel">the upstream model, meaning the model whose output will be connected</param>
+        /// <param name="downstreamModel">the downstream model, meaning the model whose input will be connected</param>
+        /// <returns></returns>
+        public bool Connect(IProcessModelSimulate upstreamModel, IProcessModelSimulate downstreamModel)
+        {
+            string outputId = null;
+
+            upstreamModel.SetOutputID(outputId);
+            int nInputs = downstreamModel.GetNumberOfInputs();
+            if (nInputs == 1)
+            {
+                downstreamModel.SetInputIDs(new string[] { outputId });
+            }
+            else
+            {// need to decide which input?? 
+                ProcessModelType upstreamType = upstreamModel.GetProcessModelType();
+                ProcessModelType downstreamType = downstreamModel.GetProcessModelType();
+
+                if (downstreamType == ProcessModelType.PID && upstreamType == ProcessModelType.SubProcess)
+                {
+                    // by convention y_meas is always input 1
+                    downstreamModel.SetInputIDs(new string[] { outputId}, 0);
+
+                }
+            }
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// Simulate over a dataset
+        /// </summary>
+        /// <param name="externalInputSignals">the external signals
+        /// that act on the process while simulating(setpoints, model inputs that are not controlled or disturbances).
+        /// The length of these signals determine the length of the simulation</param>
+        /// <param name="simData">the simulated data set to be outputted(includes the external signals)</param>
+        /// <returns></returns>
         public bool Simulate(TimeSeriesDataSet externalInputSignals, out TimeSeriesDataSet simData)
         {
             int? N = externalInputSignals.GetLength();

@@ -93,6 +93,11 @@ namespace TimeSeriesAnalysis.Dynamic
             return outputID;
         }
 
+        public int GetNumberOfInputs()
+        {
+            return modelParameters.ProcessGains.Length;
+        }
+
 
 
         /// <summary>

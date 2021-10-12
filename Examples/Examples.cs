@@ -200,7 +200,7 @@ namespace TimeSeriesAnalysis.Examples
 
             var modelList = new List<IProcessModelSimulate> { processModel, pidModel};
 
-            var multiSim = new ProcessSimulator (timeBase_s, modelList);
+            var processSim = new ProcessSimulator (timeBase_s, modelList);
 
             TimeSeriesDataSet externalSignals = new TimeSeriesDataSet(timeBase_s);
             externalSignals.AddTimeSeries(processModel.GetID(),
@@ -208,7 +208,10 @@ namespace TimeSeriesAnalysis.Examples
             externalSignals.AddTimeSeries(pidModel.GetID(), 
                 SignalType.PID_Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
 
-            multiSim.Simulate(externalSignals, out TimeSeriesDataSet simData);
+            processSim.Connect(processModel,pidModel);
+            processSim.Connect(pidModel, processModel);
+
+            processSim.Simulate(externalSignals, out TimeSeriesDataSet simData);
 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Process_Output_Y_sim),
