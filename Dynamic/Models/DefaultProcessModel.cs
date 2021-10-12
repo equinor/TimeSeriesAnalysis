@@ -97,6 +97,14 @@ namespace TimeSeriesAnalysis.Dynamic
             this.isFirstIteration = true;
         }
 
+        public void WarmStart(double[] inputs, double output)
+        { 
+        
+        
+        
+        }
+
+
         /// <summary>
         /// Iterates the process model state one time step, based on the inputs given
         /// </summary>
@@ -162,8 +170,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 y += inputs.Last();
             }
             return y; 
-
-
          }
 
         /// <summary>
@@ -173,6 +179,11 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool IsModelStatic()
         {
            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
+        }
+
+        public SignalType GetOutputSignalType()
+        {
+            return SignalType.Output_Y_sim;
         }
 
         /// <summary>
@@ -231,6 +242,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             return sb.ToString();
         }
+
+
 
 
 

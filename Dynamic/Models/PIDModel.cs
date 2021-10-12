@@ -62,9 +62,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Initalizes the controller internal state(integral term) to be steady at the given process value and output value, 
         /// useful to avoid bumps when staring controller
         /// </summary>
-        public void WarmStart(double y_process_abs, double y, double u)
+        public void WarmStart(double y_process_abs, double y_set, double u)
         {
-            pid.WarmStart(y_process_abs, y, u);
+            pid.WarmStart(y_process_abs, y_set, u);
+        }
+
+        public void WarmStart(double[] inputs, double output)
+        {
+            WarmStart(inputs[0], inputs[1],output); 
         }
 
         /// <summary>
@@ -117,6 +122,12 @@ namespace TimeSeriesAnalysis.Dynamic
             int nInputs = 2;
             return nInputs;// TODO:generalize
         }
+
+        public SignalType GetOutputSignalType()
+        {
+            return SignalType.PID_U;
+        }
+
 
     }
 }

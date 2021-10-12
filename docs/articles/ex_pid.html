@@ -82,7 +82,7 @@
 <p>In this example, a step disturbance influences a linear subprocess that is controlled by a PID-controller toward a constant setpoint of <code>y=50</code>, like depicted in the below figure:</p>
 <p><img src="images/fig_pidprocess.png" alt="Example 5 result"></p>
 <p><code>SubProcessSimulator.CoSimulateProcessAndPID</code> co-simulates a single PID-controller/processes combination such as this.</p>
-<pre><code class="lang-csharp" name="Examples">public void Ex5_pid_sim()
+<pre><code class="lang-csharp" name="Examples">public void Ex5_pid_cosimulation()
 {
     int timeBase_s = 1;
     int N = 500;

@@ -6,16 +6,6 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    public enum SignalType
-    { 
-        Unset = 0,
-        PID_ManipulatedVar_U = 1,
-        PID_Setpoint_Yset = 2,
-        Process_Distubance_D = 3,
-        Process_State_X = 4,
-        Process_Output_Y_sim = 5,
-        Process_Output_Y_meas = 6
-    }
 
     /// <summary>
     /// A  class that holds time-series data for a number of tags
@@ -45,7 +35,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public bool AddDataPoint(string signalID, int idx, double value)
         {
-            if (dataset.ContainsKey(signalID))
+            if (ContainsSignal(signalID))
             {
                 if (dataset[signalID].Length >idx)
                 {
@@ -61,6 +51,10 @@ namespace TimeSeriesAnalysis.Dynamic
         
         }
 
+        public bool ContainsSignal(string signalID)
+        {
+            return dataset.ContainsKey(signalID);
+        }
 
         public bool AddSet(TimeSeriesDataSet inputDataSet)
         {
@@ -95,7 +89,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return null;
         }
 
-        private string GetSignalName(string modelID, SignalType signalType)
+        public static string GetSignalName(string modelID, SignalType signalType)
         {
             return modelID + "_" + signalType.ToString();
         }
@@ -110,6 +104,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return false;
             }
+            N = values.Length;
             dataset.Add(signalName, values);
             return true;
         }
@@ -132,11 +127,11 @@ namespace TimeSeriesAnalysis.Dynamic
             int valueIdx = 0;
             foreach (string signalName in signalNames)
             {
-                if (dataset.ContainsKey(signalName))
+                if (!dataset.ContainsKey(signalName))
                 {
                     return null;
                 }
-                if (timeIdx > dataset[signalName].Length)
+                if (timeIdx > dataset[signalName].Count())
                 {
                     return null;
                 }

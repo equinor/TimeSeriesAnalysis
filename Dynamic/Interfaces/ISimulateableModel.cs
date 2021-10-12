@@ -22,6 +22,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// they need ot be added to states to get <c>y_sim</c>) </returns>
         double Iterate(double[] inputsU, double badDataID=-9999);
 
+
+        void WarmStart(double[] inputs, double output);
+
+
         /// <summary>
         /// Calculates the value u0 of u that at steady-state will give the output value y0.
         /// This method is used when starting a method at steady-state
@@ -56,17 +60,19 @@ namespace TimeSeriesAnalysis.Dynamic
 
         void SetOutputID(string outputID);
 
-        void SetInputIDs(string[] manipulatedVariablesU_stringIDs, int? index=null);
+        bool SetInputIDs(string[] manipulatedVariablesU_stringIDs, int? index=null);
 
 
         int GetNumberOfInputs();
-
 
         /// <summary>
         /// An unique name of the process model
         /// </summary>
         /// <returns></returns>
         string GetID();
+
+        SignalType GetOutputSignalType();
+
 
 
 

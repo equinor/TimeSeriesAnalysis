@@ -50,7 +50,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="idx">if non-null, this is the index of the element in U to set
         /// (U_stringIDs should then have just one element)</param>
 
-        public void SetInputIDs(string[] U_stringIDs, int? idx = null)
+        public bool  SetInputIDs(string[] U_stringIDs, int? idx = null)
         {
             if (idx == null)
             {
@@ -61,9 +61,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (inputIDs == null)
                 {
                     inputIDs = new string[GetNumberOfInputs()];
+                }
+                if (idx.Value < GetNumberOfInputs())
+                {
                     inputIDs[idx.Value] = U_stringIDs[0];
                 }
+                else
+                    return false;
             }
+            return true;
         }
 
         /// <summary>
@@ -86,7 +92,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         public abstract int GetNumberOfInputs();
-
 
 
 

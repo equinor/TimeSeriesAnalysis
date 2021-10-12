@@ -34,7 +34,7 @@ namespace TimeSeriesAnalysis.Examples
 
         [Test, Explicit]
         #region ex_2
-        public void Ex2_linreg()
+        public void Ex2_linear_regression()
         {
             double[] true_gains = {1,2,3};
             double true_bias = 5;
@@ -93,7 +93,7 @@ namespace TimeSeriesAnalysis.Examples
 
         [Test, Explicit]
         #region ex_4
-        public void Ex4_sysid()
+        public void Ex4_system_identification()
         {
             int timeBase_s = 1;
             double noiseAmplitude = 0.05;
@@ -142,7 +142,7 @@ namespace TimeSeriesAnalysis.Examples
 
         [Test, Explicit]
         #region ex_5
-        public void Ex5_pid_sim()
+        public void Ex5_pid_cosimulation()
         {
             int timeBase_s = 1;
             int N = 500;
@@ -175,7 +175,7 @@ namespace TimeSeriesAnalysis.Examples
 
         [Test, Explicit]
         #region ex_6
-        public void Ex6_pid_sim_improved()
+        public void Ex6_process_simulation()
         {
             int timeBase_s = 1;
             int N = 500;
@@ -196,18 +196,19 @@ namespace TimeSeriesAnalysis.Examples
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pidModel = new PIDModel(pidParameters, timeBase_s,"PID");
-            var processSim = new ProcessSimulator (timeBase_s, new List<ISimulatableModel> { processModel, pidModel });
-            var isOK = processSim.ConnectModels(processModel,pidModel);
-            isOK = processSim.ConnectModels(pidModel, processModel);
-            isOK = processSim.AddSignal(processModel, SignalType.Process_Distubance_D,TimeSeriesCreator.Step(N/4,N,0,1));
-            isOK = processSim.AddSignal(pidModel, SignalType.PID_Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            isOK = processSim.Simulate(out TimeSeriesDataSet simData);
+            var pidModel = new PIDModel(pidParameters, timeBase_s,"PID1");
+            var processSim = new ProcessSimulator (timeBase_s, 
+                new List<ISimulatableModel> { pidModel, processModel  });
+            processSim.ConnectModels(processModel,pidModel);
+            processSim.ConnectModels(pidModel, processModel);
+            processSim.AddSignal(processModel, SignalType.Distubance_D,TimeSeriesCreator.Step(N/4,N,0,1));
+            processSim.AddSignal(pidModel, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+            processSim.Simulate(out TimeSeriesDataSet simData);
 
             Plot.FromList(new List<double[]> {
-                simData.GetValues(processModel.GetID(),SignalType.Process_Output_Y_sim),
-                simData.GetValues(pidModel.GetID(),SignalType.PID_Setpoint_Yset),
-                simData.GetValues(processModel.GetID(),SignalType.Process_Distubance_D)},
+                simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                simData.GetValues(pidModel.GetID(),SignalType.PID_U),
+                simData.GetValues(processModel.GetID(),SignalType.Distubance_D)},
                 new List<string> { "y1=y_sim", "y3=u_pid", "y2=disturbance" },
                 timeBase_s, "ex6_results");
         }

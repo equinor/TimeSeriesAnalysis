@@ -251,6 +251,31 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
   <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetNumberOfInputs">ModelBaseClass.GetNumberOfInputs()</a></div>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetOutputSignalType_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputSignalType*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetOutputSignalType" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputSignalType">GetOutputSignalType()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SignalType GetOutputSignalType()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SignalType.html">SignalType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double,System.Int32)">GetSteadyStateInput(Double, Int32)</h4>
   <div class="markdown level1 summary"><p>[Method not currently implemented]</p>
@@ -360,7 +385,7 @@ useful to avoid bumps when staring controller</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void WarmStart(double y_process_abs, double y, double u)</code></pre>
+    <pre><code class="lang-csharp hljs">public void WarmStart(double y_process_abs, double y_set, double u)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -379,12 +404,44 @@ useful to avoid bumps when staring controller</p>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">y</span></td>
+        <td><span class="parametername">y_set</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">u</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.WarmStart*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_WarmStart_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.WarmStart(System.Double[],System.Double)">WarmStart(Double[], Double)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WarmStart(double[] inputs, double output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">inputs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">output</span></td>
         <td></td>
       </tr>
     </tbody>
