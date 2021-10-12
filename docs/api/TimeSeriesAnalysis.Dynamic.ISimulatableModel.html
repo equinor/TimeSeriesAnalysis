@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IProcessModelSimulate
+    <title>Interface ISimulatableModel
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IProcessModelSimulate
+    <meta name="title" content="Interface ISimulatableModel
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,26 +78,26 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate" class="text-break">Interface IProcessModelSimulate
+  <h1 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel" class="text-break">Interface ISimulatableModel
   </h1>
   <div class="markdown level0 summary"><p>Generic interface of process model (interface for ProcessSimulator to connect submodels and iterate simulation)</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IProcessModelSimulate</code></pre>
+    <pre><code class="lang-csharp hljs">public interface ISimulatableModel</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetID_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetID" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetID">GetID()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetID_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetID" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetID">GetID()</h4>
   <div class="markdown level1 summary"><p>An unique name of the process model</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -122,8 +122,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetInputIDs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetInputIDs">GetInputIDs()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs">GetInputIDs()</h4>
   <div class="markdown level1 summary"><p>Return the tag names or unique identifier of each of the variables that
 &quot;Iterate()&quot; expects</p>
 </div>
@@ -149,8 +149,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetNumberOfInputs_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetNumberOfInputs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetNumberOfInputs" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetNumberOfInputs">GetNumberOfInputs()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetNumberOfInputs_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetNumberOfInputs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetNumberOfInputs" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetNumberOfInputs">GetNumberOfInputs()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -174,8 +174,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetOutputID_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetOutputID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetOutputID" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetOutputID">GetOutputID()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetOutputID_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetOutputID" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputID">GetOutputID()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -199,8 +199,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetProcessModelType*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetProcessModelType" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetProcessModelType">GetProcessModelType()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetProcessModelType*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetProcessModelType" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetProcessModelType">GetProcessModelType()</h4>
   <div class="markdown level1 summary"><p>Returns the type of process model</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -225,8 +225,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetSteadyStateInput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_GetSteadyStateInput_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.GetSteadyStateInput(System.Double,System.Int32)">GetSteadyStateInput(Double, Int32)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetSteadyStateInput_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double,System.Int32)">GetSteadyStateInput(Double, Int32)</h4>
   <div class="markdown level1 summary"><p>Calculates the value u0 of u that at steady-state will give the output value y0.
 This method is used when starting a method at steady-state
 In its current form,this approach only makes sense for systems of one input.</p>
@@ -277,8 +277,8 @@ In its current form,this approach only makes sense for systems of one input.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.Iterate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
   <div class="markdown level1 summary"><p>Iterate the process model one timestep forward</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -329,8 +329,8 @@ they need ot be added to states to get <code>y_sim</code>)</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_SetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.SetInputIDs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_SetInputIDs_System_String___System_Nullable_System_Int32__" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.SetInputIDs(System.String[],System.Nullable{System.Int32})">SetInputIDs(String[], Nullable&lt;Int32&gt;)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_SetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.SetInputIDs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_SetInputIDs_System_String___System_Nullable_System_Int32__" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.SetInputIDs(System.String[],System.Nullable{System.Int32})">SetInputIDs(String[], Nullable&lt;Int32&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -361,8 +361,8 @@ they need ot be added to states to get <code>y_sim</code>)</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_SetOutputID_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.SetOutputID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_IProcessModelSimulate_SetOutputID_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.SetOutputID(System.String)">SetOutputID(String)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_SetOutputID_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.SetOutputID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_SetOutputID_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.SetOutputID(System.String)">SetOutputID(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

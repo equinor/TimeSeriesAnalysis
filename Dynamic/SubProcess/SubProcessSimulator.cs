@@ -22,8 +22,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class SubProcessSimulator
     {
-        IProcessModelSimulate model;
-        public SubProcessSimulator(IProcessModelSimulate model)
+        ISimulatableModel model;
+        public SubProcessSimulator(ISimulatableModel model)
         {
             this.model = model;
         }

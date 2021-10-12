@@ -14,7 +14,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Process model class for the "Default" process model. 
     /// </summary>
-    public class DefaultProcessModel : IProcessModelSimulate
+    public class DefaultProcessModel : ModelBaseClass, ISimulatableModel 
     {
         private DefaultProcessModelParameters modelParameters;
         private LowPass lowPass;
@@ -27,11 +27,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public SubProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
-        private ProcessModelType processModelType = ProcessModelType.UnTyped;
-        private string ID="not_named";
-        private string[] inputIDs;
-        private string outputID;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,70 +38,14 @@ namespace TimeSeriesAnalysis.Dynamic
         public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s,
             string ID="not_named")
         {
-            this.ID = ID;
+            processModelType = ProcessModelType.SubProcess;
+            SetID(ID);
             InitSim(timeBase_s,modelParameters);
         }
 
-        /// <summary>
-        /// Set the type of the process model
-        /// </summary>
-        /// <returns></returns>
-        public void SetProcessModelType(ProcessModelType newType)
-        {
-             processModelType = newType;
-        }
-
-        /// <summary>
-        /// Get the type of the process model
-        /// </summary>
-        /// <returns></returns>
-        public ProcessModelType GetProcessModelType()
-        {
-            return processModelType;
-        }
-
-        /// <summary>
-        /// Set the stringIDs of the one or more manipulated variables <c>U</c> that enter model
-        /// </summary>
-        /// <param name="manipulatedVariablesU_stringIDs"></param>
-        public void SetInputIDs(string[] manipulatedVariablesU_stringIDs)
-        {
-            inputIDs = manipulatedVariablesU_stringIDs;
-        }
-
-        /// <summary>
-        /// Get the type of the process model
-        /// </summary>
-        /// <returns></returns>
-        public string[] GetInputIDs()
-        {
-            return inputIDs;
-        }
-
-        public void SetOutputID(string outputID)
-        {
-            this.outputID = outputID;
-        }
-
-        public string GetOutputID()
-        {
-            return outputID;
-        }
-
-        public int GetNumberOfInputs()
+        override public int GetNumberOfInputs()
         {
             return modelParameters.ProcessGains.Length;
-        }
-
-
-
-        /// <summary>
-        /// Get the ID string of this model
-        /// </summary>
-        /// <returns></returns>
-        public string GetID()
-        {
-            return ID;        
         }
 
         /// <summary>
@@ -161,57 +100,70 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Iterates the process model state one time step, based on the inputs given
         /// </summary>
-        /// <param name="inputsU">vector of inputs</param>
+        /// <param name="inputs">vector of inputs U. Optionally the output disturbance D can be added as the last value.</param>
         /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
         /// <returns>the updated process model state(x) - the output without any output noise or disturbance.
         ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
         ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
         /// </returns>
-        public double Iterate(double[] inputsU, double badValueIndicator=-9999)
+        public double Iterate(double[] inputs, double badValueIndicator=-9999)
         {
             if (!modelParameters.AbleToIdentify())
                 return Double.NaN;
 
             double x_static = modelParameters.Bias;
 
-            for (int curInput = 0; curInput < inputsU.Length; curInput++)
+            // inputs U may include a disturbance as the last entry
+            for (int curInput = 0; curInput < Math.Min(inputs.Length, GetNumberOfInputs()); curInput++)
             {
-                double curUvalue = inputsU[curInput];
-                if (Double.IsNaN(inputsU[curInput]) || inputsU[curInput] == badValueIndicator)
+                if (curInput + 1 <= GetNumberOfInputs())
                 {
-                    curUvalue = lastGoodValuesOfU[curInput];
-                }
-                else
-                {
-                    lastGoodValuesOfU[curInput] = inputsU[curInput];
-                }
-                if (modelParameters.U0 != null)
-                {
-                    x_static += modelParameters.ProcessGains[curInput] *
-                        (curUvalue - modelParameters.U0[curInput]);
-                }
-                else
-                {
-                    x_static += modelParameters.ProcessGains[curInput] *
-                            curUvalue;
-                }
+                    double curUvalue = inputs[curInput];
+                    if (Double.IsNaN(inputs[curInput]) || inputs[curInput] == badValueIndicator)
+                    {
+                        curUvalue = lastGoodValuesOfU[curInput];
+                    }
+                    else
+                    {
+                        lastGoodValuesOfU[curInput] = inputs[curInput];
+                    }
+                    if (modelParameters.U0 != null)
+                    {
+                        x_static += modelParameters.ProcessGains[curInput] *
+                            (curUvalue - modelParameters.U0[curInput]);
+                    }
+                    else
+                    {
+                        x_static += modelParameters.ProcessGains[curInput] *
+                                curUvalue;
+                    }
 
-                if (modelParameters.ProcessGainCurvatures != null)
-                {
-                    //TODO
+                    if (modelParameters.ProcessGainCurvatures != null)
+                    {
+                        //TODO
+                    }
                 }
             }
             // nb! if first iteration, start model at steady-state
             double x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
+            double y = 0;
             if (modelParameters.TimeDelay_s <= 0)
             {
-                return x_dynamic;
+                y =  x_dynamic;
             }
             else
             {
-                return delayObj.Delay(x_dynamic);
+                y = delayObj.Delay(x_dynamic);
             }
+            // if a disturbance D has been given along with inputs U, then add it to output
+            if (inputs.Length > GetNumberOfInputs())
+            {
+                y += inputs.Last();
+            }
+            return y; 
+
+
          }
 
         /// <summary>

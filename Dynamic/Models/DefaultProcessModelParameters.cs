@@ -5,7 +5,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Parameters data class of the "Default" process model 
     /// </summary>
-    public class DefaultProcessModelParameters : ModelParametersFit
+    public class DefaultProcessModelParameters : ModelParametersBaseClass
     {
         public string SolverID;
 

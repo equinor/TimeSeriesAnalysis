@@ -66,7 +66,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             this.timeBase_s = timeBase_s;
             SubProcessDataSet dataSet = new SubProcessDataSet(timeBase_s, U);
             dataSet.BadDataID = badValueId;
-            var simulator = new SubProcessSimulator((IProcessModelSimulate)model);
+            var simulator = new SubProcessSimulator((ISimulatableModel)model);
             simulator.EmulateYmeas(ref dataSet, noiseAmplitude);
 
             if (addInBadDataToYmeasAndU)

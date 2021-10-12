@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    abstract public class ModelParametersFit
+    abstract public class ModelParametersBaseClass
     {
-
+        // TODO:add isfitted? some models are not fitte and then not everything here makes sense
         public bool WasAbleToIdentify { get; set; }
         public double FittingRsq { get; set; }
         public double FittingObjFunVal { get; set; }

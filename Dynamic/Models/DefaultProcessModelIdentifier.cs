@@ -448,7 +448,7 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.Bias = 0;
             double nanValue = dataSet.BadDataID;
             var model = new DefaultProcessModel(parameters, dataSet.TimeBase_s);
-            var simulator = new SubProcessSimulator((IProcessModelSimulate)model);
+            var simulator = new SubProcessSimulator((ISimulatableModel)model);
             var y_sim = simulator.Simulate(ref dataSet);
 
             double[] diff = (new Vec(nanValue)).Subtract(dataSet.Y_meas, y_sim);

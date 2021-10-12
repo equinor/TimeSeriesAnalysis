@@ -11,7 +11,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Generic interface of process model (interface for ProcessSimulator to connect submodels and iterate simulation)
     /// </summary>
     /// <typeparam name="T">The process model parameters class</typeparam>
-    public interface IProcessModelSimulate
+    public interface ISimulatableModel
     {
         /// <summary>
         /// Iterate the process model one timestep forward

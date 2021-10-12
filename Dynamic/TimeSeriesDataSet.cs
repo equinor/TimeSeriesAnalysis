@@ -115,11 +115,15 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        public bool AddTimeSeries(string processID, SignalType type, double[] values )
+        public string AddTimeSeries(string processID, SignalType type, double[] values )
         {
             string signalName = GetSignalName(processID, type);
             
-            return AddTimeSeries(signalName,values);
+            bool isOk =  AddTimeSeries(signalName,values);
+            if (isOk)
+                return signalName;
+            else
+                return null;
         }
 
         public double[] GetData(string[] signalNames, int timeIdx)

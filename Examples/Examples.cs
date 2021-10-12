@@ -196,22 +196,13 @@ namespace TimeSeriesAnalysis.Examples
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pidModel = new PIDModel(pidParameters, timeBase_s,"SubProcess1_PID");
-
-            var modelList = new List<IProcessModelSimulate> { processModel, pidModel};
-
-            var processSim = new ProcessSimulator (timeBase_s, modelList);
-
-            TimeSeriesDataSet externalSignals = new TimeSeriesDataSet(timeBase_s);
-            externalSignals.AddTimeSeries(processModel.GetID(),
-                SignalType.Process_Distubance_D, TimeSeriesCreator.Step(N / 4, N, 0, 1));
-            externalSignals.AddTimeSeries(pidModel.GetID(), 
-                SignalType.PID_Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
-
-            processSim.Connect(processModel,pidModel);
-            processSim.Connect(pidModel, processModel);
-
-            processSim.Simulate(externalSignals, out TimeSeriesDataSet simData);
+            var pidModel = new PIDModel(pidParameters, timeBase_s,"PID");
+            var processSim = new ProcessSimulator (timeBase_s, new List<ISimulatableModel> { processModel, pidModel });
+            var isOK = processSim.ConnectModels(processModel,pidModel);
+            isOK = processSim.ConnectModels(pidModel, processModel);
+            isOK = processSim.AddSignal(processModel, SignalType.Process_Distubance_D,TimeSeriesCreator.Step(N/4,N,0,1));
+            isOK = processSim.AddSignal(pidModel, SignalType.PID_Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+            isOK = processSim.Simulate(out TimeSeriesDataSet simData);
 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Process_Output_Y_sim),

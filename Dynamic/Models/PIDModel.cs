@@ -7,22 +7,30 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
+    /// This determines the position in the U-vector given to Iterate for the class <c>PIDModel</c>
+    /// </summary>
+    enum PIDModelInputsIdx
+    { 
+        Y_meas =0,
+        Y_setpoint=1,
+        Tracking=2,
+        GainScheduling=3
+    }
+
+    /// <summary>
     /// Model of PID-controller
     /// This class should acta as a wrapper for PIDcontroller class.
     /// </summary>
-    public class PIDModel : IProcessModelSimulate
+    public class PIDModel : ModelBaseClass,ISimulatableModel
     {
         int timeBase_s;
         PIDModelParameters pidParameters;
         PIDcontroller pid;
 
-        string ID;
-        string[] inputIDs;
-        string outputID;
-
         public PIDModel(PIDModelParameters pidParameters, int timeBase_s, string ID="not_named")
         {
-            this.ID             = ID;
+            processModelType = ProcessModelType.PID;
+            SetID(ID);
             this.timeBase_s     = timeBase_s;
             this.pidParameters  = pidParameters;
             pid                 = new PIDcontroller(timeBase_s,pidParameters.Kp, 
@@ -38,41 +46,6 @@ namespace TimeSeriesAnalysis.Dynamic
             //pid.SetGainScehduling(pidParameters.GainScheduling);
             pid.SetAntiSurgeParams(pidParameters.AntiSugeParams);
         }
-
-
-        public ProcessModelType GetProcessModelType()
-        {
-            return ProcessModelType.PID;
-        }
-        
-
-        public string GetOutputID()
-        {
-            return outputID;
-        }
-
-        public void SetOutputID(string outputID)
-        {
-            this.outputID = outputID;
-        }
-
-        public string GetID()
-        {
-            return ID;
-        }
-
-
-        public void SetInputIDs(string measuredY_IDstring, string setPoint_IDstring)
-        {
-            inputIDs = new string[] { measuredY_IDstring, setPoint_IDstring };
-        }
-
-        public string[] GetInputIDs()
-        {
-            return inputIDs;
-        }
-
-
 
         /// <summary>
         /// [Method not currently implemented]
@@ -109,17 +82,17 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return Double.NaN;
             }
-            double y_process_abs = inputs[0];
-            double y_set_abs = inputs[1];
+            double y_process_abs = inputs[(int)PIDModelInputsIdx.Y_meas];
+            double y_set_abs = inputs[(int)PIDModelInputsIdx.Y_setpoint];
             double? uTrackSignal = null;
             double? gainSchedulingVariable = null;
             if (inputs.Length >= 3)
             {
-                uTrackSignal = inputs[2];
+                uTrackSignal = inputs[(int)PIDModelInputsIdx.Tracking];
             }
             if (inputs.Length >= 4)
             {
-                gainSchedulingVariable = inputs[3];
+                gainSchedulingVariable = inputs[(int)PIDModelInputsIdx.GainScheduling];
             }
             return pid.Iterate(y_process_abs,y_set_abs, uTrackSignal, gainSchedulingVariable);
         }
@@ -139,7 +112,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// input 3 is track signal and input 4 is gain scheduling variable
         /// </summary>
         /// <returns></returns>
-        public int GetNumberOfInputs()
+        override public int GetNumberOfInputs()
         {
             int nInputs = 2;
             return nInputs;// TODO:generalize

@@ -9,20 +9,24 @@ namespace TimeSeriesAnalysis.Dynamic
     class ProcessSimulator
     {
         int timeBase_s;
-        List<IProcessModelSimulate> processModelList;
-        Dictionary<string, IProcessModelSimulate> modelDict;
+        Dictionary<string, ISimulatableModel> modelDict;
 
-        public ProcessSimulator(int timeBase_s,List<IProcessModelSimulate> 
-            processModelList = null)
+        TimeSeriesDataSet externalInputSignals;
+
+        public ProcessSimulator(int timeBase_s,List<ISimulatableModel> 
+            processModelList)
         {
+            externalInputSignals = new TimeSeriesDataSet(timeBase_s);
+
             this.timeBase_s = timeBase_s;
             if (processModelList == null)
             {
-                processModelList = new List<IProcessModelSimulate>();
+                return;
             }
-            modelDict = new Dictionary<string, IProcessModelSimulate>();
+
+            modelDict = new Dictionary<string, ISimulatableModel>();
             // create a unique model ID for each model
-            foreach (IProcessModelSimulate model in processModelList)
+            foreach (ISimulatableModel model in processModelList)
             {
                 int? number = null;
                 string modelNumberSuffix = "";
@@ -35,7 +39,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         modelNumberSuffix = "_" + number.ToString();
                     }
-                    modelID = model.GetID() + model.GetProcessModelType().ToString() + modelNumberSuffix;
+                    modelID = model.GetID() +
+                        model.GetProcessModelType().ToString() + modelNumberSuffix;
                     if (modelDict.ContainsKey(modelID))
                     {
                         number++;
@@ -50,15 +55,57 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
+       /// <summary>
+       /// Both connects and adds data to signal that is to be inputted into a specific sub-model, 
+       /// </summary>
+       /// <param name="upstreamModel"></param>
+       /// <param name="type"></param>
+       /// <param name="values"></param>
+       public bool AddSignal(ISimulatableModel upstreamModel, SignalType type, double[] values)
+        {
+            ProcessModelType modelType = upstreamModel.GetProcessModelType();
+            string signalID = externalInputSignals.AddTimeSeries(upstreamModel.GetID(), type, values);
+            if (signalID == null)
+            {
+                return false;
+            }
+            if (type == SignalType.Process_Distubance_D && modelType == ProcessModelType.SubProcess)
+            {
+                // by convention, the disturbance is always added last to inputs
+                upstreamModel.SetInputIDs(new string[] { signalID }, (int)upstreamModel.GetNumberOfInputs());
+                return true;
+            }
+            else if (type == SignalType.PID_Setpoint_Yset && modelType == ProcessModelType.PID)
+            {
+                upstreamModel.SetInputIDs(new string[] { signalID }, (int)PIDModelInputsIdx.Y_setpoint);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Connect two submodels
         /// </summary>
         /// <param name="upstreamModel">the upstream model, meaning the model whose output will be connected</param>
         /// <param name="downstreamModel">the downstream model, meaning the model whose input will be connected</param>
         /// <returns></returns>
-        public bool Connect(IProcessModelSimulate upstreamModel, IProcessModelSimulate downstreamModel)
+        public bool ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel)
         {
-            string outputId = null;
+           
+            ProcessModelType upstreamType = upstreamModel.GetProcessModelType();
+            ProcessModelType downstreamType = downstreamModel.GetProcessModelType();
+            string outputId = upstreamModel.GetID();
+            if (upstreamType == ProcessModelType.PID)
+            {
+                outputId += "_upid";
+            }
+            else if (upstreamType == ProcessModelType.SubProcess)
+            {
+                outputId += "_y";
+            } 
 
             upstreamModel.SetOutputID(outputId);
             int nInputs = downstreamModel.GetNumberOfInputs();
@@ -68,20 +115,24 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {// need to decide which input?? 
-                ProcessModelType upstreamType = upstreamModel.GetProcessModelType();
-                ProcessModelType downstreamType = downstreamModel.GetProcessModelType();
+                // 
+                int pidInputIdx = 0;// always connect pid to first intput u of subprocess for now
 
-                if (downstreamType == ProcessModelType.PID && upstreamType == ProcessModelType.SubProcess)
+                // y->u_pid
+                if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.PID  )
                 {
-                    // by convention y_meas is always input 1
-                    downstreamModel.SetInputIDs(new string[] { outputId}, 0);
-
+                    upstreamModel.SetOutputID(outputId);
+                    downstreamModel.SetInputIDs(new string[] { outputId}, (int)PIDModelInputsIdx.Y_meas);
+                }
+                //u_pid->u 
+                if (upstreamType == ProcessModelType.PID && downstreamType == ProcessModelType.SubProcess )
+                {
+                    upstreamModel.SetOutputID(outputId);
+                    downstreamModel.SetInputIDs(new string[] { outputId }, pidInputIdx);
                 }
             }
             return true;
         }
-
-
 
         /// <summary>
         /// Simulate over a dataset
@@ -91,7 +142,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// The length of these signals determine the length of the simulation</param>
         /// <param name="simData">the simulated data set to be outputted(includes the external signals)</param>
         /// <returns></returns>
-        public bool Simulate(TimeSeriesDataSet externalInputSignals, out TimeSeriesDataSet simData)
+        public bool Simulate( out TimeSeriesDataSet simData)
         {
             int? N = externalInputSignals.GetLength();
             if (!N.HasValue)

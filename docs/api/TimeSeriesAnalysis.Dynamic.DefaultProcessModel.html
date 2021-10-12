@@ -89,14 +89,39 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DefaultProcessModel</span></div>
+    <div class="level1"><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html">ModelBaseClass</a></div>
+    <div class="level2"><span class="xref">DefaultProcessModel</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.html">IProcessModelSimulate</a></div>
+    <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID">ModelBaseClass.GetID()</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetID_System_String_">ModelBaseClass.SetID(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ProcessModelType_">ModelBaseClass.SetProcessModelType(ProcessModelType)</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetProcessModelType">ModelBaseClass.GetProcessModelType()</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetInputIDs_System_String___System_Nullable_System_Int32__">ModelBaseClass.SetInputIDs(String[], Nullable&lt;Int32&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetInputIDs">ModelBaseClass.GetInputIDs()</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetOutputID_System_String_">ModelBaseClass.SetOutputID(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputID">ModelBaseClass.GetOutputID()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -120,7 +145,7 @@
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
   <h5 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DefaultProcessModel : IProcessModelSimulate</code></pre>
+    <pre><code class="lang-csharp hljs">public class DefaultProcessModel : ModelBaseClass, ISimulatableModel</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -255,58 +280,6 @@ and between calls to Iterate</p>
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetID_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetID" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetID">GetID()</h4>
-  <div class="markdown level1 summary"><p>Get the ID string of this model</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetID()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetInputIDs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetInputIDs">GetInputIDs()</h4>
-  <div class="markdown level1 summary"><p>Get the type of the process model</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string[] GetInputIDs()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetModelParameters_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetModelParameters*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetModelParameters" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetModelParameters">GetModelParameters()</h4>
   <div class="markdown level1 summary"><p>Get the objet of model paramters contained in the model</p>
@@ -334,13 +307,13 @@ and between calls to Iterate</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetOutputID_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetOutputID" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputID">GetOutputID()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetNumberOfInputs_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetNumberOfInputs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetNumberOfInputs" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetNumberOfInputs">GetNumberOfInputs()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetOutputID()</code></pre>
+    <pre><code class="lang-csharp hljs">public override int GetNumberOfInputs()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -352,37 +325,13 @@ and between calls to Iterate</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetProcessModelType" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetProcessModelType">GetProcessModelType()</h4>
-  <div class="markdown level1 summary"><p>Get the type of the process model</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ProcessModelType GetProcessModelType()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessModelType.html">ProcessModelType</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetNumberOfInputs">ModelBaseClass.GetNumberOfInputs()</a></div>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput*"></a>
@@ -500,7 +449,7 @@ and between calls to Iterate</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputsU, double badValueIndicator = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double badValueIndicator = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -514,8 +463,8 @@ and between calls to Iterate</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">inputsU</span></td>
-        <td><p>vector of inputs</p>
+        <td><span class="parametername">inputs</span></td>
+        <td><p>vector of inputs U. Optionally the output disturbance D can be added as the last value.</p>
 </td>
       </tr>
       <tr>
@@ -541,89 +490,6 @@ and between calls to Iterate</p>
 NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
 If some data points in U inputsU are NaN or equal to <code>badValueIndicator</code>, the last good value is returned</p>
 </td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetInputIDs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetInputIDs_System_String___" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetInputIDs(System.String[])">SetInputIDs(String[])</h4>
-  <div class="markdown level1 summary"><p>Set the stringIDs of the one or more manipulated variables <code>U</code> that enter model</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetInputIDs(string[] manipulatedVariablesU_stringIDs)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span>[]</td>
-        <td><span class="parametername">manipulatedVariablesU_stringIDs</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetOutputID_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetOutputID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetOutputID_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetOutputID(System.String)">SetOutputID(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetOutputID(string outputID)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">outputID</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ProcessModelType_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.SetProcessModelType(TimeSeriesAnalysis.Dynamic.ProcessModelType)">SetProcessModelType(ProcessModelType)</h4>
-  <div class="markdown level1 summary"><p>Set the type of the process model</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetProcessModelType(ProcessModelType newType)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessModelType.html">ProcessModelType</a></td>
-        <td><span class="parametername">newType</span></td>
-        <td></td>
       </tr>
     </tbody>
   </table>
@@ -658,7 +524,7 @@ This is especially useful for unit-testing and development.</p>
   <div><span class="xref">System.Object.ToString()</span></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.IProcessModelSimulate.html">IProcessModelSimulate</a>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a>
   </div>
 </article>
           </div>

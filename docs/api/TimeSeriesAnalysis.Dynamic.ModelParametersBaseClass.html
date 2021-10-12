@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class SubProcessSimulator
+    <title>Class ModelParametersBaseClass
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class SubProcessSimulator
+    <meta name="title" content="Class ModelParametersBaseClass
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,21 +78,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator" class="text-break">Class SubProcessSimulator
+  <h1 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass" class="text-break">Class ModelParametersBaseClass
   </h1>
-  <div class="markdown level0 summary"><p>Simulate any subprocess model that has implemented the IProcessModel interface.
-This class relies on depencency injection and interfaces, so that the
-the specifics of how models outputs are calculated should be encapsulated in the passed model objects.</p>
-<p>This class should not be static, as it is to be used as a type for MultiProcessSimulator</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">SubProcessSimulator</span></div>
+    <div class="level1"><span class="xref">ModelParametersBaseClass</span></div>
+      <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html">DefaultProcessModelParameters</a></div>
+      <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModelParameters.html">PIDModelParameters</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -120,35 +118,133 @@ the specifics of how models outputs are calculated should be encapsulated in the
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SubProcessSimulator</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class ModelParametersBaseClass</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="properties">Properties
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator__ctor_TimeSeriesAnalysis_Dynamic_ISimulatableModel_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.#ctor(TimeSeriesAnalysis.Dynamic.ISimulatableModel)">SubProcessSimulator(ISimulatableModel)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal">FittingObjFunVal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SubProcessSimulator(ISimulatableModel model)</code></pre>
+    <pre><code class="lang-csharp hljs">public double FittingObjFunVal { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a></td>
-        <td><span class="parametername">model</span></td>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq">FittingRsq</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double FittingRsq { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingBadDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingBadDataPoints*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingBadDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingBadDataPoints">NFittingBadDataPoints</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double NFittingBadDataPoints { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingTotalDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingTotalDataPoints*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingTotalDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingTotalDataPoints">NFittingTotalDataPoints</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double NFittingTotalDataPoints { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_WasAbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.WasAbleToIdentify*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_WasAbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.WasAbleToIdentify">WasAbleToIdentify</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool WasAbleToIdentify { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -157,47 +253,14 @@ the specifics of how models outputs are calculated should be encapsulated in the
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_CoSimulateProcessAndPID_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.CoSimulateProcessAndPID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_CoSimulateProcessAndPID_TimeSeriesAnalysis_Dynamic_PIDModel_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.CoSimulateProcessAndPID(TimeSeriesAnalysis.Dynamic.PIDModel,TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean)">CoSimulateProcessAndPID(PIDModel, ref SubProcessDataSet, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Co-simulate a process model and pid-controller</p>
-</div>
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_AbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.AbleToIdentify*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_AbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.AbleToIdentify">AbleToIdentify()</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool CoSimulateProcessAndPID(PIDModel pid, ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AbleToIdentify()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a></td>
-        <td><span class="parametername">pid</span></td>
-        <td><p>the</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></td>
-        <td><span class="parametername">processDataSet</span></td>
-        <td><p>the process will read the <code>.Disturbance</code> and <code>.TimeBase_s</code>,
-and write simulated inputs to <code>.U</code> and <code>.Y_sim</code></p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">writeResultToYmeasInsteadOfYsim</span></td>
-        <td><p>write data to <code>processDataSet.Y_meas</code>
-instead of <code>processDataSet.Y_sim</code></p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -209,89 +272,20 @@ instead of <code>processDataSet.Y_sim</code></p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns true if able to simulate, otherwise false (simulation is written into processDataSet )</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_EmulateYmeas_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.EmulateYmeas*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_EmulateYmeas_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.EmulateYmeas(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double)">EmulateYmeas(ref SubProcessDataSet, Double)</h4>
-  <div class="markdown level1 summary"><p>Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for<br>
-testing/test driven development.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void EmulateYmeas(ref SubProcessDataSet processDataSet, double noiseAmplitude = 0)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></td>
-        <td><span class="parametername">processDataSet</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">noiseAmplitude</span></td>
-        <td><p>optionally adds noise to the &quot;measured&quot; y (for testing purposes)</p>
-</td>
-      </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_Simulate_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.Simulate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_SubProcessSimulator_Simulate_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Boolean_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.Simulate(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Boolean,System.Boolean)">Simulate(ref SubProcessDataSet, Boolean, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Simulates the output of the model based on the processDataSet.U provided, by default the output is
-written back to <code>processDataSet.Y_sim</code> or <code>processDataSet.Y_meas</code>
-By default this method adds to <code>Y_sim</code> o <code>Y_meas</code> if they already contain values.</p>
-</div>
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingObjFunVal_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingObjFunVal*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingObjFunVal" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingObjFunVal">GetFittingObjFunVal()</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] Simulate(ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public double GetFittingObjFunVal()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></td>
-        <td><span class="parametername">processDataSet</span></td>
-        <td><p>dataset containing the inputs <code>U</code> to be simulated</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">writeResultToYmeasInsteadOfYsim</span></td>
-        <td><p>if <code>true</code>, output is written to <code>processDataSet.ymeas</code> instead of <code>processDataSet.ysim</code></p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">doOverwriteY</span></td>
-        <td><p>(default is false)if <code>true</code>, output overwrites any data in <code>processDataSet.ymeas</code> or <code>processDataSet.ysim</code></p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -302,9 +296,33 @@ By default this method adds to <code>Y_sim</code> o <code>Y_meas</code> if they 
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><p>Returns  the simulate y if able to simulate,otherwise null</p>
-</td>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingR2_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingR2*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingR2" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingR2">GetFittingR2()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetFittingR2()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
