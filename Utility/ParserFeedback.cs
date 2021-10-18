@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Diagnostics;
 
 namespace TimeSeriesAnalysis.Utility
 {
@@ -28,8 +28,9 @@ namespace TimeSeriesAnalysis.Utility
 
     /// <summary>
     ///     Utility class is responsible for collecting feedback lines, such as warnings,error or info text to either the console window,
-    ///     to a file structure or both. Class makes it easy to swithc between displaying output to a console while debugging, but 
-    ///     instead swithcing to outputtting to file when code moves to a server. 
+    ///     visual-studio output/debug window, to a file structure or all. 
+    ///     The class makes it easy to switch between displaying output to a console while debugging while
+    ///     to outputting to file when code moves to a server. 
     ///     Suitable for collecting debugging info from services that run many cases repeatedly.
     ///     log levels:  INFO<WARN<ERROR<FATAL  (no debug messages here)
     /// </summary>
@@ -43,6 +44,7 @@ namespace TimeSeriesAnalysis.Utility
        // 
 
         private bool doOutputAlsoToConsole = false;
+        private bool doOutputAlsoToDebug = false;
 
         int nFatalErrors;
         int nErrors;
@@ -71,12 +73,16 @@ namespace TimeSeriesAnalysis.Utility
             ResetCounters();
         }
 
-        public void EnableConsoleOutput(bool doEnable)
+        public void EnableConsoleOutput(bool doEnable=true)
         {
             this.doOutputAlsoToConsole = doEnable;
 
         }
 
+        public void EnableDebugOutput(bool doEnable=true)
+        {
+            this.doOutputAlsoToDebug = doEnable;
+        }
 
         public void CloseCaseLogFile()
         {
@@ -263,6 +269,13 @@ namespace TimeSeriesAnalysis.Utility
                     {
                         Console.WriteLine(msgString);
                     }
+                    if (doOutputAlsoToDebug)
+                    {
+                        string pad = "*****";
+                        Debug.WriteLine(pad + msgString + pad);
+                    }
+
+
                     if (commonLogFile != null)
                     {
                         if (commonLogFile.BaseStream != null)

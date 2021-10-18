@@ -86,12 +86,18 @@ namespace TimeSeriesAnalysis.Dynamic
             this.outputID = outputID;
         }
 
+        /// <summary>
+        /// returns the output ID
+        /// </summary>
+        /// <returns> may return <c>null</c> if output is not set</returns>
         public string GetOutputID()
         {
-            return outputID;
+             return TimeSeriesDataSet.GetSignalName(GetID(), GetOutputSignalType());
         }
 
         public abstract int GetNumberOfInputs();
+
+        public abstract SignalType GetOutputSignalType();
 
 
 

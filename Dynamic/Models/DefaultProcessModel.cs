@@ -104,21 +104,8 @@ namespace TimeSeriesAnalysis.Dynamic
         
         }
 
-
-        /// <summary>
-        /// Iterates the process model state one time step, based on the inputs given
-        /// </summary>
-        /// <param name="inputs">vector of inputs U. Optionally the output disturbance D can be added as the last value.</param>
-        /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
-        /// <returns>the updated process model state(x) - the output without any output noise or disturbance.
-        ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
-        ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
-        /// </returns>
-        public double Iterate(double[] inputs, double badValueIndicator=-9999)
+        private double CalculateStaticState(double[] inputs, double badValueIndicator=-9999)
         {
-            if (!modelParameters.AbleToIdentify())
-                return Double.NaN;
-
             double x_static = modelParameters.Bias;
 
             // inputs U may include a disturbance as the last entry
@@ -152,6 +139,32 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
+            return x_static;
+        }
+
+        public double? GetSteadyStateOutput(double[] u0)
+        {
+            double? ret = CalculateStaticState(u0);
+            return ret;
+        }
+
+
+        /// <summary>
+        /// Iterates the process model state one time step, based on the inputs given
+        /// </summary>
+        /// <param name="inputs">vector of inputs U. Optionally the output disturbance D can be added as the last value.</param>
+        /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
+        /// <returns>the updated process model state(x) - the output without any output noise or disturbance.
+        ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
+        ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
+        /// </returns>
+        public double Iterate(double[] inputs, double badValueIndicator=-9999)
+        {
+            if (!modelParameters.AbleToIdentify())
+                return Double.NaN;
+
+            double x_static = CalculateStaticState(inputs,badValueIndicator);
+
             // nb! if first iteration, start model at steady-state
             double x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
@@ -181,7 +194,7 @@ namespace TimeSeriesAnalysis.Dynamic
            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
         }
 
-        public SignalType GetOutputSignalType()
+        override public SignalType GetOutputSignalType()
         {
             return SignalType.Output_Y_sim;
         }

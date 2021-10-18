@@ -257,7 +257,7 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SignalType GetOutputSignalType()</code></pre>
+    <pre><code class="lang-csharp hljs">public override SignalType GetOutputSignalType()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -274,6 +274,8 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputSignalType">ModelBaseClass.GetOutputSignalType()</a></div>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput*"></a>
@@ -303,6 +305,48 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">inputIdx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateOutput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateOutput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateOutput_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateOutput(System.Double[])">GetSteadyStateOutput(Double[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? GetSteadyStateOutput(double[] u0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">u0</span></td>
         <td></td>
       </tr>
     </tbody>

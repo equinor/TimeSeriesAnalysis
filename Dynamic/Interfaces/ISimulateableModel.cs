@@ -36,6 +36,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         double? GetSteadyStateInput(double y0, int inputIdx=0);
 
+
+        /// <summary>
+        /// Get the steady state value of the model output
+        /// </summary>
+        /// <param name="u0">vector of inputs for which the steady state is to be calculated</param>
+        /// <returns>the steady-state value, if it is not possible to calculate, a <c>null</c> is returned</returns>
+        double? GetSteadyStateOutput(double[] u0);
+
         /// <summary>
         /// Get the model parameters
         /// </summary>

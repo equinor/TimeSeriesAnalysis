@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TimeSeriesAnalysis.UnitTests
+namespace TimeSeriesAnalysis.Test
 {
     [TestFixture]
     class VecUnitTests

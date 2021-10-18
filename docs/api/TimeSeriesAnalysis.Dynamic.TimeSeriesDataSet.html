@@ -328,12 +328,12 @@
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddTimeSeries_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddTimeSeries_System_String_TimeSeriesAnalysis_Dynamic_SignalType_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[])">AddTimeSeries(String, SignalType, Double[])</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddTimeSeries_System_String_TimeSeriesAnalysis_Dynamic_SignalType_System_Double___System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)">AddTimeSeries(String, SignalType, Double[], Int32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AddTimeSeries(string processID, SignalType type, double[] values)</code></pre>
+    <pre><code class="lang-csharp hljs">public string AddTimeSeries(string processID, SignalType type, double[] values, int index = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -358,6 +358,11 @@
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">values</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -423,7 +428,8 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetData_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetData*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetData_System_String___System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetData(System.String[],System.Int32)">GetData(String[], Int32)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get Data</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -462,7 +468,8 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td></td>
+        <td><p>May return null if an error occured</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -494,12 +501,13 @@
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSignalName_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSignalName_System_String_TimeSeriesAnalysis_Dynamic_SignalType_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName(System.String,TimeSeriesAnalysis.Dynamic.SignalType)">GetSignalName(String, SignalType)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSignalName_System_String_TimeSeriesAnalysis_Dynamic_SignalType_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName(System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)">GetSignalName(String, SignalType, Int32)</h4>
+  <div class="markdown level1 summary"><p>Get a unique signal name for a given signal, based on the model and signal type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string GetSignalName(string modelID, SignalType signalType)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string GetSignalName(string modelID, SignalType signalType, int idx = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -521,6 +529,12 @@
         <td><span class="parametername">signalType</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">idx</span></td>
+        <td><p>models can have multiple inputs, in which case an index is needed to uniquely identify it.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -534,7 +548,8 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><p>a unique string identifier that is used to identify a signal</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -608,12 +623,12 @@
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_System_String_TimeSeriesAnalysis_Dynamic_SignalType_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues(System.String,TimeSeriesAnalysis.Dynamic.SignalType)">GetValues(String, SignalType)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_System_String_TimeSeriesAnalysis_Dynamic_SignalType_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues(System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)">GetValues(String, SignalType, Int32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] GetValues(string processID, SignalType signalType)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] GetValues(string processID, SignalType signalType, int index = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -633,6 +648,11 @@
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SignalType.html">SignalType</a></td>
         <td><span class="parametername">signalType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
         <td></td>
       </tr>
     </tbody>

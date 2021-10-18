@@ -123,10 +123,17 @@ namespace TimeSeriesAnalysis.Dynamic
             return nInputs;// TODO:generalize
         }
 
-        public SignalType GetOutputSignalType()
+        override public SignalType GetOutputSignalType()
         {
             return SignalType.PID_U;
         }
+
+
+        public double? GetSteadyStateOutput(double[] u0)
+        {
+            return null;
+        }
+
 
 
     }

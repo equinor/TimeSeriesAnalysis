@@ -154,7 +154,10 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\TimeSeriesDataSet.cs" />
     <Compile Include="Examples\Examples.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Shared.cs" />
     <Compile Include="Tests\PIDTests.cs" />
+    <Compile Include="Tests\ProcessSimulatorMISOTests.cs" />
+    <Compile Include="Tests\ProcessSimulatorSISOTests.cs" />
     <Compile Include="Tests\SysIDUnitTests.cs" />
     <Compile Include="TimeSeriesAnalysis\RegressionResults.cs" />
     <Compile Include="Dynamic\Filters\MovingAvg.cs" />

@@ -9,7 +9,7 @@ using TimeSeriesAnalysis;
 
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.UnitTests
+namespace TimeSeriesAnalysis.Test
 {
     [TestFixture]
     class PlotUnitTests
