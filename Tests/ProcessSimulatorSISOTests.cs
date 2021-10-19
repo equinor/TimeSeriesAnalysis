@@ -9,10 +9,10 @@ using NUnit.Framework;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.Test
+namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
 {
     [TestFixture]
-    class ProcessSimulatorSISOTests
+    class SISOTests
     {
         int timeBase_s = 1;
         int N = 500;
@@ -74,7 +74,7 @@ namespace TimeSeriesAnalysis.Test
         // SISO= single-input/single-output
 
         [TestCase]
-        public void SISO_Single_RunsAndConverges()
+        public void Single_RunsAndConverges()
         {
             var processSim = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1});
@@ -94,7 +94,7 @@ namespace TimeSeriesAnalysis.Test
         }
 
         [TestCase]
-        public void SISOs_2Serial_RunsAndConverges()
+        public void Serial2_RunsAndConverges()
         {
             var processSim = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2 });
@@ -120,7 +120,7 @@ namespace TimeSeriesAnalysis.Test
 
 
         [TestCase]
-        public void SISOs_3Serial_RunsAndConverges()
+        public void Serial3_RunsAndConverges()
         {
             var processSim = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, processModel3 });

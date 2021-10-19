@@ -64,6 +64,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 if (idx.Value < GetNumberOfInputs())
                 {
+                    if (inputIDs == null)
+                    {
+                        inputIDs = new string[GetNumberOfInputs()];
+                    }
                     inputIDs[idx.Value] = U_stringIDs[0];
                 }
                 else
@@ -92,7 +96,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns> may return <c>null</c> if output is not set</returns>
         public string GetOutputID()
         {
-             return TimeSeriesDataSet.GetSignalName(GetID(), GetOutputSignalType());
+             return Signals.GetSignalName(GetID(), GetOutputSignalType());
         }
 
         public abstract int GetNumberOfInputs();

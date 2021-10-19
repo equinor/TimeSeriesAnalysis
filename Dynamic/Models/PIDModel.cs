@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="y0"></param>
         /// <param name="inputIdx"></param>
         /// <returns></returns>
-        public double? GetSteadyStateInput(double y0, int inputIdx=0)
+        public double? GetSteadyStateInput(double y0, int inputIdx=0, double[] givenInputValues = null)
         {
             return null;
         }

@@ -362,12 +362,13 @@ and between calls to Iterate</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32)">GetSteadyStateInput(Double, Int32)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_System_Double_System_Int32_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])">GetSteadyStateInput(Double, Int32, Double[])</h4>
+  <div class="markdown level1 summary"><p>Calcuate the steady-state input if the output and all-but-one input are known</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double? GetSteadyStateInput(double y0, int inputIdx = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public double? GetSteadyStateInput(double y0, int inputIdx = 0, double[] givenInputs = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -387,6 +388,11 @@ and between calls to Iterate</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">inputIdx</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">givenInputs</span></td>
         <td></td>
       </tr>
     </tbody>

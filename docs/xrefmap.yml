@@ -499,12 +499,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetOutputSignalType
   nameWithType: DefaultProcessModel.GetOutputSignalType
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32)
-  name: GetSteadyStateInput(Double, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double, System.Int32)
-  nameWithType: DefaultProcessModel.GetSteadyStateInput(Double, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name: GetSteadyStateInput(Double, Int32, Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_System_Double_System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name.vb: GetSteadyStateInput(Double, Int32, Double())
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double, System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput(System.Double, System.Int32, System.Double())
+  nameWithType: DefaultProcessModel.GetSteadyStateInput(Double, Int32, Double[])
+  nameWithType.vb: DefaultProcessModel.GetSteadyStateInput(Double, Int32, Double())
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateInput*
   name: GetSteadyStateInput
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_GetSteadyStateInput_
@@ -901,12 +904,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetProcessModelType
   nameWithType: ISimulatableModel.GetProcessModelType
-- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double,System.Int32)
-  name: GetSteadyStateInput(Double, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetSteadyStateInput_System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double, System.Int32)
-  nameWithType: ISimulatableModel.GetSteadyStateInput(Double, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name: GetSteadyStateInput(Double, Int32, Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetSteadyStateInput_System_Double_System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name.vb: GetSteadyStateInput(Double, Int32, Double())
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double, System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput(System.Double, System.Int32, System.Double())
+  nameWithType: ISimulatableModel.GetSteadyStateInput(Double, Int32, Double[])
+  nameWithType.vb: ISimulatableModel.GetSteadyStateInput(Double, Int32, Double())
 - uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetSteadyStateInput*
   name: GetSteadyStateInput
   href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetSteadyStateInput_
@@ -1843,12 +1849,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputSignalType
   nameWithType: PIDModel.GetOutputSignalType
-- uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double,System.Int32)
-  name: GetSteadyStateInput(Double, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double, System.Int32)
-  nameWithType: PIDModel.GetSteadyStateInput(Double, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name: GetSteadyStateInput(Double, Int32, Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_System_Double_System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name.vb: GetSteadyStateInput(Double, Int32, Double())
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double, System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double, System.Int32, System.Double())
+  nameWithType: PIDModel.GetSteadyStateInput(Double, Int32, Double[])
+  nameWithType.vb: PIDModel.GetSteadyStateInput(Double, Int32, Double())
 - uid: TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput*
   name: GetSteadyStateInput
   href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_
@@ -2978,19 +2987,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetLength
   nameWithType: TimeSeriesDataSet.GetLength
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName(System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)
-  name: GetSignalName(String, SignalType, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSignalName_System_String_TimeSeriesAnalysis_Dynamic_SignalType_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName(System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName(System.String, TimeSeriesAnalysis.Dynamic.SignalType, System.Int32)
-  nameWithType: TimeSeriesDataSet.GetSignalName(String, SignalType, Int32)
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName*
-  name: GetSignalName
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSignalName_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalName
-  nameWithType: TimeSeriesDataSet.GetSignalName
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalNames
   name: GetSignalNames()
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSignalNames

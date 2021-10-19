@@ -33,8 +33,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="y0">value of y for which to find matching u0</param>
         /// <param name="inputIdx">index of input(only applicable if multiple inputs)</param>
+        /// <param name="givenInputValues">for multip-input systems, all values except one must be given to calculate the steady-state u0</param>
         /// <returns></returns>
-        double? GetSteadyStateInput(double y0, int inputIdx=0);
+        double? GetSteadyStateInput(double y0, int inputIdx=0,double[] givenInputValues=null);
 
 
         /// <summary>

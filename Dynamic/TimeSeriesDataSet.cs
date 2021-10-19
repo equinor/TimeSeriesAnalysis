@@ -33,6 +33,13 @@ namespace TimeSeriesAnalysis.Dynamic
             AddSet(inputDataSet); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signalID"></param>
+        /// <param name="idx"></param>
+        /// <param name="value"></param>
+        /// <returns>returns false if signal does not already exist or if index is beyond dataset size</returns>
         public bool AddDataPoint(string signalID, int idx, double value)
         {
             if (ContainsSignal(signalID))
@@ -79,7 +86,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double[] GetValues(string processID, SignalType signalType, int index=0)
         {
-            string signalName = GetSignalName(processID, signalType, index);
+            string signalName = Signals.GetSignalName(processID, signalType, index);
             return GetValues(signalName);
         }
 
@@ -88,22 +95,10 @@ namespace TimeSeriesAnalysis.Dynamic
             if (dataset.ContainsKey(signalName))
                 return dataset[signalName];
             else
+            {
+                Shared.GetParserObj().AddError("TimeSeriesData.GetValues() did not find signal:" + signalName);
                 return null;
-        }
-
-        /// <summary>
-        /// Get a unique signal name for a given signal, based on the model and signal type.
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <param name="signalType"></param>
-        /// <param name="idx">models can have multiple inputs, in which case an index is needed to uniquely identify it.</param>
-        /// <returns>a unique string identifier that is used to identify a signal</returns>
-        public static string GetSignalName(string modelID, SignalType signalType, int idx =0)
-        {
-            if (idx==0)
-                return modelID + "_" + signalType.ToString();
-            else
-                return modelID + "_" + signalType.ToString() + "_" + idx.ToString();
+            }
         }
 
         public bool AddTimeSeries(string signalName, double[] values)
@@ -124,7 +119,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public string AddTimeSeries(string processID, SignalType type, double[] values, int index=0 )
         {
-            string signalName = GetSignalName(processID, type,index);
+            string signalName = Signals.GetSignalName(processID, type,index);
             
             bool isOk =  AddTimeSeries(signalName,values);
             if (isOk)

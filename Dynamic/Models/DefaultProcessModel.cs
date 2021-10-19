@@ -68,18 +68,59 @@ namespace TimeSeriesAnalysis.Dynamic
             return modelParameters;
         }
 
-        public double? GetSteadyStateInput(double y0, int inputIdx=0)
+        /// <summary>
+        /// Calcuate the steady-state input if the output and all-but-one input are known
+        /// </summary>
+        /// <param name="y0"></param>
+        /// <param name="inputIdx"></param>
+        /// <param name="givenInputs"></param>
+        /// <returns></returns>
+        public double? GetSteadyStateInput(double y0, int inputIdx=0, double[] givenInputs=null)
         {
+            double u0;
             // x = G*(u-u0)+bias ==>
             // y (approx) x
             // u =  (y-bias)/G+ u0 
-            double u0;
-            u0 = (y0 - modelParameters.Bias) / modelParameters.ProcessGains[inputIdx];
-            if (modelParameters.U0 != null)
+            if (givenInputs == null)
             {
-                u0 += modelParameters.U0[inputIdx];
+
+                u0 = (y0 - modelParameters.Bias) / modelParameters.ProcessGains[inputIdx];
+                if (modelParameters.U0 != null)
+                {
+                    u0 += modelParameters.U0[inputIdx];
+                }
+                return u0;
             }
-            return u0;
+            else
+            {
+                double y_otherInputs = modelParameters.Bias;
+                for (int i = 0; i < Math.Min(givenInputs.Length, modelParameters.ProcessGains.Length); i++)//nb! input may include a disturbance!
+                {
+                    if (Double.IsNaN(givenInputs[i]))
+                        continue;
+                    if (modelParameters.U0 != null)
+                    {
+                        y_otherInputs += modelParameters.ProcessGains[i] * (givenInputs[i] - modelParameters.U0[i]);
+                    }
+                    else
+                    {
+                        y_otherInputs += modelParameters.ProcessGains[i] * (givenInputs[i]);
+                    }
+                    // TODO:add inn nonlinearities here.
+                }
+
+                double y_contributionFromInput = y0 - y_otherInputs;
+                if (modelParameters.U0 != null)
+                {
+                    u0 = (y_contributionFromInput + modelParameters.U0[inputIdx]) / modelParameters.ProcessGains[inputIdx];
+                }
+                else
+                {
+                    u0 = y_contributionFromInput / modelParameters.ProcessGains[inputIdx];
+                }
+                //TODO:add inn nonlinearities here
+                return u0;
+            }
         }
 
 
@@ -95,6 +136,9 @@ namespace TimeSeriesAnalysis.Dynamic
             this.lowPass = new LowPass(timeBase_s);
             this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
             this.isFirstIteration = true;
+
+            this.SetInputIDs(new string[GetNumberOfInputs()]);
+
         }
 
         public void WarmStart(double[] inputs, double output)
