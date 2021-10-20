@@ -5,3 +5,5 @@ This library initially focuses on a simple and understandable, yet versatile cla
 *the default process model*. For those of you with a background in system identification, you can think of this model class as *"1.order ARX models with time delay and states(for dealing with disturbances)."*
 
 [The default process model](sysid_defaultmodel.md)
+
+``The goal of the identification procedure is, in loose terms, to *obtain a good and reliable model with a reasonable amount of work.*(Lennart Ljung)

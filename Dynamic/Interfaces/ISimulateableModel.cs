@@ -10,7 +10,6 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Generic interface of process model (interface for ProcessSimulator to connect submodels and iterate simulation)
     /// </summary>
-    /// <typeparam name="T">The process model parameters class</typeparam>
     public interface ISimulatableModel
     {
         /// <summary>
@@ -46,17 +45,10 @@ namespace TimeSeriesAnalysis.Dynamic
         double? GetSteadyStateOutput(double[] u0);
 
         /// <summary>
-        /// Get the model parameters
-        /// </summary>
-        /// <returns>the paramters object of the model</returns>
-       // object GetModelParameters();
-
-        /// <summary>
         /// Returns the type of process model
         /// </summary>
         /// <returns></returns>
         ProcessModelType GetProcessModelType();
-
 
         /// <summary>
         /// Return the tag names or unique identifier of each of the variables that 

@@ -171,7 +171,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
 
 
 
-        [TestCase]
+
         public void Serial2_RunsAndConverges()
         {
             var processSim = new ProcessSimulator(timeBase_s,
@@ -205,31 +205,56 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
             Assert.IsTrue(Math.Abs(simY.Last() - ((1*55+0.5*45+5)*1.1+40*0.6+5)) < 0.01, "unexpected ending value");
         }
 
-
-        [TestCase]
-        public void PIDandSerial2_RunsAndConverges()
+        // try placing models in different order, this should not affect the result at all
+        [TestCase(0,Description = "this is the easiest,as this is the order that requires no sorting ")]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4, Description = "an adidtional processmodel3 outside the pid loop is connected to processmodel1")]
+        public void PIDandSerial2_RunsAndConverges(int ver)
         {
+            List<ISimulatableModel> modelList = new List<ISimulatableModel>();
+            if (ver == 0)
+            {
+                modelList = new List<ISimulatableModel> { pidModel1, processModel1, processModel2 };
+            }
+            else if (ver == 1)
+            {
+                modelList = new List<ISimulatableModel> { pidModel1, processModel2, processModel1 };
+            }
+            else if (ver == 2)
+            {
+                modelList = new List<ISimulatableModel> { processModel2, processModel1, pidModel1 };
+            }
+            else if (ver == 3)
+            {
+                modelList = new List<ISimulatableModel> {processModel1, pidModel1,processModel2 };
+            }
+            else if (ver == 4)
+            {
+                modelList = new List<ISimulatableModel> { processModel1, pidModel1, processModel2, processModel3 };
+            }
+
+
             int pidIndex = 1;
             int externalUIndex = 0;
-            var processSim = new ProcessSimulator(timeBase_s,
-              //  new List<ISimulatableModel> { processModel2, processModel1,pidModel1 });//TODO:initalization fails unless model are in this order!
-              // (but simulation fails after first run with this order!)
-              new List<ISimulatableModel> { pidModel1, processModel1, processModel2  });//TODO:
-
+            var processSim = new ProcessSimulator(timeBase_s,modelList);
             processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(150, N));
-
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), externalUIndex);
-
             processSim.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
             processSim.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Step(240, N, 50, 40), (int)INDEX.SECOND);
-
             processSim.ConnectModels(processModel2, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1, pidIndex);
+            if (ver == 4)
+            {
+                processSim.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
+                processSim.AddSignal(processModel3, SignalType.External_U, TimeSeriesCreator.Constant(0,N), (int)INDEX.SECOND);
+            }
 
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk,"simulation returned false, it failed");
- 
+ /*
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
                 simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
@@ -238,20 +263,55 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 simData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
             },
                 new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
-                timeBase_s, "UnitTest_PIDandSerial2");
-
+                timeBase_s, "UnitTest_PIDandSerial2");*/
+            
             SISOTests.CommonAsserts(simData);
             double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y_sim);
             Assert.IsTrue(Math.Abs(simY[0] - 150) < 0.01, "unexpected starting value");
             Assert.IsTrue(Math.Abs(simY.Last() - 150) < 0.1, "unexpected ending value");
+
+            if (ver == 4)
+            {
+                double[] simY3 = simData.GetValues(processModel3.GetID(), SignalType.Output_Y_sim);
+                //  Plot.FromList(new List<double[]> { simData.GetValues(processModel3.GetID(), SignalType.Output_Y_sim) },
+                //     new List<string> { "y1=y3" }   timeBase_s, "UnitTest_PIDandSerial2"););
+
+                // Assert.IsTrue(Math.Abs(simY3[0] - 150) < 0.01, "unexpected starting value");
+                // Assert.IsTrue(Math.Abs(simY3.Last() - 150) < 0.1, "unexpected ending value");
+            } 
+
         }
 
 
 
 
-        [TestCase]
-        public void Serial3_RunsAndConverges()
+        [TestCase(0,Description ="this is the easiest, as it requires no res-")]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(2)]
+
+
+        public void Serial3_RunsAndConverges(int ver)
         {
+            List<ISimulatableModel> modelList = new List<ISimulatableModel>();
+            if (ver == 0)
+            {
+                modelList = new List<ISimulatableModel> { processModel1, processModel2, processModel3 };
+            }
+            else if (ver == 1)
+            {
+                modelList = new List<ISimulatableModel> { processModel1, processModel3, processModel2 };
+            }
+            else if (ver == 2)
+            {
+                modelList = new List<ISimulatableModel> { processModel3, processModel2, processModel1 };
+            }
+            else if (ver == 3)
+            {
+                modelList = new List<ISimulatableModel> { processModel2, processModel3, processModel1 };
+            }
+
+
             var processSim = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, processModel3 });
 

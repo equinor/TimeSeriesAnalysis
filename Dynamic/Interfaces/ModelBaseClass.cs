@@ -96,7 +96,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns> may return <c>null</c> if output is not set</returns>
         public string GetOutputID()
         {
-             return Signals.GetSignalName(GetID(), GetOutputSignalType());
+             return SignalNamer.GetSignalName(GetID(), GetOutputSignalType());
         }
 
         public abstract int GetNumberOfInputs();

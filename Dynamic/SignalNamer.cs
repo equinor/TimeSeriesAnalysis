@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    class Signals
+    /// <summary>
+    /// Handles naming of individual signals in a process simulation
+    /// </summary>
+    class SignalNamer
     {
         private const char separator = '-';// should not be "_"
 

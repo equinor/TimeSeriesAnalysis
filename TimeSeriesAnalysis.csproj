@@ -44,7 +44,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TimeSeriesAnalysis</RootNamespace>
     <AssemblyName>TimeSeriesAnalysis</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
@@ -126,6 +126,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
   <ItemGroup>
     <Compile Include="Dynamic\Interfaces\ModelBaseClass.cs" />
     <Compile Include="Dynamic\Interfaces\ModelParametersBaseClass.cs" />
+    <Compile Include="Dynamic\ConnectionParser.cs" />
     <Compile Include="Dynamic\Models\DefaultProcessModel.cs" />
     <Compile Include="Dynamic\Models\DefaultProcessModelIdentifier.cs" />
     <Compile Include="Dynamic\Models\DefaultProcessModelParameters.cs" />
@@ -142,7 +143,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\PID\PIDgainScheduling.cs" />
     <Compile Include="Dynamic\PID\PIDscaling.cs" />
     <Compile Include="Dynamic\PID\PIDtuning.cs" />
-    <Compile Include="Dynamic\Signals.cs" />
+    <Compile Include="Dynamic\SignalNamer.cs" />
     <Compile Include="Dynamic\SignalType.cs" />
     <Compile Include="Dynamic\SubProcess\SubProcessDataSetWarnings.cs" />
     <Compile Include="Dynamic\SubProcess\SubProcessDataSet.cs" />

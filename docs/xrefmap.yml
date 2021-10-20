@@ -422,6 +422,106 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.BandPass.Filter
   nameWithType: BandPass.Filter
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser
+  name: ConnectionParser
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.ConnectionParser
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser
+  nameWithType: ConnectionParser
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.#ctor
+  name: ConnectionParser()
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.ConnectionParser()
+  nameWithType: ConnectionParser.ConnectionParser()
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.#ctor*
+  name: ConnectionParser
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.ConnectionParser
+  nameWithType: ConnectionParser.ConnectionParser
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddAllModelObjects(System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name: AddAllModelObjects(Dictionary<String, ISimulatableModel>)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_AddAllModelObjects_System_Collections_Generic_Dictionary_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.AddAllModelObjects(System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name.vb: AddAllModelObjects(Dictionary(Of String, ISimulatableModel))
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddAllModelObjects(System.Collections.Generic.Dictionary<System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddAllModelObjects(System.Collections.Generic.Dictionary(Of System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel))
+  nameWithType: ConnectionParser.AddAllModelObjects(Dictionary<String, ISimulatableModel>)
+  nameWithType.vb: ConnectionParser.AddAllModelObjects(Dictionary(Of String, ISimulatableModel))
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddAllModelObjects*
+  name: AddAllModelObjects
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_AddAllModelObjects_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.AddAllModelObjects
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddAllModelObjects
+  nameWithType: ConnectionParser.AddAllModelObjects
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddConnection(System.String,System.String)
+  name: AddConnection(String, String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_AddConnection_System_String_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.AddConnection(System.String,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddConnection(System.String, System.String)
+  nameWithType: ConnectionParser.AddConnection(String, String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddConnection*
+  name: AddConnection
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_AddConnection_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.AddConnection
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddConnection
+  nameWithType: ConnectionParser.AddConnection
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels
+  name: DetermineCalculationOrderOfModels()
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_DetermineCalculationOrderOfModels
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels()
+  nameWithType: ConnectionParser.DetermineCalculationOrderOfModels()
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels*
+  name: DetermineCalculationOrderOfModels
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_DetermineCalculationOrderOfModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels
+  nameWithType: ConnectionParser.DetermineCalculationOrderOfModels
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels(System.String)
+  name: GetDownstreamModels(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModels_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels(System.String)
+  nameWithType: ConnectionParser.GetDownstreamModels(String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels*
+  name: GetDownstreamModels
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels
+  nameWithType: ConnectionParser.GetDownstreamModels
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetModelsWithNoUpstreamConnections
+  name: GetModelsWithNoUpstreamConnections()
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetModelsWithNoUpstreamConnections
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetModelsWithNoUpstreamConnections
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetModelsWithNoUpstreamConnections()
+  nameWithType: ConnectionParser.GetModelsWithNoUpstreamConnections()
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetModelsWithNoUpstreamConnections*
+  name: GetModelsWithNoUpstreamConnections
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetModelsWithNoUpstreamConnections_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetModelsWithNoUpstreamConnections
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetModelsWithNoUpstreamConnections
+  nameWithType: ConnectionParser.GetModelsWithNoUpstreamConnections
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels(System.String)
+  name: GetUpstreamModels(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamModels_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels(System.String)
+  nameWithType: ConnectionParser.GetUpstreamModels(String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels*
+  name: GetUpstreamModels
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels
+  nameWithType: ConnectionParser.GetUpstreamModels
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel
   name: DefaultProcessModel
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html

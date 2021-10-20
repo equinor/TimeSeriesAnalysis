@@ -86,7 +86,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double[] GetValues(string processID, SignalType signalType, int index=0)
         {
-            string signalName = Signals.GetSignalName(processID, signalType, index);
+            string signalName = SignalNamer.GetSignalName(processID, signalType, index);
             return GetValues(signalName);
         }
 
@@ -119,7 +119,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public string AddTimeSeries(string processID, SignalType type, double[] values, int index=0 )
         {
-            string signalName = Signals.GetSignalName(processID, type,index);
+            string signalName = SignalNamer.GetSignalName(processID, type,index);
             
             bool isOk =  AddTimeSeries(signalName,values);
             if (isOk)

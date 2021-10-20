@@ -82,6 +82,7 @@ namespace TimeSeriesAnalysis.Utility
         public void EnableDebugOutput(bool doEnable=true)
         {
             this.doOutputAlsoToDebug = doEnable;
+            this.doOutputAlsoToConsole = doEnable;
         }
 
         public void CloseCaseLogFile()
