@@ -11,14 +11,6 @@ using NUnit.Framework;
 
 namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
 {
-    enum INDEX // this is just here to improve readability
-    { 
-        FIRST=0,
-        SECOND=1,
-        THIRD=2,
-        FOURTH=3,
-        FIFTH=4
-    }
 
 
     /// <summary>
@@ -167,10 +159,6 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
             Assert.IsTrue(Math.Abs(simY[0] - (60)) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() - (60)) < 0.1);
         }
-
-
-
-
 
         public void Serial2_RunsAndConverges()
         {

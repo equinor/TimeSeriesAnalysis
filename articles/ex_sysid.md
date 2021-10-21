@@ -17,7 +17,7 @@ In this case the "true" *time-delay* of ``5`` seconds, *time-constant* of ``15``
 
 The code to create the dataset, do the identification and create the plots is shown below:
 
-[!code-csharp[Examples](../Examples/Examples.cs?name=ex_4)]
+[!code-csharp[Examples](../Examples/GettingStarted.cs?name=ex_4)]
 
 The first plot shows the dataset, showing inputs``u1``, ``u2`` and output ``y``:
 

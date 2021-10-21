@@ -9,10 +9,10 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 
-namespace TimeSeriesAnalysis.Examples
+namespace __GettingStarted
 {
     [TestFixture]
-    class Examples
+    class GettingStarted
     {
         [Test, Explicit]
         #region ex_1
@@ -184,7 +184,7 @@ namespace TimeSeriesAnalysis.Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
-                ProcessGains = new double[] { 1 },
+                ProcessGains = new double[] { 1,2 },
                 TimeDelay_s = 0,
                 Bias = 5
             };
@@ -200,16 +200,23 @@ namespace TimeSeriesAnalysis.Examples
             var processSim = new ProcessSimulator (timeBase_s, 
                 new List<ISimulatableModel> { pidModel, processModel  });
             processSim.ConnectModels(processModel,pidModel);
-            processSim.ConnectModels(pidModel, processModel);
-            processSim.AddSignal(processModel, SignalType.Distubance_D,TimeSeriesCreator.Step(N/4,N,0,1));
-            processSim.AddSignal(pidModel, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            processSim.Simulate(out TimeSeriesDataSet simData);
+            processSim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
+            processSim.AddSignal(processModel,SignalType.Distubance_D,
+                TimeSeriesCreator.Step(N/4,N,0,1));
+            processSim.AddSignal(pidModel,SignalType.Setpoint_Yset,
+                TimeSeriesCreator.Constant(50,N));
+            processSim.AddSignal(processModel,SignalType.External_U,
+                TimeSeriesCreator.Step(N/2,N,0,1),(int)INDEX.SECOND);
+
+            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                simData.GetValues(pidModel.GetID(),SignalType.PID_U),
-                simData.GetValues(processModel.GetID(),SignalType.Distubance_D)},
-                new List<string> { "y1=y_sim", "y3=u_pid", "y2=disturbance" },
+                simData.GetValues(processModel.GetID(),SignalType.Distubance_D),
+                simData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                simData.GetValues(pidModel.GetID(),SignalType.PID_U)
+                },
+                new List<string> { "y1=y_sim", "y2=disturbance", "y2=u_external","y3=u_pid"  },
                 timeBase_s, "ex6_results");
         }
         #endregion

@@ -11,9 +11,10 @@
           href: unit_tests.md
         - name: Setting up plots
           href: plot_setup.md
-        - name: Calling on this library from Matlab or Python
-          href: other_languages.md 
-          
+        - name: Calling on this library from Matlab 
+          href: matlab.md 
+        - name: Calling on this library from Python 
+          href: python.md      
 
 - name: Code examples
   href: examples.md
@@ -26,8 +27,11 @@
           href: ex_filtering.md
         - name: 4. Fitting a dynamic model to transient data example
           href: ex_sysid.md
-        - name: 5. Dynamic simulation of PID-control
+        - name: 5. Simulating a single PID-controller
           href: ex_pid.md
+        - name: 6. Larger-scale dynamic process simulation 
+          href: ex_processsim.md
+          
 
 - name: System identification
   href: sysid.md

@@ -2,7 +2,7 @@
 
 Consider the example ``ex1_hello_world`` in ``Examples.cs``:
 
-[!code-csharp[Examples](../Examples/Examples.cs?name=ex_1)]
+[!code-csharp[Examples](../Examples/GettingStarted.cs?name=ex_1)]
 
 Which when run should creates the following plot.
 

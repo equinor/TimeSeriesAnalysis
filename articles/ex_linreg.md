@@ -6,7 +6,7 @@ best describe the relationship between inputs ``u1,u2,u3`` and output ``y``.
 ``Vec.Rand`` is used to add noise to the dataset, ``Vec.Mult`` is used to multiply vector and scalars
 
 The code:
-[!code-csharp[Examples](../Examples/Examples.cs?name=ex_2)]
+[!code-csharp[Examples](../Examples/GettingStarted.cs?name=ex_2)]
 
 The dataset :
 

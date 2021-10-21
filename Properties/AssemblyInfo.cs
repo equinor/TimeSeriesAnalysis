@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TimeSeriesAnalysis")]
-[assembly: AssemblyDescription("Loading, pre-processing, regression and plotting of time-series easily in C#")]
+[assembly: AssemblyDescription("Time-series in .NET that may include transients or dynamics, including identification of dynamic models, dynamic simulation, filtering and PID-control.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Equinor")]
 [assembly: AssemblyProduct("TimeSeriesAnalysis")]

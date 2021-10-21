@@ -6,4 +6,3 @@ This library initially focuses on a simple and understandable, yet versatile cla
 
 [The default process model](sysid_defaultmodel.md)
 
-``The goal of the identification procedure is, in loose terms, to *obtain a good and reliable model with a reasonable amount of work.*(Lennart Ljung)

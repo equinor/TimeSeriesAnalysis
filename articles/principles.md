@@ -2,7 +2,7 @@
 
 ## System identification
 
-``The goal of the identification procedure is, in loose terms, to *obtain a good and reliable model with a reasonable amount of work.*``(Lennart Ljung, Theory for the user 2ed, p.399)
+*"The goal of the identification procedure is, in loose terms, to obtain a good and reliable model with a reasonable amount of work."*(Lennart Ljung, Theory for the user 2ed, p.399)
 This quote displays the trade-off of the three different and sometimes opposing goals of identification:
 1. a **good**(accurate, descriptive) model,
 2. a **reliable** model, and 
@@ -15,7 +15,7 @@ Conversely this means that models that are either
 will not be considered.
 
 Further the choice of the model should ideally be based on 
-``posing a criterion for what is a *good* model and to list the constraints that are imposed on the design by limited time and cost`` (p.406)
+*"posing a criterion for what is a good model and to list the constraints that are imposed on the design by limited time and cost"* (p.406)
 
 Thus system identification is a practical field that acknowledges that better models take more time and cost more money, and that these factors need to be taken into consideration.
 
@@ -30,4 +30,4 @@ Especially for recursive models, a single spurious value can destroy an entire m
 ## Code design
 
 - use *dependency injection*, *generics* and *interfaces* to make the process model easily replaceable - if you provide a new process model that implements the correct interfaces, it should immediately be compatible with re-usable functionality such as PID-control or simulation. 
-- do not use inheritance - this kind of code is hard to understand for others.
+- do not use inheritance - except for abstract base classes - deep inheritance is hard to understand for others.
