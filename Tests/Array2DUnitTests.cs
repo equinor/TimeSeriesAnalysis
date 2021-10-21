@@ -20,7 +20,7 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(new double[,] { { 5, 4 },{6,3 } }, result) ;
         }
 
-
+        
 
         [Test]
         public void ArrayGetColumn()

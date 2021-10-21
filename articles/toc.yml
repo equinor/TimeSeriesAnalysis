@@ -46,8 +46,8 @@
 - name: Dynamic simulation
   href: dynsim.md
   items:
-        - name: Multiprocess (large-scale) simulations
-          href: multiprocesssim.md
+        - name: ProcessSimulator
+          href: processsimulator.md
 
 - name: PID control
   href: pidcontrol.md

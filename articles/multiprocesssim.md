@@ -1,6 +1,6 @@
 
-# Multi-process(large-scale) simulations
+# ProcessSimulator
 
-Simulating many processes together is orchestrated by the class ``ProcessSimulation``.
+Simulating multiple processes together is orchestrated by the class ``ProcessSimulator``.
 
 

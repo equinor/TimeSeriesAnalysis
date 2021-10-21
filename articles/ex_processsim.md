@@ -72,3 +72,8 @@ The resulting dynamic simulation:
 
 The effect of the disturbance step entering 1/4th of the way through the dataset and then being rejected is seen, and is in fact exactly like 
 in the previous example, but now a step change in the input is also seen half-way through the dataset.
+
+> [!Note]
+> This example illustrates the work-flow that supports large-scale simulations, but the process example 
+> considered is still quite small. For examples of large-scale simulations, refer to the section on dynamic simulation.
+
