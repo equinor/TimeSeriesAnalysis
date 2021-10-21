@@ -156,6 +156,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\TimeDelay\TimeDelay.cs" />
     <Compile Include="Dynamic\TimeSeriesDataSet.cs" />
     <Compile Include="Examples\GettingStarted.cs" />
+    <Compile Include="Examples\ProcessControl.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Shared.cs" />
     <Compile Include="Tests\PIDTests.cs" />
