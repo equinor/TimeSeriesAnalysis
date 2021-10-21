@@ -49,8 +49,18 @@
         - name: ProcessSimulator
           href: processsimulator.md
 
-- name: PID control
-  href: pidcontrol.md
+        - name: PID control
+          href: pidcontrol.md
+          items:
+            - name: Feedforward control
+              href: pid_feedforward.md
+            - name: Select control and tracking
+              href: pid_select.md
+            - name: Gain-scheduling
+              href: pid_gainscheduling.md
+            - name: Cascade control
+              href: pid_cascade.md  
+
 
 - name: Glossary 
   href: glossary.md
@@ -60,6 +70,10 @@
   items:
         - name: Accord.NET 
           href: accord.md
+
+        - name: Plot.ly 
+          href: plotly.md
+
 
 - name: Contributing 
   href: ../contributing.md

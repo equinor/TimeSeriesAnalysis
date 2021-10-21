@@ -738,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/ex_processsim.html",
-          "hash": "pcROvM8rqcoxW/iCG5A3IitBx4xldq002CdfEI8WA5s="
+          "hash": "7DyCjLQtWOFEIm7cRflzX/MlzlKlQyQJsnbT320Im/o="
         }
       },
       "is_incremental": false,
@@ -1122,11 +1122,59 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/pid_cascade.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/pid_cascade.html",
+          "hash": "+ZXfbL3eN0jICwuTXwAZhIVDj7OQZ5w5rcAMaybMPWM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/pid_feedforward.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/pid_feedforward.html",
+          "hash": "H0xkj5LkElVr04EVUyLvDbVKVLCG2G9vE8GeZKdsCUc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/pid_gainscheduling.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/pid_gainscheduling.html",
+          "hash": "Jq95svMvJrLpeLVVUHiHW9doHKbmANcavyQs5CrBAAI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/pid_select.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/pid_select.html",
+          "hash": "XDI8qrSXCyy33D9lAKmM29ai3eszfHUC9ZosyxGdj5k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/pidcontrol.md",
       "output": {
         ".html": {
           "relative_path": "articles/pidcontrol.html",
-          "hash": "SXCkhHhFztUVN8kwQMno7EQ9ea1mULHSwXFh5PcXxlU="
+          "hash": "gjPo+Tz+YefSq4sBEfm+fpBv+p/SUjd7xdJ7zSgBNVE="
         }
       },
       "is_incremental": false,
@@ -1139,6 +1187,18 @@
         ".html": {
           "relative_path": "articles/plot_setup.html",
           "hash": "0pNoqLX3sJrrVtW8L1JwZp2Kky7unuLlehSTTrLrp8U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/plotly.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/plotly.html",
+          "hash": "iUGza9154HAgaRRHCmMNiJMmNTypuIQMHlzebbAi50U="
         }
       },
       "is_incremental": false,
@@ -1162,7 +1222,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/processsimulator.html",
-          "hash": "M/XHgKz8BmMvBiHnqhtrHgbBXaq8WvbkjkIjZScGcNg="
+          "hash": "LHg2IBCfb4Z1630FW5UTQufNgkaq/3jaCB081yzyRLU="
         }
       },
       "is_incremental": false,
@@ -1210,7 +1270,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "7Dqj9UWlXK5xn8D5KaQ6Z0pt16EkpniWEo2ddr3cHBQ="
+          "hash": "fclBlFm+WHEBsuZljQYcKj5c1omC5zx4gMamXfi9QtA="
         }
       },
       "is_incremental": false,
@@ -1283,7 +1343,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 32,
+          "total_file_count": 37,
           "skipped_file_count": 31
         },
         "ManagedReferenceDocumentProcessor": {

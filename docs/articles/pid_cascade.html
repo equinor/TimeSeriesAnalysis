@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>ProcessSimulator | TimeSeriesAnalysis reference documentation </title>
+    <title>Cascade control | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="ProcessSimulator | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Cascade control | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,33 +77,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="processsimulator">ProcessSimulator</h1>
+<h1 id="cascade-control">Cascade control</h1>
 
-<p>Simulating multiple processes together is orchestrated by the class <code>ProcessSimulator</code>.</p>
-<h2 id="external-interface">External interface</h2>
-<p>The intention is that the <code>ProcessSimualtor</code> class should be able to simulate any well-formulated
-combination of models that implement the <code>ISimulateableModel</code> (such as <code>PIDModel</code> and <code>DefaultProcessModel</code>.)</p>
-<p>Before simulation the models must be connected using <code>ProcessSimulator.ConnectModels()</code> and input signals need to
-be added using <code>ProcessSimulator.AddSignal()</code>. Once all connections and signals are defined, the model combination
-is then simulated by <code>ProcessSimulator.Simulate()</code>.</p>
-<p>The entire simulated dataset is presented after simulation as an object of the <code>TimeSeriesDataSet</code> class.</p>
-<h2 id="internal-workings">Internal workings</h2>
-<p>Internally each signal in the returned <code>TimeSeriesDataSet</code>
-is named by a naming convention that is handled by <code>SignalNamer</code>, which combines
-information about modelID and signaltype to create a unique ID for each signal in the simulation.</p>
-<h3 id="determining-calculation-order-parsing-connections">Determining calculation order, parsing connections</h3>
-<p>By default, <code>ProcessSimulator</code> traverses the combination of models and signals to create a feasible run-order in
-which to run the model, orchestrated by <code>ConnectionParser.DetermineCalculationOrderOfModels</code>.
-Models are then
-run in that given order for each iteration in <code>ProcessSimulator.Simulate()</code>.
-This means that process simulation does not rely on simultanously solving large sets of dynamic equations,
-which an approach that may be easier to comprehend and debug, but it is reliant on the quite complex logic required
-to determine the calculation order.</p>
-<h3 id="initialization-of-the-dynamic-model">Initialization of the dynamic model</h3>
-<p><em>The model can be started without supplying a inital state.</em> In that case the model attempts to start in the steady
-state that results from the first value (at <code>t=t0</code>) in each supplied <code>ProcessSimulator.AddSignal()</code>.</p>
-<p>Determining the inital state is handled by the private method <code>ProcessSimulator.InitToSteadyState()</code>, which is
-handled by parsing the model set and connections by logic.</p>
 </article>
           </div>
           
