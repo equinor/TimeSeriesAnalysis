@@ -46,8 +46,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
         internal void GetKpandTi(double gainSchedulingVariable, out double? Kp, out double? Ti)
         {
-            double gsVaribleFiltered = gsFilter.Filter(gainSchedulingVariable, GSVariableLP_Tc_s);
-
+            double gsVaribleFiltered = gainSchedulingVariable;
+            if (gsFilter != null)
+            {
+                gsVaribleFiltered = gsFilter.Filter(gainSchedulingVariable, GSVariableLP_Tc_s);
+            }
             Kp = null;
             Ti = null;
 

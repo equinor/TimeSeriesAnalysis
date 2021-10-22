@@ -6,6 +6,12 @@ Accord.NET is [licensed](http://accord-framework.net/license.html) under the "GN
 It can be used in commercial applications "as long as you are only linking unmodified .dll files and mention in your software and relevant source
 material that you are using this framework" - like I am doing right here. 
 
+The main author of Accord.NET has also stated that 
+["any files in the project that have only my name on the headers are now available under the MIT license."](https://github.com/accord-net/framework/issues/2123#issuecomment-723328960).
+He has also stated
+["If anyone would like, feel free to grab the framework and tear it apart, grab the parts that worked better for you and fork it!"](http://crsouza.com/2020/12/16/wrapping-up/)
+
+
 **Thanks to the developers of Accord.NET for a great framework!**
 
 No modifications are made or will ever be made to the Accord.NET dependencies in this library.

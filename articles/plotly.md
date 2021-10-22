@@ -13,7 +13,8 @@ this plotting.
 The plotting is also intended mostly as support during testing, for test-driven development, but since the 
 plots are in web-page form they could also be used as a component in web-based dashboards or advisory tools. 
 
-If calling on this library from Matlab or Python users may choose to use the built-in plotting functionalities
-of those languages and their tools, the inclusion of 
-``plotly.js`` is to make the choice of plotting tool voluntary and to not *require* 
-installing additional programs.
+> [!Note]
+> If calling on this library from Matlab or Python, users may choose to use the built-in plotting functionalities
+> of those languages and their tools, the inclusion of 
+> ``plotly.js`` is to make the choice of plotting tool voluntary and to not *require* 
+> installing additional programs.

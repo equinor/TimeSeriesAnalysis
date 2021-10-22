@@ -159,7 +159,7 @@ after the simulation.</p>
     processSim.AddSignal(processModel,SignalType.External_U,
         TimeSeriesCreator.Step(N/2,N,0,1),(int)INDEX.SECOND);
 
-    var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+    var isOk = processSim.Simulate(out var simData);
 
     Plot.FromList(new List&lt;double[]&gt; {
         simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),

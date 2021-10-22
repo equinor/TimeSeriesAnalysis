@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using System.Text;
-using System.Threading.Tasks;
-
-using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -43,7 +40,7 @@ namespace TimeSeriesAnalysis.Dynamic
             InitSim(timeBase_s,modelParameters);
         }
 
-        override public int GetNumberOfInputs()
+        override public int GetLengthOfInputVector()
         {
             return modelParameters.ProcessGains.Length;
         }
@@ -77,7 +74,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double? GetSteadyStateInput(double y0, int inputIdx=0, double[] givenInputs=null)
         {
-            double u0;
+            double u0=0;
             // x = G*(u-u0)+bias ==>
             // y (approx) x
             // u =  (y-bias)/G+ u0 
@@ -94,34 +91,147 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 double y_otherInputs = modelParameters.Bias;
-                for (int i = 0; i < Math.Min(givenInputs.Length, modelParameters.ProcessGains.Length); i++)//nb! input may include a disturbance!
+                //nb! input may include a disturbance!
+                for (int i = 0; i < Math.Min(givenInputs.Length, modelParameters.ProcessGains.Length); i++)
                 {
                     if (Double.IsNaN(givenInputs[i]))
                         continue;
-                    if (modelParameters.U0 != null)
-                    {
-                        y_otherInputs += modelParameters.ProcessGains[i] * (givenInputs[i] - modelParameters.U0[i]);
-                    }
-                    else
-                    {
-                        y_otherInputs += modelParameters.ProcessGains[i] * (givenInputs[i]);
-                    }
-                    // TODO:add inn nonlinearities here.
+                    y_otherInputs += CalculateProcessGainTerm(i, givenInputs[i]);
+                    y_otherInputs += CalcuateCurvatureTerm(i, givenInputs[i]);
                 }
 
                 double y_contributionFromInput = y0 - y_otherInputs;
-                if (modelParameters.U0 != null)
+                if (modelParameters.Curvatures == null)
                 {
-                    u0 = (y_contributionFromInput + modelParameters.U0[inputIdx]) / modelParameters.ProcessGains[inputIdx];
+                    if (modelParameters.U0 != null)
+                    {
+                        u0 = (y_contributionFromInput + modelParameters.U0[inputIdx]) / modelParameters.ProcessGains[inputIdx];
+                    }
+                    else
+                    {
+                        u0 = y_contributionFromInput / modelParameters.ProcessGains[inputIdx];
+                    }
                 }
                 else
                 {
-                    u0 = y_contributionFromInput / modelParameters.ProcessGains[inputIdx];
+                    double a = modelParameters.Curvatures[inputIdx];
+                    if (modelParameters.UNorm != null)
+                    {
+                        a = a / modelParameters.UNorm[inputIdx];
+                    }
+                    double b = modelParameters.ProcessGains[inputIdx];
+                    double c = -y_contributionFromInput;
+                    double[] quadSolution = SolveQuadratic(a, b, c);
+                    double chosenU=0;
+                    if (quadSolution.Length == 1)
+                    {   
+                       chosenU = quadSolution[0];
+                    }
+                    else if (quadSolution.Length == 2)
+                    { 
+                        chosenU = Math.Min(quadSolution[0], quadSolution[1]);
+                    }
+                    if (modelParameters.U0 == null)
+                    {
+                        u0 = chosenU ;
+                    }
+                    else
+                    {
+                        u0 = chosenU + modelParameters.U0[inputIdx];
+                    }
                 }
-                //TODO:add inn nonlinearities here
                 return u0;
             }
         }
+        /// <summary>
+        /// Sovel quadratic equation "a x^2 + b*x +c =0" (second order of polynomial  equation in a single variable x)
+        /// x = [ -b +/- sqrt(b^2 - 4ac) ] / 2a
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        public static double[] SolveQuadratic(double a, double b, double c)
+        {
+            double sqrtpart = b * b - 4 * a * c;
+            double x, x1, x2, img;
+            if (sqrtpart > 0)// two real solutions
+            {
+                x1 = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
+                x2 = (-b - System.Math.Sqrt(sqrtpart)) / (2 * a);
+                return new double[] { x1, x2 };
+            }
+            else if (sqrtpart < 0)// two imaginary solutions
+            {
+                sqrtpart = -sqrtpart;
+                x = -b / (2 * a);
+                img = System.Math.Sqrt(sqrtpart) / (2 * a);
+                return new double[] { x };// in this case, the answer is of course slightly wrong
+            }
+            else// one real solution
+            {
+                x = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
+                return new double[] { x };
+            }
+        }
+
+        /// <summary>
+        /// Determine the process-gain(linear) contribution to the outputof a particular index for a particular value
+        /// </summary>
+        /// <param name="inputIndex">the index of the input</param>
+        /// <param name="u">the value of the input</param>
+        /// <returns>contribution to the output y, excluding bias and curvature contributions</returns>
+        private double CalculateProcessGainTerm(int inputIndex, double u)
+        {
+            double processGainTerm = 0;
+            if (modelParameters.U0 != null)
+            {
+                processGainTerm += modelParameters.ProcessGains[inputIndex] * (u- modelParameters.U0[inputIndex]);
+            }
+            else
+            {
+                processGainTerm += modelParameters.ProcessGains[inputIndex] * u;
+            }
+            return processGainTerm;
+        }
+
+        /// <summary>
+        /// Determine the curvature term contribution to the output from a particular input for a particular value
+        /// </summary>
+        /// <param name="inputIndex">the index of the input</param>
+        /// <param name="u">the value of the input</param>
+        /// <returns></returns>
+        private double CalcuateCurvatureTerm(int inputIndex, double u)
+        {
+            double curvatureTerm = 0;
+
+            if (modelParameters.Curvatures != null)
+            {
+                if (modelParameters.Curvatures.Length - 1 < inputIndex)
+                {
+                    return curvatureTerm;
+                }
+                double uNorm = 1;
+                if (modelParameters.UNorm != null)
+                {
+                    if (modelParameters.UNorm.Length - 1 >= inputIndex)
+                    {
+                        uNorm = modelParameters.UNorm[inputIndex];
+                    }
+                }
+                if (modelParameters.U0 != null)
+                {
+                    curvatureTerm += modelParameters.Curvatures[inputIndex] *
+                        Math.Pow((u - modelParameters.U0[inputIndex]) , 2) / uNorm;
+                }
+                else
+                {
+                    curvatureTerm += modelParameters.Curvatures[inputIndex] *
+                        Math.Pow(u , 2) / uNorm;
+                }
+            }
+            return curvatureTerm;
+        }
+
 
 
         /// <summary>
@@ -137,7 +247,7 @@ namespace TimeSeriesAnalysis.Dynamic
             this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
             this.isFirstIteration = true;
 
-            this.SetInputIDs(new string[GetNumberOfInputs()]);
+            this.SetInputIDs(new string[GetLengthOfInputVector()]);
 
         }
 
@@ -153,9 +263,9 @@ namespace TimeSeriesAnalysis.Dynamic
             double x_static = modelParameters.Bias;
 
             // inputs U may include a disturbance as the last entry
-            for (int curInput = 0; curInput < Math.Min(inputs.Length, GetNumberOfInputs()); curInput++)
+            for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
-                if (curInput + 1 <= GetNumberOfInputs())
+                if (curInput + 1 <= GetLengthOfInputVector())
                 {
                     double curUvalue = inputs[curInput];
                     if (Double.IsNaN(inputs[curInput]) || inputs[curInput] == badValueIndicator)
@@ -166,21 +276,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         lastGoodValuesOfU[curInput] = inputs[curInput];
                     }
-                    if (modelParameters.U0 != null)
-                    {
-                        x_static += modelParameters.ProcessGains[curInput] *
-                            (curUvalue - modelParameters.U0[curInput]);
-                    }
-                    else
-                    {
-                        x_static += modelParameters.ProcessGains[curInput] *
-                                curUvalue;
-                    }
 
-                    if (modelParameters.ProcessGainCurvatures != null)
-                    {
-                        //TODO
-                    }
+                    x_static += CalculateProcessGainTerm(curInput, curUvalue);
+                    x_static += CalcuateCurvatureTerm(curInput, curUvalue);
                 }
             }
             return x_static;
@@ -222,7 +320,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 y = delayObj.Delay(x_dynamic);
             }
             // if a disturbance D has been given along with inputs U, then add it to output
-            if (inputs.Length > GetNumberOfInputs())
+            if (inputs.Length > GetLengthOfInputVector())
             {
                 y += inputs.Last();
             }
@@ -267,13 +365,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec");
             sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s + " sec");
             sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
-            if (modelParameters.ProcessGainCurvatures == null)
+            if (modelParameters.Curvatures == null)
             {
-                sb.AppendLine("ProcessCurvatures : " + "not implemented");
+                sb.AppendLine("ProcessCurvatures : " + "none");
             }
             else
             {
-                sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.ProcessGainCurvatures, sDigits));
+                sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.Curvatures, sDigits));
             }
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
             sb.AppendLine("u0 : " + Vec.ToString(modelParameters.U0,sDigits));

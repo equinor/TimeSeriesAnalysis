@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Gain-scheduling | TimeSeriesAnalysis reference documentation </title>
+    <title>Gain-scheduling a nonlinear process | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Gain-scheduling | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Gain-scheduling a nonlinear process | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,8 +77,143 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="gain-scheduling">Gain-scheduling</h1>
+<h1 id="gain-scheduling-a-nonlinear-process">Gain-scheduling a nonlinear process</h1>
 
+<p>This example considers a system that is nonlinear, and illustrates how to apply and simulate
+gain-scheduling for such a system.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>This example considers gain-scheduling only in <code>Kp</code>, but <code>PIDModel</code> also supports gain scheduling
+in <code>Ti</code>.</p>
+</div>
+<h2 id="simulating-step-responses-of-the-open-loop-system">Simulating step responses of the open-loop system</h2>
+<p>The system considered is given a <em>negative curvature</em>, meaning that the gain will decrease with increasing values of
+<code>u</code>.</p>
+<p>Firstly, the system is defined and the two simulation runs are done, one run at a low value of input, where the
+gain is <em>high</em>, and a second at a high value of the input, where the gain is <em>low</em>.</p>
+<pre><code class="lang-csharp" name="Example"></code></pre>
+<p>The resulting plot is shown below:</p>
+<p><img src="images/ex_gainscheduling_part1.png" alt="Example 5 result"></p>
+<h2 id="simulating-the-use-of-two-standard-pid-controllers">Simulating the use of two standard PID-controllers</h2>
+<pre><code class="lang-csharp" name="Example">// the system rejecting a disturbance at y=20 with pidModel1
+var pidParameters1 = new PIDModelParameters()
+{
+    Kp = 0.3,
+    Ti_s = 20
+};
+var pidModel1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
+var closedLoopSim1 = new ProcessSimulator(timeBase_s,
+    new List&lt;ISimulatableModel&gt; { pidModel1, processModel });
+closedLoopSim1.ConnectModels(pidModel1,processModel);
+closedLoopSim1.ConnectModels(processModel, pidModel1);
+closedLoopSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset,
+    TimeSeriesCreator.Constant(20,400));
+closedLoopSim1.AddSignal(processModel,SignalType.Distubance_D, TimeSeriesCreator.Step(100,400,0,10));
+var isOk =closedLoopSim1.Simulate(out var closedLoopData1);
+
+//  the system rejecting a disturbance at y=70 with pidModel2
+var pidParameters2 = new PIDModelParameters()
+{
+    Kp = 1,//NB! higher Kp
+    Ti_s = 20
+};
+var pidModel2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
+var closedLoopSim2 = new ProcessSimulator(timeBase_s,
+    new List&lt;ISimulatableModel&gt; { pidModel2, processModel });
+closedLoopSim2.ConnectModels(pidModel2, processModel);
+closedLoopSim2.ConnectModels(processModel, pidModel2);
+closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset,
+    TimeSeriesCreator.Constant(70, 400));
+closedLoopSim2.AddSignal(processModel, SignalType.Distubance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
+isOk = closedLoopSim2.Simulate(out var closedLoopData2);
+
+Plot.FromList(new List&lt;double[]&gt;
+    {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+     closedLoopData1.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
+     closedLoopData1.GetValues(pidModel1.GetID(),SignalType.PID_U),
+     closedLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+     closedLoopData2.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
+     closedLoopData2.GetValues(pidModel2.GetID(),SignalType.PID_U),
+     },
+    new List&lt;string&gt; { &quot;y1=y_run1&quot;,&quot;y1=y_setpoint(run1)&quot;, &quot;y2=u_run1(right)&quot;,&quot;y3=y-run2&quot;,
+        &quot;y3=y_setpoint(run2)&quot;, &quot;y4=u_run2(right)&quot; }, timeBase_s, &quot;GainSchedulingEx_2&quot;);
+</code></pre>
+<p>The resulting plot is shown below:
+<img src="images/ex_gainscheduling_part2.png" alt="Example 5 result"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>In order to get an approximately equally rapid disturbacne rejection at setpoint <code>y=70</code>
+as for <code>y=20</code>, <code>Kp</code> had to be increased from <code>0.3</code> to <code>1 </code>, so by about a factor of three.
+It would be quite hard to find a single PID-controller tuning that would work equally well across
+the entire span of possible outputs <code>y</code>. Thus a gain-scheduled controller could be useful here.</p>
+</div>
+<h2 id="combining-the-two-controllers-into-a-single-gain-scheduled-controller">Combining the two controllers into a single gain-scheduled controller</h2>
+<p>In the final part of this example, a gain-scheduling controller that performs equally well for both
+cases is created.</p>
+<p>The code to create the gain-scheduling controller and simulate both runs:</p>
+<pre><code class="lang-csharp" name="Example">// building a gain-scheduling controller that is able to handle both regimes
+
+var pidParametersGS = new PIDModelParameters()
+{
+    Ti_s = 20,
+    GainScheduling = new PIDgainScheduling()
+    {
+        GSActive_b =true,// turn on gain-scheduling 
+        GS_x_Min =0,    //Gain-scheduling: x minimum x=GsVariable
+        GS_x_1= 20,     //Gain-scheduling: x1,x=GsVariable
+        GS_x_2=70,      //Gain-scheduling: x2,x=GsVariable
+        GS_x_Max=100,   //Gain-scheduling: x maxiumum, x = GsVariable
+        GS_Kp_Min=0.1,  //Gain-scheduling: KP @ GsVariable=GS_x_Min
+        GS_Kp_1=0.2,    //Gain-scheduling: KP @ GsVariable=GS_x_1
+        GS_Kp_2=1,      //Gain-scheduling: KP @ GsVariable=GS_x_2
+        GS_Kp_Max=1.2   //Gain-scheduling: KP @ GsVariable=GS_x_Max
+    }
+};
+
+var pidModelGS = new PIDModel(pidParametersGS, timeBase_s, &quot;PID_GS&quot;);
+
+var closedLoopSimGS_1 = new ProcessSimulator(timeBase_s,
+    new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
+closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
+closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
+closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
+      TimeSeriesCreator.Constant(20, 400));
+closedLoopSimGS_1.AddSignal(processModel, SignalType.Distubance_D, 
+    TimeSeriesCreator.Step(100, 400, 0, 10));
+// Gain-scheduling variable:
+closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
+var isOk = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
+
+var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
+    new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
+closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
+closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
+closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
+    TimeSeriesCreator.Constant(70, 400));
+closedLoopSimGS_2.AddSignal(processModel, SignalType.Distubance_D, 
+    TimeSeriesCreator.Step(100, 400, 0, 10));
+// Gain-scheduling variable:
+closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
+isOk = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
+
+Plot.FromList(new List&lt;double[]&gt;
+    {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+     closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
+     closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.PID_U),
+     closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+     closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
+     closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.PID_U)
+     },
+    new List&lt;string&gt; { &quot;y1=y_run1&quot;,&quot;y1=y_setpoint(run1)&quot;, &quot;y2=u_run1(right)&quot;,&quot;y3=y-run2&quot;,
+        &quot;y3=y_setpoint(run2)&quot;, &quot;y4=u_run2(right)&quot; }, timeBase_s, &quot;GainSchedulingEx_3&quot;);
+</code></pre>
+<p>The resulting plot is shown below:
+<img src="images/ex_gainscheduling_part3.png" alt="Example 5 result"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Notice how in the final plot, the gain-scheduling controller combines the control performance
+of <strong>both controllers</strong> in the above parts of the example <strong>in a single controller</strong>.</p>
+</div>
 </article>
           </div>
           

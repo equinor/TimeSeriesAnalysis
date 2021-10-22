@@ -1,4 +1,4 @@
-# Design principles 
+# Design choices 
 
 ## System identification
 
@@ -7,6 +7,7 @@ This quote displays the trade-off of the three different and sometimes opposing 
 1. a **good**(accurate, descriptive) model,
 2. a **reliable** model, and 
 3. a model developed with **a reasonable amount of work**.
+
 This library intends to focus on methods that give deliver a good balance of *all three goals*. 
 Conversely this means that models that are either
 - not *good enough* 
@@ -27,7 +28,20 @@ This class library is built on the following principles/assertions:
 Especially for recursive models, a single spurious value can destroy an entire model run, thus the tooling need to support cleaning data to avoid garbage getting into models.
 - expect *parameter uncertainty*, treat it explicitly.
 
+
+## Numerical solvers
+
+- the models need to simulate *without requiring any human intervention*, and this has impacts on design choices
+for how models should be initalized and solved:
+	- rather than using numerical solvers on large matrices to find steady-state, a concious choice is 
+made to rather *require* each model to include an *explicit* steady-state calculation. 
+	- rather than use numerical solvers on large matrices to simulate the model, a concious choice is made
+to rather use *logic* to *traverse the connected models as graphs* and simulate them one-by-one in an order that
+is feasible. That means that this library must provide a solver that incldues 
+logic to determine a fesible solution order. 
+
 ## Code design
 
 - use *dependency injection*, *generics* and *interfaces* to make the process model easily replaceable - if you provide a new process model that implements the correct interfaces, it should immediately be compatible with re-usable functionality such as PID-control or simulation. 
 - do not use inheritance - except for abstract base classes - deep inheritance is hard to understand for others.
+

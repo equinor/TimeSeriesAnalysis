@@ -276,17 +276,20 @@ namespace TimeSeriesAnalysis.Dynamic
             if (y_set_abs == nanValue || Double.IsNaN(y_set_abs))
                 return u_prev;
 
-            // gain-scehduling
-            if (gsObj.GSActive_b && gainSchedulingVariable.HasValue)
+            // gain-scheduling
+            if (gsObj != null)
             {
-                gsObj.GetKpandTi(gainSchedulingVariable.Value, out double? gsKp, out double? gsTi);
-                if (gsKp.HasValue)
+                if (gsObj.GSActive_b && gainSchedulingVariable.HasValue)
                 {
-                    Kp = gsKp.Value;
-                }
-                if (gsTi.HasValue)
-                {
-                    Ti = gsTi.Value;
+                    gsObj.GetKpandTi(gainSchedulingVariable.Value, out double? gsKp, out double? gsTi);
+                    if (gsKp.HasValue)
+                    {
+                        Kp = gsKp.Value;
+                    }
+                    if (gsTi.HasValue)
+                    {
+                        Ti = gsTi.Value;
+                    }
                 }
             }
 

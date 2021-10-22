@@ -89,15 +89,12 @@ It aims to <em>avoid over-parametrization</em>, as this is known to cause issues
 <p>furthermore the <em>state</em> <code>x[k]</code> is modeled as</p>
 <pre><code>x[k] = a•x[k-1] + b•(u[k-td]-u0) + q					(linear in u)
 </code></pre>
+<p>where <code>t_d</code> here denotes the time-delay in samples.</p>
 <p>The parameter <code>a</code> in the above equation should always be between <code>[0;0.9999]</code> .</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Notice that if <code>a=0</code> the the recursive term is stricken, the disturbance is neglected and time delay is zero, then the model reverts to standard linear static model<code>y[k] = b•u[k]</code>.</p>
 </div>
-<p>Optionally the default model can be extended with a square term:</p>
-<pre><code>x[k] = a•x[k-1] + b•(u[k-t_d]-u_0) + c•(u[k-t_d]-u_0)^2 + q		(non-linear in u)
-</code></pre>
-<p>where <code>t_d</code> here denotes the time-delay in samples.</p>
 <p>The model</p>
 <ul>
 <li>is a <code>difference model</code> as <code>x[k]</code> depends on the previous value <code>x[k-1]</code>.</li>
@@ -111,6 +108,27 @@ It aims to <em>avoid over-parametrization</em>, as this is known to cause issues
 <p>All inputs in the same model by design share the same dynamic parameters <code>a</code> and <code>t_d</code>. If multiple inputs act on a single output <code>y</code> with different
 dynamics, then this should be modeled by two or more separate &quot;default models&quot; that are then added together - in identification the input of other
 sub-models can be accounted for by the disturbance-term <code>d</code></p>
+</div>
+<h2 id="second-order-polynominal-nolinear-gain">Second-order polynominal nolinear gain</h2>
+<p>Optionally the default model can be extended with a square term:</p>
+<pre><code>x[k] = a•x[k-1] + b•(u[k-t_d]-u_0) + c/uNorm•(u[k-t_d]-u_0)^2 + q	(non-linear in u)
+</code></pre>
+<p>Internally the paramter <code>c</code> is referred to as the <strong>&quot;Curvature&quot;</strong> of the default model.</p>
+<p><code>uNorm</code> is a scaling paramter that is intended to ensure that the paramters <code>b</code> and <code>c</code>
+are of approximately equal scale during identification.
+It is reccomended to choose <code>uNorm</code> equal to how much <code>u</code> is expect to vary from <code>u0</code>.
+For example, if <code>u0</code> and <code>u</code> is expected to vary in the range <code>[20,80]</code>, then <code>uNorm</code>
+should be chosen as <code>30</code>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The sign of the curvature terms <code>c</code> can be <em>either positive or negative</em>.
+If <code>c</code> is <strong>negative</strong>, then this means that the gains is <strong>higer below u0</strong> and <strong>lower above u0</strong>.
+If <code>c</code> is <strong>positive</strong>, then this means that the gains is <strong>lower below u0</strong> and <strong>higher above u0</strong>.</p>
+</div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If the model has curvature terms <code>c</code> then the process gain depends on <strong>both</strong> parameters
+<code>b</code> and <code>c</code>.</p>
 </div>
 <h2 id="process-gain-and-time-constant">Process gain and time constant</h2>
 <p>It is related to the <em>time-constant</em> <code>Tc</code> by the equation</p>

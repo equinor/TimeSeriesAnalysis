@@ -30,36 +30,10 @@ namespace TimeSeriesAnalysis.Dynamic
             modelDict = new Dictionary<string, ISimulatableModel>();
             connections = new ConnectionParser();
 
-
-            // create a unique model ID for each model
             foreach (ISimulatableModel model in processModelList)
             {
-                int? number = null;
-                string modelNumberSuffix = "";
-                bool modelIDisUnique = false;
                 string modelID = model.GetID();
 
-               // string modelID="";
-                //append a model number in the case that names are not unique
-                /*
-                while (!modelIDisUnique)
-                {
-                    if (number != null)
-                    {
-                        modelNumberSuffix = "_" + number.ToString();
-                    }
-                    modelID = model.GetID() +
-                        model.GetProcessModelType().ToString() + modelNumberSuffix;
-                    if (modelDict.ContainsKey(modelID))
-                    {
-                        number++;
-                        modelIDisUnique = false;
-                    }
-                    else
-                    {
-                        modelIDisUnique = true;
-                    }
-                }*/
                 if (modelDict.ContainsKey(modelID))
                 {
                     Shared.GetParserObj().AddError("ProcessSimulator failed to initalize, modelID" + modelID + "is not unique");
@@ -135,7 +109,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="downstreamModel">the downstream model, meaning the model whose input will be connected</param>
         /// <param name="inputIndex">input index of the downstream model to connect to (default is first input)</param>
         /// <returns></returns>
-        public bool ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int inputIndex=0)
+        public bool ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex=null)
         {
            
             ProcessModelType upstreamType = upstreamModel.GetProcessModelType();
@@ -145,7 +119,7 @@ namespace TimeSeriesAnalysis.Dynamic
             outputId = SignalNamer.GetSignalName(upstreamModel.GetID(),upstreamModel.GetOutputSignalType());
 
             upstreamModel.SetOutputID(outputId);
-            int nInputs = downstreamModel.GetNumberOfInputs();
+            int nInputs = downstreamModel.GetLengthOfInputVector();
             if (nInputs == 1)
             {
                 downstreamModel.SetInputIDs(new string[] { outputId });
@@ -156,13 +130,18 @@ namespace TimeSeriesAnalysis.Dynamic
                 // y->u_pid
                 if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.PID)
                 {
-                  //  upstreamModel.SetOutputID(outputId);
-                    downstreamModel.SetInputIDs(new string[] { outputId }, (int)PIDModelInputsIdx.Y_meas);
+                    if (inputIndex.HasValue)
+                    {
+                        downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex.Value);
+                    }
+                    else
+                    {
+                        downstreamModel.SetInputIDs(new string[] { outputId }, (int)PIDModelInputsIdx.Y_meas);
+                    }
                 }
                 //u_pid->u 
                 else if (upstreamType == ProcessModelType.PID && downstreamType == ProcessModelType.SubProcess)
                 {
-                   // upstreamModel.SetOutputID(outputId);
                     downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
                 }// process output-> connects to process input of another process
                 else if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.SubProcess)
@@ -193,6 +172,7 @@ namespace TimeSeriesAnalysis.Dynamic
             int? N = externalInputSignals.GetLength();
             if (!N.HasValue)
             {
+                Shared.GetParserObj().AddError("ProcessSimulator could not run, no external signal provided.");
                 simData = null;
                 return false;
             }
@@ -203,8 +183,10 @@ namespace TimeSeriesAnalysis.Dynamic
             // initalize the new time-series to be created in simData.
             var didInit = InitToSteadyState(ref simData);
             if (!didInit)
+            {
+                Shared.GetParserObj().AddError("ProcessSimulator failed to initalize.");
                 return false;
-
+            }
             int timeIdx = 0;
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
             {
@@ -281,13 +263,17 @@ namespace TimeSeriesAnalysis.Dynamic
                 var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
                 nTotalInputs += model.GetInputIDs().Length;
             }
-            // 
-            int nUnaccountedForSignals = nTotalInputs - nExternalInputs - nConnections;
+            //
+            
+
+            // this code cannot account for gain scheduling in pid controllers, temporarily disabled.
+
+         /*   int nUnaccountedForSignals = nTotalInputs - nExternalInputs - nConnections;
             if (nUnaccountedForSignals > 0)
             {
                 return false;
             }
-
+         */
             // forward-calculate the output for those systems where the inputs are given. 
             for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             {
@@ -391,7 +377,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
 
                 int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetInputIDs(), SignalType.External_U);
-                bool canWeFindTheUnknownInput = (model.GetNumberOfInputs()- numberOfExternalInputs == 1) && isYgiven;
+                bool canWeFindTheUnknownInput = (model.GetLengthOfInputVector()- numberOfExternalInputs == 1) && isYgiven;
        
                 if (!canWeFindTheUnknownInput)
                     continue;

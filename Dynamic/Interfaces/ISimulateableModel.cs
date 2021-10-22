@@ -64,7 +64,7 @@ namespace TimeSeriesAnalysis.Dynamic
         bool SetInputIDs(string[] manipulatedVariablesU_stringIDs, int? index=null);
 
 
-        int GetNumberOfInputs();
+        int GetLengthOfInputVector();
 
         /// <summary>
         /// An unique name of the process model

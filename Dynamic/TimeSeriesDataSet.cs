@@ -140,11 +140,17 @@ namespace TimeSeriesAnalysis.Dynamic
             int valueIdx = 0;
             foreach (string signalName in signalNames)
             {
+                if (signalName == null)
+                {
+                    retData[valueIdx] = Double.NaN;
+                    valueIdx++;
+                    continue;
+                }
                 if (!dataset.ContainsKey(signalName))
                 {
                     return null;
                 }
-                if (timeIdx > dataset[signalName].Count())
+                else if (timeIdx > dataset[signalName].Count())
                 {
                     return null;
                 }

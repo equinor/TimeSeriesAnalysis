@@ -15,15 +15,12 @@ furthermore the *state* ``x[k]`` is modeled as
 ```
 x[k] = a•x[k-1] + b•(u[k-td]-u0) + q					(linear in u)
 ```
+where ``t_d`` here denotes the time-delay in samples.
+
 The parameter ``a`` in the above equation should always be between ``[0;0.9999]`` . 
 > [!Note]
 > Notice that if ``a=0`` the the recursive term is stricken, the disturbance is neglected and time delay is zero, then the model reverts to standard linear static model``y[k] = b•u[k]``.
 
-Optionally the default model can be extended with a square term:
-``` 
-x[k] = a•x[k-1] + b•(u[k-t_d]-u_0) + c•(u[k-t_d]-u_0)^2 + q		(non-linear in u)
-```
-where ``t_d`` here denotes the time-delay in samples.
 
 The model 
 - is a ``difference model`` as ``x[k]`` depends on the previous value ``x[k-1]``.
@@ -38,6 +35,29 @@ x[k] = a•x[k-1] + b1•(u1[k-t_d]-u_10)+ b2•(u2[k-t_d]-u_20) + q		(linear in
 > All inputs in the same model by design share the same dynamic parameters ``a`` and ``t_d``. If multiple inputs act on a single output ``y`` with different
 > dynamics, then this should be modeled by two or more separate "default models" that are then added together - in identification the input of other 
 > sub-models can be accounted for by the disturbance-term ``d``
+
+## Second-order polynominal nolinear gain
+
+Optionally the default model can be extended with a square term:
+``` 
+x[k] = a•x[k-1] + b•(u[k-t_d]-u_0) + c/uNorm•(u[k-t_d]-u_0)^2 + q	(non-linear in u)
+```
+Internally the paramter ``c`` is referred to as the **"Curvature"** of the default model.
+
+``uNorm`` is a scaling paramter that is intended to ensure that the paramters ``b`` and ``c``
+are of approximately equal scale during identification. 
+It is reccomended to choose ``uNorm`` equal to how much ``u`` is expect to vary from ``u0``.
+For example, if ``u0`` and ``u`` is expected to vary in the range ``[20,80]``, then ``uNorm``
+should be chosen as ``30``.
+
+>[!Note]
+> The sign of the curvature terms ``c`` can be *either positive or negative*. 
+> If ``c`` is **negative**, then this means that the gains is **higer below u0** and **lower above u0**.
+> If ``c`` is **positive**, then this means that the gains is **lower below u0** and **higher above u0**.
+
+>[!Note]
+> If the model has curvature terms ``c`` then the process gain depends on **both** parameters
+> ``b`` and ``c``.
   
   
 ##  Process gain and time constant

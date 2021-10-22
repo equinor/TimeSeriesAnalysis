@@ -9,10 +9,10 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 
-namespace __GettingStarted
+namespace TimeSeriesAnalysis._Examples
 {
     [TestFixture]
-    class GettingStarted
+    class _GettingStarted
     {
         [Test, Explicit]
         #region ex_1
@@ -208,7 +208,7 @@ namespace __GettingStarted
             processSim.AddSignal(processModel,SignalType.External_U,
                 TimeSeriesCreator.Step(N/2,N,0,1),(int)INDEX.SECOND);
 
-            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            var isOk = processSim.Simulate(out var simData);
 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),

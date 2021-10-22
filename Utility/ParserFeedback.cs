@@ -27,12 +27,12 @@ namespace TimeSeriesAnalysis.Utility
 
 
     /// <summary>
-    ///     Utility class is responsible for collecting feedback lines, such as warnings,error or info text to either the console window,
-    ///     visual-studio output/debug window, to a file structure or all. 
-    ///     The class makes it easy to switch between displaying output to a console while debugging while
-    ///     to outputting to file when code moves to a server. 
-    ///     Suitable for collecting debugging info from services that run many cases repeatedly.
-    ///     log levels:  INFO<WARN<ERROR<FATAL  (no debug messages here)
+    /// Utility class is responsible for collecting feedback lines, such as warnings,error or info text to either the console window,
+    /// visual-studio output/debug window, to a file structure or all. 
+    /// The class makes it easy to switch between displaying output to a console while debugging while
+    /// to outputting to file when code moves to a server. 
+    /// Suitable for collecting debugging info from services that run many cases repeatedly.
+    ///  log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)
     /// </summary>
     public class ParserFeedback
     {

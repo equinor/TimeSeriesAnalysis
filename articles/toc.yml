@@ -36,7 +36,7 @@
 - name: System identification
   href: sysid.md
   items:
-        - name: Design principles
+        - name: Design choices
           href: principles.md
 
         - name: The "default model"
@@ -52,15 +52,14 @@
         - name: PID control
           href: pidcontrol.md
           items:
+            - name: Cascade control
+              href: pid_cascade.md 
             - name: Feedforward control
               href: pid_feedforward.md
-            - name: Select control and tracking
-              href: pid_select.md
             - name: Gain-scheduling
               href: pid_gainscheduling.md
-            - name: Cascade control
-              href: pid_cascade.md  
-
+            - name: Select control and tracking
+              href: pid_select.md
 
 - name: Glossary 
   href: glossary.md

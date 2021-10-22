@@ -22,8 +22,6 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         int timeBase_s = 1;
         int N = 480;
 
-        int Ysetpoint = 50;
-
         DefaultProcessModelParameters modelParameters1;
         DefaultProcessModelParameters modelParameters2;
         DefaultProcessModelParameters modelParameters3;

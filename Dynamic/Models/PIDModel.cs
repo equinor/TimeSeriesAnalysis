@@ -43,7 +43,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {// write back default scaling
                 this.pidParameters.Scaling = pid.GetScaling();
             }
-            //pid.SetGainScehduling(pidParameters.GainScheduling);
+            pid.SetGainScehduling(pidParameters.GainScheduling);
             pid.SetAntiSurgeParams(pidParameters.AntiSugeParams);
         }
 
@@ -93,7 +93,11 @@ namespace TimeSeriesAnalysis.Dynamic
             double? gainSchedulingVariable = null;
             if (inputs.Length >= 3)
             {
-                uTrackSignal = inputs[(int)PIDModelInputsIdx.Tracking];
+                double trackingSignal = inputs[(int)PIDModelInputsIdx.Tracking];
+                if (!Double.IsNaN(trackingSignal))
+                {
+                    uTrackSignal = trackingSignal;
+                }
             }
             if (inputs.Length >= 4)
             {
@@ -117,9 +121,23 @@ namespace TimeSeriesAnalysis.Dynamic
         /// input 3 is track signal and input 4 is gain scheduling variable
         /// </summary>
         /// <returns></returns>
-        override public int GetNumberOfInputs()
+        override public int GetLengthOfInputVector()
         {
-            int nInputs = 2;
+            int nInputs = 2;//default and minimum is two inputs
+
+            if (pidParameters.GainScheduling != null)
+            {
+                if (pidParameters.GainScheduling.GSActive_b || pidParameters.GainScheduling.GSActiveTi_b)
+                {
+                    nInputs = 4;
+                }
+            }
+            // TODO: set to three if pid-controller has tracking!
+            // if (pidParameters.)
+
+
+
+
             return nInputs;// TODO:generalize
         }
 
@@ -133,8 +151,5 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return null;
         }
-
-
-
     }
 }

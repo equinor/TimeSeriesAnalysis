@@ -1,6 +1,6 @@
 # PID control
 
-The PID-controller implemented in this library has the following features
+The PID-controller implemented in this library has the following features:
 
 - anti-windup
 - gain-scheduling
@@ -9,6 +9,7 @@ The PID-controller implemented in this library has the following features
 - tracking (for min/max select control)
 - input filtering
 - anti-surge "kick" control 
+- bumpless transfer between manual and automatic modes
 
 
 

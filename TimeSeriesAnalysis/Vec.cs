@@ -14,7 +14,7 @@ namespace TimeSeriesAnalysis
 {
     /// <summary>
     /// Utility functions and operations for treating arrays as mathetmatical vectors
-    /// This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec<T>)
+    /// This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec)
     /// </summary>
     public class Vec
     {
@@ -34,7 +34,7 @@ namespace TimeSeriesAnalysis
             this.valuteToReturnElementIsNaN = valuteToReturnElementIsNaN;
         }
 
-        //  Methods should be sorted alphateically
+        //  Methods should be sorted alphabetically
 
 
         ///<summary>
@@ -1187,12 +1187,17 @@ namespace TimeSeriesAnalysis
             }
             return true;
         }
-        
 
 
-        ///<comment>
+
+
+        /// <summary>
         /// Create a compact string of vector with a certain number of significant digits and a chosen divider
-        ///</summary>
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="nSignificantDigits"></param>
+        /// <param name="dividerStr"></param>
+        /// <returns></returns>
         public static string ToString(double[] array, int nSignificantDigits, string dividerStr = ";")
         {
             StringBuilder sb = new StringBuilder();

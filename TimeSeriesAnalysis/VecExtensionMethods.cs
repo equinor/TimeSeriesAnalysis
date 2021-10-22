@@ -15,33 +15,51 @@ namespace TimeSeriesAnalysis
     public static class VecExtensionMethods
     {
 
-        ///<comment>
-        /// Add scalar to vector
-        ///</summary>
+
+        /// <summary>
+        /// Add a scalar to vector
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="scalar"></param>
+        /// <param name="nanValue"></param>
+        /// <returns></returns>
         public static double[] Add(this double[] array, double scalar, double nanValue = -9999)
         {
             return (new Vec(nanValue)).Add(array, scalar);
         }
 
-        ///<comment>
-        /// elementwise subtraction of two arrays of same size
-        ///</summary>
+
+        /// <summary>
+        /// Elementwise subtraction of two arrays of same size
+        /// </summary>
+        /// <param name="array1"></param>
+        /// <param name="array2"></param>
+        /// <param name="nanValue"></param>
+        /// <returns></returns>
         public static double[] Sub(this double[] array1, double[] array2, double nanValue=-9999)
         {
             return (new Vec(nanValue)).Subtract(array1, array2);
         }
 
-        ///<comment>
+        /// <summary>
         /// Multiply vector by a scalar
-        ///</summary>
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="scalar"></param>
+        /// <param name="nanValue"></param>
+        /// <returns></returns>
         public static double[] Mult(this double[] array, double scalar, double nanValue = -9999)
         {
             return (new Vec(nanValue)).Mult(array,scalar);
         }
 
-        ///<comment>
+        /// <summary>
         /// Create a compact string of vector with a certain number of significant digits and a chosen divider
-        ///</summary>
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="nSignificantDigits"></param>
+        /// <param name="dividerStr"></param>
+        /// <returns></returns>
         public static string ToString(this double[] array,int nSignificantDigits,string dividerStr =";")
         {
             return Vec.ToString(array, nSignificantDigits, dividerStr);

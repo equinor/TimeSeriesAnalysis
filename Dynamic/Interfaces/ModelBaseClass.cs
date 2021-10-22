@@ -60,13 +60,13 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 if (inputIDs == null)
                 {
-                    inputIDs = new string[GetNumberOfInputs()];
+                    inputIDs = new string[GetLengthOfInputVector()];
                 }
-                if (idx.Value < GetNumberOfInputs())
+                if (idx.Value < GetLengthOfInputVector())
                 {
                     if (inputIDs == null)
                     {
-                        inputIDs = new string[GetNumberOfInputs()];
+                        inputIDs = new string[GetLengthOfInputVector()];
                     }
                     inputIDs[idx.Value] = U_stringIDs[0];
                 }
@@ -99,7 +99,7 @@ namespace TimeSeriesAnalysis.Dynamic
              return SignalNamer.GetSignalName(GetID(), GetOutputSignalType());
         }
 
-        public abstract int GetNumberOfInputs();
+        public abstract int GetLengthOfInputVector();
 
         public abstract SignalType GetOutputSignalType();
 
