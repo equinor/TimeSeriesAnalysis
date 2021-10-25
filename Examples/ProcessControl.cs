@@ -14,6 +14,7 @@ namespace TimeSeriesAnalysis._Examples
     [TestFixture]
     class ProcessControl
     {
+        int timeBase_s = 1;
 
         [TestCase, Explicit]
         #region CascadeControl
@@ -26,32 +27,138 @@ namespace TimeSeriesAnalysis._Examples
         #endregion
 
         [TestCase, Explicit]
-        #region FeedForward
-        public void FeedForward()
+        public void FeedForward_Part1()
         {
+            #region Feedforward_Part1
+            var processParameters = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 30,
+                ProcessGains = new double[] { 1.1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 0,
+                Bias = 50
+            };
+            var disturbanceParameters = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 30,
+                ProcessGains = new double[] { 1 },
+                U0 = new double[] { 0 },
+                TimeDelay_s = 5,
+                Bias = 0
+            };
+            var pidParameters = new PIDModelParameters()
+            {
+                Kp = 0.3,
+                Ti_s = 20
+            };
+            
+            var processModel
+                = new DefaultProcessModel(processParameters, timeBase_s, "Process1");
+            var disturbanceModel
+                = new DefaultProcessModel(disturbanceParameters, timeBase_s, "Disturbance1");
+            var pidModel = new PIDModel(pidParameters, timeBase_s, "PID");
+
+            var simNoFeedF = new ProcessSimulator(timeBase_s,
+                new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
+
+            simNoFeedF.ConnectModels(pidModel, processModel);
+            simNoFeedF.ConnectModels(processModel, pidModel);
+            simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
+
+            simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+                TimeSeriesCreator.Constant(60, 600));
+            simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+                TimeSeriesCreator.Step(300, 600, 25, 0));
+
+            var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+
+            Plot.FromList(new List<double[]>
+                {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+                    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
+                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+                    },
+                new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
+
+            #endregion
+        }
 
 
 
+        [TestCase, Explicit]
+        public void FeedForward_Part2()
+        {
+            #region Feedforward_Part2
 
+            var processParameters = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 30,
+                ProcessGains = new double[] { 1.1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 0,
+                Bias = 50
+            };
+            var disturbanceParameters = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 30,
+                ProcessGains = new double[] { 1 },
+                U0 = new double[] { 0 },
+                TimeDelay_s = 5,
+                Bias = 0
+            };
+            var pidParameters = new PIDModelParameters()
+            {
+                Kp = 0.3,
+                Ti_s = 20
+            };
 
+            var processModel
+                = new DefaultProcessModel(processParameters, timeBase_s, "Process1");
+            var disturbanceModel
+                = new DefaultProcessModel(disturbanceParameters, timeBase_s, "Disturbance1");
+            var pidModel = new PIDModel(pidParameters, timeBase_s, "PID");
 
+            var simNoFeedF = new ProcessSimulator(timeBase_s,
+                new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
 
+            simNoFeedF.ConnectModels(pidModel, processModel);
+            simNoFeedF.ConnectModels(processModel, pidModel);
+            simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
+            simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+                TimeSeriesCreator.Constant(60, 600));
+            simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+                TimeSeriesCreator.Step(300, 600, 25, 0));
 
+            var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+
+            Plot.FromList(new List<double[]>
+                {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+                    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
+                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+                    },
+                new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
+            #endregion
 
         }
-        #endregion
+
+
 
         [TestCase, Explicit]
         public void GainScheduling()
         {
-            int timeBase_s = 1;
-
-            
+                                  
             //step responses on the open-loop system
-      //      #region GainScheduling_Part1
+            #region GainScheduling_Part1
          
-            DefaultProcessModelParameters modelParameters = new DefaultProcessModelParameters
+            var modelParameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 0,
@@ -62,9 +169,9 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 0,
                 Bias = 50
             };
-            DefaultProcessModel processModel
-                = new DefaultProcessModel(modelParameters, timeBase_s, "SubProcess1");
-            /*
+            var processModel
+                = new DefaultProcessModel(modelParameters, timeBase_s, "Process1");
+            
             var openLoopSim1 = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel });
             openLoopSim1.AddSignal(processModel, SignalType.External_U,
@@ -86,7 +193,6 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> {"y1=y1(run1)","y1=y2(run2)","y3=u(run1)","y3=u(run2)"} 
                 ,timeBase_s,"GainSchedulingEx");
             #endregion
-
 
             #region GainScheduling_Part2
             // the system rejecting a disturbance at y=20 with pidModel1
@@ -132,7 +238,7 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_run1","y1=y_setpoint(run1)", "y2=u_run1(right)","y3=y-run2",
                     "y3=y_setpoint(run2)", "y4=u_run2(right)" }, timeBase_s, "GainSchedulingEx_2");
             #endregion
-            */
+            
             #region GainScheduling_Part3
             // building a gain-scheduling controller that is able to handle both regimes
 
@@ -165,7 +271,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
-            var isOk = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
+           closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
             var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModelGS, processModel });
@@ -177,7 +283,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
-            isOk = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
+            closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
 
             Plot.FromList(new List<double[]>
                 {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),

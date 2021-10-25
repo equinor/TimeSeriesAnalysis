@@ -2,4 +2,12 @@
 
 ![pid-feedforward](./images/pid_feedforward.png). 
 
-**this topic temporarily a stub, more to come**
+
+## Simulating pid-control against an external disturbance *without* feed-forward 
+[!code-csharp[Example](../Examples/ProcessControl.cs?name=Feedforward_Part1)]
+
+
+## Adding feed-forward to the simulation 
+
+[!code-csharp[Example](../Examples/ProcessControl.cs?name=Feedforward_Part2)]
+

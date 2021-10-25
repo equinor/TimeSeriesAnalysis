@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private TimeDelay delayObj;
 
         private bool isFirstIteration;
-        private double[] lastGoodValuesOfU;
+        private double[] lastGoodValuesOfInputs;
 
         public SubProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
@@ -40,9 +40,23 @@ namespace TimeSeriesAnalysis.Dynamic
             InitSim(timeBase_s,modelParameters);
         }
 
+        /// <summary>
+        /// Returns the number of external inputs U of the model. Note that this model may have an disturbance signal
+        /// added to the output in addition to the other signals.
+        /// </summary>
+        /// <returns></returns>
         override public int GetLengthOfInputVector()
         {
-            return modelParameters.ProcessGains.Length;
+            var inputIDs = GetBothKindsOfInputIDs();
+
+            if (inputIDs == null)
+            {
+                return modelParameters.ProcessGains.Length;
+            }
+            else
+            {
+                return Math.Max(modelParameters.ProcessGains.Length, inputIDs.Length);
+            }
         }
 
         /// <summary>
@@ -59,7 +73,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the objet of model paramters contained in the model
         /// </summary>
         /// <returns>Model paramter object</returns>
-        //public IModelParameters GetModelParameters()
         public DefaultProcessModelParameters GetModelParameters()
         {
             return modelParameters;
@@ -80,7 +93,6 @@ namespace TimeSeriesAnalysis.Dynamic
             // u =  (y-bias)/G+ u0 
             if (givenInputs == null)
             {
-
                 u0 = (y0 - modelParameters.Bias) / modelParameters.ProcessGains[inputIdx];
                 if (modelParameters.U0 != null)
                 {
@@ -92,25 +104,31 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 double y_otherInputs = modelParameters.Bias;
                 //nb! input may include a disturbance!
-                for (int i = 0; i < Math.Min(givenInputs.Length, modelParameters.ProcessGains.Length); i++)
+                for (int i = 0; i < givenInputs.Length; i++)
                 {
                     if (Double.IsNaN(givenInputs[i]))
                         continue;
-                    y_otherInputs += CalculateProcessGainTerm(i, givenInputs[i]);
-                    y_otherInputs += CalcuateCurvatureTerm(i, givenInputs[i]);
+                    if (i < GetModelInputIDs().Length)//model inputs
+                    {
+                        y_otherInputs += CalculateProcessGainTerm(i, givenInputs[i]);
+                        y_otherInputs += CalcuateCurvatureTerm(i, givenInputs[i]);
+                    }
+                    else // additive inputs
+                    {
+                        y_otherInputs += givenInputs[i]; 
+                    }
                 }
 
                 double y_contributionFromInput = y0 - y_otherInputs;
                 if (modelParameters.Curvatures == null)
                 {
+                    u0 = 0;
                     if (modelParameters.U0 != null)
                     {
-                        u0 = (y_contributionFromInput + modelParameters.U0[inputIdx]) / modelParameters.ProcessGains[inputIdx];
+                        u0 += modelParameters.U0[inputIdx]; 
                     }
-                    else
-                    {
-                        u0 = y_contributionFromInput / modelParameters.ProcessGains[inputIdx];
-                    }
+                    u0 += y_contributionFromInput / modelParameters.ProcessGains[inputIdx];
+
                 }
                 else
                 {
@@ -241,7 +259,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public void InitSim(double timeBase_s, DefaultProcessModelParameters modelParameters)
         {
             this.modelParameters = modelParameters;
-            this.lastGoodValuesOfU =Vec<double>.Fill(Double.NaN,modelParameters.ProcessGains.Length);
+            this.lastGoodValuesOfInputs =Vec<double>.Fill(Double.NaN,GetLengthOfInputVector());
             this.timeBase_s = timeBase_s;
             this.lowPass = new LowPass(timeBase_s);
             this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
@@ -253,9 +271,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public void WarmStart(double[] inputs, double output)
         { 
-        
-        
-        
+
         }
 
         private double CalculateStaticState(double[] inputs, double badValueIndicator=-9999)
@@ -265,18 +281,17 @@ namespace TimeSeriesAnalysis.Dynamic
             // inputs U may include a disturbance as the last entry
             for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
-                if (curInput + 1 <= GetLengthOfInputVector())
+                if (curInput + 1 <= modelParameters.ProcessGains.Length)
                 {
                     double curUvalue = inputs[curInput];
                     if (Double.IsNaN(inputs[curInput]) || inputs[curInput] == badValueIndicator)
                     {
-                        curUvalue = lastGoodValuesOfU[curInput];
+                        curUvalue = lastGoodValuesOfInputs[curInput];
                     }
                     else
                     {
-                        lastGoodValuesOfU[curInput] = inputs[curInput];
+                        lastGoodValuesOfInputs[curInput] = inputs[curInput];
                     }
-
                     x_static += CalculateProcessGainTerm(curInput, curUvalue);
                     x_static += CalcuateCurvatureTerm(curInput, curUvalue);
                 }
@@ -287,9 +302,16 @@ namespace TimeSeriesAnalysis.Dynamic
         public double? GetSteadyStateOutput(double[] u0)
         {
             double? ret = CalculateStaticState(u0);
+            if (ret.HasValue)
+            {
+                // additve output values
+                for (int i = GetModelInputIDs().Length; i < u0.Length; i++)
+                {
+                    ret += u0[i];
+                }
+            }
             return ret;
         }
-
 
         /// <summary>
         /// Iterates the process model state one time step, based on the inputs given
@@ -320,7 +342,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 y = delayObj.Delay(x_dynamic);
             }
             // if a disturbance D has been given along with inputs U, then add it to output
-            if (inputs.Length > GetLengthOfInputVector())
+            if (inputs.Length > GetModelInputIDs().Length)
             {
                 y += inputs.Last();
             }

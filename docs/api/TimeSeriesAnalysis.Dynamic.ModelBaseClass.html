@@ -126,6 +126,85 @@
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_AddSignalToOutput_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_AddSignalToOutput_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput(System.String)">AddSignalToOutput(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddSignalToOutput(string additiveInputID)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">additiveInputID</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetAdditiveInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetAdditiveInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs">GetAdditiveInputIDs()</h4>
+  <div class="markdown level1 summary"><p>Get the DIs of any additive inputs that are included in model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] GetAdditiveInputIDs()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><p>returns <code>null</code> if no additive inputs are defined.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetBothKindsOfInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetBothKindsOfInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs">GetBothKindsOfInputIDs()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] GetBothKindsOfInputIDs()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetID*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetID">GetID()</h4>
   <div class="markdown level1 summary"></div>
@@ -151,32 +230,6 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs">GetInputIDs()</h4>
-  <div class="markdown level1 summary"><p>Get the type of the process model</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string[] GetInputIDs()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetLengthOfInputVector_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetLengthOfInputVector*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetLengthOfInputVector" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetLengthOfInputVector">GetLengthOfInputVector()</h4>
   <div class="markdown level1 summary"></div>
@@ -196,6 +249,32 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetModelInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetModelInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs">GetModelInputIDs()</h4>
+  <div class="markdown level1 summary"><p>Get the type of the process model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] GetModelInputIDs()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
         <td></td>
       </tr>
     </tbody>
@@ -309,7 +388,8 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetInputIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.SetInputIDs*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetInputIDs_System_String___System_Nullable_System_Int32__" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.SetInputIDs(System.String[],System.Nullable{System.Int32})">SetInputIDs(String[], Nullable&lt;Int32&gt;)</h4>
-  <div class="markdown level1 summary"><p>Set the stringIDs of the one or more manipulated variables <code>U</code> that enter model</p>
+  <div class="markdown level1 summary"><p>Set the stringIDs of the one or more manipulated variables <code>U</code> that enter model.
+This method may append/lengthen the inputIDs</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

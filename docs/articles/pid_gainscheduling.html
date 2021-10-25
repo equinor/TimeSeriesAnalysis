@@ -91,7 +91,42 @@ in <code>Ti</code>.</p>
 <code>u</code>.</p>
 <p>Firstly, the system is defined and the two simulation runs are done, one run at a low value of input, where the
 gain is <em>high</em>, and a second at a high value of the input, where the gain is <em>low</em>.</p>
-<pre><code class="lang-csharp" name="Example"></code></pre>
+<pre><code class="lang-csharp" name="Example">
+   var modelParameters = new DefaultProcessModelParameters
+   {
+       WasAbleToIdentify = true,
+       TimeConstant_s = 0,
+       ProcessGains = new double[] { 1.1 },
+       Curvatures = new double[] { -0.7 },
+       U0 = new double[] { 50 },
+       UNorm = new double[] { 50 },
+       TimeDelay_s = 0,
+       Bias = 50
+   };
+   var processModel
+       = new DefaultProcessModel(modelParameters, timeBase_s, &quot;Process1&quot;);
+   
+   var openLoopSim1 = new ProcessSimulator(timeBase_s,
+       new List&lt;ISimulatableModel&gt; { processModel });
+   openLoopSim1.AddSignal(processModel, SignalType.External_U,
+       TimeSeriesCreator.Step(50, 200, 80, 90));
+   openLoopSim1.Simulate(out var openLoopData1);
+
+   var openLoopSim2 = new ProcessSimulator(timeBase_s,
+       new List&lt;ISimulatableModel&gt; { processModel });
+   openLoopSim2.AddSignal(processModel, SignalType.External_U,
+       TimeSeriesCreator.Step(50, 200, 20, 30));
+   openLoopSim2.Simulate(out var openLoopData2);
+
+   Plot.FromList(new List&lt;double[]&gt;
+       {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        openLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        openLoopData1.GetValues(processModel.GetID(),SignalType.External_U),
+        openLoopData2.GetValues(processModel.GetID(),SignalType.External_U)
+        },
+       new List&lt;string&gt; {&quot;y1=y1(run1)&quot;,&quot;y1=y2(run2)&quot;,&quot;y3=u(run1)&quot;,&quot;y3=u(run2)&quot;} 
+       ,timeBase_s,&quot;GainSchedulingEx&quot;);
+</code></pre>
 <p>The resulting plot is shown below:</p>
 <p><img src="images/ex_gainscheduling_part1.png" alt="Example 5 result"></p>
 <h2 id="simulating-the-use-of-two-standard-pid-controllers">Simulating the use of two standard PID-controllers</h2>
@@ -151,61 +186,61 @@ the entire span of possible outputs <code>y</code>. Thus a gain-scheduled contro
 <p>In the final part of this example, a gain-scheduling controller that performs equally well for both
 cases is created.</p>
 <p>The code to create the gain-scheduling controller and simulate both runs:</p>
-<pre><code class="lang-csharp" name="Example">// building a gain-scheduling controller that is able to handle both regimes
+<pre><code class="lang-csharp" name="Example"> // building a gain-scheduling controller that is able to handle both regimes
 
-var pidParametersGS = new PIDModelParameters()
-{
-    Ti_s = 20,
-    GainScheduling = new PIDgainScheduling()
-    {
-        GSActive_b =true,// turn on gain-scheduling 
-        GS_x_Min =0,    //Gain-scheduling: x minimum x=GsVariable
-        GS_x_1= 20,     //Gain-scheduling: x1,x=GsVariable
-        GS_x_2=70,      //Gain-scheduling: x2,x=GsVariable
-        GS_x_Max=100,   //Gain-scheduling: x maxiumum, x = GsVariable
-        GS_Kp_Min=0.1,  //Gain-scheduling: KP @ GsVariable=GS_x_Min
-        GS_Kp_1=0.2,    //Gain-scheduling: KP @ GsVariable=GS_x_1
-        GS_Kp_2=1,      //Gain-scheduling: KP @ GsVariable=GS_x_2
-        GS_Kp_Max=1.2   //Gain-scheduling: KP @ GsVariable=GS_x_Max
-    }
-};
+ var pidParametersGS = new PIDModelParameters()
+ {
+     Ti_s = 20,
+     GainScheduling = new PIDgainScheduling()
+     {
+         GSActive_b =true,// turn on gain-scheduling 
+         GS_x_Min =0,    //Gain-scheduling: x minimum x=GsVariable
+         GS_x_1= 20,     //Gain-scheduling: x1,x=GsVariable
+         GS_x_2=70,      //Gain-scheduling: x2,x=GsVariable
+         GS_x_Max=100,   //Gain-scheduling: x maxiumum, x = GsVariable
+         GS_Kp_Min=0.1,  //Gain-scheduling: KP @ GsVariable=GS_x_Min
+         GS_Kp_1=0.2,    //Gain-scheduling: KP @ GsVariable=GS_x_1
+         GS_Kp_2=1,      //Gain-scheduling: KP @ GsVariable=GS_x_2
+         GS_Kp_Max=1.2   //Gain-scheduling: KP @ GsVariable=GS_x_Max
+     }
+ };
 
-var pidModelGS = new PIDModel(pidParametersGS, timeBase_s, &quot;PID_GS&quot;);
+ var pidModelGS = new PIDModel(pidParametersGS, timeBase_s, &quot;PID_GS&quot;);
 
-var closedLoopSimGS_1 = new ProcessSimulator(timeBase_s,
-    new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
-closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
-closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
-closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
-      TimeSeriesCreator.Constant(20, 400));
-closedLoopSimGS_1.AddSignal(processModel, SignalType.Distubance_D, 
-    TimeSeriesCreator.Step(100, 400, 0, 10));
-// Gain-scheduling variable:
-closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
-var isOk = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
+ var closedLoopSimGS_1 = new ProcessSimulator(timeBase_s,
+     new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
+ closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
+ closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
+ closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
+       TimeSeriesCreator.Constant(20, 400));
+ closedLoopSimGS_1.AddSignal(processModel, SignalType.Distubance_D, 
+     TimeSeriesCreator.Step(100, 400, 0, 10));
+ // Gain-scheduling variable:
+ closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
+closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
-var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
-    new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
-closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
-closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
-closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
-    TimeSeriesCreator.Constant(70, 400));
-closedLoopSimGS_2.AddSignal(processModel, SignalType.Distubance_D, 
-    TimeSeriesCreator.Step(100, 400, 0, 10));
-// Gain-scheduling variable:
-closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
-isOk = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
+ var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
+     new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
+ closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
+ closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
+ closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
+     TimeSeriesCreator.Constant(70, 400));
+ closedLoopSimGS_2.AddSignal(processModel, SignalType.Distubance_D, 
+     TimeSeriesCreator.Step(100, 400, 0, 10));
+ // Gain-scheduling variable:
+ closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
+ closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
 
-Plot.FromList(new List&lt;double[]&gt;
-    {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-     closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
-     closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.PID_U),
-     closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-     closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
-     closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.PID_U)
-     },
-    new List&lt;string&gt; { &quot;y1=y_run1&quot;,&quot;y1=y_setpoint(run1)&quot;, &quot;y2=u_run1(right)&quot;,&quot;y3=y-run2&quot;,
-        &quot;y3=y_setpoint(run2)&quot;, &quot;y4=u_run2(right)&quot; }, timeBase_s, &quot;GainSchedulingEx_3&quot;);
+ Plot.FromList(new List&lt;double[]&gt;
+     {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+      closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
+      closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.PID_U),
+      closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+      closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
+      closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.PID_U)
+      },
+     new List&lt;string&gt; { &quot;y1=y_run1&quot;,&quot;y1=y_setpoint(run1)&quot;, &quot;y2=u_run1(right)&quot;,&quot;y3=y-run2&quot;,
+         &quot;y3=y_setpoint(run2)&quot;, &quot;y4=u_run2(right)&quot; }, timeBase_s, &quot;GainSchedulingEx_3&quot;);
 </code></pre>
 <p>The resulting plot is shown below:
 <img src="images/ex_gainscheduling_part3.png" alt="Example 5 result"></p>

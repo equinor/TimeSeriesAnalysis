@@ -13,10 +13,10 @@ namespace TimeSeriesAnalysis.Dynamic
         int timeBase_s;
         Dictionary<string, ISimulatableModel> modelDict;
         TimeSeriesDataSet externalInputSignals;
-        private int nConnections=0;
+        private int nConnections = 0;
         ConnectionParser connections;
 
-        public ProcessSimulator(int timeBase_s,List<ISimulatableModel> 
+        public ProcessSimulator(int timeBase_s, List<ISimulatableModel>
             processModelList)
         {
             externalInputSignals = new TimeSeriesDataSet(timeBase_s);
@@ -54,10 +54,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="values"></param>
         /// <param name="index">the index of the signal, this is only needed if this is an input to a multip-input model</param>
 
-        public bool AddSignal(ISimulatableModel model, SignalType type, double[] values, int index=0)
+        public bool AddSignal(ISimulatableModel model, SignalType type, double[] values, int index = 0)
         {
             ProcessModelType modelType = model.GetProcessModelType();
-            string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values,index);
+            string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
             if (signalID == null)
             {
                 Shared.GetParserObj().AddError("ProcessSimulator.AddSignal was unable to add signal.");
@@ -66,15 +66,18 @@ namespace TimeSeriesAnalysis.Dynamic
             if (type == SignalType.Distubance_D && modelType == ProcessModelType.SubProcess)
             {
                 // by convention, the disturbance is always added last to inputs
-                List<string> newInputIDs = new List<string>(model.GetInputIDs());
-                newInputIDs.Add(signalID);
-                model.SetInputIDs(newInputIDs.ToArray()); ;
+                /* List<string> newInputIDs = new List<string>(model.GetModelInputIDs());
+                 newInputIDs.Add(signalID);
+                 model.SetInputIDs(newInputIDs.ToArray()); ;*/
+
+                model.AddSignalToOutput(signalID);
+
                 return true;
             }
             else if (type == SignalType.External_U && modelType == ProcessModelType.SubProcess)
             {
                 List<string> newInputIDs = new List<string>();
-                string[] inputIDs = model.GetInputIDs();
+                string[] inputIDs = model.GetModelInputIDs();
                 if (inputIDs != null)
                 {
                     newInputIDs = new List<string>(inputIDs);
@@ -103,6 +106,20 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Add a disturbance model to the output a given <c>model</c>
+        /// </summary>
+        /// <param name="disturbanceModel"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool ConnectModelToOutput(ISimulatableModel disturbanceModel, ISimulatableModel model )
+        {
+            model.AddSignalToOutput(disturbanceModel.GetOutputID());
+            connections.AddConnection(disturbanceModel.GetID(), model.GetID());
+            nConnections++;
+            return true;
+        }
+
+        /// <summary>
         /// Connect the output of the upstream model to the input of the downstream model
         /// </summary>
         /// <param name="upstreamModel">the upstream model, meaning the model whose output will be connected</param>
@@ -120,7 +137,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             upstreamModel.SetOutputID(outputId);
             int nInputs = downstreamModel.GetLengthOfInputVector();
-            if (nInputs == 1)
+            if (nInputs == 1 && inputIndex ==0)
             {
                 downstreamModel.SetInputIDs(new string[] { outputId });
             }
@@ -146,7 +163,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 }// process output-> connects to process input of another process
                 else if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.SubProcess)
                 {
-                    downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
+                    var isOk = downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
+                    if (!isOk)
+                    {
+                        Shared.GetParserObj().AddError("ProessSimulator.ConnectModels() error connecting:" + outputId);
+                        return false;
+                    }
                 }
                 else
                 {
@@ -191,7 +213,7 @@ namespace TimeSeriesAnalysis.Dynamic
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
             {
                 var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
-                string[] inputIDs = model.GetInputIDs();
+                string[] inputIDs = model.GetModelInputIDs();
                 if (inputIDs == null)
                 {
                     Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \""+ model.GetID() +
@@ -200,7 +222,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 double[] inputVals = simData.GetData(inputIDs, timeIdx);
 
-                string outputID = model.GetOutputID(); //TimeSeriesDataSet.GetSignalName(model.GetID(), model.GetOutputSignalType());
+                string outputID = model.GetOutputID(); 
                 if (outputID==null)
                 {
                     Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -220,7 +242,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                 {
                     var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
-                    string[] inputIDs = model.GetInputIDs();
+                    string[] inputIDs = model.GetBothKindsOfInputIDs();
                     int inputDataLookBackIdx = 0; 
                     if (model.GetProcessModelType() == ProcessModelType.PID && timeIdx > 0)
                     {
@@ -234,7 +256,12 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
                     double outputVal = model.Iterate(inputVals);
-                    simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
+                    bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
+                    if (!isOk)
+                    {
+                        Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Unable to add data point for  \"" + model.GetOutputID() + "\", indicating an error in initalizing. ");
+                        return false;
+                    }
                 }
             }
             return true;
@@ -261,7 +288,7 @@ namespace TimeSeriesAnalysis.Dynamic
             for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             {
                 var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
-                nTotalInputs += model.GetInputIDs().Length;
+                nTotalInputs += model.GetModelInputIDs().Length;
             }
             //
             
@@ -283,7 +310,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     continue;
                 }
 
-                string[] inputIDs = model.GetInputIDs();
+                string[] inputIDs = model.GetBothKindsOfInputIDs();
                 bool areAllInputsGiven = true;
                 double[] u0 = new double[inputIDs.Length];
                 int k = 0;
@@ -327,7 +354,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (model.GetProcessModelType() != ProcessModelType.PID)
                     continue;
 
-                string[] inputIDs = model.GetInputIDs();
+                string[] inputIDs = model.GetModelInputIDs();
                 string ySetpointID = inputIDs[(int)PIDModelInputsIdx.Y_setpoint];
                 string yMeasID = inputIDs[(int)PIDModelInputsIdx.Y_meas];
                 if (externalInputSignals.ContainsSignal(ySetpointID))
@@ -351,8 +378,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             // assume that subsystems are ordered from left->right, go throught them right->left to propage pid-output backwards!
 
-           // for (int subSystem =  0; subSystem < orderedSimulatorIDs.Count; subSystem++)
-            for (int subSystem = orderedSimulatorIDs.Count-1; subSystem >0; subSystem--)
+            for (int subSystem = orderedSimulatorIDs.Count - 1; subSystem > 0; subSystem--)
             {
                 var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
                 if (model.GetProcessModelType() != ProcessModelType.SubProcess)
@@ -362,23 +388,24 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (outputID == null)
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulator could not init because model \"" 
-                        +model.GetID()+"\" has no defined output.");
+                    Shared.GetParserObj().AddError("ProcessSimulator could not init because model \""
+                        + model.GetID() + "\" has no defined output.");
                     return false;
                 }
-                bool isYgiven   = simSignalValueDict.ContainsKey(outputID)|| externalInputSignals.ContainsSignal(outputID);
+                bool isYgiven = simSignalValueDict.ContainsKey(outputID) || 
+                    externalInputSignals.ContainsSignal(outputID);
 
-                // TODO:generalize for cases where more than one pid may be controlling a single process(does this makes sense?)
-                int numberOfPIDInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetInputIDs(), SignalType.PID_U);
+                int numberOfPIDInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), SignalType.PID_U);
                 if (numberOfPIDInputs > 1)
                 {
                     Shared.GetParserObj().AddError("currently only one pid-input per system is supported(to be address in a future update?)");
                     return false;
                 }
+                int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), SignalType.External_U);
 
-                int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetInputIDs(), SignalType.External_U);
-                bool canWeFindTheUnknownInput = (model.GetLengthOfInputVector()- numberOfExternalInputs == 1) && isYgiven;
-       
+                bool canWeFindTheUnknownInput =
+                    (model.GetModelInputIDs().Length - numberOfExternalInputs == 1) && isYgiven;
+
                 if (!canWeFindTheUnknownInput)
                     continue;
                 double y0 = Double.NaN;
@@ -393,10 +420,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                     continue;//should not happen
 
-                int[] uPIDIndices = SignalNamer.GetIndexOfSignalType(model.GetInputIDs(), SignalType.PID_U);
-                int[] uInternalIndices = SignalNamer.GetIndexOfSignalType(model.GetInputIDs(), SignalType.Output_Y_sim);
+                int[] uPIDIndices = 
+                    SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.PID_U);
+                int[] uInternalIndices = 
+                    SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.Output_Y_sim);
                 int[] uFreeIndices = Vec<int>.Concat(uPIDIndices, uInternalIndices);
-  
+
                 if (uFreeIndices.Length > 1)
                 {
                     Shared.GetParserObj().AddError("unexpected/unsupported number of free inputs found during init.");
@@ -404,10 +433,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else if (uFreeIndices.Length == 1)
                 {
-
                     int uPidIndex = uFreeIndices[0];
-
-                    string[] inputIDs = model.GetInputIDs();
+                    string[] inputIDs = model.GetBothKindsOfInputIDs();
                     double[] givenInputValues = new double[inputIDs.Length];
                     for (int i = 0; i < inputIDs.Length; i++)
                     {
@@ -452,12 +479,49 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            // the final step is if there are any final processes "to the left of" the already initalized signals
-            // but these signals do not need to be initalized!!
-
+            // the final step is if there are any final processes "to the right of" the already initalized signals
+            for (int subSystemIdx =0; subSystemIdx < orderedSimulatorIDs.Count; subSystemIdx++)
+            {
+                var model = modelDict[orderedSimulatorIDs.ElementAt(subSystemIdx)];
+                if (simSignalValueDict.ContainsKey(model.GetOutputID()))
+                {
+                    continue;
+                }
+                bool allInputValuesKnown = true;
+                var inputIDs = model.GetBothKindsOfInputIDs();
+                double[] u0 = new double[model.GetLengthOfInputVector()];
+                int k = 0;
+                foreach (string inputId in inputIDs)
+                {
+                    bool valueFound = false;
+                    if (simSignalValueDict.Keys.Contains(inputId))
+                    {
+                        valueFound = true;
+                        u0[k] = simSignalValueDict[inputId];
+                    }
+                    else if  (externalInputSignals.ContainsSignal(inputId))
+                    {
+                        valueFound = true;
+                        u0[k] = externalInputSignals.GetValues(inputId).First();
+                    }
+                    if (!valueFound)
+                    {
+                        allInputValuesKnown = false;
+                    }
+                    k++;
+                }
+                if (allInputValuesKnown)
+                {
+                    double? ySteady = model.GetSteadyStateOutput(u0);
+                    if (ySteady.HasValue)
+                    {
+                        simSignalValueDict.Add(model.GetOutputID(), ySteady.Value);
+                    }
+                }
+            }
 
             // last step is to actually write all the values, and create otherwise empty vector to be filled.
-            double nonYetSimulatedValue = Double.NaN;
+             double nonYetSimulatedValue = Double.NaN;
             foreach (string signalID in simSignalValueDict.Keys)
             {
                 simData.AddTimeSeries(signalID, Vec<double>.Concat(new double[] { simSignalValueDict[signalID] },

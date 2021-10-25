@@ -52,6 +52,20 @@ namespace TimeSeriesAnalysis.Dynamic
         private PIDgainScheduling gsObj = null;
         private LowPass yFilt1,yFilt2;
 
+
+        // feed-forward
+        private bool isFFActive = false; // if true, then the feed-forward term is added to the output
+        private int FFHP_filter_order = 1; // feed-forward high pass filter order (0, 1 or 2)
+        private int FFLP_filter_order = 1; // feed-forward high pass filter order (0, 1 or 2)
+        private double FF_LP_Tc_s=0; // feed-forward low-pass time constant in seconds
+        private double FF_HP_Tc_s=0; // feed-forward high-pass time constant in seconds
+        private double FF_Gain = 0; // feed-forward gain
+
+        private LowPass ffLP; // feed-forward low pass filter object
+        private HighPass ffHP; // feed-forward high pass filter object
+        private bool isFFActive_prev = false;//previous value of the feed forward active signal
+    
+
         // double anti-surge related:
         private PIDAntiSurgeParams antiSurgeParms=null;
         private double u_ff_antisurge_prev;
@@ -316,8 +330,38 @@ namespace TimeSeriesAnalysis.Dynamic
                 u = u0 + KpUnscaled * e_unscaled;
 
             ///////////////////////////////////////////////////////////
-            // feed-forward (anti-surge)
-            if (antiSurgeParms != null)
+            /// general feed-forward
+            if (isFFActive && gainSchedulingVariable.HasValue)
+            {
+                double u_ff = 0;
+                double ff_signal_highpass = ffHP.Filter(gainSchedulingVariable.Value,FF_HP_Tc_s,FFHP_filter_order);
+                double ff_signal_steady = ffLP.Filter(gainSchedulingVariable.Value,FF_LP_Tc_s, FFLP_filter_order);
+
+                //*"Band-pass type: feed forward changes between the two timeconstants of the two filters *)	
+                if (FF_LP_Tc_s > 0 && FF_HP_Tc_s > 0)
+                {
+                    u_ff = FF_Gain * (ff_signal_highpass - ff_signal_steady);
+                }
+                else
+                {
+                    u_ff= FF_Gain * ff_signal_highpass;
+                }
+
+                // bumpless transfer when activating feed-forward
+                if (!isFFActive_prev)
+                {
+                    u = u_ff;// moves u to uFF on first step of isFFactive or on startup
+                }
+                else
+                {
+                    u = u + u_ff;
+                }
+                isFFActive_prev = true;
+            }
+
+            ///////////////////////////////////////////////////////////
+            // anti-surge-specific feed-forward
+                if (antiSurgeParms != null)
             {
                 double u_ff_antisurge = 0;
 

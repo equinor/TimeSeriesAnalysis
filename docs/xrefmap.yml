@@ -952,6 +952,32 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.ISimulatableModel
   fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel
   nameWithType: ISimulatableModel
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.AddSignalToOutput(System.String)
+  name: AddSignalToOutput(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_AddSignalToOutput_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.AddSignalToOutput(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.AddSignalToOutput(System.String)
+  nameWithType: ISimulatableModel.AddSignalToOutput(String)
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.AddSignalToOutput*
+  name: AddSignalToOutput
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_AddSignalToOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ISimulatableModel.AddSignalToOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.AddSignalToOutput
+  nameWithType: ISimulatableModel.AddSignalToOutput
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetBothKindsOfInputIDs
+  name: GetBothKindsOfInputIDs()
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetBothKindsOfInputIDs
+  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetBothKindsOfInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetBothKindsOfInputIDs()
+  nameWithType: ISimulatableModel.GetBothKindsOfInputIDs()
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetBothKindsOfInputIDs*
+  name: GetBothKindsOfInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetBothKindsOfInputIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetBothKindsOfInputIDs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetBothKindsOfInputIDs
+  nameWithType: ISimulatableModel.GetBothKindsOfInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetID
   name: GetID()
   href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetID
@@ -965,19 +991,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetID
   nameWithType: ISimulatableModel.GetID
-- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs
-  name: GetInputIDs()
-  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetInputIDs
-  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs
-  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs()
-  nameWithType: ISimulatableModel.GetInputIDs()
-- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs*
-  name: GetInputIDs
-  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetInputIDs_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetInputIDs
-  nameWithType: ISimulatableModel.GetInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetLengthOfInputVector
   name: GetLengthOfInputVector()
   href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetLengthOfInputVector
@@ -991,6 +1004,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetLengthOfInputVector
   nameWithType: ISimulatableModel.GetLengthOfInputVector
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetModelInputIDs
+  name: GetModelInputIDs()
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetModelInputIDs
+  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetModelInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetModelInputIDs()
+  nameWithType: ISimulatableModel.GetModelInputIDs()
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetModelInputIDs*
+  name: GetModelInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetModelInputIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetModelInputIDs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetModelInputIDs
+  nameWithType: ISimulatableModel.GetModelInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputID
   name: GetOutputID()
   href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetOutputID
@@ -1170,6 +1196,45 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.ModelBaseClass
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass
   nameWithType: ModelBaseClass
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput(System.String)
+  name: AddSignalToOutput(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_AddSignalToOutput_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput(System.String)
+  nameWithType: ModelBaseClass.AddSignalToOutput(String)
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput*
+  name: AddSignalToOutput
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_AddSignalToOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput
+  nameWithType: ModelBaseClass.AddSignalToOutput
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs
+  name: GetAdditiveInputIDs()
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetAdditiveInputIDs
+  commentId: M:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs()
+  nameWithType: ModelBaseClass.GetAdditiveInputIDs()
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs*
+  name: GetAdditiveInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetAdditiveInputIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs
+  nameWithType: ModelBaseClass.GetAdditiveInputIDs
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs
+  name: GetBothKindsOfInputIDs()
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetBothKindsOfInputIDs
+  commentId: M:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs()
+  nameWithType: ModelBaseClass.GetBothKindsOfInputIDs()
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs*
+  name: GetBothKindsOfInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetBothKindsOfInputIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetBothKindsOfInputIDs
+  nameWithType: ModelBaseClass.GetBothKindsOfInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetID
   name: GetID()
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID
@@ -1183,19 +1248,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetID
   nameWithType: ModelBaseClass.GetID
-- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs
-  name: GetInputIDs()
-  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetInputIDs
-  commentId: M:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs
-  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs()
-  nameWithType: ModelBaseClass.GetInputIDs()
-- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs*
-  name: GetInputIDs
-  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetInputIDs_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetInputIDs
-  nameWithType: ModelBaseClass.GetInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetLengthOfInputVector
   name: GetLengthOfInputVector()
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetLengthOfInputVector
@@ -1209,6 +1261,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetLengthOfInputVector
   nameWithType: ModelBaseClass.GetLengthOfInputVector
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs
+  name: GetModelInputIDs()
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetModelInputIDs
+  commentId: M:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs()
+  nameWithType: ModelBaseClass.GetModelInputIDs()
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs*
+  name: GetModelInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetModelInputIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetModelInputIDs
+  nameWithType: ModelBaseClass.GetModelInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputID
   name: GetOutputID()
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputID

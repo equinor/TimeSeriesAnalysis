@@ -80,8 +80,115 @@
 <h2 id="feedforward-control">Feedforward control</h2>
 
 <p><img src="images/pid_feedforward.png" alt="pid-feedforward">.</p>
-<p><strong>this topic temporarily a stub, more to come</strong></p>
-</article>
+<h2 id="simulating-pid-control-against-an-external-disturbance-without-feed-forward">Simulating pid-control against an external disturbance <em>without</em> feed-forward</h2>
+<pre><code class="lang-csharp" name="Example">var processParameters = new DefaultProcessModelParameters
+{
+    WasAbleToIdentify = true,
+    TimeConstant_s = 30,
+    ProcessGains = new double[] { 1.1 },
+    U0 = new double[] { 50 },
+    TimeDelay_s = 0,
+    Bias = 50
+};
+var disturbanceParameters = new DefaultProcessModelParameters
+{
+    WasAbleToIdentify = true,
+    TimeConstant_s = 30,
+    ProcessGains = new double[] { 1 },
+    U0 = new double[] { 0 },
+    TimeDelay_s = 5,
+    Bias = 0
+};
+var pidParameters = new PIDModelParameters()
+{
+    Kp = 0.3,
+    Ti_s = 20
+};
+
+var processModel
+    = new DefaultProcessModel(processParameters, timeBase_s, &quot;Process1&quot;);
+var disturbanceModel
+    = new DefaultProcessModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
+var pidModel = new PIDModel(pidParameters, timeBase_s, &quot;PID&quot;);
+
+var simNoFeedF = new ProcessSimulator(timeBase_s,
+    new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
+
+simNoFeedF.ConnectModels(pidModel, processModel);
+simNoFeedF.ConnectModels(processModel, pidModel);
+simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
+
+simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+    TimeSeriesCreator.Constant(60, 600));
+simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+    TimeSeriesCreator.Step(300, 600, 25, 0));
+
+var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+
+Plot.FromList(new List&lt;double[]&gt;
+    {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+        dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
+        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+        },
+    new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, timeBase_s, &quot;FeedForwardEx1&quot;);
+
+</code></pre><h2 id="adding-feed-forward-to-the-simulation">Adding feed-forward to the simulation</h2>
+<pre><code class="lang-csharp" name="Example">
+var processParameters = new DefaultProcessModelParameters
+{
+    WasAbleToIdentify = true,
+    TimeConstant_s = 30,
+    ProcessGains = new double[] { 1.1 },
+    U0 = new double[] { 50 },
+    TimeDelay_s = 0,
+    Bias = 50
+};
+var disturbanceParameters = new DefaultProcessModelParameters
+{
+    WasAbleToIdentify = true,
+    TimeConstant_s = 30,
+    ProcessGains = new double[] { 1 },
+    U0 = new double[] { 0 },
+    TimeDelay_s = 5,
+    Bias = 0
+};
+var pidParameters = new PIDModelParameters()
+{
+    Kp = 0.3,
+    Ti_s = 20
+};
+
+var processModel
+    = new DefaultProcessModel(processParameters, timeBase_s, &quot;Process1&quot;);
+var disturbanceModel
+    = new DefaultProcessModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
+var pidModel = new PIDModel(pidParameters, timeBase_s, &quot;PID&quot;);
+
+var simNoFeedF = new ProcessSimulator(timeBase_s,
+    new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
+
+simNoFeedF.ConnectModels(pidModel, processModel);
+simNoFeedF.ConnectModels(processModel, pidModel);
+simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
+
+simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+    TimeSeriesCreator.Constant(60, 600));
+simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+    TimeSeriesCreator.Step(300, 600, 25, 0));
+
+var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+
+Plot.FromList(new List&lt;double[]&gt;
+    {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+        dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
+        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+        },
+    new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, timeBase_s, &quot;FeedForwardEx1&quot;);
+</code></pre></article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

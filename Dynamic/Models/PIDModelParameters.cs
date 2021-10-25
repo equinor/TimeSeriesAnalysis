@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    public class PIDModelParameters:ModelParametersBaseClass // todo:consider replacing with IFittedProcessModelParameters
+    public class PIDModelParameters:ModelParametersBaseClass 
     {
         /// <summary>
         /// Proportional gain of controller

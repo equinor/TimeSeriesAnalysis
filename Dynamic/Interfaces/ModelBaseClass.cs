@@ -9,7 +9,8 @@ namespace TimeSeriesAnalysis.Dynamic
     public abstract class ModelBaseClass
     {
         private string ID = "not_named";
-        private string[] inputIDs;
+        private string[] modelInputIDs;
+        private List<string> additiveInputIDs;
         private string outputID;
 
         internal ProcessModelType processModelType = ProcessModelType.UnTyped;
@@ -44,7 +45,8 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Set the stringIDs of the one or more manipulated variables <c>U</c> that enter model
+        /// Set the stringIDs of the one or more manipulated variables <c>U</c> that enter model.
+        /// This method may append/lengthen the inputIDs
         /// </summary>
         /// <param name="U_stringIDs"></param>
         /// <param name="idx">if non-null, this is the index of the element in U to set
@@ -54,36 +56,100 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (idx == null)
             {
-                inputIDs = U_stringIDs;
+                modelInputIDs = U_stringIDs;
             }
             else
             {
-                if (inputIDs == null)
+                if (modelInputIDs == null)
                 {
-                    inputIDs = new string[GetLengthOfInputVector()];
+                    modelInputIDs = new string[GetLengthOfInputVector()];
                 }
                 if (idx.Value < GetLengthOfInputVector())
                 {
-                    if (inputIDs == null)
+                    if (modelInputIDs == null)
                     {
-                        inputIDs = new string[GetLengthOfInputVector()];
+                        modelInputIDs = new string[GetLengthOfInputVector()];
                     }
-                    inputIDs[idx.Value] = U_stringIDs[0];
+                    modelInputIDs[idx.Value] = U_stringIDs[0];
                 }
-                else
-                    return false;
+                else // append the inputIDs string(), typically for output signals
+                {
+                    /*
+                       var oldInputIds = modelInputIDs;
+                       modelInputIDs = new string[idx.Value + 1];
+                       int k = 0;
+                       foreach (string oldId in oldInputIds)
+                       {
+                           modelInputIDs[k] = oldId;
+                           k++;
+                       }
+                       modelInputIDs[idx.Value] = U_stringIDs[0];
+                       if (U_stringIDs.Length == 1)
+                           return true;
+                       else
+                           return false;//unsupported.
+                       */
+                   // return false;
+
+                }
             }
             return true;
         }
+
+        public void AddSignalToOutput(string additiveInputID)
+        {
+            if (additiveInputIDs == null)
+            {
+                additiveInputIDs = new List<string>();
+                additiveInputIDs.Add(additiveInputID);
+            }
+            else
+            {
+                if (!additiveInputIDs.Contains(outputID))
+                {
+                    additiveInputIDs.Add(additiveInputID);
+                } 
+            } 
+        }
+
+
 
         /// <summary>
         /// Get the type of the process model
         /// </summary>
         /// <returns></returns>
-        public string[] GetInputIDs()
+        public string[] GetModelInputIDs()
         {
-            return inputIDs;
+            return modelInputIDs;
         }
+
+        /// <summary>
+        /// Get the DIs of any additive inputs that are included in model
+        /// </summary>
+        /// <returns>returns <c>null</c> if no additive inputs are defined.</returns>
+        public string[] GetAdditiveInputIDs()
+        {
+            if (additiveInputIDs != null)
+            {
+                return additiveInputIDs.ToArray();
+            }
+           return null;
+        }
+
+        public string[] GetBothKindsOfInputIDs()
+        {
+            List<string> ret = new List<string>();
+            if (modelInputIDs != null)
+            {
+                ret.AddRange(modelInputIDs);
+            }
+            if (additiveInputIDs!=null)
+            {
+                ret.AddRange(additiveInputIDs);
+            }
+            return ret.ToArray();
+        }
+
 
         public void SetOutputID(string outputID)
         {

@@ -55,13 +55,18 @@ namespace TimeSeriesAnalysis.Dynamic
         /// "Iterate()" expects
         /// </summary>
         /// <returns></returns>
-        string[] GetInputIDs();
+        string[] GetModelInputIDs();
+
+        string[] GetBothKindsOfInputIDs();
+
 
         string GetOutputID();
 
         void SetOutputID(string outputID);
 
         bool SetInputIDs(string[] manipulatedVariablesU_stringIDs, int? index=null);
+
+        void AddSignalToOutput(string additiveInputID);
 
 
         int GetLengthOfInputVector();
