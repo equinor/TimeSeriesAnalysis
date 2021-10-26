@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
+using System.Configuration;
+
 namespace TimeSeriesAnalysis.Utility
 {
 
@@ -20,7 +22,7 @@ namespace TimeSeriesAnalysis.Utility
     {
         const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data\";
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
-        const string plotlyPath = @"localhost\plotly\index.html";
+        const string plotlyURL = @"localhost\plotly\index.html";
 
         /// <summary>
         /// Time-series plotting in a pop-up browser window, based on plot.ly
@@ -51,7 +53,14 @@ namespace TimeSeriesAnalysis.Utility
             if (dataList.ElementAt(0).Count()==0)
                 return "";
 
-            string command = @"-r " + plotlyPath + "#";
+            var plotlyURLinternal = plotlyURL;
+            var plotlyULRAppConfig = ConfigurationManager.AppSettings.GetValues("PlotlyURL");
+            if (plotlyULRAppConfig != null)
+            {
+                plotlyURLinternal = plotlyULRAppConfig[0];
+            }
+
+            string command = @"-r " + plotlyURLinternal + "#";
             string plotURL = ""; ;
 
             var time = InitTimeList(t0, dT_s, dataList.ElementAt(0).Count());
@@ -77,9 +86,16 @@ namespace TimeSeriesAnalysis.Utility
             plotURL += CreateCommentStr(comment);
             if (caseName.Length > 0)
                 plotURL += ";casename:" + caseName;
+
+            var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
+            var chromePathInternal = chromePath;
+            if (chromePathAppConfig != null)
+            {
+                chromePathInternal = chromePathAppConfig[0];
+            }
             if (doStartChrome)
             {
-                Start(chromePath, command + plotURL, out bool returnVal);
+                Start(chromePathInternal, command + plotURL, out bool returnVal);
             }
             return plotURL;
 
@@ -126,248 +142,6 @@ namespace TimeSeriesAnalysis.Utility
             else
                 return ";comment=" + comment.Replace(" ", "_");
         }
-
-        /*
-        ///<summary>
-        /// (deprecated)Plot one vector X, where the sampling time interval is dT_s. 
-        ///</summary>
-        [Obsolete("Deprecated, please use FromList instead.")]
-        static public void One(double[] X, int dT_s, string tagName = "Var1", string comment=null, DateTime t0 = new DateTime())
-        {
-            tagName = PreprocessTagName(tagName);
-            var time = InitTimeList(t0,dT_s, X.Count());
-            // 
-
-            WriteSingleDataToCSV(time.ToArray(), X, tagName);
-
-            Start(chromePath,
-                @"-r "+ plotlyPath + "#"+tagName + CreateCommentStr(comment), out bool returnVal);
-        }
-
-        ///<summary>
-        ///(deprecated) Plot two vectors V1 and V2, where the sampling time interval is dT_s. 
-        ///</summary>
-        [Obsolete("Deprecated, please use FromList instead.")]
-        static public void Two(double[] V1, double[] V2, int dT_s, 
-            string tagNameV1 = "Var1",string tagNameV2 = "Var2",
-            bool plotAllVarsOnLeftYaxis=true, bool useSubplots= false, string comment = null, DateTime t0 = new DateTime())
-        {
-            tagNameV1 = PreprocessTagName(tagNameV1);
-            tagNameV2 = PreprocessTagName(tagNameV2);
-
-            var time = InitTimeList(t0, dT_s,V1.Count());
-            WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
-            WriteSingleDataToCSV(time.ToArray(), V2, tagNameV2);
-
-            if (useSubplots)
-            {
-                Start(chromePath,
-                  @"-r " + plotlyPath + "#" + tagNameV1 + ";y3=" + tagNameV2 + CreateCommentStr(comment), out bool returnVal);
-            }
-            else if (plotAllVarsOnLeftYaxis)
-            {
-                Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + CreateCommentStr(comment), out bool returnVal);
-            }
-            else
-            {
-                Start(chromePath,
-                     @"-r " + plotlyPath + "#" + tagNameV1 + ";y2=" + tagNameV2 + CreateCommentStr(comment), out bool returnVal);
-            }
-        }
-
-        ///<summary>
-        /// (deprecated)Plot three vectors V1,V2,V3 where the sampling time interval is dT_s. 
-        ///</summary>
-        [Obsolete("Deprecated, please use FromList instead.")]
-        static public void Three(double[] V1, double[] V2, double[] V3, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3",
-            bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            var time = InitTimeList(t0, dT_s, V1.Count());
-            
-            WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
-            WriteSingleDataToCSV(time.ToArray(), V2, tagNameV2);
-            WriteSingleDataToCSV(time.ToArray(), V3, tagNameV3);
-
-            if (useSubplots)
-            {
-                if (plotAllOnLeftYaxis)
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";y3=" + tagNameV3 + CreateCommentStr(comment), out bool returnVal);
-                }
-                else
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";y2=" + tagNameV2 + ";y3=" + tagNameV3 + CreateCommentStr(comment), out bool returnVal);
-                }
-            }
-            else
-            {
-
-                if (plotAllOnLeftYaxis)
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";" + tagNameV3 + CreateCommentStr(comment), out bool returnVal);
-                }
-                else
-                {
-                    Start(chromePath,
-                         @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";y2=" + tagNameV3 + CreateCommentStr(comment), out bool returnVal);
-                }
-            }
-        }
-
-
-
-        ///<summary>
-        /// (deprecated)Plot four vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
-        ///</summary>
-        [Obsolete("Deprecated, please use FromList instead.")]
-        static public void Four(double[] V1, double[] V2, double[] V3,double[] V4, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4",
-            bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            tagNameV1 = PreprocessTagName(tagNameV1);
-            tagNameV2 = PreprocessTagName(tagNameV2);
-            tagNameV3 = PreprocessTagName(tagNameV3);
-            tagNameV4 = PreprocessTagName(tagNameV4);
-
-            var time = InitTimeList(t0,dT_s, V1.Count());
-            // 
-            if (V1 == null)
-                return;
-            for (int i = 0; i < V1.Length; i++)
-            {
-                time.Add(time.Last().AddSeconds(dT_s));
-            }
-            WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
-            WriteSingleDataToCSV(time.ToArray(), V2, tagNameV2);
-            WriteSingleDataToCSV(time.ToArray(), V3, tagNameV3);
-            WriteSingleDataToCSV(time.ToArray(), V4, tagNameV4);
-
-
-            if (useSubplots)
-            {
-                if (plotAllOnLeftYaxis)
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";"+tagNameV3 
-                        +";y3=" + tagNameV4 + CreateCommentStr(comment), out bool returnVal);
-                }
-                else
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";y2=" + tagNameV2 + ";y3=" + tagNameV3 
-                        + ";y4=" + tagNameV3+";" + CreateCommentStr(comment), out bool returnVal);
-                }
-            }
-            else
-            {
-
-                if (plotAllOnLeftYaxis)
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";" + tagNameV3 +";" + tagNameV4 + CreateCommentStr(comment), out bool returnVal);
-                }
-                else
-                {
-                    Start(chromePath,
-                         @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";y2=" + tagNameV3 + ";" + tagNameV4 + CreateCommentStr(comment), out bool returnVal);
-                }
-            }
-        }
-
-        ///<summary>
-        /// (deprecated)Plot five vectors V1,V2,V3,V4,V5 where the sampling time interval is dT_s. 
-        ///</summary>
-        [Obsolete("Deprecated, please use FromList instead.")]
-        static public void Five(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
-            bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0= new DateTime())
-        {
-            tagNameV1 = PreprocessTagName(tagNameV1);
-            tagNameV2 = PreprocessTagName(tagNameV2);
-            tagNameV3 = PreprocessTagName(tagNameV3);
-            tagNameV4 = PreprocessTagName(tagNameV4);
-            tagNameV5 = PreprocessTagName(tagNameV5);
-
-            var time = InitTimeList(t0, dT_s, V1.Count());
-            // 
-            if (V1 == null)
-                return;
-            for (int i = 0; i < V1.Length; i++)
-            {
-                time.Add(time.Last().AddSeconds(dT_s));
-            }
-            WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
-            WriteSingleDataToCSV(time.ToArray(), V2, tagNameV2);
-            WriteSingleDataToCSV(time.ToArray(), V3, tagNameV3);
-            WriteSingleDataToCSV(time.ToArray(), V4, tagNameV4);
-            WriteSingleDataToCSV(time.ToArray(), V5, tagNameV5);
-
-            if (useSubplots)
-            {
-            }
-            else
-            {
-
-                if (plotAllOnLeftYaxis)
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";" + tagNameV3 + ";" + tagNameV4 +";"+tagNameV5+ CreateCommentStr(comment), out bool returnVal);
-                }
-            }
-        }
-
-        ///<summary>
-        /// (deprecated)Plot six vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
-        ///</summary>
-
-        [Obsolete("Deprecated, please use FromList instead.")]
-        static public void Six(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, double[] V6, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
-            string tagNameV6 = "Var6",
-            bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            tagNameV1 = PreprocessTagName(tagNameV1);
-            tagNameV2 = PreprocessTagName(tagNameV2);
-            tagNameV3 = PreprocessTagName(tagNameV3);
-            tagNameV4 = PreprocessTagName(tagNameV4);
-            tagNameV5 = PreprocessTagName(tagNameV5);
-            tagNameV6 = PreprocessTagName(tagNameV6);
-
-            var time = InitTimeList(t0, dT_s, V1.Count());
-            // 
-            if (V1 == null)
-                return;
-            for (int i = 0; i < V1.Length; i++)
-            {
-                time.Add(time.Last().AddSeconds(dT_s));
-            }
-            WriteSingleDataToCSV(time.ToArray(), V1, tagNameV1);
-            WriteSingleDataToCSV(time.ToArray(), V2, tagNameV2);
-            WriteSingleDataToCSV(time.ToArray(), V3, tagNameV3);
-            WriteSingleDataToCSV(time.ToArray(), V4, tagNameV4);
-            WriteSingleDataToCSV(time.ToArray(), V5, tagNameV5);
-            WriteSingleDataToCSV(time.ToArray(), V6, tagNameV6);
-
-            if (useSubplots)
-            {
-            }
-            else
-            {
-
-                if (plotAllOnLeftYaxis)
-                {
-                    Start(chromePath,
-                        @"-r " + plotlyPath + "#" + tagNameV1 + ";" + tagNameV2 + ";" + tagNameV3 + ";" + tagNameV4 
-                        + ";" + tagNameV5 + ";" + tagNameV6 +  CreateCommentStr(comment), out bool returnVal) ;
-                }
-            }
-        }
-        */
 
 
         /// <summary>
@@ -427,7 +201,15 @@ namespace TimeSeriesAnalysis.Utility
                     sb.Append("\r\n");
                 }
             }
-            string fileName = plotDataPath + tagName + ".csv";
+
+            var plotDataPathInternal = plotDataPath;
+            var plotDataPathAppConfig = ConfigurationManager.AppSettings.GetValues("PlotDataPath");
+            if (plotDataPathAppConfig != null)
+            {
+                plotDataPathInternal = plotDataPathAppConfig[0];
+            }
+
+            string fileName = plotDataPathInternal + tagName + ".csv";
             if (customPlotDataPath!=null)
             {
                 fileName = customPlotDataPath;
