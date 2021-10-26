@@ -23,14 +23,59 @@ namespace TimeSeriesAnalysis._Examples
         }
 
         [TestCase, Explicit]
-        #region CascadeControl
+
         public void CascadeControl()
         {
+            #region CascadeControl
+
+            var processParameters1 = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 5,//rapid
+                ProcessGains = new double[] { 1.1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 0,
+                Bias = 50
+            };
+
+            var processParameters2 = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 30,//slow
+                ProcessGains = new double[] { 0.9 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 5,
+                Bias = 50
+            };
+            var pidParameters1 = new PIDModelParameters()
+            {
+                Kp = 0.3,
+                Ti_s = 5 //rapid
+            };
+            var pidParameters2 = new PIDModelParameters()
+            {
+                Kp = 0.3,
+                Ti_s = 40 //slow
+            };
+            var processModel1
+                = new DefaultProcessModel(processParameters1, timeBase_s, "Process1");
+            var processModel2
+                = new DefaultProcessModel(processParameters2, timeBase_s, "Process2");
+            var pidModel1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
+            var pidModel2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
+
+            var sim = new ProcessSimulator(timeBase_s,
+                new List<ISimulatableModel> { processModel1, processModel2, pidModel1, pidModel2 });
 
 
 
+
+
+
+
+            #endregion
         }
-        #endregion
+
 
         [TestCase, Explicit]
         public void FeedForward_Part1()

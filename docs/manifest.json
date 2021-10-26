@@ -917,6 +917,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/ex_cascade.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ex_cascade.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/ex_feedforward_part1.png",
       "output": {
         "resource": {
@@ -1193,7 +1204,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_cascade.html",
-          "hash": "+ZXfbL3eN0jICwuTXwAZhIVDj7OQZ5w5rcAMaybMPWM="
+          "hash": "u3EfEx0HOZ+1ajMejbPuA9v7wM+poH0pHWPa7QVNEVM="
         }
       },
       "is_incremental": false,
@@ -1411,7 +1422,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 37,
-          "skipped_file_count": 36
+          "skipped_file_count": 34
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

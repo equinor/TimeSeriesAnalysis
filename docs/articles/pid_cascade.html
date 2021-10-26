@@ -79,7 +79,56 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="cascade-control">Cascade control</h1>
 
-</article>
+<p>This example considers a cascade control scheme consisting of a rapid inner loop and a slower outer loop.
+In a real-world case, the inner loop could for instance be a (rapid) valve flow-rate controller, while the outer loop could for instance be a level that depends on the flow rate.</p>
+<p><img src="images/ex_cascade.png" alt="Cascade system"></p>
+<pre><code class="lang-csharp" name="Example">
+var processParameters1 = new DefaultProcessModelParameters
+{
+    WasAbleToIdentify = true,
+    TimeConstant_s = 5,//rapid
+    ProcessGains = new double[] { 1.1 },
+    U0 = new double[] { 50 },
+    TimeDelay_s = 0,
+    Bias = 50
+};
+
+var processParameters2 = new DefaultProcessModelParameters
+{
+    WasAbleToIdentify = true,
+    TimeConstant_s = 30,//slow
+    ProcessGains = new double[] { 0.9 },
+    U0 = new double[] { 50 },
+    TimeDelay_s = 5,
+    Bias = 50
+};
+var pidParameters1 = new PIDModelParameters()
+{
+    Kp = 0.3,
+    Ti_s = 5 //rapid
+};
+var pidParameters2 = new PIDModelParameters()
+{
+    Kp = 0.3,
+    Ti_s = 40 //rapid
+};
+var processModel1
+    = new DefaultProcessModel(processParameters1, timeBase_s, &quot;Process1&quot;);
+var processModel2
+    = new DefaultProcessModel(processParameters2, timeBase_s, &quot;Process2&quot;);
+var pidModel1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
+var pidModel2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
+
+var sim = new ProcessSimulator(timeBase_s,
+    new List&lt;ISimulatableModel&gt; { processModel1, processModel2, pidModel1, pidModel2 });
+
+
+
+
+
+
+
+</code></pre></article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
