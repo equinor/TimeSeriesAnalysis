@@ -20,7 +20,7 @@ namespace TimeSeriesAnalysis.Utility
 
     public class Plot
     {
-        const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data\";
+        const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data";
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
 
@@ -154,9 +154,17 @@ namespace TimeSeriesAnalysis.Utility
         static private Process Start(string procname, string arguments, out bool returnValue)
         {
             Process proc = new Process();
-            proc.StartInfo.FileName = procname;
-            proc.StartInfo.Arguments = arguments;
-            returnValue = proc.Start();
+            try
+            {
+                proc.StartInfo.FileName = procname;
+                proc.StartInfo.Arguments = arguments;
+                returnValue = proc.Start();
+            }
+            catch (Exception e)
+            {
+                returnValue = false;
+                Shared.GetParserObj().AddError("Exception occurred staring "+ procname+" "+ e.ToString());
+            }
             return proc;
         }
         ///<summary>
@@ -208,6 +216,8 @@ namespace TimeSeriesAnalysis.Utility
             {
                 plotDataPathInternal = plotDataPathAppConfig[0];
             }
+            if (!plotDataPathInternal.EndsWith("\\"))
+                plotDataPathInternal += "\\";
 
             string fileName = plotDataPathInternal + tagName + ".csv";
             if (customPlotDataPath!=null)
@@ -219,8 +229,15 @@ namespace TimeSeriesAnalysis.Utility
             }
             using (StringToFileWriter writer = new StringToFileWriter(fileName))
             {
-                writer.Write(sb.ToString());
-                writer.Close();
+                try
+                {
+                    writer.Write(sb.ToString());
+                    writer.Close();
+                }
+                catch(Exception e)
+                {
+                    Shared.GetParserObj().AddError("Exception writing file:"+ fileName);
+                }
             }
 
         }
