@@ -8,12 +8,18 @@ Simulating multiple processes together is orchestrated by the class ``ProcessSim
 The intention is that the ``ProcessSimualtor`` class should be able to simulate any well-formulated
 combination of models that implement the ``ISimulateableModel`` (such as ``PIDModel`` and ``DefaultProcessModel``.)
 
-Before simulation the models must be connected using ``ProcessSimulator.ConnectModels()`` and input signals need to 
-be added using ``ProcessSimulator.AddSignal()``. Once all connections and signals are defined, the model combination 
+Connections can be done using
+- ``ConnectSignal`` connects a signal to a model
+- ``ConnectModels``: connects an output of one model to an input of another model
+- ``ConnectModelToOutput``: connects an output of model model to the *output*(additive) of another model
+
+External signals are defined using 
+ - ``AddSignal``: defines a new external signal that is to be included in the simulation
+
+Once all connections and signals are defined, the model combination 
 is then simulated by ``ProcessSimulator.Simulate()``.
 
 The entire simulated dataset is presented after simulation as an object of the ``TimeSeriesDataSet`` class. 
-
 
 ## Internal workings
 
