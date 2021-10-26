@@ -215,6 +215,32 @@ hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab et
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetFeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetFeedForward" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward">GetFeedForward()</h4>
+  <div class="markdown level1 summary"><p>Get the feedforward parameters of the controller</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PIDfeedForward GetFeedForward()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDfeedForward.html">PIDfeedForward</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetGainScehduling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetGainScehduling_TimeSeriesAnalysis_Dynamic_PIDgainScheduling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)">GetGainScehduling(PIDgainScheduling)</h4>
   <div class="markdown level1 summary"><p>Get the gain scheduling settings of the controller</p>
@@ -419,14 +445,14 @@ This function returns the &quot;raw&quot; u without tracking, which can be usefu
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double_System_Double_System_Nullable_System_Double__System_Nullable_System_Double__" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double})">Iterate(Double, Double, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double_System_Double_System_Nullable_System_Double__System_Nullable_System_Double__System_Nullable_System_Double__" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})">Iterate(Double, Double, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;)</h4>
   <div class="markdown level1 summary"><p>Calculates the next u[k] output of the controller given the most recent process value and setpoint value, and optionally also
 including the tracking signal (only applicable if this is a split range controller) and optionally the gainScehduling variable if controller is to gain-schedule</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double y_process_abs, double y_set_abs, double? uTrackSignal = null, double? gainSchedulingVariable = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Iterate(double y_process_abs, double y_set_abs, double? uTrackSignal = null, double? gainSchedulingVariable = null, double? feedForwardVariable = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -456,6 +482,11 @@ including the tracking signal (only applicable if this is a split range controll
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
         <td><span class="parametername">gainSchedulingVariable</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">feedForwardVariable</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -568,6 +599,35 @@ This method is useful for back-testing against historic data.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void SetAutoMode()</code></pre>
   </div>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetFeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetFeedForward_TimeSeriesAnalysis_Dynamic_PIDfeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward(TimeSeriesAnalysis.Dynamic.PIDfeedForward)">SetFeedForward(PIDfeedForward)</h4>
+  <div class="markdown level1 summary"><p>Set the feedforward of the controller
+Re-calling this setter to update</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetFeedForward(PIDfeedForward feedForwardObj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDfeedForward.html">PIDfeedForward</a></td>
+        <td><span class="parametername">feedForwardObj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetGainScehduling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling*"></a>

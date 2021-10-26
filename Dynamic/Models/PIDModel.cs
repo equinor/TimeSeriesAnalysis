@@ -14,7 +14,8 @@ namespace TimeSeriesAnalysis.Dynamic
         Y_meas =0,
         Y_setpoint=1,
         Tracking=2,
-        GainScheduling=3
+        GainScheduling=3,
+        FeedForward=4
     }
 
     /// <summary>
@@ -45,6 +46,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             pid.SetGainScehduling(pidParameters.GainScheduling);
             pid.SetAntiSurgeParams(pidParameters.AntiSugeParams);
+            pid.SetFeedForward(pidParameters.FeedForward);
         }
 
         /// <summary>
@@ -91,6 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double y_set_abs = inputs[(int)PIDModelInputsIdx.Y_setpoint];
             double? uTrackSignal = null;
             double? gainSchedulingVariable = null;
+            double? feedForwardVariable = null;
             if (inputs.Length >= 3)
             {
                 double trackingSignal = inputs[(int)PIDModelInputsIdx.Tracking];
@@ -103,7 +106,12 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 gainSchedulingVariable = inputs[(int)PIDModelInputsIdx.GainScheduling];
             }
-            return pid.Iterate(y_process_abs,y_set_abs, uTrackSignal, gainSchedulingVariable);
+            if (inputs.Length >= 5)
+            {
+                feedForwardVariable = inputs[(int)PIDModelInputsIdx.FeedForward];
+            }
+
+            return pid.Iterate(y_process_abs,y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable);
         }
 
         /// <summary>

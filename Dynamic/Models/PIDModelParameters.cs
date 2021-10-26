@@ -33,6 +33,11 @@ namespace TimeSeriesAnalysis.Dynamic
         public PIDgainScheduling GainScheduling { get; set; } = null;
 
         /// <summary>
+        /// Feed-forward parameters object. This is optional, set to null when feedforward is not in use.
+        /// </summary>
+        public PIDfeedForward FeedForward { get; set; } = null;
+
+        /// <summary>
         /// PID-scaling object. This is optional, set to null to use unscaled PID.
         /// </summary>
         public PIDscaling Scaling { get; set; }

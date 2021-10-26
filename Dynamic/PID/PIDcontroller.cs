@@ -52,24 +52,16 @@ namespace TimeSeriesAnalysis.Dynamic
         private PIDgainScheduling gsObj = null;
         private LowPass yFilt1,yFilt2;
 
-
-        // feed-forward
-        private bool isFFActive = false; // if true, then the feed-forward term is added to the output
-        private int FFHP_filter_order = 1; // feed-forward high pass filter order (0, 1 or 2)
-        private int FFLP_filter_order = 1; // feed-forward high pass filter order (0, 1 or 2)
-        private double FF_LP_Tc_s=0; // feed-forward low-pass time constant in seconds
-        private double FF_HP_Tc_s=0; // feed-forward high-pass time constant in seconds
-        private double FF_Gain = 0; // feed-forward gain
-
+        private PIDfeedForward ffObj;
         private LowPass ffLP; // feed-forward low pass filter object
-        private HighPass ffHP; // feed-forward high pass filter object
+        private LowPass ffHP; // feed-forward high pass filter object
         private bool isFFActive_prev = false;//previous value of the feed forward active signal
-    
+        private double u_ff_prev;
+
 
         // double anti-surge related:
         private PIDAntiSurgeParams antiSurgeParms=null;
         private double u_ff_antisurge_prev;
-
 
         /// <summary>
         /// Constructor
@@ -100,6 +92,27 @@ namespace TimeSeriesAnalysis.Dynamic
             this.TimeBase_s = TimeBase_s;
             this.yFilt1 = new LowPass(TimeBase_s);
             this.yFilt2 = new LowPass(TimeBase_s);
+
+            this.ffLP = new LowPass(TimeBase_s);
+            this.ffHP = new LowPass(TimeBase_s);
+            
+        }
+
+        /// <summary>
+        /// Set the feedforward of the controller 
+        /// Re-calling this setter to update
+        /// </summary>
+        public void SetFeedForward(PIDfeedForward feedForwardObj)
+        {
+            this.ffObj = feedForwardObj;
+        }
+
+        /// <summary>
+        /// Get the feedforward parameters of the controller 
+        /// </summary>
+        public PIDfeedForward GetFeedForward()
+        {
+            return this.ffObj ;
         }
 
         /// <summary>
@@ -279,7 +292,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Calculates the next u[k] output of the controller given the most recent process value and setpoint value, and optionally also 
         /// including the tracking signal (only applicable if this is a split range controller) and optionally the gainScehduling variable if controller is to gain-schedule
         /// </summary>
-        public double Iterate(double y_process_abs, double y_set_abs, double? uTrackSignal=null, double? gainSchedulingVariable=null)
+        public double Iterate(double y_process_abs, double y_set_abs, double? uTrackSignal=null, double? gainSchedulingVariable=null,
+            double? feedForwardVariable=null)
         {
             double u;
 
@@ -331,37 +345,45 @@ namespace TimeSeriesAnalysis.Dynamic
 
             ///////////////////////////////////////////////////////////
             /// general feed-forward
-            if (isFFActive && gainSchedulingVariable.HasValue)
+            if (ffObj != null)
             {
-                double u_ff = 0;
-                double ff_signal_highpass = ffHP.Filter(gainSchedulingVariable.Value,FF_HP_Tc_s,FFHP_filter_order);
-                double ff_signal_steady = ffLP.Filter(gainSchedulingVariable.Value,FF_LP_Tc_s, FFLP_filter_order);
-
-                //*"Band-pass type: feed forward changes between the two timeconstants of the two filters *)	
-                if (FF_LP_Tc_s > 0 && FF_HP_Tc_s > 0)
+                if (ffObj.isFFActive && feedForwardVariable.HasValue)
                 {
-                    u_ff = FF_Gain * (ff_signal_highpass - ff_signal_steady);
+                    double u_ff = 0;
+                    double ff_signal_1 = ffHP.Filter(feedForwardVariable.Value,
+                        ffObj.FF_HP_Tc_s, ffObj.FFHP_filter_order);
+                    double ff_signal_2 = ffLP.Filter(feedForwardVariable.Value,
+                        ffObj.FF_LP_Tc_s, ffObj.FFLP_filter_order);
+
+                    //*"Band-pass type: feed forward changes between the two timeconstants of the two filters *)	
+                    if (ffObj.FF_LP_Tc_s > 0 && ffObj.FF_HP_Tc_s > 0)
+                    {
+                        u_ff = ffObj.FF_Gain * (ff_signal_1 - ff_signal_2);
+                    }
+                    else
+                    {
+                        u_ff = ffObj.FF_Gain * ff_signal_1;
+                    }
+                    // bumpless transfer when activating feed-forward
+                    if (!isFFActive_prev)
+                    {
+                       u_ff_prev  = u_ff;// moves u to uFF on first step of isFFactive or on startup
+                    }
+                    else
+                    {
+                        u = u + (u_ff- u_ff_prev);
+                    }
+                    u_ff_prev = u_ff;
+                    isFFActive_prev = true;
                 }
                 else
                 {
-                    u_ff= FF_Gain * ff_signal_highpass;
+                    isFFActive_prev = false;
                 }
-
-                // bumpless transfer when activating feed-forward
-                if (!isFFActive_prev)
-                {
-                    u = u_ff;// moves u to uFF on first step of isFFactive or on startup
-                }
-                else
-                {
-                    u = u + u_ff;
-                }
-                isFFActive_prev = true;
             }
-
             ///////////////////////////////////////////////////////////
             // anti-surge-specific feed-forward
-                if (antiSurgeParms != null)
+            if (antiSurgeParms != null)
             {
                 double u_ff_antisurge = 0;
 

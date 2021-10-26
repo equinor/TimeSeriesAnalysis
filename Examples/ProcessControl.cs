@@ -16,6 +16,12 @@ namespace TimeSeriesAnalysis._Examples
     {
         int timeBase_s = 1;
 
+        [SetUp]
+        public void SetUp()
+        {
+            Shared.GetParserObj().EnableDebugOutput();
+        }
+
         [TestCase, Explicit]
         #region CascadeControl
         public void CascadeControl()
@@ -81,7 +87,7 @@ namespace TimeSeriesAnalysis._Examples
                     dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
                     dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
                     },
-                new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
+                new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
 
             #endregion
         }
@@ -114,7 +120,16 @@ namespace TimeSeriesAnalysis._Examples
             var pidParameters = new PIDModelParameters()
             {
                 Kp = 0.3,
-                Ti_s = 20
+                Ti_s = 20,
+                FeedForward = new PIDfeedForward()
+                {
+                    isFFActive = true,
+                    FF_Gain = -0.7,
+                    FFHP_filter_order = 1,
+                    FFLP_filter_order = 1,
+                    FF_HP_Tc_s = 60,
+                    FF_LP_Tc_s = 0//120
+                }
             };
 
             var processModel
@@ -132,8 +147,9 @@ namespace TimeSeriesAnalysis._Examples
 
             simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(60, 600));
-            simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+            string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
                 TimeSeriesCreator.Step(300, 600, 25, 0));
+            simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PIDModelInputsIdx.FeedForward);
 
             var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
 
@@ -144,9 +160,9 @@ namespace TimeSeriesAnalysis._Examples
                     dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
                     dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
                     },
-                new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
+                new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, 
+                timeBase_s, "FeedForwardEx2");
             #endregion
-
         }
 
 

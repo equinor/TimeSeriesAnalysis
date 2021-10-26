@@ -81,6 +81,10 @@
 
 <p><img src="images/pid_feedforward.png" alt="pid-feedforward">.</p>
 <h2 id="simulating-pid-control-against-an-external-disturbance-without-feed-forward">Simulating pid-control against an external disturbance <em>without</em> feed-forward</h2>
+<p>The first part of this example shows the performance of the process and PID-controller when
+a step change occurs in the disturbance signal.
+Note that while the PID-controller is able to stabilize the process, it does create significant
+offset in <code>y</code>, it falls to about <code>y=46.5</code> at its lowest.</p>
 <pre><code class="lang-csharp" name="Example">var processParameters = new DefaultProcessModelParameters
 {
     WasAbleToIdentify = true,
@@ -132,9 +136,17 @@ Plot.FromList(new List&lt;double[]&gt;
         dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
         dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
         },
-    new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, timeBase_s, &quot;FeedForwardEx1&quot;);
+    new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist[right]&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, timeBase_s, &quot;FeedForwardEx1&quot;);
 
-</code></pre><h2 id="adding-feed-forward-to-the-simulation">Adding feed-forward to the simulation</h2>
+</code></pre>
+<p><img src="images/ex_feedforward_part1.png" alt="Example 5 result"></p>
+<h2 id="adding-feed-forward-to-the-simulation">Adding feed-forward to the simulation</h2>
+<p>In the second part of this example a feedfoward term is added to the PID-controller.
+The <strong>input</strong> to the disturbance process is assumed to be measured and is used as the feed-forward variable.
+Since this variable moves slightly in advance of the disturbance as seen on <code>y</code>  due to a time delay and time constant,
+a feed-forward from this variable should improve performance.
+As seen, the offset between <code>y</code> and <code>y_set</code> is less during the same disturbance step as in the previous part of this example,
+with <code>y</code> falling to just <code> y=50.4</code> at its lowest, but at the expense of a slight <code>overshoot</code> in <code>y</code>.</p>
 <pre><code class="lang-csharp" name="Example">
 var processParameters = new DefaultProcessModelParameters
 {
@@ -157,7 +169,16 @@ var disturbanceParameters = new DefaultProcessModelParameters
 var pidParameters = new PIDModelParameters()
 {
     Kp = 0.3,
-    Ti_s = 20
+    Ti_s = 20,
+    FeedForward = new PIDfeedForward()
+    {
+        isFFActive = true,
+        FF_Gain = -0.7,
+        FFHP_filter_order = 1,
+        FFLP_filter_order = 1,
+        FF_HP_Tc_s = 60,
+        FF_LP_Tc_s = 0//120
+    }
 };
 
 var processModel
@@ -175,8 +196,9 @@ simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
 simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
     TimeSeriesCreator.Constant(60, 600));
-simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
     TimeSeriesCreator.Step(300, 600, 25, 0));
+simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PIDModelInputsIdx.FeedForward);
 
 var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
 
@@ -187,8 +209,11 @@ Plot.FromList(new List&lt;double[]&gt;
         dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
         dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
         },
-    new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, timeBase_s, &quot;FeedForwardEx1&quot;);
-</code></pre></article>
+    new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist[right]&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, 
+    timeBase_s, &quot;FeedForwardEx2&quot;);
+</code></pre>
+<p><img src="images/ex_feedforward_part2.png" alt="Example 5 result"></p>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

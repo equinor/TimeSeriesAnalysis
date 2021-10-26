@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDModelParameters.html",
-          "hash": "6YbLW8GZ1oJ88T+aMDNO8vFJrSrRsE+x/LFl1GiLIMs="
+          "hash": "3IRiiw1aIt86Gg7bXpROKNPNxDX4sB5o3OkPZnpDfHk="
         }
       },
       "is_incremental": false,
@@ -222,7 +222,19 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html",
-          "hash": "BsiEdFk8k8z2NdwzLiNi+gd1zQRp4tI9xq8+lfDCuP0="
+          "hash": "C2Fd/wTLg97XzJ3MJ2VSR0Z3TVbfiCWwlyIldLjxOgQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html",
+          "hash": "aalEYF06o+r1QVFa9veSm6fO9C4dFWreeHmYDoF+Yic="
         }
       },
       "is_incremental": false,
@@ -234,7 +246,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html",
-          "hash": "cXQJREl2qJEa8wmIKvD2DYQaorZI5kYQhs/71lhcF7k="
+          "hash": "e8iIQOD/ARmUYQ7WqG/xrAj7rbKgsbam/Atr5s/wd4U="
         }
       },
       "is_incremental": false,
@@ -390,7 +402,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "ARvp3hg84BxQwyByAm/Sappuj9j5PDQpedU2IbLP8OE="
+          "hash": "s0MvN6ZfhOKTiwlA/RQbNZUYHQOqMkYZdptdhIa0IUE="
         }
       },
       "is_incremental": false,
@@ -642,7 +654,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "7EPtiN4kZ5vdqy92gczKfOx2K2jdq3xcHD+lvpBMZzw="
+          "hash": "g/3GEx30T6VltqKOyBG5bmWVUrQRoCCDYjz5YSGf2Vw="
         }
       },
       "is_incremental": false,
@@ -898,6 +910,28 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/ex6_results.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ex_feedforward_part1.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ex_feedforward_part1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ex_feedforward_part2.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ex_feedforward_part2.png"
         }
       },
       "is_incremental": false,
@@ -1171,7 +1205,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_feedforward.html",
-          "hash": "zF+yKWL4mowihOVWkAFvis7aWlBPcSuDEduI8ysAf2I="
+          "hash": "mG40xO03r+j3whB5VU00JWP/O5j79RL+6X45o0rp6VA="
         }
       },
       "is_incremental": false,
@@ -1377,13 +1411,13 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 37,
-          "skipped_file_count": 37
+          "skipped_file_count": 36
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 51,
-          "skipped_file_count": 51
+          "total_file_count": 52,
+          "skipped_file_count": 52
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

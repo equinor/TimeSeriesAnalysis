@@ -54,14 +54,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="values"></param>
         /// <param name="index">the index of the signal, this is only needed if this is an input to a multip-input model</param>
 
-        public bool AddSignal(ISimulatableModel model, SignalType type, double[] values, int index = 0)
+        public string AddSignal(ISimulatableModel model, SignalType type, double[] values, int index = 0)
         {
             ProcessModelType modelType = model.GetProcessModelType();
             string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
             if (signalID == null)
             {
                 Shared.GetParserObj().AddError("ProcessSimulator.AddSignal was unable to add signal.");
-                return false;
+                return null;
             }
             if (type == SignalType.Distubance_D && modelType == ProcessModelType.SubProcess)
             {
@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 model.AddSignalToOutput(signalID);
 
-                return true;
+                return null;
             }
             else if (type == SignalType.External_U && modelType == ProcessModelType.SubProcess)
             {
@@ -91,18 +91,31 @@ namespace TimeSeriesAnalysis.Dynamic
                     newInputIDs[index] = signalID;
                 }
                 model.SetInputIDs(newInputIDs.ToArray());
-                return true;
+                return signalID;
             }
             else if (type == SignalType.Setpoint_Yset && modelType == ProcessModelType.PID)
             {
                 model.SetInputIDs(new string[] { signalID }, (int)PIDModelInputsIdx.Y_setpoint);
-                return true;
+                return signalID;
             }
             else
             {
                 Shared.GetParserObj().AddError("ProcessSimulator.AddSignal was unable to add signal.");
-                return false;
+                return null;
             }
+        }
+
+        /// <summary>
+        /// Connect an existing signal with a given signalID to a new model
+        /// </summary>
+        /// <param name="signalID"></param>
+        /// <param name="model"></param>
+        /// <param name="idx"></param>
+        /// <returns></returns>
+        public bool ConnectSignal(string signalID, ISimulatableModel model, int idx)
+        {
+            model.SetInputIDs(new string[] { signalID }, idx);
+            return true;
         }
 
         /// <summary>
@@ -128,7 +141,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex=null)
         {
-           
             ProcessModelType upstreamType = upstreamModel.GetProcessModelType();
             ProcessModelType downstreamType = downstreamModel.GetProcessModelType();
             string outputId = upstreamModel.GetID();

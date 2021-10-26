@@ -14,6 +14,13 @@ namespace TimeSeriesAnalysis._Examples
     [TestFixture]
     class _GettingStarted
     {
+
+        [SetUp]
+        public void SetUp()
+        {
+            Shared.GetParserObj().EnableDebugOutput();
+        }
+
         [Test, Explicit]
         #region ex_1
         public void Ex1_hello_world()

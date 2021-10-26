@@ -25,25 +25,87 @@ namespace TimeSeriesAnalysis.Dynamic
 
         double TimeStep_s;
 
-        public bool GSActive_b =  false;//if TRUE then the gainScheduling variable and gain-scheduling inputs are used
-        double GSVariableLP_Tc_s ;//time constant of low-pass filtering of the gain-scheduling variable
+        /// <summary>
+        /// if TRUE then the gainScheduling variable and gain-scheduling inputs are used
+        /// </summary>
+        public bool GSActive_b =  false;
 
-        public double GS_x_Min; //Gain-scheduling: x minimum x=GsVariable
-        public double GS_x_1;   //Gain-scheduling: x1,x=GsVariable
-        public double GS_x_2;  //Gain-scheduling: x2,x=GsVariable
-        public double GS_x_Max;   //Gain-scheduling: x maxiumum, x = GsVariable
+        /// <summary>
+        /// time constant of low-pass filtering of the gain-scheduling variable
+        /// </summary>
+        double GSVariableLP_Tc_s ;
 
-        public double GS_Kp_Min; //Gain-scheduling: KP @ GsVariable=GS_x_Min
-        public double GS_Kp_1; //Gain-scheduling: KP @ GsVariable=GS_x_1
-        public double GS_Kp_2; //Gain-scheduling: KP @ GsVariable=GS_x_2
-        public double GS_Kp_Max;   //Gain-scheduling: KP @ GsVariable=GS_x_Max
+        /// <summary>
+        /// Gain-sheduling(x) variable minimum 
+        /// </summary>
+        public double GS_x_Min;
 
-        public bool GSActiveTi_b = false; //if TRUE then the gainScheduling is also done on Ti
-        public double GS_Ti_Min;// Gain-scheduling: Ti @ GsVariable=GS_x_Min
-        public double GS_Ti_1;//  Gain-scheduling: Ti @ GsVariable=GS_x_1
-        public double GS_Ti_2;//     Gain-scheduling: Ti @ GsVariable=GS_x_2
-        public double GS_Ti_Max;//     Gain-scheduling: Ti @ GsVariable=GS_x_Max
+        /// <summary>
+        /// Gain-sheduling(x) variable x1,x=GsVariable
+        /// </summary>
+        public double GS_x_1;
 
+        /// <summary>
+        /// Gain-sheduling(x) variable  x2,x=GsVariable
+        /// </summary>
+        public double GS_x_2;
+
+        /// <summary>
+        /// Gain-sheduling(x) variable maximum 
+        /// </summary>
+        public double GS_x_Max;
+
+        /// <summary>
+        /// KP(proportional term)  @ GsVariable=GS_x_Min
+        /// </summary>
+        public double GS_Kp_Min;
+
+        /// <summary>
+        ///  KP(proportional term)  @ GsVariable=GS_x_1
+        /// </summary>
+        public double GS_Kp_1;
+
+        /// <summary>
+        /// KP(proportional term)  @ GsVariable=GS_x_2
+        /// </summary>
+        public double GS_Kp_2;
+
+        /// <summary>
+        /// KP(proportional term) @ GsVariable=GS_x_Max
+        /// </summary>
+        public double GS_Kp_Max;
+
+        /// <summary>
+        /// if TRUE then the gainScheduling is also done on Ti
+        /// </summary>
+        public bool GSActiveTi_b = false;
+
+        /// <summary>
+        /// Ti(integral effect) @ GsVariable=GS_x_Min
+        /// </summary>
+        public double GS_Ti_Min;
+
+        /// <summary>
+        /// Ti(integral effect) @ GsVariable=GS_x_1
+        /// </summary>
+        public double GS_Ti_1;
+
+        /// <summary>
+        /// Ti(integral effect) @ GsVariable=GS_x_2
+        /// </summary>
+        public double GS_Ti_2;
+
+        /// <summary>
+        /// Ti(integral effect) @ GsVariable=GS_x_Max
+        /// </summary>
+        public double GS_Ti_Max;
+
+        /// <summary>
+        /// Get the linear interpolated Kp and Ti for a given value of the gainSchedulingVariable
+        /// </summary>
+        /// <param name="gainSchedulingVariable"></param>
+        /// <param name="Kp"></param>
+        /// <param name="Ti"></param>
         internal void GetKpandTi(double gainSchedulingVariable, out double? Kp, out double? Ti)
         {
             double gsVaribleFiltered = gainSchedulingVariable;

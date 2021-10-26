@@ -72,25 +72,21 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     modelInputIDs[idx.Value] = U_stringIDs[0];
                 }
-                else // append the inputIDs string(), typically for output signals
+                else // append the inputIDs string()
                 {
-                    /*
-                       var oldInputIds = modelInputIDs;
-                       modelInputIDs = new string[idx.Value + 1];
-                       int k = 0;
-                       foreach (string oldId in oldInputIds)
-                       {
-                           modelInputIDs[k] = oldId;
-                           k++;
-                       }
-                       modelInputIDs[idx.Value] = U_stringIDs[0];
-                       if (U_stringIDs.Length == 1)
-                           return true;
-                       else
-                           return false;//unsupported.
-                       */
-                   // return false;
-
+                    var oldInputIds = modelInputIDs;
+                    modelInputIDs = new string[idx.Value + 1];
+                    int k = 0;
+                    foreach (string oldId in oldInputIds)
+                    {
+                        modelInputIDs[k] = oldId;
+                        k++;
+                    }
+                    modelInputIDs[idx.Value] = U_stringIDs[0];
+                    if (U_stringIDs.Length == 1)
+                        return true;
+                    else
+                        return false;//unsupported
                 }
             }
             return true;
