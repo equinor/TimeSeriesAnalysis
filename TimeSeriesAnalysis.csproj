@@ -87,6 +87,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="www\plotly\CsvToTable.js">
       <Pack>True</Pack>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -115,6 +116,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
