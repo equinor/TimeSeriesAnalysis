@@ -86,7 +86,7 @@ In a real-world case, the inner loop could for instance be a (rapid) valve flow-
 var processParameters1 = new DefaultProcessModelParameters
 {
     WasAbleToIdentify = true,
-    TimeConstant_s = 5,//rapid
+    TimeConstant_s = 2,//rapid
     ProcessGains = new double[] { 1.1 },
     U0 = new double[] { 50 },
     TimeDelay_s = 0,
@@ -105,12 +105,12 @@ var processParameters2 = new DefaultProcessModelParameters
 var pidParameters1 = new PIDModelParameters()
 {
     Kp = 0.3,
-    Ti_s = 5 //rapid
+    Ti_s = 2 //rapid
 };
 var pidParameters2 = new PIDModelParameters()
 {
     Kp = 0.3,
-    Ti_s = 40 //rapid
+    Ti_s = 40 //slow
 };
 var processModel1
     = new DefaultProcessModel(processParameters1, timeBase_s, &quot;Process1&quot;);
@@ -122,11 +122,17 @@ var pidModel2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
 var sim = new ProcessSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { processModel1, processModel2, pidModel1, pidModel2 });
 
+sim.ConnectModels(processModel1, processModel2);
+sim.ConnectModels(processModel1, pidModel1);
+sim.ConnectModels(pidModel1, processModel1);
+sim.ConnectModels(processModel2, pidModel2);
+sim.ConnectModels(pidModel2, pidModel1,(int)PIDModelInputsIdx.Y_setpoint);
 
+sim.AddSignal(pidModel2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(1,10,timeBase_s,N));
+sim.AddSignal(processModel2, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
 
-
-
-
+var isOK = sim.Simulate(out var simResult);
 
 </code></pre></article>
           </div>

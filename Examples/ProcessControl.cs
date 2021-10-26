@@ -26,12 +26,13 @@ namespace TimeSeriesAnalysis._Examples
 
         public void CascadeControl()
         {
+            int N = 600;
             #region CascadeControl
 
             var processParameters1 = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
-                TimeConstant_s = 5,//rapid
+                TimeConstant_s = 2,//rapid
                 ProcessGains = new double[] { 1.1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 0,
@@ -50,7 +51,7 @@ namespace TimeSeriesAnalysis._Examples
             var pidParameters1 = new PIDModelParameters()
             {
                 Kp = 0.3,
-                Ti_s = 5 //rapid
+                Ti_s = 2 //rapid
             };
             var pidParameters2 = new PIDModelParameters()
             {
@@ -67,13 +68,21 @@ namespace TimeSeriesAnalysis._Examples
             var sim = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, pidModel1, pidModel2 });
 
+            sim.ConnectModels(processModel1, processModel2);
+            sim.ConnectModels(processModel1, pidModel1);
+            sim.ConnectModels(pidModel1, processModel1);
+            sim.ConnectModels(processModel2, pidModel2);
+            sim.ConnectModels(pidModel2, pidModel1,(int)PIDModelInputsIdx.Y_setpoint);
 
+            sim.AddSignal(pidModel2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+            sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(1,10,timeBase_s,N));
+            sim.AddSignal(processModel2, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
 
-
-
-
+            var isOK = sim.Simulate(out var simResult);
 
             #endregion
+
+            Assert.IsTrue(isOK);
         }
 
 
@@ -359,7 +368,7 @@ namespace TimeSeriesAnalysis._Examples
             #endregion
         }
 
-
+        /*
         [TestCase, Explicit]
         #region InputFiltering
         public void InputFiltering()
@@ -395,7 +404,7 @@ namespace TimeSeriesAnalysis._Examples
 
         }
         #endregion
-
+        */
 
 
 

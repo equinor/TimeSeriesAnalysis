@@ -1093,6 +1093,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tsa_mindmap.drawio.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tsa_mindmap.drawio.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/unit_test.png",
       "output": {
         "resource": {
@@ -1204,7 +1215,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_cascade.html",
-          "hash": "u3EfEx0HOZ+1ajMejbPuA9v7wM+poH0pHWPa7QVNEVM="
+          "hash": "xcytLOe4oYmv2rNgBmToAAo7bzP42utkihy+5nRzFG4="
         }
       },
       "is_incremental": false,

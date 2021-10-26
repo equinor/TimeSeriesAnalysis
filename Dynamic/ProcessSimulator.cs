@@ -173,19 +173,23 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
                 }// process output-> connects to process input of another process
-                else if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.SubProcess)
+                /*else if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.SubProcess)
                 {
                     var isOk = downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
                     if (!isOk)
                     {
-                        Shared.GetParserObj().AddError("ProessSimulator.ConnectModels() error connecting:" + outputId);
+                        Shared.GetParserObj().AddError("ProcessSimulator.ConnectModels() error connecting:" + outputId);
                         return false;
                     }
-                }
-                else
+                }*/
+                else 
                 {
-                    Shared.GetParserObj().AddError("ProessSimulator.ConnectModels() tried to connect an unimplemented model type.");
-                    return false;
+                    var isOk = downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
+                    if (!isOk)
+                    {
+                        Shared.GetParserObj().AddError("ProcessSimulator.ConnectModels() error connecting:" + outputId);
+                        return false;
+                    }
                 }
             }
             connections.AddConnection(upstreamModel.GetID(), downstreamModel.GetID());
@@ -378,9 +382,13 @@ namespace TimeSeriesAnalysis.Dynamic
                         simSignalValueDict.Add(yMeasID, ySetPoint0);
                     }
                 }
+                else if (simSignalValueDict.Keys.Contains(ySetpointID))
+                { 
+                    //OK!
+                }
                 else
                 {//TODO: extend to simulate cascade or other scheme where setpoint is an input??
-                    Shared.GetParserObj().AddError("PID-controller has no setpoint given:"+model.GetID());
+                    Shared.GetParserObj().AddError("PID-controller has no setpoint given:" + model.GetID());
                     return false;
                 }
             }

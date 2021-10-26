@@ -106,6 +106,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>returns the string of sorted model IDs, the order in which modelDict models are to be run</returns>
         public List<string> DetermineCalculationOrderOfModels()
         {
+            // TODO: if controllers are in cascade, then calculation order must be to start with the outermost loop and go inwards!
+
             List<string> unprocessedModels = modelDict.Keys.ToList();
             List<string> orderedModels = new List<string>();
             List<string> pidModels = new List<string>();
@@ -212,7 +214,6 @@ namespace TimeSeriesAnalysis.Dynamic
                             modelsIDLeftToParse.Add(ID);
                         }
                     }
-         
                     // add model if it only depends on already solved models.
                     if (orderedModels.Contains(currentModelID))
                     {
@@ -224,10 +225,6 @@ namespace TimeSeriesAnalysis.Dynamic
                         unprocessedModels.Remove(currentModelID);
                         modelsIDLeftToParse.Remove(currentModelID);
                     }
-
-                  //  if (downstreamIDs.Contains(pidModelID))
-                  //      pidLoopFinished = true;
- 
                 }
                 // remove modelId from "left to parse" stack if we successfully traversed it.
                 if (pidLoopCompletedOk)
