@@ -53,7 +53,16 @@ namespace TimeSeriesAnalysis.Utility
             if (dataList.ElementAt(0).Count()==0)
                 return "";
 
-            var plotlyURLinternal = plotlyURL;
+
+            var isPlotEnabled = ConfigurationManager.AppSettings.GetValues("PlotsEnabled");
+            if (isPlotEnabled != null)
+            {
+                var str = isPlotEnabled[0].ToLower().Trim();
+                if (str == "false")
+                    return "";
+            }
+
+                var plotlyURLinternal = plotlyURL;
             var plotlyULRAppConfig = ConfigurationManager.AppSettings.GetValues("PlotlyURL");
             if (plotlyULRAppConfig != null)
             {
