@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>min/max select and tracking | TimeSeriesAnalysis reference documentation </title>
+    <title>Enum SelectType
+   | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="min/max select and tracking | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Enum SelectType
+   | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -76,71 +78,44 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-<h1 id="minmax-select-and-tracking">min/max select and tracking</h1>
-
-<div class="NOTE">
-<h5>Note</h5>
-<p>Work-in-progress, this article is currently a stub.
-Tracking signals need to be added, the treatment of tracking signals inside
-pidcontroller.cs needs to be reviewed, and the how to initalize a system that
-included select-blocks need to be reviewed.</p>
-</div>
-<p><img src="images/pid_select.png" alt="pid-tracking">.</p>
-<pre><code class="lang-csharp" name="Example">
-var processParameters = new DefaultProcessModelParameters
-{
-    WasAbleToIdentify = true,
-    TimeConstant_s = 30,
-    ProcessGains = new double[] { 1 },
-    U0 = new double[] { 50 },
-    TimeDelay_s = 5,
-    Bias = 50
-};
-var pidParameters1 = new PIDModelParameters()
-{
-    Kp = 3, //high-gain
-    Ti_s = 20
-};
-var pidParameters2 = new PIDModelParameters()
-{
-    Kp = 0.5,//low-gain
-    Ti_s = 20 
-};
-var process
-    = new DefaultProcessModel(processParameters, timeBase_s, &quot;Process&quot;);
-var pid1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
-var pid2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
-var minSelect = new Select(SelectType.MIN,&quot;minSelect&quot;);
-
-var sim = new ProcessSimulator(timeBase_s,
-    new List&lt;ISimulatableModel&gt; { process, pid1, pid2,minSelect });
-
-// tracking and min select-related
-sim.ConnectModels(process, pid1);
-sim.ConnectModels(process, pid2);
-sim.ConnectModels(pid1, minSelect,0);
-sim.ConnectModels(pid2, minSelect,1);
-string selectSignalID = sim.ConnectModels(minSelect, process);
-sim.ConnectSignal(selectSignalID,pid1, (int)PIDModelInputsIdx.Tracking);
-sim.ConnectSignal(selectSignalID,pid2, (int)PIDModelInputsIdx.Tracking);
-
-sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
-
-var isOK = sim.Simulate(out var simResult);
-
-Plot.FromList(new List&lt;double[]&gt;
-    {
-    simResult.GetValues(process.GetID(),SignalType.Output_Y_sim),
-    simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
-    simResult.GetValues(pid1.GetID(),SignalType.PID_U),
-    simResult.GetValues(pid2.GetID(),SignalType.PID_U),
-    simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),
-    },
-new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y1=y_set&quot;, &quot;y3=u_pid1&quot;, &quot;y3=u_pid2&quot;,&quot;y3=u_select&quot; }, timeBase_s, &quot;MinSelectEx&quot;);
-</code></pre></article>
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.SelectType">
+  
+  
+  <h1 id="TimeSeriesAnalysis_Dynamic_SelectType" data-uid="TimeSeriesAnalysis.Dynamic.SelectType" class="text-break">Enum SelectType
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
+  <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
+  <h5 id="TimeSeriesAnalysis_Dynamic_SelectType_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum SelectType</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_SelectType_MAX">MAX</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_SelectType_MIN">MIN</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_SelectType_NOT_SET">NOT_SET</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

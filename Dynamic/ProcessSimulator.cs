@@ -138,8 +138,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="upstreamModel">the upstream model, meaning the model whose output will be connected</param>
         /// <param name="downstreamModel">the downstream model, meaning the model whose input will be connected</param>
         /// <param name="inputIndex">input index of the downstream model to connect to (default is first input)</param>
-        /// <returns></returns>
-        public bool ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex=null)
+        /// <returns>returns the signal id if all is ok, otherwise null.</returns>
+        public string ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex=null)
         {
             ProcessModelType upstreamType = upstreamModel.GetProcessModelType();
             ProcessModelType downstreamType = downstreamModel.GetProcessModelType();
@@ -188,13 +188,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (!isOk)
                     {
                         Shared.GetParserObj().AddError("ProcessSimulator.ConnectModels() error connecting:" + outputId);
-                        return false;
+                        return null;
                     }
                 }
             }
             connections.AddConnection(upstreamModel.GetID(), downstreamModel.GetID());
             nConnections++;
-            return true;
+            return outputId;
         }
 
         /// <summary>

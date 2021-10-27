@@ -45,7 +45,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// added to the output in addition to the other signals.
         /// </summary>
         /// <returns></returns>
-        override public int GetLengthOfInputVector()
+       override public int GetLengthOfInputVector()
         {
             var inputIDs = GetBothKindsOfInputIDs();
 
@@ -58,7 +58,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return Math.Max(modelParameters.ProcessGains.Length, inputIDs.Length);
             }
         }
-
+        
         /// <summary>
         /// Initalizer of model that for the given dataSet also creates the resulting y_sim
         /// </summary>

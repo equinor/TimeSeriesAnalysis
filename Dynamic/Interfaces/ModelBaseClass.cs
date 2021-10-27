@@ -161,7 +161,11 @@ namespace TimeSeriesAnalysis.Dynamic
              return SignalNamer.GetSignalName(GetID(), GetOutputSignalType());
         }
 
-        public abstract int GetLengthOfInputVector();
+        virtual public int GetLengthOfInputVector()
+        {
+            return GetBothKindsOfInputIDs().Length;
+
+        }
 
         public abstract SignalType GetOutputSignalType();
 
