@@ -23,14 +23,83 @@ namespace TimeSeriesAnalysis._Examples
         }
 
         [TestCase, Explicit]
-        #region CascadeControl
+
         public void CascadeControl()
         {
+            int N = 600;
+            #region CascadeControl
 
+            var processParameters1 = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 2,//rapid
+                ProcessGains = new double[] { 1.1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 0,
+                Bias = 50
+            };
 
+            var processParameters2 = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 30,//slow
+                ProcessGains = new double[] { 1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 5,
+                Bias = 50
+            };
+            var pidParameters1 = new PIDModelParameters()
+            {
+                Kp = 3,
+                Ti_s = 2 //rapid
+            };
+            var pidParameters2 = new PIDModelParameters()
+            {
+                Kp = 1,
+                Ti_s = 40 //slow
+            };
+            var process1
+                = new DefaultProcessModel(processParameters1, timeBase_s, "Process1");
+            var process2
+                = new DefaultProcessModel(processParameters2, timeBase_s, "Process2");
+            var pid1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
+            var pid2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
 
+            var sim = new ProcessSimulator(timeBase_s,
+                new List<ISimulatableModel> { process1, process2, pid1, pid2 });
+
+         //  pid1.SetManualOutput(50);
+         //   pid1.SetToManualMode();
+
+         //   pid2.SetManualOutput(50);
+         //   pid2.SetToManualMode();
+
+            sim.ConnectModels(process1, process2);
+            sim.ConnectModels(process1, pid1);
+            sim.ConnectModels(pid1, process1);
+            sim.ConnectModels(process2, pid2);
+            sim.ConnectModels(pid2, pid1,(int)PIDModelInputsIdx.Y_setpoint);
+
+            sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
+            sim.AddSignal(process1,SignalType.Distubance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+            sim.AddSignal(process2,SignalType.Distubance_D,TimeSeriesCreator.Step(300, N, 0, 1));
+
+            var isOK = sim.Simulate(out var simResult);
+
+            Plot.FromList(new List<double[]>
+                {
+                simResult.GetValues(process1.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(process2.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+                simResult.GetValues(pid1.GetID(),SignalType.PID_U),
+                simResult.GetValues(pid2.GetID(),SignalType.PID_U)
+                },
+            new List<string> { "y1=y1", "y2=y2[right]","y2=y2_set[right]", "y3=u1", "y4=u2[right]" }, timeBase_s, "CascadeEx");
+            #endregion
+
+            Assert.IsTrue(isOK);
         }
-        #endregion
+
 
         [TestCase, Explicit]
         public void FeedForward_Part1()
@@ -90,6 +159,8 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
 
             #endregion
+
+            Assert.IsTrue(isOk);
         }
 
 
@@ -163,6 +234,8 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, 
                 timeBase_s, "FeedForwardEx2");
             #endregion
+
+            Assert.IsTrue(isOk);
         }
 
 
@@ -198,7 +271,7 @@ namespace TimeSeriesAnalysis._Examples
                 new List<ISimulatableModel> { processModel });
             openLoopSim2.AddSignal(processModel, SignalType.External_U,
                 TimeSeriesCreator.Step(50, 200, 20, 30));
-            openLoopSim2.Simulate(out var openLoopData2);
+            var isOk1 = openLoopSim2.Simulate(out var openLoopData2);
 
             Plot.FromList(new List<double[]>
                 {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -241,7 +314,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(70, 400));
             closedLoopSim2.AddSignal(processModel, SignalType.Distubance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
-            isOk = closedLoopSim2.Simulate(out var closedLoopData2);
+            var isOk2 = closedLoopSim2.Simulate(out var closedLoopData2);
 
             Plot.FromList(new List<double[]>
                 {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -287,7 +360,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
-           closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
+           var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
             var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModelGS, processModel });
@@ -299,7 +372,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
-            closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
+            var isOk4 = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
 
             Plot.FromList(new List<double[]>
                 {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -312,44 +385,83 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_run1","y1=y_setpoint(run1)", "y2=u_run1(right)","y3=y-run2",
                     "y3=y_setpoint(run2)", "y4=u_run2(right)" }, timeBase_s, "GainSchedulingEx_3");
             #endregion
-        }
 
-
-        [TestCase, Explicit]
-        #region InputFiltering
-        public void InputFiltering()
-        {
-
-
-
-
-
-
-
+            Assert.IsTrue(isOk1);
+            Assert.IsTrue(isOk2);
+            Assert.IsTrue(isOk3);
+            Assert.IsTrue(isOk4);
 
 
 
         }
-        #endregion
 
-
-
+    
         [TestCase,Explicit]
-        #region MinSelect
+     
         public void MinSelect()
         {
+            int N = 600;
 
+            #region MinSelect
 
+            var processParameters = new DefaultProcessModelParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 30,
+                ProcessGains = new double[] { 1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 5,
+                Bias = 50
+            };
+            var pidParameters1 = new PIDModelParameters()
+            {
+                Kp = 3, //high-gain
+                Ti_s = 20
+            };
+            var pidParameters2 = new PIDModelParameters()
+            {
+                Kp = 0.5,//low-gain
+                Ti_s = 20 
+            };
+            var process
+                = new DefaultProcessModel(processParameters, timeBase_s, "Process");
+            var pid1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
+            var pid2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
+            var minSelect = new Select(SelectType.MIN,"minSelect");
 
+            var sim = new ProcessSimulator(timeBase_s,
+                new List<ISimulatableModel> { process, pid1, pid2,minSelect });
 
+            // tracking and min select-related
+            sim.ConnectModels(process, pid1);
+            sim.ConnectModels(process, pid2);
+            sim.ConnectModels(pid1, minSelect,0);
+            sim.ConnectModels(pid2, minSelect,1);
+            string selectSignalID = sim.ConnectModels(minSelect, process);
+            sim.ConnectSignal(selectSignalID,pid1, (int)PIDModelInputsIdx.Tracking);
+            sim.ConnectSignal(selectSignalID,pid2, (int)PIDModelInputsIdx.Tracking);
 
+            sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+            sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+            sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
 
+            var isOK = sim.Simulate(out var simResult);
+            
+            Plot.FromList(new List<double[]>
+                {
+                simResult.GetValues(process.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+                simResult.GetValues(pid1.GetID(),SignalType.PID_U),
+                simResult.GetValues(pid2.GetID(),SignalType.PID_U),
+                simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),
+                },
+            new List<string> { "y1=y1", "y1=y_set", "y3=u_pid1", "y3=u_pid2","y3=u_select" }, timeBase_s, "MinSelectEx");
+            #endregion
 
-
-
+            Assert.IsTrue(isOK);
 
         }
-        #endregion
+
 
 
 

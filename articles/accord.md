@@ -14,8 +14,6 @@ He has also stated
 
 **Thanks to the developers of Accord.NET for a great framework!**
 
-No modifications are made or will ever be made to the Accord.NET dependencies in this library.
-
 Development of Accord.NET has stopped at version 3.8.0, but I see this as no reason to worry, as the methods that are used are very stable - actually, you would not expect a 
 mathematics library to need to continue development indefinitely. 
 
@@ -23,3 +21,5 @@ In versions ``1.x`` of ``TimeSeriesAnalysis``, Accord.NET is only used inside ``
 
 Accord.NET has implemented **classification**, **clustering**, **kernel methods** and **hypothesis testing** that may become useful in future work within data-mining and building larger scale models toward version ``2.x``. 
 
+>[!Note]
+> It is also possible to bulid on top of ML.NET in development toward version 2.0.

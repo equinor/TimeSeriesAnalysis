@@ -573,13 +573,20 @@ namespace TimeSeriesAnalysis
             }
             return minVal;
         }
+
+        public double Min(double[] array)
+        {
+            return Min(array, out _);
+        }
+
+
         ///<summary>
         ///  Returns minimum value of array 
         ///</summary>
-        public static double Min(double[] array)
+        /*public static double Min(double[] array)
         {
             return (new Vec()).Min(array, out _);
-        }
+        }*/
 
         ///<summary>
         ///  Returns maximum value of array 

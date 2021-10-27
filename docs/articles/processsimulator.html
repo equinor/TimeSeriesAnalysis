@@ -83,8 +83,17 @@
 <h2 id="external-interface">External interface</h2>
 <p>The intention is that the <code>ProcessSimualtor</code> class should be able to simulate any well-formulated
 combination of models that implement the <code>ISimulateableModel</code> (such as <code>PIDModel</code> and <code>DefaultProcessModel</code>.)</p>
-<p>Before simulation the models must be connected using <code>ProcessSimulator.ConnectModels()</code> and input signals need to
-be added using <code>ProcessSimulator.AddSignal()</code>. Once all connections and signals are defined, the model combination
+<p>Connections can be done using</p>
+<ul>
+<li><code>ConnectSignal</code> connects a signal to a model</li>
+<li><code>ConnectModels</code>: connects an output of one model to an input of another model</li>
+<li><code>ConnectModelToOutput</code>: connects an output of model model to the <em>output</em>(additive) of another model</li>
+</ul>
+<p>External signals are defined using</p>
+<ul>
+<li><code>AddSignal</code>: defines a new external signal that is to be included in the simulation</li>
+</ul>
+<p>Once all connections and signals are defined, the model combination
 is then simulated by <code>ProcessSimulator.Simulate()</code>.</p>
 <p>The entire simulated dataset is presented after simulation as an object of the <code>TimeSeriesDataSet</code> class.</p>
 <h2 id="internal-workings">Internal workings</h2>

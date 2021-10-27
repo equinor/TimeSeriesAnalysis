@@ -13,6 +13,15 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         private const char separator = '-';// should not be "_"
 
+
+
+
+        public static string GetSignalName(ISimulatableModel model, SignalType signalType, int idx = 0)
+        {
+            return GetSignalName(model.GetID(), signalType,idx);
+        }
+
+
         /// <summary>
         /// Get a unique signal name for a given signal, based on the model and signal type.
         /// </summary>

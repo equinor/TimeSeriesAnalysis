@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PIDModel
+    <title>Class Select
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PIDModel
+    <meta name="title" content="Class Select
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,20 +78,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.Select">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_PIDModel" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel" class="text-break">Class PIDModel
+  <h1 id="TimeSeriesAnalysis_Dynamic_Select" data-uid="TimeSeriesAnalysis.Dynamic.Select" class="text-break">Class Select
   </h1>
-  <div class="markdown level0 summary"><p>Model of PID-controller
-This class should acta as a wrapper for PIDcontroller class.</p>
+  <div class="markdown level0 summary"><p>Selects &quot;Min&quot; or &quot;Max&quot; select block</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html">ModelBaseClass</a></div>
-    <div class="level2"><span class="xref">PIDModel</span></div>
+    <div class="level2"><span class="xref">Select</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -133,6 +132,9 @@ This class should acta as a wrapper for PIDcontroller class.</p>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputID">ModelBaseClass.GetOutputID()</a>
     </div>
     <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetLengthOfInputVector">ModelBaseClass.GetLengthOfInputVector()</a>
+    </div>
+    <div>
       <span class="xref">System.Object.ToString()</span>
     </div>
     <div>
@@ -156,21 +158,21 @@ This class should acta as a wrapper for PIDcontroller class.</p>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_PIDModel_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_Select_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PIDModel : ModelBaseClass, ISimulatableModel</code></pre>
+    <pre><code class="lang-csharp hljs">public class Select : ModelBaseClass, ISimulatableModel</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel__ctor_TimeSeriesAnalysis_Dynamic_PIDModelParameters_System_Int32_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.#ctor(TimeSeriesAnalysis.Dynamic.PIDModelParameters,System.Int32,System.String)">PIDModel(PIDModelParameters, Int32, String)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_Select__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.Select.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_Select__ctor_TimeSeriesAnalysis_Dynamic_SelectType_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String)">Select(SelectType, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDModel(PIDModelParameters pidParameters, int timeBase_s, string ID = &quot;not_named&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public Select(SelectType type, string ID)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -183,13 +185,8 @@ This class should acta as a wrapper for PIDcontroller class.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModelParameters.html">PIDModelParameters</a></td>
-        <td><span class="parametername">pidParameters</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SelectType.html">SelectType</a></td>
+        <td><span class="parametername">type</span></td>
         <td></td>
       </tr>
       <tr>
@@ -203,65 +200,8 @@ This class should acta as a wrapper for PIDcontroller class.</p>
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetLengthOfInputVector_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetLengthOfInputVector*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetLengthOfInputVector" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetLengthOfInputVector">GetLengthOfInputVector()</h4>
-  <div class="markdown level1 summary"><p>Get number of inputs (between 2 and 4)
-first input is always ymeas, second input is y_setpoint, optionally,
-input 3 is track signal and input 4 is gain scheduling variable</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetLengthOfInputVector()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetLengthOfInputVector">ModelBaseClass.GetLengthOfInputVector()</a></div>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetModelParameters_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetModelParameters*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetModelParameters" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetModelParameters">GetModelParameters()</h4>
-  <div class="markdown level1 summary"><p>Get the model parameters</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDModelParameters GetModelParameters()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModelParameters.html">PIDModelParameters</a></td>
-        <td><p>the parameters object of the model</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetOutputSignalType_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputSignalType*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetOutputSignalType" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetOutputSignalType">GetOutputSignalType()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_Select_GetOutputSignalType_" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_Select_GetOutputSignalType" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType">GetOutputSignalType()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -287,10 +227,9 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
   <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputSignalType">ModelBaseClass.GetOutputSignalType()</a></div>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateInput_System_Double_System_Int32_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])">GetSteadyStateInput(Double, Int32, Double[])</h4>
-  <div class="markdown level1 summary"><p>[Method not currently implemented]</p>
-</div>
+  <a id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateInput_System_Double_System_Int32_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput(System.Double,System.Int32,System.Double[])">GetSteadyStateInput(Double, Int32, Double[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -340,9 +279,10 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateOutput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateOutput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_GetSteadyStateOutput_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.GetSteadyStateOutput(System.Double[])">GetSteadyStateOutput(Double[])</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateOutput_" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateOutput_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput(System.Double[])">GetSteadyStateOutput(Double[])</h4>
+  <div class="markdown level1 summary"><p>Get the steady state value of the model output</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -361,7 +301,8 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">u0</span></td>
-        <td></td>
+        <td><p>vector of inputs for which the steady state is to be calculated</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -376,20 +317,20 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
-        <td></td>
+        <td><p>the steady-state value, if it is not possible to calculate, a <code>null</code> is returned</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
-  <div class="markdown level1 summary"><p>Iterate the PID controller one step</p>
-</div>
+  <a id="TimeSeriesAnalysis_Dynamic_Select_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.Select.Iterate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_Select_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double badDataID = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputsU, double badDataID = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -403,17 +344,13 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">inputs</span></td>
-        <td><p>is a vector of length 2, 3 or 4.
-First value is<code>y_process_abs</code>,  second value is <code>y_set_abs</code>, optional third value is
-<code>uTrackSignal</code>, optional fourth value is <code>gainSchedulingVariable</code></p>
-</td>
+        <td><span class="parametername">inputsU</span></td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">badDataID</span></td>
-        <td><p>value of inputs that is to be treated as <code>NaN</code></p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -428,105 +365,14 @@ First value is<code>y_process_abs</code>,  second value is <code>y_set_abs</code
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><p>the output <code>u</code> of the pid-controller. If not enough inputs, it returns <code>NaN</code></p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_SetManualOutput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_SetManualOutput_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput(System.Double)">SetManualOutput(Double)</h4>
-  <div class="markdown level1 summary"><p>Set the desired manual output fo controller.
-This output will only be applied if controller is in MANUAL mode.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetManualOutput(double manualOutput_prc)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">manualOutput_prc</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_SetToAutoMode_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_SetToAutoMode" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode">SetToAutoMode()</h4>
-  <div class="markdown level1 summary"><p>Set controller in auto</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetToAutoMode()</code></pre>
-  </div>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_SetToManualMode_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_SetToManualMode" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode">SetToManualMode()</h4>
-  <div class="markdown level1 summary"><p>Set controller in auto</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetToManualMode()</code></pre>
-  </div>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.WarmStart*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_WarmStart_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.WarmStart(System.Double,System.Double,System.Double)">WarmStart(Double, Double, Double)</h4>
-  <div class="markdown level1 summary"><p>Initalizes the controller internal state(integral term) to be steady at the given process value and output value,
-useful to avoid bumps when staring controller</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void WarmStart(double y_process_abs, double y_set, double u)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">y_process_abs</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">y_set</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">u</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PIDModel_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.WarmStart*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel_WarmStart_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.WarmStart(System.Double[],System.Double)">WarmStart(Double[], Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_Select_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.Select.WarmStart*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_Select_WarmStart_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.Select.WarmStart(System.Double[],System.Double)">WarmStart(Double[], Double)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

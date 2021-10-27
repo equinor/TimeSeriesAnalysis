@@ -522,6 +522,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels
   nameWithType: ConnectionParser.GetUpstreamModels
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamPIDId(System.String)
+  name: GetUpstreamPIDId(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamPIDId_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamPIDId(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamPIDId(System.String)
+  nameWithType: ConnectionParser.GetUpstreamPIDId(String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamPIDId*
+  name: GetUpstreamPIDId
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamPIDId_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamPIDId
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamPIDId
+  nameWithType: ConnectionParser.GetUpstreamPIDId
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID(System.String)
+  name: HasUpstreamPID(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_HasUpstreamPID_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID(System.String)
+  nameWithType: ConnectionParser.HasUpstreamPID(String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID*
+  name: HasUpstreamPID
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_HasUpstreamPID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID
+  nameWithType: ConnectionParser.HasUpstreamPID
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel
   name: DefaultProcessModel
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html
@@ -965,6 +991,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.AddSignalToOutput
   nameWithType: ISimulatableModel.AddSignalToOutput
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetAdditiveInputIDs
+  name: GetAdditiveInputIDs()
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetAdditiveInputIDs
+  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetAdditiveInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetAdditiveInputIDs()
+  nameWithType: ISimulatableModel.GetAdditiveInputIDs()
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetAdditiveInputIDs*
+  name: GetAdditiveInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetAdditiveInputIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetAdditiveInputIDs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetAdditiveInputIDs
+  nameWithType: ISimulatableModel.GetAdditiveInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetBothKindsOfInputIDs
   name: GetBothKindsOfInputIDs()
   href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetBothKindsOfInputIDs
@@ -2156,6 +2195,45 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PIDModel.Iterate
   nameWithType: PIDModel.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput(System.Double)
+  name: SetManualOutput(Double)
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_SetManualOutput_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput(System.Double)
+  nameWithType: PIDModel.SetManualOutput(Double)
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput*
+  name: SetManualOutput
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_SetManualOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.SetManualOutput
+  nameWithType: PIDModel.SetManualOutput
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode
+  name: SetToAutoMode()
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_SetToAutoMode
+  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode()
+  nameWithType: PIDModel.SetToAutoMode()
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode*
+  name: SetToAutoMode
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_SetToAutoMode_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.SetToAutoMode
+  nameWithType: PIDModel.SetToAutoMode
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode
+  name: SetToManualMode()
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_SetToManualMode
+  commentId: M:TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode()
+  nameWithType: PIDModel.SetToManualMode()
+- uid: TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode*
+  name: SetToManualMode
+  href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_SetToManualMode_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PIDModel.SetToManualMode
+  nameWithType: PIDModel.SetToManualMode
 - uid: TimeSeriesAnalysis.Dynamic.PIDModel.WarmStart(System.Double,System.Double,System.Double)
   name: WarmStart(Double, Double, Double)
   href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html#TimeSeriesAnalysis_Dynamic_PIDModel_WarmStart_System_Double_System_Double_System_Double_
@@ -2760,6 +2838,126 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
   fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
   nameWithType: ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution
+- uid: TimeSeriesAnalysis.Dynamic.Select
+  name: Select
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.Select
+  fullName: TimeSeriesAnalysis.Dynamic.Select
+  nameWithType: Select
+- uid: TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String)
+  name: Select(SelectType, String)
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select__ctor_TimeSeriesAnalysis_Dynamic_SelectType_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.Select.Select(TimeSeriesAnalysis.Dynamic.SelectType, System.String)
+  nameWithType: Select.Select(SelectType, String)
+- uid: TimeSeriesAnalysis.Dynamic.Select.#ctor*
+  name: Select
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Select.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Select.Select
+  nameWithType: Select.Select
+- uid: TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType
+  name: GetOutputSignalType()
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_GetOutputSignalType
+  commentId: M:TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType
+  fullName: TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType()
+  nameWithType: Select.GetOutputSignalType()
+- uid: TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType*
+  name: GetOutputSignalType
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_GetOutputSignalType_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType
+  nameWithType: Select.GetOutputSignalType
+- uid: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name: GetSteadyStateInput(Double, Int32, Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateInput_System_Double_System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name.vb: GetSteadyStateInput(Double, Int32, Double())
+  fullName: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput(System.Double, System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput(System.Double, System.Int32, System.Double())
+  nameWithType: Select.GetSteadyStateInput(Double, Int32, Double[])
+  nameWithType.vb: Select.GetSteadyStateInput(Double, Int32, Double())
+- uid: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput*
+  name: GetSteadyStateInput
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateInput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput
+  nameWithType: Select.GetSteadyStateInput
+- uid: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput(System.Double[])
+  name: GetSteadyStateOutput(Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateOutput_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput(System.Double[])
+  name.vb: GetSteadyStateOutput(Double())
+  fullName: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput(System.Double())
+  nameWithType: Select.GetSteadyStateOutput(Double[])
+  nameWithType.vb: Select.GetSteadyStateOutput(Double())
+- uid: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput*
+  name: GetSteadyStateOutput
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput
+  nameWithType: Select.GetSteadyStateOutput
+- uid: TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double[],System.Double)
+  name: Iterate(Double[], Double)
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_Iterate_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double[],System.Double)
+  name.vb: Iterate(Double(), Double)
+  fullName: TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double(), System.Double)
+  nameWithType: Select.Iterate(Double[], Double)
+  nameWithType.vb: Select.Iterate(Double(), Double)
+- uid: TimeSeriesAnalysis.Dynamic.Select.Iterate*
+  name: Iterate
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_Iterate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Select.Iterate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Select.Iterate
+  nameWithType: Select.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.Select.WarmStart(System.Double[],System.Double)
+  name: WarmStart(Double[], Double)
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_WarmStart_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.Select.WarmStart(System.Double[],System.Double)
+  name.vb: WarmStart(Double(), Double)
+  fullName: TimeSeriesAnalysis.Dynamic.Select.WarmStart(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Select.WarmStart(System.Double(), System.Double)
+  nameWithType: Select.WarmStart(Double[], Double)
+  nameWithType.vb: Select.WarmStart(Double(), Double)
+- uid: TimeSeriesAnalysis.Dynamic.Select.WarmStart*
+  name: WarmStart
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select_WarmStart_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Select.WarmStart
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Select.WarmStart
+  nameWithType: Select.WarmStart
+- uid: TimeSeriesAnalysis.Dynamic.SelectType
+  name: SelectType
+  href: api/TimeSeriesAnalysis.Dynamic.SelectType.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.SelectType
+  fullName: TimeSeriesAnalysis.Dynamic.SelectType
+  nameWithType: SelectType
+- uid: TimeSeriesAnalysis.Dynamic.SelectType.MAX
+  name: MAX
+  href: api/TimeSeriesAnalysis.Dynamic.SelectType.html#TimeSeriesAnalysis_Dynamic_SelectType_MAX
+  commentId: F:TimeSeriesAnalysis.Dynamic.SelectType.MAX
+  fullName: TimeSeriesAnalysis.Dynamic.SelectType.MAX
+  nameWithType: SelectType.MAX
+- uid: TimeSeriesAnalysis.Dynamic.SelectType.MIN
+  name: MIN
+  href: api/TimeSeriesAnalysis.Dynamic.SelectType.html#TimeSeriesAnalysis_Dynamic_SelectType_MIN
+  commentId: F:TimeSeriesAnalysis.Dynamic.SelectType.MIN
+  fullName: TimeSeriesAnalysis.Dynamic.SelectType.MIN
+  nameWithType: SelectType.MIN
+- uid: TimeSeriesAnalysis.Dynamic.SelectType.NOT_SET
+  name: NOT_SET
+  href: api/TimeSeriesAnalysis.Dynamic.SelectType.html#TimeSeriesAnalysis_Dynamic_SelectType_NOT_SET
+  commentId: F:TimeSeriesAnalysis.Dynamic.SelectType.NOT_SET
+  fullName: TimeSeriesAnalysis.Dynamic.SelectType.NOT_SET
+  nameWithType: SelectType.NOT_SET
 - uid: TimeSeriesAnalysis.Dynamic.SignalType
   name: SignalType
   href: api/TimeSeriesAnalysis.Dynamic.SignalType.html
@@ -2796,6 +2994,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.SignalType.PID_U
   fullName: TimeSeriesAnalysis.Dynamic.SignalType.PID_U
   nameWithType: SignalType.PID_U
+- uid: TimeSeriesAnalysis.Dynamic.SignalType.SelectorOut
+  name: SelectorOut
+  href: api/TimeSeriesAnalysis.Dynamic.SignalType.html#TimeSeriesAnalysis_Dynamic_SignalType_SelectorOut
+  commentId: F:TimeSeriesAnalysis.Dynamic.SignalType.SelectorOut
+  fullName: TimeSeriesAnalysis.Dynamic.SignalType.SelectorOut
+  nameWithType: SignalType.SelectorOut
 - uid: TimeSeriesAnalysis.Dynamic.SignalType.Setpoint_Yset
   name: Setpoint_Yset
   href: api/TimeSeriesAnalysis.Dynamic.SignalType.html#TimeSeriesAnalysis_Dynamic_SignalType_Setpoint_Yset

@@ -9,8 +9,10 @@
         External_U = 4,// the input U to a subprocess is externally provided
         Distubance_D = 5,//SubProcess
         Output_Y_sim = 6,//SubProcess
+        SelectorOut =7 // Select
+
         //    State_X = 6,//SubProcess
-//        Output_Y_sim = 7,//SubProcess
-      //  Output_Y_meas = 6//SubProcess
+        //        Output_Y_sim = 7,//SubProcess
+        //  Output_Y_meas = 6//SubProcess
     }
 }

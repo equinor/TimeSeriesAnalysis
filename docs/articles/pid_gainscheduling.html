@@ -116,7 +116,7 @@ gain is <em>high</em>, and a second at a high value of the input, where the gain
        new List&lt;ISimulatableModel&gt; { processModel });
    openLoopSim2.AddSignal(processModel, SignalType.External_U,
        TimeSeriesCreator.Step(50, 200, 20, 30));
-   openLoopSim2.Simulate(out var openLoopData2);
+   var isOk1 = openLoopSim2.Simulate(out var openLoopData2);
 
    Plot.FromList(new List&lt;double[]&gt;
        {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -160,7 +160,7 @@ closedLoopSim2.ConnectModels(processModel, pidModel2);
 closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset,
     TimeSeriesCreator.Constant(70, 400));
 closedLoopSim2.AddSignal(processModel, SignalType.Distubance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
-isOk = closedLoopSim2.Simulate(out var closedLoopData2);
+var isOk2 = closedLoopSim2.Simulate(out var closedLoopData2);
 
 Plot.FromList(new List&lt;double[]&gt;
     {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -217,7 +217,7 @@ cases is created.</p>
      TimeSeriesCreator.Step(100, 400, 0, 10));
  // Gain-scheduling variable:
  closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
-closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
+var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
  var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
      new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
@@ -229,7 +229,7 @@ closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
      TimeSeriesCreator.Step(100, 400, 0, 10));
  // Gain-scheduling variable:
  closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
- closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
+ var isOk4 = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
 
  Plot.FromList(new List&lt;double[]&gt;
      {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
