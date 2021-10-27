@@ -51,13 +51,23 @@ namespace TimeSeriesAnalysis.Dynamic
         ProcessModelType GetProcessModelType();
 
         /// <summary>
-        /// Return the tag names or unique identifier of each of the variables that 
-        /// "Iterate()" expects
+        /// Return the inputIDs that are "internal" i.e. related to the model and internal state x, but not "additive"
         /// </summary>
         /// <returns></returns>
         string[] GetModelInputIDs();
 
+        /// <summary>
+        /// Get both additive and model input IDs
+        /// </summary>
+        /// <returns></returns>
         string[] GetBothKindsOfInputIDs();
+
+
+        /// <summary>
+        /// Get additive input IDs
+        /// </summary>
+        /// <returns></returns>
+        string[] GetAdditiveInputIDs();
 
 
         string GetOutputID();

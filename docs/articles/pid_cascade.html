@@ -97,19 +97,19 @@ var processParameters2 = new DefaultProcessModelParameters
 {
     WasAbleToIdentify = true,
     TimeConstant_s = 30,//slow
-    ProcessGains = new double[] { 0.9 },
+    ProcessGains = new double[] { 1 },
     U0 = new double[] { 50 },
     TimeDelay_s = 5,
     Bias = 50
 };
 var pidParameters1 = new PIDModelParameters()
 {
-    Kp = 0.3,
+    Kp = 3,
     Ti_s = 2 //rapid
 };
 var pidParameters2 = new PIDModelParameters()
 {
-    Kp = 0.3,
+    Kp = 1,
     Ti_s = 40 //slow
 };
 var processModel1
@@ -122,6 +122,12 @@ var pidModel2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
 var sim = new ProcessSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { processModel1, processModel2, pidModel1, pidModel2 });
 
+//pidModel1.SetManualOutput(50);
+//pidModel1.SetToManualMode();
+
+//pidModel2.SetManualOutput(50);
+//pidModel2.SetToManualMode();
+
 sim.ConnectModels(processModel1, processModel2);
 sim.ConnectModels(processModel1, pidModel1);
 sim.ConnectModels(pidModel1, processModel1);
@@ -129,10 +135,21 @@ sim.ConnectModels(processModel2, pidModel2);
 sim.ConnectModels(pidModel2, pidModel1,(int)PIDModelInputsIdx.Y_setpoint);
 
 sim.AddSignal(pidModel2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(1,10,timeBase_s,N));
+sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
 sim.AddSignal(processModel2, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
 
 var isOK = sim.Simulate(out var simResult);
+
+Plot.FromList(new List&lt;double[]&gt;
+    {
+    simResult.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+    simResult.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
+    simResult.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
+    simResult.GetValues(pidModel1.GetID(),SignalType.PID_U),
+    simResult.GetValues(pidModel2.GetID(),SignalType.PID_U)
+    },
+new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y2=y2[right]&quot;,&quot;y2=y2_set[right]&quot;, &quot;y3=u1&quot;, &quot;y4=u2[right]&quot; }, timeBase_s, &quot;CascadeEx&quot;);
+
 
 </code></pre></article>
           </div>

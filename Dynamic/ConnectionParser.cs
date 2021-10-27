@@ -86,6 +86,41 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Query if the model has an upstream PID-model.
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public bool HasUpstreamPID(string modelID)
+        {
+            var upstreamModelIDs =GetUpstreamModels(modelID);
+
+            foreach (string upstreamID in upstreamModelIDs)
+            {
+                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public string GetUpstreamPIDId(string modelID)
+        {
+            var upstreamModelIDs = GetUpstreamModels(modelID);
+
+            foreach (string upstreamID in upstreamModelIDs)
+            {
+                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
+                {
+                    return upstreamID;
+                }
+            }
+            return null;
+        }
+
+
+
+        /// <summary>
         /// Gets all the models that do not have any models upstream of them.
         /// (models are then either signal generators or get their input from external signals)
         /// </summary>
@@ -106,54 +141,111 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>returns the string of sorted model IDs, the order in which modelDict models are to be run</returns>
         public List<string> DetermineCalculationOrderOfModels()
         {
-            // TODO: if controllers are in cascade, then calculation order must be to start with the outermost loop and go inwards!
-
             List<string> unprocessedModels = modelDict.Keys.ToList();
             List<string> orderedModels = new List<string>();
             List<string> pidModels = new List<string>();
 
-            // 1.any purely forward-coupled models should be processed from left->righ 
-            List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections ();
-            foreach (string forwardModelID in forwardModelIDs)
+            // forward-coupled models (i.e. models in series with no feedbacks and not dependant on feedbacks)
             {
-                orderedModels.Add(forwardModelID);
-                unprocessedModels.Remove(forwardModelID);
-            }
-
-            // 2 add any models downstream of the above that depend only on said upstream models
-            int whileIterations = 0;
-            int whileIterationsMax = 100;
-            while (forwardModelIDs.Count()>0 && whileIterations< whileIterationsMax)
-            {
-                string  forwardModelId = forwardModelIDs.First();
-                forwardModelIDs.Remove(forwardModelId);
-
-                // get the models downstream of forwardModelId, and see of any of them can be calculated
-                List<string> downstreamModelIDs = GetDownstreamModels(forwardModelId);
-                foreach (string downstreamModelID in downstreamModelIDs)
+                // 1.any purely forward-coupled models should be processed from left->right
+                List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections();
+                foreach (string forwardModelID in forwardModelIDs)
                 {
-                    List<string> upstreamModelIDs = GetUpstreamModels(downstreamModelID);
-                    if (DoesArrayContainAll(orderedModels, upstreamModelIDs))
-                    {
-                        orderedModels.Add(downstreamModelID);
-                        unprocessedModels.Remove(downstreamModelID);
-                        // you can have many serial models, model1->model2->model3->modle4 etc.
-                        // thus add to "forwardModelIDs" recursively. 
-                        forwardModelIDs.Add(downstreamModelID);
-                    }
+                    orderedModels.Add(forwardModelID);
+                    unprocessedModels.Remove(forwardModelID);
                 }
-                whileIterations++;
+
+                // 2 add any models downstream of the above that depend only on said upstream models
+                int whileIterations = 0;
+                int whileIterationsMax = 100;
+                while (forwardModelIDs.Count() > 0 && whileIterations < whileIterationsMax)
+                {
+                    string forwardModelId = forwardModelIDs.First();
+                    forwardModelIDs.Remove(forwardModelId);
+
+                    // get the models downstream of forwardModelId, and see of any of them can be calculated
+                    List<string> downstreamModelIDs = GetDownstreamModels(forwardModelId);
+                    foreach (string downstreamModelID in downstreamModelIDs)
+                    {
+                        List<string> upstreamModelIDs = GetUpstreamModels(downstreamModelID);
+                        if (DoesArrayContainAll(orderedModels, upstreamModelIDs))
+                        {
+                            orderedModels.Add(downstreamModelID);
+                            unprocessedModels.Remove(downstreamModelID);
+                            // you can have many serial models, model1->model2->model3->modle4 etc.
+                            // thus add to "forwardModelIDs" recursively. 
+                            forwardModelIDs.Add(downstreamModelID);
+                        }
+                    }
+                    whileIterations++;
+                }
             }
             // 3. find all the PID-controller models, these should be run first in any feedback loops, as the
             // look back to the past data point and are easy to initalize based on their setpoint.
-            List<string> unprocessedModelsCopy = new List<string>(unprocessedModels);
-            foreach (string modelID in unprocessedModelsCopy)
-            {
-                if (modelDict[modelID].GetProcessModelType() == ProcessModelType.PID)
+
+            // Note that controllers may be in cascades, so the order in they are processed may be signficant
+            // the calculation order should always be to start with the outermost pid-controllers and to 
+            // work your way in.
+            /*{ 
+                List<string> unprocessedModelsCopy = new List<string>(unprocessedModels);
+                foreach (string modelID in unprocessedModelsCopy)
                 {
-                    orderedModels.Add(modelID);
-                    pidModels.Add(modelID);
-                    unprocessedModels.Remove(modelID);
+                    if (modelDict[modelID].GetProcessModelType() == ProcessModelType.PID)
+                    {
+                        orderedModels.Add(modelID);
+                        pidModels.Add(modelID);
+                        unprocessedModels.Remove(modelID);
+                    }
+                }
+            }*/
+            
+            {
+        
+                bool areUnprocessedPIDModelsLeft = true;
+                int whileLoopIterations = 0;
+                int whileLoopIterationsMax = 500;
+                while (areUnprocessedPIDModelsLeft && whileLoopIterations < whileLoopIterationsMax)
+                {
+                    whileLoopIterations++;
+                    List<string> unprocessedModelsCopy = new List<string>(unprocessedModels);
+                    foreach (string modelID in unprocessedModelsCopy)
+                    {
+                        // look for pid-models that either a) are not connected to any pid-models or 
+                        // b) are connected to a model that is already in "pidModels"
+                        if (modelDict[modelID].GetProcessModelType() == ProcessModelType.PID)
+                        {
+                            var upstreamModelIDs = GetUpstreamModels(modelDict[modelID].GetID());
+                            bool modelHasUpstreamPIDNOTAlreadyProcessed = false;
+                            foreach (var upstreamModelID in upstreamModelIDs)
+                            {
+                                if (modelDict[upstreamModelID].GetProcessModelType() == ProcessModelType.PID)
+                                {
+                                    if (unprocessedModels.Contains(upstreamModelID))
+                                    {
+                                        modelHasUpstreamPIDNOTAlreadyProcessed = true;
+                                    }
+                                }
+                            }
+                            if (!modelHasUpstreamPIDNOTAlreadyProcessed)
+                            {
+                                orderedModels.Add(modelID);
+                                pidModels.Add(modelID);
+                                unprocessedModels.Remove(modelID);
+                            }
+                        }
+                    }
+
+                    // check to see if we need to do another round
+                    areUnprocessedPIDModelsLeft = false;
+                    foreach (string modelID in unprocessedModels)
+                    {
+                        // look for pid-models that either a) are not connected to any pid-models or 
+                        // b) are connected to a model that is already in "pidModels"
+                        if (modelDict[modelID].GetProcessModelType() == ProcessModelType.PID)
+                        {
+                            areUnprocessedPIDModelsLeft = true;
+                        }
+                    }
                 }
             }
             // 4. models that are left will be inside feedback loops. 
@@ -161,75 +253,77 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // if there are multiple pid loops, then these should be added "left-to-right"
             // but "pidModels" is unordered.
+            { 
             List<string> pidModelsLeftToParse = pidModels;
 
             int pidModelIdx = -1;
             int whileLoopIterations = 0;
             int whileLoopIterationsMax = 500;
-            while (pidModelsLeftToParse.Count>0 && whileLoopIterations< whileLoopIterationsMax)
-            {
-                whileLoopIterations++;
-                if (pidModelIdx >= pidModelsLeftToParse.Count - 1)
+                while (pidModelsLeftToParse.Count > 0 && whileLoopIterations < whileLoopIterationsMax)
                 {
-                    pidModelIdx = 0;
-                }
-                else
-                {
-                    pidModelIdx++;
-                }
-                string pidModelID = pidModelsLeftToParse.ElementAt(pidModelIdx);
-                // try to parse through entire model loop
-                bool pidLoopCompletedOk    = false;
-                bool pidLoopDone        = false;
-                string currentModelID   = pidModelID;
-                int whileLoopSafetyCounter = 0; // fail-to-safe:avoid endless while loops.
-                int whileLoopSafetyCounterMax = 20;
-                // try to follow the entire pid loop, adding models as you go
-                HashSet<string> modelsIDLeftToParse = new HashSet<string>();
-                foreach (string ID in GetDownstreamModels(pidModelID))
-                {
-                    modelsIDLeftToParse.Add(ID);
-                }
-                while (!pidLoopDone && whileLoopSafetyCounter < whileLoopSafetyCounterMax)
-                {
-                    whileLoopSafetyCounter++;
-                    // if stack is empty, finish.
-                    if (modelsIDLeftToParse.Count() == 0)
+                    whileLoopIterations++;
+                    if (pidModelIdx >= pidModelsLeftToParse.Count - 1)
                     {
-                        pidLoopDone = true;
-                        continue;
+                        pidModelIdx = 0;
                     }
-                    // pick first item, and remove it from stack
-                    currentModelID = modelsIDLeftToParse.ElementAt(0);
-                    modelsIDLeftToParse.Remove(currentModelID);
-                    // get all downstream items from current
-                    foreach (string ID in GetDownstreamModels(currentModelID))
+                    else
                     {
-                        if (ID == pidModelID)
+                        pidModelIdx++;
+                    }
+                    string pidModelID = pidModelsLeftToParse.ElementAt(pidModelIdx);
+                    // try to parse through entire model loop
+                    bool pidLoopCompletedOk = false;
+                    bool pidLoopDone = false;
+                    string currentModelID = pidModelID;
+                    int whileLoopSafetyCounter = 0; // fail-to-safe:avoid endless while loops.
+                    int whileLoopSafetyCounterMax = 20;
+                    // try to follow the entire pid loop, adding models as you go
+                    HashSet<string> modelsIDLeftToParse = new HashSet<string>();
+                    foreach (string ID in GetDownstreamModels(pidModelID))
+                    {
+                        modelsIDLeftToParse.Add(ID);
+                    }
+                    while (!pidLoopDone && whileLoopSafetyCounter < whileLoopSafetyCounterMax)
+                    {
+                        whileLoopSafetyCounter++;
+                        // if stack is empty, finish.
+                        if (modelsIDLeftToParse.Count() == 0)
                         {
-                            pidLoopCompletedOk = true;
+                            pidLoopDone = true;
+                            continue;
                         }
-                        else// avoid-looping around the same loop more than once!
-                        {
-                            modelsIDLeftToParse.Add(ID);
-                        }
-                    }
-                    // add model if it only depends on already solved models.
-                    if (orderedModels.Contains(currentModelID))
-                    {
-                        continue;
-                    }
-                    if (DoesModelDependOnlyOnGivenModels(currentModelID, orderedModels))
-                    {
-                        orderedModels.Add(currentModelID);
-                        unprocessedModels.Remove(currentModelID);
+                        // pick first item, and remove it from stack
+                        currentModelID = modelsIDLeftToParse.ElementAt(0);
                         modelsIDLeftToParse.Remove(currentModelID);
+                        // get all downstream items from current
+                        foreach (string ID in GetDownstreamModels(currentModelID))
+                        {
+                            if (ID == pidModelID)
+                            {
+                                pidLoopCompletedOk = true;
+                            }
+                            else// avoid-looping around the same loop more than once!
+                            {
+                                modelsIDLeftToParse.Add(ID);
+                            }
+                        }
+                        // add model if it only depends on already solved models.
+                        if (orderedModels.Contains(currentModelID))
+                        {
+                            continue;
+                        }
+                        if (DoesModelDependOnlyOnGivenModels(currentModelID, orderedModels))
+                        {
+                            orderedModels.Add(currentModelID);
+                            unprocessedModels.Remove(currentModelID);
+                            modelsIDLeftToParse.Remove(currentModelID);
+                        }
                     }
-                }
-                // remove modelId from "left to parse" stack if we successfully traversed it.
-                if (pidLoopCompletedOk)
-                {
-                    pidModelsLeftToParse.Remove(pidModelID);
+                    // remove modelId from "left to parse" stack if we successfully traversed it.
+                    if (pidLoopCompletedOk)
+                    {
+                        pidModelsLeftToParse.Remove(pidModelID);
+                    }
                 }
             }
 

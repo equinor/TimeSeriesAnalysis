@@ -159,5 +159,37 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return null;
         }
+
+        /////////////////////////////////
+        //
+
+        /// <summary>
+        /// Set controller in auto
+        /// </summary>
+        public void SetToAutoMode()
+        {
+            pid.SetAutoMode();
+        }
+
+
+        /// <summary>
+        /// Set controller in auto
+        /// </summary>
+        public void SetToManualMode()
+        {
+            pid.SetManualMode();
+        }
+
+        /// <summary>
+        /// Set the desired manual output fo controller. 
+        /// This output will only be applied if controller is in MANUAL mode.
+        /// </summary>
+        /// <param name="manualOutput_prc"></param>
+        public void SetManualOutput(double manualOutput_prc)
+        {
+            pid.SetManualOutput(manualOutput_prc);
+        }
+
+
     }
 }

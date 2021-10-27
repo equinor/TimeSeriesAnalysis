@@ -43,19 +43,19 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,//slow
-                ProcessGains = new double[] { 0.9 },
+                ProcessGains = new double[] { 1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 5,
                 Bias = 50
             };
             var pidParameters1 = new PIDModelParameters()
             {
-                Kp = 0.3,
+                Kp = 3,
                 Ti_s = 2 //rapid
             };
             var pidParameters2 = new PIDModelParameters()
             {
-                Kp = 0.3,
+                Kp = 1,
                 Ti_s = 40 //slow
             };
             var processModel1
@@ -68,6 +68,12 @@ namespace TimeSeriesAnalysis._Examples
             var sim = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, pidModel1, pidModel2 });
 
+            //pidModel1.SetManualOutput(50);
+            //pidModel1.SetToManualMode();
+
+            //pidModel2.SetManualOutput(50);
+            //pidModel2.SetToManualMode();
+
             sim.ConnectModels(processModel1, processModel2);
             sim.ConnectModels(processModel1, pidModel1);
             sim.ConnectModels(pidModel1, processModel1);
@@ -75,10 +81,21 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(pidModel2, pidModel1,(int)PIDModelInputsIdx.Y_setpoint);
 
             sim.AddSignal(pidModel2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(1,10,timeBase_s,N));
+            sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
             sim.AddSignal(processModel2, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
 
             var isOK = sim.Simulate(out var simResult);
+
+            Plot.FromList(new List<double[]>
+                {
+                simResult.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
+                simResult.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                simResult.GetValues(pidModel2.GetID(),SignalType.PID_U)
+                },
+            new List<string> { "y1=y1", "y2=y2[right]","y2=y2_set[right]", "y3=u1", "y4=u2[right]" }, timeBase_s, "CascadeEx");
+
 
             #endregion
 
@@ -144,6 +161,8 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
 
             #endregion
+
+            Assert.IsTrue(isOk);
         }
 
 
@@ -217,6 +236,8 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, 
                 timeBase_s, "FeedForwardEx2");
             #endregion
+
+            Assert.IsTrue(isOk);
         }
 
 
@@ -252,7 +273,7 @@ namespace TimeSeriesAnalysis._Examples
                 new List<ISimulatableModel> { processModel });
             openLoopSim2.AddSignal(processModel, SignalType.External_U,
                 TimeSeriesCreator.Step(50, 200, 20, 30));
-            openLoopSim2.Simulate(out var openLoopData2);
+            var isOk1 = openLoopSim2.Simulate(out var openLoopData2);
 
             Plot.FromList(new List<double[]>
                 {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -295,7 +316,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(70, 400));
             closedLoopSim2.AddSignal(processModel, SignalType.Distubance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
-            isOk = closedLoopSim2.Simulate(out var closedLoopData2);
+            var isOk2 = closedLoopSim2.Simulate(out var closedLoopData2);
 
             Plot.FromList(new List<double[]>
                 {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -341,7 +362,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
-           closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
+           var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
             var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModelGS, processModel });
@@ -353,7 +374,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
-            closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
+            var isOk4 = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
 
             Plot.FromList(new List<double[]>
                 {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -366,6 +387,14 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_run1","y1=y_setpoint(run1)", "y2=u_run1(right)","y3=y-run2",
                     "y3=y_setpoint(run2)", "y4=u_run2(right)" }, timeBase_s, "GainSchedulingEx_3");
             #endregion
+
+            Assert.IsTrue(isOk1);
+            Assert.IsTrue(isOk2);
+            Assert.IsTrue(isOk3);
+            Assert.IsTrue(isOk4);
+
+
+
         }
 
         /*
