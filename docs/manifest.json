@@ -1150,6 +1150,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tsa_mindmap.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tsa_mindmap.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/unit_test.png",
       "output": {
         "resource": {
@@ -1479,7 +1490,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 37,
-          "skipped_file_count": 33
+          "skipped_file_count": 37
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
