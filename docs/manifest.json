@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html",
-          "hash": "MocuwQL6wGRRXzMQDPg2Z2ELt2mvv6Yh5qvasUHPsQs="
+          "hash": "Ao5xE0pqt0WhzvxYAlgcnGNRms8qitLB9Urke0cBlbM="
         }
       },
       "is_incremental": false,
@@ -666,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/accord.html",
-          "hash": "PcWtjEsyfve8crqokWeG3ZDaHlbFwQ9D8Fh3wy4JpEY="
+          "hash": "dwqhnE4rNm1E/ErRL5jaqxnwA4tS3ubJBqZVeM3Shk8="
         }
       },
       "is_incremental": false,
@@ -921,6 +921,28 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/ex_cascade.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ex_cascade_open_loop_results.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ex_cascade_open_loop_results.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ex_cascade_results.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ex_cascade_results.png"
         }
       },
       "is_incremental": false,
@@ -1215,7 +1237,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_cascade.html",
-          "hash": "ZO+W8lEt+8j7BOzKGRA7GBeB4uBjZlNvy2fP0bAYBS4="
+          "hash": "dAinAJLMeBnXw4h0uczUndqnCwsKNkHvkT0yl3J1NSM="
         }
       },
       "is_incremental": false,
@@ -1275,7 +1297,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/plot_setup.html",
-          "hash": "0pNoqLX3sJrrVtW8L1JwZp2Kky7unuLlehSTTrLrp8U="
+          "hash": "3Tg16NGC79BXXlkFRD0v+pnuTVadLE9yGp+cBPdd/KU="
         }
       },
       "is_incremental": false,
@@ -1359,7 +1381,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "VcdDHWs9nmwFwY86Up9s+KSKClGbEZRseMSH2Rv6/Ck="
+          "hash": "n8Bl7xK7bpabxTI6O4AUquYS0cssk1N0BZVgc+CB7GE="
         }
       },
       "is_incremental": false,
@@ -1433,7 +1455,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 37,
-          "skipped_file_count": 34
+          "skipped_file_count": 37
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

@@ -79,79 +79,107 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="cascade-control">Cascade control</h1>
 
-<p>This example considers a cascade control scheme consisting of a rapid inner loop and a slower outer loop.
-In a real-world case, the inner loop could for instance be a (rapid) valve flow-rate controller, while the outer loop could for instance be a level that depends on the flow rate.</p>
+<p>This example considers a cascade control scheme consisting of a rapid inner loop(<code>process1</code> and <code>pid</code>)
+and a slower outer loop(<code>process2</code> and <code>pid2</code>), both being subjected to simulated disturbances.
+(In a real-world case, the inner loop of a cascade is often a (rapid) valve flow-rate controller,
+while the outer loop could for instance be a level that depends on the flow rate.)</p>
 <p><img src="images/ex_cascade.png" alt="Cascade system"></p>
+<p>A sinusoidal disturbance <code>D1</code> is introduced on process1, wheras a step disturbance is introduced halfway through
+the simulation in <code>D2</code>, and the aim is for the cascade controllers to reject both disturbances as well as possible.</p>
+<p>The code to implement the controllers:</p>
 <pre><code class="lang-csharp" name="Example">
-var processParameters1 = new DefaultProcessModelParameters
-{
-    WasAbleToIdentify = true,
-    TimeConstant_s = 2,//rapid
-    ProcessGains = new double[] { 1.1 },
-    U0 = new double[] { 50 },
-    TimeDelay_s = 0,
-    Bias = 50
-};
+   var processParameters1 = new DefaultProcessModelParameters
+   {
+       WasAbleToIdentify = true,
+       TimeConstant_s = 2,//rapid
+       ProcessGains = new double[] { 1.1 },
+       U0 = new double[] { 50 },
+       TimeDelay_s = 0,
+       Bias = 50
+   };
 
-var processParameters2 = new DefaultProcessModelParameters
-{
-    WasAbleToIdentify = true,
-    TimeConstant_s = 30,//slow
-    ProcessGains = new double[] { 1 },
-    U0 = new double[] { 50 },
-    TimeDelay_s = 5,
-    Bias = 50
-};
-var pidParameters1 = new PIDModelParameters()
-{
-    Kp = 3,
-    Ti_s = 2 //rapid
-};
-var pidParameters2 = new PIDModelParameters()
-{
-    Kp = 1,
-    Ti_s = 40 //slow
-};
-var processModel1
-    = new DefaultProcessModel(processParameters1, timeBase_s, &quot;Process1&quot;);
-var processModel2
-    = new DefaultProcessModel(processParameters2, timeBase_s, &quot;Process2&quot;);
-var pidModel1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
-var pidModel2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
+   var processParameters2 = new DefaultProcessModelParameters
+   {
+       WasAbleToIdentify = true,
+       TimeConstant_s = 30,//slow
+       ProcessGains = new double[] { 1 },
+       U0 = new double[] { 50 },
+       TimeDelay_s = 5,
+       Bias = 50
+   };
+   var pidParameters1 = new PIDModelParameters()
+   {
+       Kp = 3,
+       Ti_s = 2 //rapid
+   };
+   var pidParameters2 = new PIDModelParameters()
+   {
+       Kp = 1,
+       Ti_s = 40 //slow
+   };
+   var process1
+       = new DefaultProcessModel(processParameters1, timeBase_s, &quot;Process1&quot;);
+   var process2
+       = new DefaultProcessModel(processParameters2, timeBase_s, &quot;Process2&quot;);
+   var pid1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
+   var pid2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
 
-var sim = new ProcessSimulator(timeBase_s,
-    new List&lt;ISimulatableModel&gt; { processModel1, processModel2, pidModel1, pidModel2 });
+   var sim = new ProcessSimulator(timeBase_s,
+       new List&lt;ISimulatableModel&gt; { process1, process2, pid1, pid2 });
 
-//pidModel1.SetManualOutput(50);
-//pidModel1.SetToManualMode();
+//  pid1.SetManualOutput(50);
+//   pid1.SetToManualMode();
 
-//pidModel2.SetManualOutput(50);
-//pidModel2.SetToManualMode();
+//   pid2.SetManualOutput(50);
+//   pid2.SetToManualMode();
 
-sim.ConnectModels(processModel1, processModel2);
-sim.ConnectModels(processModel1, pidModel1);
-sim.ConnectModels(pidModel1, processModel1);
-sim.ConnectModels(processModel2, pidModel2);
-sim.ConnectModels(pidModel2, pidModel1,(int)PIDModelInputsIdx.Y_setpoint);
+   sim.ConnectModels(process1, process2);
+   sim.ConnectModels(process1, pid1);
+   sim.ConnectModels(pid1, process1);
+   sim.ConnectModels(process2, pid2);
+   sim.ConnectModels(pid2, pid1,(int)PIDModelInputsIdx.Y_setpoint);
 
-sim.AddSignal(pidModel2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
-sim.AddSignal(processModel2, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
+   sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
+   sim.AddSignal(process1,SignalType.Distubance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+   sim.AddSignal(process2,SignalType.Distubance_D,TimeSeriesCreator.Step(300, N, 0, 1));
 
-var isOK = sim.Simulate(out var simResult);
+   var isOK = sim.Simulate(out var simResult);
 
-Plot.FromList(new List&lt;double[]&gt;
-    {
-    simResult.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
-    simResult.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
-    simResult.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
-    simResult.GetValues(pidModel1.GetID(),SignalType.PID_U),
-    simResult.GetValues(pidModel2.GetID(),SignalType.PID_U)
-    },
-new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y2=y2[right]&quot;,&quot;y2=y2_set[right]&quot;, &quot;y3=u1&quot;, &quot;y4=u2[right]&quot; }, timeBase_s, &quot;CascadeEx&quot;);
+   Plot.FromList(new List&lt;double[]&gt;
+       {
+       simResult.GetValues(process1.GetID(),SignalType.Output_Y_sim),
+       simResult.GetValues(process2.GetID(),SignalType.Output_Y_sim),
+       simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+       simResult.GetValues(pid1.GetID(),SignalType.PID_U),
+       simResult.GetValues(pid2.GetID(),SignalType.PID_U)
+       },
+   new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y2=y2[right]&quot;,&quot;y2=y2_set[right]&quot;, &quot;y3=u1&quot;, &quot;y4=u2[right]&quot; }, timeBase_s, &quot;CascadeEx&quot;);
+</code></pre>
+<p>The resulting results.</p>
+<p><img src="images/ex_cascade_results.png" alt="Cascade system"></p>
+<p>To observe the open-loop behavior of the system for the same disturbances but with both controllers in <strong>manual mode</strong>,
+comment in the code lines:</p>
+<pre><code>    pid1.SetManualOutput(50);
+    pid1.SetToManualMode();
 
-
-</code></pre></article>
+    pid2.SetManualOutput(50);
+    pid2.SetToManualMode();
+</code></pre>
+<p>The resulting open-loop simulation results:
+<img src="images/ex_cascade_open_loop_results.png" alt="Cascade system"></p>
+<p>These simualtions show the benefits of the cascade control over open-loop:</p>
+<ul>
+<li>transients in <code>y2</code> of <code>+/-0.5</code>, are reduced to approximiately <code>+/-0.1</code>, and</li>
+<li>the step disturbance in <code>y2</code> is rejected.</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>There are slight &quot;bumps&quot; in both the open-loop and closed-loop cases above.
+This is because the simulations by design start in steady-state, whereas for the rest of the simulation the
+entire process is in never-ending transient state because of the sinusoidal disturbance on <code>y1</code>.
+Thus this bump is unavoidable, therefore in cases such as this, models should only be evaluated after a run-in-time.</p>
+</div>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

@@ -16,21 +16,21 @@
         - name: Calling on this library from Python 
           href: python.md      
 
-- name: Code examples
-  href: examples.md
-  items:
-        - name: 1. A "hello world" example
-          href: ex_hello_world.md
-        - name: 2. Linear regression example
-          href: ex_linreg.md
-        - name: 3. Filtering
-          href: ex_filtering.md
-        - name: 4. Fitting a dynamic model to transient data example
-          href: ex_sysid.md
-        - name: 5. Simulating a single PID-controller
-          href: ex_pid.md
-        - name: 6. Larger-scale dynamic process simulation 
-          href: ex_processsim.md
+        - name: Introductory code examples
+          href: examples.md
+          items:
+                - name: 1. A "hello world" example
+                  href: ex_hello_world.md
+                - name: 2. Linear regression example
+                  href: ex_linreg.md
+                - name: 3. Filtering
+                  href: ex_filtering.md
+                - name: 4. Fitting a dynamic model to transient data example
+                  href: ex_sysid.md
+                - name: 5. Simulating a single PID-controller
+                  href: ex_pid.md
+                - name: 6. Larger-scale dynamic process simulation 
+                  href: ex_processsim.md
           
 
 - name: System identification
@@ -49,7 +49,7 @@
         - name: ProcessSimulator
           href: processsimulator.md
 
-        - name: PID control
+        - name: PID control code examples
           href: pidcontrol.md
           items:
             - name: Cascade control

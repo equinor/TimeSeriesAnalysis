@@ -58,45 +58,43 @@ namespace TimeSeriesAnalysis._Examples
                 Kp = 1,
                 Ti_s = 40 //slow
             };
-            var processModel1
+            var process1
                 = new DefaultProcessModel(processParameters1, timeBase_s, "Process1");
-            var processModel2
+            var process2
                 = new DefaultProcessModel(processParameters2, timeBase_s, "Process2");
-            var pidModel1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
-            var pidModel2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
+            var pid1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
+            var pid2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
 
             var sim = new ProcessSimulator(timeBase_s,
-                new List<ISimulatableModel> { processModel1, processModel2, pidModel1, pidModel2 });
+                new List<ISimulatableModel> { process1, process2, pid1, pid2 });
 
-            //pidModel1.SetManualOutput(50);
-            //pidModel1.SetToManualMode();
+         //  pid1.SetManualOutput(50);
+         //   pid1.SetToManualMode();
 
-            //pidModel2.SetManualOutput(50);
-            //pidModel2.SetToManualMode();
+         //   pid2.SetManualOutput(50);
+         //   pid2.SetToManualMode();
 
-            sim.ConnectModels(processModel1, processModel2);
-            sim.ConnectModels(processModel1, pidModel1);
-            sim.ConnectModels(pidModel1, processModel1);
-            sim.ConnectModels(processModel2, pidModel2);
-            sim.ConnectModels(pidModel2, pidModel1,(int)PIDModelInputsIdx.Y_setpoint);
+            sim.ConnectModels(process1, process2);
+            sim.ConnectModels(process1, pid1);
+            sim.ConnectModels(pid1, process1);
+            sim.ConnectModels(process2, pid2);
+            sim.ConnectModels(pid2, pid1,(int)PIDModelInputsIdx.Y_setpoint);
 
-            sim.AddSignal(pidModel2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            sim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
-            sim.AddSignal(processModel2, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
+            sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
+            sim.AddSignal(process1,SignalType.Distubance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+            sim.AddSignal(process2,SignalType.Distubance_D,TimeSeriesCreator.Step(300, N, 0, 1));
 
             var isOK = sim.Simulate(out var simResult);
 
             Plot.FromList(new List<double[]>
                 {
-                simResult.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
-                simResult.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
-                simResult.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
-                simResult.GetValues(pidModel1.GetID(),SignalType.PID_U),
-                simResult.GetValues(pidModel2.GetID(),SignalType.PID_U)
+                simResult.GetValues(process1.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(process2.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+                simResult.GetValues(pid1.GetID(),SignalType.PID_U),
+                simResult.GetValues(pid2.GetID(),SignalType.PID_U)
                 },
             new List<string> { "y1=y1", "y2=y2[right]","y2=y2_set[right]", "y3=u1", "y4=u2[right]" }, timeBase_s, "CascadeEx");
-
-
             #endregion
 
             Assert.IsTrue(isOK);

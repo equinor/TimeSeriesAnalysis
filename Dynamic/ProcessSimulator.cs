@@ -229,7 +229,7 @@ namespace TimeSeriesAnalysis.Dynamic
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
             {
                 var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
-                string[] inputIDs = model.GetModelInputIDs();
+                string[] inputIDs = model.GetBothKindsOfInputIDs();//model.GetModelInputIDs();
                 if (inputIDs == null)
                 {
                     Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \""+ model.GetID() +
@@ -253,7 +253,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             // simulate for all time steps(after first step!)
-            for (timeIdx = 1; timeIdx < N; timeIdx++)
+            for (timeIdx = 0; timeIdx < N; timeIdx++)
             {
                 for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                 {
@@ -298,7 +298,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
 
             var uninitalizedPID_IDs = new List<string>();
-
 
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
             // the inital value will be calculated .Value, but is NaN unit calculated.
@@ -391,10 +390,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         + model.GetID());
                         return false;
                     }
-
                 }
             }
-
             // after the PID-controlled "Y" have been set, go through each "SubProcess" model and back-calculate 
             // the steady-state u for those subsytems that have a defined "Y".
             // assume that subsystems are ordered from left->right, go throught them right->left to propage pid-output backwards!
@@ -415,7 +412,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 bool isYgiven = simSignalValueDict.ContainsKey(outputID) || 
                     externalInputSignals.ContainsSignal(outputID);
 
-
                 int numberOfPIDInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), SignalType.PID_U);
                 if (numberOfPIDInputs > 1)
                 {
@@ -424,7 +420,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 // TODO: what about additive inputs here? This code is likely not general!
                 // 
-
                 int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), SignalType.External_U);
                 // todo: missing step here to calculate "x" from "y" based on additive inputs!
                 string[] additiveInputs = model.GetAdditiveInputIDs();
@@ -517,16 +512,12 @@ namespace TimeSeriesAnalysis.Dynamic
 
                             if (uninitalizedPID_IDs.Contains(pidID))
                             {
-                                string[] pidInputIDs = modelDict[pidID].GetModelInputIDs();
+                                string[] pidInputIDs = modelDict[pidID].GetBothKindsOfInputIDs();
                                 string ySetpointID = pidInputIDs[(int)PIDModelInputsIdx.Y_setpoint];
                                 simSignalValueDict.Add(ySetpointID,y0);
                                 uninitalizedPID_IDs.Remove(pidID);
                             }
                         }
-
-
-
-
                     }
                     else
                     {

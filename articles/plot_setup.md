@@ -41,17 +41,29 @@ the folder ``C:\inetpub`` to your ``localhost``.
 ``CsvToTable.js``, ``plotlyInterface.js`` and ``vendor\plotly.min.js``. ``vendor\plotly.min.js`` is obtained from https://plotly.com/javascript/getting-started/
 and you can swap the given file for other versions if needed.
 
+### Changing the paths by editing TimeSeriesAnalysis.dll.config
+ 
+If the paths described above for whatever reason conflict with the setup of your computer, you can change these paths 
+by editing the file ``TimeSeriesAnalysis.dll.config``, which by default has the following content:
 
-### If necessary ``localhost\plotly\data`` needs to symbolically linked to  ``c:/inetpub/www/plotly/data`` folder
+[!code-csharp[Example](../App.Config)]
+
+#### Disabling all plots
+
+It is possible to entire disable all plotting by setting the variable ``PlotsAreEnabled`` in the above mention filed to ``false``.
+This could be useful as a safety-measure if the code was ever to run in a production environment. 
+ 
+#### If necessary ``localhost\plotly\data`` needs to symbolically linked to  ``c:/inetpub/www/plotly/data`` folder
+
+An alternate way to get around paths that do not suit your runtime environment is to use ``mklink``.
 
 If your http-server is mapping "c:\inetpub", then you will not need to do this step. 
 ``TimeSeriesAnalysis`` will write data into ``C:\inetpub\plotly\Data`` and it will thus be 
 found by the javascript browser-side code and run to display your plots.
 
-*If* you are serving up another folder [PathXYZ] on your computer to localhost, and do not want to change this,
-you will have to make a symoblic link like so: 
+*If* you are serving up another folder [PathXYZ] on your computer to localhost than "c:\inetpub" , and do not want or cannot
+for whatever reason change ``TimeSeriesAnalysis.dll.config``,an alternate solution is to make a 
+directory link by the following command on the command prompt(``cmd.exe``) so: 
 
 ``mklink /D C:\inetpub\wwwroot\plotly\Data C:\[PathXYZ]\plotly\Data``
 
-> [!Note]
-> It is also possible to pass a custom ``data`` folder path to ``Plot.FromList``.  

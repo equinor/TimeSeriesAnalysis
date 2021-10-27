@@ -104,6 +104,11 @@ namespace TimeSeriesAnalysis.Dynamic
             return false;
         }
 
+        /// <summary>
+        /// Get the ID of the PID-controller that is upstream a given modelID
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
         public string GetUpstreamPIDId(string modelID)
         {
             var upstreamModelIDs = GetUpstreamModels(modelID);
@@ -186,21 +191,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // Note that controllers may be in cascades, so the order in they are processed may be signficant
             // the calculation order should always be to start with the outermost pid-controllers and to 
             // work your way in.
-            /*{ 
-                List<string> unprocessedModelsCopy = new List<string>(unprocessedModels);
-                foreach (string modelID in unprocessedModelsCopy)
-                {
-                    if (modelDict[modelID].GetProcessModelType() == ProcessModelType.PID)
-                    {
-                        orderedModels.Add(modelID);
-                        pidModels.Add(modelID);
-                        unprocessedModels.Remove(modelID);
-                    }
-                }
-            }*/
-            
             {
-        
                 bool areUnprocessedPIDModelsLeft = true;
                 int whileLoopIterations = 0;
                 int whileLoopIterationsMax = 500;
