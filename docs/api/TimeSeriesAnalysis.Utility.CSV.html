@@ -126,8 +126,76 @@
   
   
   <a id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Double_0__0____System_String____System_String_0__0____" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)">LoadDataFromCSV(String, out Double[,], out String[], out String[,])</h4>
+  <h4 id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Char_System_Double_0__0____System_String____System_String_0__0____" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)">LoadDataFromCSV(String, Char, out Double[,], out String[], out String[,])</h4>
   <div class="markdown level1 summary"><p>Load time-series data from a CSV-file into variables for further processing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool LoadDataFromCSV(string filename, char separator, out double[, ] doubleData, out string[] variableNames, out string[, ] stringData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filename</span></td>
+        <td><p>path of file to be loaded</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Char</span></td>
+        <td><span class="parametername">separator</span></td>
+        <td><p>separator character used to separate data in file</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[,]</td>
+        <td><span class="parametername">doubleData</span></td>
+        <td><p>(output) the returned 2D array where each column is the data for one variable</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">variableNames</span></td>
+        <td><p>(output) an array of the variable names in <code>doubleData</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span>[,]</td>
+        <td><span class="parametername">stringData</span></td>
+        <td><p>(output)the raw data of the entire csv-file in a 2D array, only needed if parsing of other two variables has failed, and useful for retireving timestamps</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV*"></a>
+  <h4 id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Double_0__0____System_String____System_String_0__0____" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)">LoadDataFromCSV(String, out Double[,], out String[], out String[,])</h4>
+  <div class="markdown level1 summary"><p>Load time-series data from a CSV-file into variables for further processing (using the default &quot;;&quot; separator)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

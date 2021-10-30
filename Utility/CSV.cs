@@ -14,16 +14,30 @@ namespace TimeSeriesAnalysis.Utility
 
     public class CSV
     {
-
         ///<summary>
-        /// Load time-series data from a CSV-file into variables for further processing
+        /// Load time-series data from a CSV-file into variables for further processing (using the default ";" separator)
         ///</summary>
         /// <param name="filename"> path of file to be loaded</param>
         /// <param name="doubleData">(output) the returned 2D array where each column is the data for one variable</param>
         /// <param name="variableNames">(output) an array of the variable names in <c>doubleData</c></param>
         /// <param name="stringData">(output)the raw data of the entire csv-file in a 2D array, only needed if parsing of other two variables has failed, and useful for retireving timestamps </param>
         /// <returns></returns>
+
         public static bool LoadDataFromCSV(string filename, out double[,] doubleData, out string[] variableNames, out string[,] stringData)
+        {
+            return LoadDataFromCSV(filename, ';', out doubleData, out variableNames, out stringData);
+        }
+
+        ///<summary>
+        /// Load time-series data from a CSV-file into variables for further processing
+        ///</summary>
+        /// <param name="filename"> path of file to be loaded</param>
+        /// <param name="separator"> separator character used to separate data in file</param>
+        /// <param name="doubleData">(output) the returned 2D array where each column is the data for one variable</param>
+        /// <param name="variableNames">(output) an array of the variable names in <c>doubleData</c></param>
+        /// <param name="stringData">(output)the raw data of the entire csv-file in a 2D array, only needed if parsing of other two variables has failed, and useful for retireving timestamps </param>
+        /// <returns></returns>
+        public static bool LoadDataFromCSV(string filename, char separator,out double[,] doubleData, out string[] variableNames, out string[,] stringData)
         {
             using (System.IO.StreamReader sr = new System.IO.StreamReader(filename))
             {
@@ -35,12 +49,12 @@ namespace TimeSeriesAnalysis.Utility
                 var linesDouble = new List<double[]>();
                 var linesStr = new List<string[]>();
                 // readheader
-                variableNames = sr.ReadLine().Split(';');
+                variableNames = sr.ReadLine().Split(separator);
                 while (!sr.EndOfStream)
                 {
                     double[] LineDouble = new double[variableNames.Length];
                     string currentLine = sr.ReadLine();
-                    string[] LineStr = currentLine.Split(';');
+                    string[] LineStr = currentLine.Split(separator);
                     for (int k = 0; k < LineStr.Length; k++)
                     {
                         if (LineStr[k].Length > 0)

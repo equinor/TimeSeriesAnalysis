@@ -3764,6 +3764,15 @@ references:
   commentId: T:TimeSeriesAnalysis.Utility.CSV
   fullName: TimeSeriesAnalysis.Utility.CSV
   nameWithType: CSV
+- uid: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
+  name: LoadDataFromCSV(String, Char, out Double[,], out String[], out String[,])
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Char_System_Double_0__0____System_String____System_String_0__0____
+  commentId: M:TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
+  name.vb: LoadDataFromCSV(String, Char, ByRef Double(,), ByRef String(), ByRef String(,))
+  fullName: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String, System.Char, out System.Double[,], out System.String[], out System.String[,])
+  fullName.vb: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String, System.Char, ByRef System.Double(,), ByRef System.String(), ByRef System.String(,))
+  nameWithType: CSV.LoadDataFromCSV(String, Char, out Double[,], out String[], out String[,])
+  nameWithType.vb: CSV.LoadDataFromCSV(String, Char, ByRef Double(,), ByRef String(), ByRef String(,))
 - uid: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
   name: LoadDataFromCSV(String, out Double[,], out String[], out String[,])
   href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Double_0__0____System_String____System_String_0__0____
