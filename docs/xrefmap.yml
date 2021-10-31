@@ -4147,15 +4147,24 @@ references:
   commentId: T:TimeSeriesAnalysis.Utility.Plot
   fullName: TimeSeriesAnalysis.Utility.Plot
   nameWithType: Plot
-- uid: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
-  name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
-  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
-  name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
-  fullName: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
-  nameWithType: Plot.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
-  nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
+- uid: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.DateTime[],System.String,System.String,System.Boolean)
+  name: FromList(List<Double[]>, List<String>, DateTime[], String, String, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_DateTime___System_String_System_String_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.DateTime[],System.String,System.String,System.Boolean)
+  name.vb: FromList(List(Of Double()), List(Of String), DateTime(), String, String, Boolean)
+  fullName: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.DateTime[], System.String, System.String, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.DateTime(), System.String, System.String, System.Boolean)
+  nameWithType: Plot.FromList(List<Double[]>, List<String>, DateTime[], String, String, Boolean)
+  nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), DateTime(), String, String, Boolean)
+- uid: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)
+  name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)
+  name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean)
+  fullName: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean)
+  nameWithType: Plot.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean)
+  nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean)
 - uid: TimeSeriesAnalysis.Utility.Plot.FromList*
   name: FromList
   href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_
@@ -4208,15 +4217,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.Plot4Test.Enable
   nameWithType: Plot4Test.Enable
-- uid: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
-  name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
-  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)
-  name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
-  fullName: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean, System.String)
-  nameWithType: Plot4Test.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean, String)
-  nameWithType.vb: Plot4Test.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean, String)
+- uid: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)
+  name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)
+  name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean)
+  fullName: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot4Test.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean)
+  nameWithType: Plot4Test.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean)
+  nameWithType.vb: Plot4Test.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean)
 - uid: TimeSeriesAnalysis.Utility.Plot4Test.FromList*
   name: FromList
   href: api/TimeSeriesAnalysis.Utility.Plot4Test.html#TimeSeriesAnalysis_Utility_Plot4Test_FromList_

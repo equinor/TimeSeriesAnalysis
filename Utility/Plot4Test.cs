@@ -137,12 +137,11 @@ namespace TimeSeriesAnalysis.Utility
         /// <returns></returns>
         public string FromList(List<double[]> dataList, List<string> plotNames,
             int dT_s, string comment = null, DateTime t0 = new DateTime(),
-            string caseName = "", bool doStartChrome = true, string customPlotDataPath = null)
+            string caseName = "", bool doStartChrome = true)
         {
             if (DetermineIfToPlot())
             {
-                return Plot.FromList(dataList, plotNames, dT_s, comment, t0, caseName, doStartChrome,
-                    customPlotDataPath);
+                return Plot.FromList(dataList, plotNames, dT_s, comment, t0, caseName, doStartChrome          );
             }
             else
                 return null;

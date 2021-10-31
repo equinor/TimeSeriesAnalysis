@@ -127,13 +127,80 @@ If you sometimes need to disable plots (for instance if plotting code is include
   
   
   <a id="TimeSeriesAnalysis_Utility_Plot_FromList_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList*"></a>
-  <h4 id="TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_System_String_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean,System.String)">FromList(List&lt;Double[]&gt;, List&lt;String&gt;, Int32, String, DateTime, String, Boolean, String)</h4>
+  <h4 id="TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_DateTime___System_String_System_String_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.DateTime[],System.String,System.String,System.Boolean)">FromList(List&lt;Double[]&gt;, List&lt;String&gt;, DateTime[], String, String, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string FromList(List&lt;double[]&gt; dataList, List&lt;string&gt; plotNames, DateTime[] dataTimes, string comment = null, string caseName = &quot;&quot;, bool doStartChrome = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Double</span>[]&gt;</td>
+        <td><span class="parametername">dataList</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">plotNames</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.DateTime</span>[]</td>
+        <td><span class="parametername">dataTimes</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">comment</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">caseName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doStartChrome</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Utility_Plot_FromList_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList*"></a>
+  <h4 id="TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)">FromList(List&lt;Double[]&gt;, List&lt;String&gt;, Int32, String, DateTime, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Time-series plotting in a pop-up browser window, based on plot.ly</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string FromList(List&lt;double[]&gt; dataList, List&lt;string&gt; plotNames, int dT_s, string comment = null, DateTime t0 = default(DateTime), string caseName = &quot;&quot;, bool doStartChrome = true, string customPlotDataPath = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string FromList(List&lt;double[]&gt; dataList, List&lt;string&gt; plotNames, int dT_s, string comment = null, DateTime t0 = default(DateTime), string caseName = &quot;&quot;, bool doStartChrome = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,12 +254,6 @@ or &quot;y4=&quot;(bottom right) to denote what y-axis to plot the variable on</
         <td><span class="parametername">doStartChrome</span></td>
         <td><p>By setting doStartChrome to false, you can skip opening up chrome, the link to figure
 will instead be returned</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">customPlotDataPath</span></td>
-        <td><p>by overriding this variable, the data is written to another path than the default C:\inetpub\wwwroot\plotly\Data\</p>
 </td>
       </tr>
     </tbody>

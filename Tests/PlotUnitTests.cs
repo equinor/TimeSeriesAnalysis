@@ -39,5 +39,25 @@ namespace TimeSeriesAnalysis.Test
                 new DateTime(2020,1,1, 0,0,0), "Test_SubplotPositionWorksOk");
             Console.WriteLine(plotURL);
         }
+
+        [TestCase(Explicit = true, Reason = "opens Chrome window")]
+        public void Plot_CorrectlyPlotsTimes()
+        {
+
+            List<double> input1  = new List<double>();
+            List<DateTime> dates = new List<DateTime>();
+            dates.Add(new DateTime(2000,1,1));
+            int k = 1;
+            for (int l=0;l<10;l++)
+            {
+                k++;
+                input1.Add(k);
+                dates.Add(dates.Last().AddDays(k));
+            }
+            string plotURL = Plot.FromList(new List<double[]> { input1.ToArray()},
+            new List<string> { "y1=input1" }, dates.ToArray(), "unit test"
+                , "Test_PlotsTimes");
+        }
+
     }
  }

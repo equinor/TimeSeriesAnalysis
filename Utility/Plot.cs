@@ -24,24 +24,11 @@ namespace TimeSeriesAnalysis.Utility
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
 
-        /// <summary>
-        /// Time-series plotting in a pop-up browser window, based on plot.ly
-        /// </summary>
-        /// <param name="dataList">List of doubles, one entry for each time-series to be plotted</param>
-        /// <param name="plotNames">List of string  of unique names to describe each plot, prefixed by either "y1="(top left),"y2="(top right),"y3="(bottom left) 
-        /// or "y4="(bottom right) to denote what y-axis to plot the variable on</param>
-        /// <param name="dT_s">the time between data samples in seconds</param>
-        /// <param name="comment">a comment that is shown in the plot</param>
-        /// <param name="t0">the DateTime of the first data point </param>
-        /// <param name="caseName">give each plot a casename if creating multiple plots with the re-occurring variable names</param>
-        /// <param name="doStartChrome">By setting doStartChrome to false, you can skip opening up chrome, the link to figure
-        ///   will instead be returned </param>
-        /// <param name="customPlotDataPath">by overriding this variable, the data is written to another path than the default C:\inetpub\wwwroot\plotly\Data\ </param>
-        /// <returns>The url of the resulting plot is returned</returns>
         public static string FromList(List<double[]> dataList, List<string> plotNames,
-            int dT_s, string comment = null, DateTime t0 = new DateTime(),
-            string caseName = "", bool doStartChrome = true, string customPlotDataPath = null)
+            DateTime[] dataTimes, string comment = null,
+            string caseName = "", bool doStartChrome = true)
         {
+
             if (dataList == null)
                 return "";
             if (plotNames == null)
@@ -50,15 +37,14 @@ namespace TimeSeriesAnalysis.Utility
                 return "";
             if (plotNames.Count() == 0)
                 return "";
-            if (dataList.ElementAt(0).Count()==0)
+            if (dataList.ElementAt(0).Count() == 0)
                 return "";
-
 
             var isPlotEnabled = ConfigurationManager.AppSettings.GetValues("PlotsAreEnabled");
             if (isPlotEnabled != null)
             {
                 var str = isPlotEnabled[0].ToLower().Trim();
-                if (str == "false" || str =="0")
+                if (str == "false" || str == "0")
                     return "";
             }
 
@@ -72,14 +58,11 @@ namespace TimeSeriesAnalysis.Utility
             string command = @"-r " + plotlyURLinternal + "#";
             string plotURL = ""; ;
 
-            var time = InitTimeList(t0, dT_s, dataList.ElementAt(0).Count());
-
-
             if ((caseName == null || caseName == "") && comment != null)
             {
                 caseName = comment;
             }
-            caseName = caseName.Replace("(", "").Replace(")", "").Replace(" ","") ;
+            caseName = caseName.Replace("(", "").Replace(")", "").Replace(" ", "");
 
             int j = 0;
             foreach (string plotName in plotNames)
@@ -89,7 +72,7 @@ namespace TimeSeriesAnalysis.Utility
                 plotURL += shortPPtagName;
                 if (j < plotNames.Count - 1)//dont add semicolon after last variable
                     plotURL += ";";
-                WriteSingleDataToCSV(time.ToArray(), dataList.ElementAt(j), ppTagName, null, customPlotDataPath);
+                WriteSingleDataToCSV(dataTimes.ToArray(), dataList.ElementAt(j), ppTagName, null);
                 j++;
             }
             plotURL += CreateCommentStr(comment);
@@ -107,7 +90,41 @@ namespace TimeSeriesAnalysis.Utility
                 Start(chromePathInternal, command + plotURL, out bool returnVal);
             }
             return plotURL;
+        }
 
+
+
+        /// <summary>
+        /// Time-series plotting in a pop-up browser window, based on plot.ly
+        /// </summary>
+        /// <param name="dataList">List of doubles, one entry for each time-series to be plotted</param>
+        /// <param name="plotNames">List of string  of unique names to describe each plot, prefixed by either "y1="(top left),"y2="(top right),"y3="(bottom left) 
+        /// or "y4="(bottom right) to denote what y-axis to plot the variable on</param>
+        /// <param name="dT_s">the time between data samples in seconds</param>
+        /// <param name="comment">a comment that is shown in the plot</param>
+        /// <param name="t0">the DateTime of the first data point </param>
+        /// <param name="caseName">give each plot a casename if creating multiple plots with the re-occurring variable names</param>
+        /// <param name="doStartChrome">By setting doStartChrome to false, you can skip opening up chrome, the link to figure
+        ///   will instead be returned </param>
+        /// <returns>The url of the resulting plot is returned</returns>
+        public static string FromList(List<double[]> dataList, List<string> plotNames,
+            int dT_s, string comment = null, DateTime t0 = new DateTime(),
+            string caseName = "", bool doStartChrome = true)
+        {
+            if (dataList == null)
+                return "";
+            if (plotNames == null)
+                return "";
+            if (dataList.Count() == 0)
+                return "";
+            if (plotNames.Count() == 0)
+                return "";
+            if (dataList.ElementAt(0).Count()==0)
+                return "";
+
+            var time = InitTimeList(t0, dT_s, dataList.ElementAt(0).Count());
+
+            return FromList(dataList, plotNames, time.ToArray(), comment,caseName,doStartChrome);
         }
 
         ///<summary>
