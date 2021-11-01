@@ -249,12 +249,31 @@ namespace TimeSeriesAnalysis.Test
             double[] vecExpt = { 0, 1, 2, 3, 4, 4, 4, 7, 7, 7, 10 };
             Assert.AreEqual(vecExpt, vecResult);
         }
+        [Test]
         public void ReplaceIndWithValue()
         {
             double[] vec = { 0, 1,2,3,4 };
             List<int> vecInd = new List<int> { 1,3 };
             double[] vecResult = Vec.ReplaceIndWithValue(vec, vecInd, Double.NaN);
             double[] vecExpt = { 0, Double.NaN,2,Double.NaN, 4};
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void ReplaceValuesAbove()
+        {
+            double[] vec = { 0, 6, 2, 3, 4 };
+            double[] vecResult = Vec.ReplaceValuesAbove(vec, 3,Double.NaN);
+            double[] vecExpt = { 0, Double.NaN, 2, 3,Double.NaN};
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void ReplaceValuesBelow()
+        {
+            double[] vec = { 0, 6, 2, 3, 4 };
+            double[] vecResult = Vec.ReplaceValuesBelow(vec, 3, Double.NaN);
+            double[] vecExpt = { Double.NaN, 6, Double.NaN, 3, 4 };
             Assert.AreEqual(vecExpt, vecResult);
         }
 

@@ -4962,6 +4962,38 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.ReplaceIndWithValue
   nameWithType: Vec.ReplaceIndWithValue
+- uid: TimeSeriesAnalysis.Vec.ReplaceValuesAbove(System.Double[],System.Double,System.Double)
+  name: ReplaceValuesAbove(Double[], Double, Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceValuesAbove_System_Double___System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.ReplaceValuesAbove(System.Double[],System.Double,System.Double)
+  name.vb: ReplaceValuesAbove(Double(), Double, Double)
+  fullName: TimeSeriesAnalysis.Vec.ReplaceValuesAbove(System.Double[], System.Double, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.ReplaceValuesAbove(System.Double(), System.Double, System.Double)
+  nameWithType: Vec.ReplaceValuesAbove(Double[], Double, Double)
+  nameWithType.vb: Vec.ReplaceValuesAbove(Double(), Double, Double)
+- uid: TimeSeriesAnalysis.Vec.ReplaceValuesAbove*
+  name: ReplaceValuesAbove
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceValuesAbove_
+  commentId: Overload:TimeSeriesAnalysis.Vec.ReplaceValuesAbove
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.ReplaceValuesAbove
+  nameWithType: Vec.ReplaceValuesAbove
+- uid: TimeSeriesAnalysis.Vec.ReplaceValuesBelow(System.Double[],System.Double,System.Double)
+  name: ReplaceValuesBelow(Double[], Double, Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceValuesBelow_System_Double___System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.ReplaceValuesBelow(System.Double[],System.Double,System.Double)
+  name.vb: ReplaceValuesBelow(Double(), Double, Double)
+  fullName: TimeSeriesAnalysis.Vec.ReplaceValuesBelow(System.Double[], System.Double, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.ReplaceValuesBelow(System.Double(), System.Double, System.Double)
+  nameWithType: Vec.ReplaceValuesBelow(Double[], Double, Double)
+  nameWithType.vb: Vec.ReplaceValuesBelow(Double(), Double, Double)
+- uid: TimeSeriesAnalysis.Vec.ReplaceValuesBelow*
+  name: ReplaceValuesBelow
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceValuesBelow_
+  commentId: Overload:TimeSeriesAnalysis.Vec.ReplaceValuesBelow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.ReplaceValuesBelow
+  nameWithType: Vec.ReplaceValuesBelow
 - uid: TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
   name: RSquared(Double[], Double[], List<Int32>)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_RSquared_System_Double___System_Double___System_Collections_Generic_List_System_Int32__

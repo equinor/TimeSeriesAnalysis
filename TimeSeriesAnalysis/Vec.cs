@@ -944,12 +944,38 @@ namespace TimeSeriesAnalysis
             for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
             {
                 int curVecInd = vecInd[curIndInd];
-                if (curVecInd > 0)
+                if (curVecInd >= 0)
                 {
                     outArray[curVecInd] = valueToReplaceWith;
                 }
             }
-            return array;
+            return outArray;
+        }
+
+        /// <summary>
+        /// Replace values below a threshold in an array with a new value
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="threshold"></param>
+        /// <param name="valueToReplaceWith"></param>
+        /// <returns></returns>
+        public static double[] ReplaceValuesAbove(double[] array, double threshold, double valueToReplaceWith)
+        {
+            var ind = new Vec().FindValues(array, threshold,VectorFindValueType.BiggerThan);
+            return ReplaceIndWithValue(array,ind, valueToReplaceWith);
+        }
+
+        /// <summary>
+        /// Replace all values above a certain threshold in array with a new value
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="threshold"></param>
+        /// <param name="valueToReplaceWith"></param>
+        /// <returns></returns>
+        public static double[] ReplaceValuesBelow(double[] array, double threshold, double valueToReplaceWith)
+        {
+            var ind = new Vec().FindValues(array, threshold, VectorFindValueType.SmallerThan);
+            return ReplaceIndWithValue(array, ind, valueToReplaceWith);
         }
 
         ///<summary>
