@@ -40,6 +40,35 @@ namespace TimeSeriesAnalysis.Test
             Console.WriteLine(plotURL);
         }
 
+
+        [TestCase(Explicit = true, Reason = "opens Chrome window")]
+        public void PlotFromTupleList()
+        {
+            var values1 = TimeSeriesCreator.Constant(1,100);
+            var values2 = TimeSeriesCreator.Constant(2,100);
+            var values3 = TimeSeriesCreator.Constant(1.5,100);
+
+            var times1 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,0,0,0), 3600, 24);
+            var times2 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,12,0,0), 3600, 24);
+            var times3 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,6,0,0), 3600, 24);
+
+            var list = new List<(double[], DateTime[])>()
+            {
+                (values1,times1),
+                (values2,times2),
+                (values3,times3)
+            };
+
+            string plotURL = Plot.FromList(list,
+                new List<string> { "y1=input1", "y1=input2", "y1=input3" }, "unit test" , "Test_PlotsTimes");
+
+
+
+
+
+        }
+
+
         [TestCase(Explicit = true, Reason = "opens Chrome window")]
         public void Plot_CorrectlyPlotsTimes()
         {

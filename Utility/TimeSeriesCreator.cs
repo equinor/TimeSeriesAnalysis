@@ -15,10 +15,10 @@ namespace TimeSeriesAnalysis.Utility
         /// <summary>
         /// Creates a vector of a constant value
         /// </summary>
-        /// <param name="value">constant value of timne-series</param>
+        /// <param name="value">constant value of time-series</param>
         /// <param name="N">number of data points of time-series</param>
         /// <returns></returns>
-        internal static double[] Constant(int value, int N)
+        internal static double[] Constant(double value, int N)
         {
             //(wrapper for Vec.Fill, added for code readability)
             return Vec<double>.Fill(value, N);

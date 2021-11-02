@@ -34,6 +34,79 @@ namespace TimeSeriesAnalysis.Utility
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
 
+
+        /// <summary>
+        /// Plot data from a list of value-date tuples (each time-series can have unique time-vector with unique sampling)
+        /// </summary>
+        /// <param name="dataDateTupleList"></param>
+        /// <param name="plotNames"></param>
+        /// <param name="comment"></param>
+        /// <param name="caseName"></param>
+        /// <param name="doStartChrome"></param>
+        /// <returns></returns>
+        public static string FromList(List<(double[],DateTime[])> dataDateTupleList, List<string> plotNames,
+            string comment = null, string caseName = "", bool doStartChrome = true)
+        {
+            if (dataDateTupleList == null)
+                return "";
+            if (plotNames == null)
+                return "";
+
+            var isPlotEnabled = ConfigurationManager.AppSettings.GetValues("PlotsAreEnabled");
+            if (isPlotEnabled != null)
+            {
+                var str = isPlotEnabled[0].ToLower().Trim();
+                if (str == "false" || str == "0")
+                    return "";
+            }
+            var plotlyURLinternal = plotlyURL;
+            var plotlyULRAppConfig = ConfigurationManager.AppSettings.GetValues("PlotlyURL");
+            if (plotlyULRAppConfig != null)
+            {
+                plotlyURLinternal = plotlyULRAppConfig[0];
+            }
+
+            string command = @"-r " + plotlyURLinternal + "#";
+            string plotURL = ""; ;
+
+            if ((caseName == null || caseName == "") && comment != null)
+            {
+                caseName = comment;
+            }
+            caseName = caseName.Replace("(", "").Replace(")", "").Replace(" ", "");
+
+            int j = 0;
+            foreach (var dataDateTuple in dataDateTupleList)
+            {
+                string plotName = plotNames.ElementAt(j);
+                string ppTagName = PreprocessTagName(caseName + plotName);
+                string shortPPtagName = PreprocessTagName(plotName);
+                plotURL += shortPPtagName;
+                if (j < plotNames.Count - 1)//dont add semicolon after last variable
+                    plotURL += ";";
+                WriteSingleDataToCSV(dataDateTuple.Item2, dataDateTuple.Item1, ppTagName, null);
+                j++;
+            }
+
+            plotURL += CreateCommentStr(comment);
+            if (caseName.Length > 0)
+                plotURL += ";casename:" + caseName;
+
+            var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
+            var chromePathInternal = chromePath;
+            if (chromePathAppConfig != null)
+            {
+                chromePathInternal = chromePathAppConfig[0];
+            }
+            if (doStartChrome)
+            {
+                Start(chromePathInternal, command + plotURL, out bool returnVal);
+            }
+            return plotURL;
+
+        }
+
+
         /// <summary>
         /// Plot all variables in a list of doubles, that all have the same timestamps given by <c>dataTimes</c>
         /// </summary>
