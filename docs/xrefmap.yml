@@ -5349,6 +5349,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec(Of T).Fill
   nameWithType: Vec<T>.Fill
   nameWithType.vb: Vec(Of T).Fill
+- uid: TimeSeriesAnalysis.Vec`1.GetIndicesOfValues(System.Collections.Generic.List{`0},System.Collections.Generic.List{`0})
+  name: GetIndicesOfValues(List<T>, List<T>)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_GetIndicesOfValues_System_Collections_Generic_List__0__System_Collections_Generic_List__0__
+  commentId: M:TimeSeriesAnalysis.Vec`1.GetIndicesOfValues(System.Collections.Generic.List{`0},System.Collections.Generic.List{`0})
+  name.vb: GetIndicesOfValues(List(Of T), List(Of T))
+  fullName: TimeSeriesAnalysis.Vec<T>.GetIndicesOfValues(System.Collections.Generic.List<T>, System.Collections.Generic.List<T>)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetIndicesOfValues(System.Collections.Generic.List(Of T), System.Collections.Generic.List(Of T))
+  nameWithType: Vec<T>.GetIndicesOfValues(List<T>, List<T>)
+  nameWithType.vb: Vec(Of T).GetIndicesOfValues(List(Of T), List(Of T))
+- uid: TimeSeriesAnalysis.Vec`1.GetIndicesOfValues*
+  name: GetIndicesOfValues
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_GetIndicesOfValues_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.GetIndicesOfValues
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.GetIndicesOfValues
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetIndicesOfValues
+  nameWithType: Vec<T>.GetIndicesOfValues
+  nameWithType.vb: Vec(Of T).GetIndicesOfValues
 - uid: TimeSeriesAnalysis.Vec`1.GetValuesAtIndices(`0[],System.Collections.Generic.List{System.Int32})
   name: GetValuesAtIndices(T[], List<Int32>)
   href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_GetValuesAtIndices__0___System_Collections_Generic_List_System_Int32__

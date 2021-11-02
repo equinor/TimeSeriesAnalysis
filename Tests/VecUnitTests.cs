@@ -229,6 +229,19 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(vecExpt, vecResult);
         }
 
+        [Test]
+        public void GetIndicesOfValues()
+        {
+            var vec2 = new List<int> { 10, 30, 50, 70 };
+            var vec1 = new List<int> { 10, 20,30,40, 50,60,70 };
+            var resutlExp = new List<int> { 0,2,4,6 };
+            var result = Vec<int>.GetIndicesOfValues(vec1,vec2);
+
+            Assert.AreEqual(resutlExp, result);
+
+        }
+
+
 
         [Test]
         public void ReplaceIndWithValuesPrior()

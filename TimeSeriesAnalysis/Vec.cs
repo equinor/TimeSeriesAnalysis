@@ -274,7 +274,7 @@ namespace TimeSeriesAnalysis
         {
             List<int> indices = new List<int>();
 
-            if (type == TimeSeriesAnalysis.VectorFindValueType.BiggerThan)
+            if (type == VectorFindValueType.BiggerThan)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -282,7 +282,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.VectorFindValueType.SmallerThan)
+            else if (type == VectorFindValueType.SmallerThan)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -290,7 +290,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.VectorFindValueType.BiggerOrEqual)
+            else if (type == VectorFindValueType.BiggerOrEqual)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -298,7 +298,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.VectorFindValueType.SmallerOrEqual)
+            else if (type == VectorFindValueType.SmallerOrEqual)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -306,7 +306,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.VectorFindValueType.Equal)
+            else if (type == VectorFindValueType.Equal)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -314,7 +314,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.VectorFindValueType.NaN)
+            else if (type == VectorFindValueType.NaN)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
@@ -322,7 +322,7 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
-            else if (type == TimeSeriesAnalysis.VectorFindValueType.NotNaN)
+            else if (type == VectorFindValueType.NotNaN)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {

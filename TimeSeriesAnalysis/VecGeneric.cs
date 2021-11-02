@@ -17,6 +17,138 @@ namespace TimeSeriesAnalysis
     public static class Vec<T>
     {
         ///<summary>
+        /// concatenates arrays x and y into a new larger array
+        ///</summary>
+        public static T[] Concat(T[] x, T[] y)
+        {
+            var z = new T[x.Length + y.Length];
+            x.CopyTo(z, 0);
+            y.CopyTo(z, x.Length);
+            return z;
+        }
+
+        ///<summary>
+        /// concatenates the value y to the end of array x
+        ///</summary>
+        public static T[] Concat(T[] x, T y)
+        {
+            var z = new T[x.Length + 1];
+            x.CopyTo(z, 0);
+            z[z.Length - 1] = y;
+            return z;
+        }
+
+        
+        ///<summary>
+        /// creates an array of size N where every element has value value
+        ///</summary>
+        public static T[] Fill(T value, int N)
+        {
+            T[] ret = new T[N];
+
+            for (int i = 0; i < N; i++)
+                ret[i] = value;
+            return ret;
+        }
+
+        /// <summary>
+        /// Get the indices of <c>vec1</c> values that are present in <c>vec2</c>
+        /// </summary>
+        /// <param name="vec1">The results are related to the positions in this vector</param>
+        /// <param name="vec2"><c>vec1</c> is compared to this vector</param>
+        /// <returns></returns>
+        public static List<int> GetIndicesOfValues(List<T> vec1, List<T> vec2)
+        {
+            List<int> ind1 = new List<int>();
+            for (int k = 0; k < vec1.Count; k++)
+            {
+                if (vec2.Contains(vec1.ElementAt(k)))
+                {
+                    ind1.Add(k);
+                }
+            }
+            return ind1;
+        }
+
+        ///<summary>
+        /// returns an array of the values that are in array at the indeices given by indices list
+        ///</summary>
+
+        public static T[] GetValuesAtIndices(T[] array, List<int> indices)
+        {
+            T[] ret = new T[indices.Count()];
+
+            for (int i = 0; i < indices.Count(); i++)
+            {
+                ret[i] = array[indices.ElementAt(i)];
+            }
+            return ret;
+        }
+
+        ///<summary>
+        /// returns the intersection of array1 and array2, a list of elements that are in both vectors
+        ///</summary>
+        public static List<T> Intersect(List<T> vec1, List<T> vec2)
+        {
+            return vec1.Intersect(vec2).ToList();
+        }
+
+
+
+
+
+
+        ///<summary>
+        /// returns the intersection of a number of arrays
+        ///</summary>
+        public static List<T> Intersect(List<List<T>> lists)
+        {
+            List<T> result = lists.First();
+
+            foreach (var list in lists)
+            {
+                result =  Intersect(result, list);
+            }
+            return result;
+        }
+
+
+
+
+        ///<summary>
+        /// replaces all the vaules in array with indices in indList with the last good value
+        /// prior to that index.
+        ///</summary>
+        public static double[] ReplaceIndWithValuesPrior(double[] array, List<int> indList)
+        {
+            int[] vecInd = indList.ToArray();
+
+            int lastVecInd = -1;
+            double lastReplacementValue = -1;
+            for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
+            {
+                int curVecInd = vecInd[curIndInd];
+                if (curVecInd > 0)
+                {
+                    if (lastVecInd == curVecInd - 1)
+                    {
+                        array[curVecInd] = lastReplacementValue;
+                    }
+                    else
+                    {
+                        array[curVecInd] = array[curVecInd - 1];
+                        lastReplacementValue = array[curVecInd];
+                    }
+                }
+                lastVecInd = curVecInd;
+            }
+            return array;
+        }
+
+
+
+
+        ///<summary>
         /// sort the vector vec acording to the sortType.
         ///</summary>
         public static T[] Sort(T[] vec, VectorSortType sortType)
@@ -78,116 +210,10 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
-        ///<summary>
-        /// creates an array of size N where every element has value value
-        ///</summary>
-        public static T[] Fill(T value, int N)
-        {
-            T[] ret = new T[N];
-
-            for (int i = 0; i < N; i++)
-                ret[i] = value;
-            return ret;
-        }
-
-        ///<summary>
-        /// concatenates arrays x and y into a new larger array
-        ///</summary>
-        public static T[] Concat(T[] x, T[] y)
-        {
-            var z = new T[x.Length + y.Length];
-            x.CopyTo(z, 0);
-            y.CopyTo(z, x.Length);
-            return z;
-        }
-
-        ///<summary>
-        /// concatenates the value y to the end of array x
-        ///</summary>
-        public static T[] Concat(T[] x, T y)
-        {
-            var z = new T[x.Length + 1];
-            x.CopyTo(z, 0);
-            z[z.Length - 1] = y;
-            return z;
-        }
-
-        ///<summary>
-        /// returns the intersection of array1 and array2, a list of elements that are in both vectors
-        ///</summary>
-        public static List<T> Intersect(List<T> vec1, List<T> vec2)
-        {
-            return vec1.Intersect(vec2).ToList();
-        }
-
-        ///<summary>
-        /// returns the intersection of a number of arrays
-        ///</summary>
-        public static List<T> Intersect(List<List<T>> lists)
-        {
-            List<T> result = lists.First();
-
-            foreach (var list in lists)
-            {
-                result =  Intersect(result, list);
-            }
-            return result;
-        }
-
-
-
-
-        ///<summary>
-        /// replaces all the vaules in array with indices in indList with the last good value
-        /// prior to that index.
-        ///</summary>
-        public static double[] ReplaceIndWithValuesPrior(double[] array, List<int> indList)
-        {
-            int[] vecInd = indList.ToArray();
-
-            int lastVecInd = -1;
-            double lastReplacementValue = -1;
-            for (int curIndInd = 0; curIndInd < vecInd.Length; curIndInd++)
-            {
-                int curVecInd = vecInd[curIndInd];
-                if (curVecInd > 0)
-                {
-                    if (lastVecInd == curVecInd - 1)
-                    {
-                        array[curVecInd] = lastReplacementValue;
-                    }
-                    else
-                    {
-                        array[curVecInd] = array[curVecInd - 1];
-                        lastReplacementValue = array[curVecInd];
-                    }
-                }
-                lastVecInd = curVecInd;
-            }
-            return array;
-        }
-
-
-        ///<summary>
-        /// returns an array of the values that are in array at the indeices given by indices list
-        ///</summary>
-
-        public static T[] GetValuesAtIndices(T[] array, List<int> indices)
-        {
-            T[] ret = new T[indices.Count()];
-
-            for (int i = 0; i < indices.Count(); i++)
-            {
-                ret[i] = array[indices.ElementAt(i)];
-            }
-            return ret;
-        }
-
-
 
     }
 
 
 
-   
+
 }
