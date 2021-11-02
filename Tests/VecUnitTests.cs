@@ -283,10 +283,24 @@ namespace TimeSeriesAnalysis.Test
         {
             List<int> vecInd = new List<int> { 0, 1,2, 3, 4, 6, 7,8,10};
             List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
-            List<int> vecResult = Vec.Intersect(vecInd, vecInd2);
+            List<int> vecResult = Vec<int>.Intersect(vecInd, vecInd2);
             List<int> vecExpt = new List<int> { 6,8};
             Assert.AreEqual(vecExpt, vecResult);
         }
+
+        [Test]
+        public void IntersectMultiple ()
+        {
+            List<int> vecInd = new List<int> { 0, 1, 2, 3, 4, 6, 7, 8, 10 };
+            List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
+            List<int> vecInd3 = new List<int> { 2, 3, 6, 8 };
+            List<int> vecInd4 = new List<int> { 6, 8, 8,10 };
+
+            List<int> vecResult = Vec<int>.Intersect(new List<List<int>> { vecInd,vecInd2,vecInd3,vecInd4});
+            List<int> vecExpt = new List<int> { 6, 8 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
 
         [Test]
         public void Union()

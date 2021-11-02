@@ -8,7 +8,7 @@ using TimeSeriesAnalysis;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    class ProcessSimulator
+    public class ProcessSimulator
     {
         int timeBase_s;
         Dictionary<string, ISimulatableModel> modelDict;

@@ -332,13 +332,6 @@ namespace TimeSeriesAnalysis
             return indices;
         }
 
-        ///<summary>
-        /// returns the intersection of array1 and array2, a list of elements that are in both vectors
-        ///</summary>
-        public static List<int> Intersect(List<int> vec1, List<int> vec2)
-        {
-            return vec1.Intersect(vec2).ToList();
-        }
 
 
         ///<summary>

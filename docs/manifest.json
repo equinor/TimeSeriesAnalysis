@@ -314,6 +314,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html",
+          "hash": "GxDSafcnkUG0V70RsgXT/4HunPxddVOTrcS6xzdYBMs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.yml",
       "output": {
         ".html": {
@@ -426,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "WY32OZInofrUZg5KSC1Wikcd4S+AVqZBXhlJnBadSWc="
+          "hash": "EwRwAJfxA0tb8vC4vPe7hy7KQWKSsquBETyec5tZTPI="
         }
       },
       "is_incremental": false,
@@ -594,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Vec-1.html",
-          "hash": "TZxA4c0vac0wYYV4OiM/D881YYtRjzllzMHO88/yoDY="
+          "hash": "KrQfv21B/jOT1WhVv91EK7f7Gawu50nXeN4BgH/L6k0="
         }
       },
       "is_incremental": false,
@@ -606,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Vec.html",
-          "hash": "9J12neNqsQBxj313tcRElOrIhHloju4V8nAhmfapT9Y="
+          "hash": "EkMrLKgS8rVXjy1BZLQaMxowxNQ8UKmojIm5SqcotHs="
         }
       },
       "is_incremental": false,
@@ -678,7 +690,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4H9tMhtYfedcHYaXKSo2OWaqRyreVyxXN4XxEsduxBc="
+          "hash": "xjhG2WG0VeTsdWG9WLoGXiK5R7itO3U1JgBaCrnI784="
         }
       },
       "is_incremental": false,
@@ -1308,7 +1320,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_select.html",
-          "hash": "2ncKxaGnc3+lgmWnu3DG3njoAY41hKfKzhzC67KdCqI="
+          "hash": "6TzUFMoFZHEINKyThzqI2s5qK2vRhIHYkc4BsyNNQJE="
         }
       },
       "is_incremental": false,
@@ -1495,8 +1507,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 54,
-          "skipped_file_count": 54
+          "total_file_count": 55,
+          "skipped_file_count": 55
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

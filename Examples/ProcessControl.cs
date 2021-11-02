@@ -441,7 +441,7 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectSignal(selectSignalID,pid1, (int)PIDModelInputsIdx.Tracking);
             sim.ConnectSignal(selectSignalID,pid2, (int)PIDModelInputsIdx.Tracking);
 
-            sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+             sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
             sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
             sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
 

@@ -110,6 +110,30 @@ namespace TimeSeriesAnalysis
             return z;
         }
 
+        ///<summary>
+        /// returns the intersection of array1 and array2, a list of elements that are in both vectors
+        ///</summary>
+        public static List<T> Intersect(List<T> vec1, List<T> vec2)
+        {
+            return vec1.Intersect(vec2).ToList();
+        }
+
+        ///<summary>
+        /// returns the intersection of a number of arrays
+        ///</summary>
+        public static List<T> Intersect(List<List<T>> lists)
+        {
+            List<T> result = lists.First();
+
+            foreach (var list in lists)
+            {
+                result =  Intersect(result, list);
+            }
+            return result;
+        }
+
+
+
 
         ///<summary>
         /// replaces all the vaules in array with indices in indList with the last good value

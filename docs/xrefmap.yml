@@ -2796,6 +2796,102 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.UnTyped
   fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.UnTyped
   nameWithType: ProcessModelType.UnTyped
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator
+  name: ProcessSimulator
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.ProcessSimulator
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator
+  nameWithType: ProcessSimulator
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name: ProcessSimulator(Int32, List<ISimulatableModel>)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator__ctor_System_Int32_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name.vb: ProcessSimulator(Int32, List(Of ISimulatableModel))
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ProcessSimulator(System.Int32, System.Collections.Generic.List<TimeSeriesAnalysis.Dynamic.ISimulatableModel>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ProcessSimulator(System.Int32, System.Collections.Generic.List(Of TimeSeriesAnalysis.Dynamic.ISimulatableModel))
+  nameWithType: ProcessSimulator.ProcessSimulator(Int32, List<ISimulatableModel>)
+  nameWithType.vb: ProcessSimulator.ProcessSimulator(Int32, List(Of ISimulatableModel))
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor*
+  name: ProcessSimulator
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ProcessSimulator
+  nameWithType: ProcessSimulator.ProcessSimulator
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
+  name: AddSignal(ISimulatableModel, SignalType, Double[], Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_AddSignal_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_SignalType_System_Double___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
+  name.vb: AddSignal(ISimulatableModel, SignalType, Double(), Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double(), System.Int32)
+  nameWithType: ProcessSimulator.AddSignal(ISimulatableModel, SignalType, Double[], Int32)
+  nameWithType.vb: ProcessSimulator.AddSignal(ISimulatableModel, SignalType, Double(), Int32)
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal*
+  name: AddSignal
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_AddSignal_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal
+  nameWithType: ProcessSimulator.AddSignal
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Nullable{System.Int32})
+  name: ConnectModels(ISimulatableModel, ISimulatableModel, Nullable<Int32>)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModels_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Nullable_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Nullable{System.Int32})
+  name.vb: ConnectModels(ISimulatableModel, ISimulatableModel, Nullable(Of Int32))
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Nullable<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Nullable(Of System.Int32))
+  nameWithType: ProcessSimulator.ConnectModels(ISimulatableModel, ISimulatableModel, Nullable<Int32>)
+  nameWithType.vb: ProcessSimulator.ConnectModels(ISimulatableModel, ISimulatableModel, Nullable(Of Int32))
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels*
+  name: ConnectModels
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels
+  nameWithType: ProcessSimulator.ConnectModels
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel)
+  name: ConnectModelToOutput(ISimulatableModel, ISimulatableModel)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModelToOutput_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_ISimulatableModel_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel)
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel)
+  nameWithType: ProcessSimulator.ConnectModelToOutput(ISimulatableModel, ISimulatableModel)
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput*
+  name: ConnectModelToOutput
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModelToOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput
+  nameWithType: ProcessSimulator.ConnectModelToOutput
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)
+  name: ConnectSignal(String, ISimulatableModel, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectSignal_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal(System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Int32)
+  nameWithType: ProcessSimulator.ConnectSignal(String, ISimulatableModel, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal*
+  name: ConnectSignal
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectSignal_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal
+  nameWithType: ProcessSimulator.ConnectSignal
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name: Simulate(out TimeSeriesDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name.vb: Simulate(ByRef TimeSeriesDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(out TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  nameWithType: ProcessSimulator.Simulate(out TimeSeriesDataSet)
+  nameWithType.vb: ProcessSimulator.Simulate(ByRef TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate*
+  name: Simulate
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_Simulate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate
+  nameWithType: ProcessSimulator.Simulate
 - uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
   name: ProcessTimeDelayIdentWarnings
   href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html
@@ -4669,22 +4765,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.FindValues
   nameWithType: Vec.FindValues
-- uid: TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
-  name: Intersect(List<Int32>, List<Int32>)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Intersect_System_Collections_Generic_List_System_Int32__System_Collections_Generic_List_System_Int32__
-  commentId: M:TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
-  name.vb: Intersect(List(Of Int32), List(Of Int32))
-  fullName: TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List<System.Int32>, System.Collections.Generic.List<System.Int32>)
-  fullName.vb: TimeSeriesAnalysis.Vec.Intersect(System.Collections.Generic.List(Of System.Int32), System.Collections.Generic.List(Of System.Int32))
-  nameWithType: Vec.Intersect(List<Int32>, List<Int32>)
-  nameWithType.vb: Vec.Intersect(List(Of Int32), List(Of Int32))
-- uid: TimeSeriesAnalysis.Vec.Intersect*
-  name: Intersect
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Intersect_
-  commentId: Overload:TimeSeriesAnalysis.Vec.Intersect
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Vec.Intersect
-  nameWithType: Vec.Intersect
 - uid: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
   name: InverseIndices(Int32, List<Int32>)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_InverseIndices_System_Int32_System_Collections_Generic_List_System_Int32__
@@ -5268,6 +5348,33 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetValuesAtIndices
   nameWithType: Vec<T>.GetValuesAtIndices
   nameWithType.vb: Vec(Of T).GetValuesAtIndices
+- uid: TimeSeriesAnalysis.Vec`1.Intersect(System.Collections.Generic.List{`0},System.Collections.Generic.List{`0})
+  name: Intersect(List<T>, List<T>)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Intersect_System_Collections_Generic_List__0__System_Collections_Generic_List__0__
+  commentId: M:TimeSeriesAnalysis.Vec`1.Intersect(System.Collections.Generic.List{`0},System.Collections.Generic.List{`0})
+  name.vb: Intersect(List(Of T), List(Of T))
+  fullName: TimeSeriesAnalysis.Vec<T>.Intersect(System.Collections.Generic.List<T>, System.Collections.Generic.List<T>)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Intersect(System.Collections.Generic.List(Of T), System.Collections.Generic.List(Of T))
+  nameWithType: Vec<T>.Intersect(List<T>, List<T>)
+  nameWithType.vb: Vec(Of T).Intersect(List(Of T), List(Of T))
+- uid: TimeSeriesAnalysis.Vec`1.Intersect(System.Collections.Generic.List{System.Collections.Generic.List{`0}})
+  name: Intersect(List<List<T>>)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Intersect_System_Collections_Generic_List_System_Collections_Generic_List__0___
+  commentId: M:TimeSeriesAnalysis.Vec`1.Intersect(System.Collections.Generic.List{System.Collections.Generic.List{`0}})
+  name.vb: Intersect(List(Of List(Of T)))
+  fullName: TimeSeriesAnalysis.Vec<T>.Intersect(System.Collections.Generic.List<System.Collections.Generic.List<T>>)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Intersect(System.Collections.Generic.List(Of System.Collections.Generic.List(Of T)))
+  nameWithType: Vec<T>.Intersect(List<List<T>>)
+  nameWithType.vb: Vec(Of T).Intersect(List(Of List(Of T)))
+- uid: TimeSeriesAnalysis.Vec`1.Intersect*
+  name: Intersect
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Intersect_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.Intersect
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.Intersect
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Intersect
+  nameWithType: Vec<T>.Intersect
+  nameWithType.vb: Vec(Of T).Intersect
 - uid: TimeSeriesAnalysis.Vec`1.ReplaceIndWithValuesPrior(System.Double[],System.Collections.Generic.List{System.Int32})
   name: ReplaceIndWithValuesPrior(Double[], List<Int32>)
   href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_ReplaceIndWithValuesPrior_System_Double___System_Collections_Generic_List_System_Int32__
