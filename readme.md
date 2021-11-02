@@ -4,29 +4,40 @@
 
 
 # TimeSeriesAnalysis
-*TimeSeriesAnalysis* is a class library that allows you to work efficiently with time-series 
-in .NET that may include *transients* or *dynamics*, including identification of dynamic models,
-dynamic simulation, filtering and PID-control. The aim of the library is to support mining of time-series data for advanced analytics. 
+A library for efficient test-driven development(TDD) of time-series-based algorithms. Transients/dynamic model identification, dynamic simulation, filtering and advanced industrial PID-control. The aim is to support "mining" of industrial time-series data for advanced analytics. 
 
-## Why?
-Because the final product of many enterprise time-series applications(like control algorithms or dynamic simulators) is *required* to be implemented in .NET, why not create a toolbox streamline such development as much possible? With good tooling, it may even be possible to *start* early research/prototyping/data analysis directly in .NET, removing the need to port code later.
 
-## In a rush: getting started
+## Documentation:
 
-- check out the repository 
-- build. (Developed with ``Visual Studio 2019``)
-- open ``Test Explorer`` and read/run unit tests too examine capability and API of the class library
-- did not work? Please refer to the detailed ``Getting started`` chapter in the documentation below.
+:red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis documentation</a>** :red_circle:
 
-## Documentation: Getting started, code examples and API reference documentation
+:red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis/api/TimeSeriesAnalysis.html">TimeSeriesAnalysis API documentation</a>** :red_circle:
 
-:red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a>** :red_circle:
+## Getting started
 
-## But I prefer working with time-series in MatLab or Python
+Regardless if you call this library from C#, Python or Matlab, the resulting code is very similar. 
+A good first step is to read through the [getting started](https://equinor.github.io/TimeSeriesAnalysis/articles/examples.html) examples 
+and try copying in that code and getting it to run to get the hang of things
 
-Not to fear, ``MatLab`` supports importing ``.NET`` assemblies(*.dlls) through the built-in [NET.addAssembly()](https://se.mathworks.com/help/matlab/ref/net.addassembly.html) command.
-There is a package for  ``Python`` called [Python.Net](http://pythonnet.github.io/)
-that allows you to access the methods in this library.
+### Calling this library from Python
+
+The library is easily callable from ``Python``, throughthe use of [Python.Net](http://pythonnet.github.io/),
+see help article [Gettings started:Python](https://equinor.github.io/TimeSeriesAnalysis/articles/python.html).
+
+### Calling this library from MatLab
+
+The library is easily callable from Matlab, see article [Gettings started:Matlab](https://equinor.github.io/TimeSeriesAnalysis/articles/matlab.html).
+
+### Calling this library from your .NET project
+
+- create a project in Visual Studio, and 
+- import the "TimeSeriesAnalysis" library from nuget
+
+### Working with the code of this repository
+
+- check out this repository,
+- make sure [NuGet is setup](https://equinor.github.io/TimeSeriesAnalysis/articles/nuget_setup.html) correctly, and
+- all examples are implemented as [unit-tests](/articles/unit_tests.html) using NUNit, try running these to 
 
 ## Roadmap
 
