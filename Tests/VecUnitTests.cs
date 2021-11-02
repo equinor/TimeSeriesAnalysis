@@ -122,12 +122,12 @@ namespace TimeSeriesAnalysis.Test
             double[][] X = { X1, X2 };
             var results = (new Vec()).Regress(Y, X);
             Assert.IsNotNull(results);
-            Assert.IsTrue(results.ableToIdentify);
-            Assert.Less(Math.Abs(1 - results.param[0]), 0.001,"gain paramter should be correct");
-            Assert.Less(Math.Abs(2 - results.param[1]), 0.001, "gain paramter should be correct");
-            Assert.Less(Math.Abs(results.param[2] - bias), 0.001, "bias paramter should be correct");
+            Assert.IsTrue(results.AbleToIdentify);
+            Assert.Less(Math.Abs(1 - results.Param[0]), 0.001,"gain paramter should be correct");
+            Assert.Less(Math.Abs(2 - results.Param[1]), 0.001, "gain paramter should be correct");
+            Assert.Less(Math.Abs(results.Param[2] - bias), 0.001, "bias paramter should be correct");
             Assert.Less(Math.Abs(results.Bias- bias), 0.001, "bias should be close to true");
-            Assert.Less(results.objectiveFunctionValue, 0.001,"obj function value should be close to zero");
+            Assert.Less(results.ObjectiveFunctionValue, 0.001,"obj function value should be close to zero");
             Assert.Greater(results.Rsq, 99, "Rsqured should be close to 100");
         }
 
@@ -156,8 +156,8 @@ namespace TimeSeriesAnalysis.Test
                 4
             };
             var results= (new Vec()).Regress(Y, X, indicesToignore.ToArray());
-            Assert.Less(Math.Abs(1 - results.param[0]), 0.001);
-            Assert.Less(Math.Abs(2 - results.param[1]), 0.001);
+            Assert.Less(Math.Abs(1 - results.Param[0]), 0.001);
+            Assert.Less(Math.Abs(2 - results.Param[1]), 0.001);
             Assert.Less(Math.Abs(4 - results.Y_modelled[4]), 0.0001);
 
              Assert.Greater(results.Rsq, 99);

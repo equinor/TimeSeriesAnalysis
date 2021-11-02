@@ -22,6 +22,11 @@ namespace TimeSeriesAnalysis.Dynamic
         double Iterate(double[] inputsU, double badDataID=-9999);
 
 
+        /// <summary>
+        /// If possible, set the internal state of the model so that the given inputs give the given output
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <param name="output"></param>
         void WarmStart(double[] inputs, double output);
 
 
@@ -70,15 +75,37 @@ namespace TimeSeriesAnalysis.Dynamic
         string[] GetAdditiveInputIDs();
 
 
+        /// <summary>
+        /// Get the output ID
+        /// </summary>
+        /// <returns></returns>
         string GetOutputID();
 
+        /// <summary>
+        /// Set the output ID
+        /// </summary>
+        /// <param name="outputID"></param>
         void SetOutputID(string outputID);
 
+        /// <summary>
+        /// Set the input IDs
+        /// </summary>
+        /// <param name="manipulatedVariablesU_stringIDs"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         bool SetInputIDs(string[] manipulatedVariablesU_stringIDs, int? index=null);
 
+        /// <summary>
+        /// Add an additive signal to the output
+        /// </summary>
+        /// <param name="additiveInputID"></param>
         void AddSignalToOutput(string additiveInputID);
 
 
+        /// <summary>
+        /// Get the length of the input vector
+        /// </summary>
+        /// <returns></returns>
         int GetLengthOfInputVector();
 
         /// <summary>
@@ -87,6 +114,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         string GetID();
 
+        /// <summary>
+        /// Get the type of the output signal
+        /// </summary>
+        /// <returns></returns>
         SignalType GetOutputSignalType();
 
 

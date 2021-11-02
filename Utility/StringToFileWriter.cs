@@ -11,9 +11,11 @@ namespace TimeSeriesAnalysis.Utility
 
     ///<summary>
     /// IO Utility class to write to file that implements IDisposable interface. 
+    /// <para>
     /// Suggest to use this objects of this class within the <c>using</c> keyword
     /// so that file-resources are automatically freed in case your code is terminated before
     /// it has completed. 
+    /// </para>
     ///</summary>
 
     public class StringToFileWriter : IDisposable
@@ -23,16 +25,25 @@ namespace TimeSeriesAnalysis.Utility
             string file;
             Encoding localEncoding = Encoding.UTF8;
  
+            /// <summary>
+            /// Constructor with local encodign
+            /// </summary>
+            /// <param name="filename"></param>
             public StringToFileWriter(string filename)
             {
                 memStream = new System.IO.MemoryStream();
-            sw = new StreamWriter(memStream, localEncoding)
-            {
-                NewLine = "\r\n"
-            };
-            file = filename;
+                sw = new StreamWriter(memStream, localEncoding)
+                {
+                    NewLine = "\r\n"
+                };
+                file = filename;
             }
 
+            /// <summary>
+            /// Constructor with specific encoding
+            /// </summary>
+            /// <param name="filename">file to be creates</param>
+            /// <param name="encoding">text encoding format</param>
             public StringToFileWriter(string filename, Encoding encoding)
             {
                 localEncoding = encoding;
@@ -41,11 +52,18 @@ namespace TimeSeriesAnalysis.Utility
                 file = filename;
             }
 
+            /// <summary>
+            /// Write a single line of text 
+            /// </summary>
+            /// <param name="text"></param>
             public void Write(string text)
             {
                 sw.Write(text);
             }
 
+            /// <summary>
+            /// Close file handles
+            /// </summary>
             public void Close()
             {
                 sw.Flush();
@@ -92,6 +110,10 @@ namespace TimeSeriesAnalysis.Utility
                 //sw = null;
             }
 
+            /// <summary>
+            /// Dispose
+            /// </summary>
+            /// <param name="disposing"></param>
             protected virtual void Dispose(bool disposing)
             {
                 if (disposing)
@@ -112,12 +134,19 @@ namespace TimeSeriesAnalysis.Utility
                 // free native resources
             }
 
+            /// <summary>
+            /// Disposes 
+            /// </summary>
             public void Dispose()
             {
                 Dispose(true);
                 GC.SuppressFinalize(this);
             }
 
+            /// <summary>
+            /// creates directory on path if it does not exist
+            /// </summary>
+            /// <param name="FilePath"></param>
             public void CreateDirectoryStructure(string FilePath)
             {
                 // Create results directory if not present

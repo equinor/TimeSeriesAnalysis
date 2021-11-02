@@ -74,24 +74,30 @@
 <p><img src="https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg?branch=master" alt="Build Status">
 <img src="https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/tests.yml/badge.svg?branch=master" alt="Test Status"></p>
 <h1 id="timeseriesanalysis">TimeSeriesAnalysis</h1>
-<p><em>TimeSeriesAnalysis</em> is a class library that allows you to work efficiently with time-series
-in .NET that may include <em>transients</em> or <em>dynamics</em>, including identification of dynamic models,
-dynamic simulation, filtering and PID-control. The aim of the library is to support mining of time-series data for advanced analytics.</p>
-<h2 id="why">Why?</h2>
-<p>Because the final product of many enterprise time-series applications(like control algorithms or dynamic simulators) is <em>required</em> to be implemented in .NET, why not create a toolbox streamline such development as much possible? With good tooling, it may even be possible to <em>start</em> early research/prototyping/data analysis directly in .NET, removing the need to port code later.</p>
-<h2 id="in-a-rush-getting-started">In a rush: getting started</h2>
+<p>A library for efficient test-driven development(TDD) of time-series-based algorithms. Transients/dynamic model identification, dynamic simulation, filtering and advanced industrial PID-control. The aim is to support &quot;mining&quot; of industrial time-series data for advanced analytics.</p>
+<h2 id="documentation">Documentation:</h2>
+<p>🔴 <strong><a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis documentation</a></strong> 🔴</p>
+<p>🔴 <strong><a href="https://equinor.github.io/TimeSeriesAnalysis/api/TimeSeriesAnalysis.html">TimeSeriesAnalysis API documentation</a></strong> 🔴</p>
+<h2 id="getting-started">Getting started</h2>
+<p>Regardless if you call this library from C#, Python or Matlab, the resulting code is very similar.
+A good first step is to read through the <a href="https://equinor.github.io/TimeSeriesAnalysis/articles/examples.html">getting started</a> examples
+and try copying in that code and getting it to run to get the hang of things</p>
+<h3 id="calling-this-library-from-python">Calling this library from Python</h3>
+<p>The library is easily callable from <code>Python</code>, through the use of <a href="http://pythonnet.github.io/">Python.Net</a>,
+see help article <a href="https://equinor.github.io/TimeSeriesAnalysis/articles/python.html">Gettings started:Python</a>.</p>
+<h3 id="calling-this-library-from-matlab">Calling this library from MatLab</h3>
+<p>The library is easily callable from Matlab, see article <a href="https://equinor.github.io/TimeSeriesAnalysis/articles/matlab.html">Gettings started:Matlab</a>.</p>
+<h3 id="calling-this-library-from-your-net-project">Calling this library from your .NET project</h3>
 <ul>
-<li>check out the repository</li>
-<li>build. (Developed with <code>Visual Studio 2019</code>)</li>
-<li>open <code>Test Explorer</code> and read/run unit tests too examine capability and API of the class library</li>
-<li>did not work? Please refer to the detailed <code>Getting started</code> chapter in the documentation below.</li>
+<li>create a project in Visual Studio, and</li>
+<li>import the &quot;TimeSeriesAnalysis&quot; library from NuGet</li>
 </ul>
-<h2 id="documentation-getting-started-code-examples-and-api-reference-documentation">Documentation: Getting started, code examples and API reference documentation</h2>
-<p>🔴 <strong><a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis reference documentation</a></strong> 🔴</p>
-<h2 id="but-i-prefer-working-with-time-series-in-matlab-or-python">But I prefer working with time-series in MatLab or Python</h2>
-<p>Not to fear, <code>MatLab</code> supports importing <code>.NET</code> assemblies(*.dlls) through the built-in <a href="https://se.mathworks.com/help/matlab/ref/net.addassembly.html">NET.addAssembly()</a> command.
-There is a package for  <code>Python</code> called <a href="http://pythonnet.github.io/">Python.Net</a>
-that allows you to access the methods in this library.</p>
+<h3 id="working-with-the-code-of-this-repository">Working with the code of this repository</h3>
+<ul>
+<li>check out this repository,</li>
+<li>make sure <a href="https://equinor.github.io/TimeSeriesAnalysis/articles/nuget_setup.html">NuGet is setup</a> correctly, and</li>
+<li>all examples are implemented as <a href="/articles/unit_tests.html">unit-tests</a> using NUnit, try running these to</li>
+</ul>
 <h2 id="roadmap">Roadmap</h2>
 <p>Currently in versions <code>1.x</code>, the development focuses on creating small-scale &quot;building blocks&quot;,
 modeling components such as individual PID-controllers and small-scale process models.

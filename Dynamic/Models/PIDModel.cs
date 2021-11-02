@@ -20,7 +20,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
     /// <summary>
     /// Model of PID-controller
-    /// This class should acta as a wrapper for PIDcontroller class.
+    /// <para>This class should acta as a wrapper for PIDcontroller class.</para>
     /// </summary>
     public class PIDModel : ModelBaseClass,ISimulatableModel
     {
@@ -149,12 +149,21 @@ namespace TimeSeriesAnalysis.Dynamic
             return nInputs;// TODO:generalize
         }
 
+        /// <summary>
+        /// Return the type of the output signal
+        /// </summary>
+        /// <returns></returns>
         override public SignalType GetOutputSignalType()
         {
             return SignalType.PID_U;
         }
 
 
+        /// <summary>
+        /// NOT IMPLEMENTED/NOT APPLICABLE
+        /// </summary>
+        /// <param name="u0"></param>
+        /// <returns></returns>
         public double? GetSteadyStateOutput(double[] u0)
         {
             return null;

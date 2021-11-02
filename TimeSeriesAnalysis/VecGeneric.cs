@@ -8,10 +8,12 @@ namespace TimeSeriesAnalysis
 {
 
     /// <summary>
-    /// Class for generic methods on any type T that treat arrays as vectors(sorting,slicing,concatenating). 
+    /// Class for generic methods on any type T that treat arrays as vectors (sorting,slicing,concatenating). 
+    /// <para>
     /// For mathematical methods on vectors of doubles and integers, look into non-generic sister class "Vec".
+    /// </para>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">type, such as double, int or DateTime</typeparam>
     public static class Vec<T>
     {
         ///<summary>

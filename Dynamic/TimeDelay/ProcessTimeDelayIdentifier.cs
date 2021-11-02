@@ -13,18 +13,20 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
     /// <summary>
-    /// Brute-force estimation of time delay 
-    /// 
+    /// Brute-force(trial and error) estimation of time delay 
+    /// <para>
     /// This method is intended to be generic, so that it can be applied on different kinds of process models, and thus it uses
     /// interfaces and dependency injection.
-    /// 
+    /// </para>
+    /// <para>
     /// The idea of the method is to re-identify the model first with no time-delay, and then increasing the time-delay step-by-step.
     /// This process should continue so long as the model improves (as measured by uncertainty mangitude, objective function value or Rsquared).
-    /// 
+    /// </para>
+    /// <para>
     /// Thus, this method is a component in reducing the problem of determining continous paramters along with the integer time delay
     /// (a mixed-integer problem) to a sequential optimization approach where the integer and continous parts of the problem are solved
     /// sequentially.
-    ///
+    /// </para>
     /// </summary>
     class ProcessTimeDelayIdentifier
     {

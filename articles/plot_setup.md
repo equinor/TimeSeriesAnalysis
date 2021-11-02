@@ -3,13 +3,15 @@
 If you have set up plotting correctly, you should be able to run the "PlotUnitTests" test from the Test Explorer in Visual Studio and plots should appear in a new browser window.
 
 For plotting to work you need four prerequisites
-- Chrome must installed in ``C:\Program Files (x86)\Google\Chrome\Application\chrome.exe``
-- you need to be running a local http-server, with a subfolder ``plotly`` that contains the javscript files in the "www\plotly" subfolder in the TimeSeriesAnalysis repository
-- the folder ``C:\inetpub\wwwroot\plotly\Data`` needs to exist on your computer, as data will be written in here
-- the front-end javascript code needs to find the time-series data in csv-files in its ``localhost\plotly\data`` folder.
-- (if your http-server is serving antoher folder than ``C:\inetpub\wwwroot\`` up on ``localhost``, you need to use ``mklink` to link this folder with the http-server's ``[root]\plotly\data`` folder  )
+- Chrome must installed (by default in ``C:\Program Files (x86)\Google\Chrome\Application\chrome.exe``)
+- you need to be running a local http-server, if it servers a folder ``[wwwroot]`` then beneath it there mustbe a ``[wwwroot]\plotly`` that contains the javscript files in the "www\plotly" subfolder in the TimeSeriesAnalysis repository
+- the folder ``[wwwroot]\plotly\Data`` needs to match the ``plotDataPath`` in Plot (by default: ``C:\inetpub\wwwroot\plotly\Data``). CSV-data files will be written in here.
+- the front-end JavaScript code needs to find the time-series data in csv-files in its ``localhost\plotly\data`` folder.
+- (if your http-server is serving another folder than ``C:\inetpub\wwwroot`` up on ``localhost``, you need to use ``mklink` to link this folder with the http-server's ``[root]\plotly\data`` folder )
 
-
+> [!CAUTION]
+> Be aware that you if port ``80`` and ``443`` are open on your machine and network, the data in the ``plotly\data`` folder may
+> be shared with the world. It is your responsibility to block these ports if you want to avoid sharing sensitive data. 
 
 ### Chrome
 
@@ -19,9 +21,24 @@ Currently, plotting requires Chrome,and the project expects Chrome to be install
 
 In Windows, if you are not already running a http-server, the easiest way to install one may be to install 
 ``Internet Information Services(IIS)``.
-This is done from ``Control Panel->Windows Features`` and selecting ``Internet information Services`` in the menu that appears (requires Administrator priveleges).
+This is done from ``Control Panel->Windows Features`` and selecting ``Internet information Services`` in the menu that appears (requires Administrator privileges).
 
-If setting up a new server, it is advantageous to map the folder ``c:\inetpub``.
+If setting up a new server, it is advantageous to map the folder ``c:\inetpub\wwwroot``, but it can be any path as long as it 
+contains a "plotly" subfolder and that subfolder has a subfolder ``data`` where data-files are added.
+
+If running IIS, 
+- start "Internet Information Services(IIS) Manager" from the start menu, then 
+- go to "default website"
+- press "basic settings",
+- make a note of the "physical path" and change if needed. 
+
+The "physical path" is where you need to link in the "plotly" folder. 
+
+![IIS](images/IIS_setup.png)
+
+
+
+
 
 
 ### Serving up the "plotly" folder
@@ -29,8 +46,7 @@ If setting up a new server, it is advantageous to map the folder ``c:\inetpub``.
 When running a local http-server for development, you will need to add the folder "plotly" to it. 
 The preferable way to to this is to add a symbolic link to the ``TimeSeriesAnalysis`` folder rather than copying files, to allow for version control. 
 
-Suppose that your ``TimeSeriesAnalysis`` source code is stored in ``C:\appl\source\TimeSeriesAnalysis``, and that you are running an http-sever that is hosting 
-the folder ``C:\inetpub`` to your ``localhost``. 
+Suppose that your ``TimeSeriesAnalysis`` source code is stored in ``C:\appl\source\TimeSeriesAnalysis``, and that you are running an http-sever that is hosting the folder ``C:\inetpub\wwwroot``(your ``localhost``). 
 
 *In Windows*: Start a ``command prompt``(cmd.exe) session in ``Windows`` with **administrator privileges** and give the following command:
 
@@ -50,7 +66,7 @@ by editing the file ``TimeSeriesAnalysis.dll.config``, which by default has the 
 
 #### Disabling all plots
 
-It is possible to entire disable all plotting by setting the variable ``PlotsAreEnabled`` in the above mention filed to ``false``.
+It is possible to entirely disable all plotting by setting the variable ``PlotsAreEnabled`` in the above mention filed to ``false``.
 This could be useful as a safety-measure if the code was ever to run in a production environment. 
  
 #### If necessary ``localhost\plotly\data`` needs to symbolically linked to  ``c:/inetpub/www/plotly/data`` folder

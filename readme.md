@@ -21,7 +21,7 @@ and try copying in that code and getting it to run to get the hang of things
 
 ### Calling this library from Python
 
-The library is easily callable from ``Python``, throughthe use of [Python.Net](http://pythonnet.github.io/),
+The library is easily callable from ``Python``, through the use of [Python.Net](http://pythonnet.github.io/),
 see help article [Gettings started:Python](https://equinor.github.io/TimeSeriesAnalysis/articles/python.html).
 
 ### Calling this library from MatLab
@@ -31,13 +31,13 @@ The library is easily callable from Matlab, see article [Gettings started:Matlab
 ### Calling this library from your .NET project
 
 - create a project in Visual Studio, and 
-- import the "TimeSeriesAnalysis" library from nuget
+- import the "TimeSeriesAnalysis" library from NuGet
 
 ### Working with the code of this repository
 
 - check out this repository,
 - make sure [NuGet is setup](https://equinor.github.io/TimeSeriesAnalysis/articles/nuget_setup.html) correctly, and
-- all examples are implemented as [unit-tests](/articles/unit_tests.html) using NUNit, try running these to 
+- all examples are implemented as [unit-tests](/articles/unit_tests.html) using NUnit, try running these to 
 
 ## Roadmap
 

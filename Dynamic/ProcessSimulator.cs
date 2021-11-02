@@ -8,6 +8,14 @@ using TimeSeriesAnalysis;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    /// <summary>
+    /// Performs simulates on a "process" consisting of a group of connected sub-models, that each implement ISimulatableModel
+    /// <para>
+    /// To set up a simulation, first connect models, and then add external input signals.
+    /// This class handles information about which model is connected to which, and handles callig sub-models in the
+    /// correct order with the correct input signals.
+    /// </para>
+    /// </summary>
     public class ProcessSimulator
     {
         int timeBase_s;
@@ -16,6 +24,11 @@ namespace TimeSeriesAnalysis.Dynamic
         private int nConnections = 0;
         ConnectionParser connections;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="timeBase_s"></param>
+        /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
         public ProcessSimulator(int timeBase_s, List<ISimulatableModel>
             processModelList)
         {
@@ -44,6 +57,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             connections.AddAllModelObjects(modelDict);
+        }
+
+        private bool DoesSimulationIncludeSelect()
+        {
+            foreach (ISimulatableModel model in modelDict.Values)
+            {
+                if (model.GetProcessModelType() == ProcessModelType.Select)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -198,14 +221,11 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Simulate over a dataset
+        /// Perform a dynamic simulation of the model provided, given the specified connections and external signals 
         /// </summary>
-        /// <param name="externalInputSignals">the external signals
-        /// that act on the process while simulating(setpoints, model inputs that are not controlled or disturbances).
-        /// The length of these signals determine the length of the simulation</param>
         /// <param name="simData">the simulated data set to be outputted(includes the external signals)</param>
         /// <returns></returns>
-        public bool Simulate( out TimeSeriesDataSet simData)
+        public bool Simulate (out TimeSeriesDataSet simData)
         {
             int? N = externalInputSignals.GetLength();
             if (!N.HasValue)
@@ -229,7 +249,7 @@ namespace TimeSeriesAnalysis.Dynamic
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
             {
                 var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
-                string[] inputIDs = model.GetBothKindsOfInputIDs();//model.GetModelInputIDs();
+                string[] inputIDs = model.GetBothKindsOfInputIDs();
                 if (inputIDs == null)
                 {
                     Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \""+ model.GetID() +
@@ -285,14 +305,21 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Initalize the empty datasets to their steady-state values.
-        /// - All PID-loops must have a setpoint value set and all Y_meas are initalized to setpoint
-        /// - Then all subprocesses inputs U are back-calculated to give steady-state Y_meas
+        /// <para>
+        /// <list>
+        /// <item><description> Forward-calculate all processes in series (not in any feedback-loops), where inputs to leftmost process is given</description></item>
+        /// <item><description> All PID-loops must have a setpoint value set and all Y_meas are initalized to setpoint</description></item>
+        /// <item><description> Then all subprocesses inputs inside feedback-loops U are back-calculated(right-to-left) to give steady-state Y_meas equal to Y_set</description></item>
+        /// <item><description> Finally determine if there are ny serial processes downstream of any loops that can be calucated left-to-right</description></item>
+        /// </list>
+        /// </para>
         /// </summary>
         /// <param name="simData">simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</param>
-        bool InitToSteadyState(ref TimeSeriesDataSet simData)
+        private bool InitToSteadyState(ref TimeSeriesDataSet simData)
         {
             int nTotalInputs = 0;
-            int nExternalInputs = externalInputSignals.GetSignalNames().Length;
+
+            bool doesSimulationIncludeSelect = DoesSimulationIncludeSelect();
 
             int? N = externalInputSignals.GetLength();
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();

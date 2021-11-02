@@ -5,6 +5,13 @@
     /// </summary>
     public class PIDAntiSurgeParams
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="kickPrc"></param>
+        /// <param name="ffRampDownRatePrcPerMin"></param>
+        /// <param name="nKicksFound"></param>
+        /// <param name="kickBelowThresholdE"></param>
         public PIDAntiSurgeParams(double kickPrc, double? ffRampDownRatePrcPerMin,
             int nKicksFound=0,double kickBelowThresholdE=-5 )
         {
@@ -13,9 +20,24 @@
             this.kickBelowThresholdE        = kickBelowThresholdE;
             this.nKicksFound                = nKicksFound;
         }
-        public double kickBelowThresholdE; // if kick is "ctrldev" below this value (often zero)
-        public double kickPrcPerSec;// how many percent to kick controller open if it closes 
-        public double? ffRampDownRatePrcPerMin; // after a kick, valve closure will be rate-limited.
+        /// <summary>
+        ///  if kick is "ctrldev" below this value (often zero)
+        /// </summary>
+        public double kickBelowThresholdE;
+
+        /// <summary>
+        /// how many percent to kick controller open if it closes 
+        /// </summary>
+        public double kickPrcPerSec;
+
+        /// <summary>
+        /// after a kick, valve closure will be rate-limited.
+        /// </summary>
+        public double? ffRampDownRatePrcPerMin; 
+
+        /// <summary>
+        /// Kicks counter
+        /// </summary>
         public int nKicksFound;
     }
 }

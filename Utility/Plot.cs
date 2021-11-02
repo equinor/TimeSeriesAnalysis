@@ -13,10 +13,20 @@ namespace TimeSeriesAnalysis.Utility
 {
 
     ///<summary>
-    /// Static methods for plotting one or more time-series across one or more y-axes and one or more subplots. 
+    /// Static methods for plotting one or more time-series across one or more y-axes and one or more subplots by opening up Chrome 
+    /// calling a set of JavaScript plotting methods based on plotly.js
+    /// <para>
+    /// Time-series are written as CSV-files to a specific folder on disk <c>plotDataPath</c>, before starting a chrome-window
+    /// that loads a specific "localhost" <c>plotlyURL</c> that reads said CSV-files and initates an in-browser plot using plotly.js.
+    /// </para>
+    /// <para>
+    /// For this method to work you need to be running a web server such as IIS that serves up a "localhost" <c>plotlyURL</c> as described
+    /// in the documentation.
+    /// </para>
+    /// <para>
     /// If you sometimes need to disable plots (for instance if plotting code is included in unit tests) see Plot4Test
+    /// </para>
     ///</summary>
-
 
     public class Plot
     {
@@ -24,6 +34,16 @@ namespace TimeSeriesAnalysis.Utility
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
 
+        /// <summary>
+        /// Plot all variables in a list of doubles, that all have the same timestamps given by <c>dataTimes</c>
+        /// </summary>
+        /// <param name="dataList"></param>
+        /// <param name="plotNames"></param>
+        /// <param name="dataTimes">common timestamps</param>
+        /// <param name="comment"></param>
+        /// <param name="caseName"></param>
+        /// <param name="doStartChrome"></param>
+        /// <returns></returns>
         public static string FromList(List<double[]> dataList, List<string> plotNames,
             DateTime[] dataTimes, string comment = null,
             string caseName = "", bool doStartChrome = true)
@@ -95,7 +115,7 @@ namespace TimeSeriesAnalysis.Utility
 
 
         /// <summary>
-        /// Time-series plotting in a pop-up browser window, based on plot.ly
+        /// Plot values in a list of vectors <c>dataList</c>, when all vectors start at <c>t0</c> and have a stedy sampling rate
         /// </summary>
         /// <param name="dataList">List of doubles, one entry for each time-series to be plotted</param>
         /// <param name="plotNames">List of string  of unique names to describe each plot, prefixed by either "y1="(top left),"y2="(top right),"y3="(bottom left) 
@@ -193,11 +213,7 @@ namespace TimeSeriesAnalysis.Utility
             }
             return proc;
         }
-        ///<summary>
-        // plotly interface used to plot csv expects :
-        // - first row to be time in unix time
-        // - ";" column separator
-        ///</summary>
+
         static private void WriteSingleDataToCSV(DateTime[] time, double[] data, string tagName, string comment = null, 
             string customPlotDataPath=null)
         {

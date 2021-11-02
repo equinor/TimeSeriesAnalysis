@@ -83,7 +83,7 @@
   
   <h1 id="TimeSeriesAnalysis_RegressionResults" data-uid="TimeSeriesAnalysis.RegressionResults" class="text-break">Class RegressionResults
   </h1>
-  <div class="markdown level0 summary"><p>Class that holds the results of a regression run.</p>
+  <div class="markdown level0 summary"><p>Class that holds the results of a run of <code>Vec.Regress</code>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -127,7 +127,8 @@
   
   <a id="TimeSeriesAnalysis_RegressionResults__ctor_" data-uid="TimeSeriesAnalysis.RegressionResults.#ctor*"></a>
   <h4 id="TimeSeriesAnalysis_RegressionResults__ctor" data-uid="TimeSeriesAnalysis.RegressionResults.#ctor">RegressionResults()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Default constructor, sets all values to null or zero.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -137,13 +138,14 @@
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_RegressionResults_ableToIdentify_" data-uid="TimeSeriesAnalysis.RegressionResults.ableToIdentify*"></a>
-  <h4 id="TimeSeriesAnalysis_RegressionResults_ableToIdentify" data-uid="TimeSeriesAnalysis.RegressionResults.ableToIdentify">ableToIdentify</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_RegressionResults_AbleToIdentify_" data-uid="TimeSeriesAnalysis.RegressionResults.AbleToIdentify*"></a>
+  <h4 id="TimeSeriesAnalysis_RegressionResults_AbleToIdentify" data-uid="TimeSeriesAnalysis.RegressionResults.AbleToIdentify">AbleToIdentify</h4>
+  <div class="markdown level1 summary"><p>True if able to identify, otherwise false</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ableToIdentify { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AbleToIdentify { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -164,7 +166,8 @@
   
   <a id="TimeSeriesAnalysis_RegressionResults_Bias_" data-uid="TimeSeriesAnalysis.RegressionResults.Bias*"></a>
   <h4 id="TimeSeriesAnalysis_RegressionResults_Bias" data-uid="TimeSeriesAnalysis.RegressionResults.Bias">Bias</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The bias term of the linear regression</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -189,7 +192,8 @@
   
   <a id="TimeSeriesAnalysis_RegressionResults_Gains_" data-uid="TimeSeriesAnalysis.RegressionResults.Gains*"></a>
   <h4 id="TimeSeriesAnalysis_RegressionResults_Gains" data-uid="TimeSeriesAnalysis.RegressionResults.Gains">Gains</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The gains of the linear regression</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -214,7 +218,8 @@
   
   <a id="TimeSeriesAnalysis_RegressionResults_NfittingBadDataPoints_" data-uid="TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints*"></a>
   <h4 id="TimeSeriesAnalysis_RegressionResults_NfittingBadDataPoints" data-uid="TimeSeriesAnalysis.RegressionResults.NfittingBadDataPoints">NfittingBadDataPoints</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Number of bad data point ignored in the fitting data set</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -239,7 +244,8 @@
   
   <a id="TimeSeriesAnalysis_RegressionResults_NfittingTotalDataPoints_" data-uid="TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints*"></a>
   <h4 id="TimeSeriesAnalysis_RegressionResults_NfittingTotalDataPoints" data-uid="TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints">NfittingTotalDataPoints</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Total number of data points in the fitting data set</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -262,13 +268,14 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue_" data-uid="TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue*"></a>
-  <h4 id="TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue" data-uid="TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue">objectiveFunctionValue</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_RegressionResults_ObjectiveFunctionValue_" data-uid="TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue*"></a>
+  <h4 id="TimeSeriesAnalysis_RegressionResults_ObjectiveFunctionValue" data-uid="TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue">ObjectiveFunctionValue</h4>
+  <div class="markdown level1 summary"><p>The value of the objective function after regression</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double objectiveFunctionValue { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double ObjectiveFunctionValue { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -287,13 +294,14 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_RegressionResults_param_" data-uid="TimeSeriesAnalysis.RegressionResults.param*"></a>
-  <h4 id="TimeSeriesAnalysis_RegressionResults_param" data-uid="TimeSeriesAnalysis.RegressionResults.param">param</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_RegressionResults_Param_" data-uid="TimeSeriesAnalysis.RegressionResults.Param*"></a>
+  <h4 id="TimeSeriesAnalysis_RegressionResults_Param" data-uid="TimeSeriesAnalysis.RegressionResults.Param">Param</h4>
+  <div class="markdown level1 summary"><p>All regression paramters, first the gains, then the bias term.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] param { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Param { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -312,13 +320,14 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_RegressionResults_param95prcConfInterval_" data-uid="TimeSeriesAnalysis.RegressionResults.param95prcConfInterval*"></a>
-  <h4 id="TimeSeriesAnalysis_RegressionResults_param95prcConfInterval" data-uid="TimeSeriesAnalysis.RegressionResults.param95prcConfInterval">param95prcConfInterval</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_RegressionResults_Param95prcConfInterval_" data-uid="TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval*"></a>
+  <h4 id="TimeSeriesAnalysis_RegressionResults_Param95prcConfInterval" data-uid="TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval">Param95prcConfInterval</h4>
+  <div class="markdown level1 summary"><p>The 95 percent confidence intervals of parameters</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] param95prcConfInterval { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Param95prcConfInterval { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -363,13 +372,14 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_RegressionResults_varCovarMatrix_" data-uid="TimeSeriesAnalysis.RegressionResults.varCovarMatrix*"></a>
-  <h4 id="TimeSeriesAnalysis_RegressionResults_varCovarMatrix" data-uid="TimeSeriesAnalysis.RegressionResults.varCovarMatrix">varCovarMatrix</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_RegressionResults_VarCovarMatrix_" data-uid="TimeSeriesAnalysis.RegressionResults.VarCovarMatrix*"></a>
+  <h4 id="TimeSeriesAnalysis_RegressionResults_VarCovarMatrix" data-uid="TimeSeriesAnalysis.RegressionResults.VarCovarMatrix">VarCovarMatrix</h4>
+  <div class="markdown level1 summary"><p>The variance/covariance matrix of the regression run</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[][] varCovarMatrix { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double[][] VarCovarMatrix { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -390,7 +400,8 @@
   
   <a id="TimeSeriesAnalysis_RegressionResults_Y_modelled_" data-uid="TimeSeriesAnalysis.RegressionResults.Y_modelled*"></a>
   <h4 id="TimeSeriesAnalysis_RegressionResults_Y_modelled" data-uid="TimeSeriesAnalysis.RegressionResults.Y_modelled">Y_modelled</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The modelled output</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

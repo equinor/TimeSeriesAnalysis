@@ -2586,30 +2586,30 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.SetKpScalingOn
   nameWithType: PIDscaling.SetKpScalingOn
-- uid: TimeSeriesAnalysis.Dynamic.PidStatus
-  name: PidStatus
-  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PidStatus
-  fullName: TimeSeriesAnalysis.Dynamic.PidStatus
-  nameWithType: PidStatus
-- uid: TimeSeriesAnalysis.Dynamic.PidStatus.AUTO
+- uid: TimeSeriesAnalysis.Dynamic.PIDStatus
+  name: PIDStatus
+  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PIDStatus
+  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus
+  nameWithType: PIDStatus
+- uid: TimeSeriesAnalysis.Dynamic.PIDStatus.AUTO
   name: AUTO
-  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html#TimeSeriesAnalysis_Dynamic_PidStatus_AUTO
-  commentId: F:TimeSeriesAnalysis.Dynamic.PidStatus.AUTO
-  fullName: TimeSeriesAnalysis.Dynamic.PidStatus.AUTO
-  nameWithType: PidStatus.AUTO
-- uid: TimeSeriesAnalysis.Dynamic.PidStatus.MANUAL
+  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html#TimeSeriesAnalysis_Dynamic_PIDStatus_AUTO
+  commentId: F:TimeSeriesAnalysis.Dynamic.PIDStatus.AUTO
+  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus.AUTO
+  nameWithType: PIDStatus.AUTO
+- uid: TimeSeriesAnalysis.Dynamic.PIDStatus.MANUAL
   name: MANUAL
-  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html#TimeSeriesAnalysis_Dynamic_PidStatus_MANUAL
-  commentId: F:TimeSeriesAnalysis.Dynamic.PidStatus.MANUAL
-  fullName: TimeSeriesAnalysis.Dynamic.PidStatus.MANUAL
-  nameWithType: PidStatus.MANUAL
-- uid: TimeSeriesAnalysis.Dynamic.PidStatus.TRACKING
+  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html#TimeSeriesAnalysis_Dynamic_PIDStatus_MANUAL
+  commentId: F:TimeSeriesAnalysis.Dynamic.PIDStatus.MANUAL
+  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus.MANUAL
+  nameWithType: PIDStatus.MANUAL
+- uid: TimeSeriesAnalysis.Dynamic.PIDStatus.TRACKING
   name: TRACKING
-  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html#TimeSeriesAnalysis_Dynamic_PidStatus_TRACKING
-  commentId: F:TimeSeriesAnalysis.Dynamic.PidStatus.TRACKING
-  fullName: TimeSeriesAnalysis.Dynamic.PidStatus.TRACKING
-  nameWithType: PidStatus.TRACKING
+  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html#TimeSeriesAnalysis_Dynamic_PIDStatus_TRACKING
+  commentId: F:TimeSeriesAnalysis.Dynamic.PIDStatus.TRACKING
+  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus.TRACKING
+  nameWithType: PIDStatus.TRACKING
 - uid: TimeSeriesAnalysis.Dynamic.PIDtuning
   name: PIDtuning
   href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html
@@ -2784,6 +2784,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.PID
   fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.PID
   nameWithType: ProcessModelType.PID
+- uid: TimeSeriesAnalysis.Dynamic.ProcessModelType.Select
+  name: Select
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessModelType.html#TimeSeriesAnalysis_Dynamic_ProcessModelType_Select
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.Select
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.Select
+  nameWithType: ProcessModelType.Select
 - uid: TimeSeriesAnalysis.Dynamic.ProcessModelType.SubProcess
   name: SubProcess
   href: api/TimeSeriesAnalysis.Dynamic.ProcessModelType.html#TimeSeriesAnalysis_Dynamic_ProcessModelType_SubProcess
@@ -3705,19 +3711,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.RegressionResults
   nameWithType: RegressionResults.RegressionResults
-- uid: TimeSeriesAnalysis.RegressionResults.ableToIdentify
-  name: ableToIdentify
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_ableToIdentify
-  commentId: P:TimeSeriesAnalysis.RegressionResults.ableToIdentify
-  fullName: TimeSeriesAnalysis.RegressionResults.ableToIdentify
-  nameWithType: RegressionResults.ableToIdentify
-- uid: TimeSeriesAnalysis.RegressionResults.ableToIdentify*
-  name: ableToIdentify
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_ableToIdentify_
-  commentId: Overload:TimeSeriesAnalysis.RegressionResults.ableToIdentify
+- uid: TimeSeriesAnalysis.RegressionResults.AbleToIdentify
+  name: AbleToIdentify
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_AbleToIdentify
+  commentId: P:TimeSeriesAnalysis.RegressionResults.AbleToIdentify
+  fullName: TimeSeriesAnalysis.RegressionResults.AbleToIdentify
+  nameWithType: RegressionResults.AbleToIdentify
+- uid: TimeSeriesAnalysis.RegressionResults.AbleToIdentify*
+  name: AbleToIdentify
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_AbleToIdentify_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.AbleToIdentify
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.RegressionResults.ableToIdentify
-  nameWithType: RegressionResults.ableToIdentify
+  fullName: TimeSeriesAnalysis.RegressionResults.AbleToIdentify
+  nameWithType: RegressionResults.AbleToIdentify
 - uid: TimeSeriesAnalysis.RegressionResults.Bias
   name: Bias
   href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Bias
@@ -3770,45 +3776,45 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.NfittingTotalDataPoints
   nameWithType: RegressionResults.NfittingTotalDataPoints
-- uid: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
-  name: objectiveFunctionValue
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue
-  commentId: P:TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
-  fullName: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
-  nameWithType: RegressionResults.objectiveFunctionValue
-- uid: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue*
-  name: objectiveFunctionValue
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_objectiveFunctionValue_
-  commentId: Overload:TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
+- uid: TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue
+  name: ObjectiveFunctionValue
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_ObjectiveFunctionValue
+  commentId: P:TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue
+  fullName: TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue
+  nameWithType: RegressionResults.ObjectiveFunctionValue
+- uid: TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue*
+  name: ObjectiveFunctionValue
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_ObjectiveFunctionValue_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.RegressionResults.objectiveFunctionValue
-  nameWithType: RegressionResults.objectiveFunctionValue
-- uid: TimeSeriesAnalysis.RegressionResults.param
-  name: param
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param
-  commentId: P:TimeSeriesAnalysis.RegressionResults.param
-  fullName: TimeSeriesAnalysis.RegressionResults.param
-  nameWithType: RegressionResults.param
-- uid: TimeSeriesAnalysis.RegressionResults.param*
-  name: param
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param_
-  commentId: Overload:TimeSeriesAnalysis.RegressionResults.param
+  fullName: TimeSeriesAnalysis.RegressionResults.ObjectiveFunctionValue
+  nameWithType: RegressionResults.ObjectiveFunctionValue
+- uid: TimeSeriesAnalysis.RegressionResults.Param
+  name: Param
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param
+  commentId: P:TimeSeriesAnalysis.RegressionResults.Param
+  fullName: TimeSeriesAnalysis.RegressionResults.Param
+  nameWithType: RegressionResults.Param
+- uid: TimeSeriesAnalysis.RegressionResults.Param*
+  name: Param
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.Param
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.RegressionResults.param
-  nameWithType: RegressionResults.param
-- uid: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
-  name: param95prcConfInterval
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param95prcConfInterval
-  commentId: P:TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
-  fullName: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
-  nameWithType: RegressionResults.param95prcConfInterval
-- uid: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval*
-  name: param95prcConfInterval
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_param95prcConfInterval_
-  commentId: Overload:TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
+  fullName: TimeSeriesAnalysis.RegressionResults.Param
+  nameWithType: RegressionResults.Param
+- uid: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
+  name: Param95prcConfInterval
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param95prcConfInterval
+  commentId: P:TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
+  fullName: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
+  nameWithType: RegressionResults.Param95prcConfInterval
+- uid: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval*
+  name: Param95prcConfInterval
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param95prcConfInterval_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.RegressionResults.param95prcConfInterval
-  nameWithType: RegressionResults.param95prcConfInterval
+  fullName: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
+  nameWithType: RegressionResults.Param95prcConfInterval
 - uid: TimeSeriesAnalysis.RegressionResults.Rsq
   name: Rsq
   href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Rsq
@@ -3822,19 +3828,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.Rsq
   nameWithType: RegressionResults.Rsq
-- uid: TimeSeriesAnalysis.RegressionResults.varCovarMatrix
-  name: varCovarMatrix
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_varCovarMatrix
-  commentId: P:TimeSeriesAnalysis.RegressionResults.varCovarMatrix
-  fullName: TimeSeriesAnalysis.RegressionResults.varCovarMatrix
-  nameWithType: RegressionResults.varCovarMatrix
-- uid: TimeSeriesAnalysis.RegressionResults.varCovarMatrix*
-  name: varCovarMatrix
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_varCovarMatrix_
-  commentId: Overload:TimeSeriesAnalysis.RegressionResults.varCovarMatrix
+- uid: TimeSeriesAnalysis.RegressionResults.VarCovarMatrix
+  name: VarCovarMatrix
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_VarCovarMatrix
+  commentId: P:TimeSeriesAnalysis.RegressionResults.VarCovarMatrix
+  fullName: TimeSeriesAnalysis.RegressionResults.VarCovarMatrix
+  nameWithType: RegressionResults.VarCovarMatrix
+- uid: TimeSeriesAnalysis.RegressionResults.VarCovarMatrix*
+  name: VarCovarMatrix
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_VarCovarMatrix_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.VarCovarMatrix
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.RegressionResults.varCovarMatrix
-  nameWithType: RegressionResults.varCovarMatrix
+  fullName: TimeSeriesAnalysis.RegressionResults.VarCovarMatrix
+  nameWithType: RegressionResults.VarCovarMatrix
 - uid: TimeSeriesAnalysis.RegressionResults.Y_modelled
   name: Y_modelled
   href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Y_modelled
@@ -3848,6 +3854,25 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.Y_modelled
   nameWithType: RegressionResults.Y_modelled
+- uid: TimeSeriesAnalysis.Shared
+  name: Shared
+  href: api/TimeSeriesAnalysis.Shared.html
+  commentId: T:TimeSeriesAnalysis.Shared
+  fullName: TimeSeriesAnalysis.Shared
+  nameWithType: Shared
+- uid: TimeSeriesAnalysis.Shared.GetParserObj
+  name: GetParserObj()
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_GetParserObj
+  commentId: M:TimeSeriesAnalysis.Shared.GetParserObj
+  fullName: TimeSeriesAnalysis.Shared.GetParserObj()
+  nameWithType: Shared.GetParserObj()
+- uid: TimeSeriesAnalysis.Shared.GetParserObj*
+  name: GetParserObj
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_GetParserObj_
+  commentId: Overload:TimeSeriesAnalysis.Shared.GetParserObj
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Shared.GetParserObj
+  nameWithType: Shared.GetParserObj
 - uid: TimeSeriesAnalysis.Utility
   name: TimeSeriesAnalysis.Utility
   href: api/TimeSeriesAnalysis.Utility.html
@@ -4348,12 +4373,6 @@ references:
   commentId: T:TimeSeriesAnalysis.Utility.SignificantDigits
   fullName: TimeSeriesAnalysis.Utility.SignificantDigits
   nameWithType: SignificantDigits
-- uid: TimeSeriesAnalysis.Utility.SignificantDigits.DecimalSeparator
-  name: DecimalSeparator
-  href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_DecimalSeparator
-  commentId: F:TimeSeriesAnalysis.Utility.SignificantDigits.DecimalSeparator
-  fullName: TimeSeriesAnalysis.Utility.SignificantDigits.DecimalSeparator
-  nameWithType: SignificantDigits.DecimalSeparator
 - uid: TimeSeriesAnalysis.Utility.SignificantDigits.Format(System.Double,System.Int32)
   name: Format(Double, Int32)
   href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html#TimeSeriesAnalysis_Utility_SignificantDigits_Format_System_Double_System_Int32_

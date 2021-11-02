@@ -9,27 +9,52 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Dynamic
 {
 
+    /// <summary>
+    /// An enum of the type of Select model
+    /// </summary>
     public enum SelectType
     { 
+        /// <summary>
+        /// This value should not occur
+        /// </summary>
         NOT_SET=0,
+        /// <summary>
+        /// Min-select
+        /// </summary>
         MIN=1,
+
+        /// <summary>
+        /// Max-select
+        /// </summary>
         MAX =2
     }
 
     /// <summary>
-    /// Selects "Min" or "Max" select block
+    /// Select block:  "Min" or "Max" select 
     /// </summary>
     public class Select : ModelBaseClass, ISimulatableModel 
     {
         private SelectType type;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ID"></param>
         public Select(SelectType type, string ID)
-        { 
+        {
+            processModelType = ProcessModelType.Select;
             this.type = type;
             SetID(ID);
         }
 
 
+        /// <summary>
+        /// Iterate simulation
+        /// </summary>
+        /// <param name="inputsU"></param>
+        /// <param name="badDataID"></param>
+        /// <returns></returns>
         public double Iterate(double[] inputsU, double badDataID = -9999)
         {
             if (type == SelectType.MAX)
@@ -38,9 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // default: min
          //   else if (type == SelectType.MAX)
-            {
-                return (new Vec(badDataID)).Max(inputsU);
-            }
+            return (new Vec(badDataID)).Max(inputsU);
         }
 
         public  void WarmStart(double[] inputs, double output)
@@ -65,6 +88,10 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Gives the type of the output signal
+        /// </summary>
+        /// <returns></returns>
         public override SignalType GetOutputSignalType()
         { 
             return SignalType.SelectorOut; 

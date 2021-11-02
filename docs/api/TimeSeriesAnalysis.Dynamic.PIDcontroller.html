@@ -83,21 +83,15 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_PIDcontroller" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller" class="text-break">Class PIDcontroller
   </h1>
-  <div class="markdown level0 summary"><p>Proporitional-Integral-Derivative(PID) controller that supports</p>
-<ul>
-<li>first and second order low pass filtering of process variable</li>
-<li>anti-windup</li>
-<li>bumpless transfer between auto and manual mode</li>
-<li>&quot;warmstarting&quot; -bumpless startup</li>
-<li>feedforward</li>
-<li>scaling of input and output values</li>
-<li>gain scheduling of Kp</li>
-<li>gain scheduling of Ti</li>
-<li>&quot;kicking&quot; as is usually applied to compressor recycling controllers/anti-surge</li>
-<li>min select/max select (also referred to as high select or low select: (multiple pid-controllers controlling the same output switch between auto and tracking mode)</li>
-</ul>
-<p>By design decision, this class should be kept relativly simple in terms of coding pattersn, so that it is possible to
-hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc).</p>
+  <div class="markdown level0 summary"><p>Proporitional-Integral-Derivative(PID) controller</p>
+<p>
+that supports 
+<ul><li>first and second order low pass filtering of process variable</li><li> anti-windup</li><li> bumpless transfer between auto and manual mode</li><li> &quot;warmstarting&quot; -bumpless startup</li><li> feedforward </li><li> scaling of input and output values </li><li> gain scheduling of Kp</li><li> gain scheduling of Ti</li><li> &quot;kicking&quot; as is usually applied to compressor recycling controllers/anti-surge</li><li> min select/max select (also referred to as high select or low select: (multiple pid-controllers controlling the same output switch between auto and tracking mode)</li></ul>
+</p>
+<p>
+By design decision, this class should be kept relativly simple in terms of coding patterns, so that it is possible to 
+hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc).
+</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -196,7 +190,7 @@ hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab et
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidStatus GetControllerStatus()</code></pre>
+    <pre><code class="lang-csharp hljs">public PIDStatus GetControllerStatus()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -208,7 +202,7 @@ hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab et
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidStatus.html">PidStatus</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDStatus.html">PIDStatus</a></td>
         <td></td>
       </tr>
     </tbody>

@@ -101,15 +101,26 @@ see Matrix.cs</p>
       <section><p>Operations for treating 2D-arrays as mathetmatical matrices</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></h4>
-      <section><p>Class that holds the results of a regression run.</p>
+      <section><p>Class that holds the results of a run of <code>Vec.Regress</code>.</p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Shared.html">Shared</a></h4>
+      <section><p>To enable logging of errors and warnings throughout the codebase with a single line of code,
+this class holds a &quot;ParserFeedback&quot; object.
+<example>
+Shared.GetParserObj().AddWarning(&quot;This is a warning that can be shownn on the console, written to file, or both&quot;);
+</example></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Vec.html">Vec</a></h4>
-      <section><p>Utility functions and operations for treating arrays as mathetmatical vectors
-This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec)</p>
+      <section><p>Utility functions and operations for treating arrays as mathetmatical vectors.</p>
+<p>
+This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec)
+</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Vec-1.html">Vec&lt;T&gt;</a></h4>
-      <section><p>Class for generic methods on any type T that treat arrays as vectors(sorting,slicing,concatenating).
-For mathematical methods on vectors of doubles and integers, look into non-generic sister class &quot;Vec&quot;.</p>
+      <section><p>Class for generic methods on any type T that treat arrays as vectors (sorting,slicing,concatenating).</p>
+<p>
+For mathematical methods on vectors of doubles and integers, look into non-generic sister class &quot;Vec&quot;.
+</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.VecExtensionMethods.html">VecExtensionMethods</a></h4>
       <section><p>Utility functions and operations for treating arrays as mathetmatical vectors</p>
@@ -117,9 +128,11 @@ For mathematical methods on vectors of doubles and integers, look into non-gener
     <h3 id="enums">Enums
   </h3>
       <h4><a class="xref" href="TimeSeriesAnalysis.VectorFindValueType.html">VectorFindValueType</a></h4>
-      <section></section>
+      <section><p>Input to <code>Vec.FindValues</code> which specifies the criteria of the search</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.VectorSortType.html">VectorSortType</a></h4>
-      <section></section>
+      <section><p>Input to <code>Vec.Sort</code> that specifies how values are to be sorted</p>
+</section>
 </article>
           </div>
           

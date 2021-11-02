@@ -23,10 +23,19 @@ namespace TimeSeriesAnalysis.Dynamic
             dataset = new Dictionary<string, double[]>();
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="timeBase_s"></param>
         public TimeSeriesDataSet(int timeBase_s)
         {
             Init(timeBase_s);
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="timeBase_s"></param>
+        /// <param name="inputDataSet"></param>
         public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet)
         {
             Init(timeBase_s);
@@ -34,7 +43,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// 
+        /// Add a single data point
         /// </summary>
         /// <param name="signalID"></param>
         /// <param name="idx"></param>
@@ -58,6 +67,11 @@ namespace TimeSeriesAnalysis.Dynamic
         
         }
 
+        /// <summary>
+        /// Determine if a specific signal is in the dataset
+        /// </summary>
+        /// <param name="signalID"></param>
+        /// <returns></returns>
         public bool ContainsSignal(string signalID)
         {
             if (signalID == null)
@@ -65,6 +79,11 @@ namespace TimeSeriesAnalysis.Dynamic
             return dataset.ContainsKey(signalID);
         }
 
+        /// <summary>
+        /// Adds all signals in a given set to this set
+        /// </summary>
+        /// <param name="inputDataSet"></param>
+        /// <returns></returns>
         public bool AddSet(TimeSeriesDataSet inputDataSet)
         {
             foreach (string signalName in inputDataSet.GetSignalNames())
@@ -79,17 +98,33 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
 
+        /// <summary>
+        /// Get the names of all the singals
+        /// </summary>
+        /// <returns></returns>
         public string[] GetSignalNames()
         {
             return dataset.Keys.ToArray();
         }
 
+        /// <summary>
+        /// Get the values of a specific signal
+        /// </summary>
+        /// <param name="processID"></param>
+        /// <param name="signalType"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public double[] GetValues(string processID, SignalType signalType, int index=0)
         {
             string signalName = SignalNamer.GetSignalName(processID, signalType, index);
             return GetValues(signalName);
         }
 
+        /// <summary>
+        /// Get the values of a specific signal
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <returns></returns>
         public double[] GetValues(string signalName)
         {
             if (dataset.ContainsKey(signalName))
@@ -101,6 +136,12 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
+        /// <summary>
+        /// Add an entire time-series to the dataset
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
         public bool AddTimeSeries(string signalName, double[] values)
         {
             if (signalName == null)
@@ -117,6 +158,14 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Add an entire time-series to the dataset, without specifying the signalID explicitly
+        /// </summary>
+        /// <param name="processID"></param>
+        /// <param name="type"></param>
+        /// <param name="values"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public string AddTimeSeries(string processID, SignalType type, double[] values, int index=0 )
         {
             string signalName = SignalNamer.GetSignalName(processID, type,index);
@@ -129,7 +178,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get Data
+        /// Get Data for multiple signals at a specific time index
         /// </summary>
         /// <param name="signalNames"></param>
         /// <param name="timeIdx"></param>
@@ -160,6 +209,10 @@ namespace TimeSeriesAnalysis.Dynamic
             return retData;
         }
 
+        /// <summary>
+        /// Get the length in samples of the data set
+        /// </summary>
+        /// <returns></returns>
         public int? GetLength()
         {
             return N;

@@ -79,6 +79,41 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="design-choices">Design choices</h1>
 
+<h2 id="motivation">Motivation</h2>
+<ul>
+<li><strong>human-configurable</strong> and <strong>human-readable</strong> dynamic process models (all parameters have an <strong>intuitive interpretation</strong>) motivated by system identification methodology
+<ul>
+<li>with intuitive parameters, humans can better understand automatically generated models and it becomes
+possible for humans to alter such models (semi-autonomous model generation).</li>
+<li>this excludes neural networks</li>
+</ul>
+</li>
+<li>create large-scale dynamic simulator by connecting sub-systems, creating &quot;digital twin&quot; models
+<ul>
+<li>this kind of sub-model is also <strong>intuitive</strong> to humans and <strong>visual</strong></li>
+</ul>
+</li>
+<li><strong>start by modeling the process control system</strong> (PID-control loops), as this is the handle through which process changes are made.
+<ul>
+<li>to model the process control system, the library must be able to describe <strong>dynamics</strong>, <strong>feedbacks</strong> and different kinds of
+<strong>PID-controllers</strong>.</li>
+</ul>
+</li>
+<li>try to <strong>recreate disturbance signals</strong> <code>D</code> of each PID-control loop <strong>explicitly</strong>, as this is the <em>&quot;excitation&quot;</em> that causes
+variation in an industrial process, yet these signals are not measured or observed directly. How do disturbances move through a process with multiple PID-control stages? Can this be simulated? An explicit estimate of disturbances allows &quot;playback&quot; in simulations, which means that the response of the control system with other tunings or configurations can potentially be assessed in simulation.
+<ul>
+<li>such a representation would negate the need for &quot;tuning rules&quot; for PID-controllers, they could instead be tuned <strong>by simulation</strong></li>
+<li>it would become possible to consider the <strong>joint effect</strong> on re-tuning <strong>multiple</strong> PID-controllers</li>
+<li>it would become possible to consider <strong>changes in control structure</strong>, not just changes in <strong>tuning</strong>.</li>
+</ul>
+</li>
+<li>if it were possible to find models with the above qualities <strong>from data</strong> it would enable:
+<ul>
+<li><strong>advanced analytics</strong> : autonomous or semi-autonomous analysis of process control which generates recommended actions</li>
+<li><strong>data-driven digital twins</strong> : rapid development of &quot;fitted&quot; dynamic models for specific cases-studies or advanced control</li>
+</ul>
+</li>
+</ul>
 <h2 id="system-identification">System identification</h2>
 <p><em>&quot;The goal of the identification procedure is, in loose terms, to obtain a good and reliable model with a reasonable amount of work.&quot;</em>(Lennart Ljung, Theory for the user 2ed, p.399)
 This quote displays the trade-off of the three different and sometimes opposing goals of identification:</p>
@@ -110,14 +145,14 @@ Especially for recursive models, a single spurious value can destroy an entire m
 <h2 id="numerical-solvers">Numerical solvers</h2>
 <ul>
 <li>the models need to simulate <em>without requiring any human intervention</em>, and this has impacts on design choices
-for how models should be initalized and solved:
+for how models should be initialized and solved:
 <ul>
-<li>rather than using numerical solvers on large matrices to find steady-state, a concious choice is
+<li>rather than using numerical solvers on large matrices to find steady-state, a conscious choice is
 made to rather <em>require</em> each model to include an <em>explicit</em> steady-state calculation.</li>
-<li>rather than use numerical solvers on large matrices to simulate the model, a concious choice is made
+<li>rather than use numerical solvers on large matrices to simulate the model, a conscious choice is made
 to rather use <em>logic</em> to <em>traverse the connected models as graphs</em> and simulate them one-by-one in an order that
-is feasible. That means that this library must provide a solver that incldues
-logic to determine a fesible solution order.</li>
+is feasible. That means that this library must provide a solver that includes
+logic to determine a feasible solution order.</li>
 </ul>
 </li>
 </ul>

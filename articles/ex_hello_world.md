@@ -62,6 +62,14 @@ Then try ``new List<string> { "y1=input","y3=output"}`` and notice ``output`` is
 > Try dragging and zooming the plot, and using the scooter to reading the exact time and value off the ``output`` variable in each time step in the transient.
 > Notice that the plot.ly library provides an interactive menu of to the top right of the screen. 
  
+> [!Note]
+> The path for this example is 
+> ``http://localhost/plotly/index.html#y1=V1_input;y1=V2_output;comment=ex1_hello_world;casename:ex1_hello_world``
+> If for whatever reason chrome does not start automatically on your computer, you can still open the plot 
+> manually if you have set up a local web server and paths correctly. ``Plot.FromList`` also outputs the url after the pound("#"), so in
+> this case changing the final line to ``var url = Plot.FromList...`` would set the variable ``url`` to ``y1=V1_input;y1=V2_output;comment=ex1_hello_world;casename:ex1_hello_world``.
+ 
+
  
 
 

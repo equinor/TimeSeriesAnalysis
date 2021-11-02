@@ -8,19 +8,46 @@ using System.Diagnostics;
 
 namespace TimeSeriesAnalysis.Utility
 {
+    /// <summary>
+    /// Enum to set the log level of ParserFeedback
+    /// </summary>
     public enum ParserfeedbackMessageLevel
     {
+        /// <summary>
+        /// Show only fatal error messages
+        /// </summary>
         fatal = 5,
+        /// <summary>
+        /// Show error messages and above
+        /// </summary>
         error = 4,
+        /// <summary>
+        /// Show warning messages and above
+        /// </summary>
         warn = 3,
+        /// <summary>
+        /// Show information messages and above
+        /// </summary>
         info = 2,
        //no debug messages not here!
     }
 
+    /// <summary>
+    /// Struct for each log message of ParserFeedback
+    /// </summary>
     public struct ParserFeedbackLogLine
     {
+        /// <summary>
+        /// Time of message
+        /// </summary>
         public DateTime time;
+        /// <summary>
+        /// Message Text
+        /// </summary>
         public String message;
+        /// <summary>
+        /// The level of the message
+        /// </summary>
         public ParserfeedbackMessageLevel messageLevel;
     }
 
@@ -29,10 +56,14 @@ namespace TimeSeriesAnalysis.Utility
     /// <summary>
     /// Utility class is responsible for collecting feedback lines, such as warnings,error or info text to either the console window,
     /// visual-studio output/debug window, to a file structure or all. 
+    /// <para>
     /// The class makes it easy to switch between displaying output to a console while debugging while
     /// to outputting to file when code moves to a server. 
     /// Suitable for collecting debugging info from services that run many cases repeatedly.
+    /// </para>
+    /// <para>
     ///  log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)
+    ///  </para>
     /// </summary>
     public class ParserFeedback
     {
@@ -40,8 +71,6 @@ namespace TimeSeriesAnalysis.Utility
         // if you are very unlucky you could have a while loop spitting out millions of error messages or warnings
         // which would spam server disks, this is a fail-safe
         const int MaxNumberOfErrorsToLog = 1000;
-
-       // 
 
         private bool doOutputAlsoToConsole = false;
         private bool doOutputAlsoToDebug = false;
@@ -54,8 +83,18 @@ namespace TimeSeriesAnalysis.Utility
         private string loggDir                 = "log";
         private const  string loggName         = "ParserFeedback";
         private string logfilename;
+
+        /// <summary>
+        /// Returns the name of the current log file
+        /// </summary>
+        /// <returns></returns>
         public string GetLogFilename() { return logfilename;}
         private string fullLogFileName;
+
+        /// <summary>
+        /// Returns the path to which log files are written
+        /// </summary>
+        /// <returns></returns>
         public string GetLogFilePath() { return fullLogFileName; }
 
         private FileStream commonFilestream;
@@ -66,6 +105,10 @@ namespace TimeSeriesAnalysis.Utility
         private List<ParserFeedbackLogLine> logList;
         private string[] caseArray;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="doOutputAlsoToConsole"></param>
         public ParserFeedback(bool doOutputAlsoToConsole = false)
         {
             doOutputAlsoToConsole = false;
@@ -73,18 +116,30 @@ namespace TimeSeriesAnalysis.Utility
             ResetCounters();
         }
 
+        /// <summary>
+        /// Enable (or disable) console output - i.e. writing messages directly to screen
+        /// (useful for debugging, but leave off if running on a server)
+        /// </summary>
+        /// <param name="doEnable"></param>
         public void EnableConsoleOutput(bool doEnable=true)
         {
             this.doOutputAlsoToConsole = doEnable;
 
         }
 
+        /// <summary>
+        /// Enables or disables the output to Visual Studio debug window and to console out
+        /// </summary>
+        /// <param name="doEnable"></param>
         public void EnableDebugOutput(bool doEnable=true)
         {
             this.doOutputAlsoToDebug = doEnable;
             this.doOutputAlsoToConsole = doEnable;
         }
 
+        /// <summary>
+        /// Close a log file belong to a perticular case
+        /// </summary>
         public void CloseCaseLogFile()
         {
             if (caseLogFile != null)
@@ -116,6 +171,10 @@ namespace TimeSeriesAnalysis.Utility
             logList  = new List<ParserFeedbackLogLine>();
         }
 
+        /// <summary>
+        /// If output is to be divided into multiple log files, set the names of each "case"
+        /// </summary>
+        /// <param name="caseArray"></param>
         public void SetCaseArray(string[] caseArray)
         {
             this.caseArray = caseArray;
@@ -234,6 +293,9 @@ namespace TimeSeriesAnalysis.Utility
             }
         }
 
+        /// <summary>
+        /// Reset all  error and warning counters
+        /// </summary>
         public void ResetCounters()
         {
             nFatalErrors    = 0;
@@ -304,12 +366,20 @@ namespace TimeSeriesAnalysis.Utility
             }
         }
 
+        /// <summary>
+        /// Adds a fatal error 
+        /// </summary>
+        /// <param name="message"></param>
         public void AddFatalError(string message)
         {
             nFatalErrors++;
             StoreMessage("Fatal Error :" + message+ "\r\n", ParserfeedbackMessageLevel.fatal);
         }
 
+        /// <summary>
+        /// Add an error message 
+        /// </summary>
+        /// <param name="message"></param>
         public void AddError(string message)
         {
             nErrors++;
@@ -317,7 +387,7 @@ namespace TimeSeriesAnalysis.Utility
         }
 
         ///<summary>
-        ///     For testing, this is a way to check that no errors or warnings have been given.
+        ///  For testing, this is a way to check that no errors or warnings have been given.
         ///</summary>
         public bool IsNumberOfErrorsAndWarningsZero()
         {

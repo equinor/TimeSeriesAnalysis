@@ -84,11 +84,15 @@
   <h1 id="TimeSeriesAnalysis_Utility_ParserFeedback" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback" class="text-break">Class ParserFeedback
   </h1>
   <div class="markdown level0 summary"><p>Utility class is responsible for collecting feedback lines, such as warnings,error or info text to either the console window,
-visual-studio output/debug window, to a file structure or all.
+visual-studio output/debug window, to a file structure or all.</p>
+<p>
 The class makes it easy to switch between displaying output to a console while debugging while
-to outputting to file when code moves to a server.
+to outputting to file when code moves to a server. 
 Suitable for collecting debugging info from services that run many cases repeatedly.
-log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)</p>
+</p>
+<p>
+ log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)
+</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -132,7 +136,8 @@ log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback__ctor_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.#ctor*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback__ctor_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.#ctor(System.Boolean)">ParserFeedback(Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -161,7 +166,8 @@ log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_AddError_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.AddError*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_AddError_System_String_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.AddError(System.String)">AddError(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Add an error message</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -188,7 +194,8 @@ log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_AddFatalError_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_AddFatalError_System_String_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.AddFatalError(System.String)">AddFatalError(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Adds a fatal error</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -282,7 +289,8 @@ log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_CloseCaseLogFile_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_CloseCaseLogFile" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.CloseCaseLogFile">CloseCaseLogFile()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Close a log file belong to a perticular case</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -366,7 +374,9 @@ Needs SetCaseArray to be called first</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_EnableConsoleOutput_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_EnableConsoleOutput_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.EnableConsoleOutput(System.Boolean)">EnableConsoleOutput(Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Enable (or disable) console output - i.e. writing messages directly to screen
+(useful for debugging, but leave off if running on a server)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -393,7 +403,8 @@ Needs SetCaseArray to be called first</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_EnableDebugOutput_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.EnableDebugOutput*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_EnableDebugOutput_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.EnableDebugOutput(System.Boolean)">EnableDebugOutput(Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Enables or disables the output to Visual Studio debug window and to console out</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -575,7 +586,8 @@ Needs SetCaseArray to be called first</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilename_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilename" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilename">GetLogFilename()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the name of the current log file</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -600,7 +612,8 @@ Needs SetCaseArray to be called first</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilePath_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_GetLogFilePath" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.GetLogFilePath">GetLogFilePath()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the path to which log files are written</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -651,7 +664,8 @@ Needs SetCaseArray to be called first</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_ResetCounters_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_ResetCounters" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.ResetCounters">ResetCounters()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Reset all  error and warning counters</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -661,7 +675,8 @@ Needs SetCaseArray to be called first</p>
   
   <a id="TimeSeriesAnalysis_Utility_ParserFeedback_SetCaseArray_" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_ParserFeedback_SetCaseArray_System_String___" data-uid="TimeSeriesAnalysis.Utility.ParserFeedback.SetCaseArray(System.String[])">SetCaseArray(String[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>If output is to be divided into multiple log files, set the names of each &quot;case&quot;</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

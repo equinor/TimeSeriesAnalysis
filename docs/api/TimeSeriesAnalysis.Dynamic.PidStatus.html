@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum PidStatus
+    <title>Enum PIDStatus
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum PidStatus
+    <meta name="title" content="Enum PIDStatus
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,18 +78,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PidStatus">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PIDStatus">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_PidStatus" data-uid="TimeSeriesAnalysis.Dynamic.PidStatus" class="text-break">Enum PidStatus
+  <h1 id="TimeSeriesAnalysis_Dynamic_PIDStatus" data-uid="TimeSeriesAnalysis.Dynamic.PIDStatus" class="text-break">Enum PIDStatus
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Enum to classify the status output of PidController.cs</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_PidStatus_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_PIDStatus_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum PidStatus</code></pre>
+    <pre><code class="lang-csharp hljs">public enum PIDStatus</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -102,16 +103,19 @@
     <thead>
     <tbody>
       <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_PidStatus_AUTO">AUTO</td>
-        <td></td>
+        <td id="TimeSeriesAnalysis_Dynamic_PIDStatus_AUTO">AUTO</td>
+        <td><p>Controller is in automatic mode(u varies)</p>
+</td>
       </tr>
       <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_PidStatus_MANUAL">MANUAL</td>
-        <td></td>
+        <td id="TimeSeriesAnalysis_Dynamic_PIDStatus_MANUAL">MANUAL</td>
+        <td><p>Controller in in manual mode (u is constant)</p>
+</td>
       </tr>
       <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_PidStatus_TRACKING">TRACKING</td>
-        <td></td>
+        <td id="TimeSeriesAnalysis_Dynamic_PIDStatus_TRACKING">TRACKING</td>
+        <td><p>Controller is in Tracking, i.e. it is in automatic, but its output goes to a select block which has selected another controller</p>
+</td>
       </tr>
     </tbody>
   </thead></thead></table>

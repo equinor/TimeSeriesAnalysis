@@ -82,24 +82,38 @@
 <p>If you have set up plotting correctly, you should be able to run the &quot;PlotUnitTests&quot; test from the Test Explorer in Visual Studio and plots should appear in a new browser window.</p>
 <p>For plotting to work you need four prerequisites</p>
 <ul>
-<li>Chrome must installed in <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code></li>
-<li>you need to be running a local http-server, with a subfolder <code>plotly</code> that contains the javscript files in the &quot;www\plotly&quot; subfolder in the TimeSeriesAnalysis repository</li>
-<li>the folder <code>C:\inetpub\wwwroot\plotly\Data</code> needs to exist on your computer, as data will be written in here</li>
-<li>the front-end javascript code needs to find the time-series data in csv-files in its <code>localhost\plotly\data</code> folder.</li>
-<li>(if your http-server is serving antoher folder than <code>C:\inetpub\wwwroot\</code> up on <code>localhost</code>, you need to use <code>mklink` to link this folder with the http-server's </code>[root]\plotly\data`` folder  )</li>
+<li>Chrome must installed (by default in <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code>)</li>
+<li>you need to be running a local http-server, if it servers a folder <code>[wwwroot]</code> then beneath it there mustbe a <code>[wwwroot]\plotly</code> that contains the javscript files in the &quot;www\plotly&quot; subfolder in the TimeSeriesAnalysis repository</li>
+<li>the folder <code>[wwwroot]\plotly\Data</code> needs to match the <code>plotDataPath</code> in Plot (by default: <code>C:\inetpub\wwwroot\plotly\Data</code>). CSV-data files will be written in here.</li>
+<li>the front-end JavaScript code needs to find the time-series data in csv-files in its <code>localhost\plotly\data</code> folder.</li>
+<li>(if your http-server is serving another folder than <code>C:\inetpub\wwwroot</code> up on <code>localhost</code>, you need to use <code>mklink` to link this folder with the http-server's </code>[root]\plotly\data`` folder )</li>
 </ul>
+<div class="CAUTION">
+<h5>Caution</h5>
+<p>Be aware that you if port <code>80</code> and <code>443</code> are open on your machine and network, the data in the <code>plotly\data</code> folder may
+be shared with the world. It is your responsibility to block these ports if you want to avoid sharing sensitive data.</p>
+</div>
 <h3 id="chrome">Chrome</h3>
 <p>Currently, plotting requires Chrome,and the project expects Chrome to be installed in the folder <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code>.</p>
 <h3 id="running-a-local-http-server">Running a local HTTP-server</h3>
 <p>In Windows, if you are not already running a http-server, the easiest way to install one may be to install
 <code>Internet Information Services(IIS)</code>.
-This is done from <code>Control Panel-&gt;Windows Features</code> and selecting <code>Internet information Services</code> in the menu that appears (requires Administrator priveleges).</p>
-<p>If setting up a new server, it is advantageous to map the folder <code>c:\inetpub</code>.</p>
+This is done from <code>Control Panel-&gt;Windows Features</code> and selecting <code>Internet information Services</code> in the menu that appears (requires Administrator privileges).</p>
+<p>If setting up a new server, it is advantageous to map the folder <code>c:\inetpub\wwwroot</code>, but it can be any path as long as it
+contains a &quot;plotly&quot; subfolder and that subfolder has a subfolder <code>data</code> where data-files are added.</p>
+<p>If running IIS,</p>
+<ul>
+<li>start &quot;Internet Information Services(IIS) Manager&quot; from the start menu, then</li>
+<li>go to &quot;default website&quot;</li>
+<li>press &quot;basic settings&quot;,</li>
+<li>make a note of the &quot;physical path&quot; and change if needed.</li>
+</ul>
+<p>The &quot;physical path&quot; is where you need to link in the &quot;plotly&quot; folder.</p>
+<p><img src="images/IIS_setup.png" alt="IIS"></p>
 <h3 id="serving-up-the-plotly-folder">Serving up the &quot;plotly&quot; folder</h3>
 <p>When running a local http-server for development, you will need to add the folder &quot;plotly&quot; to it.
 The preferable way to to this is to add a symbolic link to the <code>TimeSeriesAnalysis</code> folder rather than copying files, to allow for version control.</p>
-<p>Suppose that your <code>TimeSeriesAnalysis</code> source code is stored in <code>C:\appl\source\TimeSeriesAnalysis</code>, and that you are running an http-sever that is hosting
-the folder <code>C:\inetpub</code> to your <code>localhost</code>.</p>
+<p>Suppose that your <code>TimeSeriesAnalysis</code> source code is stored in <code>C:\appl\source\TimeSeriesAnalysis</code>, and that you are running an http-sever that is hosting the folder <code>C:\inetpub\wwwroot</code>(your <code>localhost</code>).</p>
 <p><em>In Windows</em>: Start a <code>command prompt</code>(cmd.exe) session in <code>Windows</code> with <strong>administrator privileges</strong> and give the following command:</p>
 <p><code>mklink /D c:\inetpub\wwwroot\plotly C:\appl\source\TimeSeriesAnalysis\www\plotly</code></p>
 <div class="NOTE">
@@ -122,7 +136,7 @@ by editing the file <code>TimeSeriesAnalysis.dll.config</code>, which by default
     &lt;/appSettings&gt;
 &lt;/configuration&gt;
 </code></pre><h4 id="disabling-all-plots">Disabling all plots</h4>
-<p>It is possible to entire disable all plotting by setting the variable <code>PlotsAreEnabled</code> in the above mention filed to <code>false</code>.
+<p>It is possible to entirely disable all plotting by setting the variable <code>PlotsAreEnabled</code> in the above mention filed to <code>false</code>.
 This could be useful as a safety-measure if the code was ever to run in a production environment.</p>
 <h4 id="if-necessary-localhostplotlydata-needs-to-symbolically-linked-to--cinetpubwwwplotlydata-folder">If necessary <code>localhost\plotly\data</code> needs to symbolically linked to  <code>c:/inetpub/www/plotly/data</code> folder</h4>
 <p>An alternate way to get around paths that do not suit your runtime environment is to use <code>mklink</code>.</p>

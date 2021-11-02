@@ -13,11 +13,6 @@ namespace TimeSeriesAnalysis.Utility
 
     public static class SignificantDigits
     {
-        public static string DecimalSeparator;
-
-        static SignificantDigits()
-        {
-        }
 
         ///<summary>
         ///  Returns number in scientific format with coefficient and exponential paramters

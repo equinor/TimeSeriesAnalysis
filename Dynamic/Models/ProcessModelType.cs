@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Enum of recognized types of unit-models 
+    /// Enum of recognized types of unit-models.
+    /// <para>
     /// This type is used to set the unit model unique identifier and is also used 
-    /// in internal logic in the large-scale dynamic simulations
-    /// 
+    /// in internal logic in the large-scale dynamic simulations</para>
     /// </summary>
     public enum ProcessModelType
     {
@@ -32,6 +32,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Disturbance model
         /// </summary>
-        Disturbance = 3
+        Disturbance = 3,
+
+        /// <summary>
+        /// Select-block
+        /// </summary>
+        Select = 4
+
     }
 }

@@ -83,7 +83,13 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator" class="text-break">Class ProcessSimulator
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Performs simulates on a &quot;process&quot; consisting of a group of connected sub-models, that each implement ISimulatableModel</p>
+<p>
+To set up a simulation, first connect models, and then add external input signals.
+This class handles information about which model is connected to which, and handles callig sub-models in the
+correct order with the correct input signals.
+</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -126,7 +132,8 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_ProcessSimulator__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator__ctor_System_Int32_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})">ProcessSimulator(Int32, List&lt;ISimulatableModel&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -150,7 +157,8 @@
       <tr>
         <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a>&gt;</td>
         <td><span class="parametername">processModelList</span></td>
-        <td></td>
+        <td><p>A list of process models, each implementing <code>ISimulatableModel</code></p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -377,7 +385,7 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_Simulate_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)">Simulate(out TimeSeriesDataSet)</h4>
-  <div class="markdown level1 summary"><p>Simulate over a dataset</p>
+  <div class="markdown level1 summary"><p>Perform a dynamic simulation of the model provided, given the specified connections and external signals</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

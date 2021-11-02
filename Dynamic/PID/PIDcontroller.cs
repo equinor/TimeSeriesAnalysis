@@ -9,23 +9,46 @@ using TimeSeriesAnalysis;
 namespace TimeSeriesAnalysis.Dynamic
 {
 
-    public enum PidStatus { MANUAL=0, AUTO=1, TRACKING=2  };
+    /// <summary>
+    /// Enum to classify the status output of PidController.cs
+    /// </summary>
+    public enum PIDStatus 
+    { 
+        /// <summary>
+        /// Controller in in manual mode (u is constant)
+        /// </summary>
+        MANUAL=0,
+        /// <summary>
+        /// Controller is in automatic mode(u varies)
+        /// </summary>
+        AUTO=1, 
+        /// <summary>
+        /// Controller is in Tracking, i.e. it is in automatic, but its output goes to a select block which has selected another controller
+        /// </summary>
+        TRACKING=2  
+    };
 
     /// <summary>
-    /// Proporitional-Integral-Derivative(PID) controller that supports 
-    /// - first and second order low pass filtering of process variable
-    /// - anti-windup 
-    /// - bumpless transfer between auto and manual mode
-    /// - "warmstarting" -bumpless startup
-    /// - feedforward 
-    /// - scaling of input and output values 
-    /// - gain scheduling of Kp
-    /// - gain scheduling of Ti
-    /// - "kicking" as is usually applied to compressor recycling controllers/anti-surge
-    /// - min select/max select (also referred to as high select or low select: (multiple pid-controllers controlling the same output switch between auto and tracking mode)
-    ///
-    /// By design decision, this class should be kept relativly simple in terms of coding pattersn, so that it is possible to 
+    /// Proporitional-Integral-Derivative(PID) controller 
+    /// <para>
+    /// that supports 
+    /// <list type="bullet">
+    /// <item><description>first and second order low pass filtering of process variable</description></item>
+    /// <item><description> anti-windup</description></item>
+    /// <item><description> bumpless transfer between auto and manual mode</description></item>
+    /// <item><description> "warmstarting" -bumpless startup</description></item>
+    /// <item><description> feedforward </description></item>
+    /// <item><description> scaling of input and output values </description></item>
+    /// <item><description> gain scheduling of Kp</description></item>
+    /// <item><description> gain scheduling of Ti</description></item>
+    /// <item><description> "kicking" as is usually applied to compressor recycling controllers/anti-surge</description></item>
+    /// <item><description> min select/max select (also referred to as high select or low select: (multiple pid-controllers controlling the same output switch between auto and tracking mode)</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// By design decision, this class should be kept relativly simple in terms of coding patterns, so that it is possible to 
     /// hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc).
+    /// </para>
     /// </summary>
     public class PIDcontroller
     {
@@ -43,7 +66,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double uTrackingOffset = 0;// zero: no split range, above zero: min select, below zero: max select -determines how much above or below the tracking signal this controller should place its output.Also determined is tracking is against min-s
         private double uTrackingCutoff;//used for tracking, how much above the active controller that the tracking controllers shoudl be
 
-        private PidStatus controllerStatus;
+        private PIDStatus controllerStatus;
         private double uIfInAuto;
         private double u_ff_withoutTracking;
         private double uManual;
@@ -136,7 +159,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns a status code, to determine if controller is in manual, auto or in tracking(relevant for split range controllers.)
         /// </summary>
 
-        public PidStatus GetControllerStatus()
+        public PIDStatus GetControllerStatus()
         {
             return this.controllerStatus;
         }
@@ -344,7 +367,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 u = u0 + KpUnscaled * e_unscaled;
 
             ///////////////////////////////////////////////////////////
-            /// general feed-forward
+            // general feed-forward
             if (ffObj != null)
             {
                 if (ffObj.isFFActive && feedForwardVariable.HasValue)
@@ -438,17 +461,17 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (Math.Abs(u_prev - uTrackSignal.Value) <= uTrackingCutoff)
                 {
-                    controllerStatus = PidStatus.AUTO;
+                    controllerStatus = PIDStatus.AUTO;
                 }
                 else
                 {
-                    controllerStatus = PidStatus.TRACKING;
+                    controllerStatus = PIDStatus.TRACKING;
                 }
                 y_set_prc_prev = y_set_prc;
             }
             else
             {
-                controllerStatus = PidStatus.AUTO;
+                controllerStatus = PIDStatus.AUTO;
             }
             // handle bumpless transfer into manual mode
 
@@ -460,7 +483,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     u = this.uManual;
                 }
-                controllerStatus = PidStatus.MANUAL;
+                controllerStatus = PIDStatus.MANUAL;
             }
 
             //   anti - wind up
@@ -512,7 +535,7 @@ namespace TimeSeriesAnalysis.Dynamic
             e_prev_prev_unscaled = e;
             u0      = u_abs;
             uIfInAuto = u_abs;
-            controllerStatus = PidStatus.AUTO; 
+            controllerStatus = PIDStatus.AUTO; 
          }
         /*
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    /// <summary>
+    /// Abstract base class that contins common functionality across all models which are to implement <c>ISimulatableModel</c>
+    /// </summary>
     public abstract class ModelBaseClass
     {
         private string ID = "not_named";
@@ -16,11 +19,19 @@ namespace TimeSeriesAnalysis.Dynamic
         internal ProcessModelType processModelType = ProcessModelType.UnTyped;
 
 
+        /// <summary>
+        /// Get the ID of the model
+        /// </summary>
+        /// <returns></returns>
         public string GetID()
         {
             return ID;
         }
 
+        /// <summary>
+        /// Set the ID of the model
+        /// </summary>
+        /// <param name="ID"></param>
         public void  SetID(string ID)
         {
             this.ID = ID;
@@ -92,6 +103,10 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
 
+        /// <summary>
+        /// Add an additive signal to the output 
+        /// </summary>
+        /// <param name="additiveInputID">ID of signal to add</param>
         public void AddSignalToOutput(string additiveInputID)
         {
             if (additiveInputIDs == null)
@@ -132,6 +147,10 @@ namespace TimeSeriesAnalysis.Dynamic
            return null;
         }
 
+        /// <summary>
+        /// Gets IDS both of model inputs and additive model outputs
+        /// </summary>
+        /// <returns></returns>
         public string[] GetBothKindsOfInputIDs()
         {
             List<string> ret = new List<string>();
@@ -147,6 +166,10 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Set the ID of the output
+        /// </summary>
+        /// <param name="outputID"></param>
         public void SetOutputID(string outputID)
         {
             this.outputID = outputID;
@@ -161,12 +184,20 @@ namespace TimeSeriesAnalysis.Dynamic
              return SignalNamer.GetSignalName(GetID(), GetOutputSignalType());
         }
 
+        /// <summary>
+        /// Get the length of the output vector
+        /// </summary>
+        /// <returns></returns>
         virtual public int GetLengthOfInputVector()
         {
             return GetBothKindsOfInputIDs().Length;
 
         }
 
+        /// <summary>
+        /// Get the type of the output signal 
+        /// </summary>
+        /// <returns></returns>
         public abstract SignalType GetOutputSignalType();
 
 

@@ -11,10 +11,15 @@ using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis._Examples
 {
+    /// <summary>
+    /// A number of "getting started" examples implemented as explicit unit tests, all of which are described further in the documentation.
+    /// <para>
+    /// The intention is that new users could start learning about this project by examining these examples.
+    /// </para>
+    /// </summary>
     [TestFixture]
     class _GettingStarted
     {
-
         [SetUp]
         public void SetUp()
         {
@@ -22,9 +27,11 @@ namespace TimeSeriesAnalysis._Examples
         }
 
         [Test, Explicit]
-        #region ex_1
+    
         public void Ex1_hello_world()
         {
+            #region ex_1
+            Shared.GetParserObj().EnableConsoleOutput();
             int timeBase_s = 1;
             double filterTc_s = 10;
 
@@ -36,13 +43,15 @@ namespace TimeSeriesAnalysis._Examples
             Plot.FromList(new List<double[]> { input, output},
                 new List<string> { "y1=V1_input","y1=V2_output"}, timeBase_s, "ex1_hello_world",
                 new DateTime(2020, 1, 1, 0, 0, 0));
+            #endregion
         }
-        #endregion
+
 
         [Test, Explicit]
-        #region ex_2
+
         public void Ex2_linear_regression()
         {
+            #region ex_2
             double[] true_gains = {1,2,3};
             double true_bias = 5;
             double noiseAmplitude = 0.1;
@@ -68,18 +77,20 @@ namespace TimeSeriesAnalysis._Examples
 
             var results = (new Vec()).Regress(y, U);
 
-            TestContext.WriteLine(Vec.ToString(results.param, 3));
+            TestContext.WriteLine(Vec.ToString(results.Param, 3));
             TestContext.WriteLine(SignificantDigits.Format(results.Rsq, 3));
 
             Plot.FromList(new List<double[]>() { y, results.Y_modelled },
                 new List<string>() { "y1=y_meas", "y1=y_mod" }, 1);
+            #endregion
         }
-        #endregion
+
 
         [Test, Explicit]
-        #region ex_3
+
         public void Ex3_filters()
         {
+            #region ex_3
             int timeBase_s = 1;
             int nStepsDuration = 2000;
 
@@ -95,13 +106,15 @@ namespace TimeSeriesAnalysis._Examples
 
             Plot.FromList(new List<double[]> { y_sim, lpFiltered, hpFiltered },
                 new List<string> { "y1=y","y3=y_lowpass","y3=y_highpass" }, timeBase_s);
+            #endregion
         }
-        #endregion
+
 
         [Test, Explicit]
-        #region ex_4
+
         public void Ex4_system_identification()
         {
+            #region ex_4
             int timeBase_s = 1;
             double noiseAmplitude = 0.05;
             var parameters = new DefaultProcessModelParameters
@@ -142,15 +155,17 @@ namespace TimeSeriesAnalysis._Examples
                  "ex4_static_vs_dynamic");
 
             Console.WriteLine("static model gains:" + Vec.ToString(regResults.Gains,3));
+            #endregion
         }
-        #endregion
+
 
 
 
         [Test, Explicit]
-        #region ex_5
+
         public void Ex5_pid_cosimulation()
         {
+            #region ex_5
             int timeBase_s = 1;
             int N = 500;
             var modelParameters = new DefaultProcessModelParameters
@@ -177,8 +192,9 @@ namespace TimeSeriesAnalysis._Examples
             Plot.FromList(new List<double[]> { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
                 new List<string> { "y1=y_sim", "y3=u_pid","y2=disturbance" }, 
                 timeBase_s, "ex5_results");
+            #endregion
         }
-        #endregion
+
 
         [Test, Explicit]
         #region ex_6

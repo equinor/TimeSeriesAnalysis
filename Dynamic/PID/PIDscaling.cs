@@ -29,10 +29,21 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool   isDefault;
         private bool isEstimated; // if no scaling info is given, in some cases we may guess/estimate umin/umax if constraint is active
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PIDscaling()
         {
             SetDefault();
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="y_min"></param>
+        /// <param name="y_max"></param>
+        /// <param name="u_min"></param>
+        /// <param name="u_max"></param>
+        /// <param name="isKpScalingKpOn"></param>
         public PIDscaling(double y_min, double y_max, double u_min, double u_max,
             bool isKpScalingKpOn)
         {
@@ -40,6 +51,9 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Set scaling to default
+        /// </summary>
         public void SetDefault()
         {
             isEstimated = false;
@@ -56,6 +70,14 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Set scaling
+        /// </summary>
+        /// <param name="y_min"></param>
+        /// <param name="y_max"></param>
+        /// <param name="u_min"></param>
+        /// <param name="u_max"></param>
+        /// <param name="isKpScalingKpOn"></param>
         public void Set(double y_min, double y_max, double u_min, double u_max,
             bool isKpScalingKpOn)
         {
@@ -67,6 +89,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.sasPIDimplementationScalesKp = isKpScalingKpOn;
         }
 
+        /// <summary>
+        /// Set the estimated u_min and u_max (if it is not known, but guessed from data)
+        /// </summary>
+        /// <param name="u_min"></param>
+        /// <param name="u_max"></param>
         public void SetEstimatedUminUmax(double u_min, double u_max)
         {
             isDefault = false;
@@ -75,12 +102,20 @@ namespace TimeSeriesAnalysis.Dynamic
             this.u_max = u_max;
         }
 
+        /// <summary>
+        /// Ask if the scaling is estimated from data or given a priori
+        /// </summary>
+        /// <returns></returns>
         public bool IsEstimated()
         {
             return isEstimated;
         }
 
 
+        /// <summary>
+        /// Get the scaling factor for Y
+        /// </summary>
+        /// <returns></returns>
         public double GetYScaleFactor()
         {
             if (sasPIDimplementationScalesKp)
@@ -95,12 +130,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 1;
         }
 
+        /// <summary>
+        /// Get the scaled version of an absolute y
+        /// </summary>
+        /// <param name="y_abs"></param>
+        /// <returns></returns>
         public double ScaleYValue(double y_abs)
         {
             return (y_abs - y_min) / (y_max - y_min);
         }
 
 
+        /// <summary>
+        /// Get the scaling factor of U
+        /// </summary>
+        /// <returns></returns>
         public double GetUScaleFactor()
         {
             if (sasPIDimplementationScalesKp)
@@ -115,33 +159,61 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 1;
         }
 
+        /// <summary>
+        /// Get a scaling factor to convert and unscaled Kp
+        /// </summary>
+        /// <returns></returns>
         public double GetKpScalingFactor()
         {
             return GetYScaleFactor() / GetUScaleFactor();
         }
 
 
+        /// <summary>
+        /// Turn scaling on or off
+        /// </summary>
+        /// <param name="isKpScalingKpOn"></param>
         public void  SetKpScalingOn(bool isKpScalingKpOn)
         {
             sasPIDimplementationScalesKp = isKpScalingKpOn;
         }
 
+        /// <summary>
+        /// Ask if scaling of Kp is active
+        /// </summary>
+        /// <returns></returns>
         public bool IsKpScalingOn()
         {
             return sasPIDimplementationScalesKp;
         }
 
+        /// <summary>
+        /// Ask if scaling is at defautl values
+        /// </summary>
+        /// <returns></returns>
         public bool IsDefault() { return isDefault; }
-        /*
-        public double GetYspMin() { return ySP_min; }
-        public double GetYspMax() { return ySP_max; }
-        public double GetYMeasMin() { return yMeas_min; }
-        public double GetYMeasMax() { return yMeas_max; }
-        */
 
+
+        /// <summary>
+        /// Get the minumum Y
+        /// </summary>
+        /// <returns></returns>
         public double GetYmin() { return y_min; }
+        /// <summary>
+        /// Get the maximum Y
+        /// </summary>
+        /// <returns></returns>
         public double GetYmax() { return y_max; }
+
+        /// <summary>
+        /// Get the minimum U
+        /// </summary>
+        /// <returns></returns>
         public double GetUmin() { return u_min; }
+        /// <summary>
+        /// Get the maximum U
+        /// </summary>
+        /// <returns></returns>
         public double GetUmax() { return u_max; }
     }
 

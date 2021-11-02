@@ -91,9 +91,7 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
 <code>{1,2}</code> are chosen.</p>
 <p><em>The aim of this example is to see how closely the <code>DefaultProcessModelIdentifier</code> is able to estimate these values.</em></p>
 <p>The code to create the dataset, do the identification and create the plots is shown below:</p>
-<pre><code class="lang-csharp" name="Examples">    public void Ex4_system_identification()
-    {
-        int timeBase_s = 1;
+<pre><code class="lang-csharp" name="Examples">        int timeBase_s = 1;
         double noiseAmplitude = 0.05;
         var parameters = new DefaultProcessModelParameters
         {
@@ -133,7 +131,6 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
              &quot;ex4_static_vs_dynamic&quot;);
 
         Console.WriteLine(&quot;static model gains:&quot; + Vec.ToString(regResults.Gains,3));
-    }
 </code></pre>
 <p>The first plot shows the dataset, showing inputs<code>u1</code>, <code>u2</code> and output <code>y</code>:</p>
 <p><img src="images/ex4_dataset.png" alt="Example 4:dataset"></p>

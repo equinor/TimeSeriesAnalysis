@@ -243,7 +243,6 @@ namespace TimeSeriesAnalysis._Examples
         [TestCase, Explicit]
         public void GainScheduling()
         {
-                                  
             //step responses on the open-loop system
             #region GainScheduling_Part1
          
@@ -390,11 +389,7 @@ namespace TimeSeriesAnalysis._Examples
             Assert.IsTrue(isOk2);
             Assert.IsTrue(isOk3);
             Assert.IsTrue(isOk4);
-
-
-
         }
-
     
         [TestCase,Explicit]
      
@@ -415,13 +410,13 @@ namespace TimeSeriesAnalysis._Examples
             };
             var pidParameters1 = new PIDModelParameters()
             {
-                Kp = 3, //high-gain
-                Ti_s = 20
+                Kp = 0.5, //low-gain
+                Ti_s = 30//slower
             };
             var pidParameters2 = new PIDModelParameters()
             {
-                Kp = 0.5,//low-gain
-                Ti_s = 20 
+                Kp = 2,//low-gain
+                Ti_s = 15 //faster
             };
             var process
                 = new DefaultProcessModel(processParameters, timeBase_s, "Process");
@@ -438,12 +433,12 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(pid1, minSelect,0);
             sim.ConnectModels(pid2, minSelect,1);
             string selectSignalID = sim.ConnectModels(minSelect, process);
-            sim.ConnectSignal(selectSignalID,pid1, (int)PIDModelInputsIdx.Tracking);
-            sim.ConnectSignal(selectSignalID,pid2, (int)PIDModelInputsIdx.Tracking);
+            sim.ConnectSignal(selectSignalID,pid1,(int)PIDModelInputsIdx.Tracking);
+            sim.ConnectSignal(selectSignalID,pid2,(int)PIDModelInputsIdx.Tracking);
 
-             sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(300, N, 0, 1));
+            sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+            sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));
+            sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(N/2, N, 0, 1));
 
             var isOK = sim.Simulate(out var simResult);
             

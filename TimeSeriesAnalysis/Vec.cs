@@ -13,8 +13,10 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis
 {
     /// <summary>
-    /// Utility functions and operations for treating arrays as mathetmatical vectors
+    /// Utility functions and operations for treating arrays as mathetmatical vectors.
+    /// <para>
     /// This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec)
+    /// </para>
     /// </summary>
     public class Vec
     {
@@ -23,7 +25,6 @@ namespace TimeSeriesAnalysis
 
         /// <summary>
         /// Constructor
-        /// 
         /// </summary>
         /// <param name="nanValue">inputs values matching this value are treated as "NaN" 
         /// and are excluded from all calculations</param>
@@ -567,19 +568,15 @@ namespace TimeSeriesAnalysis
             return minVal;
         }
 
+        /// <summary>
+        /// Minimum value of array
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
         public double Min(double[] array)
         {
             return Min(array, out _);
         }
-
-
-        ///<summary>
-        ///  Returns minimum value of array 
-        ///</summary>
-        /*public static double Min(double[] array)
-        {
-            return (new Vec()).Min(array, out _);
-        }*/
 
         ///<summary>
         ///  Returns maximum value of array 
@@ -873,11 +870,11 @@ namespace TimeSeriesAnalysis
                 {
                     yIndToIgnoreList = yIndToIgnore.ToList();
                 }
-                results.objectiveFunctionValue = (new Vec()).SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
+                results.ObjectiveFunctionValue = (new Vec()).SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
                 results.Bias = regression.Intercept;
                 results.Gains = regression.Weights;
-                results.param = Vec<double>.Concat(regression.Weights, regression.Intercept);
+                results.Param = Vec<double>.Concat(regression.Weights, regression.Intercept);
 
                 /*
                 // uncertainty estimation
@@ -910,12 +907,12 @@ namespace TimeSeriesAnalysis
                         param95prcConfInterval = null;
                     }
                 }*/
-                results.ableToIdentify = true;
+                results.AbleToIdentify = true;
                 return results;
             }
             catch 
             {
-                results.ableToIdentify = false;
+                results.AbleToIdentify = false;
                 return results;
             }
         }

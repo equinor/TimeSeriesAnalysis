@@ -163,7 +163,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Examples\GettingStarted.cs" />
     <Compile Include="Examples\ProcessControl.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Shared.cs" />
+    <Compile Include="TimeSeriesAnalysis\Shared.cs" />
     <Compile Include="Tests\ProcessSimulatorMISOTests.cs" />
     <Compile Include="Tests\ProcessSimulatorSISOTests.cs" />
     <Compile Include="Tests\SysIDUnitTests.cs" />

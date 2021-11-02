@@ -128,6 +128,11 @@ namespace TimeSeriesAnalysis
             return matrix.GetLength(1);
         }
 
+        /// <summary>
+        /// Get number of columns 
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
         static public int GetNColumns(this double[][] matrix)
         {
             return matrix.ElementAt(0).GetLength(0);
@@ -142,6 +147,11 @@ namespace TimeSeriesAnalysis
             return matrix.GetLength(0);
         }
 
+        /// <summary>
+        /// Get nubmer of rows
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
         static public int GetNRows(this double[][] matrix)
         {
             return matrix.GetLength(0);

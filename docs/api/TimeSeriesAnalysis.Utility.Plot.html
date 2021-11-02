@@ -83,8 +83,19 @@
   
   <h1 id="TimeSeriesAnalysis_Utility_Plot" data-uid="TimeSeriesAnalysis.Utility.Plot" class="text-break">Class Plot
   </h1>
-  <div class="markdown level0 summary"><p>Static methods for plotting one or more time-series across one or more y-axes and one or more subplots.
-If you sometimes need to disable plots (for instance if plotting code is included in unit tests) see Plot4Test</p>
+  <div class="markdown level0 summary"><p>Static methods for plotting one or more time-series across one or more y-axes and one or more subplots by opening up Chrome
+calling a set of JavaScript plotting methods based on plotly.js</p>
+<p>
+Time-series are written as CSV-files to a specific folder on disk <code>plotDataPath</code>, before starting a chrome-window
+that loads a specific &quot;localhost&quot; <code>plotlyURL</code> that reads said CSV-files and initates an in-browser plot using plotly.js.
+</p>
+<p>
+For this method to work you need to be running a web server such as IIS that serves up a &quot;localhost&quot; <code>plotlyURL</code> as described
+in the documentation.
+</p>
+<p>
+If you sometimes need to disable plots (for instance if plotting code is included in unit tests) see Plot4Test
+</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -128,7 +139,8 @@ If you sometimes need to disable plots (for instance if plotting code is include
   
   <a id="TimeSeriesAnalysis_Utility_Plot_FromList_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_DateTime___System_String_System_String_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.DateTime[],System.String,System.String,System.Boolean)">FromList(List&lt;Double[]&gt;, List&lt;String&gt;, DateTime[], String, String, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Plot all variables in a list of doubles, that all have the same timestamps given by <code>dataTimes</code></p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -157,7 +169,8 @@ If you sometimes need to disable plots (for instance if plotting code is include
       <tr>
         <td><span class="xref">System.DateTime</span>[]</td>
         <td><span class="parametername">dataTimes</span></td>
-        <td></td>
+        <td><p>common timestamps</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
@@ -195,7 +208,7 @@ If you sometimes need to disable plots (for instance if plotting code is include
   
   <a id="TimeSeriesAnalysis_Utility_Plot_FromList_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)">FromList(List&lt;Double[]&gt;, List&lt;String&gt;, Int32, String, DateTime, String, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Time-series plotting in a pop-up browser window, based on plot.ly</p>
+  <div class="markdown level1 summary"><p>Plot values in a list of vectors <code>dataList</code>, when all vectors start at <code>t0</code> and have a stedy sampling rate</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

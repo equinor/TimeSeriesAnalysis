@@ -80,20 +80,18 @@
 <h1 id="example-1--a-simple-hello-world">Example 1 : A simple &quot;hello world&quot;</h1>
 
 <p>Consider the example <code>ex1_hello_world</code> in <code>Examples.cs</code>:</p>
-<pre><code class="lang-csharp" name="Examples">public void Ex1_hello_world()
-{
-    int timeBase_s = 1;
-    double filterTc_s = 10;
+<pre><code class="lang-csharp" name="Examples">Shared.GetParserObj().EnableConsoleOutput();
+int timeBase_s = 1;
+double filterTc_s = 10;
 
-    double[] input = TimeSeriesCreator.Step(11, 60, 0, 1);
+double[] input = TimeSeriesCreator.Step(11, 60, 0, 1);
 
-    LowPass lp = new LowPass(timeBase_s);
-    var output = lp.Filter(input, filterTc_s);
+LowPass lp = new LowPass(timeBase_s);
+var output = lp.Filter(input, filterTc_s);
 
-    Plot.FromList(new List&lt;double[]&gt; { input, output},
-        new List&lt;string&gt; { &quot;y1=V1_input&quot;,&quot;y1=V2_output&quot;}, timeBase_s, &quot;ex1_hello_world&quot;,
-        new DateTime(2020, 1, 1, 0, 0, 0));
-}
+Plot.FromList(new List&lt;double[]&gt; { input, output},
+    new List&lt;string&gt; { &quot;y1=V1_input&quot;,&quot;y1=V2_output&quot;}, timeBase_s, &quot;ex1_hello_world&quot;,
+    new DateTime(2020, 1, 1, 0, 0, 0));
 </code></pre>
 <p>Which when run should creates the following plot.</p>
 <p><img src="images/ex1_hello_world.png" alt="Example 1:hello world"></p>
@@ -140,6 +138,14 @@ Then try <code>new List&lt;string&gt; { &quot;y1=input&quot;,&quot;y3=output&quo
 <h5>Note</h5>
 <p>Try dragging and zooming the plot, and using the scooter to reading the exact time and value off the <code>output</code> variable in each time step in the transient.
 Notice that the plot.ly library provides an interactive menu of to the top right of the screen.</p>
+</div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The path for this example is
+<code>http://localhost/plotly/index.html#y1=V1_input;y1=V2_output;comment=ex1_hello_world;casename:ex1_hello_world</code>
+If for whatever reason chrome does not start automatically on your computer, you can still open the plot
+manually if you have set up a local web server and paths correctly. <code>Plot.FromList</code> also outputs the url after the pound(&quot;#&quot;), so in
+this case changing the final line to <code>var url = Plot.FromList...</code> would set the variable <code>url</code> to <code>y1=V1_input;y1=V2_output;comment=ex1_hello_world;casename:ex1_hello_world</code>.</p>
 </div>
 </article>
           </div>

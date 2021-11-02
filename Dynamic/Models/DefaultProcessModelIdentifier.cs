@@ -15,8 +15,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Identifier of the "Default" process model - a dynamic process model with time-constant, time-delay, 
     /// linear process gain and optional (nonlinear)curvature process gains.
-    /// This model class is sufficent for most real-world dynamic systems, yet also introduces the fewest possible 
-    /// paramters to describe the system in an attempt to avoiding over-fitting/over-parametrization
+    /// <para>This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
+    /// parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization</para>
     /// </summary>
     public class DefaultProcessModelIdentifier 
     {
@@ -293,18 +293,18 @@ namespace TimeSeriesAnalysis.Dynamic
                     regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
                 }
 
-                if (regResults.param != null)
+                if (regResults.Param != null)
                 {
                     double a;
                     if (assumeThatYkminusOneApproxXkminusOne)
                     {
-                        a = regResults.param[0] + 1;
+                        a = regResults.Param[0] + 1;
                     }
                     else
                     {
-                        a = regResults.param[0];
+                        a = regResults.Param[0];
                     }
-                    double[] b = Vec<double>.SubArray(regResults.param, 1, regResults.param.Length - 2);
+                    double[] b = Vec<double>.SubArray(regResults.Param, 1, regResults.Param.Length - 2);
                     if (a > 1)
                         a = 0;
                     //d_mod_cur = d;
@@ -388,9 +388,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 regResults = vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray());
                 timeConstant_s = 0;
-                if (regResults.param != null)
+                if (regResults.Param != null)
                 {
-                    processGains = Vec<double>.SubArray(regResults.param, 0, regResults.param.Length - 2);
+                    processGains = Vec<double>.SubArray(regResults.Param, 0, regResults.Param.Length - 2);
                 }
             }
             DefaultProcessModelParameters parameters = new DefaultProcessModelParameters();
@@ -400,13 +400,13 @@ namespace TimeSeriesAnalysis.Dynamic
             // in these cases varCovarMatrix is null
 
             const double maxAbsValueRegression = 10000;
-            if (regResults.param == null || !regResults.ableToIdentify)
+            if (regResults.Param == null || !regResults.AbleToIdentify)
             {
                 parameters.WasAbleToIdentify = false;
                 parameters.AddWarning(ProcessIdentWarnings.RegressionProblemFailedToYieldSolution);
                 return parameters;
             }
-            else if (Math.Abs(regResults.param[1]) > maxAbsValueRegression)
+            else if (Math.Abs(regResults.Param[1]) > maxAbsValueRegression)
             {
                 parameters.WasAbleToIdentify = false;
                 parameters.AddWarning(ProcessIdentWarnings.NotPossibleToIdentify);
@@ -428,14 +428,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                 {
                     parameters.AddWarning(ProcessIdentWarnings.ReEstimateBiasFailed);
-                    parameters.Bias = regResults.param.Last();
+                    parameters.Bias = regResults.Param.Last();
                 }
                 // TODO:add back uncertainty estimates
 
                 parameters.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 parameters.FittingRsq = regResults.Rsq;
-                parameters.FittingObjFunVal = regResults.objectiveFunctionValue;
+                parameters.FittingObjFunVal = regResults.ObjectiveFunctionValue;
                 return parameters;
             }
         }

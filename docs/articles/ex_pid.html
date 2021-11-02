@@ -82,35 +82,32 @@
 <p>In this example, a step disturbance influences a linear subprocess that is controlled by a PID-controller toward a constant setpoint of <code>y=50</code>, like depicted in the below figure:</p>
 <p><img src="images/fig_pidprocess.png" alt="Example 5 result"></p>
 <p><code>SubProcessSimulator.CoSimulateProcessAndPID</code> co-simulates a single PID-controller/processes combination such as this.</p>
-<pre><code class="lang-csharp" name="Examples">public void Ex5_pid_cosimulation()
+<pre><code class="lang-csharp" name="Examples">int timeBase_s = 1;
+int N = 500;
+var modelParameters = new DefaultProcessModelParameters
 {
-    int timeBase_s = 1;
-    int N = 500;
-    var modelParameters = new DefaultProcessModelParameters
-    {
-        WasAbleToIdentify = true,
-        TimeConstant_s = 10,
-        ProcessGains = new double[] { 1 },
-        TimeDelay_s = 0,
-        Bias = 5
-    };
-    var processModel = new DefaultProcessModel(modelParameters, timeBase_s);
-    var pidParameters = new PIDModelParameters()
-    {
-        Kp = 0.5,
-        Ti_s = 20
-    };
-    var pid = new PIDModel(pidParameters, timeBase_s);
-    var dataSet = new SubProcessDataSet(timeBase_s,N);
-    dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
-    dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
-    var simulator = new SubProcessSimulator(processModel);
-    simulator.CoSimulateProcessAndPID( pid, ref dataSet);
+    WasAbleToIdentify = true,
+    TimeConstant_s = 10,
+    ProcessGains = new double[] { 1 },
+    TimeDelay_s = 0,
+    Bias = 5
+};
+var processModel = new DefaultProcessModel(modelParameters, timeBase_s);
+var pidParameters = new PIDModelParameters()
+{
+    Kp = 0.5,
+    Ti_s = 20
+};
+var pid = new PIDModel(pidParameters, timeBase_s);
+var dataSet = new SubProcessDataSet(timeBase_s,N);
+dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
+dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
+var simulator = new SubProcessSimulator(processModel);
+simulator.CoSimulateProcessAndPID( pid, ref dataSet);
 
-    Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
-        new List&lt;string&gt; { &quot;y1=y_sim&quot;, &quot;y3=u_pid&quot;,&quot;y2=disturbance&quot; }, 
-        timeBase_s, &quot;ex5_results&quot;);
-}
+Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
+    new List&lt;string&gt; { &quot;y1=y_sim&quot;, &quot;y3=u_pid&quot;,&quot;y2=disturbance&quot; }, 
+    timeBase_s, &quot;ex5_results&quot;);
 </code></pre>
 <p>The resulting dynamic simulation:
 <img src="images/ex5_results.png" alt="Example 5 result"></p>

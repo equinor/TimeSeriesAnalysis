@@ -9,10 +9,13 @@ namespace TimeSeriesAnalysis.Utility
     ///<summary>
     /// Utility class to work with unix time stamps
     ///</summary>
-
     public class UnixTime
     {
-        public static double GetNowUnixTime()//does not work properly, off by one hour
+        /// <summary>
+        /// Returns the Unix time of the current UTC-time. 
+        /// </summary>
+        /// <returns></returns>
+        public static double GetNowUnixTime()
         {
             return ConvertToUnixTimestamp(DateTime.UtcNow);
         }

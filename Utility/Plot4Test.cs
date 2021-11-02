@@ -48,6 +48,10 @@ namespace TimeSeriesAnalysis.Utility
             isEnabled = true;
         }
 
+        /// <summary>
+        /// Gets the number of plots that have been written
+        /// </summary>
+        /// <returns></returns>
         public int GetNumberOfPlotsMade()
         {
             return plotCounter;

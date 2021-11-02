@@ -7,35 +7,68 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis
 {
     /// <summary>
-    /// Class that holds the results of a regression run.
+    /// Class that holds the results of a run of <c>Vec.Regress</c>.
     /// </summary>
     public class RegressionResults
     {
+        /// <summary>
+        /// Default constructor, sets all values to null or zero.
+        /// </summary>
         public RegressionResults()
         {
-            ableToIdentify = false;
+            AbleToIdentify = false;
             Rsq = 0;
-            objectiveFunctionValue = Double.PositiveInfinity;
-            param95prcConfInterval = null;
+            ObjectiveFunctionValue = Double.PositiveInfinity;
+            Param95prcConfInterval = null;
             Y_modelled = null;
-            varCovarMatrix = null;
+            VarCovarMatrix = null;
             NfittingBadDataPoints = 0;
         }
         /// <summary>
         /// R2-root-means-squared between Y and Y_modelled for the tuning dataset(a value between 0 and 100, higher is better)
         /// </summary>
         public double Rsq { get; set; }
-        public double objectiveFunctionValue { get; set; }
-        public double[] param { get; set; }
-        public double[] param95prcConfInterval { get; set; }
-        public double[][] varCovarMatrix { get; set; }
+        /// <summary>
+        /// The value of the objective function after regression
+        /// </summary>
+        public double ObjectiveFunctionValue { get; set; }
+        /// <summary>
+        /// All regression paramters, first the gains, then the bias term.
+        /// </summary>
+        public double[] Param { get; set; }
+        /// <summary>
+        /// The 95 percent confidence intervals of parameters
+        /// </summary>
+        public double[] Param95prcConfInterval { get; set; }
+        /// <summary>
+        /// The variance/covariance matrix of the regression run
+        /// </summary>
+        public double[][] VarCovarMatrix { get; set; }
+        /// <summary>
+        /// The modelled output
+        /// </summary>
         public double[] Y_modelled { get; set; }
+        /// <summary>
+        /// The bias term of the linear regression
+        /// </summary>
         public double Bias { get; set; }
+        /// <summary>
+        /// The gains of the linear regression
+        /// </summary>
         public double[] Gains { get; set; }
 
-        public bool ableToIdentify { get; set; }
+        /// <summary>
+        /// True if able to identify, otherwise false
+        /// </summary>
+        public bool AbleToIdentify { get; set; }
 
+        /// <summary>
+        /// Number of bad data point ignored in the fitting data set
+        /// </summary>
         public int NfittingBadDataPoints { get; set; }
+        /// <summary>
+        /// Total number of data points in the fitting data set
+        /// </summary>
         public int NfittingTotalDataPoints { get; set; }
         
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    /// <summary>
+    /// Parameters of the PIDModel
+    /// </summary>
     public class PIDModelParameters:ModelParametersBaseClass 
     {
         /// <summary>

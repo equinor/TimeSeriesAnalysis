@@ -8,12 +8,12 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// A high-pass recursive time-series filter based on <c>LowPass</c>.
-    /// 
+    /// <para>
     /// This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
     /// requires litte memory and computation. This filter is causal, meaning that
     /// for calculating the filtered value at time <c>k</c> it does not use future values such as <c>k+1</c>, but 
     /// this is at the expense of introducing a time-shift/phase-shift.
-    /// 
+    /// </para>
     /// </summary>
     public class HighPass
     {
