@@ -8,6 +8,7 @@ zip %name% readme.md
 zip -j %name% bin\debug\*.dll
 zip -j %name% bin\debug\*.pdb
 zip -j %name% bin\debug\*.dll.config
+zip -j %name% bin\debug\TimeSeriesAnalysis.xml
 zip -r %name% www\plotly\*.js 
 zip -r %name% www\plotly\vendor\*.js 
 zip -r %name% www\plotly\*.html
