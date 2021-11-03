@@ -318,7 +318,19 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html",
-          "hash": "T6/hqQfAhveWqN8FUuO0S0mPy0YfOChxBFRdBkji7yk="
+          "hash": "u+4AygetQ1ED7G/44/czedMJJhtfHFe7SEPL2j5nlrE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html",
+          "hash": "Lgqdnk+PRHk9DRe+LAFY4I1fsrd9lBnKX7QfobN9WuA="
         }
       },
       "is_incremental": false,
@@ -438,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "RlxVn96TrYWsdl3Qh7DiDw5jrOBCzHuthXFLj1Z16ws="
+          "hash": "/QSCIley7blJa2L9DV59xaIKju+0L8eLDBKnuWvUdEc="
         }
       },
       "is_incremental": false,
@@ -702,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4SpBeFu27mp8DRNCFukD6MG39Yx5iwREH5UG5CIHuqg="
+          "hash": "vZASL54y39XjuAsB9rE7E4fYd3t5sebHFlRCiknOgtU="
         }
       },
       "is_incremental": false,
@@ -1541,8 +1553,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 56,
-          "skipped_file_count": 56
+          "total_file_count": 57,
+          "skipped_file_count": 57
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

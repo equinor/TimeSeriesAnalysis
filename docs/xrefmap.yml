@@ -2882,6 +2882,45 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal
   nameWithType: ProcessSimulator.ConnectSignal
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
+  name: GetConnections()
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetConnections
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections()
+  nameWithType: ProcessSimulator.GetConnections()
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections*
+  name: GetConnections
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetConnections_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
+  nameWithType: ProcessSimulator.GetConnections
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
+  name: GetExternalSignals()
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetExternalSignals
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals()
+  nameWithType: ProcessSimulator.GetExternalSignals()
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals*
+  name: GetExternalSignals
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetExternalSignals_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
+  nameWithType: ProcessSimulator.GetExternalSignals
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
+  name: GetModels()
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetModels
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels()
+  nameWithType: ProcessSimulator.GetModels()
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels*
+  name: GetModels
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
+  nameWithType: ProcessSimulator.GetModels
 - uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
   name: Simulate(out TimeSeriesDataSet)
   href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
@@ -2898,6 +2937,41 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate
   nameWithType: ProcessSimulator.Simulate
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer
+  name: ProcessSimulatorInitalizer
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer
+  nameWithType: ProcessSimulatorInitalizer
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor(TimeSeriesAnalysis.Dynamic.ProcessSimulator)
+  name: ProcessSimulatorInitalizer(ProcessSimulator)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer__ctor_TimeSeriesAnalysis_Dynamic_ProcessSimulator_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor(TimeSeriesAnalysis.Dynamic.ProcessSimulator)
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ProcessSimulatorInitalizer(TimeSeriesAnalysis.Dynamic.ProcessSimulator)
+  nameWithType: ProcessSimulatorInitalizer.ProcessSimulatorInitalizer(ProcessSimulator)
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor*
+  name: ProcessSimulatorInitalizer
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ProcessSimulatorInitalizer
+  nameWithType: ProcessSimulatorInitalizer.ProcessSimulatorInitalizer
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name: ToSteadyState(ref TimeSeriesDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer_ToSteadyState_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
+  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name.vb: ToSteadyState(ByRef TimeSeriesDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(ref TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  nameWithType: ProcessSimulatorInitalizer.ToSteadyState(ref TimeSeriesDataSet)
+  nameWithType.vb: ProcessSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState*
+  name: ToSteadyState
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer_ToSteadyState_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState
+  nameWithType: ProcessSimulatorInitalizer.ToSteadyState
 - uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
   name: ProcessTimeDelayIdentWarnings
   href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html
