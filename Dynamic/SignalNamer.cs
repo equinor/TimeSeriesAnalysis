@@ -71,7 +71,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (typeString.Contains("Distubance_D"))
             {
-                return SignalType.Distubance_D;
+                return SignalType.Disturbance_D;
             }
             if (typeString.Contains("Output_Y_sim"))
             {

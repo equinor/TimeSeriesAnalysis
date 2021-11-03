@@ -190,7 +190,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-            processSim.AddSignal(processModel1, SignalType.Distubance_D, TimeSeriesCreator.Step(N / 4, N, 0, 1));
+            processSim.AddSignal(processModel1, SignalType.Disturbance_D, TimeSeriesCreator.Step(N / 4, N, 0, 1));
             processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
 

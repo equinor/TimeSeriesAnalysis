@@ -78,7 +78,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.GetParserObj().AddError("ProcessSimulator.AddSignal was unable to add signal.");
                 return null;
             }
-            if (type == SignalType.Distubance_D && modelType == ProcessModelType.SubProcess)
+            if (type == SignalType.Disturbance_D && modelType == ProcessModelType.SubProcess)
             {
                 // by convention, the disturbance is always added last to inputs
                 /* List<string> newInputIDs = new List<string>(model.GetModelInputIDs());

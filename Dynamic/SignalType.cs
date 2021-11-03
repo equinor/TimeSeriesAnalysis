@@ -28,7 +28,7 @@
         /// <summary>
         /// The disturbance on the output of a "Process"
         /// </summary>
-        Distubance_D = 5,//SubProcess
+        Disturbance_D = 5,//SubProcess
         /// <summary>
         /// The simulated output of a "Process"
         /// </summary>

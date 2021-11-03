@@ -81,8 +81,8 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(pid2, pid1,(int)PIDModelInputsIdx.Y_setpoint);
 
             sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
-            sim.AddSignal(process1,SignalType.Distubance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
-            sim.AddSignal(process2,SignalType.Distubance_D,TimeSeriesCreator.Step(300, N, 0, 1));
+            sim.AddSignal(process1,SignalType.Disturbance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+            sim.AddSignal(process2,SignalType.Disturbance_D,TimeSeriesCreator.Step(300, N, 0, 1));
 
             var isOK = sim.Simulate(out var simResult);
 
@@ -296,7 +296,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSim1.ConnectModels(processModel, pidModel1);
             closedLoopSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(20,400));
-            closedLoopSim1.AddSignal(processModel,SignalType.Distubance_D, TimeSeriesCreator.Step(100,400,0,10));
+            closedLoopSim1.AddSignal(processModel,SignalType.Disturbance_D, TimeSeriesCreator.Step(100,400,0,10));
             var isOk =closedLoopSim1.Simulate(out var closedLoopData1);
 
             //  the system rejecting a disturbance at y=70 with pidModel2
@@ -312,7 +312,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSim2.ConnectModels(processModel, pidModel2);
             closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(70, 400));
-            closedLoopSim2.AddSignal(processModel, SignalType.Distubance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
+            closedLoopSim2.AddSignal(processModel, SignalType.Disturbance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
             var isOk2 = closedLoopSim2.Simulate(out var closedLoopData2);
 
             Plot.FromList(new List<double[]>
@@ -355,7 +355,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
             closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
                   TimeSeriesCreator.Constant(20, 400));
-            closedLoopSimGS_1.AddSignal(processModel, SignalType.Distubance_D, 
+            closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D, 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
@@ -367,7 +367,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
             closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(70, 400));
-            closedLoopSimGS_2.AddSignal(processModel, SignalType.Distubance_D, 
+            closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D, 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
@@ -438,7 +438,7 @@ namespace TimeSeriesAnalysis._Examples
 
             sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
             sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));
-            sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(N/2, N, 0, 10));
+            sim.AddSignal(process, SignalType.Disturbance_D, TimeSeriesCreator.Step(N/2, N, 0, 10));
 
             var isOK = sim.Simulate(out var simResult);
             

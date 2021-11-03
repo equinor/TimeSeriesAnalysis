@@ -224,7 +224,7 @@ namespace TimeSeriesAnalysis._Examples
                 new List<ISimulatableModel> { pidModel, processModel  });
             processSim.ConnectModels(processModel,pidModel);
             processSim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
-            processSim.AddSignal(processModel,SignalType.Distubance_D,
+            processSim.AddSignal(processModel,SignalType.Disturbance_D,
                 TimeSeriesCreator.Step(N/4,N,0,1));
             processSim.AddSignal(pidModel,SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(50,N));
@@ -235,7 +235,7 @@ namespace TimeSeriesAnalysis._Examples
 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                simData.GetValues(processModel.GetID(),SignalType.Distubance_D),
+                simData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
                 simData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
                 simData.GetValues(pidModel.GetID(),SignalType.PID_U)
                 },
