@@ -48,9 +48,9 @@ namespace TimeSeriesAnalysis.Test
             var values2 = TimeSeriesCreator.Constant(2,100);
             var values3 = TimeSeriesCreator.Constant(1.5,100);
 
-            var times1 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,0,0,0), 3600, 24);
-            var times2 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,12,0,0), 3600, 24);
-            var times3 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,6,0,0), 3600, 24);
+            var times1 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,0,0,0), 3600, 100);
+            var times2 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,12,0,0), 3600, 100);
+            var times3 = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1,6,0,0), 3600, 100);
 
             var list = new List<(double[], DateTime[])>()
             {
@@ -61,11 +61,6 @@ namespace TimeSeriesAnalysis.Test
 
             string plotURL = Plot.FromList(list,
                 new List<string> { "y1=input1", "y1=input2", "y1=input3" }, "unit test" , "Test_PlotsTimes");
-
-
-
-
-
         }
 
 
