@@ -13,3 +13,4 @@ _site/articles/toc.html
 Output-Build.txt
 www/plotly/data/
 zips/
+venv/
