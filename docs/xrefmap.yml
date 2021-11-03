@@ -483,19 +483,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels
   nameWithType: ConnectionParser.DetermineCalculationOrderOfModels
-- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels(System.String)
-  name: GetDownstreamModels(String)
-  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModels_System_String_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels(System.String)
-  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels(System.String)
-  nameWithType: ConnectionParser.GetDownstreamModels(String)
-- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels*
-  name: GetDownstreamModels
-  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModels_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs(System.String)
+  name: GetDownstreamModelIDs(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModelIDs_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs(System.String)
+  nameWithType: ConnectionParser.GetDownstreamModelIDs(String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs*
+  name: GetDownstreamModelIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModelIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModels
-  nameWithType: ConnectionParser.GetDownstreamModels
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs
+  nameWithType: ConnectionParser.GetDownstreamModelIDs
 - uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetModelsWithNoUpstreamConnections
   name: GetModelsWithNoUpstreamConnections()
   href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetModelsWithNoUpstreamConnections

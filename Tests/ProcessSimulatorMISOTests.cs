@@ -30,7 +30,8 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         DefaultProcessModel processModel3;
         PIDModelParameters pidParameters1;
         PIDModel pidModel1;
-
+        Select minSelect1;
+        Select maxSelect1;
         [SetUp]
         public void SetUp()
         {
@@ -71,6 +72,10 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 Ti_s = 20
             };
             pidModel1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
+
+            minSelect1 = new Select(SelectType.MIN,"MINSELECT");
+            maxSelect1 = new Select(SelectType.MAX, "MAXSELECT");
+
         }
 
 
@@ -97,6 +102,51 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 new List<string> { "y1=y_sim1", "y3=u1","y3=u2" },
                 timeBase_s, "UnitTest_SingleMISO");*/
         }
+
+        [Test]
+        public void MinSelect_RunsAndConverges()
+        {
+            var processSim = new ProcessSimulator(timeBase_s,
+                new List<ISimulatableModel> { processModel1, processModel2, minSelect1 });
+            processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.FIRST);
+            processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.SECOND);
+            processSim.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.FIRST);
+            processSim.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.SECOND);
+
+            processSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
+            processSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
+
+            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            SISOTests.CommonAsserts(simData);
+            double[] simY = simData.GetValues(minSelect1.GetID(), SignalType.SelectorOut);
+
+            Assert.IsTrue(Math.Abs(simY[0] - (6.5)) < 0.01);
+            Assert.IsTrue(Math.Abs(simY.Last() - (6.5)) < 0.01);
+        }
+        [Test]
+        public void MaxSelect_RunsAndConverges()
+        {
+            var processSim = new ProcessSimulator(timeBase_s,
+                new List<ISimulatableModel> { processModel1, processModel2, maxSelect1 });
+            processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.FIRST);
+            processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.SECOND);
+            processSim.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.FIRST);
+            processSim.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.SECOND);
+
+            processSim.ConnectModels(processModel1, maxSelect1, (int)INDEX.FIRST);
+            processSim.ConnectModels(processModel2, maxSelect1, (int)INDEX.SECOND);
+
+            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            SISOTests.CommonAsserts(simData);
+            double[] simY = simData.GetValues(maxSelect1.GetID(), SignalType.SelectorOut);
+
+            Assert.IsTrue(Math.Abs(simY[0] - (6.7)) < 0.01);
+            Assert.IsTrue(Math.Abs(simY.Last() - (6.7)) < 0.01);
+        }
+
+
 
 
         public void Single_RunsAndConverges()

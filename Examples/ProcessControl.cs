@@ -438,7 +438,7 @@ namespace TimeSeriesAnalysis._Examples
 
             sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
             sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));
-            sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(N/2, N, 0, 1));
+            sim.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(N/2, N, 0, 10));
 
             var isOK = sim.Simulate(out var simResult);
             
@@ -450,7 +450,7 @@ namespace TimeSeriesAnalysis._Examples
                 simResult.GetValues(pid2.GetID(),SignalType.PID_U),
                 simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),
                 },
-            new List<string> { "y1=y1", "y1=y_set", "y3=u_pid1", "y3=u_pid2","y3=u_select" }, timeBase_s, "MinSelectEx");
+            new List<string> { "y1=y1", "y1=y1_set", "y3=u_pid1", "y3=u_pid2","y3=u_select" }, timeBase_s, "MinSelectEx");
             #endregion
 
             Assert.IsTrue(isOK);

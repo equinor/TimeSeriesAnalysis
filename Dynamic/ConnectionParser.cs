@@ -19,11 +19,20 @@ namespace TimeSeriesAnalysis.Dynamic
 
         List<(string, string)> connections;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ConnectionParser()
         {
             connections = new List<(string, string)>();
             modelDict = new Dictionary<string, ISimulatableModel>();
         }
+
+
+
+
+
+
 
         /// <summary>
         /// Adds a list of all the model IDs that make up a process simulation
@@ -32,11 +41,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public void AddAllModelObjects( Dictionary<string, ISimulatableModel> allModels)
         {
             this.modelDict = allModels;
-        }
-
-        private string[] GetAllModelIDs()
-        {
-            return this.modelDict.Keys.ToArray();
         }
 
 
@@ -50,96 +54,7 @@ namespace TimeSeriesAnalysis.Dynamic
             connections.Add((upstreamID,downstreamID));
         }
 
-        /// <summary>
-        /// Get all the models which are connected to a given model one level directly downstream of it
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public List<string> GetDownstreamModels(string modelID)
-        {
-            var downstreamModels = new List<string>();
-            foreach ((string, string) connection in connections)
-            {
-                if (connection.Item1 == modelID)
-                {
-                    downstreamModels.Add(connection.Item2);
-                }
-            }
-            return downstreamModels.ToList();
-        }
 
-        /// <summary>
-        /// Get all the models which are connected to a given model one level directly upstream of it
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public List<string> GetUpstreamModels(string modelID)
-        {
-            var upstreamModels = new List<string>();
-            foreach ((string, string) connection in connections)
-            {
-                if (connection.Item2 == modelID)
-                {
-                    upstreamModels.Add(connection.Item1);
-                }
-            }
-            return upstreamModels.ToList();
-        }
-
-        /// <summary>
-        /// Query if the model has an upstream PID-model.
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public bool HasUpstreamPID(string modelID)
-        {
-            var upstreamModelIDs =GetUpstreamModels(modelID);
-
-            foreach (string upstreamID in upstreamModelIDs)
-            {
-                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Get the ID of the PID-controller that is upstream a given modelID
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public string GetUpstreamPIDId(string modelID)
-        {
-            var upstreamModelIDs = GetUpstreamModels(modelID);
-
-            foreach (string upstreamID in upstreamModelIDs)
-            {
-                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
-                {
-                    return upstreamID;
-                }
-            }
-            return null;
-        }
-
-
-
-        /// <summary>
-        /// Gets all the models that do not have any models upstream of them.
-        /// (models are then either signal generators or get their input from external signals)
-        /// </summary>
-        /// <returns></returns>
-        public List<string> GetModelsWithNoUpstreamConnections()
-        {
-            var modelsIDsToReturn = new List<string>(GetAllModelIDs());
-            foreach ((string, string) connection in connections)
-            {
-                modelsIDsToReturn.Remove(connection.Item2);
-            }
-            return modelsIDsToReturn.ToList();
-        }
 
         /// <summary>
         /// Determine the order in which the models must be solved
@@ -170,7 +85,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     forwardModelIDs.Remove(forwardModelId);
 
                     // get the models downstream of forwardModelId, and see of any of them can be calculated
-                    List<string> downstreamModelIDs = GetDownstreamModels(forwardModelId);
+                    List<string> downstreamModelIDs = GetDownstreamModelIDs(forwardModelId);
                     foreach (string downstreamModelID in downstreamModelIDs)
                     {
                         List<string> upstreamModelIDs = GetUpstreamModels(downstreamModelID);
@@ -271,7 +186,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     int whileLoopSafetyCounterMax = 20;
                     // try to follow the entire pid loop, adding models as you go
                     HashSet<string> modelsIDLeftToParse = new HashSet<string>();
-                    foreach (string ID in GetDownstreamModels(pidModelID))
+                    foreach (string ID in GetDownstreamModelIDs(pidModelID))
                     {
                         modelsIDLeftToParse.Add(ID);
                     }
@@ -288,7 +203,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         currentModelID = modelsIDLeftToParse.ElementAt(0);
                         modelsIDLeftToParse.Remove(currentModelID);
                         // get all downstream items from current
-                        foreach (string ID in GetDownstreamModels(currentModelID))
+                        foreach (string ID in GetDownstreamModelIDs(currentModelID))
                         {
                             if (ID == pidModelID)
                             {
@@ -353,10 +268,110 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="givenModelIDs"></param>
         /// <returns>return true if model can be calculated if the givenModelIds are given, otherwise false</returns>
         private bool DoesModelDependOnlyOnGivenModels(string modelId, List<string> givenModelIDs)
-        { 
+        {
             List<string> upstreamModelIds = GetUpstreamModels(modelId);
             // return DoesArrayContainAll(upstreamModelIds, givenModelIDs);
-            return DoesArrayContainAll(givenModelIDs,upstreamModelIds);
+            return DoesArrayContainAll(givenModelIDs, upstreamModelIds);
+        }
+
+        /// <summary>
+        /// Get all the models which are connected to a given model one level directly downstream of it
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public List<string> GetDownstreamModelIDs(string modelID)
+        {
+            var downstreamModels = new List<string>();
+            foreach ((string, string) connection in connections)
+            {
+                if (connection.Item1 == modelID)
+                {
+                    downstreamModels.Add(connection.Item2);
+                }
+            }
+            return downstreamModels.ToList();
+        }
+
+
+
+        /// <summary>
+        /// Get all the models which are connected to a given model one level directly upstream of it
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public List<string> GetUpstreamModels(string modelID)
+        {
+            var upstreamModels = new List<string>();
+            foreach ((string, string) connection in connections)
+            {
+                if (connection.Item2 == modelID)
+                {
+                    upstreamModels.Add(connection.Item1);
+                }
+            }
+            return upstreamModels.ToList();
+        }
+
+
+        private string[] GetAllModelIDs()
+        {
+            return this.modelDict.Keys.ToArray();
+        }
+
+
+        /// <summary>
+        /// Query if the model has an upstream PID-model.
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public bool HasUpstreamPID(string modelID)
+        {
+            var upstreamModelIDs = GetUpstreamModels(modelID);
+
+            foreach (string upstreamID in upstreamModelIDs)
+            {
+                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Get the ID of the PID-controller that is upstream a given modelID
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public string GetUpstreamPIDId(string modelID)
+        {
+            var upstreamModelIDs = GetUpstreamModels(modelID);
+
+            foreach (string upstreamID in upstreamModelIDs)
+            {
+                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
+                {
+                    return upstreamID;
+                }
+            }
+            return null;
+        }
+
+
+
+        /// <summary>
+        /// Gets all the models that do not have any models upstream of them.
+        /// (models are then either signal generators or get their input from external signals)
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetModelsWithNoUpstreamConnections()
+        {
+            var modelsIDsToReturn = new List<string>(GetAllModelIDs());
+            foreach ((string, string) connection in connections)
+            {
+                modelsIDsToReturn.Remove(connection.Item2);
+            }
+            return modelsIDsToReturn.ToList();
         }
 
     }

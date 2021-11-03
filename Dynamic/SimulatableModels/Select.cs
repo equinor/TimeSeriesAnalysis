@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // default: min
          //   else if (type == SelectType.MAX)
-            return (new Vec(badDataID)).Max(inputsU);
+            return (new Vec(badDataID)).Min(inputsU);
         }
 
         public  void WarmStart(double[] inputs, double output)

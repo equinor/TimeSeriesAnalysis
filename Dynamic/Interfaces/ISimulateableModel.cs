@@ -32,8 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Calculates the value u0 of u that at steady-state will give the output value y0.
-        /// This method is used when starting a method at steady-state
-        /// In its current form,this approach only makes sense for systems of one input. 
+        /// This method is used when starting a method at steady-state.
         /// </summary>
         /// <param name="y0">value of y for which to find matching u0</param>
         /// <param name="inputIdx">index of input(only applicable if multiple inputs)</param>

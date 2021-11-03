@@ -59,15 +59,7 @@ namespace TimeSeriesAnalysis.Dynamic
             connections.AddAllModelObjects(modelDict);
         }
 
-        private bool DoesSimulationIncludeSelect()
-        {
-            foreach (ISimulatableModel model in modelDict.Values)
-            {
-                if (model.GetProcessModelType() == ProcessModelType.Select)
-                    return true;
-            }
-            return false;
-        }
+
 
         /// <summary>
         /// Both connects and adds data to signal that is to be inputted into a specific sub-model, 
@@ -313,7 +305,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
                     if (!isOk)
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Unable to add data point for  \"" + model.GetOutputID() + "\", indicating an error in initalizing. ");
+                        Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Unable to add data point for  \"" 
+                            + model.GetOutputID() + "\", indicating an error in initalizing. ");
                         return false;
                     }
                 }

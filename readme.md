@@ -21,17 +21,25 @@ and try copying in that code and getting it to run to get the hang of things
 
 ### Calling this library from Python
 
-The library is easily callable from ``Python``, through the use of [Python.Net](http://pythonnet.github.io/),
-see help article [Gettings started:Python](https://equinor.github.io/TimeSeriesAnalysis/articles/python.html).
+The library can be conveniently used from ``Python``
+- grab the zipped binaries from a [release](https://github.com/equinor/TimeSeriesAnalysis/releases) and unzip 
+- set up [Python.Net](http://pythonnet.github.io/),
+- start calling the [API-methods](https://equinor.github.io/TimeSeriesAnalysis/api/TimeSeriesAnalysis.html) 
+(see help article [Getting started:Python](https://equinor.github.io/TimeSeriesAnalysis/articles/python.html).)
 
 ### Calling this library from MatLab
 
-The library is easily callable from Matlab, see article [Gettings started:Matlab](https://equinor.github.io/TimeSeriesAnalysis/articles/matlab.html).
+The library be conveniently used from ``Matlab``
+- grab the zipped binaries from a [release](https://github.com/equinor/TimeSeriesAnalysis/releases) and unzip 
+- load the assembly with `` NET.addAssembly()``
+- start calling the [API](https://equinor.github.io/TimeSeriesAnalysis/api/TimeSeriesAnalysis.html) 
+(see article [Getting started:Matlab](https://equinor.github.io/TimeSeriesAnalysis/articles/matlab.html).)
 
 ### Calling this library from your .NET project
 
 - create a project in Visual Studio, and 
 - import the "TimeSeriesAnalysis" library from NuGet
+- start calling the [API](https://equinor.github.io/TimeSeriesAnalysis/api/TimeSeriesAnalysis.html) 
 
 ### Working with the code of this repository
 
