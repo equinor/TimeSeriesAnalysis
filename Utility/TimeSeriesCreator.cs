@@ -38,7 +38,7 @@ namespace TimeSeriesAnalysis.Utility
             for (int i = 0; i < N; i++)
             {
                 times.Add(curTime);
-                curTime.AddSeconds(dT_s);
+                curTime = curTime.AddSeconds(dT_s);
             }
             return times.ToArray();
         }
