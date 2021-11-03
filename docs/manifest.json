@@ -378,7 +378,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.SignalType.html",
-          "hash": "jOW7FceCvzVJ7AsYP1JZ/zxOZIy1oIcyLvEKZl4Rqvo="
+          "hash": "xsSoyd687qtfXo/9PFTFV5yNYbXQbebZ8EbjtmfwDEk="
         }
       },
       "is_incremental": false,
@@ -770,11 +770,35 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/ex_filtering_python.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ex_filtering_python.html",
+          "hash": "Zq/aNLzb1yxSk/sHsifmXXi9ZSNfv+LK+kubrT/2UC8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/ex_hello_world.md",
       "output": {
         ".html": {
           "relative_path": "articles/ex_hello_world.html",
           "hash": "sdnVoeUH1a4I8PwstOreH6ZHbFKQOH6ulyJG8JXjKT0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/ex_hello_world_python.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ex_hello_world_python.html",
+          "hash": "RALt9gPCIDlGExZtWkbadTv6GqCOcXsQVYxasX2161Y="
         }
       },
       "is_incremental": false,
@@ -794,6 +818,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/ex_linreg_python.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ex_linreg_python.html",
+          "hash": "hSPtv+fEkP3GLQSvYKUb7CXjVswiimP+cEi/+Rrb/Nc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/ex_pid.md",
       "output": {
         ".html": {
@@ -806,11 +842,35 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/ex_pid_python.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ex_pid_python.html",
+          "hash": "/kRHA9w/8BZo4gachhiLsCr9hSSJINzv6VkUHs1g/tQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/ex_processsim.md",
       "output": {
         ".html": {
           "relative_path": "articles/ex_processsim.html",
-          "hash": "Mpu8fL5wRmtC5byjEarzaqxZdo4+ncyjKTFHHw0PkJc="
+          "hash": "OhGYSfOuTPTIvpVfSN3TA4hMMPQJX8QeywbIwaZd6j0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/ex_processsim_python.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ex_processsim_python.html",
+          "hash": "Ughz3DVq2B8zt8+KwKXa+TqPqPtxfa1CWV4doXxDEAU="
         }
       },
       "is_incremental": false,
@@ -823,6 +883,18 @@
         ".html": {
           "relative_path": "articles/ex_sysid.html",
           "hash": "bWZzIUeSLp0DJURUF+D8osrEy66/uaQePm/gEKnzUxA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/ex_sysid_python.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ex_sysid_python.html",
+          "hash": "ggaNEwHHmBp3fyUGVcbxxS1xonocEHMTrP2E3UIn5Wk="
         }
       },
       "is_incremental": false,
@@ -1330,7 +1402,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_cascade.html",
-          "hash": "dAinAJLMeBnXw4h0uczUndqnCwsKNkHvkT0yl3J1NSM="
+          "hash": "0svAE/LvGTlrnockBW4yZjqrZlT+0vaM3ORCtT+njtw="
         }
       },
       "is_incremental": false,
@@ -1354,7 +1426,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_gainscheduling.html",
-          "hash": "Y4XL04LzTWmJ8B7nJ/bVRmr20yH5z+hqMhQaxXnnwuM="
+          "hash": "P8mJ3tAdP5EKapt9olGsNiJ1ZHMdiGuIXye2Lqm1JvY="
         }
       },
       "is_incremental": false,
@@ -1366,7 +1438,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_select.html",
-          "hash": "Q4PU1ijcBsMCOgRVvlKdFQGv5al/VLwcUXt1KN3Rs5I="
+          "hash": "LazBMgZszvrpmfypsaqvv6wexLehqEL37SsB5wbS/0U="
         }
       },
       "is_incremental": false,
@@ -1474,7 +1546,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "n8Bl7xK7bpabxTI6O4AUquYS0cssk1N0BZVgc+CB7GE="
+          "hash": "yjnkdlo8U9tUsFSXXp+nYFKgYRF6gY9Gfk5lNpzJE1k="
         }
       },
       "is_incremental": false,
@@ -1547,8 +1619,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 37,
-          "skipped_file_count": 37
+          "total_file_count": 43,
+          "skipped_file_count": 42
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

@@ -143,7 +143,7 @@ closedLoopSim1.ConnectModels(pidModel1,processModel);
 closedLoopSim1.ConnectModels(processModel, pidModel1);
 closedLoopSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset,
     TimeSeriesCreator.Constant(20,400));
-closedLoopSim1.AddSignal(processModel,SignalType.Distubance_D, TimeSeriesCreator.Step(100,400,0,10));
+closedLoopSim1.AddSignal(processModel,SignalType.Disturbance_D, TimeSeriesCreator.Step(100,400,0,10));
 var isOk =closedLoopSim1.Simulate(out var closedLoopData1);
 
 //  the system rejecting a disturbance at y=70 with pidModel2
@@ -159,7 +159,7 @@ closedLoopSim2.ConnectModels(pidModel2, processModel);
 closedLoopSim2.ConnectModels(processModel, pidModel2);
 closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset,
     TimeSeriesCreator.Constant(70, 400));
-closedLoopSim2.AddSignal(processModel, SignalType.Distubance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
+closedLoopSim2.AddSignal(processModel, SignalType.Disturbance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
 var isOk2 = closedLoopSim2.Simulate(out var closedLoopData2);
 
 Plot.FromList(new List&lt;double[]&gt;
@@ -213,7 +213,7 @@ cases is created.</p>
  closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
  closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
        TimeSeriesCreator.Constant(20, 400));
- closedLoopSimGS_1.AddSignal(processModel, SignalType.Distubance_D, 
+ closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D, 
      TimeSeriesCreator.Step(100, 400, 0, 10));
  // Gain-scheduling variable:
  closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
@@ -225,7 +225,7 @@ var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
  closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
  closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
      TimeSeriesCreator.Constant(70, 400));
- closedLoopSimGS_2.AddSignal(processModel, SignalType.Distubance_D, 
+ closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D, 
      TimeSeriesCreator.Step(100, 400, 0, 10));
  // Gain-scheduling variable:
  closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);

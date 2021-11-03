@@ -5,11 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum SignalType
-   | TimeSeriesAnalysis reference documentation </title>
+    <title>Example 1 : A simple &quot;hello world&quot; | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum SignalType
-   | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Example 1 : A simple &quot;hello world&quot; | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -78,73 +76,43 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.SignalType">
-  
-  
-  <h1 id="TimeSeriesAnalysis_Dynamic_SignalType" data-uid="TimeSeriesAnalysis.Dynamic.SignalType" class="text-break">Enum SignalType
-  </h1>
-  <div class="markdown level0 summary"><p>Enum of types of signals that ProcessSimulator must differentiate between</p>
-</div>
-  <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
-  <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_SignalType_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum SignalType</code></pre>
-  </div>
-  <h3 id="fields">Fields
-  </h3>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    <thead>
-    <tbody>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_Disturbance_D">Disturbance_D</td>
-        <td><p>The disturbance on the output of a &quot;Process&quot;</p>
-</td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_External_U">External_U</td>
-        <td><p>An input to a model that is not from a simulated PID-controller</p>
-</td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_NonPIDInternal_U">NonPIDInternal_U</td>
-        <td><p>An input to a model that is an output of another process-model</p>
-</td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_Output_Y_sim">Output_Y_sim</td>
-        <td><p>The simulated output of a &quot;Process&quot;</p>
-</td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_PID_U">PID_U</td>
-        <td><p>The output/manipulated variable of a PID-controller</p>
-</td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_SelectorOut">SelectorOut</td>
-        <td><p>The output of a select block</p>
-</td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_Setpoint_Yset">Setpoint_Yset</td>
-        <td><p>Setpoint of a PID-controller</p>
-</td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_SignalType_Unset">Unset</td>
-        <td><p>Unset, should not occur</p>
-</td>
-      </tr>
-    </tbody>
-  </thead></thead></table>
-</article>
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="example-1--a-simple-hello-world">Example 1 : A simple &quot;hello world&quot;</h1>
+
+<pre><code name="Examples">import sys
+
+import clr
+import matplotlib.pyplot as plt
+
+assembly_path = r&quot;C:\Appl\TimeSeriesAnalysisBuild&quot;
+
+sys.path.append(assembly_path)
+
+clr.AddReference(&quot;TimeSeriesAnalysis&quot;)
+clr.AddReference(&quot;System.Collections&quot;)
+clr.AddReference(&quot;System&quot;)
+
+
+from TimeSeriesAnalysis.Dynamic import LowPass
+from TimeSeriesAnalysis.Utility import TimeSeriesCreator
+
+timeBase_s = 1
+filterTc_s = 10.0
+
+input = TimeSeriesCreator.Step(11, 60, 0, 1)
+
+lp = LowPass(timeBase_s)
+output = lp.Filter(input, filterTc_s)
+
+
+plt.plot(list(input), label=&quot;input&quot;)
+plt.plot(list(output), label=&quot;output&quot;)
+plt.grid()
+plt.legend(loc=&quot;right&quot;)
+plt.title(&quot;Example 1: Hello World&quot;)
+
+plt.show()
+</code></pre></article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

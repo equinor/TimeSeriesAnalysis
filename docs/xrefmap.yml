@@ -3140,12 +3140,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.SignalType
   fullName: TimeSeriesAnalysis.Dynamic.SignalType
   nameWithType: SignalType
-- uid: TimeSeriesAnalysis.Dynamic.SignalType.Distubance_D
-  name: Distubance_D
-  href: api/TimeSeriesAnalysis.Dynamic.SignalType.html#TimeSeriesAnalysis_Dynamic_SignalType_Distubance_D
-  commentId: F:TimeSeriesAnalysis.Dynamic.SignalType.Distubance_D
-  fullName: TimeSeriesAnalysis.Dynamic.SignalType.Distubance_D
-  nameWithType: SignalType.Distubance_D
+- uid: TimeSeriesAnalysis.Dynamic.SignalType.Disturbance_D
+  name: Disturbance_D
+  href: api/TimeSeriesAnalysis.Dynamic.SignalType.html#TimeSeriesAnalysis_Dynamic_SignalType_Disturbance_D
+  commentId: F:TimeSeriesAnalysis.Dynamic.SignalType.Disturbance_D
+  fullName: TimeSeriesAnalysis.Dynamic.SignalType.Disturbance_D
+  nameWithType: SignalType.Disturbance_D
 - uid: TimeSeriesAnalysis.Dynamic.SignalType.External_U
   name: External_U
   href: api/TimeSeriesAnalysis.Dynamic.SignalType.html#TimeSeriesAnalysis_Dynamic_SignalType_External_U

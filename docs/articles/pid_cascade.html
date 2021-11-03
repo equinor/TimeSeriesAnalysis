@@ -140,8 +140,8 @@ the simulation in <code>D2</code>, and the aim is for the cascade controllers to
    sim.ConnectModels(pid2, pid1,(int)PIDModelInputsIdx.Y_setpoint);
 
    sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
-   sim.AddSignal(process1,SignalType.Distubance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
-   sim.AddSignal(process2,SignalType.Distubance_D,TimeSeriesCreator.Step(300, N, 0, 1));
+   sim.AddSignal(process1,SignalType.Disturbance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+   sim.AddSignal(process2,SignalType.Disturbance_D,TimeSeriesCreator.Step(300, N, 0, 1));
 
    var isOK = sim.Simulate(out var simResult);
 
