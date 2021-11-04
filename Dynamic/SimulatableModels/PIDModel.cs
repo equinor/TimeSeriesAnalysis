@@ -81,6 +81,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="y0"></param>
         /// <param name="inputIdx"></param>
+        /// <param name="givenInputValues"></param>
         /// <returns></returns>
         public double? GetSteadyStateInput(double y0, int inputIdx=0, double[] givenInputValues = null)
         {
@@ -174,12 +175,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-
             // TODO: set to three if pid-controller has tracking!
             // if (pidParameters.)
-
-
-
 
             return nInputs;// TODO:generalize
         }
@@ -203,10 +200,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return null;
         }
-
-        /////////////////////////////////
-        //
-
+          
         /// <summary>
         /// Set controller in auto
         /// </summary>
@@ -214,7 +208,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             pid.SetAutoMode();
         }
-
 
         /// <summary>
         /// Set controller in auto

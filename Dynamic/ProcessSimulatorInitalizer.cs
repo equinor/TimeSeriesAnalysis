@@ -400,6 +400,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     processInputsList.Add(simSignalValueDict[inputID]);
                     continue;
                 }
+                else
+                {
+                    processInputsList.Add(Double.NaN);
+                }
                 // input not found, it must be "free" 
                 freeInputIdxs.Add(idx);
                 idx++;
@@ -449,7 +453,7 @@ namespace TimeSeriesAnalysis.Dynamic
             simSignalValueDict[modelDict[activePID_ID].GetOutputID()] = 
                 selectInputs.ElementAt(indOfActivePID.First());
             uninitalizedPID_IDs.Remove(activePID_ID);
-            // set initial value for inactive PID
+            // set initial u0 for inactive PIDs
             foreach (string pidID in uninitalizedPID_IDs)
             {
                 var pidModel = modelDict[pidID];
@@ -467,8 +471,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:PID input vector too short, no tracking?");
                     return false;
                 }
+                pidModel.WarmStart(pidInputsU, y0);
                 double u0 = pidModel.Iterate(pidInputsU.ToArray());
-                simSignalValueDict[pidModel.GetOutputID()] = u0;
+                simSignalValueDict[pidModel.GetOutputID()] = u0 + 0.5;
             }
             uninitalizedPID_IDs = new List<string>();//Todo:generalize
 

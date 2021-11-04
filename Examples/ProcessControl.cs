@@ -24,6 +24,11 @@ namespace TimeSeriesAnalysis._Examples
 
         [TestCase, Explicit]
 
+        public void CascadeControl_Ex()
+        {
+            CascadeControl_Ex();
+        }
+
         public TimeSeriesDataSet CascadeControl()
         {
             int N = 600;
@@ -104,6 +109,11 @@ namespace TimeSeriesAnalysis._Examples
 
 
         [TestCase, Explicit]
+        public void FeedForward_Part1_Ex()
+        {
+            FeedForward_Part1();
+        }
+
         public TimeSeriesDataSet FeedForward_Part1()
         {
             #region Feedforward_Part1
@@ -169,9 +179,14 @@ namespace TimeSeriesAnalysis._Examples
 
 
         [TestCase, Explicit]
-        public TimeSeriesDataSet FeedForward_Part2()
+        public void FeedForward_Part2_Ex()
         {
-            #region Feedforward_Part2
+            FeedForward_Part2();
+        }
+
+        public TimeSeriesDataSet FeedForward_Part2()
+        { 
+        #region Feedforward_Part2
 
             var processParameters = new DefaultProcessModelParameters
             {
@@ -245,12 +260,16 @@ namespace TimeSeriesAnalysis._Examples
 
 
         [TestCase, Explicit]
-        public TimeSeriesDataSet GainScheduling()
+        public void  GainScheduling_Ex()
         {
+            GainScheduling();
+        }
+        public TimeSeriesDataSet GainScheduling()
+        { 
             //step responses on the open-loop system
-            #region GainScheduling_Part1
-         
-            var modelParameters = new DefaultProcessModelParameters
+        #region GainScheduling_Part1
+
+        var modelParameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 0,
@@ -395,9 +414,14 @@ namespace TimeSeriesAnalysis._Examples
             Assert.IsTrue(isOk4);
             return closedLoopDataGS_2;
         }
-    
-        [TestCase,Explicit]
-     
+
+        [TestCase, Explicit]
+
+        public void MinSelect_Ex()
+        {
+            var ret = MinSelect();
+        }
+
         public TimeSeriesDataSet MinSelect()
         {
             int N = 600;
@@ -407,21 +431,25 @@ namespace TimeSeriesAnalysis._Examples
             var processParameters = new DefaultProcessModelParameters
             {
                 WasAbleToIdentify = true,
-                TimeConstant_s = 30,
+                TimeConstant_s = 10,
                 ProcessGains = new double[] { 1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 5,
-                Bias = 50
+                Bias = 50,
+                Y_min =0,
+                Y_max =100
             };
             var pidParameters1 = new PIDModelParameters()
             {
                 Kp = 0.5, //low-gain
-                Ti_s = 30//slower
+                Ti_s = 250 // slow control (use buffer capacity, use less valve action)
             };
+            // 
+           // var pidParameters2 = pidParameters1;//
             var pidParameters2 = new PIDModelParameters()
             {
-                Kp = 2,//low-gain
-                Ti_s = 15 //faster
+                Kp = 2,//high-gain
+                Ti_s = 15 // faster control(avoid carryover, aggressivley use valve when needed)
             };
             var process
                 = new DefaultProcessModel(processParameters, timeBase_s, "Process");
@@ -443,19 +471,25 @@ namespace TimeSeriesAnalysis._Examples
 
             sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
             sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));
-            sim.AddSignal(process, SignalType.Disturbance_D, TimeSeriesCreator.Step(N/2, N, 0, 10));
+            sim.AddSignal(process, SignalType.Disturbance_D,
+                new Vec().Add(TimeSeriesCreator.Sinus(5,50,timeBase_s,N),
+                TimeSeriesCreator.TwoSteps(N*2/8,N*3/8,N,0,80,0))
+                );
 
             var isOK = sim.Simulate(out var simResult);
             
             Plot.FromList(new List<double[]>
                 {
                 simResult.GetValues(process.GetID(),SignalType.Output_Y_sim),
+                Vec<double>.Fill(85,N),
+                simResult.GetValues(pid1.GetID(),SignalType.Setpoint_Yset),
                 simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
                 simResult.GetValues(pid1.GetID(),SignalType.PID_U),
                 simResult.GetValues(pid2.GetID(),SignalType.PID_U),
                 simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),
                 },
-            new List<string> { "y1=y1", "y1=y1_set", "y3=u_pid1", "y3=u_pid2","y3=u_select" }, timeBase_s, "MinSelectEx");
+            new List<string> { "y1=y1","y1=yHH", "y1=y1_set", "y1=y2_set",
+                "y3=u_pid1", "y3=u_pid2","y3=u_select" }, timeBase_s, "MinSelectEx");
             #endregion
 
             Assert.IsTrue(isOK);

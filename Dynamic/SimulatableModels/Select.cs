@@ -26,7 +26,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Max-select
         /// </summary>
-        MAX =2
+        MAX =2,
+        /// <summary>
+        /// Range: Forces signal to stay above a given minimum and below a given maximum
+        /// </summary>
+        RANGE=3
+
     }
 
     /// <summary>
@@ -40,6 +45,8 @@ namespace TimeSeriesAnalysis.Dynamic
     public class Select : ModelBaseClass, ISimulatableModel 
     {
         private SelectType type;
+        private double threshold1;
+        private double threshold2;
 
         /// <summary>
         /// Constructor
@@ -53,6 +60,18 @@ namespace TimeSeriesAnalysis.Dynamic
             SetID(ID);
         }
 
+        /// <summary>
+        /// Constructor with thresholds for range
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ID"></param>
+        /// <param name="threshold1"></param>
+        /// <param name="threshold2"></param>
+        public Select(SelectType type, string ID, double threshold1, double threshold2)
+        {
+            this.threshold1 = threshold1;
+            this.threshold2 = threshold2;
+        }
 
         /// <summary>
         /// Iterate simulation
@@ -66,6 +85,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return (new Vec(badDataID)).Max(inputsU);
             }
+            else
             // default: min
          //   else if (type == SelectType.MAX)
             return (new Vec(badDataID)).Min(inputsU);

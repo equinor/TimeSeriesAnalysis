@@ -66,7 +66,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double u_prev, e_prev_unscaled, e_prev_prev_unscaled;
         private bool isInAuto;
 
-        private double uTrackingOffset = 0;// zero: no split range, above zero: min select, below zero: max select -determines how much above or below the tracking signal this controller should place its output.Also determined is tracking is against min-s
+        private double uTrackingOffset = 1;// zero: no tracking range, above zero: min select, below zero: max select -determines how much above or below the tracking signal this controller should place its output.Also determined is tracking is against min-s
         private double uTrackingCutoff;//used for tracking, how much above the active controller that the tracking controllers shoudl be
 
         private PIDStatus controllerStatus;
@@ -272,7 +272,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Set the offset that is to be added or subtracte to a split range controller that is inactive or tracking.
-        /// If this value is above zero, then the controller is MIN SELECT, if this value is negative then the controller is assumed MAX SELECT
+        /// If this value is above zero, then the controller is MIN SELECT, 
+        /// if this value is negative then the controller is assumed MAX SELECT
+        /// if this vlaue is zero, then trakcking will not work properly as controller will be unable 
+        /// to determine if its output was selected by looking at the tracking signal.
         /// </summary>
         public void SetTrackingOffset(double uTrackingOffset, double uTrackingCutoff =0.5)
         {
@@ -566,6 +569,10 @@ namespace TimeSeriesAnalysis.Dynamic
             return uTrackingOffset;
         }
 
+        /// <summary>
+        /// Get the tracking cutoff parameter
+        /// </summary>
+        /// <returns></returns>
         public double GetTrackingCutoff()
         {
             return uTrackingCutoff;

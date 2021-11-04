@@ -92,40 +92,40 @@ in <code>Ti</code>.</p>
 <p>Firstly, the system is defined and the two simulation runs are done, one run at a low value of input, where the
 gain is <em>high</em>, and a second at a high value of the input, where the gain is <em>low</em>.</p>
 <pre><code class="lang-csharp" name="Example">
-   var modelParameters = new DefaultProcessModelParameters
-   {
-       WasAbleToIdentify = true,
-       TimeConstant_s = 0,
-       ProcessGains = new double[] { 1.1 },
-       Curvatures = new double[] { -0.7 },
-       U0 = new double[] { 50 },
-       UNorm = new double[] { 50 },
-       TimeDelay_s = 0,
-       Bias = 50
-   };
-   var processModel
-       = new DefaultProcessModel(modelParameters, timeBase_s, &quot;Process1&quot;);
-   
-   var openLoopSim1 = new ProcessSimulator(timeBase_s,
-       new List&lt;ISimulatableModel&gt; { processModel });
-   openLoopSim1.AddSignal(processModel, SignalType.External_U,
-       TimeSeriesCreator.Step(50, 200, 80, 90));
-   openLoopSim1.Simulate(out var openLoopData1);
+var modelParameters = new DefaultProcessModelParameters
+    {
+        WasAbleToIdentify = true,
+        TimeConstant_s = 0,
+        ProcessGains = new double[] { 1.1 },
+        Curvatures = new double[] { -0.7 },
+        U0 = new double[] { 50 },
+        UNorm = new double[] { 50 },
+        TimeDelay_s = 0,
+        Bias = 50
+    };
+    var processModel
+        = new DefaultProcessModel(modelParameters, timeBase_s, &quot;Process1&quot;);
+    
+    var openLoopSim1 = new ProcessSimulator(timeBase_s,
+        new List&lt;ISimulatableModel&gt; { processModel });
+    openLoopSim1.AddSignal(processModel, SignalType.External_U,
+        TimeSeriesCreator.Step(50, 200, 80, 90));
+    openLoopSim1.Simulate(out var openLoopData1);
 
-   var openLoopSim2 = new ProcessSimulator(timeBase_s,
-       new List&lt;ISimulatableModel&gt; { processModel });
-   openLoopSim2.AddSignal(processModel, SignalType.External_U,
-       TimeSeriesCreator.Step(50, 200, 20, 30));
-   var isOk1 = openLoopSim2.Simulate(out var openLoopData2);
+    var openLoopSim2 = new ProcessSimulator(timeBase_s,
+        new List&lt;ISimulatableModel&gt; { processModel });
+    openLoopSim2.AddSignal(processModel, SignalType.External_U,
+        TimeSeriesCreator.Step(50, 200, 20, 30));
+    var isOk1 = openLoopSim2.Simulate(out var openLoopData2);
 
-   Plot.FromList(new List&lt;double[]&gt;
-       {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-        openLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-        openLoopData1.GetValues(processModel.GetID(),SignalType.External_U),
-        openLoopData2.GetValues(processModel.GetID(),SignalType.External_U)
-        },
-       new List&lt;string&gt; {&quot;y1=y1(run1)&quot;,&quot;y1=y2(run2)&quot;,&quot;y3=u(run1)&quot;,&quot;y3=u(run2)&quot;} 
-       ,timeBase_s,&quot;GainSchedulingEx&quot;);
+    Plot.FromList(new List&lt;double[]&gt;
+        {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+         openLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+         openLoopData1.GetValues(processModel.GetID(),SignalType.External_U),
+         openLoopData2.GetValues(processModel.GetID(),SignalType.External_U)
+         },
+        new List&lt;string&gt; {&quot;y1=y1(run1)&quot;,&quot;y1=y2(run2)&quot;,&quot;y3=u(run1)&quot;,&quot;y3=u(run2)&quot;} 
+        ,timeBase_s,&quot;GainSchedulingEx&quot;);
 </code></pre>
 <p>The resulting plot is shown below:</p>
 <p><img src="images/ex_gainscheduling_part1.png" alt="Example 5 result"></p>

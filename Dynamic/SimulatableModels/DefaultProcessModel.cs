@@ -50,6 +50,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool isFirstIteration;
         private double[] lastGoodValuesOfInputs;
 
+        // todo:Remove/refactor these
         public SubProcessDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
@@ -281,27 +282,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
 
-        /// <summary>
-        /// Initalize the process model with a sampling time
-        /// </summary>
-        /// <param name="timeBase_s">the timebase in seconds, the length of time between calls to Iterate(data sampling time interval)</param>
-        public void InitSim(double timeBase_s, DefaultProcessModelParameters modelParameters)
-        {
-            this.modelParameters = modelParameters;
-            this.lastGoodValuesOfInputs =Vec<double>.Fill(Double.NaN,GetLengthOfInputVector());
-            this.timeBase_s = timeBase_s;
-            this.lowPass = new LowPass(timeBase_s);
-            this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
-            this.isFirstIteration = true;
 
-            this.SetInputIDs(new string[GetLengthOfInputVector()]);
-
-        }
-
-        public void WarmStart(double[] inputs, double output)
-        { 
-
-        }
 
         private double CalculateStaticState(double[] inputs, double badValueIndicator=-9999)
         {
@@ -328,6 +309,11 @@ namespace TimeSeriesAnalysis.Dynamic
             return x_static;
         }
 
+        /// <summary>
+        /// Get the steady state output y for a given input
+        /// </summary>
+        /// <param name="u0"></param>
+        /// <returns></returns>
         public double? GetSteadyStateOutput(double[] u0)
         {
             double? ret = CalculateStaticState(u0);
@@ -341,6 +327,16 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return ret;
         }
+
+        /// <summary>
+        /// Get the type of output signal
+        /// </summary>
+        /// <returns></returns>
+        override public SignalType GetOutputSignalType()
+        {
+            return SignalType.Output_Y_sim;
+        }
+
 
         /// <summary>
         /// Iterates the process model state one time step, based on the inputs given
@@ -375,6 +371,22 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 y += inputs.Last();
             }
+            if (!Double.IsNaN(modelParameters.Y_max))
+            {
+                if (y > modelParameters.Y_max)
+                {
+                    y = modelParameters.Y_max;
+                }
+            }
+            if (!Double.IsNaN(modelParameters.Y_min))
+            {
+                if (y < modelParameters.Y_min)
+                {
+                    y = modelParameters.Y_min;
+                }
+            }
+
+
             return y; 
          }
 
@@ -387,9 +399,22 @@ namespace TimeSeriesAnalysis.Dynamic
            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
         }
 
-        override public SignalType GetOutputSignalType()
+
+        /// <summary>
+        /// Initalize the process model with a sampling time
+        /// </summary>
+        /// <param name="timeBase_s">the timebase in seconds, the length of time between calls to Iterate(data sampling time interval)</param>
+        /// <param name="modelParameters">model paramters object</param>
+        private void InitSim(double timeBase_s, DefaultProcessModelParameters modelParameters)
         {
-            return SignalType.Output_Y_sim;
+            this.modelParameters = modelParameters;
+            this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
+            this.timeBase_s = timeBase_s;
+            this.lowPass = new LowPass(timeBase_s);
+            this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
+            this.isFirstIteration = true;
+
+            this.SetInputIDs(new string[GetLengthOfInputVector()]);
         }
 
         /// <summary>
@@ -450,6 +475,15 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Warm-starting(not implemented)
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <param name="output"></param>
+        public void WarmStart(double[] inputs, double output)
+        {
+
+        }
 
 
 

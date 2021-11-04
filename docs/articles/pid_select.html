@@ -100,58 +100,68 @@ the tank completely.</li>
 <p>The output <code>Y</code> could for instance be the level in the tank, and the input <code>U</code> could be the opening of the gas outlet, one strategy to avoid liquid carryover could be to have this valve close more if a slug arrives.</p>
 <p><img src="images/ex_minselect.png" alt="pid-tracking">.</p>
 <pre><code class="lang-csharp" name="Example">
-var processParameters = new DefaultProcessModelParameters
-{
-    WasAbleToIdentify = true,
-    TimeConstant_s = 30,
-    ProcessGains = new double[] { 1 },
-    U0 = new double[] { 50 },
-    TimeDelay_s = 5,
-    Bias = 50
-};
-var pidParameters1 = new PIDModelParameters()
-{
-    Kp = 0.5, //low-gain
-    Ti_s = 30//slower
-};
-var pidParameters2 = new PIDModelParameters()
-{
-    Kp = 2,//low-gain
-    Ti_s = 15 //faster
-};
-var process
-    = new DefaultProcessModel(processParameters, timeBase_s, &quot;Process&quot;);
-var pid1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
-var pid2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
-var minSelect = new Select(SelectType.MIN,&quot;minSelect&quot;);
+ var processParameters = new DefaultProcessModelParameters
+ {
+     WasAbleToIdentify = true,
+     TimeConstant_s = 10,
+     ProcessGains = new double[] { 1 },
+     U0 = new double[] { 50 },
+     TimeDelay_s = 5,
+     Bias = 50,
+     Y_min =0,
+     Y_max =100
+ };
+ var pidParameters1 = new PIDModelParameters()
+ {
+     Kp = 0.5, //low-gain
+     Ti_s = 250 // slow control (use buffer capacity, use less valve action)
+ };
+ // 
+// var pidParameters2 = pidParameters1;//
+ var pidParameters2 = new PIDModelParameters()
+ {
+     Kp = 2,//high-gain
+     Ti_s = 15 // faster control(avoid carryover, aggressivley use valve when needed)
+ };
+ var process
+     = new DefaultProcessModel(processParameters, timeBase_s, &quot;Process&quot;);
+ var pid1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
+ var pid2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
+ var minSelect = new Select(SelectType.MIN,&quot;minSelect&quot;);
 
-var sim = new ProcessSimulator(timeBase_s,
-    new List&lt;ISimulatableModel&gt; { process, pid1, pid2,minSelect });
+ var sim = new ProcessSimulator(timeBase_s,
+     new List&lt;ISimulatableModel&gt; { process, pid1, pid2,minSelect });
 
-// tracking and min select-related
-sim.ConnectModels(process, pid1);
-sim.ConnectModels(process, pid2);
-sim.ConnectModels(pid1, minSelect,0);
-sim.ConnectModels(pid2, minSelect,1);
-string selectSignalID = sim.ConnectModels(minSelect, process);
-sim.ConnectSignal(selectSignalID,pid1,(int)PIDModelInputsIdx.Tracking);
-sim.ConnectSignal(selectSignalID,pid2,(int)PIDModelInputsIdx.Tracking);
+ // tracking and min select-related
+ sim.ConnectModels(process, pid1);
+ sim.ConnectModels(process, pid2);
+ sim.ConnectModels(pid1, minSelect,0);
+ sim.ConnectModels(pid2, minSelect,1);
+ string selectSignalID = sim.ConnectModels(minSelect, process);
+ sim.ConnectSignal(selectSignalID,pid1,(int)PIDModelInputsIdx.Tracking);
+ sim.ConnectSignal(selectSignalID,pid2,(int)PIDModelInputsIdx.Tracking);
 
-sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));
-sim.AddSignal(process, SignalType.Disturbance_D, TimeSeriesCreator.Step(N/2, N, 0, 10));
+ sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+ sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));
+ sim.AddSignal(process, SignalType.Disturbance_D,
+     new Vec().Add(TimeSeriesCreator.Sinus(5,50,timeBase_s,N),
+     TimeSeriesCreator.TwoSteps(N*2/8,N*3/8,N,0,80,0))
+     );
 
-var isOK = sim.Simulate(out var simResult);
-
-Plot.FromList(new List&lt;double[]&gt;
-    {
-    simResult.GetValues(process.GetID(),SignalType.Output_Y_sim),
-    simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
-    simResult.GetValues(pid1.GetID(),SignalType.PID_U),
-    simResult.GetValues(pid2.GetID(),SignalType.PID_U),
-    simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),
-    },
-new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y1=y1_set&quot;, &quot;y3=u_pid1&quot;, &quot;y3=u_pid2&quot;,&quot;y3=u_select&quot; }, timeBase_s, &quot;MinSelectEx&quot;);
+ var isOK = sim.Simulate(out var simResult);
+ 
+ Plot.FromList(new List&lt;double[]&gt;
+     {
+     simResult.GetValues(process.GetID(),SignalType.Output_Y_sim),
+     Vec&lt;double&gt;.Fill(85,N),
+     simResult.GetValues(pid1.GetID(),SignalType.Setpoint_Yset),
+     simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+     simResult.GetValues(pid1.GetID(),SignalType.PID_U),
+     simResult.GetValues(pid2.GetID(),SignalType.PID_U),
+     simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),
+     },
+ new List&lt;string&gt; { &quot;y1=y1&quot;,&quot;y1=yHH&quot;, &quot;y1=y1_set&quot;, &quot;y1=y2_set&quot;,
+     &quot;y3=u_pid1&quot;, &quot;y3=u_pid2&quot;,&quot;y3=u_select&quot; }, timeBase_s, &quot;MinSelectEx&quot;);
 </code></pre></article>
           </div>
           

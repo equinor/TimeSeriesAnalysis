@@ -657,19 +657,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.GetSteadyStateOutput
   nameWithType: DefaultProcessModel.GetSteadyStateOutput
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double,TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters)
-  name: InitSim(Double, DefaultProcessModelParameters)
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_InitSim_System_Double_TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double,TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters)
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim(System.Double, TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters)
-  nameWithType: DefaultProcessModel.InitSim(Double, DefaultProcessModelParameters)
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim*
-  name: InitSim
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_InitSim_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.InitSim
-  nameWithType: DefaultProcessModel.InitSim
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModel.IsModelStatic
   name: IsModelStatic()
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModel_IsModelStatic
@@ -931,6 +918,18 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.UNorm
   nameWithType: DefaultProcessModelParameters.UNorm
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.Y_max
+  name: Y_max
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_Y_max
+  commentId: F:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.Y_max
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.Y_max
+  nameWithType: DefaultProcessModelParameters.Y_max
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.Y_min
+  name: Y_min
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelParameters_Y_min
+  commentId: F:TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.Y_min
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.Y_min
+  nameWithType: DefaultProcessModelParameters.Y_min
 - uid: TimeSeriesAnalysis.Dynamic.HighPass
   name: HighPass
   href: api/TimeSeriesAnalysis.Dynamic.HighPass.html
@@ -3035,6 +3034,12 @@ references:
   commentId: M:TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String)
   fullName: TimeSeriesAnalysis.Dynamic.Select.Select(TimeSeriesAnalysis.Dynamic.SelectType, System.String)
   nameWithType: Select.Select(SelectType, String)
+- uid: TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String,System.Double,System.Double)
+  name: Select(SelectType, String, Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select__ctor_TimeSeriesAnalysis_Dynamic_SelectType_System_String_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.Select.Select(TimeSeriesAnalysis.Dynamic.SelectType, System.String, System.Double, System.Double)
+  nameWithType: Select.Select(SelectType, String, Double, Double)
 - uid: TimeSeriesAnalysis.Dynamic.Select.#ctor*
   name: Select
   href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select__ctor_
@@ -3143,6 +3148,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.SelectType.NOT_SET
   fullName: TimeSeriesAnalysis.Dynamic.SelectType.NOT_SET
   nameWithType: SelectType.NOT_SET
+- uid: TimeSeriesAnalysis.Dynamic.SelectType.RANGE
+  name: RANGE
+  href: api/TimeSeriesAnalysis.Dynamic.SelectType.html#TimeSeriesAnalysis_Dynamic_SelectType_RANGE
+  commentId: F:TimeSeriesAnalysis.Dynamic.SelectType.RANGE
+  fullName: TimeSeriesAnalysis.Dynamic.SelectType.RANGE
+  nameWithType: SelectType.RANGE
 - uid: TimeSeriesAnalysis.Dynamic.SignalType
   name: SignalType
   href: api/TimeSeriesAnalysis.Dynamic.SignalType.html
@@ -4709,6 +4720,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step
   nameWithType: TimeSeriesCreator.Step
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.TwoSteps(System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double)
+  name: TwoSteps(Int32, Int32, Int32, Double, Double, Double)
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_TwoSteps_System_Int32_System_Int32_System_Int32_System_Double_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.TwoSteps(System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.TwoSteps(System.Int32, System.Int32, System.Int32, System.Double, System.Double, System.Double)
+  nameWithType: TimeSeriesCreator.TwoSteps(Int32, Int32, Int32, Double, Double, Double)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.TwoSteps*
+  name: TwoSteps
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_TwoSteps_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.TwoSteps
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.TwoSteps
+  nameWithType: TimeSeriesCreator.TwoSteps
 - uid: TimeSeriesAnalysis.Utility.UnixTime
   name: UnixTime
   href: api/TimeSeriesAnalysis.Utility.UnixTime.html

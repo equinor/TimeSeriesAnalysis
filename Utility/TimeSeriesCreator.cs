@@ -85,5 +85,27 @@ namespace TimeSeriesAnalysis.Utility
                 Vec<double>.Fill(val2, N2));
         }
 
+        /// <summary>
+        /// Create a time-series with two step changes
+        /// </summary>
+        /// <param name="step1StartIdx">index of first step change</param>
+        /// <param name="step2StartIdx">index of second step change</param>
+        /// <param name="N"></param>
+        /// <param name="val1">value before steps</param>
+        /// <param name="val2">value of first step</param>
+        /// <param name="val3">value of second step</param>
+        /// <returns></returns>
+        static public double[] TwoSteps(int step1StartIdx, int step2StartIdx, int N, double val1, double val2, double val3)
+        {
+            if (step1StartIdx > N || step2StartIdx>N)
+                return null;
+            int N1 = step1StartIdx + 1;
+            return Vec<double>.Concat(Step(step1StartIdx, step2StartIdx-1,val1,val2),
+                Vec<double>.Fill(val3, N-step2StartIdx+1));
+        }
+
+
+
+
     }
 }
