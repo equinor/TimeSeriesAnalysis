@@ -24,7 +24,7 @@ namespace TimeSeriesAnalysis._Examples
 
         [TestCase, Explicit]
 
-        public void CascadeControl()
+        public TimeSeriesDataSet CascadeControl()
         {
             int N = 600;
             #region CascadeControl
@@ -94,15 +94,17 @@ namespace TimeSeriesAnalysis._Examples
                 simResult.GetValues(pid1.GetID(),SignalType.PID_U),
                 simResult.GetValues(pid2.GetID(),SignalType.PID_U)
                 },
-            new List<string> { "y1=y1", "y2=y2[right]","y2=y2_set[right]", "y3=u1", "y4=u2[right]" }, timeBase_s, "CascadeEx");
+                new List<string> { "y1=y1", "y2=y2[right]","y2=y2_set[right]", "y3=u1", "y4=u2[right]" },
+                timeBase_s, "CascadeEx");
             #endregion
 
             Assert.IsTrue(isOK);
+            return simResult;
         }
 
 
         [TestCase, Explicit]
-        public void FeedForward_Part1()
+        public TimeSeriesDataSet FeedForward_Part1()
         {
             #region Feedforward_Part1
             var processParameters = new DefaultProcessModelParameters
@@ -161,12 +163,13 @@ namespace TimeSeriesAnalysis._Examples
             #endregion
 
             Assert.IsTrue(isOk);
+            return dataNoFeedF;
         }
 
 
 
         [TestCase, Explicit]
-        public void FeedForward_Part2()
+        public TimeSeriesDataSet FeedForward_Part2()
         {
             #region Feedforward_Part2
 
@@ -236,12 +239,13 @@ namespace TimeSeriesAnalysis._Examples
             #endregion
 
             Assert.IsTrue(isOk);
+            return dataNoFeedF;
         }
 
 
 
         [TestCase, Explicit]
-        public void GainScheduling()
+        public TimeSeriesDataSet GainScheduling()
         {
             //step responses on the open-loop system
             #region GainScheduling_Part1
@@ -389,11 +393,12 @@ namespace TimeSeriesAnalysis._Examples
             Assert.IsTrue(isOk2);
             Assert.IsTrue(isOk3);
             Assert.IsTrue(isOk4);
+            return closedLoopDataGS_2;
         }
     
         [TestCase,Explicit]
      
-        public void MinSelect()
+        public TimeSeriesDataSet MinSelect()
         {
             int N = 600;
 
@@ -454,7 +459,7 @@ namespace TimeSeriesAnalysis._Examples
             #endregion
 
             Assert.IsTrue(isOK);
-
+            return simResult;
         }
 
 

@@ -146,18 +146,20 @@ namespace TimeSeriesAnalysis
         }
 
 
-
-
-        ///<summary>
-        /// sort the vector vec acording to the sortType.
+        /// <summary>
+        /// Sort a vector
         ///</summary>
+        /// </summary>
+        /// <param name="vec">vector to be sorted</param>
+        /// <param name="sortType">the type of sorting</param>
+        /// <returns>indices of vec in sorted order</returns>
         public static T[] Sort(T[] vec, VectorSortType sortType)
         {
             return Vec<T>.Sort(vec, sortType, out _);
         }
 
         ///<summary>
-        /// sort the vector vec acording to the sortType. The indices corresponding tot he sorted values are given out in the idx array.
+        /// Sort the vector 
         ///</summary>
         public static T[] Sort(T[] vec, VectorSortType sortType, out int[] idx)
         {

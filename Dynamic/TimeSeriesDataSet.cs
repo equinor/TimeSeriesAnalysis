@@ -15,12 +15,13 @@ namespace TimeSeriesAnalysis.Dynamic
         int timeBase_s;
         Dictionary<string, double[]> dataset;
         int? N;
-
+        bool didSimulationReturnOk = false;
 
         private void Init(int timeBase_s)
         {
             this.timeBase_s = timeBase_s;
             dataset = new Dictionary<string, double[]>();
+            didSimulationReturnOk = false;
         }
 
         /// <summary>
@@ -98,43 +99,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
 
-        /// <summary>
-        /// Get the names of all the singals
-        /// </summary>
-        /// <returns></returns>
-        public string[] GetSignalNames()
-        {
-            return dataset.Keys.ToArray();
-        }
-
-        /// <summary>
-        /// Get the values of a specific signal
-        /// </summary>
-        /// <param name="processID"></param>
-        /// <param name="signalType"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public double[] GetValues(string processID, SignalType signalType, int index=0)
-        {
-            string signalName = SignalNamer.GetSignalName(processID, signalType, index);
-            return GetValues(signalName);
-        }
-
-        /// <summary>
-        /// Get the values of a specific signal
-        /// </summary>
-        /// <param name="signalName"></param>
-        /// <returns></returns>
-        public double[] GetValues(string signalName)
-        {
-            if (dataset.ContainsKey(signalName))
-                return dataset[signalName];
-            else
-            {
-                Shared.GetParserObj().AddError("TimeSeriesData.GetValues() did not find signal:" + signalName);
-                return null;
-            }
-        }
 
         /// <summary>
         /// Add an entire time-series to the dataset
@@ -166,11 +130,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="values"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string AddTimeSeries(string processID, SignalType type, double[] values, int index=0 )
+        public string AddTimeSeries(string processID, SignalType type, double[] values, int index = 0)
         {
-            string signalName = SignalNamer.GetSignalName(processID, type,index);
-            
-            bool isOk =  AddTimeSeries(signalName,values);
+            string signalName = SignalNamer.GetSignalName(processID, type, index);
+
+            bool isOk = AddTimeSeries(signalName, values);
             if (isOk)
                 return signalName;
             else
@@ -216,6 +180,43 @@ namespace TimeSeriesAnalysis.Dynamic
         public int? GetLength()
         {
             return N;
+        }
+        /// <summary>
+        /// Get the names of all the singals
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetSignalNames()
+        {
+            return dataset.Keys.ToArray();
+        }
+
+        /// <summary>
+        /// Get the values of a specific signal
+        /// </summary>
+        /// <param name="processID"></param>
+        /// <param name="signalType"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public double[] GetValues(string processID, SignalType signalType, int index = 0)
+        {
+            string signalName = SignalNamer.GetSignalName(processID, signalType, index);
+            return GetValues(signalName);
+        }
+
+        /// <summary>
+        /// Get the values of a specific signal
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <returns></returns>
+        public double[] GetValues(string signalName)
+        {
+            if (dataset.ContainsKey(signalName))
+                return dataset[signalName];
+            else
+            {
+                Shared.GetParserObj().AddError("TimeSeriesData.GetValues() did not find signal:" + signalName);
+                return null;
+            }
         }
 
 

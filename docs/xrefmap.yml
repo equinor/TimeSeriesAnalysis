@@ -3934,6 +3934,32 @@ references:
   commentId: T:TimeSeriesAnalysis.Shared
   fullName: TimeSeriesAnalysis.Shared
   nameWithType: Shared
+- uid: TimeSeriesAnalysis.Shared.DisablePlots
+  name: DisablePlots()
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_DisablePlots
+  commentId: M:TimeSeriesAnalysis.Shared.DisablePlots
+  fullName: TimeSeriesAnalysis.Shared.DisablePlots()
+  nameWithType: Shared.DisablePlots()
+- uid: TimeSeriesAnalysis.Shared.DisablePlots*
+  name: DisablePlots
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_DisablePlots_
+  commentId: Overload:TimeSeriesAnalysis.Shared.DisablePlots
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Shared.DisablePlots
+  nameWithType: Shared.DisablePlots
+- uid: TimeSeriesAnalysis.Shared.EnablePlots
+  name: EnablePlots()
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_EnablePlots
+  commentId: M:TimeSeriesAnalysis.Shared.EnablePlots
+  fullName: TimeSeriesAnalysis.Shared.EnablePlots()
+  nameWithType: Shared.EnablePlots()
+- uid: TimeSeriesAnalysis.Shared.EnablePlots*
+  name: EnablePlots
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_EnablePlots_
+  commentId: Overload:TimeSeriesAnalysis.Shared.EnablePlots
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Shared.EnablePlots
+  nameWithType: Shared.EnablePlots
 - uid: TimeSeriesAnalysis.Shared.GetParserObj
   name: GetParserObj()
   href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_GetParserObj
@@ -3947,6 +3973,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Shared.GetParserObj
   nameWithType: Shared.GetParserObj
+- uid: TimeSeriesAnalysis.Shared.IsPlottingEnabled
+  name: IsPlottingEnabled()
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_IsPlottingEnabled
+  commentId: M:TimeSeriesAnalysis.Shared.IsPlottingEnabled
+  fullName: TimeSeriesAnalysis.Shared.IsPlottingEnabled()
+  nameWithType: Shared.IsPlottingEnabled()
+- uid: TimeSeriesAnalysis.Shared.IsPlottingEnabled*
+  name: IsPlottingEnabled
+  href: api/TimeSeriesAnalysis.Shared.html#TimeSeriesAnalysis_Shared_IsPlottingEnabled_
+  commentId: Overload:TimeSeriesAnalysis.Shared.IsPlottingEnabled
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Shared.IsPlottingEnabled
+  nameWithType: Shared.IsPlottingEnabled
 - uid: TimeSeriesAnalysis.Utility
   name: TimeSeriesAnalysis.Utility
   href: api/TimeSeriesAnalysis.Utility.html

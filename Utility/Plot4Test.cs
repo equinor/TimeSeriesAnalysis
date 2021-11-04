@@ -67,74 +67,7 @@ namespace TimeSeriesAnalysis.Utility
                 return false;
         }
 
-        /*
-        ///<summary>
-        /// Plot one vector X, where the sampling time interval is dT_s. 
-        ///</summary>
-        public void One(double[] X, int dT_s, string tagName = "Var1", string comment = null, DateTime t0 = new DateTime())
-        {
-            if (DetermineIfToPlot())
-                Plot.One(X, dT_s, tagName, comment, t0);
-        }
-        ///<summary>
-        /// Plot two vectors V1 and V2, where the sampling time interval is dT_s. 
-        ///</summary>
-        public void Two(double[] V1, double[] V2, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2",
-            bool plotAllVarsOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            if (DetermineIfToPlot())
-                Plot.Two(V1, V2, dT_s, tagNameV1, tagNameV2, plotAllVarsOnLeftYaxis, useSubplots, comment, t0);
-        }
 
-        ///<summary>
-        /// Plot three vectors V1, V2, V3 where the sampling time interval is dT_s. 
-        ///</summary>
-        public void Three(double[] V1, double[] V2, double[] V3, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3",
-            bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            if (DetermineIfToPlot())
-                Plot.Three(V1, V2, V3, dT_s, tagNameV1, tagNameV2, tagNameV3, plotAllOnLeftYaxis, useSubplots, comment, t0);
-        }
-
-        ///<summary>
-        /// Plot three vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
-        ///</summary>
-        public void Four(double[] V1, double[] V2, double[] V3, double[] V4, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4",
-             bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            if (DetermineIfToPlot())
-                Plot.Four(V1, V2, V3, V4, dT_s, tagNameV1, tagNameV2, tagNameV3, tagNameV4, plotAllOnLeftYaxis,
-                useSubplots, comment, t0);
-        }
-
-        ///<summary>
-        /// Plot five vectors V1,V2,V3,V4,V5 where the sampling time interval is dT_s. 
-        ///</summary>
-        public void Five(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
-            bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            if (DetermineIfToPlot())
-                Plot.Five(V1, V2, V3, V4, V5, dT_s, tagNameV1, tagNameV2, tagNameV3, tagNameV4, tagNameV5,
-                plotAllOnLeftYaxis, useSubplots, comment, t0);
-        }
-
-        ///<summary>
-        /// Plot six vectors V1,V2,V3,V4 where the sampling time interval is dT_s. 
-        ///</summary>
-        public void Six(double[] V1, double[] V2, double[] V3, double[] V4, double[] V5, double[] V6, int dT_s,
-            string tagNameV1 = "Var1", string tagNameV2 = "Var2", string tagNameV3 = "Var3", string tagNameV4 = "Var4", string tagNameV5 = "Var5",
-            string tagNameV6 = "Var6",
-            bool plotAllOnLeftYaxis = true, bool useSubplots = false, string comment = null, DateTime t0 = new DateTime())
-        {
-            if (DetermineIfToPlot())
-                Plot.Six(V1, V2, V3, V4, V5, V6, dT_s, tagNameV1, tagNameV2, tagNameV3, tagNameV4, tagNameV5, tagNameV6,
-                plotAllOnLeftYaxis, useSubplots, comment, t0);
-        }
-*/
         /// <summary>
         /// Wrapper for Plot.FromList that 
         /// </summary>

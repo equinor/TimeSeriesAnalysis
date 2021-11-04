@@ -83,11 +83,10 @@
   
   <h1 id="TimeSeriesAnalysis_Shared" data-uid="TimeSeriesAnalysis.Shared" class="text-break">Class Shared
   </h1>
-  <div class="markdown level0 summary"><p>To enable logging of errors and warnings throughout the codebase with a single line of code,
-this class holds a &quot;ParserFeedback&quot; object.
-<example>
-Shared.GetParserObj().AddWarning(&quot;This is a warning that can be shownn on the console, written to file, or both&quot;);
-</example></p>
+  <div class="markdown level0 summary"><p>Globals</p>
+<p>
+Should only be used for logging, setting/getting configurations.
+</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,6 +128,28 @@ Shared.GetParserObj().AddWarning(&quot;This is a warning that can be shownn on t
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_Shared_DisablePlots_" data-uid="TimeSeriesAnalysis.Shared.DisablePlots*"></a>
+  <h4 id="TimeSeriesAnalysis_Shared_DisablePlots" data-uid="TimeSeriesAnalysis.Shared.DisablePlots">DisablePlots()</h4>
+  <div class="markdown level1 summary"><p>Disables all plotting</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DisablePlots()</code></pre>
+  </div>
+  
+  
+  <a id="TimeSeriesAnalysis_Shared_EnablePlots_" data-uid="TimeSeriesAnalysis.Shared.EnablePlots*"></a>
+  <h4 id="TimeSeriesAnalysis_Shared_EnablePlots" data-uid="TimeSeriesAnalysis.Shared.EnablePlots">EnablePlots()</h4>
+  <div class="markdown level1 summary"><p>Enables all plotting</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EnablePlots()</code></pre>
+  </div>
+  
+  
   <a id="TimeSeriesAnalysis_Shared_GetParserObj_" data-uid="TimeSeriesAnalysis.Shared.GetParserObj*"></a>
   <h4 id="TimeSeriesAnalysis_Shared_GetParserObj" data-uid="TimeSeriesAnalysis.Shared.GetParserObj">GetParserObj()</h4>
   <div class="markdown level1 summary"><p>Returns the ParserFeedback object, which can be used to add loglines for info,warnings or errors</p>
@@ -149,6 +170,37 @@ Shared.GetParserObj().AddWarning(&quot;This is a warning that can be shownn on t
     <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Utility.ParserFeedback.html">ParserFeedback</a></td>
+        <td><p>the Parserfeedback object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="TimeSeriesAnalysis_Shared_GetParserObj_examples">Examples</h5>
+  <p>Example usage:</p>
+<pre><code>Shared.GetParserObj().AddWarning(&quot;This is a warning that can be shown on the console, written to file, or both&quot;);</code></pre>
+
+  
+  
+  <a id="TimeSeriesAnalysis_Shared_IsPlottingEnabled_" data-uid="TimeSeriesAnalysis.Shared.IsPlottingEnabled*"></a>
+  <h4 id="TimeSeriesAnalysis_Shared_IsPlottingEnabled" data-uid="TimeSeriesAnalysis.Shared.IsPlottingEnabled">IsPlottingEnabled()</h4>
+  <div class="markdown level1 summary"><p>Queries if plotting is enabled or not</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsPlottingEnabled()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>

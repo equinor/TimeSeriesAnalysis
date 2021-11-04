@@ -9,8 +9,79 @@ using TimeSeriesAnalysis.Utility;
 
 using NUnit.Framework;
 
+using TimeSeriesAnalysis._Examples;
+
+
 namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
 {
+    /// <summary>
+    /// Tests that run the Processcontrol examples but with plotting disabled.
+    /// <para>
+    /// This way we both have examples that are free of an unit testing logic, but a
+    /// also ensure that we have automatic verification that the example cases remain in working order,
+    /// without having to duplicate the example code in separate unit tests.
+    /// </para>
+    /// </summary>
+    [TestFixture]
+    class ProcessControlTests
+    {
+        [Test]
+        public void  CascadeControl()
+        {
+            Shared.DisablePlots();
+
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.CascadeControl();
+
+            Shared.EnablePlots();
+        }
+
+        [Test]
+        public void FeedForwardControl_Part1()
+        {
+            Shared.DisablePlots();
+
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.FeedForward_Part1();
+
+            Shared.EnablePlots();
+        }
+
+
+        [Test]
+        public void FeedForwardControl_Part2()
+        {
+            Shared.DisablePlots();
+
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.FeedForward_Part2();
+
+            Shared.EnablePlots();
+        }
+
+        [Test]
+        public void GainScheduling()
+        {
+            Shared.DisablePlots();
+
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.GainScheduling();
+
+            Shared.EnablePlots();
+        }
+        [Test]
+        public void MinSelect()
+        {
+            Shared.DisablePlots();
+
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.MinSelect();
+
+            Shared.EnablePlots();
+        }
+    }
+
+
 
 
     /// <summary>

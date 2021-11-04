@@ -34,6 +34,21 @@ namespace TimeSeriesAnalysis.Utility
         const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
 
+        private static bool ShouldPlottingBeDone()
+        {
+            if (!Shared.IsPlottingEnabled())
+                return false;
+            var isPlotEnabled = ConfigurationManager.AppSettings.GetValues("PlotsAreEnabled");
+            if (isPlotEnabled != null)
+            {
+                var str = isPlotEnabled[0].ToLower().Trim();
+                if (str == "false" || str == "0")
+                    return false;
+            }
+            return true;
+        }
+
+
 
         /// <summary>
         /// Plot data from a list of value-date tuples (each time-series can have unique time-vector with unique sampling)
@@ -52,13 +67,10 @@ namespace TimeSeriesAnalysis.Utility
             if (plotNames == null)
                 return "";
 
-            var isPlotEnabled = ConfigurationManager.AppSettings.GetValues("PlotsAreEnabled");
-            if (isPlotEnabled != null)
-            {
-                var str = isPlotEnabled[0].ToLower().Trim();
-                if (str == "false" || str == "0")
-                    return "";
-            }
+            if(!ShouldPlottingBeDone())
+                return "";
+
+
             var plotlyURLinternal = plotlyURL;
             var plotlyULRAppConfig = ConfigurationManager.AppSettings.GetValues("PlotlyURL");
             if (plotlyULRAppConfig != null)
@@ -133,13 +145,8 @@ namespace TimeSeriesAnalysis.Utility
             if (dataList.ElementAt(0).Count() == 0)
                 return "";
 
-            var isPlotEnabled = ConfigurationManager.AppSettings.GetValues("PlotsAreEnabled");
-            if (isPlotEnabled != null)
-            {
-                var str = isPlotEnabled[0].ToLower().Trim();
-                if (str == "false" || str == "0")
-                    return "";
-            }
+            if (!ShouldPlottingBeDone())
+                return "";
 
             var plotlyURLinternal = plotlyURL;
             var plotlyULRAppConfig = ConfigurationManager.AppSettings.GetValues("PlotlyURL");
@@ -213,6 +220,9 @@ namespace TimeSeriesAnalysis.Utility
             if (plotNames.Count() == 0)
                 return "";
             if (dataList.ElementAt(0).Count()==0)
+                return "";
+
+            if (!ShouldPlottingBeDone())
                 return "";
 
             var time = InitTimeList(t0, dT_s, dataList.ElementAt(0).Count());
