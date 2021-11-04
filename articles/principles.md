@@ -33,7 +33,7 @@ This quote displays the trade-off of the three different and sometimes opposing 
 This library intends to focus on methods that give deliver a good balance of *all three goals*. 
 Conversely this means that models that are either
 - not *good enough* 
-- not *relivable enough*, or
+- not *reliable enough*, or
 - *cannot be developed with a reasonable amount of work* 
 will not be considered.
 

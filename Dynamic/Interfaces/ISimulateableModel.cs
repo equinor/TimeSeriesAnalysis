@@ -9,7 +9,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
     /// <summary>
     /// Generic interface that any process model needs to implement if it is to be 
-    /// simulated by <seealso cref="ProcessSimulator"/>.
+    /// simulated by <seealso cref="PlantSimulator"/>.
     /// </summary>
     public interface ISimulatableModel
     {

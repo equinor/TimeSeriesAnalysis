@@ -25,10 +25,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// <seealso cref="DefaultProcessModel"/>
     /// <seealso cref="PIDModel"/>
-    /// <seealso cref="ProcessSimulatorInitalizer"/>
+    /// <seealso cref="PlantSimulatorInitalizer"/>
     /// <seealso cref="Select"/>
     /// </summary>
-    public class ProcessSimulator
+    public class PlantSimulator
     {
         int timeBase_s;
         Dictionary<string, ISimulatableModel> modelDict;
@@ -41,7 +41,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="timeBase_s"></param>
         /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
-        public ProcessSimulator(int timeBase_s, List<ISimulatableModel>
+        public PlantSimulator(int timeBase_s, List<ISimulatableModel>
             processModelList)
         {
             externalInputSignals = new TimeSeriesDataSet(timeBase_s);
@@ -61,7 +61,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (modelDict.ContainsKey(modelID))
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulator failed to initalize, modelID" + modelID + "is not unique");
+                    Shared.GetParserObj().AddError("PlantSimulator failed to initalize, modelID" + modelID + "is not unique");
                 }
                 else
                 {
@@ -87,7 +87,7 @@ namespace TimeSeriesAnalysis.Dynamic
             string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
             if (signalID == null)
             {
-                Shared.GetParserObj().AddError("ProcessSimulator.AddSignal was unable to add signal.");
+                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");
                 return null;
             }
             if (type == SignalType.Disturbance_D && modelType == ProcessModelType.SubProcess)
@@ -127,7 +127,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                Shared.GetParserObj().AddError("ProcessSimulator.AddSignal was unable to add signal.");
+                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");
                 return null;
             }
         }
@@ -214,7 +214,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     var isOk = downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
                     if (!isOk)
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulator.ConnectModels() error connecting:" + outputId);
+                        Shared.GetParserObj().AddError("PlantSimulator.ConnectModels() error connecting:" + outputId);
                         return null;
                     }
                 }
@@ -263,7 +263,7 @@ namespace TimeSeriesAnalysis.Dynamic
             int? N = externalInputSignals.GetLength();
             if (!N.HasValue)
             {
-                Shared.GetParserObj().AddError("ProcessSimulator could not run, no external signal provided.");
+                Shared.GetParserObj().AddError("PlantSimulator could not run, no external signal provided.");
                 simData = null;
                 return simData.SetSimStatus(false);
             }
@@ -272,11 +272,11 @@ namespace TimeSeriesAnalysis.Dynamic
             simData = new TimeSeriesDataSet(timeBase_s,externalInputSignals);
 
             // initalize the new time-series to be created in simData.
-            var init = new ProcessSimulatorInitalizer(this);
+            var init = new PlantSimulatorInitalizer(this);
             var didInit = init.ToSteadyState(ref simData);
             if (!didInit)
             {
-                Shared.GetParserObj().AddError("ProcessSimulator failed to initalize.");
+                Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
                 return simData.SetSimStatus(false);
             }
             int timeIdx = 0;
@@ -286,7 +286,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 string[] inputIDs = model.GetBothKindsOfInputIDs();
                 if (inputIDs == null)
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \""+ model.GetID() +
+                    Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \""+ model.GetID() +
                         "\" has null inputIDs.");
                     return simData.SetSimStatus(false);
                 }
@@ -295,7 +295,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 string outputID = model.GetOutputID(); 
                 if (outputID==null)
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \"" + model.GetID() +
+                    Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
                         "\" has null outputID.");
                     return simData.SetSimStatus(false);
                 }
@@ -321,7 +321,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     double[] inputVals = simData.GetData(inputIDs, timeIdx- inputDataLookBackIdx);
                     if (inputVals == null)
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \"" + model.GetID() +
+                        Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
                             "\" error retreiving input values.");
                         return simData.SetSimStatus(false);
                     }
@@ -329,7 +329,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
                     if (!isOk)
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Unable to add data point for  \"" 
+                        Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \"" 
                             + model.GetOutputID() + "\", indicating an error in initalizing. ");
                         return simData.SetSimStatus(false);
                     }

@@ -124,7 +124,7 @@ the simulation in <code>D2</code>, and the aim is for the cascade controllers to
    var pid1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
    var pid2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
 
-   var sim = new ProcessSimulator(timeBase_s,
+   var sim = new PlantSimulator(timeBase_s,
        new List&lt;ISimulatableModel&gt; { process1, process2, pid1, pid2 });
 
 //  pid1.SetManualOutput(50);

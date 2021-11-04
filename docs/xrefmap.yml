@@ -2708,6 +2708,176 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed
   nameWithType: PidTuning.SetReversed
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator
+  name: PlantSimulator
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PlantSimulator
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator
+  nameWithType: PlantSimulator
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name: PlantSimulator(Int32, List<ISimulatableModel>)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_System_Int32_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name.vb: PlantSimulator(Int32, List(Of ISimulatableModel))
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List<TimeSeriesAnalysis.Dynamic.ISimulatableModel>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List(Of TimeSeriesAnalysis.Dynamic.ISimulatableModel))
+  nameWithType: PlantSimulator.PlantSimulator(Int32, List<ISimulatableModel>)
+  nameWithType.vb: PlantSimulator.PlantSimulator(Int32, List(Of ISimulatableModel))
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor*
+  name: PlantSimulator
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator
+  nameWithType: PlantSimulator.PlantSimulator
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
+  name: AddSignal(ISimulatableModel, SignalType, Double[], Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_AddSignal_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_SignalType_System_Double___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
+  name.vb: AddSignal(ISimulatableModel, SignalType, Double(), Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double(), System.Int32)
+  nameWithType: PlantSimulator.AddSignal(ISimulatableModel, SignalType, Double[], Int32)
+  nameWithType.vb: PlantSimulator.AddSignal(ISimulatableModel, SignalType, Double(), Int32)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal*
+  name: AddSignal
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_AddSignal_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal
+  nameWithType: PlantSimulator.AddSignal
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Nullable{System.Int32})
+  name: ConnectModels(ISimulatableModel, ISimulatableModel, Nullable<Int32>)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectModels_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Nullable_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Nullable{System.Int32})
+  name.vb: ConnectModels(ISimulatableModel, ISimulatableModel, Nullable(Of Int32))
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Nullable<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Nullable(Of System.Int32))
+  nameWithType: PlantSimulator.ConnectModels(ISimulatableModel, ISimulatableModel, Nullable<Int32>)
+  nameWithType.vb: PlantSimulator.ConnectModels(ISimulatableModel, ISimulatableModel, Nullable(Of Int32))
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels*
+  name: ConnectModels
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels
+  nameWithType: PlantSimulator.ConnectModels
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel)
+  name: ConnectModelToOutput(ISimulatableModel, ISimulatableModel)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectModelToOutput_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_ISimulatableModel_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel)
+  nameWithType: PlantSimulator.ConnectModelToOutput(ISimulatableModel, ISimulatableModel)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModelToOutput*
+  name: ConnectModelToOutput
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectModelToOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModelToOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModelToOutput
+  nameWithType: PlantSimulator.ConnectModelToOutput
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)
+  name: ConnectSignal(String, ISimulatableModel, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectSignal_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal(System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Int32)
+  nameWithType: PlantSimulator.ConnectSignal(String, ISimulatableModel, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal*
+  name: ConnectSignal
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectSignal_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal
+  nameWithType: PlantSimulator.ConnectSignal
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections
+  name: GetConnections()
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetConnections
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections()
+  nameWithType: PlantSimulator.GetConnections()
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections*
+  name: GetConnections
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetConnections_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections
+  nameWithType: PlantSimulator.GetConnections
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
+  name: GetExternalSignals()
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetExternalSignals
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals()
+  nameWithType: PlantSimulator.GetExternalSignals()
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals*
+  name: GetExternalSignals
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetExternalSignals_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
+  nameWithType: PlantSimulator.GetExternalSignals
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels
+  name: GetModels()
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetModels
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels()
+  nameWithType: PlantSimulator.GetModels()
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels*
+  name: GetModels
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels
+  nameWithType: PlantSimulator.GetModels
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name: Simulate(out TimeSeriesDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name.vb: Simulate(ByRef TimeSeriesDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(out TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  nameWithType: PlantSimulator.Simulate(out TimeSeriesDataSet)
+  nameWithType.vb: PlantSimulator.Simulate(ByRef TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate*
+  name: Simulate
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate
+  nameWithType: PlantSimulator.Simulate
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer
+  name: PlantSimulatorInitalizer
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer
+  nameWithType: PlantSimulatorInitalizer
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.#ctor(TimeSeriesAnalysis.Dynamic.PlantSimulator)
+  name: PlantSimulatorInitalizer(PlantSimulator)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer__ctor_TimeSeriesAnalysis_Dynamic_PlantSimulator_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.#ctor(TimeSeriesAnalysis.Dynamic.PlantSimulator)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.PlantSimulatorInitalizer(TimeSeriesAnalysis.Dynamic.PlantSimulator)
+  nameWithType: PlantSimulatorInitalizer.PlantSimulatorInitalizer(PlantSimulator)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.#ctor*
+  name: PlantSimulatorInitalizer
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.PlantSimulatorInitalizer
+  nameWithType: PlantSimulatorInitalizer.PlantSimulatorInitalizer
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name: ToSteadyState(ref TimeSeriesDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyState_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name.vb: ToSteadyState(ByRef TimeSeriesDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(ref TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  nameWithType: PlantSimulatorInitalizer.ToSteadyState(ref TimeSeriesDataSet)
+  nameWithType.vb: PlantSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState*
+  name: ToSteadyState
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyState_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState
+  nameWithType: PlantSimulatorInitalizer.ToSteadyState
 - uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings
   name: ProcessIdentWarnings
   href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html
@@ -2810,176 +2980,6 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ProcessModelType.UnTyped
   fullName: TimeSeriesAnalysis.Dynamic.ProcessModelType.UnTyped
   nameWithType: ProcessModelType.UnTyped
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator
-  name: ProcessSimulator
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.ProcessSimulator
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator
-  nameWithType: ProcessSimulator
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
-  name: ProcessSimulator(Int32, List<ISimulatableModel>)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator__ctor_System_Int32_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
-  name.vb: ProcessSimulator(Int32, List(Of ISimulatableModel))
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ProcessSimulator(System.Int32, System.Collections.Generic.List<TimeSeriesAnalysis.Dynamic.ISimulatableModel>)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ProcessSimulator(System.Int32, System.Collections.Generic.List(Of TimeSeriesAnalysis.Dynamic.ISimulatableModel))
-  nameWithType: ProcessSimulator.ProcessSimulator(Int32, List<ISimulatableModel>)
-  nameWithType.vb: ProcessSimulator.ProcessSimulator(Int32, List(Of ISimulatableModel))
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor*
-  name: ProcessSimulator
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.#ctor
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ProcessSimulator
-  nameWithType: ProcessSimulator.ProcessSimulator
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
-  name: AddSignal(ISimulatableModel, SignalType, Double[], Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_AddSignal_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_SignalType_System_Double___System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
-  name.vb: AddSignal(ISimulatableModel, SignalType, Double(), Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double[], System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double(), System.Int32)
-  nameWithType: ProcessSimulator.AddSignal(ISimulatableModel, SignalType, Double[], Int32)
-  nameWithType.vb: ProcessSimulator.AddSignal(ISimulatableModel, SignalType, Double(), Int32)
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal*
-  name: AddSignal
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_AddSignal_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.AddSignal
-  nameWithType: ProcessSimulator.AddSignal
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Nullable{System.Int32})
-  name: ConnectModels(ISimulatableModel, ISimulatableModel, Nullable<Int32>)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModels_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Nullable_System_Int32__
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Nullable{System.Int32})
-  name.vb: ConnectModels(ISimulatableModel, ISimulatableModel, Nullable(Of Int32))
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Nullable<System.Int32>)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Nullable(Of System.Int32))
-  nameWithType: ProcessSimulator.ConnectModels(ISimulatableModel, ISimulatableModel, Nullable<Int32>)
-  nameWithType.vb: ProcessSimulator.ConnectModels(ISimulatableModel, ISimulatableModel, Nullable(Of Int32))
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels*
-  name: ConnectModels
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModels_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModels
-  nameWithType: ProcessSimulator.ConnectModels
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel)
-  name: ConnectModelToOutput(ISimulatableModel, ISimulatableModel)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModelToOutput_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_ISimulatableModel_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel)
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.ISimulatableModel)
-  nameWithType: ProcessSimulator.ConnectModelToOutput(ISimulatableModel, ISimulatableModel)
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput*
-  name: ConnectModelToOutput
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectModelToOutput_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectModelToOutput
-  nameWithType: ProcessSimulator.ConnectModelToOutput
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)
-  name: ConnectSignal(String, ISimulatableModel, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectSignal_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal(System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel, System.Int32)
-  nameWithType: ProcessSimulator.ConnectSignal(String, ISimulatableModel, Int32)
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal*
-  name: ConnectSignal
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_ConnectSignal_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.ConnectSignal
-  nameWithType: ProcessSimulator.ConnectSignal
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
-  name: GetConnections()
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetConnections
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections()
-  nameWithType: ProcessSimulator.GetConnections()
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections*
-  name: GetConnections
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetConnections_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections
-  nameWithType: ProcessSimulator.GetConnections
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
-  name: GetExternalSignals()
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetExternalSignals
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals()
-  nameWithType: ProcessSimulator.GetExternalSignals()
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals*
-  name: GetExternalSignals
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetExternalSignals_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals
-  nameWithType: ProcessSimulator.GetExternalSignals
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
-  name: GetModels()
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetModels
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels()
-  nameWithType: ProcessSimulator.GetModels()
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels*
-  name: GetModels
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetModels_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels
-  nameWithType: ProcessSimulator.GetModels
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name: Simulate(out TimeSeriesDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name.vb: Simulate(ByRef TimeSeriesDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(out TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  nameWithType: ProcessSimulator.Simulate(out TimeSeriesDataSet)
-  nameWithType.vb: ProcessSimulator.Simulate(ByRef TimeSeriesDataSet)
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate*
-  name: Simulate
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulator.html#TimeSeriesAnalysis_Dynamic_ProcessSimulator_Simulate_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulator.Simulate
-  nameWithType: ProcessSimulator.Simulate
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer
-  name: ProcessSimulatorInitalizer
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer
-  nameWithType: ProcessSimulatorInitalizer
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor(TimeSeriesAnalysis.Dynamic.ProcessSimulator)
-  name: ProcessSimulatorInitalizer(ProcessSimulator)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer__ctor_TimeSeriesAnalysis_Dynamic_ProcessSimulator_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor(TimeSeriesAnalysis.Dynamic.ProcessSimulator)
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ProcessSimulatorInitalizer(TimeSeriesAnalysis.Dynamic.ProcessSimulator)
-  nameWithType: ProcessSimulatorInitalizer.ProcessSimulatorInitalizer(ProcessSimulator)
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor*
-  name: ProcessSimulatorInitalizer
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.#ctor
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ProcessSimulatorInitalizer
-  nameWithType: ProcessSimulatorInitalizer.ProcessSimulatorInitalizer
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name: ToSteadyState(ref TimeSeriesDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer_ToSteadyState_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
-  commentId: M:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name.vb: ToSteadyState(ByRef TimeSeriesDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(ref TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  nameWithType: ProcessSimulatorInitalizer.ToSteadyState(ref TimeSeriesDataSet)
-  nameWithType.vb: ProcessSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesDataSet)
-- uid: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState*
-  name: ToSteadyState
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer_ToSteadyState_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.ToSteadyState
-  nameWithType: ProcessSimulatorInitalizer.ToSteadyState
 - uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
   name: ProcessTimeDelayIdentWarnings
   href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html

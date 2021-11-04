@@ -220,18 +220,18 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 20
             };
             var pidModel = new PIDModel(pidParameters, timeBase_s,"PID1");
-            var processSim = new ProcessSimulator (timeBase_s, 
+            var sim = new PlantSimulator (timeBase_s, 
                 new List<ISimulatableModel> { pidModel, processModel  });
-            processSim.ConnectModels(processModel,pidModel);
-            processSim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
-            processSim.AddSignal(processModel,SignalType.Disturbance_D,
+            sim.ConnectModels(processModel,pidModel);
+            sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
+            sim.AddSignal(processModel,SignalType.Disturbance_D,
                 TimeSeriesCreator.Step(N/4,N,0,1));
-            processSim.AddSignal(pidModel,SignalType.Setpoint_Yset,
+            sim.AddSignal(pidModel,SignalType.Setpoint_Yset,
                 TimeSeriesCreator.Constant(50,N));
-            processSim.AddSignal(processModel,SignalType.External_U,
+            sim.AddSignal(processModel,SignalType.External_U,
                 TimeSeriesCreator.Step(N/2,N,0,1),(int)INDEX.SECOND);
 
-            var isOk = processSim.Simulate(out var simData);
+            var isOk = sim.Simulate(out var simData);
 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),

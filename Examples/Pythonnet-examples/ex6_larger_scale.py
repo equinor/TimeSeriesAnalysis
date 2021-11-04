@@ -19,7 +19,7 @@ from TimeSeriesAnalysis.Dynamic import (
     ISimulatableModel,
     PIDModel,
     PIDModelParameters,
-    ProcessSimulator,
+    PlantSimulator,
     SignalType,
     TimeSeriesDataSet,
 )
@@ -52,18 +52,18 @@ sim_models.Add(pid)
 sim_models.Add(process)
 
 
-processSimulator = ProcessSimulator(timeBase_s, sim_models)
+plantSimulator = PlantSimulator(timeBase_s, sim_models)
 
-processSimulator.ConnectModels(process, pid)
-processSimulator.ConnectModels(pid, process, 0)
+plantSimulator.ConnectModels(process, pid)
+plantSimulator.ConnectModels(pid, process, 0)
 
-processSimulator.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(N/4, N, 0, 1))
-processSimulator.AddSignal(pid, SignalType.Setpoint_Yset, TimeSeriesCreator.Step(0, N, 50, 50))
-processSimulator.AddSignal(process, SignalType.External_U, TimeSeriesCreator.Step(N/2, N, 0, 1), 1)
+plantSimulator.AddSignal(process, SignalType.Distubance_D, TimeSeriesCreator.Step(N/4, N, 0, 1))
+plantSimulator.AddSignal(pid, SignalType.Setpoint_Yset, TimeSeriesCreator.Step(0, N, 50, 50))
+plantSimulator.AddSignal(process, SignalType.External_U, TimeSeriesCreator.Step(N/2, N, 0, 1), 1)
 
 
 simData = TimeSeriesDataSet(int(timeBase_s))
-isOK, simDataUpdated = processSimulator.Simulate(simData)
+isOK, simDataUpdated = plantSimulator.Simulate(simData)
 
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 fig.suptitle("Example 6: Larger-scale dynamic process simulation")

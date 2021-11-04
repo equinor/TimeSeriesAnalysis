@@ -115,7 +115,7 @@ var disturbanceModel
     = new DefaultProcessModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
 var pidModel = new PIDModel(pidParameters, timeBase_s, &quot;PID&quot;);
 
-var simNoFeedF = new ProcessSimulator(timeBase_s,
+var simNoFeedF = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
 
 simNoFeedF.ConnectModels(pidModel, processModel);
@@ -187,7 +187,7 @@ var disturbanceModel
     = new DefaultProcessModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
 var pidModel = new PIDModel(pidParameters, timeBase_s, &quot;PID&quot;);
 
-var simNoFeedF = new ProcessSimulator(timeBase_s,
+var simNoFeedF = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
 
 simNoFeedF.ConnectModels(pidModel, processModel);

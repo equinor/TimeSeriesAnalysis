@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>TimeSeriesAnalysis .NET class library | TimeSeriesAnalysis reference documentation </title>
+    <title>Plotting capabilities | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="TimeSeriesAnalysis .NET class library | TimeSeriesAnalysis reference documentation ">
+    <meta name="title" content="Plotting capabilities | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -77,38 +77,59 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="timeseriesanalysis-net-class-library">TimeSeriesAnalysis .NET class library</h1>
+<h2 id="plotting-capabilities">Plotting capabilities</h2>
 
-<h2 id="at-a-glance">At a glance</h2>
-<p><strong>TimeSeriesAnalysis is a library intended to support efficient test-driven development of
-time-series-based algorithms.
-Studying data with transients/dynamics, through dynamic model identification,
-dynamic simulation, filtering and PID-control is supported.
-The library aims to support mining of time-series data for advanced analytics.</strong></p>
-<p><em>TimeSeriesAnalysis</em>  handles typical tasks related to time-series analysis such as</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>This library is written to support test-driven development(TDD) of algorithms based on time-series,
+and to support the TDD workflow, it supports time-series plotting. This feature is extremely useful to
+visualize the results of of unit tests or acceptance tests, and this helps enormously with debugging.
+The unit tests of this repository, give an example of how you can use these plotting capabilities for your own testing.</p>
+</div>
+<p>Plotting features supported</p>
 <ul>
-<li><em>loading</em> time-series data from CSV-files,</li>
-<li><em>manipulating</em> time-series data as arrays and vectors,</li>
-<li><em>filtering</em> out values by range, detecting and removing bad values, smoothing</li>
-<li><em>fitting static models</em> to time-series data by linear regression(based on <code>Accord.NET</code>),</li>
-<li><em>fitting dynamic models</em> to time-series by custom methods that build on linear regression, and</li>
-<li><em>plotting</em> times-series (in a browser window with <code>plot.ly</code>).</li>
-<li><em>dynamic simulation</em> of systems that may include interactions with <em>PID-controllers</em> (the library includes a reference PID-controller implementation).</li>
+<li>one or two subplots(stacked vertically)</li>
+<li>one or two y-axes on either subplot</li>
+<li>support for zooming in the plot,</li>
+<li>subplots x-axes are linked when zooming</li>
+<li>ability to turn trends on/off, which will cause auto-zoom to update</li>
+<li>ability to hover over trends to inspect values</li>
+<li>currently up to six trends can be plotted on a page in total(this can be increased if there is interest)</li>
 </ul>
-<p><strong>The aim of this library is to make the process of working with time-series as easy as possible,
-and the resulting work flow should be comparable to working in <em>Matlab</em>, <em>Python</em> or <em>R</em>.</strong></p>
-<h2 id="motivation">Motivation</h2>
-<p>The aim in creating this library is to support
-a) development of data-driven dynamic <em>digital twins</em> and
-b) &quot;mining&quot; of industrial time-series data for <em>advanced analytics</em>.</p>
-<p>Advanced analytics requires automated or semi-automated analysis to generate reccomendations.</p>
-<p>Assuming that a sucess criterion for creating high-quality, dependable and adaptable software is to
-have a software whose source-code is avaialable for debugging to end-users (i.e. <strong>is open</strong>) and
-free of &quot;black-box&quot; external dependencies. This kind of software is also easier to integrate into other
-solutions, share and to deploy in different ways(on-premise, on your local computer, integrated into
-vendor software, or running in the cloud).</p>
-<p>Another success criterion is beleived to be <strong>collaboration</strong> across the industry, something creating
-this library and sharing hopefully will foster.</p>
+<p>The plotting leverages the JavaScript framework <a href="https://plotly.com/javascript/">plot.ly</a>.
+Some JavaScript extensions have been made to this toolbox to allow
+time-series to seamlessly be exported from your .NET code to the browser.</p>
+<p>Consider the unit-test <code>PlotUnitTests.SubplotPositionWorksOk()</code>:</p>
+<p>The code below is used to generate four &quot;vectors&quot;, arrays of doubles, with a step change in each.</p>
+<pre><code>public void SubplotPositionWorksOk()
+{
+   double[] input2 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 20), Vec&lt;double&gt;.Fill(2, 20));
+   double[] input1 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 10), Vec&lt;double&gt;.Fill(1, 30));
+   double[] input3 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 30), Vec&lt;double&gt;.Fill(1, 10));
+   double[] input4 = Vec&lt;double&gt;.Concat(Vec&lt;double&gt;.Fill(0, 35), Vec&lt;double&gt;.Fill(1, 5));
+
+   string plotURL = Plot.FromList(new List&lt;double[]&gt;{ input1,input2,input3,input4},
+		new List&lt;string&gt;{ &quot;y1=input1&quot;,&quot;y2=input2&quot;,&quot;y3=input3&quot;,&quot;y4=input4&quot;},1,
+		&quot;unit test&quot;,new DateTime(2020,1,1, 0,0,0), &quot;Test_SubplotPositionWorksOk&quot;);
+}
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Note how the <code>Vec.Fill()</code> an <code>Vec.Concat()</code> of <code>TimeSeriesAnalysis</code> package is used in this example to create two vectors of a given
+length and value and concatenate them in a single line of code.</p>
+</div>
+<p>The above code generates the following interactive plot in a Chrome-window(this window pops up automatically):</p>
+<p><img src="images/example_plotting.png" alt="Example plot"></p>
+<p>This plot has two <em>subplots</em>(one top, one bottom). Each subplot has both a left and a right axis:
+the top subplot has axes <code>y1</code> and <code>y2</code> and the bottom subplot has axes <code>y3</code> and <code>y4</code>.</p>
+<p>By using the top left menu, it is possible to <em>zoom</em> and <em>drag</em> the plots, and the two subplots are <em>linked</em>,
+meaning when you zoom in one of them, the x-axes of the other plot will zoom as well.
+Moving the cursor over each plot allows the values to be browsed by an interactive <code>scooter</code>.</p>
+<p>By clicking on the variable names in the <em>legend</em> on the top left, it is possible to disable plotting selected variables.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Multiple plots will cause Chrome to display them in multiple tabs. A large number of figures can be generated and sorted in this way.</p>
+</div>
 </article>
           </div>
           

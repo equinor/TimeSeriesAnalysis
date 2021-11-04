@@ -153,7 +153,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         [TestCase]
         public void MISO_Single_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1 });
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), (int)INDEX.FIRST);
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(180, N, 50, 45), (int)INDEX.SECOND);
@@ -177,7 +177,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         [Test]
         public void MinSelect_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, minSelect1 });
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.FIRST);
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.SECOND);
@@ -198,7 +198,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         [Test]
         public void MaxSelect_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, maxSelect1 });
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.FIRST);
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Constant(1, N), (int)INDEX.SECOND);
@@ -222,7 +222,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
 
         public void Single_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1 });
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), (int)INDEX.FIRST);
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(180, N, 50, 45), (int)INDEX.SECOND);
@@ -255,7 +255,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 externalUIndex = 0;
             }
 
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModel1, processModel1 });
 
             processSim.ConnectModels(processModel1, pidModel1);
@@ -281,7 +281,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
 
         public void Serial2_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2 });
 
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), (int)INDEX.FIRST);
@@ -345,7 +345,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
 
             int pidIndex = 1;
             int externalUIndex = 0;
-            var processSim = new ProcessSimulator(timeBase_s,modelList);
+            var processSim = new PlantSimulator(timeBase_s,modelList);
             processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(150, N));
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), externalUIndex);
             processSim.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
@@ -419,7 +419,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
             }
 
 
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, processModel3 });
 
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), (int)INDEX.FIRST);

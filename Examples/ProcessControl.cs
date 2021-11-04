@@ -70,7 +70,7 @@ namespace TimeSeriesAnalysis._Examples
             var pid1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
             var pid2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
 
-            var sim = new ProcessSimulator(timeBase_s,
+            var sim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { process1, process2, pid1, pid2 });
 
          //  pid1.SetManualOutput(50);
@@ -147,7 +147,7 @@ namespace TimeSeriesAnalysis._Examples
                 = new DefaultProcessModel(disturbanceParameters, timeBase_s, "Disturbance1");
             var pidModel = new PIDModel(pidParameters, timeBase_s, "PID");
 
-            var simNoFeedF = new ProcessSimulator(timeBase_s,
+            var simNoFeedF = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
 
             simNoFeedF.ConnectModels(pidModel, processModel);
@@ -227,7 +227,7 @@ namespace TimeSeriesAnalysis._Examples
                 = new DefaultProcessModel(disturbanceParameters, timeBase_s, "Disturbance1");
             var pidModel = new PIDModel(pidParameters, timeBase_s, "PID");
 
-            var simNoFeedF = new ProcessSimulator(timeBase_s,
+            var simNoFeedF = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
 
             simNoFeedF.ConnectModels(pidModel, processModel);
@@ -283,13 +283,13 @@ namespace TimeSeriesAnalysis._Examples
             var processModel
                 = new DefaultProcessModel(modelParameters, timeBase_s, "Process1");
             
-            var openLoopSim1 = new ProcessSimulator(timeBase_s,
+            var openLoopSim1 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel });
             openLoopSim1.AddSignal(processModel, SignalType.External_U,
                 TimeSeriesCreator.Step(50, 200, 80, 90));
             openLoopSim1.Simulate(out var openLoopData1);
 
-            var openLoopSim2 = new ProcessSimulator(timeBase_s,
+            var openLoopSim2 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel });
             openLoopSim2.AddSignal(processModel, SignalType.External_U,
                 TimeSeriesCreator.Step(50, 200, 20, 30));
@@ -313,7 +313,7 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 20
             };
             var pidModel1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
-            var closedLoopSim1 = new ProcessSimulator(timeBase_s,
+            var closedLoopSim1 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModel1, processModel });
             closedLoopSim1.ConnectModels(pidModel1,processModel);
             closedLoopSim1.ConnectModels(processModel, pidModel1);
@@ -329,7 +329,7 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 20
             };
             var pidModel2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
-            var closedLoopSim2 = new ProcessSimulator(timeBase_s,
+            var closedLoopSim2 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModel2, processModel });
             closedLoopSim2.ConnectModels(pidModel2, processModel);
             closedLoopSim2.ConnectModels(processModel, pidModel2);
@@ -372,7 +372,7 @@ namespace TimeSeriesAnalysis._Examples
 
             var pidModelGS = new PIDModel(pidParametersGS, timeBase_s, "PID_GS");
 
-            var closedLoopSimGS_1 = new ProcessSimulator(timeBase_s,
+            var closedLoopSimGS_1 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModelGS, processModel });
             closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
             closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
@@ -384,7 +384,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PidModelInputsIdx.GainScheduling);
            var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
-            var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
+            var closedLoopSimGS_2 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModelGS, processModel });
             closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
@@ -457,7 +457,7 @@ namespace TimeSeriesAnalysis._Examples
             var pid2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
             var minSelect = new Select(SelectType.MIN,"minSelect");
 
-            var sim = new ProcessSimulator(timeBase_s,
+            var sim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { process, pid1, pid2,minSelect });
 
             // tracking and min select-related

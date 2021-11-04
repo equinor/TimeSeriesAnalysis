@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Intializes a simulator in the first data point 
+    /// Intializes a plant simulator in the first data point 
     /// <para>
     /// Currently, only initalizing to steady-state is supported.
     /// </para>
@@ -16,15 +16,15 @@ namespace TimeSeriesAnalysis.Dynamic
     /// using mathematical programming/matrix solvers.
     /// </para>
     /// </summary>
-    public class ProcessSimulatorInitalizer
+    public class PlantSimulatorInitalizer
     {
-        private ProcessSimulator simulator;
+        private PlantSimulator simulator;
         private List<string> orderedSimulatorIDs;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="simulator">simulator object that already includes connections,models and signals to be simulated</param>
-        public ProcessSimulatorInitalizer(ProcessSimulator simulator)
+        public PlantSimulatorInitalizer(PlantSimulator simulator)
         {
             this.simulator = simulator;
             var connections = simulator.GetConnections();
@@ -83,7 +83,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // check if any uninitalized pid-controllers remain
             if (uninitalizedPID_IDs.Count > 0)
             {
-                Shared.GetParserObj().AddError("ProcessSimulatorInitalizer failed to initalize controller:" + uninitalizedPID_IDs[0]);
+                Shared.GetParserObj().AddError("PlantSimulatorInitalizer failed to initalize controller:" + uninitalizedPID_IDs[0]);
                 return false;
             }
             // last step is to actually write all the values, and create otherwise empty vector to be filled.
@@ -123,7 +123,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 string outputID = model.GetOutputID();
                 if (outputID == null)
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulatorInitalizer could not init because model \""
+                    Shared.GetParserObj().AddError("PlantSimulatorInitalizer could not init because model \""
                         + model.GetID() + "\" has no defined output.");
                     return false;
                 }
@@ -162,7 +162,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 int[] uFreeIndices = Vec<int>.Concat(uPIDIndices, uInternalIndices);
                 if (uFreeIndices.Length > 1)
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:unexpected/unsupported number of free inputs found during init.");
+                    Shared.GetParserObj().AddError("PlantSimulatorInitalizer:unexpected/unsupported number of free inputs found during init.");
                     return false;
                 }
                 else if (uFreeIndices.Length == 1)
@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:something went wrong when calculating steady-state inputs during init.");
+                        Shared.GetParserObj().AddError("PlantSimulatorInitalizer:something went wrong when calculating steady-state inputs during init.");
                         return false;
                     }
                 }
@@ -257,7 +257,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     if (inputID == null)
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: model "
+                        Shared.GetParserObj().AddError("PlantSimulatorInitalizer: model "
                             + model.GetID() + " has an unexpected null input");
                         return false;
                     }
@@ -336,7 +336,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: PID-controller has no setpoint given:"
+                        Shared.GetParserObj().AddError("PlantSimulatorInitalizer: PID-controller has no setpoint given:"
                         + model.GetID());
                         return null;
                     }
@@ -372,12 +372,12 @@ namespace TimeSeriesAnalysis.Dynamic
             // then we need code to sort PIDs by which block they connect to.
             if (downstreamModelIDs.Count() == 0 || downstreamModelIDs.Count() > 1)
             {
-                Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: PID-configuration not yet supported");
+                Shared.GetParserObj().AddError("PlantSimulatorInitalizer: PID-configuration not yet supported");
                 return false;
             }
             if (modelDict[downstreamModelIDs.First()].GetProcessModelType() != ProcessModelType.Select)
             {
-                Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: PID-configuration unrecognized(expected select block?):" +
+                Shared.GetParserObj().AddError("PlantSimulatorInitalizer: PID-configuration unrecognized(expected select block?):" +
                     downstreamModelIDs.First());
                 return false;
             }
@@ -385,7 +385,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var processModelIDs = connections.GetDownstreamModelIDs(downstreamModelIDs.First());
             if (processModelIDs.Count > 1)
             {
-                Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: Multiple process models inside select loop not supported");
+                Shared.GetParserObj().AddError("PlantSimulatorInitalizer: Multiple process models inside select loop not supported");
                 return false;
             }
             var processModelID = processModelIDs.First();
@@ -410,7 +410,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (freeInputIdxs.Count > 1)
             {
-                Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: Process has too many free inputs to initalize min-selet:"+ 
+                Shared.GetParserObj().AddError("PlantSimulatorInitalizer: Process has too many free inputs to initalize min-selet:"+ 
                     processModelID);
                 return false;
             }
@@ -427,7 +427,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 string ySetpointID = pidInputIDs[(int)PidModelInputsIdx.Y_setpoint];
                 if (!simSignalValueDict.ContainsKey(ySetpointID))
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:missing setpoint signal found while initalizing select loop:");
+                    Shared.GetParserObj().AddError("PlantSimulatorInitalizer:missing setpoint signal found while initalizing select loop:");
                     return false;
                 }
                 double ySetpointForCurrentPID0 = simSignalValueDict[ySetpointID];
@@ -468,7 +468,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:PID input vector too short, no tracking?");
+                    Shared.GetParserObj().AddError("PlantSimulatorInitalizer:PID input vector too short, no tracking?");
                     return false;
                 }
                 pidModel.WarmStart(pidInputsU, y0);

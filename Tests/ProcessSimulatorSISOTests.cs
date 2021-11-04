@@ -76,7 +76,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         [TestCase]
         public void Single_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1});
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(N / 4, N, 50, 55));
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
@@ -96,7 +96,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         [TestCase]
         public void Serial2_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2 });
 
             processSim.ConnectModels(processModel1, processModel2);
@@ -122,7 +122,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         [TestCase]
         public void Serial3_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1, processModel2, processModel3 });
 
             processSim.ConnectModels(processModel1, processModel2);
@@ -186,7 +186,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
             [TestCase]
         public void BasicPID_DisturbanceStep_RunsAndConverges()
         {
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
@@ -207,7 +207,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         public void BasicPID_SetpointStep_RunsAndConverges()
         {
             double newSetpoint = 51;
-            var processSim = new ProcessSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);

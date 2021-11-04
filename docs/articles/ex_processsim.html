@@ -82,7 +82,7 @@
 <p>The last example illustrated one very simple &quot;process&quot; consisting of a single PID-controller and a single-input/single-output process model,
 which could be simulated using <code>CoSimulateProcessAndPID</code>.</p>
 <p>Most systems of interest are more complicated, as each each model may have more than one input, and there may be several different PID-controllers and several
-subprocess-models interacting. Simulation of these kinds of systems is done using the class <code>ProessSimulator</code>.</p>
+subprocess-models interacting. Simulation of these kinds of systems is done using the class <code>PlantSimulator</code>.</p>
 <p>To keep things familiar this example extends on the previous. The subprocess-model is extended to <em>two inputs</em>, one external input signal is added in
 addition to the pid-signal input as shown below:</p>
 <p><img src="images/fig_ex6.png" alt="Example 6"></p>
@@ -91,20 +91,20 @@ gain to <code>modelParamters</code>:</p>
 <pre><code> ProcessGains = new double[] { 1,2 },
 </code></pre>
 <p>Then the process simulator class is initialized, it needs a list of all models classes that will be simulated:</p>
-<pre><code>var processSim = new ProcessSimulator (timeBase_s, 
+<pre><code>var sim = new PlantSimulator (timeBase_s, 
     new List&lt;ISimulatableModel&gt; { pidModel, processModel  });
 </code></pre>
 <p>Then the two models <code>pidModel</code> and <code>processModel</code> need to be given two connections to make the feedback loop:</p>
-<pre><code>processSim.ConnectModels(processModel,pidModel);
-processSim.ConnectModels(pidModel, processModel, (int)INDEX.FIRST);
+<pre><code>sim.ConnectModels(processModel,pidModel);
+sim.ConnectModels(pidModel, processModel, (int)INDEX.FIRST);
 </code></pre>
 <p>Notice that since <code>processModel</code> now has two inputs, we need to specify which input the <code>pidModel</code> connects to.
 If you like, you can use the enum <code>INDEX</code> to produce more readable code, or just specify the integer directly.</p>
 <p>Similarly to the previous example, a disturbance with a step of amplitude <code>1</code> is added 1/4th of the way through the dataset is added to the process model:</p>
-<pre><code>processSim.AddSignal(processModel, SignalType.Distubance_D,TimeSeriesCreator.Step(N/4,N,0,1));
+<pre><code>sim.AddSignal(processModel, SignalType.Distubance_D,TimeSeriesCreator.Step(N/4,N,0,1));
 </code></pre>
 <p>and a constant setpoint  of <code>50</code> is applied to the process model:</p>
-<pre><code>processSim.AddSignal(pidModel, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
+<pre><code>sim.AddSignal(pidModel, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
@@ -112,11 +112,11 @@ If you like, you can use the enum <code>INDEX</code> to produce more readable co
 for instance by setting the value <code>TimeSeriesCreator.Step(0,N)</code> then the simulation in this example will replicate the previous simulation in the previous example <em>exactly</em>.</p>
 </div>
 <p>Then to extend the example, add a step change from <code>0</code> to <code>1</code> in the external input:</p>
-<pre><code>processSim.AddSignal(processModel, SignalType.External_U, TimeSeriesCreator.Step(N / 2, N, 0, 1), (int)INDEX.SECOND);
+<pre><code>sim.AddSignal(processModel, SignalType.External_U, TimeSeriesCreator.Step(N / 2, N, 0, 1), (int)INDEX.SECOND);
 </code></pre>
 <p>making sure to apply this signal to the second input of the <code>processModel</code>.</p>
 <p>After all connections are made and signals added, then simulation is done using</p>
-<pre><code>var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+<pre><code>var isOk = sim.Simulate(out TimeSeriesDataSet simData);
 </code></pre>
 <p>This method outputs an object of the type <code>TimeSeriesDataSet</code> that stores all the time-series of the simulation, both the signals added above and the simulated
 values, which can be accessed through convenient getters.
@@ -148,18 +148,18 @@ after the simulation.</p>
         Ti_s = 20
     };
     var pidModel = new PIDModel(pidParameters, timeBase_s,&quot;PID1&quot;);
-    var processSim = new ProcessSimulator (timeBase_s, 
+    var sim = new PlantSimulator (timeBase_s, 
         new List&lt;ISimulatableModel&gt; { pidModel, processModel  });
-    processSim.ConnectModels(processModel,pidModel);
-    processSim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
-    processSim.AddSignal(processModel,SignalType.Disturbance_D,
+    sim.ConnectModels(processModel,pidModel);
+    sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
+    sim.AddSignal(processModel,SignalType.Disturbance_D,
         TimeSeriesCreator.Step(N/4,N,0,1));
-    processSim.AddSignal(pidModel,SignalType.Setpoint_Yset,
+    sim.AddSignal(pidModel,SignalType.Setpoint_Yset,
         TimeSeriesCreator.Constant(50,N));
-    processSim.AddSignal(processModel,SignalType.External_U,
+    sim.AddSignal(processModel,SignalType.External_U,
         TimeSeriesCreator.Step(N/2,N,0,1),(int)INDEX.SECOND);
 
-    var isOk = processSim.Simulate(out var simData);
+    var isOk = sim.Simulate(out var simData);
 
     Plot.FromList(new List&lt;double[]&gt; {
         simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),

@@ -1,7 +1,9 @@
 
 - name: Introduction
   href: index.md
-
+  items:
+        - name: Plotting capabilities
+          href: plotting.md
 - name: Getting Started
   href: getting_started.md
   items:
@@ -61,7 +63,7 @@
 - name: Dynamic simulation
   href: dynsim.md
   items:
-        - name: ProcessSimulator
+        - name: PlantSimulator
           href: processsimulator.md
 
         - name: PID control code examples

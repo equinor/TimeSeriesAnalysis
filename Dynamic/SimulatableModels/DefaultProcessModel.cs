@@ -38,7 +38,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <seealso cref="DefaultProcessModelParameters"/>
     /// <seealso cref="DefaultProcessModelIdentifier"/>
     /// <seealso cref="PIDModel"/>
-    /// <seealso cref="ProcessSimulator"/>
+    /// <seealso cref="PlantSimulator"/>
     /// </summary>
     public class DefaultProcessModel : ModelBaseClass, ISimulatableModel 
     {

@@ -106,13 +106,13 @@ var modelParameters = new DefaultProcessModelParameters
     var processModel
         = new DefaultProcessModel(modelParameters, timeBase_s, &quot;Process1&quot;);
     
-    var openLoopSim1 = new ProcessSimulator(timeBase_s,
+    var openLoopSim1 = new PlantSimulator(timeBase_s,
         new List&lt;ISimulatableModel&gt; { processModel });
     openLoopSim1.AddSignal(processModel, SignalType.External_U,
         TimeSeriesCreator.Step(50, 200, 80, 90));
     openLoopSim1.Simulate(out var openLoopData1);
 
-    var openLoopSim2 = new ProcessSimulator(timeBase_s,
+    var openLoopSim2 = new PlantSimulator(timeBase_s,
         new List&lt;ISimulatableModel&gt; { processModel });
     openLoopSim2.AddSignal(processModel, SignalType.External_U,
         TimeSeriesCreator.Step(50, 200, 20, 30));
@@ -137,7 +137,7 @@ var pidParameters1 = new PIDModelParameters()
     Ti_s = 20
 };
 var pidModel1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
-var closedLoopSim1 = new ProcessSimulator(timeBase_s,
+var closedLoopSim1 = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { pidModel1, processModel });
 closedLoopSim1.ConnectModels(pidModel1,processModel);
 closedLoopSim1.ConnectModels(processModel, pidModel1);
@@ -153,7 +153,7 @@ var pidParameters2 = new PIDModelParameters()
     Ti_s = 20
 };
 var pidModel2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
-var closedLoopSim2 = new ProcessSimulator(timeBase_s,
+var closedLoopSim2 = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { pidModel2, processModel });
 closedLoopSim2.ConnectModels(pidModel2, processModel);
 closedLoopSim2.ConnectModels(processModel, pidModel2);
@@ -207,7 +207,7 @@ cases is created.</p>
 
  var pidModelGS = new PIDModel(pidParametersGS, timeBase_s, &quot;PID_GS&quot;);
 
- var closedLoopSimGS_1 = new ProcessSimulator(timeBase_s,
+ var closedLoopSimGS_1 = new PlantSimulator(timeBase_s,
      new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
  closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
  closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
@@ -219,7 +219,7 @@ cases is created.</p>
  closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PidModelInputsIdx.GainScheduling);
 var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
- var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
+ var closedLoopSimGS_2 = new PlantSimulator(timeBase_s,
      new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
  closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
  closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);

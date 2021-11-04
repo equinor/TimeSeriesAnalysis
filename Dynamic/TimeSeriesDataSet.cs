@@ -10,7 +10,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// A class that holds time-series data for a number of tags
     /// <remark>
-    /// This is the return data class of the <seealso cref="ProcessSimulator"/>
+    /// This is the return data class of the <seealso cref="PlantSimulator"/>
     /// </remark>
     /// </summary>
     public class TimeSeriesDataSet

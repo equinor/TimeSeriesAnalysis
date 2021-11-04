@@ -129,7 +129,7 @@ the tank completely.</li>
  var pid2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
  var minSelect = new Select(SelectType.MIN,&quot;minSelect&quot;);
 
- var sim = new ProcessSimulator(timeBase_s,
+ var sim = new PlantSimulator(timeBase_s,
      new List&lt;ISimulatableModel&gt; { process, pid1, pid2,minSelect });
 
  // tracking and min select-related
