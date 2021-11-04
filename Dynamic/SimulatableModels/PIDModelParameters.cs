@@ -8,6 +8,8 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// Parameters of the PIDModel
+    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PIDcontroller"/>
     /// </summary>
     public class PIDModelParameters:ModelParametersBaseClass 
     {

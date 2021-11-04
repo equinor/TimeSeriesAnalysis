@@ -9,6 +9,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Delays a signal by a specific number of time steps, keeping an internal buffer of delayed values 
     /// between iterations.
+    /// <para>
+    /// This is a reasuble class for providing time-delay functionality to simulatable models.
+    /// </para>
+    /// <seealo cref="DefaultProcessModel"/>
     /// </summary>
     public class TimeDelay
     {

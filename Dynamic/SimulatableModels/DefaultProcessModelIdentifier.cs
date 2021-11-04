@@ -15,8 +15,23 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Identifier of the "Default" process model - a dynamic process model with time-constant, time-delay, 
     /// linear process gain and optional (nonlinear)curvature process gains.
-    /// <para>This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
-    /// parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization</para>
+    /// <para>
+    /// This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
+    /// parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization
+    /// </para>
+    /// <para>
+    /// The "default" process model is linear-in-paramters, so that it can be solved by linear regression
+    /// and identification should thus be both fast and stable. 
+    /// </para>
+    /// <para>
+    /// Time-delay is an integer parameter, and finding the time-delay alongside continous paramters
+    /// turns the identification problem into a linear mixed-integer problem. 
+    /// The time delay identification is done by splitting the time-delay estimation from continous parameter
+    /// identification, turning the solver into a sequential optimization solver. 
+    /// This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
+    /// is deferred to <c>ProcessTimeDelayIdentifier</c>
+    /// </para>
+    /// <seealso cref="ProcessTimeDelayIdentifier"/>
     /// </summary>
     public class DefaultProcessModelIdentifier 
     {
@@ -35,7 +50,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// a new y_sim is also added</param>
         /// <param name="u0">Optionally sets the local working point for the inputs
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <returns> returning the model parameters </returns>
+        /// <returns> the identified model parameters and some information about the fit</returns>
         public DefaultProcessModel Identify(ref SubProcessDataSet dataSet, double[] u0 = null)
         {
             bool doNonzeroU0 = true;// should be: true

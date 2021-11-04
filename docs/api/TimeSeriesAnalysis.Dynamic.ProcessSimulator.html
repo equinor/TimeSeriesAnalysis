@@ -83,12 +83,24 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator" class="text-break">Class ProcessSimulator
   </h1>
-  <div class="markdown level0 summary"><p>Performs simulates on a &quot;process&quot; consisting of a group of connected sub-models, that each implement ISimulatableModel</p>
+  <div class="markdown level0 summary"><p>Simulates larger &quot;plant-models&quot; that is built up connected sub-models,
+that each implement <code>ISimulatableModel</code></p>
 <p>
 To set up a simulation, first connect models, and then add external input signals.
 This class handles information about which model is connected to which, and handles callig sub-models in the
 correct order with the correct input signals.
 </p>
+<p>
+By default, the model attempts to start in steady-state, intalization handled by <code>ProcessSimulatorInitalizer</code>
+(this requires no user interaction)
+</p>
+<p>
+The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProcessModel</code> and <code>Select</code>
+</p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html">DefaultProcessModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html">ProcessSimulatorInitalizer</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -385,7 +397,8 @@ correct order with the correct input signals.
   
   <a id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetConnections_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetConnections" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetConnections">GetConnections()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get ConnenectionParser object</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -410,7 +423,8 @@ correct order with the correct input signals.
   
   <a id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetExternalSignals_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetExternalSignals" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetExternalSignals">GetExternalSignals()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get a TimeSeriesDataSet of all external signals of model</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -435,7 +449,8 @@ correct order with the correct input signals.
   
   <a id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetModels_" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ProcessSimulator_GetModels" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulator.GetModels">GetModels()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get dictionary of all models</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

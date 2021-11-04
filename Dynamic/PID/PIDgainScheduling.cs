@@ -3,16 +3,26 @@
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Class that contains special pid-controller parameters for gain-scheduling controllers
+    /// Parameters describing PID-controller parameters for gain-scheduling 
+    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PIDcontroller"/>
     /// </summary>
     public class PIDgainScheduling
     {
+        /// <summary>
+        /// Constructor(disable gain-scheduling by default)
+        /// </summary>
         public PIDgainScheduling()
         {
             GSActive_b = false;
             GSActiveTi_b = false;
         }
 
+        /// <summary>
+        /// Constructor that enables gain-scheduling filter (but gain-scheduling still disabled)
+        /// </summary>
+        /// <param name="TimeStep_s"></param>
+        /// <param name="GSVariableLP_Tc_s"></param>
         public PIDgainScheduling(double TimeStep_s, double GSVariableLP_Tc_s)
         {
             this.GSVariableLP_Tc_s = GSVariableLP_Tc_s;

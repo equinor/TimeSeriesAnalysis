@@ -8,7 +8,10 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
-    /// A  class that holds time-series data for a number of tags
+    /// A class that holds time-series data for a number of tags
+    /// <remark>
+    /// This is the return data class of the <seealso cref="ProcessSimulator"/>
+    /// </remark>
     /// </summary>
     public class TimeSeriesDataSet
     {
@@ -41,6 +44,26 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             Init(timeBase_s);
             AddSet(inputDataSet); 
+        }
+
+        /// <summary>
+        /// Set the termination status of the simualtion
+        /// </summary>
+        /// <param name="didSimulationTerminateOk"></param>
+        /// <returns>returns the same status given in</returns>
+        public bool SetSimStatus(bool didSimulationTerminateOk)
+        {
+            didSimulationReturnOk = didSimulationTerminateOk;
+            return didSimulationReturnOk;
+        }
+
+        /// <summary>
+        /// Returns the simualtion status
+        /// </summary>
+        /// <returns></returns>
+        public bool GetSimStatus()
+        {
+            return didSimulationReturnOk;
         }
 
         /// <summary>

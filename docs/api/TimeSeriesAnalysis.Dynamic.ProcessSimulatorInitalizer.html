@@ -83,7 +83,15 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_ProcessSimulatorInitalizer" data-uid="TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer" class="text-break">Class ProcessSimulatorInitalizer
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Intializes a simulator in the first data point</p>
+<p>
+Currently, only initalizing to steady-state is supported.
+</p>
+<p>
+By design choice, this class traverses the models by logic to initialize the plant model rather than
+using mathematical programming/matrix solvers.
+</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>

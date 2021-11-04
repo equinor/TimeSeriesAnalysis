@@ -8,8 +8,37 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Dynamic
 {
 
-    /// <summary>
-    /// Process model class for the "Default" process model. 
+    /// <summary> 
+    /// Simulatable "default" process model. 
+    /// <remarks>
+    /// <para>
+    /// This is a model that can be either dynamic or static, have one or multiple inputs
+    /// and can be either linear in inputs or have inputs nonlinearity described by a
+    /// polynominal. Dynamics can be either 1.order time-constant, time-delay or both.
+    /// The model also supports "additive" signals added to its output(intended for modeling disturbances.)
+    /// </para>
+    /// <para>
+    /// The model is designed to lend itesel well to identificaiton from industrial time-series
+    /// datasets, and is supported by the accompanying identificaiton method <c>DefaultProcessModelIdentifier</c>.
+    /// </para>
+    /// <para>
+    /// This model is also intended to be co-simulated with <c>PIDModel</c> by <c>ProcessSimulator</c> to study
+    /// process control feedback loops.
+    /// </para>
+    ///  <para>
+    /// It is assumed that for most unit processes in industrial process control systems can be described 
+    /// sufficiently by this model, and thus that larger plants can be modeled by connecting unit models
+    /// based on this model structure.
+    /// </para>
+    /// <para>
+    /// It would be possible to extend this model to also describe second-order dynamics along the same principles by
+    /// the intorduction of one additional paramters in future work. 
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="DefaultProcessModelParameters"/>
+    /// <seealso cref="DefaultProcessModelIdentifier"/>
+    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="ProcessSimulator"/>
     /// </summary>
     public class DefaultProcessModel : ModelBaseClass, ISimulatableModel 
     {

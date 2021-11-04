@@ -8,7 +8,8 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
-    /// Generic interface of process model (interface for ProcessSimulator to connect submodels and iterate simulation)
+    /// Generic interface that any process model needs to implement if it is to be 
+    /// simulated by <seealso cref="ProcessSimulator"/>.
     /// </summary>
     public interface ISimulatableModel
     {
@@ -20,7 +21,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>the value of the state x of the process model at the new time step(be aware that if a disturbance is defined, 
         /// they need ot be added to states to get <c>y_sim</c>) </returns>
         double Iterate(double[] inputsU, double badDataID=-9999);
-
 
         /// <summary>
         /// If possible, set the internal state of the model so that the given inputs give the given output

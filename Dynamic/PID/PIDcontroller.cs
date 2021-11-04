@@ -47,8 +47,11 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// <para>
     /// By design decision, this class should be kept relativly simple in terms of coding patterns, so that it is possible to 
-    /// hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc).
+    /// hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc). 
+    /// To simulate PID-control, use the wrapper class PIDModel, as it wraps this class and impelments the
+    /// <c>ISimulatableModel</c> interface needed to simulate with <c>ProcessSimulator</c>
     /// </para>
+    /// <seealso cref="PIDModel"/>
     /// </summary>
     public class PIDcontroller
     {

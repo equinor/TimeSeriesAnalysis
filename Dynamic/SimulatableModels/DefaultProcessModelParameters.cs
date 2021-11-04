@@ -3,7 +3,7 @@
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Parameters data class of the "Default" process model 
+    /// Parameters data class of the <seealso cref="DefaultProcessModel"/>
     /// </summary>
     public class DefaultProcessModelParameters : ModelParametersBaseClass
     {

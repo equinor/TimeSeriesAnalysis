@@ -149,7 +149,6 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Sort a vector
         ///</summary>
-        /// </summary>
         /// <param name="vec">vector to be sorted</param>
         /// <param name="sortType">the type of sorting</param>
         /// <returns>indices of vec in sorted order</returns>

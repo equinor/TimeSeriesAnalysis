@@ -359,7 +359,7 @@ namespace TimeSeriesAnalysis.Utility
                     writer.Write(sb.ToString());
                     writer.Close();
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     Shared.GetParserObj().AddError("Exception writing file:"+ fileName);
                 }

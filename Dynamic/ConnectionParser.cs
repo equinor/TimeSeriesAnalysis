@@ -9,7 +9,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Class that tracks which model is connected to which in a set of models. 
     /// <para>
-    /// This is important when traversing the models when simulating with the ProcesSimulator, as these models need to be
+    /// This is important when traversing the models when simulating with the 
+    /// <seealso cref="ProcessSimulator"/>, as these models need to be
     /// run in a specific order</para>
     /// </summary>
     public class ConnectionParser

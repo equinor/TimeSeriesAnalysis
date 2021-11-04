@@ -85,8 +85,23 @@
   </h1>
   <div class="markdown level0 summary"><p>Identifier of the &quot;Default&quot; process model - a dynamic process model with time-constant, time-delay,
 linear process gain and optional (nonlinear)curvature process gains.</p>
-<p>This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
-parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization</p>
+<p>
+This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
+parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization
+</p>
+<p>
+The &quot;default&quot; process model is linear-in-paramters, so that it can be solved by linear regression
+and identification should thus be both fast and stable. 
+</p>
+<p>
+Time-delay is an integer parameter, and finding the time-delay alongside continous paramters
+turns the identification problem into a linear mixed-integer problem. 
+The time delay identification is done by splitting the time-delay estimation from continous parameter
+identification, turning the solver into a sequential optimization solver. 
+This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
+is deferred to <code>ProcessTimeDelayIdentifier</code>
+</p>
+<span class="xref">TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentifier</span>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -187,7 +202,7 @@ around which the model is to be designed(can be set to <code>null</code>)</p>
     <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html">DefaultProcessModel</a></td>
-        <td><p>returning the model parameters</p>
+        <td><p>the identified model parameters and some information about the fit</p>
 </td>
       </tr>
     </tbody>

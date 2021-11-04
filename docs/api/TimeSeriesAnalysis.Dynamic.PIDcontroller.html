@@ -90,8 +90,11 @@ that supports
 </p>
 <p>
 By design decision, this class should be kept relativly simple in terms of coding patterns, so that it is possible to 
-hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc).
+hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc). 
+To simulate PID-control, use the wrapper class PIDModel, as it wraps this class and impelments the
+<code>ISimulatableModel</code> interface needed to simulate with <code>ProcessSimulator</code>
 </p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">

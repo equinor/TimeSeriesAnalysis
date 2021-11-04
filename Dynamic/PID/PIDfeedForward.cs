@@ -1,7 +1,9 @@
 ﻿namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Settings related to feedfoward in the pidcontroller.
+    /// Parameters describing PID-controller parameters for feed-forward
+    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PIDcontroller"/>
     /// </summary>
     public class PIDfeedForward
     {

@@ -14,6 +14,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// for calculating the filtered value at time <c>k</c> it does not use future values such as <c>k+1</c>, but 
     /// this is at the expense of introducing a time-shift/phase-shift.
     /// </para>
+    /// <seealso cref="LowPass"/>
+    /// <seealso cref="BandPass"/>
+    /// <seealso cref="MovingAvg"/>
     /// </summary>
     public class HighPass
     {

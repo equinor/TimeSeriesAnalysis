@@ -1536,19 +1536,28 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.MovingAvg.MovingAvg
   nameWithType: MovingAvg.MovingAvg
-- uid: TimeSeriesAnalysis.Dynamic.MovingAvg.Add(System.Double)
-  name: Add(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.MovingAvg.html#TimeSeriesAnalysis_Dynamic_MovingAvg_Add_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.MovingAvg.Add(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.MovingAvg.Add(System.Double)
-  nameWithType: MovingAvg.Add(Double)
-- uid: TimeSeriesAnalysis.Dynamic.MovingAvg.Add*
-  name: Add
-  href: api/TimeSeriesAnalysis.Dynamic.MovingAvg.html#TimeSeriesAnalysis_Dynamic_MovingAvg_Add_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.MovingAvg.Add
+- uid: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double)
+  name: Filter(Double)
+  href: api/TimeSeriesAnalysis.Dynamic.MovingAvg.html#TimeSeriesAnalysis_Dynamic_MovingAvg_Filter_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double)
+  nameWithType: MovingAvg.Filter(Double)
+- uid: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double[])
+  name: Filter(Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.MovingAvg.html#TimeSeriesAnalysis_Dynamic_MovingAvg_Filter_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double[])
+  name.vb: Filter(Double())
+  fullName: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double())
+  nameWithType: MovingAvg.Filter(Double[])
+  nameWithType.vb: MovingAvg.Filter(Double())
+- uid: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter*
+  name: Filter
+  href: api/TimeSeriesAnalysis.Dynamic.MovingAvg.html#TimeSeriesAnalysis_Dynamic_MovingAvg_Filter_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.MovingAvg.Filter
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.MovingAvg.Add
-  nameWithType: MovingAvg.Add
+  fullName: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter
+  nameWithType: MovingAvg.Filter
 - uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams
   name: PIDAntiSurgeParams
   href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html
@@ -3652,6 +3661,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSignalNames
   nameWithType: TimeSeriesDataSet.GetSignalNames
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus
+  name: GetSimStatus()
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSimStatus
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus()
+  nameWithType: TimeSeriesDataSet.GetSimStatus()
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus*
+  name: GetSimStatus
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSimStatus_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus
+  nameWithType: TimeSeriesDataSet.GetSimStatus
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues(System.String)
   name: GetValues(String)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_System_String_
@@ -3671,6 +3693,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues
   nameWithType: TimeSeriesDataSet.GetValues
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus(System.Boolean)
+  name: SetSimStatus(Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetSimStatus_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus(System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus(System.Boolean)
+  nameWithType: TimeSeriesDataSet.SetSimStatus(Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus*
+  name: SetSimStatus
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetSimStatus_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus
+  nameWithType: TimeSeriesDataSet.SetSimStatus
 - uid: TimeSeriesAnalysis.Matrix
   name: Matrix
   href: api/TimeSeriesAnalysis.Matrix.html

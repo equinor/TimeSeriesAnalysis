@@ -83,7 +83,27 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_MovingAvg" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg" class="text-break">Class MovingAvg
   </h1>
-  <div class="markdown level0 summary"><p>Moving-average filter of time-series</p>
+  <div class="markdown level0 summary"><p>Moving-average low-pass filter</p>
+<p>
+This filter is causal, meaning that for calculating the filtered value at time <code>k</code>
+it does not use future values such as <code>k+1</code>, this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<p>
+This is a finite-impulse-response type filter.
+</p>
+<p>
+An alterntive to this filter is <code>LowPass</code>, which is infinite-impulse-repsonse, and also 
+requires less working memory(this filter needs to hold a buffer equal to <code>bufferSize</code>, but <code>LowPass</code> only
+needs to keep its last value in memory). <code>LowPass</code> will have less phase-shift/time-shift, because it 
+places most weight on the last datapoint, whereas this filter will weight all data points in its buffer equally and
+thus responds sluggish. 
+</p>
+<p>
+The advantage of this filter is that it allows you to control precisely how many past values are weighted.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.BandPass.html">BandPass</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -127,7 +147,7 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_MovingAvg__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.#ctor*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_MovingAvg__ctor_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.#ctor(System.Int32)">MovingAvg(Int32)</h4>
-  <div class="markdown level1 summary"><p>constructor</p>
+  <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -156,14 +176,14 @@
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_MovingAvg_Add_" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.Add*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_MovingAvg_Add_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.Add(System.Double)">Add(Double)</h4>
-  <div class="markdown level1 summary"><p>Add one more value to the moving-average filter, call this method iterativly.</p>
+  <a id="TimeSeriesAnalysis_Dynamic_MovingAvg_Filter_" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.Filter*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_MovingAvg_Filter_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double)">Filter(Double)</h4>
+  <div class="markdown level1 summary"><p>Add value to the moving-average filter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Add(double val)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Filter(double signal)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,7 +197,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">val</span></td>
+        <td><span class="parametername">signal</span></td>
         <td><p>the scalar value to be added</p>
 </td>
       </tr>
@@ -194,7 +214,53 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td></td>
+        <td><p>the output of the filter, given the new value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_MovingAvg_Filter_" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.Filter*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_MovingAvg_Filter_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.MovingAvg.Filter(System.Double[])">Filter(Double[])</h4>
+  <div class="markdown level1 summary"><p>Run filter over a vector of values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] Filter(double[] signal)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">signal</span></td>
+        <td><p>vector of values to be filtered</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><p>the moving-averge filtered version of <code>values</code></p>
+</td>
       </tr>
     </tbody>
   </table>

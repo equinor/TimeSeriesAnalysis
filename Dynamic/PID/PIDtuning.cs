@@ -9,7 +9,10 @@ using TimeSeriesAnalysis;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Class that expresses the tuning of a PIDcontroller
+    /// Parameters describing PID-controller tuning (Kp,Ti,Td)
+    /// 
+    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PIDcontroller"/>
     /// </summary>
     public class PIDtuning
     {

@@ -9,12 +9,24 @@ using TimeSeriesAnalysis;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Performs simulates on a "process" consisting of a group of connected sub-models, that each implement ISimulatableModel
+    /// Simulates larger "plant-models" that is built up connected sub-models, 
+    /// that each implement <c>ISimulatableModel</c>
     /// <para>
     /// To set up a simulation, first connect models, and then add external input signals.
     /// This class handles information about which model is connected to which, and handles callig sub-models in the
     /// correct order with the correct input signals.
     /// </para>
+    /// <para>
+    /// By default, the model attempts to start in steady-state, intalization handled by <c>ProcessSimulatorInitalizer</c>
+    /// (this requires no user interaction)
+    /// </para>
+    /// <para>
+    /// The building blocks of plant models are <c>PIDModel</c>, <c>DefaultProcessModel</c> and <c>Select</c>
+    /// </para>
+    /// <seealso cref="DefaultProcessModel"/>
+    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="ProcessSimulatorInitalizer"/>
+    /// <seealso cref="Select"/>
     /// </summary>
     public class ProcessSimulator
     {
@@ -212,16 +224,28 @@ namespace TimeSeriesAnalysis.Dynamic
             return outputId;
         }
 
+        /// <summary>
+        /// Get a TimeSeriesDataSet of all external signals of model
+        /// </summary>
+        /// <returns></returns>
         public TimeSeriesDataSet GetExternalSignals()
         {
             return externalInputSignals;
         }
 
+        /// <summary>
+        /// Get ConnenectionParser object
+        /// </summary>
+        /// <returns></returns>
         public ConnectionParser GetConnections()
         {
             return connections;
         }
 
+        /// <summary>
+        /// Get dictionary of all models 
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string,ISimulatableModel> GetModels()
         {
             return modelDict;
@@ -241,7 +265,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 Shared.GetParserObj().AddError("ProcessSimulator could not run, no external signal provided.");
                 simData = null;
-                return false;
+                return simData.SetSimStatus(false);
             }
 
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
@@ -253,7 +277,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("ProcessSimulator failed to initalize.");
-                return false;
+                return simData.SetSimStatus(false);
             }
             int timeIdx = 0;
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
@@ -264,7 +288,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \""+ model.GetID() +
                         "\" has null inputIDs.");
-                    return false;
+                    return simData.SetSimStatus(false);
                 }
                 double[] inputVals = simData.GetData(inputIDs, timeIdx);
 
@@ -273,7 +297,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \"" + model.GetID() +
                         "\" has null outputID.");
-                    return false;
+                    return simData.SetSimStatus(false);
                 }
                 double[] outputVals = simData.GetData(new string[]{outputID}, timeIdx);
                 if (outputVals != null)
@@ -299,7 +323,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Model \"" + model.GetID() +
                             "\" error retreiving input values.");
-                        return false;
+                        return simData.SetSimStatus(false);
                     }
                     double outputVal = model.Iterate(inputVals);
                     bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
@@ -307,11 +331,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         Shared.GetParserObj().AddError("ProcessSimulator.Simulate() failed. Unable to add data point for  \"" 
                             + model.GetOutputID() + "\", indicating an error in initalizing. ");
-                        return false;
+                        return simData.SetSimStatus(false);
                     }
                 }
             }
-            return true;
+            return simData.SetSimStatus(true);
         }
 
    

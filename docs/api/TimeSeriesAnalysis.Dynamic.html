@@ -95,24 +95,72 @@ requires litte memory and computation. This filter is causal, meaning that
 for calculating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
 this is at the expense of introducing a time-shift/phase-shift.
 </p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.MovingAvg.html">MovingAvg</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ConnectionParser.html">ConnectionParser</a></h4>
       <section><p>Class that tracks which model is connected to which in a set of models.</p>
 <p>
-This is important when traversing the models when simulating with the ProcesSimulator, as these models need to be
+This is important when traversing the models when simulating with the 
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulator.html">ProcessSimulator</a>, as these models need to be
 run in a specific order</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html">DefaultProcessModel</a></h4>
-      <section><p>Process model class for the &quot;Default&quot; process model.</p>
+      <section><p>Simulatable &quot;default&quot; process model.
+<remarks><p>
+<p>
+This is a model that can be either dynamic or static, have one or multiple inputs
+and can be either linear in inputs or have inputs nonlinearity described by a
+polynominal. Dynamics can be either 1.order time-constant, time-delay or both.
+The model also supports &quot;additive&quot; signals added to its output(intended for modeling disturbances.)
+</p>
+<p>
+The model is designed to lend itesel well to identificaiton from industrial time-series
+datasets, and is supported by the accompanying identificaiton method <code>DefaultProcessModelIdentifier</code>.
+</p>
+<p>
+This model is also intended to be co-simulated with <code>PIDModel</code> by <code>ProcessSimulator</code> to study
+process control feedback loops.
+</p>
+<p>
+It is assumed that for most unit processes in industrial process control systems can be described 
+sufficiently by this model, and thus that larger plants can be modeled by connecting unit models
+based on this model structure.
+</p>
+<p>
+It would be possible to extend this model to also describe second-order dynamics along the same principles by
+the intorduction of one additional paramters in future work. 
+</p>
+</remarks>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html">DefaultProcessModelParameters</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html">DefaultProcessModelIdentifier</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulator.html">ProcessSimulator</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html">DefaultProcessModelIdentifier</a></h4>
       <section><p>Identifier of the &quot;Default&quot; process model - a dynamic process model with time-constant, time-delay,
 linear process gain and optional (nonlinear)curvature process gains.</p>
-<p>This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
-parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization</p>
+<p>
+This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
+parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization
+</p>
+<p>
+The &quot;default&quot; process model is linear-in-paramters, so that it can be solved by linear regression
+and identification should thus be both fast and stable. 
+</p>
+<p>
+Time-delay is an integer parameter, and finding the time-delay alongside continous paramters
+turns the identification problem into a linear mixed-integer problem. 
+The time delay identification is done by splitting the time-delay estimation from continous parameter
+identification, turning the solver into a sequential optimization solver. 
+This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
+is deferred to <code>ProcessTimeDelayIdentifier</code>
+</p>
+<span class="xref">TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentifier</span>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html">DefaultProcessModelParameters</a></h4>
-      <section><p>Parameters data class of the &quot;Default&quot; process model</p>
+      <section><p>Parameters data class of the <a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html">DefaultProcessModel</a></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.HighPass.html">HighPass</a></h4>
       <section><p>A high-pass recursive time-series filter based on <code>LowPass</code>.</p>
@@ -122,16 +170,21 @@ requires litte memory and computation. This filter is causal, meaning that
 for calculating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
 this is at the expense of introducing a time-shift/phase-shift.
 </p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.BandPass.html">BandPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.MovingAvg.html">MovingAvg</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a></h4>
-      <section><p>Numerical low-pass filtering of time-series.</p>
+      <section><p>Low-pass filtering of time-series.</p>
 <p>
 This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
 requires litte memory and computation. This filter is causal, meaning that
 for calcuating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
 this is at the expense of introducing a time-shift/phase-shift.
 </p>
-///
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.BandPass.html">BandPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.MovingAvg.html">MovingAvg</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html">ModelBaseClass</a></h4>
       <section><p>Abstract base class that contins common functionality across all models which are to implement <code>ISimulatableModel</code></p>
@@ -139,10 +192,32 @@ this is at the expense of introducing a time-shift/phase-shift.
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html">ModelParametersBaseClass</a></h4>
       <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.MovingAvg.html">MovingAvg</a></h4>
-      <section><p>Moving-average filter of time-series</p>
+      <section><p>Moving-average low-pass filter</p>
+<p>
+This filter is causal, meaning that for calculating the filtered value at time <code>k</code>
+it does not use future values such as <code>k+1</code>, this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<p>
+This is a finite-impulse-response type filter.
+</p>
+<p>
+An alterntive to this filter is <code>LowPass</code>, which is infinite-impulse-repsonse, and also 
+requires less working memory(this filter needs to hold a buffer equal to <code>bufferSize</code>, but <code>LowPass</code> only
+needs to keep its last value in memory). <code>LowPass</code> will have less phase-shift/time-shift, because it 
+places most weight on the last datapoint, whereas this filter will weight all data points in its buffer equally and
+thus responds sluggish. 
+</p>
+<p>
+The advantage of this filter is that it allows you to control precisely how many past values are weighted.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.BandPass.html">BandPass</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html">PIDAntiSurgeParams</a></h4>
-      <section><p>Class that contains special pid-controller parameters for anti-surge controllers</p>
+      <section><p>Class that contains special pid-controller parameters for anti-surge controllers
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></h4>
       <section><p>Proporitional-Integral-Derivative(PID) controller</p>
@@ -152,40 +227,99 @@ that supports
 </p>
 <p>
 By design decision, this class should be kept relativly simple in terms of coding patterns, so that it is possible to 
-hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc).
+hand-port this class to other languages (c++/c/Structured Text/Labview/Matlab etc). 
+To simulate PID-control, use the wrapper class PIDModel, as it wraps this class and impelments the
+<code>ISimulatableModel</code> interface needed to simulate with <code>ProcessSimulator</code>
 </p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDfeedForward.html">PIDfeedForward</a></h4>
-      <section><p>Settings related to feedfoward in the pidcontroller.</p>
+      <section><p>Parameters describing PID-controller parameters for feed-forward
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html">PIDgainScheduling</a></h4>
-      <section><p>Class that contains special pid-controller parameters for gain-scheduling controllers</p>
+      <section><p>Parameters describing PID-controller parameters for gain-scheduling
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a></h4>
-      <section><p>Model of PID-controller</p>
-<p>This class should acta as a wrapper for PIDcontroller class.</p>
+      <section><p>Simulatable industrial PID-controller
+<remark><p>
+<p>
+This class is as a wrapper for <a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a> class, 
+that implements <a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a>.
+</p>
+<p>
+To simulate minimum or maximum select controllers, combine this class
+with <a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a> blocks.
+</p>
+<p>
+The controller paramters belong to different aspects of the controller like, tuning, scaling,
+gain-scheduling, feedforward and anti-surge are adjusted have been collected into a number of 
+data-classes, linked below:
+</p>
+</remark>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModelParameters.html">PIDModelParameters</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html">PIDAntiSurgeParams</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDfeedForward.html">PIDfeedForward</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html">PIDgainScheduling</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDStatus.html">PIDStatus</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDscaling.html">PIDscaling</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDtuning.html">PIDtuning</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModelParameters.html">PIDModelParameters</a></h4>
-      <section><p>Parameters of the PIDModel</p>
+      <section><p>Parameters of the PIDModel
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDscaling.html">PIDscaling</a></h4>
-      <section><p>Class that describes of the pid-controller is to scale the process value y and also the range of u.</p>
+      <section><p>Parameters describing PID-controller parameters for scaling
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDtuning.html">PIDtuning</a></h4>
-      <section><p>Class that expresses the tuning of a PIDcontroller</p>
+      <section><p>Parameters describing PID-controller tuning (Kp,Ti,Td)</p>
+<p><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulator.html">ProcessSimulator</a></h4>
-      <section><p>Performs simulates on a &quot;process&quot; consisting of a group of connected sub-models, that each implement ISimulatableModel</p>
+      <section><p>Simulates larger &quot;plant-models&quot; that is built up connected sub-models,
+that each implement <code>ISimulatableModel</code></p>
 <p>
 To set up a simulation, first connect models, and then add external input signals.
 This class handles information about which model is connected to which, and handles callig sub-models in the
 correct order with the correct input signals.
 </p>
+<p>
+By default, the model attempts to start in steady-state, intalization handled by <code>ProcessSimulatorInitalizer</code>
+(this requires no user interaction)
+</p>
+<p>
+The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProcessModel</code> and <code>Select</code>
+</p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html">DefaultProcessModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html">ProcessSimulatorInitalizer</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulatorInitalizer.html">ProcessSimulatorInitalizer</a></h4>
-      <section></section>
+      <section><p>Intializes a simulator in the first data point</p>
+<p>
+Currently, only initalizing to steady-state is supported.
+</p>
+<p>
+By design choice, this class traverses the models by logic to initialize the plant model rather than
+using mathematical programming/matrix solvers.
+</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a></h4>
-      <section><p>Select block:  &quot;Min&quot; or &quot;Max&quot; select</p>
+      <section><p>Simulatable select block</p>
+<p>
+This block can function either as &quot;minimum&quot; or &quot;maximum&quot; selector.
+It can be used either for enforcing ranges in plant simulations, but also for simulating 
+&quot;min select&quot; or &quot;max selct&quot; pid-control by combining with <a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessDataSet.html">SubProcessDataSet</a></h4>
       <section><p>The data for a porition of a process, containg only one output and one or multiple inputs that influence it</p>
@@ -199,14 +333,22 @@ the specifics of how models outputs are calculated should be encapsulated in the
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeDelay.html">TimeDelay</a></h4>
       <section><p>Delays a signal by a specific number of time steps, keeping an internal buffer of delayed values
 between iterations.</p>
+<p>
+This is a reasuble class for providing time-delay functionality to simulatable models.
+</p>
+<seealo cref="T:TimeSeriesAnalysis.Dynamic.DefaultProcessModel"></seealo>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></h4>
-      <section><p>A  class that holds time-series data for a number of tags</p>
+      <section><p>A class that holds time-series data for a number of tags
+<remark>
+This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulator.html">ProcessSimulator</a>
+</remark></p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a></h4>
-      <section><p>Generic interface of process model (interface for ProcessSimulator to connect submodels and iterate simulation)</p>
+      <section><p>Generic interface that any process model needs to implement if it is to be
+simulated by <a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulator.html">ProcessSimulator</a>.</p>
 </section>
     <h3 id="enums">Enums
   </h3>

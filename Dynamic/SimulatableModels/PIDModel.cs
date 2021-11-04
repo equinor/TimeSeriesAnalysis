@@ -19,8 +19,29 @@ namespace TimeSeriesAnalysis.Dynamic
     }
 
     /// <summary>
-    /// Model of PID-controller
-    /// <para>This class should acta as a wrapper for PIDcontroller class.</para>
+    /// Simulatable industrial PID-controller
+    /// <remark>
+    /// <para>
+    /// This class is as a wrapper for <seealso cref="PIDcontroller"/> class, 
+    /// that implements <seealso cref="ISimulatableModel"/>.
+    /// </para>
+    /// <para>
+    /// To simulate minimum or maximum select controllers, combine this class
+    /// with <seealso cref="Select"/> blocks.
+    /// </para>
+    /// <para>
+    /// The controller paramters belong to different aspects of the controller like, tuning, scaling,
+    /// gain-scheduling, feedforward and anti-surge are adjusted have been collected into a number of 
+    /// data-classes, linked below:
+    /// </para>
+    /// </remark>
+    /// <seealso cref="PIDModelParameters"/>
+    /// <seealso cref="PIDAntiSurgeParams"/>
+    /// <seealso cref="PIDfeedForward"/>
+    /// <seealso cref="PIDgainScheduling"/>
+    /// <seealso cref="PIDStatus"/>
+    /// <seealso cref="PIDscaling"/>
+    /// <seealso cref="PIDtuning"/>
     /// </summary>
     public class PIDModel : ModelBaseClass,ISimulatableModel
     {
@@ -28,6 +49,12 @@ namespace TimeSeriesAnalysis.Dynamic
         PIDModelParameters pidParameters;
         PIDcontroller pid;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="pidParameters">object containing the paramters of the controller</param>
+        /// <param name="timeBase_s">sampling time, a steady time between each call to Iterate</param>
+        /// <param name="ID">Each controller shoudl be given a unique ID</param>
         public PIDModel(PIDModelParameters pidParameters, int timeBase_s, string ID="not_named")
         {
             processModelType = ProcessModelType.PID;

@@ -30,7 +30,12 @@ namespace TimeSeriesAnalysis.Dynamic
     }
 
     /// <summary>
-    /// Select block:  "Min" or "Max" select 
+    /// Simulatable select block
+    /// <para>
+    /// This block can function either as "minimum" or "maximum" selector.
+    /// It can be used either for enforcing ranges in plant simulations, but also for simulating 
+    /// "min select" or "max selct" pid-control by combining with <seealso cref="PIDModel"/>
+    /// </para>
     /// </summary>
     public class Select : ModelBaseClass, ISimulatableModel 
     {

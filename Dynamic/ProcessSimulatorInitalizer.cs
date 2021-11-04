@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    /// <summary>
+    /// Intializes a simulator in the first data point 
+    /// <para>
+    /// Currently, only initalizing to steady-state is supported.
+    /// </para>
+    /// <para>
+    /// By design choice, this class traverses the models by logic to initialize the plant model rather than
+    /// using mathematical programming/matrix solvers.
+    /// </para>
+    /// </summary>
     public class ProcessSimulatorInitalizer
     {
         ProcessSimulator simulator;
         List<string> orderedSimulatorIDs;
-
 
         /// <summary>
         /// Constructor

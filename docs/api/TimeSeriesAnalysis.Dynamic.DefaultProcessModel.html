@@ -83,7 +83,36 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModel" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModel" class="text-break">Class DefaultProcessModel
   </h1>
-  <div class="markdown level0 summary"><p>Process model class for the &quot;Default&quot; process model.</p>
+  <div class="markdown level0 summary"><p>Simulatable &quot;default&quot; process model.
+<remarks><p>
+<p>
+This is a model that can be either dynamic or static, have one or multiple inputs
+and can be either linear in inputs or have inputs nonlinearity described by a
+polynominal. Dynamics can be either 1.order time-constant, time-delay or both.
+The model also supports &quot;additive&quot; signals added to its output(intended for modeling disturbances.)
+</p>
+<p>
+The model is designed to lend itesel well to identificaiton from industrial time-series
+datasets, and is supported by the accompanying identificaiton method <code>DefaultProcessModelIdentifier</code>.
+</p>
+<p>
+This model is also intended to be co-simulated with <code>PIDModel</code> by <code>ProcessSimulator</code> to study
+process control feedback loops.
+</p>
+<p>
+It is assumed that for most unit processes in industrial process control systems can be described 
+sufficiently by this model, and thus that larger plants can be modeled by connecting unit models
+based on this model structure.
+</p>
+<p>
+It would be possible to extend this model to also describe second-order dynamics along the same principles by
+the intorduction of one additional paramters in future work. 
+</p>
+</remarks>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelParameters.html">DefaultProcessModelParameters</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html">DefaultProcessModelIdentifier</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessSimulator.html">ProcessSimulator</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">

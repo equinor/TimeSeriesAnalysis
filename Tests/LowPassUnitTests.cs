@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis.Test
         [TestCase(4,24)]
         [TestCase(4,12)]
 
-        public void StepChange(double TimeBase_s, double FilterTc_s)
+        public void LowPass_StepChange_CorrectValue(double TimeBase_s, double FilterTc_s)
         {
             double[] input = Vec<double>.Concat(Vec<double>.Fill(0, 10), Vec<double>.Fill(1, 30));
             LowPass lp = new LowPass(TimeBase_s);

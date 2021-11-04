@@ -83,8 +83,29 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_PIDModel" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel" class="text-break">Class PIDModel
   </h1>
-  <div class="markdown level0 summary"><p>Model of PID-controller</p>
-<p>This class should acta as a wrapper for PIDcontroller class.</p>
+  <div class="markdown level0 summary"><p>Simulatable industrial PID-controller
+<remark><p>
+<p>
+This class is as a wrapper for <a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a> class, 
+that implements <a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a>.
+</p>
+<p>
+To simulate minimum or maximum select controllers, combine this class
+with <a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a> blocks.
+</p>
+<p>
+The controller paramters belong to different aspects of the controller like, tuning, scaling,
+gain-scheduling, feedforward and anti-surge are adjusted have been collected into a number of 
+data-classes, linked below:
+</p>
+</remark>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModelParameters.html">PIDModelParameters</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html">PIDAntiSurgeParams</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDfeedForward.html">PIDfeedForward</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html">PIDgainScheduling</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDStatus.html">PIDStatus</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDscaling.html">PIDscaling</a>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDtuning.html">PIDtuning</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -166,7 +187,8 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_PIDModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.#ctor*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PIDModel__ctor_TimeSeriesAnalysis_Dynamic_PIDModelParameters_System_Int32_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PIDModel.#ctor(TimeSeriesAnalysis.Dynamic.PIDModelParameters,System.Int32,System.String)">PIDModel(PIDModelParameters, Int32, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -185,17 +207,20 @@
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModelParameters.html">PIDModelParameters</a></td>
         <td><span class="parametername">pidParameters</span></td>
-        <td></td>
+        <td><p>object containing the paramters of the controller</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">timeBase_s</span></td>
-        <td></td>
+        <td><p>sampling time, a steady time between each call to Iterate</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">ID</span></td>
-        <td></td>
+        <td><p>Each controller shoudl be given a unique ID</p>
+</td>
       </tr>
     </tbody>
   </table>

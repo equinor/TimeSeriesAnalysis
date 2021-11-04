@@ -9,7 +9,9 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
-    /// Class that describes of the pid-controller is to scale the process value y and also the range of u.
+    /// Parameters describing PID-controller parameters for scaling 
+    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PIDcontroller"/>
     /// </summary>
 
     public class PIDscaling

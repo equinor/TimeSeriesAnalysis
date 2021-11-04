@@ -19,6 +19,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// 
         /// </summary>
         /// <param name="inData"></param>
+        /// <param name="badValueIndicatingValue"></param>
         /// <returns></returns>
         static public List<int> GetAllBadIndices(double[] inData, double badValueIndicatingValue = -9999)
         {
@@ -34,6 +35,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// perform identification.
         /// </summary>
         /// <param name="inData"></param>
+        /// <param name="badValueIndicatingValue"></param>
         /// <returns></returns>
         static public List<int> GetAllBadIndicesPlussNext(double[] inData, double badValueIndicatingValue = -9999)
         {
