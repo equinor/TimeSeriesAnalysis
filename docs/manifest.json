@@ -182,23 +182,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html",
-          "hash": "S1Mw7GVqBtD7XtueyqTuot/FIb1lztpu0BBGZcYGzEo="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDModel.yml",
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDModel.html",
-          "hash": "xdkiOWy/QdBbJsXpA7q7oIfGOEO74HBLY8ry9jUTpRw="
+          "hash": "QWraeJ4BKGzYFHLqd9s4PPY+M/H82+mcrPZTVI1FflI="
         }
       },
       "is_incremental": false,
@@ -210,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDModelParameters.html",
-          "hash": "EXNiDozN8KW/fdaQq+D39agr6Tx/f7O77DEcm0Kr7TA="
+          "hash": "bo2Stj1eSSeIHThcN3hSeQO5IZYPeheFVlamdAxdUbI="
         }
       },
       "is_incremental": false,
@@ -218,11 +206,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDStatus.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDStatus.html",
-          "hash": "ez8E7XXzQ+fTRjMgvI/lDqo/gAx+25F5CSwADLakmCU="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html",
+          "hash": "rMojKlZQ9TUGVYV8vdXja7ezimQWzXCc5abQuletnBA="
         }
       },
       "is_incremental": false,
@@ -230,11 +218,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDcontroller.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidController.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html",
-          "hash": "xdCBekMU4+v9UuyE8YgbKG3Q6/9gUL9IFDrnhFB9aOE="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidController.html",
+          "hash": "rodxpTICmeUbzu0tnnT6eUV/Qz35l4VAjt/WfLNnsis="
         }
       },
       "is_incremental": false,
@@ -242,11 +230,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidFeedForward.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html",
-          "hash": "v/acxkoj3b9ZifoiwaLxzdoexiQl5bivpKDgapEhSf0="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html",
+          "hash": "KDGMm9NJd50nDi/GtJMrixk7GIMwWb9+Qacqb5VPFPY="
         }
       },
       "is_incremental": false,
@@ -254,11 +242,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html",
-          "hash": "EBpvT7BAoaZrlR5B//ogMgV8LbGBk26a4DZ2HZ7xHrU="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html",
+          "hash": "Exgm0ndKHN8VTrt6DZpPA4MuVflqs50CG0al5eiuO9g="
         }
       },
       "is_incremental": false,
@@ -266,11 +254,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDscaling.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidScaling.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDscaling.html",
-          "hash": "rOpVsK2Yx4YGn9xoaM2s90IsGMAZ0djG+no4xK4xkEg="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidScaling.html",
+          "hash": "tonHwykBpMbi9hJmjIu9EVjJUGoCtmepFGcmMqR4Xqw="
         }
       },
       "is_incremental": false,
@@ -278,11 +266,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDtuning.yml",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidStatus.yml",
       "output": {
         ".html": {
-          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PIDtuning.html",
-          "hash": "v93xQgQ3i8mwkJLHPiujN48r+SfiuHYMmPm/xJJ/q9o="
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidStatus.html",
+          "hash": "/t0dS5jMUZUCnSsEHrCCkPYEbTt59LiagweQ8rTI698="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidTuning.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidTuning.html",
+          "hash": "+jTkHTInbZ0fRO9ow2QqVAPVAdsZb1ypCb5IqSrKM+Q="
         }
       },
       "is_incremental": false,
@@ -354,7 +354,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.Select.html",
-          "hash": "4k+t5tYdFy6eIW0n+yj8PjhI2Srx+ekcPxsGeEPwx3g="
+          "hash": "W2NdNM0+vjRqMU7zovpT6o+LUiHizmujm5MwrE5Qpw4="
         }
       },
       "is_incremental": false,
@@ -366,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.SelectType.html",
-          "hash": "iksGK/hwnBBPzcp6oUNoon4TN7P412L1syxbE5XNaKg="
+          "hash": "thlc6+1jd1MXXMLrjshnySCwhkQGHhsAaaXkpcvbZ5w="
         }
       },
       "is_incremental": false,
@@ -450,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "AR49gx0xHy6HStoUZxkUQG4nzHujSX8yablb6lfXSuE="
+          "hash": "3k/XPo/0t46AuR2QyQFPL8k/4GSW+RQpGYb4nl3awQI="
         }
       },
       "is_incremental": false,
@@ -714,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "vZASL54y39XjuAsB9rE7E4fYd3t5sebHFlRCiknOgtU="
+          "hash": "RyNfVclkNNfovPepFpXWcp7zehJpamNCfwAa3SvjxxU="
         }
       },
       "is_incremental": false,
@@ -1402,7 +1402,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_cascade.html",
-          "hash": "qZ/i766V8oUQ5qHp7vqv2xztIVTVn8zow4NAFq3pl78="
+          "hash": "3oE8Ygmr9e0MUYY4j0CiYWRFo1qBcVD+7Xsxn265+8Y="
         }
       },
       "is_incremental": false,
@@ -1414,7 +1414,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_feedforward.html",
-          "hash": "ltXLK8DqfV4rbD4z5Wt8iaEl5edlk9a/uYJ9vAXGTE4="
+          "hash": "hESqSA2EqcTGjuXbO/36vTVrHeDKlIvUVF6azyKhX4A="
         }
       },
       "is_incremental": false,
@@ -1426,7 +1426,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_gainscheduling.html",
-          "hash": "s/+gQu+CX3cpTe85a11oWavmMKJI+oPtLk+ss95fuBg="
+          "hash": "qRbs1gugtrYfDtfE48vYhR3fVW8fmCxz/kflRJW/+F0="
         }
       },
       "is_incremental": false,
@@ -1438,7 +1438,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/pid_select.html",
-          "hash": "bzhquXFcP2dZz/wPAU7NMcPweY6XXRQg1b0h5c4X1v8="
+          "hash": "A0Jb+AQKH8jDEucgWR5OdGa19u+d4N5VoaHKa/HPQsk="
         }
       },
       "is_incremental": false,
@@ -1626,7 +1626,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 57,
-          "skipped_file_count": 57
+          "skipped_file_count": 56
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

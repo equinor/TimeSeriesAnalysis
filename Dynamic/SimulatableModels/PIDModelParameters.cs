@@ -9,7 +9,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Parameters of the PIDModel
     /// <seealso cref="PIDModel"/>
-    /// <seealso cref="PIDcontroller"/>
+    /// <seealso cref="PidController"/>
     /// </summary>
     public class PIDModelParameters:ModelParametersBaseClass 
     {
@@ -35,22 +35,22 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Gain-scheduling object. This is optional, set to null gain-scheduling is not in use.
         /// </summary>
-        public PIDgainScheduling GainScheduling { get; set; } = null;
+        public PidGainScheduling GainScheduling { get; set; } = null;
 
         /// <summary>
         /// Feed-forward parameters object. This is optional, set to null when feedforward is not in use.
         /// </summary>
-        public PIDfeedForward FeedForward { get; set; } = null;
+        public PidFeedForward FeedForward { get; set; } = null;
 
         /// <summary>
         /// PID-scaling object. This is optional, set to null to use unscaled PID.
         /// </summary>
-        public PIDscaling Scaling { get; set; }
+        public PidScaling Scaling { get; set; }
 
         /// <summary>
         /// PID anti-surge paramters objet. This is optional, set to null if not anti-surge PID
         /// </summary>
-        public PIDAntiSurgeParams AntiSugeParams { get; set; } = null;
+        public PidAntiSurgeParams AntiSugeParams { get; set; } = null;
 
     }
 }

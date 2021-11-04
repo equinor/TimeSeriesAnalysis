@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PIDAntiSurgeParams
+    <title>Class PidAntiSurgeParams
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PIDAntiSurgeParams
+    <meta name="title" content="Class PidAntiSurgeParams
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,20 +78,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams" class="text-break">Class PIDAntiSurgeParams
+  <h1 id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams" class="text-break">Class PidAntiSurgeParams
   </h1>
   <div class="markdown level0 summary"><p>Class that contains special pid-controller parameters for anti-surge controllers
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
-<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PidController.html">PidController</a></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">PIDAntiSurgeParams</span></div>
+    <div class="level1"><span class="xref">PidAntiSurgeParams</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -119,22 +119,22 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PIDAntiSurgeParams</code></pre>
+    <pre><code class="lang-csharp hljs">public class PidAntiSurgeParams</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams__ctor_System_Double_System_Nullable_System_Double__System_Int32_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.#ctor(System.Double,System.Nullable{System.Double},System.Int32,System.Double)">PIDAntiSurgeParams(Double, Nullable&lt;Double&gt;, Int32, Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams__ctor_System_Double_System_Nullable_System_Double__System_Int32_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.#ctor(System.Double,System.Nullable{System.Double},System.Int32,System.Double)">PidAntiSurgeParams(Double, Nullable&lt;Double&gt;, Int32, Double)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDAntiSurgeParams(double kickPrc, double? ffRampDownRatePrcPerMin, int nKicksFound = 0, double kickBelowThresholdE = -5)</code></pre>
+    <pre><code class="lang-csharp hljs">public PidAntiSurgeParams(double kickPrc, double? ffRampDownRatePrcPerMin, int nKicksFound = 0, double kickBelowThresholdE = -5)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,7 +172,7 @@
   </h3>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_ffRampDownRatePrcPerMin" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.ffRampDownRatePrcPerMin">ffRampDownRatePrcPerMin</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_ffRampDownRatePrcPerMin" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.ffRampDownRatePrcPerMin">ffRampDownRatePrcPerMin</h4>
   <div class="markdown level1 summary"><p>after a kick, valve closure will be rate-limited.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -197,7 +197,7 @@
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_kickBelowThresholdE" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickBelowThresholdE">kickBelowThresholdE</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_kickBelowThresholdE" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickBelowThresholdE">kickBelowThresholdE</h4>
   <div class="markdown level1 summary"><p>if kick is &quot;ctrldev&quot; below this value (often zero)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -222,7 +222,7 @@
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_kickPrcPerSec" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickPrcPerSec">kickPrcPerSec</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_kickPrcPerSec" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickPrcPerSec">kickPrcPerSec</h4>
   <div class="markdown level1 summary"><p>how many percent to kick controller open if it closes</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -247,7 +247,7 @@
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_nKicksFound" data-uid="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.nKicksFound">nKicksFound</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_nKicksFound" data-uid="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.nKicksFound">nKicksFound</h4>
   <div class="markdown level1 summary"><p>Kicks counter</p>
 </div>
   <div class="markdown level1 conceptual"></div>

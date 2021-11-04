@@ -3,9 +3,9 @@
     /// <summary>
     /// Class that contains special pid-controller parameters for anti-surge controllers
     ///  <seealso cref="PIDModel"/>
-    /// <seealso cref="PIDcontroller"/>
+    /// <seealso cref="PidController"/>
     /// </summary>
-    public class PIDAntiSurgeParams
+    public class PidAntiSurgeParams
     {
         /// <summary>
         /// Constructor
@@ -14,7 +14,7 @@
         /// <param name="ffRampDownRatePrcPerMin"></param>
         /// <param name="nKicksFound"></param>
         /// <param name="kickBelowThresholdE"></param>
-        public PIDAntiSurgeParams(double kickPrc, double? ffRampDownRatePrcPerMin,
+        public PidAntiSurgeParams(double kickPrc, double? ffRampDownRatePrcPerMin,
             int nKicksFound=0,double kickBelowThresholdE=-5 )
         {
             this.kickPrcPerSec              = kickPrc;

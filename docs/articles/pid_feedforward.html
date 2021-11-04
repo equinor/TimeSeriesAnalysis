@@ -170,7 +170,7 @@ var pidParameters = new PIDModelParameters()
 {
     Kp = 0.3,
     Ti_s = 20,
-    FeedForward = new PIDfeedForward()
+    FeedForward = new PidFeedForward()
     {
         isFFActive = true,
         FF_Gain = -0.7,
@@ -198,7 +198,7 @@ simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
     TimeSeriesCreator.Constant(60, 600));
 string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
     TimeSeriesCreator.Step(300, 600, 25, 0));
-simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PIDModelInputsIdx.FeedForward);
+simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
 
 var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
 

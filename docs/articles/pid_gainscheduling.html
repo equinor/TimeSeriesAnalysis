@@ -191,7 +191,7 @@ cases is created.</p>
  var pidParametersGS = new PIDModelParameters()
  {
      Ti_s = 20,
-     GainScheduling = new PIDgainScheduling()
+     GainScheduling = new PidGainScheduling()
      {
          GSActive_b =true,// turn on gain-scheduling 
          GS_x_Min =0,    //Gain-scheduling: x minimum x=GsVariable
@@ -216,7 +216,7 @@ cases is created.</p>
  closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D, 
      TimeSeriesCreator.Step(100, 400, 0, 10));
  // Gain-scheduling variable:
- closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
+ closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PidModelInputsIdx.GainScheduling);
 var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
  var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
@@ -228,7 +228,7 @@ var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
  closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D, 
      TimeSeriesCreator.Step(100, 400, 0, 10));
  // Gain-scheduling variable:
- closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
+ closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PidModelInputsIdx.GainScheduling);
  var isOk4 = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
 
  Plot.FromList(new List&lt;double[]&gt;

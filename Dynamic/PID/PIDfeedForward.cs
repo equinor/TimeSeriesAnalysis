@@ -3,9 +3,9 @@
     /// <summary>
     /// Parameters describing PID-controller parameters for feed-forward
     /// <seealso cref="PIDModel"/>
-    /// <seealso cref="PIDcontroller"/>
+    /// <seealso cref="PidController"/>
     /// </summary>
-    public class PIDfeedForward
+    public class PidFeedForward
     {
         /// <summary>
         ///  if true, then the feed-forward term is added to the output

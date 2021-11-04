@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PIDtuning
+    <title>Class PidTuning
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PIDtuning
+    <meta name="title" content="Class PidTuning
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,20 +78,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_PIDtuning" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning" class="text-break">Class PIDtuning
+  <h1 id="TimeSeriesAnalysis_Dynamic_PidTuning" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning" class="text-break">Class PidTuning
   </h1>
   <div class="markdown level0 summary"><p>Parameters describing PID-controller tuning (Kp,Ti,Td)</p>
 <p><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDModel.html">PIDModel</a>
-<a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDcontroller.html">PIDcontroller</a></p>
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.PidController.html">PidController</a></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">PIDtuning</span></div>
+    <div class="level1"><span class="xref">PidTuning</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -119,22 +119,22 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_PIDtuning_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_PidTuning_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PIDtuning</code></pre>
+    <pre><code class="lang-csharp hljs">public class PidTuning</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDtuning__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDtuning__ctor_System_Double_System_Double_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor(System.Double,System.Double,System.Boolean)">PIDtuning(Double, Double, Boolean)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidTuning__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidTuning__ctor_System_Double_System_Double_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.#ctor(System.Double,System.Double,System.Boolean)">PidTuning(Double, Double, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initalize tuning of Kp and Ti and if controller is reversed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDtuning(double Kp, double Ti, bool isReversed = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public PidTuning(double Kp, double Ti, bool isReversed = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,14 +165,14 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDtuning__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDtuning__ctor_System_Double_System_Double_System_Double_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor(System.Double,System.Double,System.Double,System.Boolean)">PIDtuning(Double, Double, Double, Boolean)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidTuning__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidTuning__ctor_System_Double_System_Double_System_Double_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.#ctor(System.Double,System.Double,System.Double,System.Boolean)">PidTuning(Double, Double, Double, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initalize tuning,Ti and Td are expected to be in seconds, and if Kp sign is to be reversed</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDtuning(double Kp, double Ti, double Td = 0, bool isReversed = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public PidTuning(double Kp, double Ti, double Td = 0, bool isReversed = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -210,8 +210,8 @@
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDtuning_GetKp_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDtuning_GetKp" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp">GetKp()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidTuning_GetKp_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.GetKp*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidTuning_GetKp" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.GetKp">GetKp()</h4>
   <div class="markdown level1 summary"><p>Gets the Kp, including the sign(accounts for pid-controller being set to reverese Kp sign)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -236,8 +236,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDtuning_GetTd_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDtuning_GetTd" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd">GetTd()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidTuning_GetTd_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.GetTd*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidTuning_GetTd" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.GetTd">GetTd()</h4>
   <div class="markdown level1 summary"><p>Gets the Td in seoncds</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -262,8 +262,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDtuning_GetTi_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDtuning_GetTi" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi">GetTi()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidTuning_GetTi_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.GetTi*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidTuning_GetTi" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.GetTi">GetTi()</h4>
   <div class="markdown level1 summary"><p>Gets the Ti in seoncds</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -288,8 +288,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDtuning_IsReversed_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDtuning_IsReversed" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed">IsReversed()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidTuning_IsReversed_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidTuning_IsReversed" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed">IsReversed()</h4>
   <div class="markdown level1 summary"><p>Returns true if the K sign is to be reversed</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -314,8 +314,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDtuning_SetReversed_" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDtuning_SetReversed" data-uid="TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed">SetReversed()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidTuning_SetReversed_" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidTuning_SetReversed" data-uid="TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed">SetReversed()</h4>
   <div class="markdown level1 summary"><p>Specifies that Kp is to be reversed (By default Kp is not reversed)</p>
 </div>
   <div class="markdown level1 conceptual"></div>

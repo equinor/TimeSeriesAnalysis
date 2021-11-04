@@ -27,26 +27,19 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Max-select
         /// </summary>
         MAX =2,
-        /// <summary>
-        /// Range: Forces signal to stay above a given minimum and below a given maximum
-        /// </summary>
-        RANGE=3
-
     }
 
     /// <summary>
     /// Simulatable select block
     /// <para>
-    /// This block can function either as "minimum" or "maximum" selector.
-    /// It can be used either for enforcing ranges in plant simulations, but also for simulating 
-    /// "min select" or "max selct" pid-control by combining with <seealso cref="PIDModel"/>
+    /// This block can function either as "minimum" or "maximum" selector, mainly inteded
+    /// for simulating "min select" or "max selct" pid-control by combining with
+    /// <seealso cref="PIDModel"/>
     /// </para>
     /// </summary>
     public class Select : ModelBaseClass, ISimulatableModel 
     {
         private SelectType type;
-        private double threshold1;
-        private double threshold2;
 
         /// <summary>
         /// Constructor
@@ -58,19 +51,6 @@ namespace TimeSeriesAnalysis.Dynamic
             processModelType = ProcessModelType.Select;
             this.type = type;
             SetID(ID);
-        }
-
-        /// <summary>
-        /// Constructor with thresholds for range
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="ID"></param>
-        /// <param name="threshold1"></param>
-        /// <param name="threshold2"></param>
-        public Select(SelectType type, string ID, double threshold1, double threshold2)
-        {
-            this.threshold1 = threshold1;
-            this.threshold2 = threshold2;
         }
 
         /// <summary>
@@ -86,21 +66,33 @@ namespace TimeSeriesAnalysis.Dynamic
                 return (new Vec(badDataID)).Max(inputsU);
             }
             else
-            // default: min
-         //   else if (type == SelectType.MAX)
-            return (new Vec(badDataID)).Min(inputsU);
+            {
+                return (new Vec(badDataID)).Min(inputsU);
+            }
         }
 
-        public  void WarmStart(double[] inputs, double output)
+        /// <summary>
+        /// Not implemented
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <param name="output"></param>
+        public void WarmStart(double[] inputs, double output)
         { 
         
         }
 
-        public  double? GetSteadyStateInput(double y0, int inputIdx = 0, double[] givenInputValues = null)
+        /// <summary>
+        /// Not implemented
+        /// </summary>
+        /// <param name="y0"></param>
+        /// <param name="inputIdx"></param>
+        /// <param name="givenInputValues"></param>
+        /// <returns></returns>
+        public  double? GetSteadyStateInput(double y0, int inputIdx = 0, 
+            double[] givenInputValues = null)
         {
             return null;//todo?
         }
-
 
         /// <summary>
         /// Get the steady state value of the model output
@@ -112,7 +104,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return Iterate(u0);
         }
 
-
         /// <summary>
         /// Gives the type of the output signal
         /// </summary>
@@ -121,8 +112,5 @@ namespace TimeSeriesAnalysis.Dynamic
         { 
             return SignalType.SelectorOut; 
         }
-
-        
-
     }
 }

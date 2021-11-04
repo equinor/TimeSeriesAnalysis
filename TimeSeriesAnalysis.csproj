@@ -89,6 +89,12 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Examples\Pythonnet-examples\ex1_hello_world.py" />
+    <None Include="Examples\Pythonnet-examples\ex2_linear_regression.py" />
+    <None Include="Examples\Pythonnet-examples\ex3_filtering.py" />
+    <None Include="Examples\Pythonnet-examples\ex4_sysid.py" />
+    <None Include="Examples\Pythonnet-examples\ex5_pid_sim.py" />
+    <None Include="Examples\Pythonnet-examples\ex6_larger_scale.py" />
     <None Include="www\plotly\CsvToTable.js">
       <Pack>True</Pack>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -138,17 +144,17 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\Filters\HighPass.cs" />
     <Compile Include="Dynamic\Interfaces\ISimulateableModel.cs" />
     <Compile Include="Dynamic\Filters\LowPass.cs" />
-    <Compile Include="Dynamic\SimulatableModels\PIDModel.cs" />
-    <Compile Include="Dynamic\SimulatableModels\PIDModelParameters.cs" />
+    <Compile Include="Dynamic\SimulatableModels\PidModel.cs" />
+    <Compile Include="Dynamic\SimulatableModels\PidModelParameters.cs" />
     <Compile Include="Dynamic\SimulatableModels\ProcessModelType.cs" />
     <Compile Include="Dynamic\SimulatableModels\Select.cs" />
-    <Compile Include="Dynamic\PID\PIDfeedForward.cs" />
+    <Compile Include="Dynamic\PID\PidFeedForward.cs" />
     <Compile Include="Dynamic\ProcessSimulator.cs" />
-    <Compile Include="Dynamic\PID\PIDAntiSurgeParams.cs" />
-    <Compile Include="Dynamic\PID\PIDcontroller.cs" />
-    <Compile Include="Dynamic\PID\PIDgainScheduling.cs" />
-    <Compile Include="Dynamic\PID\PIDscaling.cs" />
-    <Compile Include="Dynamic\PID\PIDtuning.cs" />
+    <Compile Include="Dynamic\PID\PidAntiSurgeParams.cs" />
+    <Compile Include="Dynamic\PID\PidController.cs" />
+    <Compile Include="Dynamic\PID\PidGainScheduling.cs" />
+    <Compile Include="Dynamic\PID\PidScaling.cs" />
+    <Compile Include="Dynamic\PID\PidTuning.cs" />
     <Compile Include="Dynamic\ProcessSimulatorInitalizer.cs" />
     <Compile Include="Dynamic\SignalNamer.cs" />
     <Compile Include="Dynamic\SignalType.cs" />

@@ -11,10 +11,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Parameters describing PID-controller parameters for scaling 
     /// <seealso cref="PIDModel"/>
-    /// <seealso cref="PIDcontroller"/>
+    /// <seealso cref="PidController"/>
     /// </summary>
 
-    public class PIDscaling
+    public class PidScaling
     {
         // init with default values
 
@@ -34,7 +34,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Constructor
         /// </summary>
-        public PIDscaling()
+        public PidScaling()
         {
             SetDefault();
         }
@@ -46,7 +46,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="u_min"></param>
         /// <param name="u_max"></param>
         /// <param name="isKpScalingKpOn"></param>
-        public PIDscaling(double y_min, double y_max, double u_min, double u_max,
+        public PidScaling(double y_min, double y_max, double u_min, double u_max,
             bool isKpScalingKpOn)
         {
             Set(y_min,  y_max,  u_min,  u_max, isKpScalingKpOn);

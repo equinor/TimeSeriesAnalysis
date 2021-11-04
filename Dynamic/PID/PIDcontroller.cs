@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Enum to classify the status output of PidController.cs
     /// </summary>
-    public enum PIDStatus 
+    public enum PidStatus 
     { 
         /// <summary>
         /// Controller in in manual mode (u is constant)
@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// <seealso cref="PIDModel"/>
     /// </summary>
-    public class PIDcontroller
+    public class PidController
     {
         private double nanValue = -9999; 
 
@@ -62,23 +62,23 @@ namespace TimeSeriesAnalysis.Dynamic
         private double y_FilterTconst_s;
         private double y_FilterOrder;
         private double u0;
-        private PIDscaling pidScaling;
+        private PidScaling pidScaling;
         private double u_prev, e_prev_unscaled, e_prev_prev_unscaled;
         private bool isInAuto;
 
         private double uTrackingOffset = 1;// zero: no tracking range, above zero: min select, below zero: max select -determines how much above or below the tracking signal this controller should place its output.Also determined is tracking is against min-s
         private double uTrackingCutoff;//used for tracking, how much above the active controller that the tracking controllers shoudl be
 
-        private PIDStatus controllerStatus;
+        private PidStatus controllerStatus;
         private double uIfInAuto;
         private double u_ff_withoutTracking;
         private double uManual;
 
         private double y_set_prc_prev;
-        private PIDgainScheduling gsObj = null;
+        private PidGainScheduling gsObj = null;
         private LowPass yFilt1,yFilt2;
 
-        private PIDfeedForward ffObj;
+        private PidFeedForward ffObj;
         private LowPass ffLP; // feed-forward low pass filter object
         private LowPass ffHP; // feed-forward high pass filter object
         private bool isFFActive_prev = false;//previous value of the feed forward active signal
@@ -86,16 +86,16 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         // double anti-surge related:
-        private PIDAntiSurgeParams antiSurgeParms=null;
+        private PidAntiSurgeParams antiSurgeParms=null;
         private double u_ff_antisurge_prev;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public PIDcontroller(double TimeBase_s, double Kp=1, double Ti=50, double Td=0, double nanValue=-9999)
+        public PidController(double TimeBase_s, double Kp=1, double Ti=50, double Td=0, double nanValue=-9999)
         {
             this.nanValue = nanValue;
-            this.pidScaling = new PIDscaling();
+            this.pidScaling = new PidScaling();
             this.TimeBase_s = TimeBase_s;
 
             this.Kp = Kp;
@@ -113,7 +113,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             this.isInAuto = true;
 
-            this.gsObj = new PIDgainScheduling();
+            this.gsObj = new PidGainScheduling();
 
             this.TimeBase_s = TimeBase_s;
             this.yFilt1 = new LowPass(TimeBase_s);
@@ -128,7 +128,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Set the feedforward of the controller 
         /// Re-calling this setter to update
         /// </summary>
-        public void SetFeedForward(PIDfeedForward feedForwardObj)
+        public void SetFeedForward(PidFeedForward feedForwardObj)
         {
             this.ffObj = feedForwardObj;
         }
@@ -136,7 +136,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Get the feedforward parameters of the controller 
         /// </summary>
-        public PIDfeedForward GetFeedForward()
+        public PidFeedForward GetFeedForward()
         {
             return this.ffObj ;
         }
@@ -145,14 +145,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Set the gain scheduling of the controller (by default controller has no gain-scheduling)
         /// Re-calling this setter to update gain-scheduling
         /// </summary>
-        public void SetGainScehduling(PIDgainScheduling gainSchedulingObj)
+        public void SetGainScehduling(PidGainScheduling gainSchedulingObj)
         {
             this.gsObj = gainSchedulingObj;
         }
         /// <summary>
         /// Get the gain scheduling settings of the controller
         /// </summary>
-        public PIDgainScheduling GetGainScehduling(PIDgainScheduling gainSchedulingObj)
+        public PidGainScheduling GetGainScehduling(PidGainScheduling gainSchedulingObj)
         {
             return this.gsObj;
         }
@@ -162,7 +162,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns a status code, to determine if controller is in manual, auto or in tracking(relevant for split range controllers.)
         /// </summary>
 
-        public PIDStatus GetControllerStatus()
+        public PidStatus GetControllerStatus()
         {
             return this.controllerStatus;
         }
@@ -181,7 +181,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the object that contains scaling information 
         /// </summary>
 
-        public PIDscaling GetScaling()
+        public PidScaling GetScaling()
         {
             return this.pidScaling;
         }
@@ -192,7 +192,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Sets the anti-surge "kick" paramters of the controller
         /// </summary>
 
-        public void SetAntiSurgeParams(PIDAntiSurgeParams antiSurgeParams)
+        public void SetAntiSurgeParams(PidAntiSurgeParams antiSurgeParams)
         {
             this.antiSurgeParms = antiSurgeParams;
         }
@@ -228,7 +228,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Gives a PIDscaling object that specifies how input and output is to be scaled.
         /// </summary>
 
-        public void SetScaling(PIDscaling pidScaling)
+        public void SetScaling(PidScaling pidScaling)
         {
             this.pidScaling = pidScaling;
         }
@@ -467,17 +467,17 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (Math.Abs(u_prev - uTrackSignal.Value) <= uTrackingCutoff)
                 {
-                    controllerStatus = PIDStatus.AUTO;
+                    controllerStatus = PidStatus.AUTO;
                 }
                 else
                 {
-                    controllerStatus = PIDStatus.TRACKING;
+                    controllerStatus = PidStatus.TRACKING;
                 }
                 y_set_prc_prev = y_set_prc;
             }
             else
             {
-                controllerStatus = PIDStatus.AUTO;
+                controllerStatus = PidStatus.AUTO;
             }
             // handle bumpless transfer into manual mode
 
@@ -489,7 +489,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     u = this.uManual;
                 }
-                controllerStatus = PIDStatus.MANUAL;
+                controllerStatus = PidStatus.MANUAL;
             }
 
             //   anti - wind up
@@ -541,7 +541,7 @@ namespace TimeSeriesAnalysis.Dynamic
             e_prev_prev_unscaled = e;
             u0      = u_abs;
             uIfInAuto = u_abs;
-            controllerStatus = PIDStatus.AUTO; 
+            controllerStatus = PidStatus.AUTO; 
          }
         /*
 

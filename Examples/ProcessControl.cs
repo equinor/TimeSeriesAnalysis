@@ -83,7 +83,7 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(process1, pid1);
             sim.ConnectModels(pid1, process1);
             sim.ConnectModels(process2, pid2);
-            sim.ConnectModels(pid2, pid1,(int)PIDModelInputsIdx.Y_setpoint);
+            sim.ConnectModels(pid2, pid1,(int)PidModelInputsIdx.Y_setpoint);
 
             sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
             sim.AddSignal(process1,SignalType.Disturbance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
@@ -210,7 +210,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 Kp = 0.3,
                 Ti_s = 20,
-                FeedForward = new PIDfeedForward()
+                FeedForward = new PidFeedForward()
                 {
                     isFFActive = true,
                     FF_Gain = -0.7,
@@ -238,7 +238,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Constant(60, 600));
             string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
                 TimeSeriesCreator.Step(300, 600, 25, 0));
-            simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PIDModelInputsIdx.FeedForward);
+            simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
 
             var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
 
@@ -356,7 +356,7 @@ namespace TimeSeriesAnalysis._Examples
             var pidParametersGS = new PIDModelParameters()
             {
                 Ti_s = 20,
-                GainScheduling = new PIDgainScheduling()
+                GainScheduling = new PidGainScheduling()
                 {
                     GSActive_b =true,// turn on gain-scheduling 
                     GS_x_Min =0,    //Gain-scheduling: x minimum x=GsVariable
@@ -381,7 +381,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D, 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
-            closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PIDModelInputsIdx.GainScheduling);
+            closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PidModelInputsIdx.GainScheduling);
            var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
 
             var closedLoopSimGS_2 = new ProcessSimulator(timeBase_s,
@@ -393,7 +393,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D, 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
-            closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PIDModelInputsIdx.GainScheduling);
+            closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PidModelInputsIdx.GainScheduling);
             var isOk4 = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
 
             Plot.FromList(new List<double[]>
@@ -466,8 +466,8 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(pid1, minSelect,0);
             sim.ConnectModels(pid2, minSelect,1);
             string selectSignalID = sim.ConnectModels(minSelect, process);
-            sim.ConnectSignal(selectSignalID,pid1,(int)PIDModelInputsIdx.Tracking);
-            sim.ConnectSignal(selectSignalID,pid2,(int)PIDModelInputsIdx.Tracking);
+            sim.ConnectSignal(selectSignalID,pid1,(int)PidModelInputsIdx.Tracking);
+            sim.ConnectSignal(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
 
             sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
             sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));

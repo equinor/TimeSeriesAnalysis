@@ -12,9 +12,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Parameters describing PID-controller tuning (Kp,Ti,Td)
     /// 
     /// <seealso cref="PIDModel"/>
-    /// <seealso cref="PIDcontroller"/>
+    /// <seealso cref="PidController"/>
     /// </summary>
-    public class PIDtuning
+    public class PidTuning
     {
         private double Kp;
         private double Ti;
@@ -26,7 +26,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Initalize tuning,Ti and Td are expected to be in seconds, and if Kp sign is to be reversed
         /// </summary>
 
-        public PIDtuning(double Kp, double Ti, double Td=0, bool isReversed=false)
+        public PidTuning(double Kp, double Ti, double Td=0, bool isReversed=false)
         {
             this.Kp = Kp;
             this.Ti = Ti;
@@ -38,7 +38,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Initalize tuning of Kp and Ti and if controller is reversed.
         /// </summary>
 
-        public PIDtuning(double Kp, double Ti, bool isReversed=false)
+        public PidTuning(double Kp, double Ti, bool isReversed=false)
         {
             this.Kp = Kp;
             this.Ti = Ti;

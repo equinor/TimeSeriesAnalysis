@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PIDcontroller
+    <title>Class PidController
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PIDcontroller
+    <meta name="title" content="Class PidController
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,10 +78,10 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PidController">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_PIDcontroller" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller" class="text-break">Class PIDcontroller
+  <h1 id="TimeSeriesAnalysis_Dynamic_PidController" data-uid="TimeSeriesAnalysis.Dynamic.PidController" class="text-break">Class PidController
   </h1>
   <div class="markdown level0 summary"><p>Proporitional-Integral-Derivative(PID) controller</p>
 <p>
@@ -100,7 +100,7 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">PIDcontroller</span></div>
+    <div class="level1"><span class="xref">PidController</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -128,22 +128,22 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_PidController_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PIDcontroller</code></pre>
+    <pre><code class="lang-csharp hljs">public class PidController</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller__ctor_System_Double_System_Double_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)">PIDcontroller(Double, Double, Double, Double, Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController__ctor_System_Double_System_Double_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)">PidController(Double, Double, Double, Double, Double)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDcontroller(double TimeBase_s, double Kp = 1, double Ti = 50, double Td = 0, double nanValue = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public PidController(double TimeBase_s, double Kp = 1, double Ti = 50, double Td = 0, double nanValue = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -186,14 +186,14 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetControllerStatus_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetControllerStatus" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus">GetControllerStatus()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetControllerStatus_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetControllerStatus" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus">GetControllerStatus()</h4>
   <div class="markdown level1 summary"><p>Returns a status code, to determine if controller is in manual, auto or in tracking(relevant for split range controllers.)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDStatus GetControllerStatus()</code></pre>
+    <pre><code class="lang-csharp hljs">public PidStatus GetControllerStatus()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -205,21 +205,21 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDStatus.html">PIDStatus</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidStatus.html">PidStatus</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetFeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetFeedForward" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward">GetFeedForward()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetFeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetFeedForward" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward">GetFeedForward()</h4>
   <div class="markdown level1 summary"><p>Get the feedforward parameters of the controller</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDfeedForward GetFeedForward()</code></pre>
+    <pre><code class="lang-csharp hljs">public PidFeedForward GetFeedForward()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -231,21 +231,21 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDfeedForward.html">PIDfeedForward</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidFeedForward.html">PidFeedForward</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetGainScehduling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetGainScehduling_TimeSeriesAnalysis_Dynamic_PIDgainScheduling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)">GetGainScehduling(PIDgainScheduling)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetGainScehduling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetGainScehduling_TimeSeriesAnalysis_Dynamic_PidGainScheduling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)">GetGainScehduling(PidGainScheduling)</h4>
   <div class="markdown level1 summary"><p>Get the gain scheduling settings of the controller</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDgainScheduling GetGainScehduling(PIDgainScheduling gainSchedulingObj)</code></pre>
+    <pre><code class="lang-csharp hljs">public PidGainScheduling GetGainScehduling(PidGainScheduling gainSchedulingObj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -258,7 +258,7 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html">PIDgainScheduling</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidGainScheduling.html">PidGainScheduling</a></td>
         <td><span class="parametername">gainSchedulingObj</span></td>
         <td></td>
       </tr>
@@ -274,21 +274,21 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html">PIDgainScheduling</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidGainScheduling.html">PidGainScheduling</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetScaling" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling">GetScaling()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetScaling*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetScaling" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetScaling">GetScaling()</h4>
   <div class="markdown level1 summary"><p>Get the object that contains scaling information</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PIDscaling GetScaling()</code></pre>
+    <pre><code class="lang-csharp hljs">public PidScaling GetScaling()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -300,15 +300,15 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDscaling.html">PIDscaling</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidScaling.html">PidScaling</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTimeBase_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTimeBase" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase">GetTimeBase()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetTimeBase_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetTimeBase" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase">GetTimeBase()</h4>
   <div class="markdown level1 summary"><p>Sets the length of time in seconds between each iteration of the controller, i.e. the &quot;clock time&quot; or &quot;time base&quot;.
 This is very important to set correctly for the controller to function properly. Normally the clock time is set only once during intalization.</p>
 </div>
@@ -334,8 +334,8 @@ This is very important to set correctly for the controller to function properly.
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingCutoff_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingCutoff" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff">GetTrackingCutoff()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetTrackingCutoff_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetTrackingCutoff" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff">GetTrackingCutoff()</h4>
   <div class="markdown level1 summary"><p>Get the tracking cutoff parameter</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -360,8 +360,8 @@ This is very important to set correctly for the controller to function properly.
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingOffset_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingOffset" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset">GetTrackingOffset()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetTrackingOffset_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetTrackingOffset" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset">GetTrackingOffset()</h4>
   <div class="markdown level1 summary"><p>Returns the tracking offset of the controller, the offset that a non-active controller will add or subtract from its
 output when inactive in a split range control scheme</p>
 </div>
@@ -387,8 +387,8 @@ output when inactive in a split range control scheme</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUIfInAuto_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUIfInAuto" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto">GetUIfInAuto()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetUIfInAuto_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetUIfInAuto" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto">GetUIfInAuto()</h4>
   <div class="markdown level1 summary"><p>Returns the value of the output u that the controller would give if it was in auto.
 This is useful when considering turning on a controller that is in manual to see that the controller gives a sensible output.
 Call &quot;iterate&quot; first to update the internals of the controller.</p>
@@ -415,8 +415,8 @@ Call &quot;iterate&quot; first to update the internals of the controller.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUWithoutTracking_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUWithoutTracking" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking">GetUWithoutTracking()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_GetUWithoutTracking_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_GetUWithoutTracking" data-uid="TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking">GetUWithoutTracking()</h4>
   <div class="markdown level1 summary"><p>Split range controllers add an offset to the output u for inactive or &quot;tracking&quot; controllers.
 This function returns the &quot;raw&quot; u without tracking, which can be useful for initalizing simulations with split range control.</p>
 </div>
@@ -442,8 +442,8 @@ This function returns the &quot;raw&quot; u without tracking, which can be usefu
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double_System_Double_System_Nullable_System_Double__System_Nullable_System_Double__System_Nullable_System_Double__" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})">Iterate(Double, Double, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.Iterate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_Iterate_System_Double_System_Double_System_Nullable_System_Double__System_Nullable_System_Double__System_Nullable_System_Double__" data-uid="TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})">Iterate(Double, Double, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;)</h4>
   <div class="markdown level1 summary"><p>Calculates the next u[k] output of the controller given the most recent process value and setpoint value, and optionally also
 including the tracking signal (only applicable if this is a split range controller) and optionally the gainScehduling variable if controller is to gain-schedule</p>
 </div>
@@ -506,8 +506,8 @@ including the tracking signal (only applicable if this is a split range controll
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double___System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double[],System.Double[],System.Double[])">Iterate(Double[], Double[], Double[])</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.Iterate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_Iterate_System_Double___System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double[],System.Double[],System.Double[])">Iterate(Double[], Double[], Double[])</h4>
   <div class="markdown level1 summary"><p>Calculates an entire output vector u given vector of processes and setpoints (and optionally a tracking signal for split range)
 This method is useful for back-testing against historic data.</p>
 </div>
@@ -560,14 +560,14 @@ This method is useful for back-testing against historic data.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAntiSurgeParams_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAntiSurgeParams_TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams)">SetAntiSurgeParams(PIDAntiSurgeParams)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetAntiSurgeParams_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetAntiSurgeParams_TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams)">SetAntiSurgeParams(PidAntiSurgeParams)</h4>
   <div class="markdown level1 summary"><p>Sets the anti-surge &quot;kick&quot; paramters of the controller</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetAntiSurgeParams(PIDAntiSurgeParams antiSurgeParams)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetAntiSurgeParams(PidAntiSurgeParams antiSurgeParams)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -580,7 +580,7 @@ This method is useful for back-testing against historic data.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html">PIDAntiSurgeParams</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html">PidAntiSurgeParams</a></td>
         <td><span class="parametername">antiSurgeParams</span></td>
         <td></td>
       </tr>
@@ -588,8 +588,8 @@ This method is useful for back-testing against historic data.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAutoMode_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAutoMode" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode">SetAutoMode()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetAutoMode_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetAutoMode" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode">SetAutoMode()</h4>
   <div class="markdown level1 summary"><p>Set the control to autoamtic mode (i.e. u varies based on inputs and settings) (use SetManualMode to switch back)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -599,15 +599,15 @@ This method is useful for back-testing against historic data.</p>
   </div>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetFeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetFeedForward_TimeSeriesAnalysis_Dynamic_PIDfeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward(TimeSeriesAnalysis.Dynamic.PIDfeedForward)">SetFeedForward(PIDfeedForward)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetFeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetFeedForward_TimeSeriesAnalysis_Dynamic_PidFeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward(TimeSeriesAnalysis.Dynamic.PidFeedForward)">SetFeedForward(PidFeedForward)</h4>
   <div class="markdown level1 summary"><p>Set the feedforward of the controller
 Re-calling this setter to update</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetFeedForward(PIDfeedForward feedForwardObj)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetFeedForward(PidFeedForward feedForwardObj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -620,7 +620,7 @@ Re-calling this setter to update</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDfeedForward.html">PIDfeedForward</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidFeedForward.html">PidFeedForward</a></td>
         <td><span class="parametername">feedForwardObj</span></td>
         <td></td>
       </tr>
@@ -628,15 +628,15 @@ Re-calling this setter to update</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetGainScehduling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetGainScehduling_TimeSeriesAnalysis_Dynamic_PIDgainScheduling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)">SetGainScehduling(PIDgainScheduling)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetGainScehduling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetGainScehduling_TimeSeriesAnalysis_Dynamic_PidGainScheduling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)">SetGainScehduling(PidGainScheduling)</h4>
   <div class="markdown level1 summary"><p>Set the gain scheduling of the controller (by default controller has no gain-scheduling)
 Re-calling this setter to update gain-scheduling</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetGainScehduling(PIDgainScheduling gainSchedulingObj)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetGainScehduling(PidGainScheduling gainSchedulingObj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -649,7 +649,7 @@ Re-calling this setter to update gain-scheduling</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html">PIDgainScheduling</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidGainScheduling.html">PidGainScheduling</a></td>
         <td><span class="parametername">gainSchedulingObj</span></td>
         <td></td>
       </tr>
@@ -657,8 +657,8 @@ Re-calling this setter to update gain-scheduling</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetKp_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetKp_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp(System.Double)">SetKp(Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetKp_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetKp*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetKp_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetKp(System.Double)">SetKp(Double)</h4>
   <div class="markdown level1 summary"><p>Sets the Proportional gain(P) of the controller</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -685,8 +685,8 @@ Re-calling this setter to update gain-scheduling</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualMode_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualMode" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode">SetManualMode()</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetManualMode_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetManualMode*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetManualMode" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetManualMode">SetManualMode()</h4>
   <div class="markdown level1 summary"><p>Set the control to manual mode (i.e. constant u). Will cause a bumpless transfer.(use SetAutoMode to switch back)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -696,8 +696,8 @@ Re-calling this setter to update gain-scheduling</p>
   </div>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualOutput_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualOutput_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput(System.Double)">SetManualOutput(Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetManualOutput_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetManualOutput_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput(System.Double)">SetManualOutput(Double)</h4>
   <div class="markdown level1 summary"><p>Set the manual output of the model (will only be used if set)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -724,14 +724,14 @@ Re-calling this setter to update gain-scheduling</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetScaling_TimeSeriesAnalysis_Dynamic_PIDscaling_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling(TimeSeriesAnalysis.Dynamic.PIDscaling)">SetScaling(PIDscaling)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetScaling*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetScaling_TimeSeriesAnalysis_Dynamic_PidScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetScaling(TimeSeriesAnalysis.Dynamic.PidScaling)">SetScaling(PidScaling)</h4>
   <div class="markdown level1 summary"><p>Gives a PIDscaling object that specifies how input and output is to be scaled.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetScaling(PIDscaling pidScaling)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetScaling(PidScaling pidScaling)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -744,7 +744,7 @@ Re-calling this setter to update gain-scheduling</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PIDscaling.html">PIDscaling</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidScaling.html">PidScaling</a></td>
         <td><span class="parametername">pidScaling</span></td>
         <td></td>
       </tr>
@@ -752,8 +752,8 @@ Re-calling this setter to update gain-scheduling</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTd_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTd_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd(System.Double)">SetTd(Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetTd_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetTd*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetTd_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetTd(System.Double)">SetTd(Double)</h4>
   <div class="markdown level1 summary"><p>Sets the differential(D) time contant of the controller in seconds</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -780,8 +780,8 @@ Re-calling this setter to update gain-scheduling</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTi_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTi_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi(System.Double)">SetTi(Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetTi_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetTi*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetTi_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetTi(System.Double)">SetTi(Double)</h4>
   <div class="markdown level1 summary"><p>Sets the Integral(I) time contant of the controller in seconds</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -808,8 +808,8 @@ Re-calling this setter to update gain-scheduling</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTrackingOffset_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTrackingOffset_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset(System.Double,System.Double)">SetTrackingOffset(Double, Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetTrackingOffset_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetTrackingOffset_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset(System.Double,System.Double)">SetTrackingOffset(Double, Double)</h4>
   <div class="markdown level1 summary"><p>Set the offset that is to be added or subtracte to a split range controller that is inactive or tracking.
 If this value is above zero, then the controller is MIN SELECT,
 if this value is negative then the controller is assumed MAX SELECT
@@ -845,8 +845,8 @@ to determine if its output was selected by looking at the tracking signal.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetU0ForPcontrol_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetU0ForPcontrol_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol(System.Double)">SetU0ForPcontrol(Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetU0ForPcontrol_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetU0ForPcontrol_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol(System.Double)">SetU0ForPcontrol(Double)</h4>
   <div class="markdown level1 summary"><p>For proportional-only controllers (P-controllers), a u0 offset to be added to u is specified by this method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -873,8 +873,8 @@ to determine if its output was selected by looking at the tracking signal.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetYFilter_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_SetYFilter_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter(System.Double,System.Int32)">SetYFilter(Double, Int32)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetYFilter_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetYFilter*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetYFilter_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetYFilter(System.Double,System.Int32)">SetYFilter(Double, Int32)</h4>
   <div class="markdown level1 summary"><p>Sets the filter time constant in seconds and the filter order (1. or 2. order supported) of low-pass filter to be applied to the process
 measurement y</p>
 </div>
@@ -907,8 +907,8 @@ measurement y</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PIDcontroller_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PIDcontroller_WarmStart_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart(System.Double,System.Double,System.Double)">WarmStart(Double, Double, Double)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.WarmStart*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_WarmStart_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.WarmStart(System.Double,System.Double,System.Double)">WarmStart(Double, Double, Double)</h4>
   <div class="markdown level1 summary"><p>Initalizes the controller internal state(integral term) to be steady at the given process value and output value,
 useful to avoid bumps when staring controller</p>
 </div>

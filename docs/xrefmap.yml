@@ -1557,546 +1557,546 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.MovingAvg.Filter
   nameWithType: MovingAvg.Filter
-- uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams
-  name: PIDAntiSurgeParams
-  href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams
-  fullName: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams
-  nameWithType: PIDAntiSurgeParams
-- uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.#ctor(System.Double,System.Nullable{System.Double},System.Int32,System.Double)
-  name: PIDAntiSurgeParams(Double, Nullable<Double>, Int32, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams__ctor_System_Double_System_Nullable_System_Double__System_Int32_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.#ctor(System.Double,System.Nullable{System.Double},System.Int32,System.Double)
-  name.vb: PIDAntiSurgeParams(Double, Nullable(Of Double), Int32, Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.PIDAntiSurgeParams(System.Double, System.Nullable<System.Double>, System.Int32, System.Double)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.PIDAntiSurgeParams(System.Double, System.Nullable(Of System.Double), System.Int32, System.Double)
-  nameWithType: PIDAntiSurgeParams.PIDAntiSurgeParams(Double, Nullable<Double>, Int32, Double)
-  nameWithType.vb: PIDAntiSurgeParams.PIDAntiSurgeParams(Double, Nullable(Of Double), Int32, Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.#ctor*
-  name: PIDAntiSurgeParams
-  href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.#ctor
+- uid: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams
+  name: PidAntiSurgeParams
+  href: api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams
+  fullName: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams
+  nameWithType: PidAntiSurgeParams
+- uid: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.#ctor(System.Double,System.Nullable{System.Double},System.Int32,System.Double)
+  name: PidAntiSurgeParams(Double, Nullable<Double>, Int32, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams__ctor_System_Double_System_Nullable_System_Double__System_Int32_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.#ctor(System.Double,System.Nullable{System.Double},System.Int32,System.Double)
+  name.vb: PidAntiSurgeParams(Double, Nullable(Of Double), Int32, Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.PidAntiSurgeParams(System.Double, System.Nullable<System.Double>, System.Int32, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.PidAntiSurgeParams(System.Double, System.Nullable(Of System.Double), System.Int32, System.Double)
+  nameWithType: PidAntiSurgeParams.PidAntiSurgeParams(Double, Nullable<Double>, Int32, Double)
+  nameWithType.vb: PidAntiSurgeParams.PidAntiSurgeParams(Double, Nullable(Of Double), Int32, Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.#ctor*
+  name: PidAntiSurgeParams
+  href: api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.PIDAntiSurgeParams
-  nameWithType: PIDAntiSurgeParams.PIDAntiSurgeParams
-- uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.ffRampDownRatePrcPerMin
+  fullName: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.PidAntiSurgeParams
+  nameWithType: PidAntiSurgeParams.PidAntiSurgeParams
+- uid: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.ffRampDownRatePrcPerMin
   name: ffRampDownRatePrcPerMin
-  href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_ffRampDownRatePrcPerMin
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.ffRampDownRatePrcPerMin
-  fullName: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.ffRampDownRatePrcPerMin
-  nameWithType: PIDAntiSurgeParams.ffRampDownRatePrcPerMin
-- uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickBelowThresholdE
+  href: api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_ffRampDownRatePrcPerMin
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.ffRampDownRatePrcPerMin
+  fullName: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.ffRampDownRatePrcPerMin
+  nameWithType: PidAntiSurgeParams.ffRampDownRatePrcPerMin
+- uid: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickBelowThresholdE
   name: kickBelowThresholdE
-  href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_kickBelowThresholdE
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickBelowThresholdE
-  fullName: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickBelowThresholdE
-  nameWithType: PIDAntiSurgeParams.kickBelowThresholdE
-- uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickPrcPerSec
+  href: api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_kickBelowThresholdE
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickBelowThresholdE
+  fullName: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickBelowThresholdE
+  nameWithType: PidAntiSurgeParams.kickBelowThresholdE
+- uid: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickPrcPerSec
   name: kickPrcPerSec
-  href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_kickPrcPerSec
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickPrcPerSec
-  fullName: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.kickPrcPerSec
-  nameWithType: PIDAntiSurgeParams.kickPrcPerSec
-- uid: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.nKicksFound
+  href: api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_kickPrcPerSec
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickPrcPerSec
+  fullName: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.kickPrcPerSec
+  nameWithType: PidAntiSurgeParams.kickPrcPerSec
+- uid: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.nKicksFound
   name: nKicksFound
-  href: api/TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_nKicksFound
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.nKicksFound
-  fullName: TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams.nKicksFound
-  nameWithType: PIDAntiSurgeParams.nKicksFound
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller
-  name: PIDcontroller
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PIDcontroller
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller
-  nameWithType: PIDcontroller
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)
-  name: PIDcontroller(Double, Double, Double, Double, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller__ctor_System_Double_System_Double_System_Double_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.PIDcontroller(System.Double, System.Double, System.Double, System.Double, System.Double)
-  nameWithType: PIDcontroller.PIDcontroller(Double, Double, Double, Double, Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor*
-  name: PIDcontroller
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.#ctor
+  href: api/TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html#TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_nKicksFound
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.nKicksFound
+  fullName: TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.nKicksFound
+  nameWithType: PidAntiSurgeParams.nKicksFound
+- uid: TimeSeriesAnalysis.Dynamic.PidController
+  name: PidController
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidController
+  fullName: TimeSeriesAnalysis.Dynamic.PidController
+  nameWithType: PidController
+- uid: TimeSeriesAnalysis.Dynamic.PidController.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)
+  name: PidController(Double, Double, Double, Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController__ctor_System_Double_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.PidController(System.Double, System.Double, System.Double, System.Double, System.Double)
+  nameWithType: PidController.PidController(Double, Double, Double, Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.#ctor*
+  name: PidController
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.PIDcontroller
-  nameWithType: PIDcontroller.PIDcontroller
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.PidController
+  nameWithType: PidController.PidController
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus
   name: GetControllerStatus()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetControllerStatus
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus()
-  nameWithType: PIDcontroller.GetControllerStatus()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetControllerStatus
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus()
+  nameWithType: PidController.GetControllerStatus()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus*
   name: GetControllerStatus
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetControllerStatus_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetControllerStatus_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetControllerStatus
-  nameWithType: PIDcontroller.GetControllerStatus
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetControllerStatus
+  nameWithType: PidController.GetControllerStatus
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward
   name: GetFeedForward()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetFeedForward
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward()
-  nameWithType: PIDcontroller.GetFeedForward()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetFeedForward
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward()
+  nameWithType: PidController.GetFeedForward()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward*
   name: GetFeedForward
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetFeedForward_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetFeedForward_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetFeedForward
-  nameWithType: PIDcontroller.GetFeedForward
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)
-  name: GetGainScehduling(PIDgainScheduling)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetGainScehduling_TimeSeriesAnalysis_Dynamic_PIDgainScheduling_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)
-  nameWithType: PIDcontroller.GetGainScehduling(PIDgainScheduling)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling*
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetFeedForward
+  nameWithType: PidController.GetFeedForward
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)
+  name: GetGainScehduling(PidGainScheduling)
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetGainScehduling_TimeSeriesAnalysis_Dynamic_PidGainScheduling_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)
+  nameWithType: PidController.GetGainScehduling(PidGainScheduling)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling*
   name: GetGainScehduling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetGainScehduling_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetGainScehduling_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetGainScehduling
-  nameWithType: PIDcontroller.GetGainScehduling
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetGainScehduling
+  nameWithType: PidController.GetGainScehduling
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetScaling
   name: GetScaling()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetScaling
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling()
-  nameWithType: PIDcontroller.GetScaling()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetScaling
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetScaling
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetScaling()
+  nameWithType: PidController.GetScaling()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetScaling*
   name: GetScaling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetScaling_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetScaling_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetScaling
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetScaling
-  nameWithType: PIDcontroller.GetScaling
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetScaling
+  nameWithType: PidController.GetScaling
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase
   name: GetTimeBase()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTimeBase
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase()
-  nameWithType: PIDcontroller.GetTimeBase()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetTimeBase
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase()
+  nameWithType: PidController.GetTimeBase()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase*
   name: GetTimeBase
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTimeBase_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetTimeBase_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTimeBase
-  nameWithType: PIDcontroller.GetTimeBase
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetTimeBase
+  nameWithType: PidController.GetTimeBase
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff
   name: GetTrackingCutoff()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingCutoff
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff()
-  nameWithType: PIDcontroller.GetTrackingCutoff()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetTrackingCutoff
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff()
+  nameWithType: PidController.GetTrackingCutoff()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff*
   name: GetTrackingCutoff
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingCutoff_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetTrackingCutoff_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingCutoff
-  nameWithType: PIDcontroller.GetTrackingCutoff
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingCutoff
+  nameWithType: PidController.GetTrackingCutoff
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset
   name: GetTrackingOffset()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingOffset
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset()
-  nameWithType: PIDcontroller.GetTrackingOffset()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetTrackingOffset
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset()
+  nameWithType: PidController.GetTrackingOffset()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset*
   name: GetTrackingOffset
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetTrackingOffset_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetTrackingOffset_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetTrackingOffset
-  nameWithType: PIDcontroller.GetTrackingOffset
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetTrackingOffset
+  nameWithType: PidController.GetTrackingOffset
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto
   name: GetUIfInAuto()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUIfInAuto
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto()
-  nameWithType: PIDcontroller.GetUIfInAuto()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetUIfInAuto
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto()
+  nameWithType: PidController.GetUIfInAuto()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto*
   name: GetUIfInAuto
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUIfInAuto_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetUIfInAuto_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUIfInAuto
-  nameWithType: PIDcontroller.GetUIfInAuto
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetUIfInAuto
+  nameWithType: PidController.GetUIfInAuto
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking
   name: GetUWithoutTracking()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUWithoutTracking
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking()
-  nameWithType: PIDcontroller.GetUWithoutTracking()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetUWithoutTracking
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking()
+  nameWithType: PidController.GetUWithoutTracking()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking*
   name: GetUWithoutTracking
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_GetUWithoutTracking_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_GetUWithoutTracking_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.GetUWithoutTracking
-  nameWithType: PIDcontroller.GetUWithoutTracking
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.GetUWithoutTracking
+  nameWithType: PidController.GetUWithoutTracking
+- uid: TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})
   name: Iterate(Double, Double, Nullable<Double>, Nullable<Double>, Nullable<Double>)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double_System_Double_System_Nullable_System_Double__System_Nullable_System_Double__System_Nullable_System_Double__
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_Iterate_System_Double_System_Double_System_Nullable_System_Double__System_Nullable_System_Double__System_Nullable_System_Double__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double,System.Double,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})
   name.vb: Iterate(Double, Double, Nullable(Of Double), Nullable(Of Double), Nullable(Of Double))
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double, System.Double, System.Nullable<System.Double>, System.Nullable<System.Double>, System.Nullable<System.Double>)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double, System.Double, System.Nullable(Of System.Double), System.Nullable(Of System.Double), System.Nullable(Of System.Double))
-  nameWithType: PIDcontroller.Iterate(Double, Double, Nullable<Double>, Nullable<Double>, Nullable<Double>)
-  nameWithType.vb: PIDcontroller.Iterate(Double, Double, Nullable(Of Double), Nullable(Of Double), Nullable(Of Double))
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double[],System.Double[],System.Double[])
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double, System.Double, System.Nullable<System.Double>, System.Nullable<System.Double>, System.Nullable<System.Double>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double, System.Double, System.Nullable(Of System.Double), System.Nullable(Of System.Double), System.Nullable(Of System.Double))
+  nameWithType: PidController.Iterate(Double, Double, Nullable<Double>, Nullable<Double>, Nullable<Double>)
+  nameWithType.vb: PidController.Iterate(Double, Double, Nullable(Of Double), Nullable(Of Double), Nullable(Of Double))
+- uid: TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double[],System.Double[],System.Double[])
   name: Iterate(Double[], Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_System_Double___System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double[],System.Double[],System.Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_Iterate_System_Double___System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double[],System.Double[],System.Double[])
   name.vb: Iterate(Double(), Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double[], System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate(System.Double(), System.Double(), System.Double())
-  nameWithType: PIDcontroller.Iterate(Double[], Double[], Double[])
-  nameWithType.vb: PIDcontroller.Iterate(Double(), Double(), Double())
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate*
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double[], System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PidController.Iterate(System.Double(), System.Double(), System.Double())
+  nameWithType: PidController.Iterate(Double[], Double[], Double[])
+  nameWithType.vb: PidController.Iterate(Double(), Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.PidController.Iterate*
   name: Iterate
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_Iterate_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_Iterate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.Iterate
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.Iterate
-  nameWithType: PIDcontroller.Iterate
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams)
-  name: SetAntiSurgeParams(PIDAntiSurgeParams)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAntiSurgeParams_TimeSeriesAnalysis_Dynamic_PIDAntiSurgeParams_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PIDAntiSurgeParams)
-  nameWithType: PIDcontroller.SetAntiSurgeParams(PIDAntiSurgeParams)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams*
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.Iterate
+  nameWithType: PidController.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams)
+  name: SetAntiSurgeParams(PidAntiSurgeParams)
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetAntiSurgeParams_TimeSeriesAnalysis_Dynamic_PidAntiSurgeParams_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams(TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams)
+  nameWithType: PidController.SetAntiSurgeParams(PidAntiSurgeParams)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams*
   name: SetAntiSurgeParams
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAntiSurgeParams_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetAntiSurgeParams_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAntiSurgeParams
-  nameWithType: PIDcontroller.SetAntiSurgeParams
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetAntiSurgeParams
+  nameWithType: PidController.SetAntiSurgeParams
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode
   name: SetAutoMode()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAutoMode
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode()
-  nameWithType: PIDcontroller.SetAutoMode()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetAutoMode
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode()
+  nameWithType: PidController.SetAutoMode()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode*
   name: SetAutoMode
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetAutoMode_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetAutoMode_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetAutoMode
-  nameWithType: PIDcontroller.SetAutoMode
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward(TimeSeriesAnalysis.Dynamic.PIDfeedForward)
-  name: SetFeedForward(PIDfeedForward)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetFeedForward_TimeSeriesAnalysis_Dynamic_PIDfeedForward_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward(TimeSeriesAnalysis.Dynamic.PIDfeedForward)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward(TimeSeriesAnalysis.Dynamic.PIDfeedForward)
-  nameWithType: PIDcontroller.SetFeedForward(PIDfeedForward)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward*
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetAutoMode
+  nameWithType: PidController.SetAutoMode
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward(TimeSeriesAnalysis.Dynamic.PidFeedForward)
+  name: SetFeedForward(PidFeedForward)
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetFeedForward_TimeSeriesAnalysis_Dynamic_PidFeedForward_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward(TimeSeriesAnalysis.Dynamic.PidFeedForward)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward(TimeSeriesAnalysis.Dynamic.PidFeedForward)
+  nameWithType: PidController.SetFeedForward(PidFeedForward)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward*
   name: SetFeedForward
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetFeedForward_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetFeedForward_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetFeedForward
-  nameWithType: PIDcontroller.SetFeedForward
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)
-  name: SetGainScehduling(PIDgainScheduling)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetGainScehduling_TimeSeriesAnalysis_Dynamic_PIDgainScheduling_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PIDgainScheduling)
-  nameWithType: PIDcontroller.SetGainScehduling(PIDgainScheduling)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling*
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetFeedForward
+  nameWithType: PidController.SetFeedForward
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)
+  name: SetGainScehduling(PidGainScheduling)
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetGainScehduling_TimeSeriesAnalysis_Dynamic_PidGainScheduling_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling(TimeSeriesAnalysis.Dynamic.PidGainScheduling)
+  nameWithType: PidController.SetGainScehduling(PidGainScheduling)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling*
   name: SetGainScehduling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetGainScehduling_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetGainScehduling_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetGainScehduling
-  nameWithType: PIDcontroller.SetGainScehduling
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetGainScehduling
+  nameWithType: PidController.SetGainScehduling
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetKp(System.Double)
   name: SetKp(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetKp_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp(System.Double)
-  nameWithType: PIDcontroller.SetKp(Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetKp_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetKp(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetKp(System.Double)
+  nameWithType: PidController.SetKp(Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetKp*
   name: SetKp
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetKp_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetKp_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetKp
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetKp
-  nameWithType: PIDcontroller.SetKp
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetKp
+  nameWithType: PidController.SetKp
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetManualMode
   name: SetManualMode()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualMode
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode()
-  nameWithType: PIDcontroller.SetManualMode()
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetManualMode
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetManualMode
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetManualMode()
+  nameWithType: PidController.SetManualMode()
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetManualMode*
   name: SetManualMode
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualMode_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetManualMode_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetManualMode
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualMode
-  nameWithType: PIDcontroller.SetManualMode
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetManualMode
+  nameWithType: PidController.SetManualMode
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput(System.Double)
   name: SetManualOutput(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualOutput_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput(System.Double)
-  nameWithType: PIDcontroller.SetManualOutput(Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetManualOutput_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput(System.Double)
+  nameWithType: PidController.SetManualOutput(Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput*
   name: SetManualOutput
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetManualOutput_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetManualOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetManualOutput
-  nameWithType: PIDcontroller.SetManualOutput
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling(TimeSeriesAnalysis.Dynamic.PIDscaling)
-  name: SetScaling(PIDscaling)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetScaling_TimeSeriesAnalysis_Dynamic_PIDscaling_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling(TimeSeriesAnalysis.Dynamic.PIDscaling)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling(TimeSeriesAnalysis.Dynamic.PIDscaling)
-  nameWithType: PIDcontroller.SetScaling(PIDscaling)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling*
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetManualOutput
+  nameWithType: PidController.SetManualOutput
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetScaling(TimeSeriesAnalysis.Dynamic.PidScaling)
+  name: SetScaling(PidScaling)
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetScaling_TimeSeriesAnalysis_Dynamic_PidScaling_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetScaling(TimeSeriesAnalysis.Dynamic.PidScaling)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetScaling(TimeSeriesAnalysis.Dynamic.PidScaling)
+  nameWithType: PidController.SetScaling(PidScaling)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetScaling*
   name: SetScaling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetScaling_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetScaling_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetScaling
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetScaling
-  nameWithType: PIDcontroller.SetScaling
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetScaling
+  nameWithType: PidController.SetScaling
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetTd(System.Double)
   name: SetTd(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTd_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd(System.Double)
-  nameWithType: PIDcontroller.SetTd(Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetTd_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetTd(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetTd(System.Double)
+  nameWithType: PidController.SetTd(Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetTd*
   name: SetTd
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTd_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetTd_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetTd
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTd
-  nameWithType: PIDcontroller.SetTd
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetTd
+  nameWithType: PidController.SetTd
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetTi(System.Double)
   name: SetTi(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTi_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi(System.Double)
-  nameWithType: PIDcontroller.SetTi(Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetTi_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetTi(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetTi(System.Double)
+  nameWithType: PidController.SetTi(Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetTi*
   name: SetTi
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTi_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetTi_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetTi
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTi
-  nameWithType: PIDcontroller.SetTi
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetTi
+  nameWithType: PidController.SetTi
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset(System.Double,System.Double)
   name: SetTrackingOffset(Double, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTrackingOffset_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset(System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset(System.Double, System.Double)
-  nameWithType: PIDcontroller.SetTrackingOffset(Double, Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetTrackingOffset_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset(System.Double, System.Double)
+  nameWithType: PidController.SetTrackingOffset(Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset*
   name: SetTrackingOffset
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetTrackingOffset_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetTrackingOffset_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetTrackingOffset
-  nameWithType: PIDcontroller.SetTrackingOffset
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetTrackingOffset
+  nameWithType: PidController.SetTrackingOffset
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol(System.Double)
   name: SetU0ForPcontrol(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetU0ForPcontrol_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol(System.Double)
-  nameWithType: PIDcontroller.SetU0ForPcontrol(Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetU0ForPcontrol_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol(System.Double)
+  nameWithType: PidController.SetU0ForPcontrol(Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol*
   name: SetU0ForPcontrol
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetU0ForPcontrol_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetU0ForPcontrol_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetU0ForPcontrol
-  nameWithType: PIDcontroller.SetU0ForPcontrol
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetU0ForPcontrol
+  nameWithType: PidController.SetU0ForPcontrol
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetYFilter(System.Double,System.Int32)
   name: SetYFilter(Double, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetYFilter_System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter(System.Double,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter(System.Double, System.Int32)
-  nameWithType: PIDcontroller.SetYFilter(Double, Int32)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetYFilter_System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.SetYFilter(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetYFilter(System.Double, System.Int32)
+  nameWithType: PidController.SetYFilter(Double, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.SetYFilter*
   name: SetYFilter
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_SetYFilter_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_SetYFilter_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.SetYFilter
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.SetYFilter
-  nameWithType: PIDcontroller.SetYFilter
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart(System.Double,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.SetYFilter
+  nameWithType: PidController.SetYFilter
+- uid: TimeSeriesAnalysis.Dynamic.PidController.WarmStart(System.Double,System.Double,System.Double)
   name: WarmStart(Double, Double, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_WarmStart_System_Double_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart(System.Double,System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart(System.Double, System.Double, System.Double)
-  nameWithType: PIDcontroller.WarmStart(Double, Double, Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart*
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_WarmStart_System_Double_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidController.WarmStart(System.Double,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.WarmStart(System.Double, System.Double, System.Double)
+  nameWithType: PidController.WarmStart(Double, Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidController.WarmStart*
   name: WarmStart
-  href: api/TimeSeriesAnalysis.Dynamic.PIDcontroller.html#TimeSeriesAnalysis_Dynamic_PIDcontroller_WarmStart_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart
+  href: api/TimeSeriesAnalysis.Dynamic.PidController.html#TimeSeriesAnalysis_Dynamic_PidController_WarmStart_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidController.WarmStart
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDcontroller.WarmStart
-  nameWithType: PIDcontroller.WarmStart
-- uid: TimeSeriesAnalysis.Dynamic.PIDfeedForward
-  name: PIDfeedForward
-  href: api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PIDfeedForward
-  fullName: TimeSeriesAnalysis.Dynamic.PIDfeedForward
-  nameWithType: PIDfeedForward
-- uid: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_Gain
+  fullName: TimeSeriesAnalysis.Dynamic.PidController.WarmStart
+  nameWithType: PidController.WarmStart
+- uid: TimeSeriesAnalysis.Dynamic.PidFeedForward
+  name: PidFeedForward
+  href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidFeedForward
+  fullName: TimeSeriesAnalysis.Dynamic.PidFeedForward
+  nameWithType: PidFeedForward
+- uid: TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_Gain
   name: FF_Gain
-  href: api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html#TimeSeriesAnalysis_Dynamic_PIDfeedForward_FF_Gain
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_Gain
-  fullName: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_Gain
-  nameWithType: PIDfeedForward.FF_Gain
-- uid: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_HP_Tc_s
+  href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html#TimeSeriesAnalysis_Dynamic_PidFeedForward_FF_Gain
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_Gain
+  fullName: TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_Gain
+  nameWithType: PidFeedForward.FF_Gain
+- uid: TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_HP_Tc_s
   name: FF_HP_Tc_s
-  href: api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html#TimeSeriesAnalysis_Dynamic_PIDfeedForward_FF_HP_Tc_s
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_HP_Tc_s
-  fullName: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_HP_Tc_s
-  nameWithType: PIDfeedForward.FF_HP_Tc_s
-- uid: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_LP_Tc_s
+  href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html#TimeSeriesAnalysis_Dynamic_PidFeedForward_FF_HP_Tc_s
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_HP_Tc_s
+  fullName: TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_HP_Tc_s
+  nameWithType: PidFeedForward.FF_HP_Tc_s
+- uid: TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_LP_Tc_s
   name: FF_LP_Tc_s
-  href: api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html#TimeSeriesAnalysis_Dynamic_PIDfeedForward_FF_LP_Tc_s
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_LP_Tc_s
-  fullName: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FF_LP_Tc_s
-  nameWithType: PIDfeedForward.FF_LP_Tc_s
-- uid: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FFHP_filter_order
+  href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html#TimeSeriesAnalysis_Dynamic_PidFeedForward_FF_LP_Tc_s
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_LP_Tc_s
+  fullName: TimeSeriesAnalysis.Dynamic.PidFeedForward.FF_LP_Tc_s
+  nameWithType: PidFeedForward.FF_LP_Tc_s
+- uid: TimeSeriesAnalysis.Dynamic.PidFeedForward.FFHP_filter_order
   name: FFHP_filter_order
-  href: api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html#TimeSeriesAnalysis_Dynamic_PIDfeedForward_FFHP_filter_order
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDfeedForward.FFHP_filter_order
-  fullName: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FFHP_filter_order
-  nameWithType: PIDfeedForward.FFHP_filter_order
-- uid: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FFLP_filter_order
+  href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html#TimeSeriesAnalysis_Dynamic_PidFeedForward_FFHP_filter_order
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidFeedForward.FFHP_filter_order
+  fullName: TimeSeriesAnalysis.Dynamic.PidFeedForward.FFHP_filter_order
+  nameWithType: PidFeedForward.FFHP_filter_order
+- uid: TimeSeriesAnalysis.Dynamic.PidFeedForward.FFLP_filter_order
   name: FFLP_filter_order
-  href: api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html#TimeSeriesAnalysis_Dynamic_PIDfeedForward_FFLP_filter_order
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDfeedForward.FFLP_filter_order
-  fullName: TimeSeriesAnalysis.Dynamic.PIDfeedForward.FFLP_filter_order
-  nameWithType: PIDfeedForward.FFLP_filter_order
-- uid: TimeSeriesAnalysis.Dynamic.PIDfeedForward.isFFActive
+  href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html#TimeSeriesAnalysis_Dynamic_PidFeedForward_FFLP_filter_order
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidFeedForward.FFLP_filter_order
+  fullName: TimeSeriesAnalysis.Dynamic.PidFeedForward.FFLP_filter_order
+  nameWithType: PidFeedForward.FFLP_filter_order
+- uid: TimeSeriesAnalysis.Dynamic.PidFeedForward.isFFActive
   name: isFFActive
-  href: api/TimeSeriesAnalysis.Dynamic.PIDfeedForward.html#TimeSeriesAnalysis_Dynamic_PIDfeedForward_isFFActive
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDfeedForward.isFFActive
-  fullName: TimeSeriesAnalysis.Dynamic.PIDfeedForward.isFFActive
-  nameWithType: PIDfeedForward.isFFActive
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling
-  name: PIDgainScheduling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PIDgainScheduling
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling
-  nameWithType: PIDgainScheduling
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.#ctor
-  name: PIDgainScheduling()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling__ctor
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.#ctor
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.PIDgainScheduling()
-  nameWithType: PIDgainScheduling.PIDgainScheduling()
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.#ctor(System.Double,System.Double)
-  name: PIDgainScheduling(Double, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling__ctor_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.#ctor(System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.PIDgainScheduling(System.Double, System.Double)
-  nameWithType: PIDgainScheduling.PIDgainScheduling(Double, Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.#ctor*
-  name: PIDgainScheduling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.#ctor
+  href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html#TimeSeriesAnalysis_Dynamic_PidFeedForward_isFFActive
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidFeedForward.isFFActive
+  fullName: TimeSeriesAnalysis.Dynamic.PidFeedForward.isFFActive
+  nameWithType: PidFeedForward.isFFActive
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling
+  name: PidGainScheduling
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidGainScheduling
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling
+  nameWithType: PidGainScheduling
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.#ctor
+  name: PidGainScheduling()
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidGainScheduling.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.PidGainScheduling()
+  nameWithType: PidGainScheduling.PidGainScheduling()
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.#ctor(System.Double,System.Double)
+  name: PidGainScheduling(Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling__ctor_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidGainScheduling.#ctor(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.PidGainScheduling(System.Double, System.Double)
+  nameWithType: PidGainScheduling.PidGainScheduling(Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.#ctor*
+  name: PidGainScheduling
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidGainScheduling.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.PIDgainScheduling
-  nameWithType: PIDgainScheduling.PIDgainScheduling
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_1
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.PidGainScheduling
+  nameWithType: PidGainScheduling.PidGainScheduling
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_1
   name: GS_Kp_1
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Kp_1
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_1
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_1
-  nameWithType: PIDgainScheduling.GS_Kp_1
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_2
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Kp_1
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_1
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_1
+  nameWithType: PidGainScheduling.GS_Kp_1
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_2
   name: GS_Kp_2
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Kp_2
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_2
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_2
-  nameWithType: PIDgainScheduling.GS_Kp_2
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_Max
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Kp_2
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_2
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_2
+  nameWithType: PidGainScheduling.GS_Kp_2
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_Max
   name: GS_Kp_Max
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Kp_Max
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_Max
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_Max
-  nameWithType: PIDgainScheduling.GS_Kp_Max
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_Min
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Kp_Max
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_Max
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_Max
+  nameWithType: PidGainScheduling.GS_Kp_Max
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_Min
   name: GS_Kp_Min
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Kp_Min
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_Min
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Kp_Min
-  nameWithType: PIDgainScheduling.GS_Kp_Min
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_1
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Kp_Min
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_Min
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Kp_Min
+  nameWithType: PidGainScheduling.GS_Kp_Min
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_1
   name: GS_Ti_1
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Ti_1
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_1
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_1
-  nameWithType: PIDgainScheduling.GS_Ti_1
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_2
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Ti_1
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_1
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_1
+  nameWithType: PidGainScheduling.GS_Ti_1
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_2
   name: GS_Ti_2
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Ti_2
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_2
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_2
-  nameWithType: PIDgainScheduling.GS_Ti_2
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_Max
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Ti_2
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_2
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_2
+  nameWithType: PidGainScheduling.GS_Ti_2
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_Max
   name: GS_Ti_Max
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Ti_Max
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_Max
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_Max
-  nameWithType: PIDgainScheduling.GS_Ti_Max
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_Min
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Ti_Max
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_Max
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_Max
+  nameWithType: PidGainScheduling.GS_Ti_Max
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_Min
   name: GS_Ti_Min
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_Ti_Min
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_Min
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_Ti_Min
-  nameWithType: PIDgainScheduling.GS_Ti_Min
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_1
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_Ti_Min
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_Min
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_Ti_Min
+  nameWithType: PidGainScheduling.GS_Ti_Min
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_1
   name: GS_x_1
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_x_1
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_1
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_1
-  nameWithType: PIDgainScheduling.GS_x_1
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_2
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_x_1
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_1
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_1
+  nameWithType: PidGainScheduling.GS_x_1
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_2
   name: GS_x_2
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_x_2
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_2
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_2
-  nameWithType: PIDgainScheduling.GS_x_2
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_Max
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_x_2
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_2
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_2
+  nameWithType: PidGainScheduling.GS_x_2
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_Max
   name: GS_x_Max
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_x_Max
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_Max
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_Max
-  nameWithType: PIDgainScheduling.GS_x_Max
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_Min
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_x_Max
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_Max
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_Max
+  nameWithType: PidGainScheduling.GS_x_Max
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_Min
   name: GS_x_Min
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GS_x_Min
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_Min
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GS_x_Min
-  nameWithType: PIDgainScheduling.GS_x_Min
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GSActive_b
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GS_x_Min
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_Min
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GS_x_Min
+  nameWithType: PidGainScheduling.GS_x_Min
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActive_b
   name: GSActive_b
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GSActive_b
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GSActive_b
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GSActive_b
-  nameWithType: PIDgainScheduling.GSActive_b
-- uid: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GSActiveTi_b
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GSActive_b
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActive_b
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActive_b
+  nameWithType: PidGainScheduling.GSActive_b
+- uid: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActiveTi_b
   name: GSActiveTi_b
-  href: api/TimeSeriesAnalysis.Dynamic.PIDgainScheduling.html#TimeSeriesAnalysis_Dynamic_PIDgainScheduling_GSActiveTi_b
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GSActiveTi_b
-  fullName: TimeSeriesAnalysis.Dynamic.PIDgainScheduling.GSActiveTi_b
-  nameWithType: PIDgainScheduling.GSActiveTi_b
+  href: api/TimeSeriesAnalysis.Dynamic.PidGainScheduling.html#TimeSeriesAnalysis_Dynamic_PidGainScheduling_GSActiveTi_b
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActiveTi_b
+  fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActiveTi_b
+  nameWithType: PidGainScheduling.GSActiveTi_b
 - uid: TimeSeriesAnalysis.Dynamic.PIDModel
   name: PIDModel
   href: api/TimeSeriesAnalysis.Dynamic.PIDModel.html
@@ -2374,340 +2374,340 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PIDModelParameters.Ti_s
   nameWithType: PIDModelParameters.Ti_s
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling
-  name: PIDscaling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PIDscaling
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling
-  nameWithType: PIDscaling
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.#ctor
-  name: PIDscaling()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling__ctor
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.#ctor
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.PIDscaling()
-  nameWithType: PIDscaling.PIDscaling()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.#ctor(System.Double,System.Double,System.Double,System.Double,System.Boolean)
-  name: PIDscaling(Double, Double, Double, Double, Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling__ctor_System_Double_System_Double_System_Double_System_Double_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.#ctor(System.Double,System.Double,System.Double,System.Double,System.Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.PIDscaling(System.Double, System.Double, System.Double, System.Double, System.Boolean)
-  nameWithType: PIDscaling.PIDscaling(Double, Double, Double, Double, Boolean)
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.#ctor*
-  name: PIDscaling
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.#ctor
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling
+  name: PidScaling
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidScaling
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling
+  nameWithType: PidScaling
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.#ctor
+  name: PidScaling()
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.PidScaling()
+  nameWithType: PidScaling.PidScaling()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.#ctor(System.Double,System.Double,System.Double,System.Double,System.Boolean)
+  name: PidScaling(Double, Double, Double, Double, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling__ctor_System_Double_System_Double_System_Double_System_Double_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.#ctor(System.Double,System.Double,System.Double,System.Double,System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.PidScaling(System.Double, System.Double, System.Double, System.Double, System.Boolean)
+  nameWithType: PidScaling.PidScaling(Double, Double, Double, Double, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.#ctor*
+  name: PidScaling
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.PIDscaling
-  nameWithType: PIDscaling.PIDscaling
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetKpScalingFactor
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.PidScaling
+  nameWithType: PidScaling.PidScaling
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetKpScalingFactor
   name: GetKpScalingFactor()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetKpScalingFactor
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.GetKpScalingFactor
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetKpScalingFactor()
-  nameWithType: PIDscaling.GetKpScalingFactor()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetKpScalingFactor*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetKpScalingFactor
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.GetKpScalingFactor
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetKpScalingFactor()
+  nameWithType: PidScaling.GetKpScalingFactor()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetKpScalingFactor*
   name: GetKpScalingFactor
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetKpScalingFactor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.GetKpScalingFactor
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetKpScalingFactor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.GetKpScalingFactor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetKpScalingFactor
-  nameWithType: PIDscaling.GetKpScalingFactor
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmax
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetKpScalingFactor
+  nameWithType: PidScaling.GetKpScalingFactor
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmax
   name: GetUmax()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetUmax
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmax
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmax()
-  nameWithType: PIDscaling.GetUmax()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmax*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetUmax
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.GetUmax
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmax()
+  nameWithType: PidScaling.GetUmax()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmax*
   name: GetUmax
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetUmax_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmax
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetUmax_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.GetUmax
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmax
-  nameWithType: PIDscaling.GetUmax
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmin
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmax
+  nameWithType: PidScaling.GetUmax
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmin
   name: GetUmin()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetUmin
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmin
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmin()
-  nameWithType: PIDscaling.GetUmin()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmin*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetUmin
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.GetUmin
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmin()
+  nameWithType: PidScaling.GetUmin()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmin*
   name: GetUmin
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetUmin_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmin
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetUmin_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.GetUmin
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUmin
-  nameWithType: PIDscaling.GetUmin
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUScaleFactor
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetUmin
+  nameWithType: PidScaling.GetUmin
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetUScaleFactor
   name: GetUScaleFactor()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetUScaleFactor
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.GetUScaleFactor
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUScaleFactor()
-  nameWithType: PIDscaling.GetUScaleFactor()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUScaleFactor*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetUScaleFactor
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.GetUScaleFactor
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetUScaleFactor()
+  nameWithType: PidScaling.GetUScaleFactor()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetUScaleFactor*
   name: GetUScaleFactor
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetUScaleFactor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.GetUScaleFactor
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetUScaleFactor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.GetUScaleFactor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetUScaleFactor
-  nameWithType: PIDscaling.GetUScaleFactor
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmax
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetUScaleFactor
+  nameWithType: PidScaling.GetUScaleFactor
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmax
   name: GetYmax()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetYmax
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmax
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmax()
-  nameWithType: PIDscaling.GetYmax()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmax*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetYmax
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.GetYmax
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmax()
+  nameWithType: PidScaling.GetYmax()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmax*
   name: GetYmax
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetYmax_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmax
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetYmax_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.GetYmax
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmax
-  nameWithType: PIDscaling.GetYmax
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmin
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmax
+  nameWithType: PidScaling.GetYmax
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmin
   name: GetYmin()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetYmin
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmin
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmin()
-  nameWithType: PIDscaling.GetYmin()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmin*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetYmin
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.GetYmin
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmin()
+  nameWithType: PidScaling.GetYmin()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmin*
   name: GetYmin
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetYmin_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmin
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetYmin_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.GetYmin
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYmin
-  nameWithType: PIDscaling.GetYmin
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYScaleFactor
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetYmin
+  nameWithType: PidScaling.GetYmin
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetYScaleFactor
   name: GetYScaleFactor()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetYScaleFactor
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.GetYScaleFactor
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYScaleFactor()
-  nameWithType: PIDscaling.GetYScaleFactor()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYScaleFactor*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetYScaleFactor
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.GetYScaleFactor
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetYScaleFactor()
+  nameWithType: PidScaling.GetYScaleFactor()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.GetYScaleFactor*
   name: GetYScaleFactor
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_GetYScaleFactor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.GetYScaleFactor
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_GetYScaleFactor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.GetYScaleFactor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.GetYScaleFactor
-  nameWithType: PIDscaling.GetYScaleFactor
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.IsDefault
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.GetYScaleFactor
+  nameWithType: PidScaling.GetYScaleFactor
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.IsDefault
   name: IsDefault()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_IsDefault
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.IsDefault
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.IsDefault()
-  nameWithType: PIDscaling.IsDefault()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.IsDefault*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_IsDefault
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.IsDefault
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.IsDefault()
+  nameWithType: PidScaling.IsDefault()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.IsDefault*
   name: IsDefault
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_IsDefault_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.IsDefault
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_IsDefault_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.IsDefault
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.IsDefault
-  nameWithType: PIDscaling.IsDefault
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.IsEstimated
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.IsDefault
+  nameWithType: PidScaling.IsDefault
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.IsEstimated
   name: IsEstimated()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_IsEstimated
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.IsEstimated
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.IsEstimated()
-  nameWithType: PIDscaling.IsEstimated()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.IsEstimated*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_IsEstimated
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.IsEstimated
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.IsEstimated()
+  nameWithType: PidScaling.IsEstimated()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.IsEstimated*
   name: IsEstimated
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_IsEstimated_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.IsEstimated
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_IsEstimated_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.IsEstimated
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.IsEstimated
-  nameWithType: PIDscaling.IsEstimated
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.IsKpScalingOn
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.IsEstimated
+  nameWithType: PidScaling.IsEstimated
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.IsKpScalingOn
   name: IsKpScalingOn()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_IsKpScalingOn
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.IsKpScalingOn
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.IsKpScalingOn()
-  nameWithType: PIDscaling.IsKpScalingOn()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.IsKpScalingOn*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_IsKpScalingOn
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.IsKpScalingOn
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.IsKpScalingOn()
+  nameWithType: PidScaling.IsKpScalingOn()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.IsKpScalingOn*
   name: IsKpScalingOn
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_IsKpScalingOn_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.IsKpScalingOn
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_IsKpScalingOn_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.IsKpScalingOn
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.IsKpScalingOn
-  nameWithType: PIDscaling.IsKpScalingOn
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.ScaleYValue(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.IsKpScalingOn
+  nameWithType: PidScaling.IsKpScalingOn
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.ScaleYValue(System.Double)
   name: ScaleYValue(Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_ScaleYValue_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.ScaleYValue(System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.ScaleYValue(System.Double)
-  nameWithType: PIDscaling.ScaleYValue(Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.ScaleYValue*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_ScaleYValue_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.ScaleYValue(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.ScaleYValue(System.Double)
+  nameWithType: PidScaling.ScaleYValue(Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.ScaleYValue*
   name: ScaleYValue
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_ScaleYValue_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.ScaleYValue
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_ScaleYValue_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.ScaleYValue
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.ScaleYValue
-  nameWithType: PIDscaling.ScaleYValue
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.Set(System.Double,System.Double,System.Double,System.Double,System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.ScaleYValue
+  nameWithType: PidScaling.ScaleYValue
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.Set(System.Double,System.Double,System.Double,System.Double,System.Boolean)
   name: Set(Double, Double, Double, Double, Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_Set_System_Double_System_Double_System_Double_System_Double_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.Set(System.Double,System.Double,System.Double,System.Double,System.Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.Set(System.Double, System.Double, System.Double, System.Double, System.Boolean)
-  nameWithType: PIDscaling.Set(Double, Double, Double, Double, Boolean)
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.Set*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_Set_System_Double_System_Double_System_Double_System_Double_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.Set(System.Double,System.Double,System.Double,System.Double,System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.Set(System.Double, System.Double, System.Double, System.Double, System.Boolean)
+  nameWithType: PidScaling.Set(Double, Double, Double, Double, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.Set*
   name: Set
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_Set_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.Set
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_Set_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.Set
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.Set
-  nameWithType: PIDscaling.Set
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.SetDefault
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.Set
+  nameWithType: PidScaling.Set
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.SetDefault
   name: SetDefault()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_SetDefault
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.SetDefault
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.SetDefault()
-  nameWithType: PIDscaling.SetDefault()
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.SetDefault*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_SetDefault
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.SetDefault
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.SetDefault()
+  nameWithType: PidScaling.SetDefault()
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.SetDefault*
   name: SetDefault
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_SetDefault_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.SetDefault
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_SetDefault_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.SetDefault
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.SetDefault
-  nameWithType: PIDscaling.SetDefault
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.SetEstimatedUminUmax(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.SetDefault
+  nameWithType: PidScaling.SetDefault
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.SetEstimatedUminUmax(System.Double,System.Double)
   name: SetEstimatedUminUmax(Double, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_SetEstimatedUminUmax_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.SetEstimatedUminUmax(System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.SetEstimatedUminUmax(System.Double, System.Double)
-  nameWithType: PIDscaling.SetEstimatedUminUmax(Double, Double)
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.SetEstimatedUminUmax*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_SetEstimatedUminUmax_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.SetEstimatedUminUmax(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.SetEstimatedUminUmax(System.Double, System.Double)
+  nameWithType: PidScaling.SetEstimatedUminUmax(Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.SetEstimatedUminUmax*
   name: SetEstimatedUminUmax
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_SetEstimatedUminUmax_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.SetEstimatedUminUmax
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_SetEstimatedUminUmax_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.SetEstimatedUminUmax
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.SetEstimatedUminUmax
-  nameWithType: PIDscaling.SetEstimatedUminUmax
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.SetKpScalingOn(System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.SetEstimatedUminUmax
+  nameWithType: PidScaling.SetEstimatedUminUmax
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.SetKpScalingOn(System.Boolean)
   name: SetKpScalingOn(Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_SetKpScalingOn_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDscaling.SetKpScalingOn(System.Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.SetKpScalingOn(System.Boolean)
-  nameWithType: PIDscaling.SetKpScalingOn(Boolean)
-- uid: TimeSeriesAnalysis.Dynamic.PIDscaling.SetKpScalingOn*
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_SetKpScalingOn_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidScaling.SetKpScalingOn(System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.SetKpScalingOn(System.Boolean)
+  nameWithType: PidScaling.SetKpScalingOn(Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.PidScaling.SetKpScalingOn*
   name: SetKpScalingOn
-  href: api/TimeSeriesAnalysis.Dynamic.PIDscaling.html#TimeSeriesAnalysis_Dynamic_PIDscaling_SetKpScalingOn_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDscaling.SetKpScalingOn
+  href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html#TimeSeriesAnalysis_Dynamic_PidScaling_SetKpScalingOn_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidScaling.SetKpScalingOn
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDscaling.SetKpScalingOn
-  nameWithType: PIDscaling.SetKpScalingOn
-- uid: TimeSeriesAnalysis.Dynamic.PIDStatus
-  name: PIDStatus
-  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PIDStatus
-  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus
-  nameWithType: PIDStatus
-- uid: TimeSeriesAnalysis.Dynamic.PIDStatus.AUTO
+  fullName: TimeSeriesAnalysis.Dynamic.PidScaling.SetKpScalingOn
+  nameWithType: PidScaling.SetKpScalingOn
+- uid: TimeSeriesAnalysis.Dynamic.PidStatus
+  name: PidStatus
+  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidStatus
+  fullName: TimeSeriesAnalysis.Dynamic.PidStatus
+  nameWithType: PidStatus
+- uid: TimeSeriesAnalysis.Dynamic.PidStatus.AUTO
   name: AUTO
-  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html#TimeSeriesAnalysis_Dynamic_PIDStatus_AUTO
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDStatus.AUTO
-  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus.AUTO
-  nameWithType: PIDStatus.AUTO
-- uid: TimeSeriesAnalysis.Dynamic.PIDStatus.MANUAL
+  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html#TimeSeriesAnalysis_Dynamic_PidStatus_AUTO
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidStatus.AUTO
+  fullName: TimeSeriesAnalysis.Dynamic.PidStatus.AUTO
+  nameWithType: PidStatus.AUTO
+- uid: TimeSeriesAnalysis.Dynamic.PidStatus.MANUAL
   name: MANUAL
-  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html#TimeSeriesAnalysis_Dynamic_PIDStatus_MANUAL
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDStatus.MANUAL
-  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus.MANUAL
-  nameWithType: PIDStatus.MANUAL
-- uid: TimeSeriesAnalysis.Dynamic.PIDStatus.TRACKING
+  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html#TimeSeriesAnalysis_Dynamic_PidStatus_MANUAL
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidStatus.MANUAL
+  fullName: TimeSeriesAnalysis.Dynamic.PidStatus.MANUAL
+  nameWithType: PidStatus.MANUAL
+- uid: TimeSeriesAnalysis.Dynamic.PidStatus.TRACKING
   name: TRACKING
-  href: api/TimeSeriesAnalysis.Dynamic.PIDStatus.html#TimeSeriesAnalysis_Dynamic_PIDStatus_TRACKING
-  commentId: F:TimeSeriesAnalysis.Dynamic.PIDStatus.TRACKING
-  fullName: TimeSeriesAnalysis.Dynamic.PIDStatus.TRACKING
-  nameWithType: PIDStatus.TRACKING
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning
-  name: PIDtuning
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.PIDtuning
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning
-  nameWithType: PIDtuning
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor(System.Double,System.Double,System.Boolean)
-  name: PIDtuning(Double, Double, Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning__ctor_System_Double_System_Double_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor(System.Double,System.Double,System.Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.PIDtuning(System.Double, System.Double, System.Boolean)
-  nameWithType: PIDtuning.PIDtuning(Double, Double, Boolean)
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor(System.Double,System.Double,System.Double,System.Boolean)
-  name: PIDtuning(Double, Double, Double, Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning__ctor_System_Double_System_Double_System_Double_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor(System.Double,System.Double,System.Double,System.Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.PIDtuning(System.Double, System.Double, System.Double, System.Boolean)
-  nameWithType: PIDtuning.PIDtuning(Double, Double, Double, Boolean)
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor*
-  name: PIDtuning
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDtuning.#ctor
+  href: api/TimeSeriesAnalysis.Dynamic.PidStatus.html#TimeSeriesAnalysis_Dynamic_PidStatus_TRACKING
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidStatus.TRACKING
+  fullName: TimeSeriesAnalysis.Dynamic.PidStatus.TRACKING
+  nameWithType: PidStatus.TRACKING
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning
+  name: PidTuning
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidTuning
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning
+  nameWithType: PidTuning
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.#ctor(System.Double,System.Double,System.Boolean)
+  name: PidTuning(Double, Double, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning__ctor_System_Double_System_Double_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidTuning.#ctor(System.Double,System.Double,System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.PidTuning(System.Double, System.Double, System.Boolean)
+  nameWithType: PidTuning.PidTuning(Double, Double, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.#ctor(System.Double,System.Double,System.Double,System.Boolean)
+  name: PidTuning(Double, Double, Double, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning__ctor_System_Double_System_Double_System_Double_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidTuning.#ctor(System.Double,System.Double,System.Double,System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.PidTuning(System.Double, System.Double, System.Double, System.Boolean)
+  nameWithType: PidTuning.PidTuning(Double, Double, Double, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.#ctor*
+  name: PidTuning
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidTuning.#ctor
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.PIDtuning
-  nameWithType: PIDtuning.PIDtuning
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.PidTuning
+  nameWithType: PidTuning.PidTuning
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.GetKp
   name: GetKp()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_GetKp
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp()
-  nameWithType: PIDtuning.GetKp()
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp*
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_GetKp
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidTuning.GetKp
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.GetKp()
+  nameWithType: PidTuning.GetKp()
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.GetKp*
   name: GetKp
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_GetKp_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_GetKp_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidTuning.GetKp
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.GetKp
-  nameWithType: PIDtuning.GetKp
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.GetKp
+  nameWithType: PidTuning.GetKp
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.GetTd
   name: GetTd()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_GetTd
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd()
-  nameWithType: PIDtuning.GetTd()
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd*
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_GetTd
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidTuning.GetTd
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.GetTd()
+  nameWithType: PidTuning.GetTd()
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.GetTd*
   name: GetTd
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_GetTd_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_GetTd_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidTuning.GetTd
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTd
-  nameWithType: PIDtuning.GetTd
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.GetTd
+  nameWithType: PidTuning.GetTd
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.GetTi
   name: GetTi()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_GetTi
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi()
-  nameWithType: PIDtuning.GetTi()
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi*
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_GetTi
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidTuning.GetTi
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.GetTi()
+  nameWithType: PidTuning.GetTi()
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.GetTi*
   name: GetTi
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_GetTi_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_GetTi_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidTuning.GetTi
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.GetTi
-  nameWithType: PIDtuning.GetTi
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.GetTi
+  nameWithType: PidTuning.GetTi
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed
   name: IsReversed()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_IsReversed
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed()
-  nameWithType: PIDtuning.IsReversed()
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed*
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_IsReversed
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed()
+  nameWithType: PidTuning.IsReversed()
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed*
   name: IsReversed
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_IsReversed_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_IsReversed_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.IsReversed
-  nameWithType: PIDtuning.IsReversed
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.IsReversed
+  nameWithType: PidTuning.IsReversed
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed
   name: SetReversed()
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_SetReversed
-  commentId: M:TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed()
-  nameWithType: PIDtuning.SetReversed()
-- uid: TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed*
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_SetReversed
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed()
+  nameWithType: PidTuning.SetReversed()
+- uid: TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed*
   name: SetReversed
-  href: api/TimeSeriesAnalysis.Dynamic.PIDtuning.html#TimeSeriesAnalysis_Dynamic_PIDtuning_SetReversed_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed
+  href: api/TimeSeriesAnalysis.Dynamic.PidTuning.html#TimeSeriesAnalysis_Dynamic_PidTuning_SetReversed_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PIDtuning.SetReversed
-  nameWithType: PIDtuning.SetReversed
+  fullName: TimeSeriesAnalysis.Dynamic.PidTuning.SetReversed
+  nameWithType: PidTuning.SetReversed
 - uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings
   name: ProcessIdentWarnings
   href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html
@@ -3034,12 +3034,6 @@ references:
   commentId: M:TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String)
   fullName: TimeSeriesAnalysis.Dynamic.Select.Select(TimeSeriesAnalysis.Dynamic.SelectType, System.String)
   nameWithType: Select.Select(SelectType, String)
-- uid: TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String,System.Double,System.Double)
-  name: Select(SelectType, String, Double, Double)
-  href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select__ctor_TimeSeriesAnalysis_Dynamic_SelectType_System_String_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String,System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.Dynamic.Select.Select(TimeSeriesAnalysis.Dynamic.SelectType, System.String, System.Double, System.Double)
-  nameWithType: Select.Select(SelectType, String, Double, Double)
 - uid: TimeSeriesAnalysis.Dynamic.Select.#ctor*
   name: Select
   href: api/TimeSeriesAnalysis.Dynamic.Select.html#TimeSeriesAnalysis_Dynamic_Select__ctor_
@@ -3148,12 +3142,6 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.SelectType.NOT_SET
   fullName: TimeSeriesAnalysis.Dynamic.SelectType.NOT_SET
   nameWithType: SelectType.NOT_SET
-- uid: TimeSeriesAnalysis.Dynamic.SelectType.RANGE
-  name: RANGE
-  href: api/TimeSeriesAnalysis.Dynamic.SelectType.html#TimeSeriesAnalysis_Dynamic_SelectType_RANGE
-  commentId: F:TimeSeriesAnalysis.Dynamic.SelectType.RANGE
-  fullName: TimeSeriesAnalysis.Dynamic.SelectType.RANGE
-  nameWithType: SelectType.RANGE
 - uid: TimeSeriesAnalysis.Dynamic.SignalType
   name: SignalType
   href: api/TimeSeriesAnalysis.Dynamic.SignalType.html

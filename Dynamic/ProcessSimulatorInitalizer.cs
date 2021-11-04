@@ -207,7 +207,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             if (uninitalizedPID_IDs.Contains(pidID))
                             {
                                 string[] pidInputIDs = modelDict[pidID].GetBothKindsOfInputIDs();
-                                string ySetpointID = pidInputIDs[(int)PIDModelInputsIdx.Y_setpoint];
+                                string ySetpointID = pidInputIDs[(int)PidModelInputsIdx.Y_setpoint];
                                 simSignalValueDict.Add(ySetpointID, y0);
                                 uninitalizedPID_IDs.Remove(pidID);
                             }
@@ -313,8 +313,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
                 string[] inputIDs = model.GetModelInputIDs();
-                string ySetpointID = inputIDs[(int)PIDModelInputsIdx.Y_setpoint];
-                string yMeasID = inputIDs[(int)PIDModelInputsIdx.Y_meas];
+                string ySetpointID = inputIDs[(int)PidModelInputsIdx.Y_setpoint];
+                string yMeasID = inputIDs[(int)PidModelInputsIdx.Y_meas];
                 if (simSignalValueDict.ContainsKey(ySetpointID))
                 {
                     double ySetPoint0 = simSignalValueDict[ySetpointID];
@@ -424,7 +424,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 var pidModel = modelDict[pidID];
                 string[] pidInputIDs = pidModel.GetModelInputIDs();
-                string ySetpointID = pidInputIDs[(int)PIDModelInputsIdx.Y_setpoint];
+                string ySetpointID = pidInputIDs[(int)PidModelInputsIdx.Y_setpoint];
                 if (!simSignalValueDict.ContainsKey(ySetpointID))
                 {
                     Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:missing setpoint signal found while initalizing select loop:");
@@ -458,13 +458,13 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 var pidModel = modelDict[pidID];
                 string[] pidInputIDs = pidModel.GetModelInputIDs();
-                string ySetpointID = pidInputIDs[(int)PIDModelInputsIdx.Y_setpoint];
+                string ySetpointID = pidInputIDs[(int)PidModelInputsIdx.Y_setpoint];
                 double[] pidInputsU = new double[pidInputIDs.Length];
-                pidInputsU[(int)PIDModelInputsIdx.Y_meas] = y0;
-                pidInputsU[(int)PIDModelInputsIdx.Y_setpoint] = simSignalValueDict[ySetpointID];
-                if (pidInputIDs.Length-1>= (int)PIDModelInputsIdx.Tracking)
+                pidInputsU[(int)PidModelInputsIdx.Y_meas] = y0;
+                pidInputsU[(int)PidModelInputsIdx.Y_setpoint] = simSignalValueDict[ySetpointID];
+                if (pidInputIDs.Length-1>= (int)PidModelInputsIdx.Tracking)
                 {
-                    pidInputsU[(int)PIDModelInputsIdx.Tracking] = selectOutput;//todo:generalize
+                    pidInputsU[(int)PidModelInputsIdx.Tracking] = selectOutput;//todo:generalize
                 }
                 else
                 {

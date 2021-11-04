@@ -138,8 +138,8 @@ the tank completely.</li>
  sim.ConnectModels(pid1, minSelect,0);
  sim.ConnectModels(pid2, minSelect,1);
  string selectSignalID = sim.ConnectModels(minSelect, process);
- sim.ConnectSignal(selectSignalID,pid1,(int)PIDModelInputsIdx.Tracking);
- sim.ConnectSignal(selectSignalID,pid2,(int)PIDModelInputsIdx.Tracking);
+ sim.ConnectSignal(selectSignalID,pid1,(int)PidModelInputsIdx.Tracking);
+ sim.ConnectSignal(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
 
  sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
  sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));

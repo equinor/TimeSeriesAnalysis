@@ -9,7 +9,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// This determines the position in the U-vector given to Iterate for the class <c>PIDModel</c>
     /// </summary>
-    enum PIDModelInputsIdx
+    enum PidModelInputsIdx
     { 
         Y_meas =0,
         Y_setpoint=1,
@@ -22,7 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Simulatable industrial PID-controller
     /// <remark>
     /// <para>
-    /// This class is as a wrapper for <seealso cref="PIDcontroller"/> class, 
+    /// This class is as a wrapper for <seealso cref="PidController"/> class, 
     /// that implements <seealso cref="ISimulatableModel"/>.
     /// </para>
     /// <para>
@@ -36,18 +36,18 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// </remark>
     /// <seealso cref="PIDModelParameters"/>
-    /// <seealso cref="PIDAntiSurgeParams"/>
-    /// <seealso cref="PIDfeedForward"/>
-    /// <seealso cref="PIDgainScheduling"/>
-    /// <seealso cref="PIDStatus"/>
-    /// <seealso cref="PIDscaling"/>
-    /// <seealso cref="PIDtuning"/>
+    /// <seealso cref="PidAntiSurgeParams"/>
+    /// <seealso cref="PidFeedForward"/>
+    /// <seealso cref="PidGainScheduling"/>
+    /// <seealso cref="PidStatus"/>
+    /// <seealso cref="PidScaling"/>
+    /// <seealso cref="PidTuning"/>
     /// </summary>
     public class PIDModel : ModelBaseClass,ISimulatableModel
     {
         int timeBase_s;
         PIDModelParameters pidParameters;
-        PIDcontroller pid;
+        PidController pid;
 
         /// <summary>
         /// Constructor
@@ -61,7 +61,7 @@ namespace TimeSeriesAnalysis.Dynamic
             SetID(ID);
             this.timeBase_s     = timeBase_s;
             this.pidParameters  = pidParameters;
-            pid                 = new PIDcontroller(timeBase_s,pidParameters.Kp, 
+            pid                 = new PidController(timeBase_s,pidParameters.Kp, 
                 pidParameters.Ti_s, pidParameters.Td_s, pidParameters.NanValue);
             if (pidParameters.Scaling != null)
             {
@@ -123,14 +123,14 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return Double.NaN;
             }
-            double y_process_abs = inputs[(int)PIDModelInputsIdx.Y_meas];
-            double y_set_abs = inputs[(int)PIDModelInputsIdx.Y_setpoint];
+            double y_process_abs = inputs[(int)PidModelInputsIdx.Y_meas];
+            double y_set_abs = inputs[(int)PidModelInputsIdx.Y_setpoint];
             double? uTrackSignal = null;
             double? gainSchedulingVariable = null;
             double? feedForwardVariable = null;
             if (inputs.Length >= 3)
             {
-                double trackingSignal = inputs[(int)PIDModelInputsIdx.Tracking];
+                double trackingSignal = inputs[(int)PidModelInputsIdx.Tracking];
                 if (!Double.IsNaN(trackingSignal))
                 {
                     uTrackSignal = trackingSignal;
@@ -138,11 +138,11 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (inputs.Length >= 4)
             {
-                gainSchedulingVariable = inputs[(int)PIDModelInputsIdx.GainScheduling];
+                gainSchedulingVariable = inputs[(int)PidModelInputsIdx.GainScheduling];
             }
             if (inputs.Length >= 5)
             {
-                feedForwardVariable = inputs[(int)PIDModelInputsIdx.FeedForward];
+                feedForwardVariable = inputs[(int)PidModelInputsIdx.FeedForward];
             }
 
             return pid.Iterate(y_process_abs,y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable);

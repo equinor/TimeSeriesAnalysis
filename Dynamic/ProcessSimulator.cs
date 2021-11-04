@@ -122,7 +122,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else if (type == SignalType.Setpoint_Yset && modelType == ProcessModelType.PID)
             {
-                model.SetInputIDs(new string[] { signalID }, (int)PIDModelInputsIdx.Y_setpoint);
+                model.SetInputIDs(new string[] { signalID }, (int)PidModelInputsIdx.Y_setpoint);
                 return signalID;
             }
             else
@@ -192,7 +192,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        downstreamModel.SetInputIDs(new string[] { outputId }, (int)PIDModelInputsIdx.Y_meas);
+                        downstreamModel.SetInputIDs(new string[] { outputId }, (int)PidModelInputsIdx.Y_meas);
                     }
                 }
                 //u_pid->u 
