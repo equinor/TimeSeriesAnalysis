@@ -734,6 +734,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/c_sharp.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/c_sharp.html",
+          "hash": "2l/WvfvMk38l2FFD5P3a+p0fNAduh72rrwhqquBnY6s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/dependencies.md",
       "output": {
         ".html": {
@@ -930,7 +942,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/getting_started.html",
-          "hash": "5Q9xIkgs+QHbz2BPGCHmArpEgfmFHHeJMutMLnc9xgY="
+          "hash": "ypdd7E4YJptNu07ohGYOt8dgLFxagMhuRbsA6q/2o+Q="
         }
       },
       "is_incremental": false,
@@ -1306,7 +1318,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/index.html",
-          "hash": "Bwmx27zh0BNstWc7NVz58U4poxMZ+N7QHq38n4TUjYE="
+          "hash": "AbqhtSG0CXzdL1FCd59oNzD9nVux/Tw5i1qFcrVHDsU="
         }
       },
       "is_incremental": false,
@@ -1366,7 +1378,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/nuget.html",
-          "hash": "xm5H9uVNAL/nXFrPnLvS65AIecdC9Xd/1rUZUFu2YB0="
+          "hash": "5Q9xIkgs+QHbz2BPGCHmArpEgfmFHHeJMutMLnc9xgY="
         }
       },
       "is_incremental": false,
@@ -1462,7 +1474,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/plot_setup.html",
-          "hash": "ibhfX1VQ0ibIoPSLoDk/aViBxt1qBXGOBwg3OQ7qJeA="
+          "hash": "rbrFm2lAZlpQBtGv1FqDmIWu/NutOj+elI/cnixHL20="
         }
       },
       "is_incremental": false,
@@ -1558,19 +1570,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "msbtthXr68UtLRkb2ye+WogmZ971u9AiJ05J0j1orMw="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "articles/unit_tests.md",
-      "output": {
-        ".html": {
-          "relative_path": "articles/unit_tests.html",
-          "hash": "NF7NJWdK5Y/fayZ92Z6Y2juUKGMCnZHg/pZOXHl+nL4="
+          "hash": "GEpYSjluUgzC8dlvkv9PdKcmsGU+SRRohLz7aGK1pk8="
         }
       },
       "is_incremental": false,
@@ -1632,7 +1632,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 44,
-          "skipped_file_count": 44
+          "skipped_file_count": 43
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

@@ -7,16 +7,14 @@
 - name: Getting Started
   href: getting_started.md
   items:
-        - name: Setting up NuGet
-          href: nuget_setup.md
-        - name: Setting up and running unit tests
-          href: unit_tests.md
-        - name: Setting up plots
-          href: plot_setup.md
-        - name: Calling on this library from Matlab 
-          href: matlab.md 
-        - name: Calling on this library from Python 
+        - name: Calling this library from Python 
           href: python.md      
+        - name: Calling this library from Matlab 
+          href: matlab.md 
+        - name: Rebuilding the library in C# 
+          href: c_sharp.md 
+        - name: Setting up built-in plotting (mainly for C#)
+          href: plot_setup.md
 
         - name: Introductory code examples(C#)
           href: examples.md

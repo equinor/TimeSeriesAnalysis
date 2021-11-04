@@ -1,5 +1,11 @@
 ## Setting up plots
 
+> [!Note]
+> The built-in plotting is mainly intended to provide a stand-alone plotting capability to those
+> working in Visual Studio. If you are running the code from Python or Matlab, you might find it easier to 
+> get started with the built-in plotting in those languages (see Python "getting started" examples).
+
+
 If you have set up plotting correctly, you should be able to run the "PlotUnitTests" test from the Test Explorer in Visual Studio and plots should appear in a new browser window.
 
 For plotting to work you need four prerequisites
