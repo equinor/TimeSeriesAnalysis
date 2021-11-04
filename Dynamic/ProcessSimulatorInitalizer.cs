@@ -18,9 +18,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ProcessSimulatorInitalizer
     {
-        ProcessSimulator simulator;
-        List<string> orderedSimulatorIDs;
-
+        private ProcessSimulator simulator;
+        private List<string> orderedSimulatorIDs;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -31,7 +30,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var connections = simulator.GetConnections();
             orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
         }
-
         /// <summary>
         /// Initalize the empty datasets to their steady-state values 
         /// <para>
@@ -44,19 +42,22 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </para>
         /// </summary>
         /// <param name="simData">simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</param>
-
         public bool ToSteadyState( ref TimeSeriesDataSet simData)
         {
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
             // the inital value will be calculated .Value, but is NaN unit calculated.
-            var simSignalValueDict = new Dictionary<string, double>();
-
+            var signalValuesAtT0 = new Dictionary<string, double>();
+            // add external signals to simSiganlValueDIct
+            foreach (var signalId in simData.GetSignalNames())
+            {
+                signalValuesAtT0.Add(signalId,simData.GetValues(signalId).First());
+            }
             // forward-calculate the output for those systems where the inputs are given. 
-            var isOk = ForwardCalcNonPID(ref simSignalValueDict);
+            var isOk = ForwardCalcNonPID(ref signalValuesAtT0);
             if (!isOk)
                 return false;
             // find all PID-controllers, and setting the "y" equal to "yset"
-            var uninitalizedPID_IDs = SetPidControlledVariablesToSetpoints(ref simSignalValueDict);
+            var uninitalizedPID_IDs = SetPidControlledVariablesToSetpoints(ref signalValuesAtT0);
             if (uninitalizedPID_IDs == null)
             {
                 return false;
@@ -64,46 +65,44 @@ namespace TimeSeriesAnalysis.Dynamic
             // after the PID-controlled "Y" have been set, go through each "SubProcess" model and back-calculate 
             // the steady-state u for those subsytems that have a defined "Y".
             // assume that subsystems are ordered from left->right, go throught them right->left to propage pid-output backwards!
-            isOk = BackwardsCalcNonPID(ref simSignalValueDict,ref uninitalizedPID_IDs);
+            isOk = BackwardsCalcNonPID(ref signalValuesAtT0,ref uninitalizedPID_IDs);
             if (!isOk)
                 return false;
-
             // if will still be uninitalized pids if simulator contains a select-block, 
             // try to treat this now
             if (uninitalizedPID_IDs.Count > 0)
             {
-                isOk = SelectLoopsCalc(ref simSignalValueDict, ref uninitalizedPID_IDs);
+                isOk = SelectLoopsCalc(ref signalValuesAtT0, ref uninitalizedPID_IDs);
                 if (!isOk)
                     return false;
             }
-
             // the final step is if there are any final processes "to the right of" the already initalized signals
-            isOk = ForwardCalcNonPID(ref simSignalValueDict);
+            isOk = ForwardCalcNonPID(ref signalValuesAtT0);
             if (!isOk)
                 return false;
             // check if any uninitalized pid-controllers remain
             if (uninitalizedPID_IDs.Count > 0)
             {
-                Shared.GetParserObj().AddError("ProcessSimulator failed to initalize controller:" + uninitalizedPID_IDs[0]);
+                Shared.GetParserObj().AddError("ProcessSimulatorInitalizer failed to initalize controller:" + uninitalizedPID_IDs[0]);
                 return false;
             }
-
             // last step is to actually write all the values, and create otherwise empty vector to be filled.
             {
                 double nonYetSimulatedValue = Double.NaN;
                 var externalInputSignals = simulator.GetExternalSignals();
                 int? N = externalInputSignals.GetLength();
-                foreach (string signalID in simSignalValueDict.Keys)
+                foreach (string signalID in signalValuesAtT0.Keys)
                 {
-                    simData.AddTimeSeries(signalID, Vec<double>.Concat(new double[] { simSignalValueDict[signalID] },
+                    // external signals are already rpesent in simData, do not add twice
+                    if (!simData.ContainsSignal(signalID))
+                    {
+                        simData.AddTimeSeries(signalID, Vec<double>.Concat(new double[] { signalValuesAtT0[signalID] },
                         Vec<double>.Fill(nonYetSimulatedValue, N.Value - 1)));
+                    }
                 }
             }
-
             return true;
         }
-
-
         /// <summary>
         /// Initalizes sub-processes inside PID-feedback loops "from right-to-left"(backwards,finds  for a given y what is u)
         /// This method only supports a single PID-input per model.
@@ -114,51 +113,39 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool BackwardsCalcNonPID(ref Dictionary<string, double> simSignalValueDict,
             ref List<string> uninitalizedPID_IDs)
         {
-            var externalInputSignals = simulator.GetExternalSignals();
             var modelDict = simulator.GetModels();
             var connections = simulator.GetConnections();
-
             for (int subSystem = orderedSimulatorIDs.Count - 1; subSystem > 0; subSystem--)
             {
                 var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
                 if (model.GetProcessModelType() == ProcessModelType.PID)
                     continue;
-
                 string outputID = model.GetOutputID();
-
                 if (outputID == null)
                 {
-                    Shared.GetParserObj().AddError("ProcessSimulator could not init because model \""
+                    Shared.GetParserObj().AddError("ProcessSimulatorInitalizer could not init because model \""
                         + model.GetID() + "\" has no defined output.");
                     return false;
                 }
-                bool isYgiven = simSignalValueDict.ContainsKey(outputID) ||
-                    externalInputSignals.ContainsSignal(outputID);
-
                 int numberOfPIDInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), SignalType.PID_U);
                 if (numberOfPIDInputs > 1)
                 {
                     continue; // this will be the case for select-blocks.
                 }
-                // TODO: what about additive inputs here? This code is likely not general!
-                // 
-                int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), SignalType.External_U);
-                // todo: missing step here to calculate "x" from "y" based on additive inputs!
+                int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), 
+                    SignalType.External_U);
                 string[] additiveInputs = model.GetAdditiveInputIDs();
                 bool isXgiven = true;
                 if (additiveInputs != null)
                 {
                     foreach (string additiveInput in additiveInputs)
                     {
-                        if (!simSignalValueDict.ContainsKey(outputID) &&
-                        !externalInputSignals.ContainsSignal(outputID))
+                        if (!simSignalValueDict.ContainsKey(outputID))
                             isXgiven = false;
                     }
                 }
-
                 bool canWeFindTheUnknownInput =
                     (model.GetModelInputIDs().Length - numberOfExternalInputs == 1) && isXgiven;
-
                 if (!canWeFindTheUnknownInput)
                     continue;
                 double y0 = Double.NaN;
@@ -166,22 +153,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     y0 = simSignalValueDict[outputID];
                 }
-                else if (externalInputSignals.ContainsSignal(outputID))
-                {
-                    y0 = externalInputSignals.GetValues(outputID)[0];
-                }
                 else
                     continue;//should not happen
-
                 int[] uPIDIndices =
                     SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.PID_U);
                 int[] uInternalIndices =
                     SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.Output_Y_sim);
                 int[] uFreeIndices = Vec<int>.Concat(uPIDIndices, uInternalIndices);
-
                 if (uFreeIndices.Length > 1)
                 {
-                    Shared.GetParserObj().AddError("unexpected/unsupported number of free inputs found during init.");
+                    Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:unexpected/unsupported number of free inputs found during init.");
                     return false;
                 }
                 else if (uFreeIndices.Length == 1)
@@ -198,11 +179,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         else
                         {
                             string inputID = inputIDs[i];
-                            if (externalInputSignals.ContainsSignal(inputID))
-                            {
-                                givenInputValues[i] = externalInputSignals.GetValues(inputID).First();
-                            }
-                            else if (simSignalValueDict.ContainsKey(inputID))
+                            if (simSignalValueDict.ContainsKey(inputID))
                             {
                                 givenInputValues[i] = simSignalValueDict[inputID];
                             }
@@ -214,24 +191,19 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                     }
                     double? u0 = model.GetSteadyStateInput(y0, uPidIndex, givenInputValues);
-
                     if (u0.HasValue)
                     {
                         // write value
-                        if (!simSignalValueDict.Keys.Contains(inputIDs[uPidIndex]) &&
-                            !externalInputSignals.ContainsSignal(inputIDs[uPidIndex]))
+                        if (!simSignalValueDict.Keys.Contains(inputIDs[uPidIndex]))
                         {
                             simSignalValueDict.Add(inputIDs[uPidIndex], u0.Value);
                         }
-
                         // if the subprocess is in an inner loop of a cascade control, then 
                         // having determined "y" also now allows us to set the inital value for "yset"
-
                         bool hasUpstreamPID = connections.HasUpstreamPID(model.GetID());
                         if (hasUpstreamPID)
                         {
                             var pidID = connections.GetUpstreamPIDId(model.GetID());
-
                             if (uninitalizedPID_IDs.Contains(pidID))
                             {
                                 string[] pidInputIDs = modelDict[pidID].GetBothKindsOfInputIDs();
@@ -243,14 +215,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        Shared.GetParserObj().AddError("something went wrong when calculating steady-state inputs during init.");
+                        Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:something went wrong when calculating steady-state inputs during init.");
                         return false;
                     }
                 }
             }
             return true;
         }
-
         /// <summary>
         /// Calculates "from left-to-right"(forward, so from input to output) interconnected models where these are
         /// connected in series, where the first model in the chain only has external inputs.
@@ -262,13 +233,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         private bool ForwardCalcNonPID(ref Dictionary<string, double> simSignalValueDict)
         {
-
-            var externalInputSignals = simulator.GetExternalSignals();
             var modelDict = simulator.GetModels();
             var connections = simulator.GetConnections();
-
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
-
             // forward-calculate the output for those systems where the inputs are given. 
             for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             {
@@ -290,15 +257,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     if (inputID == null)
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulator.ToSteadyState(): model "
+                        Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: model "
                             + model.GetID() + " has an unexpected null input");
                         return false;
                     }
-                    if (externalInputSignals.ContainsSignal(inputID))
-                    {
-                        u0[k] = externalInputSignals.GetValues(inputID).First();
-                    }
-                    else if (simSignalValueDict.ContainsKey(inputID))
+                    if (simSignalValueDict.ContainsKey(inputID))
                     {
                         u0[k] = simSignalValueDict[inputID];
                     }
@@ -318,11 +281,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-
             return true;
         }
-
-
         /// <summary>
         /// Method that initalizes PID-controllers
         /// <para>
@@ -334,23 +294,18 @@ namespace TimeSeriesAnalysis.Dynamic
         private List<string> SetPidControlledVariablesToSetpoints(ref Dictionary<string, double> simSignalValueDict)
         {
             List<string> uninitalizedPID_IDs = new List<string>();
-
-            var externalInputSignals = simulator.GetExternalSignals();
             var modelDict = simulator.GetModels();
             var connections = simulator.GetConnections();
-
             for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             {
                 var modelID = orderedSimulatorIDs.ElementAt(subSystem);
-
                 var model = modelDict[modelID];
                 if (model.GetProcessModelType() != ProcessModelType.PID)
                     continue;
-
                 var downstream = connections.GetDownstreamModelIDs(modelID);
                 if (downstream.Count > 0)
                 {
-                    // this method does not handle Sleect PID-controllers
+                    // this method does not handle Select PID-controllers
                     if (modelDict[downstream.First()].GetProcessModelType() == ProcessModelType.Select)
                     {
                         uninitalizedPID_IDs.Add(modelID);
@@ -360,18 +315,17 @@ namespace TimeSeriesAnalysis.Dynamic
                 string[] inputIDs = model.GetModelInputIDs();
                 string ySetpointID = inputIDs[(int)PIDModelInputsIdx.Y_setpoint];
                 string yMeasID = inputIDs[(int)PIDModelInputsIdx.Y_meas];
-                if (externalInputSignals.ContainsSignal(ySetpointID))
+                if (simSignalValueDict.ContainsKey(ySetpointID))
                 {
-                    double ySetPoint0 = externalInputSignals.GetValues(ySetpointID)[0];
-                    if (!simSignalValueDict.Keys.Contains(yMeasID) &&
-                        !externalInputSignals.ContainsSignal(yMeasID))
+                    double ySetPoint0 = simSignalValueDict[ySetpointID];
+                    if (!simSignalValueDict.Keys.Contains(yMeasID))
                     {
                         simSignalValueDict.Add(yMeasID, ySetPoint0);
                     }
                 }
                 else if (simSignalValueDict.Keys.Contains(ySetpointID))
                 {
-                    //OK!
+                    //OK!, do nothing
                 }
                 else
                 {
@@ -382,17 +336,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        Shared.GetParserObj().AddError("ProcessSimulator.InitToSteadyState(): PID-controller has no setpoint given:"
+                        Shared.GetParserObj().AddError("ProcessSimulatorInitalizer: PID-controller has no setpoint given:"
                         + model.GetID());
                         return null;
                     }
                 }
             }
             return uninitalizedPID_IDs;
-
         }
-
-
         /// <summary>
         /// Initalizes PID controllers inside min/max select loops
         /// </summary>
@@ -402,9 +353,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="simSignalValueDict"></param>
         /// <param name="uninitalizedPID_IDs"></param>
         /// <returns></returns>
-        private bool SelectLoopsCalc(ref Dictionary<string, double> simSignalValueDict, ref List<string> uninitalizedPID_IDs)
+        private bool SelectLoopsCalc(ref Dictionary<string, double> simSignalValueDict, 
+            ref List<string> uninitalizedPID_IDs)
         {
-            var externalInputSignals = simulator.GetExternalSignals();
             var modelDict = simulator.GetModels();
             var connections = simulator.GetConnections();
 
@@ -444,18 +395,12 @@ namespace TimeSeriesAnalysis.Dynamic
             var processInputsList = new List<double>(); 
             foreach (var inputID in processModel.GetBothKindsOfInputIDs())
             {
-                if (externalInputSignals.ContainsSignal(inputID))
-                {
-                    processInputsList.Add(externalInputSignals.GetValues(inputID).First());
-                    continue;
-                }
                 if (simSignalValueDict.ContainsKey(inputID))
                 {
                     processInputsList.Add(simSignalValueDict[inputID]);
                     continue;
                 }
                 // input not found, it must be "free" 
-
                 freeInputIdxs.Add(idx);
                 idx++;
             }
@@ -465,12 +410,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     processModelID);
                 return false;
             }
-
             var givenProcessModelInputs = processInputsList.ToArray();
-
             var distubanceIDs = modelDict[processModelID].GetAdditiveInputIDs();
-            double disturbance0 = externalInputSignals.GetValues(distubanceIDs.First()).First();
-
+            double disturbance0 = simSignalValueDict[distubanceIDs.First()];
             // back-calculate the pid input to the controlled process for the given setpoint and disturbance
             List<double> selectInputs = new List<double>();
             List<double> pidSetpoints = new List<double>();
@@ -479,47 +421,43 @@ namespace TimeSeriesAnalysis.Dynamic
                 var pidModel = modelDict[pidID];
                 string[] pidInputIDs = pidModel.GetModelInputIDs();
                 string ySetpointID = pidInputIDs[(int)PIDModelInputsIdx.Y_setpoint];
-                if (!externalInputSignals.ContainsSignal(ySetpointID))
+                if (!simSignalValueDict.ContainsKey(ySetpointID))
                 {
                     Shared.GetParserObj().AddError("ProcessSimulatorInitalizer:missing setpoint signal found while initalizing select loop:");
                     return false;
                 }
-                double ySetpointForCurrentPID0 = externalInputSignals.GetValues(ySetpointID).First();
+                double ySetpointForCurrentPID0 = simSignalValueDict[ySetpointID];
                 pidSetpoints.Add(ySetpointForCurrentPID0);
-                double? u0 = processModel.GetSteadyStateInput(ySetpointForCurrentPID0, freeInputIdxs.First(), givenProcessModelInputs);
+                double? u0 = processModel.GetSteadyStateInput(ySetpointForCurrentPID0, 
+                    freeInputIdxs.First(), givenProcessModelInputs);
                 if (u0.HasValue)
                 {
                     selectInputs.Add(u0.Value);
                 }
             }
-
             // run inputs through select block
             var selectModel = modelDict[downstreamModelIDs.First()];
             var selectOutput = selectModel.Iterate(selectInputs.ToArray());
-
-            var indOfActivePID = (new Vec()).FindValues(selectInputs.ToArray(), selectOutput, VectorFindValueType.Equal);
+            var indOfActivePID = (new Vec()).FindValues(selectInputs.ToArray(),
+                selectOutput, VectorFindValueType.Equal);
             var y0 = pidSetpoints.ElementAt(indOfActivePID.First());
-
             // now we know what the select output will give.
             simSignalValueDict[selectModel.GetOutputID()] = selectOutput;
             string activePID_ID = uninitalizedPID_IDs[indOfActivePID.First()];
             simSignalValueDict[processModel.GetOutputID()] = y0;
-
             // add active PID output signal to steady-state values and remove from uninitalized list
-            simSignalValueDict[modelDict[activePID_ID].GetOutputID()] = selectInputs.ElementAt(indOfActivePID.First());
+            simSignalValueDict[modelDict[activePID_ID].GetOutputID()] = 
+                selectInputs.ElementAt(indOfActivePID.First());
             uninitalizedPID_IDs.Remove(activePID_ID);
-
             // set initial value for inactive PID
             foreach (string pidID in uninitalizedPID_IDs)
             {
                 var pidModel = modelDict[pidID];
                 string[] pidInputIDs = pidModel.GetModelInputIDs();
                 string ySetpointID = pidInputIDs[(int)PIDModelInputsIdx.Y_setpoint];
-
                 double[] pidInputsU = new double[pidInputIDs.Length];
                 pidInputsU[(int)PIDModelInputsIdx.Y_meas] = y0;
-                pidInputsU[(int)PIDModelInputsIdx.Y_setpoint] = externalInputSignals.GetValues(ySetpointID).First();//TODO:generalize
-
+                pidInputsU[(int)PIDModelInputsIdx.Y_setpoint] = simSignalValueDict[ySetpointID];
                 if (pidInputIDs.Length-1>= (int)PIDModelInputsIdx.Tracking)
                 {
                     pidInputsU[(int)PIDModelInputsIdx.Tracking] = selectOutput;//todo:generalize
