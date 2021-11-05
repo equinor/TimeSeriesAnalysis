@@ -50,12 +50,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// a new y_sim is also added</param>
         /// <param name="u0">Optionally sets the local working point for the inputs
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
+        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public DefaultProcessModel Identify(ref SubProcessDataSet dataSet, double[] u0 = null)
+        public DefaultProcessModel Identify(ref SubProcessDataSet dataSet, double[] u0 = null, double[] uNorm= null)
         {
             bool doNonzeroU0 = true;// should be: true
             bool doUseDynamicModel = true;// should be:true
             bool doEstimateTimeDelay = true; // should be:true
+            bool doEstimateCurvature = true;// experimental
             double FilterTc_s = 0;// experimental: by default set to zero.
             bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
             double maxExpectedTc_s = dataSet.GetTimeSpan().TotalSeconds / 4;
@@ -79,11 +81,38 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 // for a dynamic model y will depend on yprev
                 // therefore it is difficult to have ycur the same length as ymeas
-                modelParams =
-                   EstimateProcessForAGivenTimeDelay
-                   (timeDelayIdx, dataSet, doUseDynamicModel,
-                   FilterTc_s, u0, assumeThatYkminusOneApproxXkminusOne);
+                {
+                    DefaultProcessModelParameters modelParams_noCurvature =
+                       EstimateProcessForAGivenTimeDelay
+                       (timeDelayIdx, dataSet, doUseDynamicModel, false,
+                       FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
 
+                    if (doEstimateCurvature)
+                    {
+                        DefaultProcessModelParameters modelParams_withCurvature =
+                              EstimateProcessForAGivenTimeDelay
+                              (timeDelayIdx, dataSet, doUseDynamicModel, true,
+                              FilterTc_s, u0, uNorm,assumeThatYkminusOneApproxXkminusOne);
+
+                        // chose the best fitting model: with or without curvature
+                        // if in doubt, just use model without curvature (thus multiple criteria need to pass)
+                        if (modelParams_noCurvature.FittingRsq< modelParams_withCurvature.FittingRsq &&
+                            modelParams_noCurvature.FittingObjFunVal> modelParams_withCurvature.FittingObjFunVal &&
+                            modelParams_withCurvature.WasAbleToIdentify
+                            )
+                        {
+                            modelParams = modelParams_withCurvature;
+                        }
+                        else
+                        {
+                            modelParams = modelParams_noCurvature;
+                        }
+                    }
+                    else
+                    {
+                        modelParams = modelParams_noCurvature;
+                    }
+                }
                 if (!continueIncreasingTimeDelayEst)
                     continue;
                 // logic to deal with while loop
@@ -132,7 +161,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private DefaultProcessModelParameters EstimateProcessForAGivenTimeDelay
             (int timeDelay_samples, SubProcessDataSet dataSet,
-            bool useDynamicModel, double FilterTc_s, double[] u0, bool assumeThatYkminusOneApproxXkminusOne
+            bool useDynamicModel,bool doEstimateCurvature, 
+            double FilterTc_s, double[] u0, double[] uNorm, bool assumeThatYkminusOneApproxXkminusOne
             )
         {
             Vec vec = new Vec(dataSet.BadDataID);
@@ -208,7 +238,9 @@ namespace TimeSeriesAnalysis.Dynamic
             RegressionResults regResults;
             double timeConstant_s = Double.NaN;
             double[] processGains = Vec<double>.Fill(Double.NaN, ucurList.Count);
-            double[] x_mod_cur = null, y_mod_cur = null;
+            double[] processCurvatures = Vec<double>.Fill(Double.NaN, ucurList.Count);
+
+            double[] x_mod_cur = null;//, y_mod_cur = null;
             if (useDynamicModel)
             {
                 // Tc *xdot = x[k-1] + B*u[k-1]
@@ -269,14 +301,41 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (dcur != null && dprev!= null)
                     {
                         phi1_ols = vec.Subtract(yprev, dprev);
-                        //Y_ols = vec.Subtract(deltaY, dcur);
                         Y_ols = vec.Subtract(deltaY, vec.Subtract(dcur,dprev));
                     }
                     double[,] phi_ols2D = new double[ycur.Length, ucurList.Count + 1];
+                    if (doEstimateCurvature)
+                    {
+                        phi_ols2D = new double[ycur.Length, ucurList.Count*2 + 1];
+                    }
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
                     {
                         phi_ols2D.WriteColumn(curIdx + 1, vec.Subtract(ucurList[curIdx], u0[curIdx]));
+                    }
+                    if (doEstimateCurvature)
+                    {
+                        for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
+                        {
+                            double uNormCur = 1;
+                            if (uNorm != null)
+                            {
+                                if (uNorm.Length - 1 > curIdx)
+                                {
+                                    if (uNorm[curIdx] <= 0)
+                                    {
+                                        Shared.GetParserObj().AddError("uNorm illegal value, shoudl be positive and nonzero:" 
+                                            + uNorm[curIdx]);
+                                    }
+                                    else
+                                    {
+                                        uNormCur = uNorm[curIdx];
+                                    }
+                                }
+                            }
+                            phi_ols2D.WriteColumn(curIdx + ucurList.Count+ 1,
+                                vec.Div(vec.Pow(vec.Subtract(ucurList[curIdx], u0[curIdx]),2), uNormCur));
+                        }
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
                     regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
@@ -320,6 +379,13 @@ namespace TimeSeriesAnalysis.Dynamic
                         a = regResults.Param[0];
                     }
                     double[] b = Vec<double>.SubArray(regResults.Param, 1, regResults.Param.Length - 2);
+                    double[] c = null;
+                    if (doEstimateCurvature)
+                    {
+                        b = Vec<double>.SubArray(regResults.Param, 1, ucurList.Count);
+                        c = Vec<double>.SubArray(regResults.Param, ucurList.Count+1, regResults.Param.Length - 2);
+                    }
+
                     if (a > 1)
                         a = 0;
                     //d_mod_cur = d;
@@ -336,6 +402,22 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (timeConstant_s < 0)
                         timeConstant_s = 0;
                     processGains = vec.Div(b,1-a);
+
+                    if (doEstimateCurvature && c != null)
+                    {
+                        processCurvatures = vec.Div(c, 1 - a);
+                        if (uNorm != null)
+                        {
+                            if (processCurvatures.Length == uNorm.Length)
+                            {
+                                processCurvatures = vec.Multiply (processCurvatures, uNorm);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        processCurvatures = null;
+                    }
 
                     #region move to DefaultProcessModel.cs
                     x_mod_cur = new double[x_mod_cur_raw.Length];
@@ -433,7 +515,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.TimeBase_s;
                 parameters.TimeConstant_s = timeConstant_s;
                 parameters.ProcessGains = processGains;
+                parameters.Curvatures = processCurvatures;
                 parameters.U0 = u0;
+                parameters.UNorm = uNorm;
 
                 double? recalcBias = ReEstimateBias(dataSet, parameters);
                 if (recalcBias.HasValue)
@@ -446,7 +530,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.Bias = regResults.Param.Last();
                 }
                 // TODO:add back uncertainty estimates
-
                 parameters.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 parameters.FittingRsq = regResults.Rsq;

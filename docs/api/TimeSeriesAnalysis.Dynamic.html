@@ -325,10 +325,7 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
       <section><p>The data for a porition of a process, containg only one output and one or multiple inputs that influence it</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SubProcessSimulator.html">SubProcessSimulator</a></h4>
-      <section><p>Simulate any subprocess model that has implemented the IProcessModel interface.
-This class relies on depencency injection and interfaces, so that the
-the specifics of how models outputs are calculated should be encapsulated in the passed model objects.</p>
-<p>This class should not be static, as it is to be used as a type for MultiProcessSimulator</p>
+      <section><p>Stand-olone simulation of any ISimulatableModel model.</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeDelay.html">TimeDelay</a></h4>
       <section><p>Delays a signal by a specific number of time steps, keeping an internal buffer of delayed values

@@ -183,9 +183,15 @@ namespace TimeSeriesAnalysis
             return sortedAsc;
         }
 
-        ///<summary>
-        /// returns the portion of array1 starting and indStart, and ending at indEnd(or at the end if third paramter is omitted)
+
+        /// <summary>
+       ///  Rreturns the portion of array1 starting and indStart, and ending at indEnd(or at the end if third paramter is omitted)
         ///</summary>
+        /// </summary>
+        /// <param name="array1">array to get subarray from</param>
+        /// <param name="indStart">starting index</param>
+        /// <param name="indEnd">ending index(or to the end if omitted)</param>
+        /// <returns></returns>
         public static T[] SubArray(T[] array1, int indStart, int indEnd = -9999)
         {
             if (array1 == null)

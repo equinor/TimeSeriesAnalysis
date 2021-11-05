@@ -603,7 +603,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// elementwise multipliation of val2 to array1
         ///</summary>
-        public double[] Mult(double[] array1, double val2)
+        public double[] Multiply(double[] array1, double val2)
         {
             if (array1 == null)
                 return null;
@@ -663,6 +663,22 @@ namespace TimeSeriesAnalysis
                 }
             }
             return retVal;
+        }
+
+        ///<summary>
+        ///  Calculates the power of an array
+        ///</summary>
+        public double[] Pow(double[] array, double factor)
+        {
+            double[] ret = new double[array.Length];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                if (IsNaN(array[i]))
+                    ret[i] = valuteToReturnElementIsNaN;
+                else
+                    ret[i] = Math.Pow(array[i], factor);
+            }
+            return ret;
         }
 
         ///<summary>

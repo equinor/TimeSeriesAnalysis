@@ -29,7 +29,7 @@ u2 = TimeSeriesCreator.Step(31, 61, 1, 2)
 u3 = TimeSeriesCreator.Step(21, 61, 1, -1)
 
 y = []
-noise = Vec().Mult(Vec.Rand(u1.Length, -1, 1, 0), noise_amplitude)
+noise = Vec().Multiply(Vec.Rand(u1.Length, -1, 1, 0), noise_amplitude)
 for k in range(u1.Length):
     y.append(
         true_gains[0] * u1[k]

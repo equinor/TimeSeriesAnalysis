@@ -13,16 +13,16 @@ using System.Diagnostics;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Simulate any subprocess model that has implemented the IProcessModel interface. 
-    /// This class relies on depencency injection and interfaces, so that the 
-    /// the specifics of how models outputs are calculated should be encapsulated in the passed model objects.
-    /// 
-    /// This class should not be static, as it is to be used as a type for MultiProcessSimulator
-    /// 
+    /// Stand-olone simulation of any ISimulatableModel model. 
     /// </summary>
+    /// 
     public class SubProcessSimulator
     {
         ISimulatableModel model;
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="model"></param>
         public SubProcessSimulator(ISimulatableModel model)
         {
             this.model = model;
@@ -32,7 +32,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for  
         /// testing/test driven development.
         /// </summary>
-        /// <param name="model"></param>
         /// <param name="processDataSet"></param>
         /// <param name="noiseAmplitude">optionally adds noise to the "measured" y (for testing purposes)</param>
         public void EmulateYmeas(ref SubProcessDataSet processDataSet, double noiseAmplitude=0)

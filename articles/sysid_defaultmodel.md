@@ -36,17 +36,17 @@ x[k] = a•x[k-1] + b1•(u1[k-t_d]-u_10)+ b2•(u2[k-t_d]-u_20) + q		(linear in
 > dynamics, then this should be modeled by two or more separate "default models" that are then added together - in identification the input of other 
 > sub-models can be accounted for by the disturbance-term ``d``
 
-## Second-order polynominal nolinear gain
+## Second-order polynomial nonlinear gain
 
 Optionally the default model can be extended with a square term:
 ``` 
 x[k] = a•x[k-1] + b•(u[k-t_d]-u_0) + c/uNorm•(u[k-t_d]-u_0)^2 + q	(non-linear in u)
 ```
-Internally the paramter ``c`` is referred to as the **"Curvature"** of the default model.
+Internally the parameter ``c`` is referred to as the **"Curvature"** of the default model.
 
-``uNorm`` is a scaling paramter that is intended to ensure that the paramters ``b`` and ``c``
+``uNorm`` is a scaling parameter that is intended to ensure that the parameters ``b`` and ``c``
 are of approximately equal scale during identification. 
-It is reccomended to choose ``uNorm`` equal to how much ``u`` is expect to vary from ``u0``.
+It is recommended to choose ``uNorm`` equal to how much ``u`` is expect to vary from ``u0``.
 For example, if ``u0`` and ``u`` is expected to vary in the range ``[20,80]``, then ``uNorm``
 should be chosen as ``30``.
 

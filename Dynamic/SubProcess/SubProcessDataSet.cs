@@ -8,35 +8,65 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-
-
     /// <summary>
     /// The data for a porition of a process, containg only one output and one or multiple inputs that influence it
     /// </summary>
     public class SubProcessDataSet
     {
+        /// <summary>
+        /// list of warings during identification
+        /// </summary>
         public List<SubProcessDataSetWarnings> warnings{ get; set; } 
-
+        /// <summary>
+        /// Name
+        /// </summary>
         public  string ProcessName { get;}
+        /// <summary>
+        /// Timestamps 
+        /// </summary>
         public DateTime[] Times { get; }
+        /// <summary>
+        /// Output Y (measured)
+        /// </summary>
         public double[] Y_meas { get; set; }
+        /// <summary>
+        /// Output Y (simulated)
+        /// </summary>
         public double[] Y_sim { get; set; }
 
+        /// <summary>
+        /// Input U(simulated) - in the case of PID-control
+        /// </summary>
         public double[,] U_sim { get; set; }
 
         /// <summary>
-        /// If subprocess includes a PID-controller, this value should be non-null
+        /// Setpoint - (if sub-process includes a PID-controller)
         /// </summary>
         public double[] Y_setpoint { get; set; } = null;
 
-        public double[] D { get; set; } //additive _output_ disturbance (Y_meas = Y_sim+Disturbance ideally)
+        /// <summary>
+        /// Additve output disturbance D (Y = X+ D)
+        /// </summary>
+        public double[] D { get; set; } 
 
+        /// <summary>
+        /// Input U (given)
+        /// </summary>
         public double[,] U { get; set; }
 
+        /// <summary>
+        /// The number of data points 
+        /// </summary>
         public int NumDataPoints { get; }
 
+        /// <summary>
+        /// The sampling time
+        /// </summary>
         public double TimeBase_s { get; set; }
 
+        /// <summary>
+        /// The time stamp of the start of the dataset
+        /// </summary>
         public DateTime t0;
 
         /// <summary>

@@ -157,13 +157,13 @@ is deferred to <code>ProcessTimeDelayIdentifier</code>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier_Identify_" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier_Identify_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double[])">Identify(ref SubProcessDataSet, Double[])</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier_Identify_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double[],System.Double[])">Identify(ref SubProcessDataSet, Double[], Double[])</h4>
   <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model that best fits the dataSet given</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultProcessModel Identify(ref SubProcessDataSet dataSet, double[] u0 = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultProcessModel Identify(ref SubProcessDataSet dataSet, double[] u0 = null, double[] uNorm = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,6 +187,12 @@ a new y_sim is also added</p>
         <td><span class="parametername">u0</span></td>
         <td><p>Optionally sets the local working point for the inputs
 around which the model is to be designed(can be set to <code>null</code>)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">uNorm</span></td>
+        <td><p>normalizing paramter for u-u0 (its range)</p>
 </td>
       </tr>
     </tbody>

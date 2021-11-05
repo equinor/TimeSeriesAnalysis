@@ -50,7 +50,7 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         public static double[] Mult(this double[] array, double scalar, double nanValue = -9999)
         {
-            return (new Vec(nanValue)).Mult(array,scalar);
+            return (new Vec(nanValue)).Multiply(array,scalar);
         }
 
         /// <summary>

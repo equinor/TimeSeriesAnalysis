@@ -280,10 +280,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return curvatureTerm;
         }
 
-
-
-
-
         private double CalculateStaticState(double[] inputs, double badValueIndicator=-9999)
         {
             double x_static = modelParameters.Bias;
@@ -350,8 +346,11 @@ namespace TimeSeriesAnalysis.Dynamic
         public double Iterate(double[] inputs, double badValueIndicator=-9999)
         {
             if (!modelParameters.AbleToIdentify())
+            {
+                Shared.GetParserObj().AddError(GetID()+
+                    ":Iterate() returned NaN because trying to simulate a model that was not able to be identified." );
                 return Double.NaN;
-
+            }
             double x_static = CalculateStaticState(inputs,badValueIndicator);
 
             // nb! if first iteration, start model at steady-state
@@ -451,6 +450,16 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
             sb.AppendLine("u0 : " + Vec.ToString(modelParameters.U0,sDigits));
+            if (modelParameters.UNorm == null)
+            {
+                sb.AppendLine("uNorm : " + "none");
+            }
+            else
+            {
+                sb.AppendLine("uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits));
+            }
+
+
             sb.AppendLine("-------------------------");
             sb.AppendLine("fitting objective : " + SignificantDigits.Format(modelParameters.GetFittingObjFunVal(),4) );
             sb.AppendLine("fitting R2: " + SignificantDigits.Format(modelParameters.GetFittingR2(), 4) );

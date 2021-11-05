@@ -109,14 +109,14 @@ It aims to <em>avoid over-parametrization</em>, as this is known to cause issues
 dynamics, then this should be modeled by two or more separate &quot;default models&quot; that are then added together - in identification the input of other
 sub-models can be accounted for by the disturbance-term <code>d</code></p>
 </div>
-<h2 id="second-order-polynominal-nolinear-gain">Second-order polynominal nolinear gain</h2>
+<h2 id="second-order-polynomial-nonlinear-gain">Second-order polynomial nonlinear gain</h2>
 <p>Optionally the default model can be extended with a square term:</p>
 <pre><code>x[k] = a•x[k-1] + b•(u[k-t_d]-u_0) + c/uNorm•(u[k-t_d]-u_0)^2 + q	(non-linear in u)
 </code></pre>
-<p>Internally the paramter <code>c</code> is referred to as the <strong>&quot;Curvature&quot;</strong> of the default model.</p>
-<p><code>uNorm</code> is a scaling paramter that is intended to ensure that the paramters <code>b</code> and <code>c</code>
+<p>Internally the parameter <code>c</code> is referred to as the <strong>&quot;Curvature&quot;</strong> of the default model.</p>
+<p><code>uNorm</code> is a scaling parameter that is intended to ensure that the parameters <code>b</code> and <code>c</code>
 are of approximately equal scale during identification.
-It is reccomended to choose <code>uNorm</code> equal to how much <code>u</code> is expect to vary from <code>u0</code>.
+It is recommended to choose <code>uNorm</code> equal to how much <code>u</code> is expect to vary from <code>u0</code>.
 For example, if <code>u0</code> and <code>u</code> is expected to vary in the range <code>[20,80]</code>, then <code>uNorm</code>
 should be chosen as <code>30</code>.</p>
 <div class="NOTE">

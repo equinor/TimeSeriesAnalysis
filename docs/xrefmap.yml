@@ -760,15 +760,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.DefaultProcessModelIdentifier
   nameWithType: DefaultProcessModelIdentifier.DefaultProcessModelIdentifier
-- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double[])
-  name: Identify(ref SubProcessDataSet, Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier_Identify_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double[])
-  name.vb: Identify(ByRef SubProcessDataSet, Double())
-  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double())
-  nameWithType: DefaultProcessModelIdentifier.Identify(ref SubProcessDataSet, Double[])
-  nameWithType.vb: DefaultProcessModelIdentifier.Identify(ByRef SubProcessDataSet, Double())
+- uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double[],System.Double[])
+  name: Identify(ref SubProcessDataSet, Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier_Identify_TimeSeriesAnalysis_Dynamic_SubProcessDataSet__System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(TimeSeriesAnalysis.Dynamic.SubProcessDataSet@,System.Double[],System.Double[])
+  name.vb: Identify(ByRef SubProcessDataSet, Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(ref TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify(ByRef TimeSeriesAnalysis.Dynamic.SubProcessDataSet, System.Double(), System.Double())
+  nameWithType: DefaultProcessModelIdentifier.Identify(ref SubProcessDataSet, Double[], Double[])
+  nameWithType.vb: DefaultProcessModelIdentifier.Identify(ByRef SubProcessDataSet, Double(), Double())
 - uid: TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.Identify*
   name: Identify
   href: api/TimeSeriesAnalysis.Dynamic.DefaultProcessModelIdentifier.html#TimeSeriesAnalysis_Dynamic_DefaultProcessModelIdentifier_Identify_
@@ -4708,6 +4708,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Step
   nameWithType: TimeSeriesCreator.Step
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.ThreeSteps(System.Int32,System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double)
+  name: ThreeSteps(Int32, Int32, Int32, Int32, Double, Double, Double, Double)
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_ThreeSteps_System_Int32_System_Int32_System_Int32_System_Int32_System_Double_System_Double_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.ThreeSteps(System.Int32,System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.ThreeSteps(System.Int32, System.Int32, System.Int32, System.Int32, System.Double, System.Double, System.Double, System.Double)
+  nameWithType: TimeSeriesCreator.ThreeSteps(Int32, Int32, Int32, Int32, Double, Double, Double, Double)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.ThreeSteps*
+  name: ThreeSteps
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_ThreeSteps_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.ThreeSteps
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.ThreeSteps
+  nameWithType: TimeSeriesCreator.ThreeSteps
 - uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.TwoSteps(System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double)
   name: TwoSteps(Int32, Int32, Int32, Double, Double, Double)
   href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_TwoSteps_System_Int32_System_Int32_System_Int32_System_Double_System_Double_System_Double_
@@ -5125,22 +5138,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Min
   nameWithType: Vec.Min
-- uid: TimeSeriesAnalysis.Vec.Mult(System.Double[],System.Double)
-  name: Mult(Double[], Double)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Mult_System_Double___System_Double_
-  commentId: M:TimeSeriesAnalysis.Vec.Mult(System.Double[],System.Double)
-  name.vb: Mult(Double(), Double)
-  fullName: TimeSeriesAnalysis.Vec.Mult(System.Double[], System.Double)
-  fullName.vb: TimeSeriesAnalysis.Vec.Mult(System.Double(), System.Double)
-  nameWithType: Vec.Mult(Double[], Double)
-  nameWithType.vb: Vec.Mult(Double(), Double)
-- uid: TimeSeriesAnalysis.Vec.Mult*
-  name: Mult
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Mult_
-  commentId: Overload:TimeSeriesAnalysis.Vec.Mult
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Vec.Mult
-  nameWithType: Vec.Mult
+- uid: TimeSeriesAnalysis.Vec.Multiply(System.Double[],System.Double)
+  name: Multiply(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Multiply_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Multiply(System.Double[],System.Double)
+  name.vb: Multiply(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Multiply(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Multiply(System.Double(), System.Double)
+  nameWithType: Vec.Multiply(Double[], Double)
+  nameWithType.vb: Vec.Multiply(Double(), Double)
 - uid: TimeSeriesAnalysis.Vec.Multiply(System.Double[],System.Double[])
   name: Multiply(Double[], Double[])
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Multiply_System_Double___System_Double___
@@ -5157,6 +5163,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Multiply
   nameWithType: Vec.Multiply
+- uid: TimeSeriesAnalysis.Vec.Pow(System.Double[],System.Double)
+  name: Pow(Double[], Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Pow_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.Pow(System.Double[],System.Double)
+  name.vb: Pow(Double(), Double)
+  fullName: TimeSeriesAnalysis.Vec.Pow(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.Pow(System.Double(), System.Double)
+  nameWithType: Vec.Pow(Double[], Double)
+  nameWithType.vb: Vec.Pow(Double(), Double)
+- uid: TimeSeriesAnalysis.Vec.Pow*
+  name: Pow
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Pow_
+  commentId: Overload:TimeSeriesAnalysis.Vec.Pow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.Pow
+  nameWithType: Vec.Pow
 - uid: TimeSeriesAnalysis.Vec.Rand(System.Int32,System.Double,System.Double,System.Nullable{System.Int32})
   name: Rand(Int32, Double, Double, Nullable<Int32>)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Rand_System_Int32_System_Double_System_Double_System_Nullable_System_Int32__

@@ -61,7 +61,7 @@ namespace TimeSeriesAnalysis._Examples
             double[] u3 = TimeSeriesCreator.Step(21, 61, 1,-1);
 
             double[] y = new double[u1.Length];
-            double[] noise = (new Vec()).Mult(Vec.Rand(u1.Length, -1,1,0),noiseAmplitude);
+            double[] noise = (new Vec()).Multiply(Vec.Rand(u1.Length, -1,1,0),noiseAmplitude);
             for (int k = 0; k < u1.Length; k++)
             {
                 y[k] = true_gains[0] * u1[k] 
