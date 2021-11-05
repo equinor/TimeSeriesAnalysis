@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Numerical band-pass filter based on <c>LowPass</c>
+    /// Numerical band-pass filter based on <seealso cref="LowPass"/>
     /// <para>
     /// This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
     /// requires litte memory and computation. This filter is causal, meaning that

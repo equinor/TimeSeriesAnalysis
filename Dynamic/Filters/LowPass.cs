@@ -31,6 +31,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Constructor
         /// </summary>
         /// <param name="TimeBase_s">The time base, the time interval between each time step of the dataset, in seconds</param>
+        /// <param name="nanValue">value that is to be treated as NaN and ignored</param>
         public LowPass(double TimeBase_s, double nanValue = -9999)
         {
             this.timeBase_s = TimeBase_s;

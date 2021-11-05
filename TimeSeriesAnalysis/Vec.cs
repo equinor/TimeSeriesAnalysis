@@ -15,7 +15,7 @@ namespace TimeSeriesAnalysis
     /// <summary>
     /// Utility functions and operations for treating arrays as mathetmatical vectors.
     /// <para>
-    /// This class considers doubles, methods that require comparisons cannot be easily ported to generic (Vec)
+    /// This class considers doubles, methods that require comparisons cannot be easily ported to generic "Vec"/>
     /// </para>
     /// </summary>
     public class Vec

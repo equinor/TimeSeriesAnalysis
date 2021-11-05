@@ -13,7 +13,7 @@ using System.Diagnostics;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Stand-olone simulation of any ISimulatableModel model. 
+    /// Stand-alone simulation of any ISimulatableModel model. 
     /// </summary>
     /// 
     public class SubProcessSimulator

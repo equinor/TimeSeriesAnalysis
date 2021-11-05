@@ -16,9 +16,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// This is a finite-impulse-response type filter.
     /// </para>
     /// <para>
-    /// An alterntive to this filter is <c>LowPass</c>, which is infinite-impulse-repsonse, and also 
-    /// requires less working memory(this filter needs to hold a buffer equal to <c>bufferSize</c>, but <c>LowPass</c> only
-    /// needs to keep its last value in memory). <c>LowPass</c> will have less phase-shift/time-shift, because it 
+    /// An alterntive to this filter is <seealso cref="LowPass"/>, which is infinite-impulse-repsonse, and also 
+    /// requires less working memory(this filter needs to hold a buffer equal to <c>bufferSize</c>, but 
+    /// <seealso cref="LowPass"/> only needs to keep its last value in memory). 
+    /// <seealso cref="LowPass"/> will have less phase-shift/time-shift, because it 
     /// places most weight on the last datapoint, whereas this filter will weight all data points in its buffer equally and
     /// thus responds sluggish. 
     /// </para>

@@ -92,9 +92,10 @@ it does not use future values such as <code>k+1</code>, this is at the expense o
 This is a finite-impulse-response type filter.
 </p>
 <p>
-An alterntive to this filter is <code>LowPass</code>, which is infinite-impulse-repsonse, and also 
-requires less working memory(this filter needs to hold a buffer equal to <code>bufferSize</code>, but <code>LowPass</code> only
-needs to keep its last value in memory). <code>LowPass</code> will have less phase-shift/time-shift, because it 
+An alterntive to this filter is <a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a>, which is infinite-impulse-repsonse, and also 
+requires less working memory(this filter needs to hold a buffer equal to <code>bufferSize</code>, but 
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a> only needs to keep its last value in memory). 
+<a class="xref" href="TimeSeriesAnalysis.Dynamic.LowPass.html">LowPass</a> will have less phase-shift/time-shift, because it 
 places most weight on the last datapoint, whereas this filter will weight all data points in its buffer equally and
 thus responds sluggish. 
 </p>

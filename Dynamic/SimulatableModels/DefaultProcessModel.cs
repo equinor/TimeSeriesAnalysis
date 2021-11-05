@@ -14,15 +14,15 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <para>
     /// This is a model that can be either dynamic or static, have one or multiple inputs
     /// and can be either linear in inputs or have inputs nonlinearity described by a
-    /// polynominal. Dynamics can be either 1.order time-constant, time-delay or both.
+    /// second-order polynominal. Dynamics can be either 1.order time-constant, time-delay or both.
     /// The model also supports "additive" signals added to its output(intended for modeling disturbances.)
     /// </para>
     /// <para>
-    /// The model is designed to lend itesel well to identificaiton from industrial time-series
-    /// datasets, and is supported by the accompanying identificaiton method <c>DefaultProcessModelIdentifier</c>.
+    /// The model is designed to lend itself well to identificaiton from industrial time-series
+    /// datasets, and is supported by the accompanying identificaiton method <seealso cref="DefaultProcessModelIdentifier"/>.
     /// </para>
     /// <para>
-    /// This model is also intended to be co-simulated with <c>PIDModel</c> by <c>ProcessSimulator</c> to study
+    /// This model is also intended to be co-simulated with <seealso cref="PIDModel"/> by <seealso cref="PlantSimulator"/> to study
     /// process control feedback loops.
     /// </para>
     ///  <para>
@@ -35,10 +35,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// the intorduction of one additional paramters in future work. 
     /// </para>
     /// </remarks>
-    /// <seealso cref="DefaultProcessModelParameters"/>
-    /// <seealso cref="DefaultProcessModelIdentifier"/>
-    /// <seealso cref="PIDModel"/>
-    /// <seealso cref="PlantSimulator"/>
+    /// See also: <seealso cref="DefaultProcessModelParameters"/>
     /// </summary>
     public class DefaultProcessModel : ModelBaseClass, ISimulatableModel 
     {

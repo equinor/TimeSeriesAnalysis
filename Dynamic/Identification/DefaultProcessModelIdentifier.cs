@@ -29,9 +29,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// The time delay identification is done by splitting the time-delay estimation from continous parameter
     /// identification, turning the solver into a sequential optimization solver. 
     /// This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
-    /// is deferred to <c>ProcessTimeDelayIdentifier</c>
+    /// is deferred to <seealso cref="ProcessTimeDelayIdentifier"/>
     /// </para>
-    /// <seealso cref="ProcessTimeDelayIdentifier"/>
+    /// 
     /// </summary>
     public class DefaultProcessModelIdentifier 
     {

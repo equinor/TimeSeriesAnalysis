@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Abstract base class that contins common functionality across all models which are to implement <c>ISimulatableModel</c>
+    /// Abstract base class that contains common functionality across all models which are to implement 
+    /// <seealso cref="ISimulatableModel"/>
     /// </summary>
     public abstract class ModelBaseClass
     {
