@@ -16,14 +16,14 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Stand-alone simulation of any ISimulatableModel model. 
     /// </summary>
     /// 
-    public class SubProcessSimulator
+    public class UnitSimulator
     {
         ISimulatableModel model;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="model"></param>
-        public SubProcessSimulator(ISimulatableModel model)
+        public UnitSimulator(ISimulatableModel model)
         {
             this.model = model;
         }
@@ -34,7 +34,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="processDataSet"></param>
         /// <param name="noiseAmplitude">optionally adds noise to the "measured" y (for testing purposes)</param>
-        public void EmulateYmeas(ref SubProcessDataSet processDataSet, double noiseAmplitude=0)
+        public void SimulateYmeas(ref UnitDataSet processDataSet, double noiseAmplitude=0)
         {
             Simulate(ref processDataSet,true);
             if (noiseAmplitude > 0)
@@ -60,8 +60,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="writeResultToYmeasInsteadOfYsim">write data to <c>processDataSet.Y_meas</c> 
         /// instead of <c>processDataSet.Y_sim</c></param>
         /// <returns>Returns true if able to simulate, otherwise false (simulation is written into processDataSet )</returns>
-        public bool CoSimulateProcessAndPID
-            ( PIDModel pid, ref SubProcessDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
+        public bool CoSimulate
+            ( PIDModel pid, ref UnitDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
         {
             if (processDataSet.Y_setpoint == null)
             {
@@ -98,7 +98,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                processDataSet.warnings.Add(SubProcessDataSetWarnings.FailedToInitializePIDcontroller);
+                processDataSet.warnings.Add(UnitWarnings.FailedToInitializePIDcontroller);
                 Debug.WriteLine("Failed to initalize PID-contoller.");
                 u = umin + (umax-umin)/2;
             }
@@ -145,7 +145,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="writeResultToYmeasInsteadOfYsim">if <c>true</c>, output is written to <c>processDataSet.ymeas</c> instead of <c>processDataSet.ysim</c></param>
         /// <param name="doOverwriteY">(default is false)if <c>true</c>, output overwrites any data in <c>processDataSet.ymeas</c> or <c>processDataSet.ysim</c></param>
         /// <returns>Returns  the simulate y if able to simulate,otherwise null</returns> 
-        public double[] Simulate(ref SubProcessDataSet processDataSet,
+        public double[] Simulate(ref UnitDataSet processDataSet,
             bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY=false)
         {
             int N = processDataSet.NumDataPoints;

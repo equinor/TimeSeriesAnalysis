@@ -19,8 +19,8 @@ from TimeSeriesAnalysis.Dynamic import (
     DefaultProcessModel,
     DefaultProcessModelIdentifier,
     DefaultProcessModelParameters,
-    SubProcessDataSet,
-    SubProcessSimulator,
+    UnitDataSet,
+    UnitSimulator,
 )
 from TimeSeriesAnalysis.Utility import TimeSeriesCreator
 
@@ -54,8 +54,8 @@ u_list.Add(u2)
 
 U = Array2D[Double].InitFromColumnList(u_list)
 
-dataSet = SubProcessDataSet(timeBase_s, U)
-simulator = SubProcessSimulator(model)
+dataSet = UnitDataSet(timeBase_s, U)
+simulator = UnitSimulator(model)
 
 simulator.EmulateYmeas(dataSet, noiseAmplitude)
 
