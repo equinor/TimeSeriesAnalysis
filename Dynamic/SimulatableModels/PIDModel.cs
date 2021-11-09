@@ -35,7 +35,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// data-classes, linked below:
     /// </para>
     /// </remark>
-    /// <seealso cref="PIDModelParameters"/>
+    /// <seealso cref="PidParameters"/>
     /// <seealso cref="PidAntiSurgeParams"/>
     /// <seealso cref="PidFeedForward"/>
     /// <seealso cref="PidGainScheduling"/>
@@ -43,10 +43,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <seealso cref="PidScaling"/>
     /// <seealso cref="PidTuning"/>
     /// </summary>
-    public class PIDModel : ModelBaseClass,ISimulatableModel
+    public class PidModel : ModelBaseClass,ISimulatableModel
     {
         int timeBase_s;
-        PIDModelParameters pidParameters;
+        PidParameters pidParameters;
         PidController pid;
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParameters">object containing the paramters of the controller</param>
         /// <param name="timeBase_s">sampling time, a steady time between each call to Iterate</param>
         /// <param name="ID">Each controller shoudl be given a unique ID</param>
-        public PIDModel(PIDModelParameters pidParameters, int timeBase_s, string ID="not_named")
+        public PidModel(PidParameters pidParameters, int timeBase_s, string ID="not_named")
         {
-            processModelType = ProcessModelType.PID;
+            processModelType = ModelType.PID;
             SetID(ID);
             this.timeBase_s     = timeBase_s;
             this.pidParameters  = pidParameters;
@@ -152,7 +152,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the model parameters
         /// </summary>
         /// <returns>the parameters object of the model</returns>
-        public PIDModelParameters GetModelParameters()
+        public PidParameters GetModelParameters()
         {
             return pidParameters;
         }

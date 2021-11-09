@@ -4,7 +4,7 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// Parameters describing PID-controller parameters for gain-scheduling 
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PidModel"/>
     /// <seealso cref="PidController"/>
     /// </summary>
     public class PidGainScheduling

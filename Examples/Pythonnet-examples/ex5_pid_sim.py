@@ -13,10 +13,10 @@ clr.AddReference("System.Collections")
 clr.AddReference("TimeSeriesAnalysis")
 
 from TimeSeriesAnalysis.Dynamic import (
-    DefaultProcessModel,
-    DefaultProcessModelParameters,
-    PIDModel,
-    PIDModelParameters,
+    UnitModel,
+    UnitParameters,
+    PidModel,
+    PidParameters,
     UnitDataSet,
     UnitSimulator,
 )
@@ -35,15 +35,15 @@ modelParameters.TimeDelay = 0.0
 modelParameters.Bias = 5.0
 
 
-processModel = DefaultProcessModel(modelParameters, timeBase_s)
+processModel = UnitModel(modelParameters, timeBase_s)
 
-pidParameters = PIDModelParameters()
+pidParameters = PidParameters()
 
 pidParameters.Kp = 0.5
 pidParameters.Ti_s = 20.0
 
 
-pid = PIDModel(pidParameters, timeBase_s)
+pid = PidModel(pidParameters, timeBase_s)
 
 dataSet = UnitDataSet(timeBase_s, N)
 

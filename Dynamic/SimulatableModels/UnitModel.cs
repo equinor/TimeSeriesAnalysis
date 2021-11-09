@@ -19,10 +19,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// <para>
     /// The model is designed to lend itself well to identificaiton from industrial time-series
-    /// datasets, and is supported by the accompanying identificaiton method <seealso cref="DefaultProcessModelIdentifier"/>.
+    /// datasets, and is supported by the accompanying identificaiton method <seealso cref="UnitIdentifier"/>.
     /// </para>
     /// <para>
-    /// This model is also intended to be co-simulated with <seealso cref="PIDModel"/> by <seealso cref="PlantSimulator"/> to study
+    /// This model is also intended to be co-simulated with <seealso cref="PidModel"/> by <seealso cref="PlantSimulator"/> to study
     /// process control feedback loops.
     /// </para>
     ///  <para>
@@ -35,11 +35,11 @@ namespace TimeSeriesAnalysis.Dynamic
     /// the intorduction of one additional paramters in future work. 
     /// </para>
     /// </remarks>
-    /// See also: <seealso cref="DefaultProcessModelParameters"/>
+    /// See also: <seealso cref="UnitParameters"/>
     /// </summary>
-    public class DefaultProcessModel : ModelBaseClass, ISimulatableModel 
+    public class UnitModel : ModelBaseClass, ISimulatableModel 
     {
-        private DefaultProcessModelParameters modelParameters;
+        private UnitParameters modelParameters;
         private LowPass lowPass;
         private double timeBase_s;
         private TimeDelay delayObj;
@@ -59,10 +59,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// and between calls to Iterate</param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
 
-        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, double timeBase_s,
+        public UnitModel(UnitParameters modelParameters, double timeBase_s,
             string ID="not_named")
         {
-            processModelType = ProcessModelType.SubProcess;
+            processModelType = ModelType.SubProcess;
             SetID(ID);
             InitSim(timeBase_s,modelParameters);
         }
@@ -91,7 +91,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
-        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, UnitDataSet dataSet)
+        public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet)
         {
             InitSim(dataSet.TimeBase_s, modelParameters);
         }
@@ -100,7 +100,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the objet of model paramters contained in the model
         /// </summary>
         /// <returns>Model paramter object</returns>
-        public DefaultProcessModelParameters GetModelParameters()
+        public UnitParameters GetModelParameters()
         {
             return modelParameters;
         }
@@ -401,7 +401,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="timeBase_s">the timebase in seconds, the length of time between calls to Iterate(data sampling time interval)</param>
         /// <param name="modelParameters">model paramters object</param>
-        private void InitSim(double timeBase_s, DefaultProcessModelParameters modelParameters)
+        private void InitSim(double timeBase_s, UnitParameters modelParameters)
         {
             this.modelParameters = modelParameters;
             this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
@@ -422,6 +422,10 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             int sDigits = 3;
 
+            int cutOffForUsingDays_s = 86400;
+            int cutOffForUsingHours_s = 3600;
+
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("DefaultProcessModel");
             sb.AppendLine("-------------------------");
@@ -433,9 +437,35 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("---NOT able to identify---");
             }
-            sb.AppendLine("TimeConstant : " + 
-                SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec");
-            sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s + " sec");
+            // time constant
+            if (modelParameters.TimeConstant_s < cutOffForUsingHours_s)
+            {
+                sb.AppendLine("TimeConstant : " +
+                    SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec");
+            }
+            else if (modelParameters.TimeConstant_s < cutOffForUsingDays_s)
+            {
+                sb.AppendLine("TimeConstant : " +
+                    SignificantDigits.Format(modelParameters.TimeConstant_s/3600, sDigits) + " hours");
+            }
+            else // use days
+            {
+                sb.AppendLine("TimeConstant : " +
+                    SignificantDigits.Format(modelParameters.TimeConstant_s/86400, sDigits) + " days");
+            }
+            // time delay
+            if (modelParameters.TimeDelay_s < cutOffForUsingHours_s)
+            {
+                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s + " sec");
+            }
+            else if (modelParameters.TimeDelay_s < cutOffForUsingDays_s)
+            {
+                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s/3600 + " sec");
+            }
+            else
+            {
+                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s/86400 + " days");
+            }
             sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
             if (modelParameters.Curvatures == null)
             {

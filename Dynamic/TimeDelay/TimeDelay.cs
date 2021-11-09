@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <para>
     /// This is a reasuble class for providing time-delay functionality to simulatable models.
     /// </para>
-    /// <seealo cref="DefaultProcessModel"/>
+    /// <seealo cref="UnitModel"/>
     /// </summary>
     public class TimeDelay
     {

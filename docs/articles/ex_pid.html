@@ -84,7 +84,7 @@
 <p><code>SubProcessSimulator.CoSimulateProcessAndPID</code> co-simulates a single PID-controller/processes combination such as this.</p>
 <pre><code class="lang-csharp" name="Examples">int timeBase_s = 1;
 int N = 500;
-var modelParameters = new DefaultProcessModelParameters
+var modelParameters = new UnitParameters
 {
     WasAbleToIdentify = true,
     TimeConstant_s = 10,
@@ -92,13 +92,13 @@ var modelParameters = new DefaultProcessModelParameters
     TimeDelay_s = 0,
     Bias = 5
 };
-var processModel = new DefaultProcessModel(modelParameters, timeBase_s);
-var pidParameters = new PIDModelParameters()
+var processModel = new UnitModel(modelParameters, timeBase_s);
+var pidParameters = new PidParameters()
 {
     Kp = 0.5,
     Ti_s = 20
 };
-var pid = new PIDModel(pidParameters, timeBase_s);
+var pid = new PidModel(pidParameters, timeBase_s);
 var dataSet = new UnitDataSet(timeBase_s,N);
 dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
 dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);

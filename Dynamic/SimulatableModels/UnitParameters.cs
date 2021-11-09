@@ -3,10 +3,13 @@
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Parameters data class of the <seealso cref="DefaultProcessModel"/>
+    /// Parameters data class of the <seealso cref="UnitModel"/>
     /// </summary>
-    public class DefaultProcessModelParameters : ModelParametersBaseClass
+    public class UnitParameters : ModelParametersBaseClass
     {
+        /// <summary>
+        /// ID of the solver used to identify the model
+        /// </summary>
         public string SolverID;
 
         /// <summary>
@@ -62,7 +65,10 @@ namespace TimeSeriesAnalysis.Dynamic
         internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
      
         
-        public DefaultProcessModelParameters()
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public UnitParameters()
         {
             errorsAndWarningMessages = new List<ProcessIdentWarnings>();
         }

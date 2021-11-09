@@ -34,7 +34,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <para>
     /// This block can function either as "minimum" or "maximum" selector, mainly inteded
     /// for simulating "min select" or "max selct" pid-control by combining with
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PidModel"/>
     /// </para>
     /// </summary>
     public class Select : ModelBaseClass, ISimulatableModel 
@@ -48,7 +48,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="ID"></param>
         public Select(SelectType type, string ID)
         {
-            processModelType = ProcessModelType.Select;
+            processModelType = ModelType.Select;
             this.type = type;
             SetID(ID);
         }

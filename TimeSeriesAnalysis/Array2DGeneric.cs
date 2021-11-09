@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="columnList"></param>
         /// <returns>null if list columnList dimensions do not match</returns>
-        static public T[,] InitFromColumnList(List<T[]> columnList)
+        static public T[,] FromList(List<T[]> columnList)
         {
             int nColumns = columnList.Count;
             int nRows    = columnList.ElementAt(0).Length;

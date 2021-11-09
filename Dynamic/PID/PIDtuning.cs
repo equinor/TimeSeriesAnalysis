@@ -11,7 +11,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Parameters describing PID-controller tuning (Kp,Ti,Td)
     /// 
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PidModel"/>
     /// <seealso cref="PidController"/>
     /// </summary>
     public class PidTuning

@@ -97,8 +97,68 @@ see Matrix.cs</p>
       <h4><a class="xref" href="TimeSeriesAnalysis.Array2DExtensionMethods.html">Array2DExtensionMethods</a></h4>
       <section><p>Extension methods based on Array2D</p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.BandPass.html">BandPass</a></h4>
+      <section><p>Numerical band-pass filter based on <a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a></p>
+<p>
+This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
+requires litte memory and computation. This filter is causal, meaning that
+for calculating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
+this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.MovingAvg.html">MovingAvg</a>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.HighPass.html">HighPass</a></h4>
+      <section><p>A high-pass recursive time-series filter based on <a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>.</p>
+<p>
+This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
+requires litte memory and computation. This filter is causal, meaning that
+for calculating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
+this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.BandPass.html">BandPass</a>
+<a class="xref" href="TimeSeriesAnalysis.MovingAvg.html">MovingAvg</a>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a></h4>
+      <section><p>Low-pass filtering of time-series.</p>
+<p>
+This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
+requires litte memory and computation. This filter is causal, meaning that
+for calcuating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
+this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.BandPass.html">BandPass</a>
+<a class="xref" href="TimeSeriesAnalysis.MovingAvg.html">MovingAvg</a>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Matrix.html">Matrix</a></h4>
       <section><p>Operations for treating 2D-arrays as mathetmatical matrices</p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.MovingAvg.html">MovingAvg</a></h4>
+      <section><p>Moving-average low-pass filter</p>
+<p>
+This filter is causal, meaning that for calculating the filtered value at time <code>k</code>
+it does not use future values such as <code>k+1</code>, this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<p>
+This is a finite-impulse-response type filter.
+</p>
+<p>
+An alterntive to this filter is <a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>, which is infinite-impulse-repsonse, and also 
+requires less working memory(this filter needs to hold a buffer equal to <code>bufferSize</code>, but 
+<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a> only needs to keep its last value in memory). 
+<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a> will have less phase-shift/time-shift, because it 
+places most weight on the last datapoint, whereas this filter will weight all data points in its buffer equally and
+thus responds sluggish. 
+</p>
+<p>
+The advantage of this filter is that it allows you to control precisely how many past values are weighted.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.BandPass.html">BandPass</a>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></h4>
       <section><p>Class that holds the results of a run of <code>Vec.Regress</code>.</p>

@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Class that contains special pid-controller parameters for anti-surge controllers
-    ///  <seealso cref="PIDModel"/>
+    ///  <seealso cref="PidModel"/>
     /// <seealso cref="PidController"/>
     /// </summary>
     public class PidAntiSurgeParams

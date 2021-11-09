@@ -93,14 +93,14 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         int timeBase_s = 1;
         int N = 480;
 
-        DefaultProcessModelParameters modelParameters1;
-        DefaultProcessModelParameters modelParameters2;
-        DefaultProcessModelParameters modelParameters3;
-        DefaultProcessModel processModel1;
-        DefaultProcessModel processModel2;
-        DefaultProcessModel processModel3;
-        PIDModelParameters pidParameters1;
-        PIDModel pidModel1;
+        UnitParameters modelParameters1;
+        UnitParameters modelParameters2;
+        UnitParameters modelParameters3;
+        UnitModel processModel1;
+        UnitModel processModel2;
+        UnitModel processModel3;
+        PidParameters pidParameters1;
+        PidModel pidModel1;
         Select minSelect1;
         Select maxSelect1;
         [SetUp]
@@ -108,7 +108,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
         {
             Shared.GetParserObj().EnableDebugOutput();
 
-            modelParameters1 = new DefaultProcessModelParameters
+            modelParameters1 = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
@@ -116,7 +116,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 TimeDelay_s = 5,
                 Bias = 5
             };
-            modelParameters2 = new DefaultProcessModelParameters
+            modelParameters2 = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 20,
@@ -124,7 +124,7 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 TimeDelay_s = 10,
                 Bias = 5
             };
-            modelParameters3 = new DefaultProcessModelParameters
+            modelParameters3 = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 20,
@@ -133,16 +133,16 @@ namespace TimeSeriesAnalysis.Test.ProcessSimulatorTests
                 Bias = 5
             };
 
-            processModel1 = new DefaultProcessModel(modelParameters1, timeBase_s, "SubProcess1");
-            processModel2 = new DefaultProcessModel(modelParameters2, timeBase_s, "SubProcess2");
-            processModel3 = new DefaultProcessModel(modelParameters3, timeBase_s, "SubProcess3");
+            processModel1 = new UnitModel(modelParameters1, timeBase_s, "SubProcess1");
+            processModel2 = new UnitModel(modelParameters2, timeBase_s, "SubProcess2");
+            processModel3 = new UnitModel(modelParameters3, timeBase_s, "SubProcess3");
 
-            pidParameters1 = new PIDModelParameters()
+            pidParameters1 = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            pidModel1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
+            pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
 
             minSelect1 = new Select(SelectType.MIN,"MINSELECT");
             maxSelect1 = new Select(SelectType.MAX, "MAXSELECT");

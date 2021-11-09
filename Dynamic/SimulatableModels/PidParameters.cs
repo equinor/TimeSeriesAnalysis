@@ -8,10 +8,10 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// Parameters of the PIDModel
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PidModel"/>
     /// <seealso cref="PidController"/>
     /// </summary>
-    public class PIDModelParameters:ModelParametersBaseClass 
+    public class PidParameters:ModelParametersBaseClass 
     {
         /// <summary>
         /// Proportional gain of controller

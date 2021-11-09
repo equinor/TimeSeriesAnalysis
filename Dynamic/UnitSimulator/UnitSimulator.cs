@@ -61,7 +61,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// instead of <c>processDataSet.Y_sim</c></param>
         /// <returns>Returns true if able to simulate, otherwise false (simulation is written into processDataSet )</returns>
         public bool CoSimulate
-            ( PIDModel pid, ref UnitDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
+            ( PidModel pid, ref UnitDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
         {
             if (processDataSet.Y_setpoint == null)
             {
@@ -124,7 +124,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 Y[rowIdx] = y;
                 U[rowIdx] = u;
             }
-            processDataSet.U_sim = Array2D<double>.InitFromColumnList(new List<double[]> { U });
+            processDataSet.U_sim = Array2D<double>.FromList(new List<double[]> { U });
             if (writeResultToYmeasInsteadOfYsim)
             {
                 processDataSet.Y_meas = Y;

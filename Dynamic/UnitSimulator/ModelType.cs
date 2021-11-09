@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// This type is used to set the unit model unique identifier and is also used 
     /// in internal logic in the large-scale dynamic simulations</para>
     /// </summary>
-    public enum ProcessModelType
+    public enum ModelType
     {
         /// <summary>
         /// Type is not set

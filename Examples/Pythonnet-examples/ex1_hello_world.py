@@ -12,7 +12,7 @@ clr.AddReference("System.Collections")
 clr.AddReference("System")
 
 
-from TimeSeriesAnalysis.Dynamic import LowPass
+from TimeSeriesAnalysis import LowPass
 from TimeSeriesAnalysis.Utility import TimeSeriesCreator
 
 timeBase_s = 1

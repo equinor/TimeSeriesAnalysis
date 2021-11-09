@@ -6,20 +6,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class LowPass
-   </title>
+   | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LowPass
-   ">
+   | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
@@ -58,6 +58,16 @@
           </div>
         </div>
       </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -73,7 +83,16 @@
   
   <h1 id="TimeSeriesAnalysis_LowPass" data-uid="TimeSeriesAnalysis.LowPass" class="text-break">Class LowPass
   </h1>
-  <div class="markdown level0 summary"><p>Numerical low-pass filtering of time-series</p>
+  <div class="markdown level0 summary"><p>Low-pass filtering of time-series.</p>
+<p>
+This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
+requires litte memory and computation. This filter is causal, meaning that
+for calcuating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
+this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.BandPass.html">BandPass</a>
+<a class="xref" href="TimeSeriesAnalysis.MovingAvg.html">MovingAvg</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -116,13 +135,13 @@
   
   
   <a id="TimeSeriesAnalysis_LowPass__ctor_" data-uid="TimeSeriesAnalysis.LowPass.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_LowPass__ctor_System_Double_" data-uid="TimeSeriesAnalysis.LowPass.#ctor(System.Double)">LowPass(Double)</h4>
+  <h4 id="TimeSeriesAnalysis_LowPass__ctor_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.LowPass.#ctor(System.Double,System.Double)">LowPass(Double, Double)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LowPass(double TimeBase_s)</code></pre>
+    <pre><code class="lang-csharp hljs">public LowPass(double TimeBase_s, double nanValue = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -138,6 +157,12 @@
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">TimeBase_s</span></td>
         <td><p>The time base, the time interval between each time step of the dataset, in seconds</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">nanValue</span></td>
+        <td><p>value that is to be treated as NaN and ignored</p>
 </td>
       </tr>
     </tbody>
@@ -180,7 +205,7 @@
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">order</span></td>
-        <td><p>filter order, eitehr 1 or 2 is supported</p>
+        <td><p>filter order, either 1 or 2 is supported</p>
 </td>
       </tr>
       <tr>

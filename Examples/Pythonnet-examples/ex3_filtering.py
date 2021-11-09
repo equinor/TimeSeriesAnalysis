@@ -11,8 +11,7 @@ clr.AddReference("System")
 clr.AddReference("System.Collections")
 clr.AddReference("TimeSeriesAnalysis")
 
-from TimeSeriesAnalysis import Vec
-from TimeSeriesAnalysis.Dynamic import HighPass, LowPass
+from TimeSeriesAnalysis import Vec, HighPass, LowPass
 from TimeSeriesAnalysis.Utility import TimeSeriesCreator
 
 timeBase_s = 1

@@ -85,7 +85,7 @@
 a step change occurs in the disturbance signal.
 Note that while the PID-controller is able to stabilize the process, it does create significant
 offset in <code>y</code>, it falls to about <code>y=46.5</code> at its lowest.</p>
-<pre><code class="lang-csharp" name="Example">var processParameters = new DefaultProcessModelParameters
+<pre><code class="lang-csharp" name="Example">var processParameters = new UnitParameters
 {
     WasAbleToIdentify = true,
     TimeConstant_s = 30,
@@ -94,7 +94,7 @@ offset in <code>y</code>, it falls to about <code>y=46.5</code> at its lowest.</
     TimeDelay_s = 0,
     Bias = 50
 };
-var disturbanceParameters = new DefaultProcessModelParameters
+var disturbanceParameters = new UnitParameters
 {
     WasAbleToIdentify = true,
     TimeConstant_s = 30,
@@ -103,17 +103,17 @@ var disturbanceParameters = new DefaultProcessModelParameters
     TimeDelay_s = 5,
     Bias = 0
 };
-var pidParameters = new PIDModelParameters()
+var pidParameters = new PidParameters()
 {
     Kp = 0.3,
     Ti_s = 20
 };
 
 var processModel
-    = new DefaultProcessModel(processParameters, timeBase_s, &quot;Process1&quot;);
+    = new UnitModel(processParameters, timeBase_s, &quot;Process1&quot;);
 var disturbanceModel
-    = new DefaultProcessModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
-var pidModel = new PIDModel(pidParameters, timeBase_s, &quot;PID&quot;);
+    = new UnitModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
+var pidModel = new PidModel(pidParameters, timeBase_s, &quot;PID&quot;);
 
 var simNoFeedF = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
@@ -148,7 +148,7 @@ a feed-forward from this variable should improve performance.
 As seen, the offset between <code>y</code> and <code>y_set</code> is less during the same disturbance step as in the previous part of this example,
 with <code>y</code> falling to just <code> y=50.4</code> at its lowest, but at the expense of a slight <code>overshoot</code> in <code>y</code>.</p>
 <pre><code class="lang-csharp" name="Example">
-var processParameters = new DefaultProcessModelParameters
+var processParameters = new UnitParameters
 {
     WasAbleToIdentify = true,
     TimeConstant_s = 30,
@@ -157,7 +157,7 @@ var processParameters = new DefaultProcessModelParameters
     TimeDelay_s = 0,
     Bias = 50
 };
-var disturbanceParameters = new DefaultProcessModelParameters
+var disturbanceParameters = new UnitParameters
 {
     WasAbleToIdentify = true,
     TimeConstant_s = 30,
@@ -166,7 +166,7 @@ var disturbanceParameters = new DefaultProcessModelParameters
     TimeDelay_s = 5,
     Bias = 0
 };
-var pidParameters = new PIDModelParameters()
+var pidParameters = new PidParameters()
 {
     Kp = 0.3,
     Ti_s = 20,
@@ -182,10 +182,10 @@ var pidParameters = new PIDModelParameters()
 };
 
 var processModel
-    = new DefaultProcessModel(processParameters, timeBase_s, &quot;Process1&quot;);
+    = new UnitModel(processParameters, timeBase_s, &quot;Process1&quot;);
 var disturbanceModel
-    = new DefaultProcessModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
-var pidModel = new PIDModel(pidParameters, timeBase_s, &quot;PID&quot;);
+    = new UnitModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
+var pidModel = new PidModel(pidParameters, timeBase_s, &quot;PID&quot;);
 
 var simNoFeedF = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });

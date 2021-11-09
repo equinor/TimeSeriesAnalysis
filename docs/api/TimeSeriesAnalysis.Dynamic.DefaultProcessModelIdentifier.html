@@ -162,7 +162,7 @@ is deferred to <span class="xref">TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIde
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultProcessModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -206,7 +206,7 @@ around which the model is to be designed(can be set to <code>null</code>)</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DefaultProcessModel.html">DefaultProcessModel</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
         <td><p>the identified model parameters and some information about the fit</p>
 </td>
       </tr>

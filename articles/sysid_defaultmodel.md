@@ -1,6 +1,6 @@
-# The default model
+# UnitModel - the default process model
 
-The "default" model in this library is intended to be a model that can describe most average process systems. 
+The "default" model in this library is ``UnitModel``, intended to be a model that can describe most average process systems. 
 It aims to *avoid over-parametrization*, as this is known to cause issues on real-world datasets with limited excitation.
 
 As a design choice, the model has built in support for *explicitly treating* **measured/modeled external disturbances**, for use in analysis of closed-loop systems.

@@ -131,7 +131,7 @@ after the simulation.</p>
     int timeBase_s = 1;
     int N = 500;
 
-    DefaultProcessModelParameters modelParameters = new DefaultProcessModelParameters
+    UnitParameters modelParameters = new UnitParameters
     {
         WasAbleToIdentify = true,
         TimeConstant_s = 10,
@@ -139,15 +139,15 @@ after the simulation.</p>
         TimeDelay_s = 0,
         Bias = 5
     };
-    DefaultProcessModel processModel 
-        = new DefaultProcessModel(modelParameters, timeBase_s,&quot;SubProcess1&quot;);
+    UnitModel processModel 
+        = new UnitModel(modelParameters, timeBase_s,&quot;SubProcess1&quot;);
     
-    var pidParameters = new PIDModelParameters()
+    var pidParameters = new PidParameters()
     {
         Kp = 0.5,
         Ti_s = 20
     };
-    var pidModel = new PIDModel(pidParameters, timeBase_s,&quot;PID1&quot;);
+    var pidModel = new PidModel(pidParameters, timeBase_s,&quot;PID1&quot;);
     var sim = new PlantSimulator (timeBase_s, 
         new List&lt;ISimulatableModel&gt; { pidModel, processModel  });
     sim.ConnectModels(processModel,pidModel);

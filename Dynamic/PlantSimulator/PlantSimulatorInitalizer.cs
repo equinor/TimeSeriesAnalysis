@@ -118,7 +118,7 @@ namespace TimeSeriesAnalysis.Dynamic
             for (int subSystem = orderedSimulatorIDs.Count - 1; subSystem > 0; subSystem--)
             {
                 var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
-                if (model.GetProcessModelType() == ProcessModelType.PID)
+                if (model.GetProcessModelType() == ModelType.PID)
                     continue;
                 string outputID = model.GetOutputID();
                 if (outputID == null)
@@ -244,7 +244,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     continue;
                 }
-                if (model.GetProcessModelType() == ProcessModelType.PID)
+                if (model.GetProcessModelType() == ModelType.PID)
                 {
                     continue;
                 }
@@ -300,13 +300,13 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 var modelID = orderedSimulatorIDs.ElementAt(subSystem);
                 var model = modelDict[modelID];
-                if (model.GetProcessModelType() != ProcessModelType.PID)
+                if (model.GetProcessModelType() != ModelType.PID)
                     continue;
                 var downstream = connections.GetDownstreamModelIDs(modelID);
                 if (downstream.Count > 0)
                 {
                     // this method does not handle Select PID-controllers
-                    if (modelDict[downstream.First()].GetProcessModelType() == ProcessModelType.Select)
+                    if (modelDict[downstream.First()].GetProcessModelType() == ModelType.Select)
                     {
                         uninitalizedPID_IDs.Add(modelID);
                         continue;
@@ -375,7 +375,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.GetParserObj().AddError("PlantSimulatorInitalizer: PID-configuration not yet supported");
                 return false;
             }
-            if (modelDict[downstreamModelIDs.First()].GetProcessModelType() != ProcessModelType.Select)
+            if (modelDict[downstreamModelIDs.First()].GetProcessModelType() != ModelType.Select)
             {
                 Shared.GetParserObj().AddError("PlantSimulatorInitalizer: PID-configuration unrecognized(expected select block?):" +
                     downstreamModelIDs.First());

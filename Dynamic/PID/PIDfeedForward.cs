@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Parameters describing PID-controller parameters for feed-forward
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PidModel"/>
     /// <seealso cref="PidController"/>
     /// </summary>
     public class PidFeedForward

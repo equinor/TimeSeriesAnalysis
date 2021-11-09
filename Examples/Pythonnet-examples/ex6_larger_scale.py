@@ -14,11 +14,11 @@ clr.AddReference("TimeSeriesAnalysis")
 
 from System.Collections.Generic import List
 from TimeSeriesAnalysis.Dynamic import (
-    DefaultProcessModel,
-    DefaultProcessModelParameters,
+    UnitModel,
+    UnitParameters,
     ISimulatableModel,
-    PIDModel,
-    PIDModelParameters,
+    PidModel,
+    PidParameters,
     PlantSimulator,
     SignalType,
     TimeSeriesDataSet,
@@ -37,15 +37,15 @@ modelParameters.TimeDelay = 0.0
 modelParameters.Bias = 5.0
 
 
-process = DefaultProcessModel(modelParameters, timeBase_s, ID="SubProcess1")
+process = UnitModel(modelParameters, timeBase_s, ID="SubProcess1")
 
-pidParameters = PIDModelParameters()
+pidParameters = PidParameters()
 
 pidParameters.Kp = 0.5
 pidParameters.Ti_s = 20.0
 
 
-pid = PIDModel(pidParameters, timeBase_s, ID="PID1")
+pid = PidModel(pidParameters, timeBase_s, ID="PID1")
 
 sim_models = List[ISimulatableModel]()
 sim_models.Add(pid)

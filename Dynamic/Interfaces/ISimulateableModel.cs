@@ -52,7 +52,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns the type of process model
         /// </summary>
         /// <returns></returns>
-        ProcessModelType GetProcessModelType();
+        ModelType GetProcessModelType();
 
         /// <summary>
         /// Return the inputIDs that are "internal" i.e. related to the model and internal state x, but not "additive"

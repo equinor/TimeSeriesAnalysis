@@ -120,13 +120,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         // look for pid-models that either a) are not connected to any pid-models or 
                         // b) are connected to a model that is already in "pidModels"
-                        if (modelDict[modelID].GetProcessModelType() == ProcessModelType.PID)
+                        if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
                         {
                             var upstreamModelIDs = GetUpstreamModels(modelDict[modelID].GetID());
                             bool modelHasUpstreamPIDNOTAlreadyProcessed = false;
                             foreach (var upstreamModelID in upstreamModelIDs)
                             {
-                                if (modelDict[upstreamModelID].GetProcessModelType() == ProcessModelType.PID)
+                                if (modelDict[upstreamModelID].GetProcessModelType() == ModelType.PID)
                                 {
                                     if (unprocessedModels.Contains(upstreamModelID))
                                     {
@@ -149,7 +149,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         // look for pid-models that either a) are not connected to any pid-models or 
                         // b) are connected to a model that is already in "pidModels"
-                        if (modelDict[modelID].GetProcessModelType() == ProcessModelType.PID)
+                        if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
                         {
                             areUnprocessedPIDModelsLeft = true;
                         }
@@ -331,7 +331,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             foreach (string upstreamID in upstreamModelIDs)
             {
-                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
+                if (modelDict[upstreamID].GetProcessModelType() == ModelType.PID)
                 {
                     return true;
                 }
@@ -350,7 +350,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             foreach (string upstreamID in upstreamModelIDs)
             {
-                if (modelDict[upstreamID].GetProcessModelType() == ProcessModelType.PID)
+                if (modelDict[upstreamID].GetProcessModelType() == ModelType.PID)
                 {
                     return upstreamID;
                 }

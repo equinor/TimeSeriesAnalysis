@@ -92,7 +92,7 @@ in <code>Ti</code>.</p>
 <p>Firstly, the system is defined and the two simulation runs are done, one run at a low value of input, where the
 gain is <em>high</em>, and a second at a high value of the input, where the gain is <em>low</em>.</p>
 <pre><code class="lang-csharp" name="Example">
-var modelParameters = new DefaultProcessModelParameters
+var modelParameters = new UnitParameters
     {
         WasAbleToIdentify = true,
         TimeConstant_s = 0,
@@ -104,7 +104,7 @@ var modelParameters = new DefaultProcessModelParameters
         Bias = 50
     };
     var processModel
-        = new DefaultProcessModel(modelParameters, timeBase_s, &quot;Process1&quot;);
+        = new UnitModel(modelParameters, timeBase_s, &quot;Process1&quot;);
     
     var openLoopSim1 = new PlantSimulator(timeBase_s,
         new List&lt;ISimulatableModel&gt; { processModel });
@@ -131,12 +131,12 @@ var modelParameters = new DefaultProcessModelParameters
 <p><img src="images/ex_gainscheduling_part1.png" alt="Example 5 result"></p>
 <h2 id="simulating-the-use-of-two-standard-pid-controllers">Simulating the use of two standard PID-controllers</h2>
 <pre><code class="lang-csharp" name="Example">// the system rejecting a disturbance at y=20 with pidModel1
-var pidParameters1 = new PIDModelParameters()
+var pidParameters1 = new PidParameters()
 {
     Kp = 0.3,
     Ti_s = 20
 };
-var pidModel1 = new PIDModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
+var pidModel1 = new PidModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
 var closedLoopSim1 = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { pidModel1, processModel });
 closedLoopSim1.ConnectModels(pidModel1,processModel);
@@ -147,12 +147,12 @@ closedLoopSim1.AddSignal(processModel,SignalType.Disturbance_D, TimeSeriesCreato
 var isOk =closedLoopSim1.Simulate(out var closedLoopData1);
 
 //  the system rejecting a disturbance at y=70 with pidModel2
-var pidParameters2 = new PIDModelParameters()
+var pidParameters2 = new PidParameters()
 {
     Kp = 1,//NB! higher Kp
     Ti_s = 20
 };
-var pidModel2 = new PIDModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
+var pidModel2 = new PidModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
 var closedLoopSim2 = new PlantSimulator(timeBase_s,
     new List&lt;ISimulatableModel&gt; { pidModel2, processModel });
 closedLoopSim2.ConnectModels(pidModel2, processModel);
@@ -188,7 +188,7 @@ cases is created.</p>
 <p>The code to create the gain-scheduling controller and simulate both runs:</p>
 <pre><code class="lang-csharp" name="Example"> // building a gain-scheduling controller that is able to handle both regimes
 
- var pidParametersGS = new PIDModelParameters()
+ var pidParametersGS = new PidParameters()
  {
      Ti_s = 20,
      GainScheduling = new PidGainScheduling()
@@ -205,7 +205,7 @@ cases is created.</p>
      }
  };
 
- var pidModelGS = new PIDModel(pidParametersGS, timeBase_s, &quot;PID_GS&quot;);
+ var pidModelGS = new PidModel(pidParametersGS, timeBase_s, &quot;PID_GS&quot;);
 
  var closedLoopSimGS_1 = new PlantSimulator(timeBase_s,
      new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });

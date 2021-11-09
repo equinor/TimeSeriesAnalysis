@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis._Examples
             #region ex_4
             int timeBase_s = 1;
             double noiseAmplitude = 0.05;
-            var parameters = new DefaultProcessModelParameters
+            var parameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 15,
@@ -125,11 +125,11 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 5,
                 Bias = 5
             };
-            var model = new DefaultProcessModel(parameters, timeBase_s);
+            var model = new UnitModel(parameters, timeBase_s);
 
             double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
+            double[,] U = Array2D<double>.FromList(new List<double[]>{u1 ,u2});
 
             var dataSet = new UnitDataSet(timeBase_s,U);
             var simulator = new UnitSimulator(model);
@@ -138,7 +138,7 @@ namespace TimeSeriesAnalysis._Examples
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s,"ex4_data");
 
-            var modelId = new DefaultProcessModelIdentifier();
+            var modelId = new UnitIdentifier();
             var identifiedModel = modelId.Identify(ref dataSet);
     
             Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas, 
@@ -168,7 +168,7 @@ namespace TimeSeriesAnalysis._Examples
             #region ex_5
             int timeBase_s = 1;
             int N = 500;
-            var modelParameters = new DefaultProcessModelParameters
+            var modelParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
@@ -176,13 +176,13 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            var processModel = new DefaultProcessModel(modelParameters, timeBase_s);
-            var pidParameters = new PIDModelParameters()
+            var processModel = new UnitModel(modelParameters, timeBase_s);
+            var pidParameters = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pid = new PIDModel(pidParameters, timeBase_s);
+            var pid = new PidModel(pidParameters, timeBase_s);
             var dataSet = new UnitDataSet(timeBase_s,N);
             dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
             dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
@@ -203,7 +203,7 @@ namespace TimeSeriesAnalysis._Examples
             int timeBase_s = 1;
             int N = 500;
 
-            DefaultProcessModelParameters modelParameters = new DefaultProcessModelParameters
+            UnitParameters modelParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
@@ -211,15 +211,15 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            DefaultProcessModel processModel 
-                = new DefaultProcessModel(modelParameters, timeBase_s,"SubProcess1");
+            UnitModel processModel 
+                = new UnitModel(modelParameters, timeBase_s,"SubProcess1");
             
-            var pidParameters = new PIDModelParameters()
+            var pidParameters = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pidModel = new PIDModel(pidParameters, timeBase_s,"PID1");
+            var pidModel = new PidModel(pidParameters, timeBase_s,"PID1");
             var sim = new PlantSimulator (timeBase_s, 
                 new List<ISimulatableModel> { pidModel, processModel  });
             sim.ConnectModels(processModel,pidModel);

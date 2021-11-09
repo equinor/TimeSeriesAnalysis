@@ -17,7 +17,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private List<string> additiveInputIDs;
         private string outputID;
 
-        internal ProcessModelType processModelType = ProcessModelType.UnTyped;
+        internal ModelType processModelType = ModelType.UnTyped;
 
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Set the type of the process model
         /// </summary>
         /// <returns></returns>
-        public void SetProcessModelType(ProcessModelType newType)
+        public void SetProcessModelType(ModelType newType)
         {
             processModelType = newType;
         }
@@ -51,7 +51,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the type of the process model
         /// </summary>
         /// <returns></returns>
-        public ProcessModelType GetProcessModelType()
+        public ModelType GetProcessModelType()
         {
             return processModelType;
         }

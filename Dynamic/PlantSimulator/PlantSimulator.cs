@@ -23,8 +23,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <para>
     /// The building blocks of plant models are <c>PIDModel</c>, <c>DefaultProcessModel</c> and <c>Select</c>
     /// </para>
-    /// <seealso cref="DefaultProcessModel"/>
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="UnitModel"/>
+    /// <seealso cref="PidModel"/>
     /// <seealso cref="PlantSimulatorInitalizer"/>
     /// <seealso cref="Select"/>
     /// </summary>
@@ -83,14 +83,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public string AddSignal(ISimulatableModel model, SignalType type, double[] values, int index = 0)
         {
-            ProcessModelType modelType = model.GetProcessModelType();
+            ModelType modelType = model.GetProcessModelType();
             string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
             if (signalID == null)
             {
                 Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");
                 return null;
             }
-            if (type == SignalType.Disturbance_D && modelType == ProcessModelType.SubProcess)
+            if (type == SignalType.Disturbance_D && modelType == ModelType.SubProcess)
             {
                 // by convention, the disturbance is always added last to inputs
                 /* List<string> newInputIDs = new List<string>(model.GetModelInputIDs());
@@ -101,7 +101,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 return null;
             }
-            else if (type == SignalType.External_U && modelType == ProcessModelType.SubProcess)
+            else if (type == SignalType.External_U && modelType == ModelType.SubProcess)
             {
                 List<string> newInputIDs = new List<string>();
                 string[] inputIDs = model.GetModelInputIDs();
@@ -120,7 +120,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 model.SetInputIDs(newInputIDs.ToArray());
                 return signalID;
             }
-            else if (type == SignalType.Setpoint_Yset && modelType == ProcessModelType.PID)
+            else if (type == SignalType.Setpoint_Yset && modelType == ModelType.PID)
             {
                 model.SetInputIDs(new string[] { signalID }, (int)PidModelInputsIdx.Y_setpoint);
                 return signalID;
@@ -168,8 +168,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>returns the signal id if all is ok, otherwise null.</returns>
         public string ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex=null)
         {
-            ProcessModelType upstreamType = upstreamModel.GetProcessModelType();
-            ProcessModelType downstreamType = downstreamModel.GetProcessModelType();
+            ModelType upstreamType = upstreamModel.GetProcessModelType();
+            ModelType downstreamType = downstreamModel.GetProcessModelType();
             string outputId = upstreamModel.GetID();
 
             outputId = SignalNamer.GetSignalName(upstreamModel.GetID(),upstreamModel.GetOutputSignalType());
@@ -184,7 +184,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {// need to decide which input?? 
                 // 
                 // y->u_pid
-                if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.PID)
+                if (upstreamType == ModelType.SubProcess && downstreamType == ModelType.PID)
                 {
                     if (inputIndex.HasValue)
                     {
@@ -196,7 +196,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
                 //u_pid->u 
-                else if (upstreamType == ProcessModelType.PID && downstreamType == ProcessModelType.SubProcess)
+                else if (upstreamType == ModelType.PID && downstreamType == ModelType.SubProcess)
                 {
                     downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
                 }// process output-> connects to process input of another process
@@ -314,7 +314,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
                     string[] inputIDs = model.GetBothKindsOfInputIDs();
                     int inputDataLookBackIdx = 0; 
-                    if (model.GetProcessModelType() == ProcessModelType.PID && timeIdx > 0)
+                    if (model.GetProcessModelType() == ModelType.PID && timeIdx > 0)
                     {
                         inputDataLookBackIdx = 1;
                     }

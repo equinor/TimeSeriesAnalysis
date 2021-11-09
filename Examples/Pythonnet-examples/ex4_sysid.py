@@ -16,9 +16,9 @@ from System import Array, Double
 from System.Collections.Generic import List
 from TimeSeriesAnalysis import Array2D, Vec
 from TimeSeriesAnalysis.Dynamic import (
-    DefaultProcessModel,
-    DefaultProcessModelIdentifier,
-    DefaultProcessModelParameters,
+    UnitModel,
+    UnitIdentifier,
+    UnitParameters,
     UnitDataSet,
     UnitSimulator,
 )
@@ -36,7 +36,7 @@ parameters.TimeDelay = 5.0
 parameters.Bias = 5.0
 
 
-model = DefaultProcessModel(parameters, timeBase_s, ID="not_named")
+model = UnitModel(parameters, timeBase_s, ID="not_named")
 
 model.modelParameters = parameters
 model.timeBase_s = timeBase_s
@@ -52,14 +52,14 @@ u_list.Add(u1)
 u_list.Add(u2)
 
 
-U = Array2D[Double].InitFromColumnList(u_list)
+U = Array2D[Double].FromList(u_list)
 
 dataSet = UnitDataSet(timeBase_s, U)
 simulator = UnitSimulator(model)
 
-simulator.EmulateYmeas(dataSet, noiseAmplitude)
+simulator.SimulateYmeas(dataSet, noiseAmplitude)
 
-modelId = DefaultProcessModelIdentifier()
+modelId = UnitIdentifier()
 identifiedModel, subprosDataSet = modelId.Identify(dataSet)
 
 regResults = Vec().Regress(dataSet.Y_meas, U)

@@ -184,6 +184,50 @@ see Matrix.cs</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Array2D_1_FromList_" data-uid="TimeSeriesAnalysis.Array2D`1.FromList*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_FromList_System_Collections_Generic_List__0____" data-uid="TimeSeriesAnalysis.Array2D`1.FromList(System.Collections.Generic.List{`0[]})">FromList(List&lt;T[]&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a 2D array from a list of arrays representing each column in the array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[, ] FromList(List&lt;T[]&gt; columnList)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;T[]&gt;</td>
+        <td><span class="parametername">columnList</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[,]</td>
+        <td><p>null if list columnList dimensions do not match</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Array2D_1_GetColumn_" data-uid="TimeSeriesAnalysis.Array2D`1.GetColumn*"></a>
   <h4 id="TimeSeriesAnalysis_Array2D_1_GetColumn__0_____System_Int32_" data-uid="TimeSeriesAnalysis.Array2D`1.GetColumn(`0[][],System.Int32)">GetColumn(T[][], Int32)</h4>
   <div class="markdown level1 summary"><p>returns the column of the matrix with the given index</p>
@@ -371,50 +415,6 @@ see Matrix.cs</p>
       <tr>
         <td>T[]</td>
         <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Array2D_1_InitFromColumnList_" data-uid="TimeSeriesAnalysis.Array2D`1.InitFromColumnList*"></a>
-  <h4 id="TimeSeriesAnalysis_Array2D_1_InitFromColumnList_System_Collections_Generic_List__0____" data-uid="TimeSeriesAnalysis.Array2D`1.InitFromColumnList(System.Collections.Generic.List{`0[]})">InitFromColumnList(List&lt;T[]&gt;)</h4>
-  <div class="markdown level1 summary"><p>Initializes a 2D array from a list of arrays representing each column in the array</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T[, ] InitFromColumnList(List&lt;T[]&gt; columnList)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;T[]&gt;</td>
-        <td><span class="parametername">columnList</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>T[,]</td>
-        <td><p>null if list columnList dimensions do not match</p>
-</td>
       </tr>
     </tbody>
   </table>

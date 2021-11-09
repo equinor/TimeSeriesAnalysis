@@ -27,7 +27,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// (a mixed-integer problem) to a sequential optimization approach where the integer and continous parts of the problem are solved
     /// sequentially.
     /// </para>
-    /// <seealso cref="DefaultProcessModelIdentifier"/>
+    /// <seealso cref="UnitIdentifier"/>
     /// </summary>
     class ProcessTimeDelayIdentifier
     {

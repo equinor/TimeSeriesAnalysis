@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class MovingAvg
+    <title>Class UnitIdentifier
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class MovingAvg
+    <meta name="title" content="Class UnitIdentifier
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,39 +78,35 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.MovingAvg">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier">
   
   
-  <h1 id="TimeSeriesAnalysis_MovingAvg" data-uid="TimeSeriesAnalysis.MovingAvg" class="text-break">Class MovingAvg
+  <h1 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier" class="text-break">Class UnitIdentifier
   </h1>
-  <div class="markdown level0 summary"><p>Moving-average low-pass filter</p>
+  <div class="markdown level0 summary"><p>Identifier of the &quot;Default&quot; process model - a dynamic process model with time-constant, time-delay,
+linear process gain and optional (nonlinear)curvature process gains.</p>
 <p>
-This filter is causal, meaning that for calculating the filtered value at time <code>k</code>
-it does not use future values such as <code>k+1</code>, this is at the expense of introducing a time-shift/phase-shift.
+This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
+parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization
 </p>
 <p>
-This is a finite-impulse-response type filter.
+The &quot;default&quot; process model is linear-in-paramters, so that it can be solved by linear regression
+and identification should thus be both fast and stable. 
 </p>
 <p>
-An alterntive to this filter is <a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>, which is infinite-impulse-repsonse, and also 
-requires less working memory(this filter needs to hold a buffer equal to <code>bufferSize</code>, but 
-<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a> only needs to keep its last value in memory). 
-<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a> will have less phase-shift/time-shift, because it 
-places most weight on the last datapoint, whereas this filter will weight all data points in its buffer equally and
-thus responds sluggish. 
+Time-delay is an integer parameter, and finding the time-delay alongside continous paramters
+turns the identification problem into a linear mixed-integer problem. 
+The time delay identification is done by splitting the time-delay estimation from continous parameter
+identification, turning the solver into a sequential optimization solver. 
+This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
+is deferred to <span class="xref">TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentifier</span>
 </p>
-<p>
-The advantage of this filter is that it allows you to control precisely how many past values are weighted.
-</p>
-<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>
-<a class="xref" href="TimeSeriesAnalysis.HighPass.html">HighPass</a>
-<a class="xref" href="TimeSeriesAnalysis.BandPass.html">BandPass</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">MovingAvg</span></div>
+    <div class="level1"><span class="xref">UnitIdentifier</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -136,55 +132,37 @@ The advantage of this filter is that it allows you to control precisely how many
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.html">TimeSeriesAnalysis</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_MovingAvg_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MovingAvg</code></pre>
+    <pre><code class="lang-csharp hljs">public class UnitIdentifier</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_MovingAvg__ctor_" data-uid="TimeSeriesAnalysis.MovingAvg.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_MovingAvg__ctor_System_Int32_" data-uid="TimeSeriesAnalysis.MovingAvg.#ctor(System.Int32)">MovingAvg(Int32)</h4>
-  <div class="markdown level1 summary"><p>Constructor</p>
+  <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier__ctor" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor">UnitIdentifier()</h4>
+  <div class="markdown level1 summary"><p>Default Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MovingAvg(int bufferSize)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitIdentifier()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">bufferSize</span></td>
-        <td><p>the number of samples to average, which determines the size of the buffer to create</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_MovingAvg_Filter_" data-uid="TimeSeriesAnalysis.MovingAvg.Filter*"></a>
-  <h4 id="TimeSeriesAnalysis_MovingAvg_Filter_System_Double_" data-uid="TimeSeriesAnalysis.MovingAvg.Filter(System.Double)">Filter(Double)</h4>
-  <div class="markdown level1 summary"><p>Add value to the moving-average filter.</p>
+  <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])">Identify(ref UnitDataSet, Double[], Double[])</h4>
+  <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model that best fits the dataSet given</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Filter(double signal)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,9 +175,23 @@ The advantage of this filter is that it allows you to control precisely how many
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">signal</span></td>
-        <td><p>the scalar value to be added</p>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataSet</span></td>
+        <td><p>The dataset containing the ymeas and U that is to be fitted against,
+a new y_sim is also added</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">u0</span></td>
+        <td><p>Optionally sets the local working point for the inputs
+around which the model is to be designed(can be set to <code>null</code>)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">uNorm</span></td>
+        <td><p>normalizing paramter for u-u0 (its range)</p>
 </td>
       </tr>
     </tbody>
@@ -214,53 +206,8 @@ The advantage of this filter is that it allows you to control precisely how many
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><p>the output of the filter, given the new value</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_MovingAvg_Filter_" data-uid="TimeSeriesAnalysis.MovingAvg.Filter*"></a>
-  <h4 id="TimeSeriesAnalysis_MovingAvg_Filter_System_Double___" data-uid="TimeSeriesAnalysis.MovingAvg.Filter(System.Double[])">Filter(Double[])</h4>
-  <div class="markdown level1 summary"><p>Run filter over a vector of values</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] Filter(double[] signal)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">signal</span></td>
-        <td><p>vector of values to be filtered</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><p>the moving-averge filtered version of <code>values</code></p>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
+        <td><p>the identified model parameters and some information about the fit</p>
 </td>
       </tr>
     </tbody>

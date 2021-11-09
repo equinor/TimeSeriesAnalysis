@@ -10,7 +10,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
     /// <summary>
     /// Parameters describing PID-controller parameters for scaling 
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PidModel"/>
     /// <seealso cref="PidController"/>
     /// </summary>
 

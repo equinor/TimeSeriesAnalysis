@@ -33,12 +33,12 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// 
     /// </summary>
-    public class DefaultProcessModelIdentifier 
+    public class UnitIdentifier 
     {
         /// <summary>
         /// Default Constructor
         /// </summary>
-         public DefaultProcessModelIdentifier()
+         public UnitIdentifier()
         {
         }
 
@@ -52,7 +52,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public DefaultProcessModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm= null)
+        public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm= null)
         {
             bool doNonzeroU0 = true;// should be: true
             bool doUseDynamicModel = true;// should be:true
@@ -75,21 +75,21 @@ namespace TimeSeriesAnalysis.Dynamic
             // BEGIN WHILE loop to model process for different time delays               
             bool continueIncreasingTimeDelayEst = true;
             int timeDelayIdx = 0;
-            DefaultProcessModelParameters modelParams;
+            UnitParameters modelParams;
             
             while (continueIncreasingTimeDelayEst)
             {
                 // for a dynamic model y will depend on yprev
                 // therefore it is difficult to have ycur the same length as ymeas
                 {
-                    DefaultProcessModelParameters modelParams_noCurvature =
+                    UnitParameters modelParams_noCurvature =
                        EstimateProcessForAGivenTimeDelay
                        (timeDelayIdx, dataSet, doUseDynamicModel, false,
                        FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
 
                     if (doEstimateCurvature)
                     {
-                        DefaultProcessModelParameters modelParams_withCurvature =
+                        UnitParameters modelParams_withCurvature =
                               EstimateProcessForAGivenTimeDelay
                               (timeDelayIdx, dataSet, doUseDynamicModel, true,
                               FilterTc_s, u0, uNorm,assumeThatYkminusOneApproxXkminusOne);
@@ -133,7 +133,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 bool doDebugPlotting = false;//should normally be false.
                 if (doDebugPlotting)
                 { 
-                    var debugModel = new DefaultProcessModel(modelParams, dataSet);
+                    var debugModel = new UnitModel(modelParams, dataSet);
                     var sim = new UnitSimulator(debugModel);
                     var y_sim = sim.Simulate(ref dataSet);
                     Plot.FromList(new List<double[]> {y_sim,dataSet.Y_meas},new List<string> { "y1=ysim", "y1=ymeas" },
@@ -144,13 +144,13 @@ namespace TimeSeriesAnalysis.Dynamic
             // the the time delay which caused the smallest object function value
             int bestTimeDelayIdx = processTimeDelayIdentifyObj.ChooseBestTimeDelay(
                 out List<ProcessTimeDelayIdentWarnings> timeDelayWarnings);
-            DefaultProcessModelParameters modelParameters =
-                (DefaultProcessModelParameters)processTimeDelayIdentifyObj.GetRun(bestTimeDelayIdx);
+            UnitParameters modelParameters =
+                (UnitParameters)processTimeDelayIdentifyObj.GetRun(bestTimeDelayIdx);
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
             // END While loop 
             /////////////////////////////////////////////////////////////////
            
-            var model = new DefaultProcessModel(modelParameters, dataSet);
+            var model = new UnitModel(modelParameters, dataSet);
             var simulator = new UnitSimulator(model);
             simulator.Simulate(ref dataSet,default,true);// overwrite any y_sim
             model.FittedDataSet = dataSet;
@@ -159,7 +159,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        private DefaultProcessModelParameters EstimateProcessForAGivenTimeDelay
+        private UnitParameters EstimateProcessForAGivenTimeDelay
             (int timeDelay_samples, UnitDataSet dataSet,
             bool useDynamicModel,bool doEstimateCurvature, 
             double FilterTc_s, double[] u0, double[] uNorm, bool assumeThatYkminusOneApproxXkminusOne
@@ -490,7 +490,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     processGains = Vec<double>.SubArray(regResults.Param, 0, regResults.Param.Length - 2);
                 }
             }
-            DefaultProcessModelParameters parameters = new DefaultProcessModelParameters();
+            UnitParameters parameters = new UnitParameters();
             parameters.SolverID = solverID;
 
             // Vec.Regress can return very large values if y is noisy and u is stationary. 
@@ -541,11 +541,11 @@ namespace TimeSeriesAnalysis.Dynamic
         // bias is not always accurate for dynamic model identification 
         // as it is as "difference equation" that matches the changes in the 
         //
-        private double? ReEstimateBias(UnitDataSet dataSet, DefaultProcessModelParameters parameters)
+        private double? ReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
         {
             parameters.Bias = 0;
             double nanValue = dataSet.BadDataID;
-            var model = new DefaultProcessModel(parameters, dataSet.TimeBase_s);
+            var model = new UnitModel(parameters, dataSet.TimeBase_s);
             var simulator = new UnitSimulator((ISimulatableModel)model);
             var y_sim = simulator.Simulate(ref dataSet);
 

@@ -21,7 +21,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         public void Simulate_TimeDelay(int timeDelay_s)
         {
             var timeBase_s = 1;
-            var parameters = new DefaultProcessModelParameters
+            var parameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 ProcessGains = new double []{ 1},
@@ -29,10 +29,10 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 TimeDelay_s = timeDelay_s,
                 Bias =0
             };
-            var model   = new DefaultProcessModel(parameters, timeBase_s);
+            var model   = new UnitModel(parameters, timeBase_s);
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 31),
                 Vec<double>.Fill(1, 30));
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1});
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1});
             UnitDataSet dataSet = new UnitDataSet(timeBase_s, U);
             var simulator = new UnitSimulator(model);
             var ret  = simulator.Simulate(ref dataSet);
@@ -57,12 +57,12 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         static Plot4Test plot = new Plot4Test(doPlotting);
         double timeBase_s = 1;
 
-        public UnitDataSet CreateDataSet(DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
+        public UnitDataSet CreateDataSet(UnitParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
-            DefaultProcessModel model = new DefaultProcessModel(designParameters, timeBase_s);
+            UnitModel model = new UnitModel(designParameters, timeBase_s);
             this.timeBase_s = timeBase_s;
 
             UnitDataSet dataSet = new UnitDataSet(timeBase_s, U);
@@ -92,15 +92,15 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             return dataSet;
         }
 
-        public DefaultProcessModel Identify(UnitDataSet dataSet, DefaultProcessModelParameters designParameters)
+        public UnitModel Identify(UnitDataSet dataSet, UnitParameters designParameters)
         {
-            var modelId = new DefaultProcessModelIdentifier();
-            DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0, designParameters.UNorm);
+            var modelId = new UnitIdentifier();
+            UnitModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0, designParameters.UNorm);
             return identifiedModel;
         }
 
-        public DefaultProcessModel CreateDataAndIdentify(
-            DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
+        public UnitModel CreateDataAndIdentify(
+            UnitParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude,
@@ -111,7 +111,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         /// <summary>
         /// These test criteria shoudl normally pass, unless you are testing the negative
         /// </summary>
-        public void DefaultAsserts(DefaultProcessModel model, DefaultProcessModelParameters designParameters)
+        public void DefaultAsserts(UnitModel model, UnitParameters designParameters)
         {
             Console.WriteLine(model.ToString());
 
@@ -170,7 +170,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
 
             var data = new UnitDataSet((u, dateu), (y, datey));
 
-            var id = new DefaultProcessModelIdentifier();
+            var id = new UnitIdentifier();
             var model = id.Identify(ref data);
 
         //    Plot.FromList(new List<double[]> { data.U.GetColumn(0),data.Y_sim, data.Y_meas},
@@ -194,11 +194,11 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
             double[] u2 = TimeSeriesCreator.Step( 80, 300, 1, 3);
 
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1, u2 });
 
             bool addInBadDataToYmeas = true;
 
-            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -228,9 +228,9 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double noiseAmplitude = 0.01;
 
             double[] u1 = TimeSeriesCreator.Step(40, 100, 0, 1);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1 });
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1 });
 
-            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -275,9 +275,9 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double noiseAmplitude = 0.01;
 
             double[] u1 = TimeSeriesCreator.ThreeSteps(60, 120, 180, 240, 0, 1, 2, 3);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1 });
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1 });
 
-            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -288,7 +288,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 Bias = bias
             };
 
-            DefaultProcessModelParameters paramtersNoCurvature = new DefaultProcessModelParameters
+            UnitParameters paramtersNoCurvature = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
@@ -298,7 +298,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 U0 = new double[] { 1 },
                 Bias = bias
             };
-            var refModel = new DefaultProcessModel(paramtersNoCurvature,timeBase_s,"reference");
+            var refModel = new UnitModel(paramtersNoCurvature,timeBase_s,"reference");
 
             var sim = new PlantSimulator((int)timeBase_s,new List<ISimulatableModel> { refModel });
             sim.AddSignal(refModel, SignalType.External_U, u1);
@@ -345,9 +345,9 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
 
             double[] u1 = TimeSeriesCreator.ThreeSteps(60, 120, 180, 240, 0, 1, 2, 3);
             double[] u2 = TimeSeriesCreator.ThreeSteps(90, 150, 210, 240, 2, 1, 3, 2);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1,u2 });
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1,u2 });
 
-            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -357,7 +357,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 Bias = bias
             };
 
-            DefaultProcessModelParameters paramtersNoCurvature = new DefaultProcessModelParameters
+            UnitParameters paramtersNoCurvature = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
@@ -366,7 +366,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 U0 = new double[] { 1,1 },
                 Bias = bias
             };
-            var refModel = new DefaultProcessModel(paramtersNoCurvature, timeBase_s, "reference");
+            var refModel = new UnitModel(paramtersNoCurvature, timeBase_s, "reference");
 
             var sim = new PlantSimulator((int)timeBase_s, new List<ISimulatableModel> { refModel });
             sim.AddSignal(refModel, SignalType.External_U, u1, (int)INDEX.FIRST);
@@ -399,9 +399,9 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(40, 100, 0, 1);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1, u2 });
 
-            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -424,9 +424,9 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(60, 100, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(40, 100, 1, 0);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2 });
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1, u2 });
 
-            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -461,8 +461,8 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double[] u1 = TimeSeriesCreator.Step(50, 100 ,0,1) ;
             double[] u2 = TimeSeriesCreator.Step(35, 100, 1, 0);
             double[] u3 = TimeSeriesCreator.Step(60, 100, 0, 1);
-            double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1, u2, u3 });
-            DefaultProcessModelParameters designParameters = new DefaultProcessModelParameters
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1, u2, u3 });
+            UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 ProcessGains = new double[] { 1, 2, 1.5 },

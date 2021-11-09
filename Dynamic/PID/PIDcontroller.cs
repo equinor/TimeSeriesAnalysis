@@ -51,7 +51,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// To simulate PID-control, use the wrapper class PIDModel, as it wraps this class and impelments the
     /// <c>ISimulatableModel</c> interface needed to simulate with <c>ProcessSimulator</c>
     /// </para>
-    /// <seealso cref="PIDModel"/>
+    /// <seealso cref="PidModel"/>
     /// </summary>
     public class PidController
     {

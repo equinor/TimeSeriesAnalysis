@@ -34,7 +34,7 @@ namespace TimeSeriesAnalysis._Examples
             int N = 600;
             #region CascadeControl
 
-            var processParameters1 = new DefaultProcessModelParameters
+            var processParameters1 = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 2,//rapid
@@ -44,7 +44,7 @@ namespace TimeSeriesAnalysis._Examples
                 Bias = 50
             };
 
-            var processParameters2 = new DefaultProcessModelParameters
+            var processParameters2 = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,//slow
@@ -53,22 +53,22 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 5,
                 Bias = 50
             };
-            var pidParameters1 = new PIDModelParameters()
+            var pidParameters1 = new PidParameters()
             {
                 Kp = 3,
                 Ti_s = 2 //rapid
             };
-            var pidParameters2 = new PIDModelParameters()
+            var pidParameters2 = new PidParameters()
             {
                 Kp = 1,
                 Ti_s = 40 //slow
             };
             var process1
-                = new DefaultProcessModel(processParameters1, timeBase_s, "Process1");
+                = new UnitModel(processParameters1, timeBase_s, "Process1");
             var process2
-                = new DefaultProcessModel(processParameters2, timeBase_s, "Process2");
-            var pid1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
-            var pid2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
+                = new UnitModel(processParameters2, timeBase_s, "Process2");
+            var pid1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var pid2 = new PidModel(pidParameters2, timeBase_s, "PID2");
 
             var sim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { process1, process2, pid1, pid2 });
@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis._Examples
         public TimeSeriesDataSet FeedForward_Part1()
         {
             #region Feedforward_Part1
-            var processParameters = new DefaultProcessModelParameters
+            var processParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
@@ -126,7 +126,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 0,
                 Bias = 50
             };
-            var disturbanceParameters = new DefaultProcessModelParameters
+            var disturbanceParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
@@ -135,17 +135,17 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 5,
                 Bias = 0
             };
-            var pidParameters = new PIDModelParameters()
+            var pidParameters = new PidParameters()
             {
                 Kp = 0.3,
                 Ti_s = 20
             };
             
             var processModel
-                = new DefaultProcessModel(processParameters, timeBase_s, "Process1");
+                = new UnitModel(processParameters, timeBase_s, "Process1");
             var disturbanceModel
-                = new DefaultProcessModel(disturbanceParameters, timeBase_s, "Disturbance1");
-            var pidModel = new PIDModel(pidParameters, timeBase_s, "PID");
+                = new UnitModel(disturbanceParameters, timeBase_s, "Disturbance1");
+            var pidModel = new PidModel(pidParameters, timeBase_s, "PID");
 
             var simNoFeedF = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
@@ -188,7 +188,7 @@ namespace TimeSeriesAnalysis._Examples
         { 
         #region Feedforward_Part2
 
-            var processParameters = new DefaultProcessModelParameters
+            var processParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
@@ -197,7 +197,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 0,
                 Bias = 50
             };
-            var disturbanceParameters = new DefaultProcessModelParameters
+            var disturbanceParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
@@ -206,7 +206,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 5,
                 Bias = 0
             };
-            var pidParameters = new PIDModelParameters()
+            var pidParameters = new PidParameters()
             {
                 Kp = 0.3,
                 Ti_s = 20,
@@ -222,10 +222,10 @@ namespace TimeSeriesAnalysis._Examples
             };
 
             var processModel
-                = new DefaultProcessModel(processParameters, timeBase_s, "Process1");
+                = new UnitModel(processParameters, timeBase_s, "Process1");
             var disturbanceModel
-                = new DefaultProcessModel(disturbanceParameters, timeBase_s, "Disturbance1");
-            var pidModel = new PIDModel(pidParameters, timeBase_s, "PID");
+                = new UnitModel(disturbanceParameters, timeBase_s, "Disturbance1");
+            var pidModel = new PidModel(pidParameters, timeBase_s, "PID");
 
             var simNoFeedF = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
@@ -269,7 +269,7 @@ namespace TimeSeriesAnalysis._Examples
             //step responses on the open-loop system
         #region GainScheduling_Part1
 
-        var modelParameters = new DefaultProcessModelParameters
+        var modelParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 0,
@@ -281,7 +281,7 @@ namespace TimeSeriesAnalysis._Examples
                 Bias = 50
             };
             var processModel
-                = new DefaultProcessModel(modelParameters, timeBase_s, "Process1");
+                = new UnitModel(modelParameters, timeBase_s, "Process1");
             
             var openLoopSim1 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel });
@@ -307,12 +307,12 @@ namespace TimeSeriesAnalysis._Examples
 
             #region GainScheduling_Part2
             // the system rejecting a disturbance at y=20 with pidModel1
-            var pidParameters1 = new PIDModelParameters()
+            var pidParameters1 = new PidParameters()
             {
                 Kp = 0.3,
                 Ti_s = 20
             };
-            var pidModel1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
+            var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
             var closedLoopSim1 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModel1, processModel });
             closedLoopSim1.ConnectModels(pidModel1,processModel);
@@ -323,12 +323,12 @@ namespace TimeSeriesAnalysis._Examples
             var isOk =closedLoopSim1.Simulate(out var closedLoopData1);
 
             //  the system rejecting a disturbance at y=70 with pidModel2
-            var pidParameters2 = new PIDModelParameters()
+            var pidParameters2 = new PidParameters()
             {
                 Kp = 1,//NB! higher Kp
                 Ti_s = 20
             };
-            var pidModel2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
+            var pidModel2 = new PidModel(pidParameters2, timeBase_s, "PID2");
             var closedLoopSim2 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModel2, processModel });
             closedLoopSim2.ConnectModels(pidModel2, processModel);
@@ -353,7 +353,7 @@ namespace TimeSeriesAnalysis._Examples
             #region GainScheduling_Part3
             // building a gain-scheduling controller that is able to handle both regimes
 
-            var pidParametersGS = new PIDModelParameters()
+            var pidParametersGS = new PidParameters()
             {
                 Ti_s = 20,
                 GainScheduling = new PidGainScheduling()
@@ -370,7 +370,7 @@ namespace TimeSeriesAnalysis._Examples
                 }
             };
 
-            var pidModelGS = new PIDModel(pidParametersGS, timeBase_s, "PID_GS");
+            var pidModelGS = new PidModel(pidParametersGS, timeBase_s, "PID_GS");
 
             var closedLoopSimGS_1 = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { pidModelGS, processModel });
@@ -428,7 +428,7 @@ namespace TimeSeriesAnalysis._Examples
 
             #region MinSelect
 
-            var processParameters = new DefaultProcessModelParameters
+            var processParameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
@@ -439,22 +439,22 @@ namespace TimeSeriesAnalysis._Examples
                 Y_min =0,
                 Y_max =100
             };
-            var pidParameters1 = new PIDModelParameters()
+            var pidParameters1 = new PidParameters()
             {
                 Kp = 0.5, //low-gain
                 Ti_s = 250 // slow control (use buffer capacity, use less valve action)
             };
             // 
            // var pidParameters2 = pidParameters1;//
-            var pidParameters2 = new PIDModelParameters()
+            var pidParameters2 = new PidParameters()
             {
                 Kp = 2,//high-gain
                 Ti_s = 15 // faster control(avoid carryover, aggressivley use valve when needed)
             };
             var process
-                = new DefaultProcessModel(processParameters, timeBase_s, "Process");
-            var pid1 = new PIDModel(pidParameters1, timeBase_s, "PID1");
-            var pid2 = new PIDModel(pidParameters2, timeBase_s, "PID2");
+                = new UnitModel(processParameters, timeBase_s, "Process");
+            var pid1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var pid2 = new PidModel(pidParameters2, timeBase_s, "PID2");
             var minSelect = new Select(SelectType.MIN,"minSelect");
 
             var sim = new PlantSimulator(timeBase_s,

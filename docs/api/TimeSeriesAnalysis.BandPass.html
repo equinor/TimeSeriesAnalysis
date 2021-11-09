@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ModelParametersBaseClass
+    <title>Class BandPass
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ModelParametersBaseClass
+    <meta name="title" content="Class BandPass
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,20 +78,27 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.BandPass">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass" class="text-break">Class ModelParametersBaseClass
+  <h1 id="TimeSeriesAnalysis_BandPass" data-uid="TimeSeriesAnalysis.BandPass" class="text-break">Class BandPass
   </h1>
-  <div class="markdown level0 summary"><p>Abstract base class for ISimulatableModel classes</p>
+  <div class="markdown level0 summary"><p>Numerical band-pass filter based on <a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a></p>
+<p>
+This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
+requires litte memory and computation. This filter is causal, meaning that
+for calculating the filtered value at time <code>k</code> it does not use future values such as <code>k+1</code>, but 
+this is at the expense of introducing a time-shift/phase-shift.
+</p>
+<a class="xref" href="TimeSeriesAnalysis.LowPass.html">LowPass</a>
+<a class="xref" href="TimeSeriesAnalysis.HighPass.html">HighPass</a>
+<a class="xref" href="TimeSeriesAnalysis.MovingAvg.html">MovingAvg</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">ModelParametersBaseClass</span></div>
-      <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></div>
-      <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">UnitParameters</a></div>
+    <div class="level1"><span class="xref">BandPass</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -117,141 +124,44 @@
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.html">TimeSeriesAnalysis</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_BandPass_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class ModelParametersBaseClass</code></pre>
+    <pre><code class="lang-csharp hljs">public class BandPass</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal">FittingObjFunVal</h4>
-  <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
-</div>
+  <a id="TimeSeriesAnalysis_BandPass__ctor_" data-uid="TimeSeriesAnalysis.BandPass.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_BandPass__ctor_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.BandPass.#ctor(System.Double,System.Double)">BandPass(Double, Double)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double FittingObjFunVal { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public BandPass(double TimeBase_s, double nanValue = -9999)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">TimeBase_s</span></td>
         <td></td>
       </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq">FittingRsq</h4>
-  <div class="markdown level1 summary"><p>The value of the R2 or root mean square of fitting,higher is better (used to choose among models)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double FittingRsq { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingBadDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingBadDataPoints*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingBadDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingBadDataPoints">NFittingBadDataPoints</h4>
-  <div class="markdown level1 summary"><p>Number of bad data points ignored during fitting</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double NFittingBadDataPoints { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingTotalDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingTotalDataPoints*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingTotalDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingTotalDataPoints">NFittingTotalDataPoints</h4>
-  <div class="markdown level1 summary"><p>Number of total data points (good and bad) available for fitting</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double NFittingTotalDataPoints { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_WasAbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.WasAbleToIdentify*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_WasAbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.WasAbleToIdentify">WasAbleToIdentify</h4>
-  <div class="markdown level1 summary"><p>True if identification was able to identify, otherwise false.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool WasAbleToIdentify { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><span class="parametername">nanValue</span></td>
+        <td><p>value to be treated as NaN</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -259,39 +169,57 @@
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_AbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.AbleToIdentify*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_AbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.AbleToIdentify">AbleToIdentify()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_BandPass_Filter_" data-uid="TimeSeriesAnalysis.BandPass.Filter*"></a>
+  <h4 id="TimeSeriesAnalysis_BandPass_Filter_System_Double_System_Double_System_Double_System_Int32_System_Boolean_" data-uid="TimeSeriesAnalysis.BandPass.Filter(System.Double,System.Double,System.Double,System.Int32,System.Boolean)">Filter(Double, Double, Double, Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Adds a single data point to the filter</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool AbleToIdentify()</code></pre>
+    <pre><code class="lang-csharp hljs">public double Filter(double signal, double lpFilterTc_s, double hpFilterTc_s, int order = 1, bool doReset = false)</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">signal</span></td>
+        <td><p>data point</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">lpFilterTc_s</span></td>
+        <td><p>low-passfilter time constant in seconds</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">hpFilterTc_s</span></td>
+        <td><p>high-passfilter time constant in seconds</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">order</span></td>
+        <td><p>filter order, either 1 or 2 is supported</p>
+</td>
+      </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><span class="parametername">doReset</span></td>
+        <td><p>usually false, setting to true causes filter to reset to the value of signal</p>
+</td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingObjFunVal_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingObjFunVal*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingObjFunVal" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingObjFunVal">GetFittingObjFunVal()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double GetFittingObjFunVal()</code></pre>
-  </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -309,14 +237,51 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingR2_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingR2*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingR2" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingR2">GetFittingR2()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_BandPass_Filter_" data-uid="TimeSeriesAnalysis.BandPass.Filter*"></a>
+  <h4 id="TimeSeriesAnalysis_BandPass_Filter_System_Double___System_Double_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.BandPass.Filter(System.Double[],System.Double,System.Double,System.Int32)">Filter(Double[], Double, Double, Int32)</h4>
+  <div class="markdown level1 summary"><p>Filter an entire time-series in one command</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double GetFittingR2()</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Filter(double[] signal, double lpFilterTc_s, double hpFilterTc_s, int order = 1)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">signal</span></td>
+        <td><p>the vector of the entire time-series to be filtered</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">lpFilterTc_s</span></td>
+        <td><p>filter time constant</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">hpFilterTc_s</span></td>
+        <td><p>filter time constant</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">order</span></td>
+        <td><p>filter order, either 1 or 2</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -327,8 +292,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><p>a vector of the filtered time-series</p>
+</td>
       </tr>
     </tbody>
   </table>
