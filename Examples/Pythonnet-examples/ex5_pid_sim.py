@@ -17,8 +17,8 @@ from TimeSeriesAnalysis.Dynamic import (
     DefaultProcessModelParameters,
     PIDModel,
     PIDModelParameters,
-    SubProcessDataSet,
-    SubProcessSimulator,
+    UnitDataSet,
+    UnitSimulator,
 )
 from TimeSeriesAnalysis.Utility import TimeSeriesCreator
 
@@ -45,12 +45,12 @@ pidParameters.Ti_s = 20.0
 
 pid = PIDModel(pidParameters, timeBase_s)
 
-dataSet = SubProcessDataSet(timeBase_s, N)
+dataSet = UnitDataSet(timeBase_s, N)
 
 dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1)
 dataSet.Y_setpoint = TimeSeriesCreator.Step(0, N, 50, 50)
 
-simulator = SubProcessSimulator(processModel)
+simulator = UnitSimulator(processModel)
 isOK, dataSet = simulator.CoSimulateProcessAndPID(pid, dataSet)
 
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)

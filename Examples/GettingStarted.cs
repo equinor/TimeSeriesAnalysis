@@ -131,9 +131,9 @@ namespace TimeSeriesAnalysis._Examples
             double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]>{u1 ,u2});
 
-            var dataSet = new SubProcessDataSet(timeBase_s,U);
-            var simulator = new SubProcessSimulator(model);
-            simulator.EmulateYmeas(ref dataSet, noiseAmplitude);
+            var dataSet = new UnitDataSet(timeBase_s,U);
+            var simulator = new UnitSimulator(model);
+            simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
 
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s,"ex4_data");
@@ -183,11 +183,11 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 20
             };
             var pid = new PIDModel(pidParameters, timeBase_s);
-            var dataSet = new SubProcessDataSet(timeBase_s,N);
+            var dataSet = new UnitDataSet(timeBase_s,N);
             dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
             dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
-            var simulator = new SubProcessSimulator(processModel);
-            simulator.CoSimulateProcessAndPID( pid, ref dataSet);
+            var simulator = new UnitSimulator(processModel);
+            simulator.CoSimulate( pid, ref dataSet);
 
             Plot.FromList(new List<double[]> { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
                 new List<string> { "y1=y_sim", "y3=u_pid","y2=disturbance" }, 

@@ -52,7 +52,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public DefaultProcessModel Identify(ref SubProcessDataSet dataSet, double[] u0 = null, double[] uNorm= null)
+        public DefaultProcessModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm= null)
         {
             bool doNonzeroU0 = true;// should be: true
             bool doUseDynamicModel = true;// should be:true
@@ -134,7 +134,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doDebugPlotting)
                 { 
                     var debugModel = new DefaultProcessModel(modelParams, dataSet);
-                    var sim = new SubProcessSimulator(debugModel);
+                    var sim = new UnitSimulator(debugModel);
                     var y_sim = sim.Simulate(ref dataSet);
                     Plot.FromList(new List<double[]> {y_sim,dataSet.Y_meas},new List<string> { "y1=ysim", "y1=ymeas" },
                         (int)dataSet.TimeBase_s, "iteration:"+ timeDelayIdx,default,"debug_it_" + timeDelayIdx);
@@ -151,7 +151,7 @@ namespace TimeSeriesAnalysis.Dynamic
             /////////////////////////////////////////////////////////////////
            
             var model = new DefaultProcessModel(modelParameters, dataSet);
-            var simulator = new SubProcessSimulator(model);
+            var simulator = new UnitSimulator(model);
             simulator.Simulate(ref dataSet,default,true);// overwrite any y_sim
             model.FittedDataSet = dataSet;
 
@@ -160,7 +160,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         private DefaultProcessModelParameters EstimateProcessForAGivenTimeDelay
-            (int timeDelay_samples, SubProcessDataSet dataSet,
+            (int timeDelay_samples, UnitDataSet dataSet,
             bool useDynamicModel,bool doEstimateCurvature, 
             double FilterTc_s, double[] u0, double[] uNorm, bool assumeThatYkminusOneApproxXkminusOne
             )
@@ -541,12 +541,12 @@ namespace TimeSeriesAnalysis.Dynamic
         // bias is not always accurate for dynamic model identification 
         // as it is as "difference equation" that matches the changes in the 
         //
-        private double? ReEstimateBias(SubProcessDataSet dataSet, DefaultProcessModelParameters parameters)
+        private double? ReEstimateBias(UnitDataSet dataSet, DefaultProcessModelParameters parameters)
         {
             parameters.Bias = 0;
             double nanValue = dataSet.BadDataID;
             var model = new DefaultProcessModel(parameters, dataSet.TimeBase_s);
-            var simulator = new SubProcessSimulator((ISimulatableModel)model);
+            var simulator = new UnitSimulator((ISimulatableModel)model);
             var y_sim = simulator.Simulate(ref dataSet);
 
             double[] diff = (new Vec(nanValue)).Subtract(dataSet.Y_meas, y_sim);

@@ -33,8 +33,8 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 31),
                 Vec<double>.Fill(1, 30));
             double[,] U = Array2D<double>.InitFromColumnList(new List<double[]> { u1});
-            SubProcessDataSet dataSet = new SubProcessDataSet(timeBase_s, U);
-            var simulator = new SubProcessSimulator(model);
+            UnitDataSet dataSet = new UnitDataSet(timeBase_s, U);
+            var simulator = new UnitSimulator(model);
             var ret  = simulator.Simulate(ref dataSet);
 
          //   Plot.FromList(new List<double[]>{ dataSet.Y_sim,u1},new List<string>{"y1=ymeas ","y3=u1"}, timeBase_s);
@@ -55,9 +55,9 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
     {
         static bool doPlotting = false;
         static Plot4Test plot = new Plot4Test(doPlotting);
-        double timeBase_s=1;
+        double timeBase_s = 1;
 
-        public SubProcessDataSet CreateDataSet (DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
+        public UnitDataSet CreateDataSet(DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
@@ -65,10 +65,10 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             DefaultProcessModel model = new DefaultProcessModel(designParameters, timeBase_s);
             this.timeBase_s = timeBase_s;
 
-            SubProcessDataSet dataSet = new SubProcessDataSet(timeBase_s, U);
+            UnitDataSet dataSet = new UnitDataSet(timeBase_s, U);
             dataSet.BadDataID = badValueId;
-            var simulator = new SubProcessSimulator(model);
-            simulator.EmulateYmeas(ref dataSet, noiseAmplitude);
+            var simulator = new UnitSimulator(model);
+            simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
 
             if (addInBadDataToYmeasAndU)
             {
@@ -92,9 +92,9 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             return dataSet;
         }
 
-        public DefaultProcessModel Identify(SubProcessDataSet dataSet, DefaultProcessModelParameters designParameters)
+        public DefaultProcessModel Identify(UnitDataSet dataSet, DefaultProcessModelParameters designParameters)
         {
-            DefaultProcessModelIdentifier modelId = new DefaultProcessModelIdentifier();
+            var modelId = new DefaultProcessModelIdentifier();
             DefaultProcessModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0, designParameters.UNorm);
             return identifiedModel;
         }
@@ -103,7 +103,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             DefaultProcessModelParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
-            var dataSet = CreateDataSet(designParameters,U,timeBase_s, noiseAmplitude, 
+            var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude,
                 addInBadDataToYmeasAndU, badValueId);
             return Identify(dataSet, designParameters);
         }
@@ -115,30 +115,30 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         {
             Console.WriteLine(model.ToString());
 
-            Assert.IsNotNull(model,"returned model should never be null");
-            Assert.IsTrue(model.GetModelParameters().AbleToIdentify(),"should be able to identify model");
-            Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == 0,"should give no warnings");
-          //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
+            Assert.IsNotNull(model, "returned model should never be null");
+            Assert.IsTrue(model.GetModelParameters().AbleToIdentify(), "should be able to identify model");
+            Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == 0, "should give no warnings");
+            //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
             double[] estGains = model.GetModelParameters().ProcessGains;
-            for (int k=0;k<estGains.Count(); k++)
+            for (int k = 0; k < estGains.Count(); k++)
             {
-                Assert.IsTrue(Math.Abs(designParameters.ProcessGains[k]- estGains[k] )< 0.1,
-                    "est.gains should be close to actual gain. Est:"+ estGains[k]+ "real:"+ designParameters.ProcessGains[k]);
+                Assert.IsTrue(Math.Abs(designParameters.ProcessGains[k] - estGains[k]) < 0.1,
+                    "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.ProcessGains[k]);
             }
             if (designParameters.TimeConstant_s < 0.5)
             {
                 Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeConstant_s - designParameters.TimeConstant_s) < 0.1,
-                    "est.timeconstant should be close to actual tc.Est:"+ model.GetModelParameters().TimeConstant_s + 
-                    "real:"+ designParameters.TimeConstant_s);
+                    "est.timeconstant should be close to actual tc.Est:" + model.GetModelParameters().TimeConstant_s +
+                    "real:" + designParameters.TimeConstant_s);
             }
             else
             {
-                Assert.IsTrue(Math.Abs(designParameters.TimeConstant_s/model.GetModelParameters().TimeConstant_s - 1) < 0.10,
+                Assert.IsTrue(Math.Abs(designParameters.TimeConstant_s / model.GetModelParameters().TimeConstant_s - 1) < 0.10,
                         "est.timeconstant should be close to actual tc");
             }
-     //       double[] curvatures = model.GetModelParameters().Curvatures;
-      //      if 
+            //       double[] curvatures = model.GetModelParameters().Curvatures;
+            //      if 
 
 
 
@@ -154,6 +154,33 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         public void SetUp()
         {
             Shared.GetParserObj().EnableDebugOutput();
+        }
+
+
+        [TestCase()]
+        
+        public void PartlyOverlappingDatasets()
+        {
+            var u = TimeSeriesCreator.Step(120,240,0,1);
+            var y = TimeSeriesCreator.Step(60,240,2,3);// step occurs at same time
+            
+            // u-dataset starts one minute before y and finishes one minute before
+            var dateu = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1, 0, 0, 0), 1, 240);
+            var datey = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1, 0, 1, 0), 1, 240);
+
+            var data = new UnitDataSet((u, dateu), (y, datey));
+
+            var id = new DefaultProcessModelIdentifier();
+            var model = id.Identify(ref data);
+
+        //    Plot.FromList(new List<double[]> { data.U.GetColumn(0),data.Y_sim, data.Y_meas},
+         //       new List<string> { "y3=u", "y1=y_sim", "y1=y_meas" }, data.Times, "partlyoverlaptest");
+
+            Assert.IsTrue(data.NumDataPoints == 180);
+            Assert.IsTrue(model.GetModelParameters().ProcessGains.First()< 1.02);
+            Assert.IsTrue(model.GetModelParameters().ProcessGains.First() >0.98);
+
+
         }
 
 

@@ -48,7 +48,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double[] lastGoodValuesOfInputs;
 
         // todo:Remove/refactor these
-        public SubProcessDataSet FittedDataSet { get; internal set; }
+        public UnitDataSet FittedDataSet { get; internal set; }
         public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
-        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, SubProcessDataSet dataSet)
+        public DefaultProcessModel(DefaultProcessModelParameters modelParameters, UnitDataSet dataSet)
         {
             InitSim(dataSet.TimeBase_s, modelParameters);
         }
