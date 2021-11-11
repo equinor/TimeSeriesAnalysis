@@ -156,7 +156,6 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             Shared.GetParserObj().EnableDebugOutput();
         }
 
-
         [TestCase()]
         
         public void PartlyOverlappingDatasets()
@@ -179,11 +178,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             Assert.IsTrue(data.NumDataPoints == 180);
             Assert.IsTrue(model.GetModelParameters().ProcessGains.First()< 1.02);
             Assert.IsTrue(model.GetModelParameters().ProcessGains.First() >0.98);
-
-
         }
-
-
 
         [TestCase(Double.NaN)]
         [TestCase(-9999)]
@@ -317,6 +312,13 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         }
 
 
+
+        [TestCase(0.4, 0, 0, Category = "Nonlinear")]
+        public void I2_OneNonlinearInput(double curvature, double timeConstant_s, int timeDelay_s)
+        {
+            var model = I2_Internal(curvature,timeConstant_s,timeDelay_s,false);
+        }
+
         [TestCase(0.4, 0, 0, Category = "Nonlinear")]
         [TestCase(0.2, 0, 0, Category = "Nonlinear")]
         [TestCase(-0.1, 0, 0, Category = "Nonlinear")]
@@ -338,22 +340,37 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         [TestCase(-0.2, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
         [TestCase(-0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
 
-        public void I2_NonLinear(double curvature, double timeConstant_s, int timeDelay_s)
+        public void I2_NonLinear(double curvature, double timeConstant_s, int timeDelay_s,bool curvatureOnBothInputs=true)
+        {
+            I2_Internal(curvature, timeConstant_s, timeDelay_s, curvatureOnBothInputs);
+        }
+
+        UnitModel I2_Internal(double curvature, double timeConstant_s, int timeDelay_s, bool curvatureOnBothInputs)
         {
             double bias = 1;
             double noiseAmplitude = 0.02;
 
             double[] u1 = TimeSeriesCreator.ThreeSteps(60, 120, 180, 240, 0, 1, 2, 3);
             double[] u2 = TimeSeriesCreator.ThreeSteps(90, 150, 210, 240, 2, 1, 3, 2);
-            double[,] U = Array2D<double>.FromList(new List<double[]> { u1,u2 });
+            double[,] U = Array2D<double>.FromList(new List<double[]> { u1, u2 });
+
+            double[] curvatures;
+            if (curvatureOnBothInputs)
+            {
+                curvatures = new double[] { curvature, curvature };
+            }
+            else
+            {
+                curvatures = new double[] { curvature, 0 };
+            }
 
             UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 ProcessGains = new double[] { 1, 0.7 },
-                Curvatures = new double[] { curvature,curvature },// same curvature
-                U0 = new double[] { 1,1 },
+                Curvatures = curvatures,
+                U0 = new double[] { 1, 1 },
                 Bias = bias
             };
 
@@ -363,14 +380,14 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 ProcessGains = new double[] { 1, 0.7 },
-                U0 = new double[] { 1,1 },
+                U0 = new double[] { 1, 1 },
                 Bias = bias
             };
             var refModel = new UnitModel(paramtersNoCurvature, timeBase_s, "reference");
 
             var sim = new PlantSimulator((int)timeBase_s, new List<ISimulatableModel> { refModel });
             sim.AddSignal(refModel, SignalType.External_U, u1, (int)INDEX.FIRST);
-            sim.AddSignal(refModel, SignalType.External_U, u2,(int)INDEX.SECOND);
+            sim.AddSignal(refModel, SignalType.External_U, u2, (int)INDEX.SECOND);
 
             var isOk = sim.Simulate(out TimeSeriesDataSet refData);
 
@@ -380,11 +397,13 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 model.FittedDataSet.Y_meas,
                 refData.GetValues(refModel.GetID(),SignalType.Output_Y_sim),
                 u1, u2 },
-                 new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1","y3=u2" }, (int)timeBase_s, caseId, default,
+                 new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1", "y3=u2" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
             DefaultAsserts(model, designParameters);
+            return model;
         }
+
 
 
 
