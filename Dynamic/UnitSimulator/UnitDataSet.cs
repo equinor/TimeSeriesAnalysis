@@ -187,7 +187,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             for (int i = 0; i < U.GetNColumns(); i++)
             {
-                double? avg = (new Vec()).Mean(U.GetColumn(i));
+                double? avg = (new Vec(BadDataID)).Mean(U.GetColumn(i));
                 if (!avg.HasValue)
                     return null;
                 averages.Add(avg.Value);

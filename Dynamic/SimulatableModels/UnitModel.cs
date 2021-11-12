@@ -66,26 +66,6 @@ namespace TimeSeriesAnalysis.Dynamic
             SetID(ID);
             InitSim(timeBase_s,modelParameters);
         }
-
-        /// <summary>
-        /// Returns the number of external inputs U of the model. Note that this model may have an disturbance signal
-        /// added to the output in addition to the other signals.
-        /// </summary>
-        /// <returns></returns>
-       override public int GetLengthOfInputVector()
-        {
-            var inputIDs = GetBothKindsOfInputIDs();
-
-            if (inputIDs == null)
-            {
-                return modelParameters.ProcessGains.Length;
-            }
-            else
-            {
-                return Math.Max(modelParameters.ProcessGains.Length, inputIDs.Length);
-            }
-        }
-        
         /// <summary>
         /// Initalizer of model that for the given dataSet also creates the resulting y_sim
         /// </summary>
@@ -95,6 +75,27 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             InitSim(dataSet.TimeBase_s, modelParameters);
         }
+
+
+        /// <summary>
+        /// Returns the number of external inputs U of the model. Note that this model may have an disturbance signal
+        /// added to the output in addition to the other signals.
+        /// </summary>
+        /// <returns></returns>
+        override public int GetLengthOfInputVector()
+        {
+            var inputIDs = GetBothKindsOfInputIDs();
+
+            if (inputIDs == null)
+            {
+                return modelParameters.LinearGains.Length;
+            }
+            else
+            {
+                return Math.Max(modelParameters.LinearGains.Length, inputIDs.Length);
+            }
+        }
+        
 
         /// <summary>
         /// Get the objet of model paramters contained in the model
@@ -120,7 +121,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // u =  (y-bias)/G+ u0 
             if (givenInputs == null)
             {
-                u0 = (y0 - modelParameters.Bias) / modelParameters.ProcessGains[inputIdx];
+                u0 = (y0 - modelParameters.Bias) / modelParameters.LinearGains[inputIdx];
                 if (modelParameters.U0 != null)
                 {
                     u0 += modelParameters.U0[inputIdx];
@@ -154,7 +155,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         u0 += modelParameters.U0[inputIdx]; 
                     }
-                    u0 += y_contributionFromInput / modelParameters.ProcessGains[inputIdx];
+                    u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
 
                 }
                 else
@@ -164,7 +165,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         a = a / modelParameters.UNorm[inputIdx];
                     }
-                    double b = modelParameters.ProcessGains[inputIdx];
+                    double b = modelParameters.LinearGains[inputIdx];
                     double c = -y_contributionFromInput;
                     double[] quadSolution = SolveQuadratic(a, b, c);
                     double chosenU=0;
@@ -188,36 +189,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return u0;
             }
         }
-        /// <summary>
-        /// Sovel quadratic equation "a x^2 + b*x +c =0" (second order of polynomial  equation in a single variable x)
-        /// x = [ -b +/- sqrt(b^2 - 4ac) ] / 2a
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
-        public static double[] SolveQuadratic(double a, double b, double c)
-        {
-            double sqrtpart = b * b - 4 * a * c;
-            double x, x1, x2, img;
-            if (sqrtpart > 0)// two real solutions
-            {
-                x1 = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
-                x2 = (-b - System.Math.Sqrt(sqrtpart)) / (2 * a);
-                return new double[] { x1, x2 };
-            }
-            else if (sqrtpart < 0)// two imaginary solutions
-            {
-                sqrtpart = -sqrtpart;
-                x = -b / (2 * a);
-                img = System.Math.Sqrt(sqrtpart) / (2 * a);
-                return new double[] { x };// in this case, the answer is of course slightly wrong
-            }
-            else// one real solution
-            {
-                x = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
-                return new double[] { x };
-            }
-        }
 
         /// <summary>
         /// Determine the process-gain(linear) contribution to the outputof a particular index for a particular value
@@ -230,11 +201,11 @@ namespace TimeSeriesAnalysis.Dynamic
             double processGainTerm = 0;
             if (modelParameters.U0 != null)
             {
-                processGainTerm += modelParameters.ProcessGains[inputIndex] * (u- modelParameters.U0[inputIndex]);
+                processGainTerm += modelParameters.LinearGains[inputIndex] * (u- modelParameters.U0[inputIndex]);
             }
             else
             {
-                processGainTerm += modelParameters.ProcessGains[inputIndex] * u;
+                processGainTerm += modelParameters.LinearGains[inputIndex] * u;
             }
             return processGainTerm;
         }
@@ -284,7 +255,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // inputs U may include a disturbance as the last entry
             for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
-                if (curInput + 1 <= modelParameters.ProcessGains.Length)
+                if (curInput + 1 <= modelParameters.LinearGains.Length)
                 {
                     double curUvalue = inputs[curInput];
                     if (Double.IsNaN(inputs[curInput]) || inputs[curInput] == badValueIndicator)
@@ -414,6 +385,38 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Sovel quadratic equation "a x^2 + b*x +c =0" (second order of polynomial  equation in a single variable x)
+        /// x = [ -b +/- sqrt(b^2 - 4ac) ] / 2a
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        private static double[] SolveQuadratic(double a, double b, double c)
+        {
+            double sqrtpart = b * b - 4 * a * c;
+            double x, x1, x2, img;
+            if (sqrtpart > 0)// two real solutions
+            {
+                x1 = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
+                x2 = (-b - System.Math.Sqrt(sqrtpart)) / (2 * a);
+                return new double[] { x1, x2 };
+            }
+            else if (sqrtpart < 0)// two imaginary solutions
+            {
+                sqrtpart = -sqrtpart;
+                x = -b / (2 * a);
+                img = System.Math.Sqrt(sqrtpart) / (2 * a);
+                return new double[] { x };// in this case, the answer is of course slightly wrong
+            }
+            else// one real solution
+            {
+                x = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
+                return new double[] { x };
+            }
+        }
+
+
+        /// <summary>
         /// Create a nice human-readable summary of all the important data contained in the model object. 
         /// This is especially useful for unit-testing and development.
         /// </summary>
@@ -466,17 +469,29 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s/86400 + " days");
             }
-            sb.AppendLine("ProcessGains : " + Vec.ToString(modelParameters.ProcessGains, sDigits));
+           
             if (modelParameters.Curvatures == null)
             {
+                sb.AppendLine("ProcessGains(lin) : " + Vec.ToString(modelParameters.GetProcessGains(), sDigits));
                 sb.AppendLine("ProcessCurvatures : " + "none");
             }
             else
             {
-                sb.AppendLine("ProcessCurvatures : " + Vec.ToString(modelParameters.Curvatures, sDigits));
+                sb.AppendLine("ProcessGains(at u0) : " + Vec.ToString(modelParameters.GetProcessGains(), sDigits));
+                sb.AppendLine(" -> Linear : " + Vec.ToString(modelParameters.LinearGains, sDigits));
+                sb.AppendLine(" -> Curvature : "  + Vec.ToString(modelParameters.Curvatures, sDigits));
+                sb.AppendLine(" -> u0 : " + Vec.ToString(modelParameters.U0, sDigits));
+                if (modelParameters.UNorm == null)
+                {
+                    sb.AppendLine(" -> uNorm : " + "none");
+                }
+                else
+                {
+                    sb.AppendLine(" -> uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits));
+                }
             }
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
-            sb.AppendLine("u0 : " + Vec.ToString(modelParameters.U0,sDigits));
+            /*
             if (modelParameters.UNorm == null)
             {
                 sb.AppendLine("uNorm : " + "none");
@@ -484,7 +499,7 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 sb.AppendLine("uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits));
-            }
+            }*/
 
 
             sb.AppendLine("-------------------------");

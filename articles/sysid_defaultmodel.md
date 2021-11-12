@@ -94,28 +94,6 @@ G1(u1) = b1/(1-a) + c1/(1-a)•2•u1.
 
 
 
-##  Solver
-
-Determining ``[a,b,c,q,t_d]`` can be expressed as a **linear mixed-integer** problem.
-If the integer term ``t_d`` is given, then determining the *continuous parameters* ``[a,b,c,q]`` is a *linear* optimization problem.
-
-The solver ``DefaultProcessModelIdentifier`` takes a *sequential* approach to solving the parameter estimation problem.
-It solves for the continuous parameters starting at zero time delay and then for increasing time-delays, until the logic determines that 
-attempting to solve for larger time delays is not necessary. The solver then selects the ``best`` time delay and the associated continuous parameters.
-This logic is implemented in the class ``ProcessTimeDelayIdentifier``.
-
-Because the optimization problem of finding ``[a,b,c,q,t_d]`` requires solving a difference equation and the solver looks at difference between subsequent data points, the formulation favors estimating ``[a,b,c,]``, but at the expense of the value of the bias ``q``. Thus once the parameters ``[a,b,c,]`` which express the dynamics are found, the bias ``q`` is found in a subsequent calculation 
-``DefaultProcessModelIdentifier.ReEstimateBias()``to minimize the overall difference between measured and modeled outputs ``y``.
-
-The flow of the solver is as below:
-
-- start at zero time delay ``t_d``,
-- while( ``TimeDelay`` object says to continue ),
-	- Solve for ``[a,b,c,]`` for a given ``t_d``,
-	- for a given ``[a,c,d,t_q]`` find ``q``,
-	- save the model run in ``TimeDelay`` class object, and
-	- increase time delay.
-- ``TimeDelay`` object chooses the best model run out of all the saved runs.
 
 
 

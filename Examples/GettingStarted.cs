@@ -121,7 +121,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 15,
-                ProcessGains = new double[] {1,2},
+                LinearGains = new double[] {1,2},
                 TimeDelay_s = 5,
                 Bias = 5
             };
@@ -172,7 +172,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 TimeDelay_s = 0,
                 Bias = 5
             };
@@ -207,7 +207,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
-                ProcessGains = new double[] { 1,2 },
+                LinearGains = new double[] { 1,2 },
                 TimeDelay_s = 0,
                 Bias = 5
             };

@@ -36,10 +36,14 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class UnitIdentifier 
     {
+        const double fitMinImprovement = 0.0001;
+        const double rSquaredMinImprovement = 0.001;
+
+
         /// <summary>
         /// Default Constructor
         /// </summary>
-         public UnitIdentifier()
+        public UnitIdentifier()
         {
         }
 
@@ -55,6 +59,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns> the identified model parameters and some information about the fit</returns>
         public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm= null)
         {
+            var vec = new Vec(dataSet.BadDataID);
+
             bool doNonzeroU0 = true;// should be: true
             bool doUseDynamicModel = true;// should be:true
             bool doEstimateTimeDelay = true; // should be:true
@@ -70,6 +76,20 @@ namespace TimeSeriesAnalysis.Dynamic
                     u0 = dataSet.GetAverageU();
                 }
             }
+            if (uNorm == null)
+            {
+                uNorm = Vec<double>.Fill(1, dataSet.U.GetNColumns());
+                for (int k=0;k<dataSet.U.GetNColumns(); k++)
+                {
+                    var u = dataSet.U.GetColumn(k);
+                    uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
+                    if (uNorm[k] == 0)
+                    {
+                        uNorm[k] = 1;
+                    }
+                }
+            }
+
             ProcessTimeDelayIdentifier processTimeDelayIdentifyObj =
                 new ProcessTimeDelayIdentifier(dataSet.TimeBase_s, maxExpectedTc_s);
             /////////////////////////////////////////////////////////////////
@@ -80,43 +100,35 @@ namespace TimeSeriesAnalysis.Dynamic
             
             while (continueIncreasingTimeDelayEst)
             {
-                // for a dynamic model y will depend on yprev
-                // therefore it is difficult to have ycur the same length as ymeas
+                bool[] allCurvesDisabled = new bool[u0.Count()];
+                for (int i = 0; i < u0.Count(); i++)
                 {
-                    bool[] allCurvesDisabled = new bool[u0.Count()];
-                    bool[] allCurvesEnabled = new bool[u0.Count()];
-                    for (int i = 0; i < u0.Count(); i++)
-                    {
-                        allCurvesDisabled[i] = false;
-                        allCurvesEnabled[i] = true;
-                    }
-                    var modelList = new List<UnitParameters>();
-                    UnitParameters modelParams_noCurvature =
-                       EstimateProcessForAGivenTimeDelay
-                       (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesDisabled,
-                       FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
-    
-                    if (doEstimateCurvature)
-                    {
-                        // todo: attempt all combinatiosn and choose best(take back in below comment)
-                        //List<bool[]> allNonZeroCombinations = GetAllNonzeroBitArrays(u0.Count());
-                        List<bool[]> allNonZeroCombinations = new List<bool[]> { allCurvesEnabled };
-
-                        foreach (bool[] curCurveEnabledConfig in allNonZeroCombinations)
-                        {
-                            UnitParameters modelParams_withCurvature =
-                                  EstimateProcessForAGivenTimeDelay
-                                  (timeDelayIdx, dataSet, doUseDynamicModel, curCurveEnabledConfig, //allCurvesEnabled,
-                                  FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
-                            modelList.Add(modelParams_withCurvature);
-                        }
-                        modelParams = ChooseBestModel(modelParams_noCurvature,modelList);
-                    }
-                    else
-                    {
-                        modelParams = modelParams_noCurvature;
-                    }
+                    allCurvesDisabled[i] = false;
                 }
+                var modelList = new List<UnitParameters>();
+                UnitParameters modelParams_noCurvature =
+                    EstimateProcessForAGivenTimeDelay
+                    (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesDisabled,
+                    FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
+
+                if (doEstimateCurvature)
+                {
+                    List<bool[]> allNonZeroCombinations = GetAllNonzeroBitArrays(u0.Count());
+                    foreach (bool[] curCurveEnabledConfig in allNonZeroCombinations)
+                    {
+                        UnitParameters modelParams_withCurvature =
+                                EstimateProcessForAGivenTimeDelay
+                                (timeDelayIdx, dataSet, doUseDynamicModel, curCurveEnabledConfig, //allCurvesEnabled,
+                                FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
+                        modelList.Add(modelParams_withCurvature);
+                    }
+                    modelParams = ChooseBestModel(modelParams_noCurvature,modelList);
+                }
+                else
+                {
+                    modelParams = modelParams_noCurvature;
+                }
+
                 if (!continueIncreasingTimeDelayEst)
                     continue;
                 // logic to deal with while loop
@@ -167,9 +179,8 @@ namespace TimeSeriesAnalysis.Dynamic
             List<bool[]> list = new List<bool[]>();
 
             var ints = new List<int>();
-            for (int i = 1; i < size * 2; i++)
+            for (int i = 1; i < Math.Max(size * size,2); i++)
             {
-                //ints.Add(i);
                 var boolArray = new bool[size];
                 BitArray bitArray = new BitArray ( new int[] { i } );
                 for (int k = 0; k < size; k++)
@@ -177,7 +188,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     boolArray[k] = bitArray.Get(k);
                 }
                 list.Add(boolArray);
-
             }
             return list;
         }
@@ -187,10 +197,20 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             UnitParameters bestModel = fallbackModel;
 
+            // models will be arranged from least to most numbre of curvature terms
+            // in case of doubt, do not add in extra curvature that does not significantly improve the objective function
+
             foreach (UnitParameters curModel in allModels)
             {
-                if (bestModel.FittingRsq < curModel.FittingRsq &&
-                   bestModel.FittingObjFunVal > curModel.FittingObjFunVal &&
+                // objective function: lower is better
+                double improvedRsquared = curModel.FittingRsq - bestModel.FittingRsq ;// positive if curmodel improves on the current best
+               
+                // Rsquared: higher is better
+                double improvedFit = bestModel.FittingObjFunVal- curModel.FittingObjFunVal ;// positive if curmodel improves on the current best
+
+
+                if (improvedFit> fitMinImprovement &&
+                   improvedRsquared > rSquaredMinImprovement &&
                    curModel.WasAbleToIdentify
                    )
                 {
@@ -353,7 +373,6 @@ namespace TimeSeriesAnalysis.Dynamic
                             if (doEstimateCurvature[i])
                                 nCurvatures++;
                         }
-                        //doEstimateCurvature.Count(true)
                         phi_ols2D = new double[ycur.Length, ucurList.Count + nCurvatures + 1];
                     }
                     phi_ols2D.WriteColumn(0, phi1_ols);
@@ -457,7 +476,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     if (doEstimateCurvature.Contains(true) && c != null)
                     {
-                        processCurvatures = Vec<double>.Fill(1, ucurList.Count);
+                        processCurvatures = Vec<double>.Fill(0, ucurList.Count);
                         int curCurvature = 0;
                         for (int curU = 0; curU < doEstimateCurvature.Count(); curU++)
                         {
@@ -572,7 +591,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.WasAbleToIdentify = true;
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.TimeBase_s;
                 parameters.TimeConstant_s = timeConstant_s;
-                parameters.ProcessGains = processGains;
+                parameters.LinearGains = processGains;
                 parameters.Curvatures = processCurvatures;
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;

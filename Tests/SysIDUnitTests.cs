@@ -10,21 +10,21 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 
-namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
+namespace TimeSeriesAnalysis.Test.SysID
 {
 
-    class DefaultModel_Simulation
+    class UnitSimulation
     {
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(10)]
-        public void Simulate_TimeDelay(int timeDelay_s)
+        public void UnitSimulate_TimeDelay(int timeDelay_s)
         {
             var timeBase_s = 1;
             var parameters = new UnitParameters
             {
                 WasAbleToIdentify = true,
-                ProcessGains = new double []{ 1},
+                LinearGains = new double []{ 1},
                 TimeConstant_s = 0,
                 TimeDelay_s = timeDelay_s,
                 Bias =0
@@ -51,7 +51,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
     /// DefaultModel unit tests
     /// In the naming convention I1 refers to one input, I2 two inputs etc.
     /// </summary>
-    class DefaultModel_Identification
+    class UnitIdentification
     {
         static bool doPlotting = false;
         static Plot4Test plot = new Plot4Test(doPlotting);
@@ -120,11 +120,13 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == 0, "should give no warnings");
             //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
-            double[] estGains = model.GetModelParameters().ProcessGains;
+            //double[] estGains = model.GetModelParameters().ProcessGains;
+            double[] estGains = model.GetModelParameters().GetProcessGains();
             for (int k = 0; k < estGains.Count(); k++)
             {
-                Assert.IsTrue(Math.Abs(designParameters.ProcessGains[k] - estGains[k]) < 0.1,
-                    "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.ProcessGains[k]);
+                //Assert.IsTrue(Math.Abs(designParameters.ProcessGains[k] - estGains[k]) < 0.1,
+                Assert.IsTrue(Math.Abs(designParameters.GetProcessGain(k) - estGains[k]) < 0.1,
+                "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.GetProcessGain(k));
             }
             if (designParameters.TimeConstant_s < 0.5)
             {
@@ -137,15 +139,11 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 Assert.IsTrue(Math.Abs(designParameters.TimeConstant_s / model.GetModelParameters().TimeConstant_s - 1) < 0.10,
                         "est.timeconstant should be close to actual tc");
             }
-            //       double[] curvatures = model.GetModelParameters().Curvatures;
-            //      if 
-
-
 
             Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeDelay_s - designParameters.TimeDelay_s) < 0.1,
                 "est.time delay should be close to actual");
-            Assert.IsTrue(Math.Abs(model.GetModelParameters().Bias - designParameters.Bias) < 0.1,
-                "est. Bias should be close to actual");
+//            Assert.IsTrue(Math.Abs(model.GetModelParameters().Bias - designParameters.Bias) < 0.1,
+ //               "est. Bias should be close to actual");
 
         }
 
@@ -176,8 +174,8 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
          //       new List<string> { "y3=u", "y1=y_sim", "y1=y_meas" }, data.Times, "partlyoverlaptest");
 
             Assert.IsTrue(data.NumDataPoints == 180);
-            Assert.IsTrue(model.GetModelParameters().ProcessGains.First()< 1.02);
-            Assert.IsTrue(model.GetModelParameters().ProcessGains.First() >0.98);
+            Assert.IsTrue(model.GetModelParameters().LinearGains.First()< 1.02);
+            Assert.IsTrue(model.GetModelParameters().LinearGains.First() >0.98);
         }
 
         [TestCase(Double.NaN)]
@@ -197,7 +195,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1, 2 },
+                LinearGains = new double[] { 1, 2 },
                 U0 = Vec<double>.Fill(1, 2),
                 Bias = bias
             };
@@ -229,7 +227,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 U0 = Vec<double>.Fill(1,1),
                 Bias            = bias
             };
@@ -276,7 +274,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 Curvatures = new double[] { curvature },
                 UNorm = new double[] { 1.1 },
                 U0 = new double[] { 1 },
@@ -288,7 +286,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 UNorm = new double[] { 1.1 },
                 U0 = new double[] { 1 },
                 Bias = bias
@@ -311,33 +309,26 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             DefaultAsserts(model, designParameters);
         }
 
-
-
         [TestCase(0.4, 0, 0, Category = "Nonlinear")]
+        [TestCase(-0.2, 5, 0, Category = "Nonlinear,Dynamic")]
+        [TestCase(-0.4, 5, 0, Category = "Nonlinear,Dynamic")]
+        [TestCase(0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
+        [TestCase(0.2, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
         public void I2_OneNonlinearInput(double curvature, double timeConstant_s, int timeDelay_s)
         {
             var model = I2_Internal(curvature,timeConstant_s,timeDelay_s,false);
+
+            Assert.IsTrue(model.GetModelParameters().Curvatures[1] == 0,"id should disable second curvature term");
+
         }
 
         [TestCase(0.4, 0, 0, Category = "Nonlinear")]
-        [TestCase(0.2, 0, 0, Category = "Nonlinear")]
-        [TestCase(-0.1, 0, 0, Category = "Nonlinear")]
-        [TestCase(-0.2, 0, 0, Category = "Nonlinear")]
         [TestCase(-0.4, 0, 0, Category = "Nonlinear")]
         [TestCase(0.4, 5, 0, Category = "Nonlinear,Dynamic")]
-        [TestCase(0.2, 5, 0, Category = "Nonlinear,Dynamic")]
-        [TestCase(-0.1, 5, 0, Category = "Nonlinear,Dynamic")]
-        [TestCase(-0.2, 5, 0, Category = "Nonlinear,Dynamic")]
         [TestCase(-0.4, 5, 0, Category = "Nonlinear,Dynamic")]
         [TestCase(0.4, 0, 5, Category = "Nonlinear,Delayed")]
-        [TestCase(0.2, 0, 5, Category = "Nonlinear,Delayed")]
-        [TestCase(-0.1, 0, 5, Category = "Nonlinear,Delayed")]
-        [TestCase(-0.2, 0, 5, Category = "Nonlinear,Delayed")]
         [TestCase(-0.4, 0, 5, Category = "Nonlinear,Delayed")]
         [TestCase(0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
-        [TestCase(0.2, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
-        [TestCase(-0.1, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
-        [TestCase(-0.2, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
         [TestCase(-0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
 
         public void I2_NonLinear(double curvature, double timeConstant_s, int timeDelay_s,bool curvatureOnBothInputs=true)
@@ -368,9 +359,10 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1, 0.7 },
+                LinearGains = new double[] { 1, 0.7 },
                 Curvatures = curvatures,
-                U0 = new double[] { 1, 1 },
+                U0 = new double[] { 1, 1 },// set this to make results comparable
+                UNorm = new double[] { 1, 1 },// set this to make results comparable
                 Bias = bias
             };
 
@@ -379,7 +371,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
                 WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1, 0.7 },
+                LinearGains = new double[] { 1, 0.7 },
                 U0 = new double[] { 1, 1 },
                 Bias = bias
             };
@@ -424,7 +416,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1,2 },
+                LinearGains = new double[] { 1,2 },
                 U0 = Vec<double>.Fill(1,2),
                 Bias = bias
             };
@@ -449,7 +441,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
-                ProcessGains = new double[] { 1, 2 },
+                LinearGains = new double[] { 1, 2 },
                 U0 = Vec<double>.Fill(1, 2),
                 Bias = bias
             };
@@ -474,7 +466,7 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
         [TestCase(1, 0, Category = "Static")]
         [TestCase(0, 20, Category = "Dynamic")]
         [TestCase(1, 20, Category = "Dynamic")]
-        public void I3_Linear(double bias, double timeConstant_s)
+        public void I3_Linear_singlesteps(double bias, double timeConstant_s)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(50, 100 ,0,1) ;
@@ -484,8 +476,8 @@ namespace TimeSeriesAnalysis.Dynamic.DefaultModelTests
             UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
-                ProcessGains = new double[] { 1, 2, 1.5 },
-                U0 = Vec<double>.Fill(1,3),
+                LinearGains = new double[] { 1, 2, 1.5 },
+               // U0 = Vec<double>.Fill(1,3),
                 Bias = bias
             };
             var model = CreateDataAndIdentify(designParameters, U,timeBase_s, noiseAmplitude);

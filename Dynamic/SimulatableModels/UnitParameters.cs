@@ -36,7 +36,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// An array of gains that determine how much in the steady state each input change affects the output(multiplied with (u-u0))
         /// </summary>
-        public double[] ProcessGains { get; set; } = null;
+        public double[] LinearGains { get; set; } = null;
 
         /// <summary>
         /// The nonlinear curvature of the process gain, this paramter is multiplied + Curvatures*((u-u0)/Unorm)^2.
@@ -63,8 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private List<ProcessIdentWarnings> errorsAndWarningMessages;
         internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
-     
-        
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -73,12 +72,66 @@ namespace TimeSeriesAnalysis.Dynamic
             errorsAndWarningMessages = new List<ProcessIdentWarnings>();
         }
 
+        /// <summary>
+        /// Return the process gain for a given index at u=u0
+        /// <para>
+        /// Note that for nonlinear processes, the process gain is given by a combination of 
+        /// the linear and curvature terms of the model : dy/du(u=u0)
+        /// </para>
+        /// </summary>
+        /// <param name="inputIdx"></param>
+        /// <returns></returns>
+        public double GetProcessGain(int inputIdx)
+        {
+            if (inputIdx > LinearGains.Length-1)
+            {
+                return double.NaN;
+            }
+            if (Curvatures == null)
+                return LinearGains[inputIdx];
+            if (inputIdx <= Curvatures.Length - 1)
+            {
+                if ( UNorm== null)
+                    return LinearGains[inputIdx] + 2 * Curvatures[inputIdx];
+                else
+                    return LinearGains[inputIdx] + 2 * Curvatures[inputIdx] / UNorm[inputIdx];
+            }
+            else
+            {
+                return LinearGains[inputIdx];
+            }
+        }
+
+        /// <summary>
+        /// Get all process gains (including both linear and any nonlinear terms)
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetProcessGains()
+        {
+            var list = new List<double>();
+            for (int inputIdx = 0; inputIdx < U0.Length; inputIdx++)
+            {
+                list.Add(GetProcessGain(inputIdx));
+            }
+            return list.ToArray();
+        }
+
+
+
+        /// <summary>
+        /// Adds a identifiation warning to the object
+        /// </summary>
+        /// <param name="warning"></param>
         public void AddWarning(ProcessIdentWarnings warning)
         {
             if (!errorsAndWarningMessages.Contains(warning))
                 errorsAndWarningMessages.Add(warning);
         }
 
+        /// <summary>
+        /// Get the list of all warnings given during identification of the model
+        /// </summary>
+        /// <returns></returns>
         public List<ProcessIdentWarnings> GetWarningList()
         {
             return errorsAndWarningMessages;

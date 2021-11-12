@@ -63,14 +63,14 @@ Advanced analytics is [defined](https://www.gartner.com/en/information-technolog
  traditional business intelligence (BI), to discover deeper insights, make predictions, 
  or generate recommendations."*
 
-Note that advanced analytics by definiton **requires** **automated** or **semi-automated**
- analysis to generate reccomendations, 
+Note that advanced analytics by definition **requires** **automated** or **semi-automated**
+ analysis to generate recommendations, 
 thus it needs to be *"data-driven"*.
 
-A success criterion for any *data driven* method will be its **relibility**, so that despite
-little manual configuration and assitance, methods should consistenly provide **dependable** high-quality
+A success criterion for any *data driven* method will be its **reliability**, so that despite
+little manual configuration and assistance, methods should consistently provide **dependable** high-quality
 output. To create reliable and dependable software, complete control of the entire software stack is 
-advantagous as: 
+advantageous as: 
 - solutions are easier to integrate and deploy (be it on-premise, on your local computer, integrated into
 vendor software, or running in the cloud), and
 - the quality, behavior and performance of each component can be inspected and, if need be, improved,i.e. there

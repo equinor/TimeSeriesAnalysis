@@ -38,7 +38,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 2,//rapid
-                ProcessGains = new double[] { 1.1 },
+                LinearGains = new double[] { 1.1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 0,
                 Bias = 50
@@ -48,7 +48,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,//slow
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 5,
                 Bias = 50
@@ -121,7 +121,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
-                ProcessGains = new double[] { 1.1 },
+                LinearGains = new double[] { 1.1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 0,
                 Bias = 50
@@ -130,7 +130,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 U0 = new double[] { 0 },
                 TimeDelay_s = 5,
                 Bias = 0
@@ -192,7 +192,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
-                ProcessGains = new double[] { 1.1 },
+                LinearGains = new double[] { 1.1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 0,
                 Bias = 50
@@ -201,7 +201,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 30,
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 U0 = new double[] { 0 },
                 TimeDelay_s = 5,
                 Bias = 0
@@ -273,7 +273,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 0,
-                ProcessGains = new double[] { 1.1 },
+                LinearGains = new double[] { 1.1 },
                 Curvatures = new double[] { -0.7 },
                 U0 = new double[] { 50 },
                 UNorm = new double[] { 50 },
@@ -432,7 +432,7 @@ namespace TimeSeriesAnalysis._Examples
             {
                 WasAbleToIdentify = true,
                 TimeConstant_s = 10,
-                ProcessGains = new double[] { 1 },
+                LinearGains = new double[] { 1 },
                 U0 = new double[] { 50 },
                 TimeDelay_s = 5,
                 Bias = 50,

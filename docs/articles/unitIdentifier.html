@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>The UnitIdentifier - identification of UnitModels | TimeSeriesAnalysis reference documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="The UnitIdentifier - identification of UnitModels | TimeSeriesAnalysis reference documentation ">
+    <meta name="generator" content="docfx 2.58.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="the-unitidentifier---identification-of-unitmodels">The UnitIdentifier - identification of UnitModels</h1>
+
+<p>The <code>UnitIdentifier</code> is based on the idea of starting with a static linear regression models and
+to by trial-and-error add in additional terms in the model given that it doing so improves the fit of the model
+by given criteria. This approach is based on the recommended work-flow in the field of system identification.</p>
+<p>The idea is to automate the work-flow of selecting the best model structure in the set of model structures supported by the <code>UnitModel</code>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>There is a chance of over-fitting if a model has too many parameters, thus it is not always given that adding in more
+terms is better, in fact doing so can degrade model performance.</p>
+</div>
+<h2 id="first-run">First run</h2>
+<p>Identification starts with finding a linear static model, which acts as a reference against which all subsequent identification runs is to be compared.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If the linear,static fit between the output and the given inputs does not at least broadly follow the measured output, then adding nonlinearities
+time-delays or time-constants rarely if ever is meaningful.</p>
+</div>
+<h2 id="time-constant-and-bias">Time constant and bias</h2>
+<p>The solver solves for terms [a,b,c] jointly. The objective function is formulated in terms of <strong>differences</strong>, finding the parameters which
+produce the minimum sum of square differences <code>sum_{k=2}^N(y[k]-y[k-1])^2</code>.</p>
+<p>Because the optimization problem of finding <code>[a,b,c,q,t_d]</code> requires solving a <strong>difference</strong> equation and the solver looks at difference between subsequent data points, the formulation favors estimating <code>[a,b,c,]</code>, but at the expense of the value of the bias <code>q</code>. Thus once the parameters <code>[a,b,c,]</code> which express the dynamics are found, the bias <code>q</code> is found in a subsequent calculation
+<code>UnitIdentifier.ReEstimateBias()</code>to minimize the overall difference between measured and modeled outputs <code>y</code>.</p>
+<h2 id="nonlinear-terms">Nonlinear terms</h2>
+<p><code>UnitIdentifier</code> will <em>first</em> try finding a model that is <em>linear</em> in inputs u, it will then re-solve the identification for every combination
+possible of curvatures for each input turned on/off, and chooses a model with one or more nonlinear terms if it results in a higher R-squared and a
+lower value of the objective function.</p>
+<p>To avoid over-fitting, a model with more nonlinear terms is only selected over a less complicated model if the improvement in objective
+function and R-squared is <strong>significant</strong>, i.e. over a threshold.</p>
+<h2 id="time-delay">Time delay</h2>
+<p>Determining <code>[a,b,c,q,t_d]</code> can be expressed as a <strong>linear mixed-integer</strong> problem.
+If the integer term <code>t_d</code> is given, then determining the <em>continuous parameters</em> <code>[a,b,c,q]</code> is a <em>linear</em> optimization problem.</p>
+<p>The solver <code>UnitIdentifier</code> takes a <em>sequential</em> approach to solving the joint estimation problem.
+It solves for the <em>continuous</em> parameters starting at zero time delay and then for ever-increasing time-delays identifies and compares, until the logic determines that
+attempting to solve for larger time delays is not necessary.</p>
+<p>The solver then selects the <code>best</code> time delay and the associated continuous parameters.
+This logic is implemented in the class <code>ProcessTimeDelayIdentifier</code>.</p>
+<h2 id="flow-of-solver">Flow of solver</h2>
+<p>The flow of the solver is as below:</p>
+<ul>
+<li>start at zero time delay <code>t_d</code>,</li>
+<li>while( <code>TimeDelay</code> object says to continue ),
+<ul>
+<li>solve the model with no curvatures c=0</li>
+<li>Solve for <code>[a,b,c,]</code> with every combination of curvatures on/off for a given <code>t_d</code>,</li>
+<li>for each given <code>[a,c,d,t_q]</code> find the bias <code>q</code>,</li>
+<li>choose the best model of the above for the given time delay</li>
+<li>save the best model run for the given time-delay in the `TimeDelay`` class object, and</li>
+<li>increase time delay.</li>
+</ul>
+</li>
+<li><code>TimeDelay</code> object chooses the best model run out of all the saved runs.</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p><strong>The solver may thus run tens or hundreds separate identifications with different model terms turned on/off for each run of the <code>UnitModelIdentifier</code>,
+but without requiring any user-interaction.</strong></p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
