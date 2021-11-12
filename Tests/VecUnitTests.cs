@@ -11,7 +11,9 @@ namespace TimeSeriesAnalysis.Test
     class VecUnitTests
     {
 
-
+        [TestCase(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3, 4 })]
+        [TestCase(new int[] { 1, 2, 3, 5 }, new int[] { 1, 2, 3, 4, 5, 6 })]
+        [TestCase(new int[] { 3, 6, 9 }, new int[] { 3, 4, 6, 7, 9, 10 })]
         public void AppendTrailingIndices(int[] ind_in, int[] exp)
         {
             List<int> outArray = Vec.AppendTrailingIndices(new List<int>(ind_in));
@@ -182,12 +184,6 @@ namespace TimeSeriesAnalysis.Test
             List<int> vecExpt = new List<int> { 0, 1, 2, 3, 4, 5 };
             Assert.AreEqual(vecExpt, vecResult);
         }
-
-        [TestCase(new int[] { 1, 2, 3 }, new int[] { 1,2,3,4})]
-        [TestCase(new int[] { 1, 2, 3, 5}, new int[] { 1, 2, 3, 4, 5 ,6 })]
-        [TestCase(new int[] { 3, 6, 9 }, new int[] { 3, 4, 6, 7, 9, 10 })]
-
-
 
 
         [Test]
