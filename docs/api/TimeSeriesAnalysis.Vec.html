@@ -735,6 +735,128 @@ Also capable of finding NaN values</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Vec_GetGradient_" data-uid="TimeSeriesAnalysis.Vec.GetGradient*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_GetGradient_System_Double___System_DateTime___System_Int32_System_Int32___" data-uid="TimeSeriesAnalysis.Vec.GetGradient(System.Double[],System.DateTime[],System.Int32,System.Int32[])">GetGradient(Double[], DateTime[], Int32, Int32[])</h4>
+  <div class="markdown level1 summary"><p>Gets the gradient of a time-series</p>
+<p>
+Works by running a regression with time as the &quot;X&quot; variable
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RegressionResults GetGradient(double[] values, DateTime[] dates, int sampleTime_sec = 1, int[] indicesToIgnore = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>values for which the graident is sought</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.DateTime</span>[]</td>
+        <td><span class="parametername">dates</span></td>
+        <td><p>dates corrsponding to the values</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">sampleTime_sec</span></td>
+        <td><p>in what unit of time (given in seconds)the gradient shall be persented</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
+        <td><p>optional array of indices that are to be ignored during regression</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></td>
+        <td><p>the gradient will be the &quot;Gain&quot; of the returned object (in units per second by default)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_GetGradient_" data-uid="TimeSeriesAnalysis.Vec.GetGradient*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_GetGradient_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32___" data-uid="TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32[])">GetGradient((Double[], DateTime[]), Int32, Int32[])</h4>
+  <div class="markdown level1 summary"><p>Get the gradient of a time-series</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RegressionResults GetGradient((double[], DateTime[]) valueDateTuple, int sampleTime_sec = 1, int[] indicesToIgnore = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Double</span>[], <span class="xref">System.DateTime</span>[]&gt;</td>
+        <td><span class="parametername">valueDateTuple</span></td>
+        <td><p>a value/datetime array tuple</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">sampleTime_sec</span></td>
+        <td><p>sample time in which to present the result</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
+        <td><p>indices to ignore</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Vec_InverseIndices_" data-uid="TimeSeriesAnalysis.Vec.InverseIndices*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_InverseIndices_System_Int32_System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})">InverseIndices(Int32, List&lt;Int32&gt;)</h4>
   <div class="markdown level1 summary"><p>given a list of sorted indeces and a desired vector size N, returns the indices that are not in &quot;sortedIndices&quot;
@@ -1843,6 +1965,64 @@ some statistics on the fit and uncertainty thereof.</p>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">threshold</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">valueToReplaceWith</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_ReplaceValuesAboveOrBelow_" data-uid="TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_ReplaceValuesAboveOrBelow_System_Double___System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow(System.Double[],System.Double,System.Double,System.Double)">ReplaceValuesAboveOrBelow(Double[], Double, Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Replace values above a higher threshold or below a lower threshold with a new value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double[] ReplaceValuesAboveOrBelow(double[] array, double lowerThreshold, double higherThreshold, double valueToReplaceWith)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">lowerThreshold</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">higherThreshold</span></td>
         <td></td>
       </tr>
       <tr>

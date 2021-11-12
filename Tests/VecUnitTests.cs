@@ -3,11 +3,58 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using TimeSeriesAnalysis.Utility;
+
 namespace TimeSeriesAnalysis.Test
 {
     [TestFixture]
     class VecUnitTests
     {
+
+
+        public void AppendTrailingIndices(int[] ind_in, int[] exp)
+        {
+            List<int> outArray = Vec.AppendTrailingIndices(new List<int>(ind_in));
+            Assert.AreEqual(exp, outArray);
+        }
+
+        [Test]
+        public void ContainsM9999()
+        {
+            double[] Y1 = { 1, 0, -9999, 0 };
+            bool contM9999 = (new Vec()).ContainsBadData(Y1);
+            Assert.IsTrue(contM9999);
+
+            double[] Y2 = { 1, 0, 0, -9999 };
+            contM9999 = (new Vec()).ContainsBadData(Y2);
+            Assert.IsTrue(contM9999);
+
+            double[] Y3 = { 1, 0, 0, 9999 };
+            contM9999 = (new Vec()).ContainsBadData(Y3);
+            Assert.IsFalse(contM9999);
+        }
+
+
+        [Test]
+        public void Cov_ZeroForConstantVectors()
+        {
+            double[] vec1 = Vec<double>.Fill(2, 10);
+            double[] vec2 = Vec<double>.Fill(1, 10);
+            double cov = (new Vec()).Cov(vec1, vec2);
+            Assert.AreEqual(0, cov);
+        }
+
+        [Test]
+        public void Cov_OrderIrrelevant()
+        {
+            double[] vec1 = Vec.Rand(10);
+            double[] vec2 = Vec.Rand(10);
+            double cov1 = (new Vec()).Cov(vec1, vec2);
+            double cov2 = (new Vec()).Cov(vec2, vec1);
+            Assert.AreEqual(cov1, cov2);
+        }
+
+
         [TestCase(new int[] { 0, 1 }, 3, new int[] { 2 })]
         [TestCase(new int[] { 0, 2 }, 3, new int[] { 1 })]
         [TestCase(new int[] { 1, 2 }, 3, new int[] { 0 })]
@@ -62,53 +109,6 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(0, var);
         }
 
-        [Test]
-        public void SubArray_GivesCorrectSubArray()
-        {
-            double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            double[] vecResult = Vec<double>.SubArray(vec, 1, 2);
-            double[] vecExpt = { 1, 2 };
-            Assert.AreEqual(vecExpt, vecResult);
-        }
-        [Test]
-        public void SubArray_GivesCorrectSubArray2()
-        {
-            double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            double[] vecResult = Vec<double>.SubArray(vec, 9);
-            double[] vecExpt = { 9, 10 };
-            Assert.AreEqual(vecExpt, vecResult);
-        }
-
-        [Test]
-        public void SubArray_GivesCorrectSubArray3()
-        {
-            double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            double[] vecResult = Vec<double>.SubArray(vec, -1, 2);
-            double[] vecExpt = { 0, 1, 2 };
-            Assert.AreEqual(vecExpt, vecResult);
-        }
-
-        [Test]
-        public void Cov_ZeroForConstantVectors()
-        {
-            double[] vec1 = Vec<double>.Fill(2,10);
-            double[] vec2 = Vec<double>.Fill(1,10);
-            double cov = (new Vec()).Cov(vec1, vec2);
-            Assert.AreEqual(0, cov);
-        }
-
-        [Test]
-        public void Cov_OrderIrrelevant()
-        {
-            double[] vec1 = Vec.Rand(10);
-            double[] vec2 = Vec.Rand(10);
-            double cov1 = (new Vec()).Cov(vec1, vec2);
-            double cov2 = (new Vec()).Cov(vec2, vec1);
-            Assert.AreEqual(cov1, cov2);
-        }
 
         [TestCase(0)]
         [TestCase(1)]
@@ -163,21 +163,6 @@ namespace TimeSeriesAnalysis.Test
              Assert.Greater(results.Rsq, 99);
         }
 
-        [Test]
-        public void ContainsM9999()
-        {
-            double[] Y1 = { 1, 0, -9999, 0 };
-            bool contM9999 = (new Vec()).ContainsBadData(Y1);
-            Assert.IsTrue(contM9999);
-
-            double[] Y2 = { 1, 0, 0, -9999 };
-            contM9999 = (new Vec()).ContainsBadData(Y2);
-            Assert.IsTrue(contM9999);
-
-            double[] Y3 = { 1, 0, 0, 9999 };
-            contM9999 = (new Vec()).ContainsBadData(Y3);
-            Assert.IsFalse(contM9999);
-        }
 
 
         [Test]
@@ -203,12 +188,6 @@ namespace TimeSeriesAnalysis.Test
         [TestCase(new int[] { 3, 6, 9 }, new int[] { 3, 4, 6, 7, 9, 10 })]
 
 
-
-        public void AppendTrailingIndices(int[] ind_in, int[] exp )
-        {
-            List<int> outArray = Vec.AppendTrailingIndices(new List<int>(ind_in));
-            Assert.AreEqual(exp, outArray);
-        }
 
 
         [Test]
@@ -238,58 +217,15 @@ namespace TimeSeriesAnalysis.Test
             var result = Vec<int>.GetIndicesOfValues(vec1,vec2);
 
             Assert.AreEqual(resutlExp, result);
-
-        }
-
-
-
-        [Test]
-        public void ReplaceIndWithValuesPrior()
-        {
-            double[] vec = { 0, 1, 2, 3, 4, -9999, -9999, -9999, 8, 9, 10 };
-            List<int> vecInd = new List<int> { 5,6,7 };
-            double[] vecResult = Vec<double>.ReplaceIndWithValuesPrior(vec, vecInd);
-            double[] vecExpt = { 0, 1, 2, 3, 4, 4, 4, 4, 8, 9, 10 };
-            Assert.AreEqual(vecExpt, vecResult);
-        }
-
-        [Test]
-        public void ReplaceIndWithValuesPrior2()
-        {
-            double[] vec = { 0, 1, 2, 3, 4, -9999, -9999, 7, -9999, -9999, 10 };
-            List<int> vecInd = new List<int> { 5, 6, 8, 9 };
-            double[] vecResult = Vec<double>.ReplaceIndWithValuesPrior(vec, vecInd);
-            double[] vecExpt = { 0, 1, 2, 3, 4, 4, 4, 7, 7, 7, 10 };
-            Assert.AreEqual(vecExpt, vecResult);
         }
         [Test]
-        public void ReplaceIndWithValue()
+        public void GetGradient()
         {
-            double[] vec = { 0, 1,2,3,4 };
-            List<int> vecInd = new List<int> { 1,3 };
-            double[] vecResult = Vec.ReplaceIndWithValue(vec, vecInd, Double.NaN);
-            double[] vecExpt = { 0, Double.NaN,2,Double.NaN, 4};
-            Assert.AreEqual(vecExpt, vecResult);
+            var vec1 = new List<double> { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+            var dates = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), 3600, 10);
+            var results = Vec.GetGradient(vec1.ToArray(),dates,3600);
+            Assert.IsTrue(Math.Abs(results.Gains.First() -10 )<0.01);
         }
-
-        [Test]
-        public void ReplaceValuesAbove()
-        {
-            double[] vec = { 0, 6, 2, 3, 4 };
-            double[] vecResult = Vec.ReplaceValuesAbove(vec, 3,Double.NaN);
-            double[] vecExpt = { 0, Double.NaN, 2, 3,Double.NaN};
-            Assert.AreEqual(vecExpt, vecResult);
-        }
-
-        [Test]
-        public void ReplaceValuesBelow()
-        {
-            double[] vec = { 0, 6, 2, 3, 4 };
-            double[] vecResult = Vec.ReplaceValuesBelow(vec, 3, Double.NaN);
-            double[] vecExpt = { Double.NaN, 6, Double.NaN, 3, 4 };
-            Assert.AreEqual(vecExpt, vecResult);
-        }
-
 
         [Test]
         public void Intersect()
@@ -315,15 +251,96 @@ namespace TimeSeriesAnalysis.Test
         }
 
 
+
+
+
         [Test]
-        public void Union()
+        public void ReplaceIndWithValuesPrior()
         {
-            List<int> vecInd = new List<int> { 0, 1, 2, 3, 4, 6, 7, 8, 10 };
-            List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
-            List<int> vecResult = Vec.Union(vecInd, vecInd2);
-            List<int> vecExpt = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            double[] vec = { 0, 1, 2, 3, 4, -9999, -9999, -9999, 8, 9, 10 };
+            List<int> vecInd = new List<int> { 5, 6, 7 };
+            double[] vecResult = Vec<double>.ReplaceIndWithValuesPrior(vec, vecInd);
+            double[] vecExpt = { 0, 1, 2, 3, 4, 4, 4, 4, 8, 9, 10 };
             Assert.AreEqual(vecExpt, vecResult);
         }
+
+
+        [Test]
+        public void ReplaceIndWithValuesPrior2()
+        {
+            double[] vec = { 0, 1, 2, 3, 4, -9999, -9999, 7, -9999, -9999, 10 };
+            List<int> vecInd = new List<int> { 5, 6, 8, 9 };
+            double[] vecResult = Vec<double>.ReplaceIndWithValuesPrior(vec, vecInd);
+            double[] vecExpt = { 0, 1, 2, 3, 4, 4, 4, 7, 7, 7, 10 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+        [Test]
+        public void ReplaceIndWithValue()
+        {
+            double[] vec = { 0, 1, 2, 3, 4 };
+            List<int> vecInd = new List<int> { 1, 3 };
+            double[] vecResult = Vec.ReplaceIndWithValue(vec, vecInd, Double.NaN);
+            double[] vecExpt = { 0, Double.NaN, 2, Double.NaN, 4 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void ReplaceValuesAbove()
+        {
+            double[] vec = { 0, 6, 2, 3, 4 };
+            double[] vecResult = Vec.ReplaceValuesAbove(vec, 3, Double.NaN);
+            double[] vecExpt = { 0, Double.NaN, 2, 3, Double.NaN };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void ReplaceValuesBelow()
+        {
+            double[] vec = { 0, 6, 2, 3, 4 };
+            double[] vecResult = Vec.ReplaceValuesBelow(vec, 3, Double.NaN);
+            double[] vecExpt = { Double.NaN, 6, Double.NaN, 3, 4 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void ReplaceValuesAboveOrBelow()
+        {
+            double[] vec = { 0, 6, 2, 3, 4 };
+            double[] vecResult = Vec.ReplaceValuesAboveOrBelow(vec, 3,5, Double.NaN);
+            double[] vecExpt = { Double.NaN, Double.NaN, Double.NaN, 3, 4 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void SerializeAndDeserialize_works()
+        {
+            string fileName = @"C:\Appl\source\TimeSeriesAnalysis\unittest.txt";
+            double[] vec1 = { 0.0001, 1.00002, -0.02, -1.002, 200000, Double.NaN };
+            Vec.Serialize(vec1, fileName);
+            double[] vec2 = Vec.Deserialize(fileName);
+
+            Assert.AreEqual(vec1, vec2);
+        }
+
+        [TestCase(null, ExpectedResult = 4)]
+        [TestCase(new int[] { 1 }, ExpectedResult = 4)]
+        //[TestCase(null, -1, ExpectedResult = 2)]
+        //[TestCase(new int[] { 1 },-1, ExpectedResult = 2)]
+
+        public double SumOfSquareErrors(int[] indToIgnoreArray)
+        {
+            double[] vec1 = { 0, Double.NaN, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            double[] vec2 = (new Vec()).Add(vec1, 2); ;
+
+            List<int> indToIgnoreList = null;
+            if (indToIgnoreArray != null)
+            {
+                indToIgnoreList = indToIgnoreArray.ToList();
+            }
+            double sumAbsErr = (new Vec()).SumOfSquareErr(vec1, vec2, 0, true, indToIgnoreList);
+            return sumAbsErr;
+        }
+
 
         [Test]
         public void SumOfAbsErrors()
@@ -347,6 +364,46 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(1, sumAbsErr);
         }
 
+
+        [Test]
+        public void SubArray_GivesCorrectSubArray()
+        {
+            double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            double[] vecResult = Vec<double>.SubArray(vec, 1, 2);
+            double[] vecExpt = { 1, 2 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+        [Test]
+        public void SubArray_GivesCorrectSubArray2()
+        {
+            double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            double[] vecResult = Vec<double>.SubArray(vec, 9);
+            double[] vecExpt = { 9, 10 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void SubArray_GivesCorrectSubArray3()
+        {
+            double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            double[] vecResult = Vec<double>.SubArray(vec, -1, 2);
+            double[] vecExpt = { 0, 1, 2 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
+        public void Union()
+        {
+            List<int> vecInd = new List<int> { 0, 1, 2, 3, 4, 6, 7, 8, 10 };
+            List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
+            List<int> vecResult = Vec.Union(vecInd, vecInd2);
+            List<int> vecExpt = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
         [Test]
         public void VecMax()
         {
@@ -368,38 +425,7 @@ namespace TimeSeriesAnalysis.Test
         }
 
 
-        [TestCase(null,ExpectedResult = 4)]
-        [TestCase(new int[] { 1 },ExpectedResult = 4 )]
-        //[TestCase(null, -1, ExpectedResult = 2)]
-        //[TestCase(new int[] { 1 },-1, ExpectedResult = 2)]
 
-        public double SumOfSquareErrors(int[] indToIgnoreArray)
-        {
-            double[] vec1 = { 0, Double.NaN, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            double[] vec2 = (new Vec()).Add(vec1, 2); ;
-
-            List<int> indToIgnoreList=null;
-            if (indToIgnoreArray != null)
-            {
-                indToIgnoreList = indToIgnoreArray.ToList();
-            }
-            double sumAbsErr = (new Vec()).SumOfSquareErr(vec1, vec2, 0, true, indToIgnoreList);
-            return sumAbsErr;
-        }
-
-
-        [Test]
-        public void SerializeAndDeserialize_works()
-        {
-            string fileName = @"C:\Appl\source\TimeSeriesAnalysis\unittest.txt";
-            double[] vec1 = { 0.0001,1.00002,-0.02,-1.002, 200000, Double.NaN };
-            Vec.Serialize(vec1, fileName);
-            double[] vec2 = Vec.Deserialize(fileName);
-
-            Assert.AreEqual(vec1,vec2);
-
-
-        }
 
 
 

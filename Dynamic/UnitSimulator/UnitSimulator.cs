@@ -124,7 +124,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 Y[rowIdx] = y;
                 U[rowIdx] = u;
             }
-            processDataSet.U_sim = Array2D<double>.FromList(new List<double[]> { U });
+            processDataSet.U_sim = Array2D<double>.Create(new List<double[]> { U });
             if (writeResultToYmeasInsteadOfYsim)
             {
                 processDataSet.Y_meas = Y;

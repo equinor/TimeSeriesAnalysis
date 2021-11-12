@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="columnList"></param>
         /// <returns>null if list columnList dimensions do not match</returns>
-        static public T[,] FromList(List<T[]> columnList)
+        static public T[,] Create(List<T[]> columnList)
         {
             int nColumns = columnList.Count;
             int nRows    = columnList.ElementAt(0).Length;
@@ -42,12 +42,15 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
-
-
-
-
-
-
+        /// <summary>
+        /// Create 2d-array with only a single column
+        /// </summary>
+        /// <param name="columnArray"></param>
+        /// <returns></returns>
+        static public T[,] Create(T[] columnArray)
+        {
+            return Create(new List<T[]> { columnArray });
+        }
 
 
         ///<summary>

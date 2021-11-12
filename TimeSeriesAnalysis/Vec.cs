@@ -333,7 +333,42 @@ namespace TimeSeriesAnalysis
             return indices;
         }
 
+        /// <summary>
+        /// Get the gradient of a time-series
+        /// </summary>
+        /// <param name="valueDateTuple">a value/datetime array tuple</param>
+        /// <param name="sampleTime_sec">sample time in which to present the result</param>
+        /// <param name="indicesToIgnore">indices to ignore</param>
+        /// <returns></returns>
+        public static RegressionResults GetGradient((double[],DateTime[]) valueDateTuple, int sampleTime_sec = 1, int[] indicesToIgnore = null)
+        {
+            return GetGradient(valueDateTuple.Item1, valueDateTuple.Item2, sampleTime_sec, indicesToIgnore);
+        }
 
+        /// <summary>
+        /// Gets the gradient of a time-series 
+        /// <para>
+        /// Works by running a regression with time as the "X" variable
+        /// </para>
+        /// </summary>
+        /// <param name="values">values for which the graident is sought</param>
+        /// <param name="dates">dates corrsponding to the values </param>
+        /// <param name="sampleTime_sec">in what unit of time (given in seconds)the gradient shall be persented </param>
+        /// <param name="indicesToIgnore">optional array of indices that are to be ignored during regression</param>
+        /// <returns>the gradient will be the "Gain" of the returned object (in units per second by default)</returns>
+        public static RegressionResults GetGradient(double[] values, DateTime[] dates, int sampleTime_sec = 1,int[] indicesToIgnore=null)
+        {
+            var vec = new Vec();
+            var datesAsNumbers = new List<double>();
+            foreach (var date in dates)
+            {
+                datesAsNumbers.Add( UnixTime.ConvertToUnixTimestamp(date)/ sampleTime_sec);
+            }
+            var X = Array2D<double>.Create(datesAsNumbers.ToArray());
+            var results = vec.Regress(values,X, indicesToIgnore);
+
+            return results;
+        }
 
         ///<summary>
         /// given a list of sorted indeces and a desired vector size N, returns the indices that are not in "sortedIndices"
@@ -982,6 +1017,19 @@ namespace TimeSeriesAnalysis
         {
             var ind = new Vec().FindValues(array, threshold, VectorFindValueType.SmallerThan);
             return ReplaceIndWithValue(array, ind, valueToReplaceWith);
+        }
+
+        /// <summary>
+        /// Replace values above a higher threshold or below a lower threshold with a new value
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="lowerThreshold"></param>
+        /// <param name="higherThreshold"></param>
+        /// <param name="valueToReplaceWith"></param>
+        /// <returns></returns>
+        public static double[] ReplaceValuesAboveOrBelow(double[] array, double lowerThreshold, double higherThreshold, double valueToReplaceWith)
+        {
+            return ReplaceValuesAbove(ReplaceValuesBelow(array,lowerThreshold, valueToReplaceWith),higherThreshold,valueToReplaceWith);
         }
 
         ///<summary>

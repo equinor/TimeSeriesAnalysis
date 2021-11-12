@@ -56,24 +56,33 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Convert2DtoJagged
   nameWithType: Array2D<T>.Convert2DtoJagged
   nameWithType.vb: Array2D(Of T).Convert2DtoJagged
-- uid: TimeSeriesAnalysis.Array2D`1.FromList(System.Collections.Generic.List{`0[]})
-  name: FromList(List<T[]>)
-  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_FromList_System_Collections_Generic_List__0____
-  commentId: M:TimeSeriesAnalysis.Array2D`1.FromList(System.Collections.Generic.List{`0[]})
-  name.vb: FromList(List(Of T()))
-  fullName: TimeSeriesAnalysis.Array2D<T>.FromList(System.Collections.Generic.List<T[]>)
-  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).FromList(System.Collections.Generic.List(Of T()))
-  nameWithType: Array2D<T>.FromList(List<T[]>)
-  nameWithType.vb: Array2D(Of T).FromList(List(Of T()))
-- uid: TimeSeriesAnalysis.Array2D`1.FromList*
-  name: FromList
-  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_FromList_
-  commentId: Overload:TimeSeriesAnalysis.Array2D`1.FromList
+- uid: TimeSeriesAnalysis.Array2D`1.Create(`0[])
+  name: Create(T[])
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Create__0___
+  commentId: M:TimeSeriesAnalysis.Array2D`1.Create(`0[])
+  name.vb: Create(T())
+  fullName: TimeSeriesAnalysis.Array2D<T>.Create(T[])
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Create(T())
+  nameWithType: Array2D<T>.Create(T[])
+  nameWithType.vb: Array2D(Of T).Create(T())
+- uid: TimeSeriesAnalysis.Array2D`1.Create(System.Collections.Generic.List{`0[]})
+  name: Create(List<T[]>)
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Create_System_Collections_Generic_List__0____
+  commentId: M:TimeSeriesAnalysis.Array2D`1.Create(System.Collections.Generic.List{`0[]})
+  name.vb: Create(List(Of T()))
+  fullName: TimeSeriesAnalysis.Array2D<T>.Create(System.Collections.Generic.List<T[]>)
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Create(System.Collections.Generic.List(Of T()))
+  nameWithType: Array2D<T>.Create(List<T[]>)
+  nameWithType.vb: Array2D(Of T).Create(List(Of T()))
+- uid: TimeSeriesAnalysis.Array2D`1.Create*
+  name: Create
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Create_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.Create
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Array2D<T>.FromList
-  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).FromList
-  nameWithType: Array2D<T>.FromList
-  nameWithType.vb: Array2D(Of T).FromList
+  fullName: TimeSeriesAnalysis.Array2D<T>.Create
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Create
+  nameWithType: Array2D<T>.Create
+  nameWithType.vb: Array2D(Of T).Create
 - uid: TimeSeriesAnalysis.Array2D`1.GetColumn(`0[][],System.Int32)
   name: GetColumn(T[][], Int32)
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumn__0_____System_Int32_
@@ -4984,6 +4993,31 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.FindValues
   nameWithType: Vec.FindValues
+- uid: TimeSeriesAnalysis.Vec.GetGradient(System.Double[],System.DateTime[],System.Int32,System.Int32[])
+  name: GetGradient(Double[], DateTime[], Int32, Int32[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_GetGradient_System_Double___System_DateTime___System_Int32_System_Int32___
+  commentId: M:TimeSeriesAnalysis.Vec.GetGradient(System.Double[],System.DateTime[],System.Int32,System.Int32[])
+  name.vb: GetGradient(Double(), DateTime(), Int32, Int32())
+  fullName: TimeSeriesAnalysis.Vec.GetGradient(System.Double[], System.DateTime[], System.Int32, System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Vec.GetGradient(System.Double(), System.DateTime(), System.Int32, System.Int32())
+  nameWithType: Vec.GetGradient(Double[], DateTime[], Int32, Int32[])
+  nameWithType.vb: Vec.GetGradient(Double(), DateTime(), Int32, Int32())
+- uid: TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32[])
+  name: GetGradient((Double[], DateTime[]), Int32, Int32[])
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_GetGradient_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32___
+  commentId: M:TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32[])
+  name.vb: GetGradient((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32())
+  fullName: TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple<System.Double[], System.DateTime[]>, System.Int32, System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple(Of System.Double(), System.DateTime()), System.Int32, System.Int32())
+  nameWithType: Vec.GetGradient((Double[], DateTime[]), Int32, Int32[])
+  nameWithType.vb: Vec.GetGradient((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32())
+- uid: TimeSeriesAnalysis.Vec.GetGradient*
+  name: GetGradient
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_GetGradient_
+  commentId: Overload:TimeSeriesAnalysis.Vec.GetGradient
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.GetGradient
+  nameWithType: Vec.GetGradient
 - uid: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
   name: InverseIndices(Int32, List<Int32>)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_InverseIndices_System_Int32_System_Collections_Generic_List_System_Int32__
@@ -5286,6 +5320,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.ReplaceValuesAbove
   nameWithType: Vec.ReplaceValuesAbove
+- uid: TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow(System.Double[],System.Double,System.Double,System.Double)
+  name: ReplaceValuesAboveOrBelow(Double[], Double, Double, Double)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceValuesAboveOrBelow_System_Double___System_Double_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow(System.Double[],System.Double,System.Double,System.Double)
+  name.vb: ReplaceValuesAboveOrBelow(Double(), Double, Double, Double)
+  fullName: TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow(System.Double[], System.Double, System.Double, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow(System.Double(), System.Double, System.Double, System.Double)
+  nameWithType: Vec.ReplaceValuesAboveOrBelow(Double[], Double, Double, Double)
+  nameWithType.vb: Vec.ReplaceValuesAboveOrBelow(Double(), Double, Double, Double)
+- uid: TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow*
+  name: ReplaceValuesAboveOrBelow
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceValuesAboveOrBelow_
+  commentId: Overload:TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.ReplaceValuesAboveOrBelow
+  nameWithType: Vec.ReplaceValuesAboveOrBelow
 - uid: TimeSeriesAnalysis.Vec.ReplaceValuesBelow(System.Double[],System.Double,System.Double)
   name: ReplaceValuesBelow(Double[], Double, Double)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ReplaceValuesBelow_System_Double___System_Double_System_Double_

@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis.Test
         public void InitFromColumnList()
         {
             List<double[]> inputList = new List<double[]> {new  double[] {  5, 6 },new  double[]{ 4, 3 }};
-            var result=  Array2D<double>.FromList(inputList);
+            var result=  Array2D<double>.Create(inputList);
             Assert.AreEqual(new double[,] { { 5, 4 },{6,3 } }, result) ;
         }
 
