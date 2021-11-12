@@ -79,6 +79,18 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="unitmodel---the-default-process-model">UnitModel - the default process model</h1>
 
+<div class="NOTE">
+<h5>Note</h5>
+<p>As we shall se, the <code>UnitModel</code> has five very useful proprieties:</p>
+<ol>
+<li>the number of parameters is as low as possible, given the model's capability, <strong>reducing the likelihood of over-fitting</strong>,</li>
+<li>the parameters can be given an intuitive physical interpretation (making the model <strong>&quot;grey-box&quot;</strong> rather than &quot;black box&quot;),</li>
+<li>the model is <strong>linear-in-parameters</strong>, meaning parameters can be found using linear regression,</li>
+<li>the model can <strong>describe curvatures</strong>, a nonlinearity in the process gain, and</li>
+<li>by turning on or off different parameters, the model can take different capabilities, it acts as a <strong>flexible &quot;model set&quot;</strong>.</li>
+</ol>
+</div>
+<h2 id="details">Details</h2>
 <p>The &quot;default&quot; model in this library is <code>UnitModel</code>, intended to be a model that can describe most average process systems.
 It aims to <em>avoid over-parametrization</em>, as this is known to cause issues on real-world datasets with limited excitation.</p>
 <p>As a design choice, the model has built in support for <em>explicitly treating</em> <strong>measured/modeled external disturbances</strong>, for use in analysis of closed-loop systems.</p>

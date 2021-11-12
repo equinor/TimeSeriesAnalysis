@@ -195,13 +195,20 @@ namespace TimeSeriesAnalysis.Dynamic
             List<double> objR2List = new List<double>();
             for (int i = 0; i < modelRuns.Count; i++)
             {
-                if (modelRuns[i].AbleToIdentify())
+                if (modelRuns[i] == null)
                 {
-                    objR2List.Add(modelRuns[i].GetFittingR2());
+                    objR2List.Add(Double.NaN);
                 }
                 else
                 {
-                    objR2List.Add(Double.NaN);
+                    if (modelRuns[i].AbleToIdentify())
+                    {
+                        objR2List.Add(modelRuns[i].GetFittingR2());
+                    }
+                    else
+                    {
+                        objR2List.Add(Double.NaN);
+                    }
                 }
 
             }
@@ -217,13 +224,20 @@ namespace TimeSeriesAnalysis.Dynamic
             List<double> objFunValList = new List<double>();
             for (int i = 0; i < modelRuns.Count; i++)
             {
-                if (modelRuns[i].AbleToIdentify())
+                if (modelRuns[i] == null)
                 {
-                    objFunValList.Add(modelRuns[i].GetFittingObjFunVal());
+                    objFunValList.Add(Double.NaN);
                 }
                 else
                 {
-                    objFunValList.Add(Double.NaN);
+                    if (modelRuns[i].AbleToIdentify())
+                    {
+                        objFunValList.Add(modelRuns[i].GetFittingObjFunVal());
+                    }
+                    else
+                    {
+                        objFunValList.Add(Double.NaN);
+                    }
                 }
             }
             return objFunValList.ToArray();

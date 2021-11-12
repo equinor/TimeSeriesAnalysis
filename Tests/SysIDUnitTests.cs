@@ -58,7 +58,8 @@ namespace TimeSeriesAnalysis.Test.SysID
         double timeBase_s = 1;
 
         public UnitDataSet CreateDataSet(UnitParameters designParameters, double[,] U, double timeBase_s,
-            double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
+            double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN,
+            bool doNonWhiteNoise=false)
         {
             designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
@@ -68,7 +69,21 @@ namespace TimeSeriesAnalysis.Test.SysID
             UnitDataSet dataSet = new UnitDataSet(timeBase_s, U);
             dataSet.BadDataID = badValueId;
             var simulator = new UnitSimulator(model);
-            simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
+            if (doNonWhiteNoise)
+            {
+                simulator.SimulateYmeas(ref dataSet, 0);
+                double rand = 0;
+                var randObj = new Random(45466545);
+                for (int i = 0; i < dataSet.Y_meas.Length; i++)
+                {
+                    rand += (randObj.NextDouble()-0.5)*2* noiseAmplitude;
+                    dataSet.Y_meas[i] = dataSet.Y_meas[i] + rand;
+                }
+            }
+            else
+            {
+                simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
+            }
 
             if (addInBadDataToYmeasAndU)
             {
@@ -79,10 +94,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 {
                     int t_offset = (int)Math.Floor((double)(addBadUDataEveryNthPoint / (curU + 2)));
                     int curT = t_offset;
-                    //  for (int curT = t_offset; curT < dataSet.U.GetNRows(); curT+= addBadUDataEveryNthPoint)
-                    {
-                        dataSet.U[curT, curU] = badValueId;
-                    }
+                    dataSet.U[curT, curU] = badValueId;
                 }
                 for (int i = 0; i < dataSet.Y_meas.Length; i += addBadYDataEveryNthPoint)
                 {
@@ -98,7 +110,12 @@ namespace TimeSeriesAnalysis.Test.SysID
             UnitModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0, designParameters.UNorm);
             return identifiedModel;
         }
-
+        public UnitModel IdentifyStatic(UnitDataSet dataSet, UnitParameters designParameters)
+        {
+            var modelId = new UnitIdentifier();
+            UnitModel identifiedModel = modelId.IdentifyStatic(ref dataSet, designParameters.U0, designParameters.UNorm);
+            return identifiedModel;
+        }
         public UnitModel CreateDataAndIdentify(
             UnitParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
@@ -107,6 +124,26 @@ namespace TimeSeriesAnalysis.Test.SysID
                 addInBadDataToYmeasAndU, badValueId);
             return Identify(dataSet, designParameters);
         }
+
+        public UnitModel CreateDataAndIdentifyStatic(
+    UnitParameters designParameters, double[,] U, double timeBase_s,
+    double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
+        {
+            var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude,
+                addInBadDataToYmeasAndU, badValueId);
+            return IdentifyStatic(dataSet, designParameters);
+        }
+
+        public UnitModel CreateDataWithNonWhiteNoiseAndIdentify(
+             UnitParameters designParameters, double[,] U, double timeBase_s,
+             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
+        {
+            var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude,
+                addInBadDataToYmeasAndU, badValueId,true);
+            return Identify(dataSet, designParameters);
+        }
+
+
 
         /// <summary>
         /// These test criteria shoudl normally pass, unless you are testing the negative
@@ -120,11 +157,9 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == 0, "should give no warnings");
             //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
-            //double[] estGains = model.GetModelParameters().ProcessGains;
             double[] estGains = model.GetModelParameters().GetProcessGains();
             for (int k = 0; k < estGains.Count(); k++)
             {
-                //Assert.IsTrue(Math.Abs(designParameters.ProcessGains[k] - estGains[k]) < 0.1,
                 Assert.IsTrue(Math.Abs(designParameters.GetProcessGain(k) - estGains[k]) < 0.1,
                 "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.GetProcessGain(k));
             }
@@ -139,12 +174,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Assert.IsTrue(Math.Abs(designParameters.TimeConstant_s / model.GetModelParameters().TimeConstant_s - 1) < 0.10,
                         "est.timeconstant should be close to actual tc");
             }
-
             Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeDelay_s - designParameters.TimeDelay_s) < 0.1,
                 "est.time delay should be close to actual");
-//            Assert.IsTrue(Math.Abs(model.GetModelParameters().Bias - designParameters.Bias) < 0.1,
- //               "est. Bias should be close to actual");
-
         }
 
 
@@ -424,9 +455,11 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1,u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
-
             DefaultAsserts(model, designParameters);
         }
+
+
+
 
         [TestCase(1, 0, 2, Category = "Delayed")]
         [TestCase(1, 15, 2, Category = "Dynamic")]
@@ -477,12 +510,72 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 TimeConstant_s = timeConstant_s,
                 LinearGains = new double[] { 1, 2, 1.5 },
-               // U0 = Vec<double>.Fill(1,3),
                 Bias = bias
             };
             var model = CreateDataAndIdentify(designParameters, U,timeBase_s, noiseAmplitude);
             DefaultAsserts(model, designParameters);
         }
+
+        [TestCase(0, 0, Category = "Static")]
+        [TestCase(1, 0, Category = "Static")]
+        public void IdentifyStatic_I3_Linear_singlesteps(double bias, double timeConstant_s)
+        {
+            double noiseAmplitude = 0.01;
+            double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(35, 100, 1, 0);
+            double[] u3 = TimeSeriesCreator.Step(60, 100, 0, 1);
+            double[,] U = Array2D<double>.Create(new List<double[]> { u1, u2, u3 });
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                LinearGains = new double[] { 1, 2, 1.5 },
+                Bias = bias
+            };
+            var model = CreateDataAndIdentifyStatic(designParameters, U, timeBase_s, noiseAmplitude);
+            DefaultAsserts(model, designParameters);
+        }
+
+
+
+        [TestCase(0, 0, Category = "Static")]
+        [TestCase(1, 0, Category = "Static")]
+        [TestCase(0, 20, Category = "Dynamic")]
+        [TestCase(1, 20, Category = "Dynamic")]
+        public void SignificantNonWhiteNoise_I3_Linear(double bias, double timeConstant_s)
+        {
+            Plot4Test plotLocal = new Plot4Test(false);
+            int N = 1000;
+            double noiseAmplitude = 0.07;
+            double[] u1 = TimeSeriesCreator.Step(500, N, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(350, N, 1, 0);
+            double[] u3 = TimeSeriesCreator.Step(600, N, 0, 1);
+            double[,] U = Array2D<double>.Create(new List<double[]> { u1, u2, u3 });
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                LinearGains = new double[] { 1, 2, 1.5 },
+                Bias = bias
+            };
+            var model = CreateDataWithNonWhiteNoiseAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+
+            string caseId = TestContext.CurrentContext.Test.Name;
+            plotLocal.FromList(new List<double[]> { model.FittedDataSet.Y_sim,
+                model.FittedDataSet.Y_meas,            
+                u1, u2,u3 },
+                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y3=u3" }, (int)timeBase_s, caseId, default,
+                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
+
+            // In this case, the model gains are not very accurate.
+            // It is also the case that the time constant tends to be non-zero even if the underlying process is static
+            Console.WriteLine(model.ToString());
+            Assert.IsNotNull(model, "returned model should never be null");
+            Assert.IsTrue(model.GetModelParameters().AbleToIdentify(), "should be able to identify model");
+            Assert.IsTrue((new Vec()).Max(model.GetModelParameters().GetProcessGains())<3);
+            Assert.IsTrue((new Vec()).Max(model.GetModelParameters().GetProcessGains()) > 0.5);
+            // DefaultAsserts(model, designParameters);
+        }
+
+
 
 
 

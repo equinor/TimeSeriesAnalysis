@@ -1787,7 +1787,7 @@ i.e. of the &quot;other vectors</p>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">Y</span></td>
-        <td><p>vector of responve variable values (to be modelled)</p>
+        <td><p>vector of outptu variable values to be modelled</p>
 </td>
       </tr>
       <tr>
@@ -2103,7 +2103,7 @@ some statistics on the fit and uncertainty thereof.</p>
   
   
   <a id="TimeSeriesAnalysis_Vec_RSquared_" data-uid="TimeSeriesAnalysis.Vec.RSquared*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_RSquared_System_Double___System_Double___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})">RSquared(Double[], Double[], List&lt;Int32&gt;)</h4>
+  <h4 id="TimeSeriesAnalysis_Vec_RSquared_System_Double___System_Double___System_Collections_Generic_List_System_Int32__System_Int32_" data-uid="TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32},System.Int32)">RSquared(Double[], Double[], List&lt;Int32&gt;, Int32)</h4>
   <div class="markdown level1 summary"><p>R-squared
 R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent
 variable that's explained by an independent variable or variables in a regression model.
@@ -2115,7 +2115,7 @@ half of the observed variation can be explained by the model's inputs.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double RSquared(double[] vector1, double[] vector2, List&lt;int&gt; indToIgnoreExt = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public double RSquared(double[] vector1, double[] vector2, List&lt;int&gt; indToIgnoreExt = null, int ymodOffset = -1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2144,6 +2144,11 @@ half of the observed variation can be explained by the model's inputs.</p>
         <td><span class="parametername">indToIgnoreExt</span></td>
         <td><p>optionally: indices to be ignored(for instance bad values)</p>
 </td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">ymodOffset</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

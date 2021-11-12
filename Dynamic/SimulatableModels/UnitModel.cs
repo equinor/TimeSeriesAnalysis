@@ -222,6 +222,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (modelParameters.Curvatures != null)
             {
+                if (Double.IsNaN(modelParameters.Curvatures[inputIndex]))
+                {
+                    return curvatureTerm;
+                }
                 if (modelParameters.Curvatures.Length - 1 < inputIndex)
                 {
                     return curvatureTerm;
@@ -491,20 +495,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
-            /*
-            if (modelParameters.UNorm == null)
-            {
-                sb.AppendLine("uNorm : " + "none");
-            }
-            else
-            {
-                sb.AppendLine("uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits));
-            }*/
-
 
             sb.AppendLine("-------------------------");
-            sb.AppendLine("fitting objective : " + SignificantDigits.Format(modelParameters.GetFittingObjFunVal(),4) );
-            sb.AppendLine("fitting R2: " + SignificantDigits.Format(modelParameters.GetFittingR2(), 4) );
+            sb.AppendLine("objective(fitting,diffs) : " + SignificantDigits.Format(modelParameters.ObjFunValFittingDiff,4) );
+            sb.AppendLine("R2(fitting,diffs): " + SignificantDigits.Format(modelParameters.RsqFittingDiff, 4) );
+            sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.RsqFittingAbs, 4));
+
             sb.AppendLine("fitting data points: " + modelParameters.NFittingTotalDataPoints + " of which " + modelParameters.NFittingBadDataPoints +" were excluded");
             foreach (var warning in modelParameters.GetWarningList())
                 sb.AppendLine("fitting warning :" + warning.ToString());

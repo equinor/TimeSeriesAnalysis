@@ -127,58 +127,6 @@
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal">FittingObjFunVal</h4>
-  <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double FittingObjFunVal { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq">FittingRsq</h4>
-  <div class="markdown level1 summary"><p>The value of the R2 or root mean square of fitting,higher is better (used to choose among models)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double FittingRsq { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingBadDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingBadDataPoints*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_NFittingBadDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingBadDataPoints">NFittingBadDataPoints</h4>
   <div class="markdown level1 summary"><p>Number of bad data points ignored during fitting</p>
@@ -231,6 +179,122 @@
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingAbs_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingAbs" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs">ObjFunValFittingAbs</h4>
+  <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
+<p>
+This is the R-squared of the &quot;absolute&quot; sum(ymeas[k]-ymod[k-1])
+</p>>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ObjFunValFittingAbs { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingDiff_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingDiff" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff">ObjFunValFittingDiff</h4>
+  <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
+<p>
+This is the R-squared of the &quot;differences&quot;  sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
+</p>>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ObjFunValFittingDiff { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingAbs_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingAbs" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs">RsqFittingAbs</h4>
+  <div class="markdown level1 summary"><p>The value of the R2 or root mean square</p>
+<p>
+This is the R-squared of the &quot;absolute&quot; sum(ymeas[k] - ymod[k] )
+</p>>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double RsqFittingAbs { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingDiff_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingDiff" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff">RsqFittingDiff</h4>
+  <div class="markdown level1 summary"><p>The value of the R2 or root mean square of fitting,higher is better (used to choose among models)</p>
+<p>
+This is the R-squared of the &quot;differences&quot; sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
+</p>>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double RsqFittingDiff { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_WasAbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.WasAbleToIdentify*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_WasAbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.WasAbleToIdentify">WasAbleToIdentify</h4>
   <div class="markdown level1 summary"><p>True if identification was able to identify, otherwise false.</p>
@@ -261,7 +325,8 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_AbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.AbleToIdentify*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_AbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.AbleToIdentify">AbleToIdentify()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns true if identification was able to find a model</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -286,7 +351,8 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingObjFunVal_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingObjFunVal*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingObjFunVal" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingObjFunVal">GetFittingObjFunVal()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the value of the fitting object function</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -311,7 +377,8 @@
   
   <a id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingR2_" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingR2*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingR2" data-uid="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingR2">GetFittingR2()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Get the R-squared of the fitting</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

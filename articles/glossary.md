@@ -1,5 +1,12 @@
 # Glossary
 
+### *Grey-box models* 
+
+*"Such a model set, whose parameters are basically viewed as vehicles for adjusting the fit to the data and do not reflect phyiscal considerations
+in the system, is called black box. Model sets with adjustable paramters with physical interpretation may, accordingly, be called gray boxes"*.
+
+(*Lennart Ljung, System Identificaton,theory for the user 2nd ed.)
+
 ### *Time base* 
 
 ``Time-base`` in this context is another expression for ``sampling time`` which is the inverse of the ``sampling rate``. 

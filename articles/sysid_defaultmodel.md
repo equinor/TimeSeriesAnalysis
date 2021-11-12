@@ -1,5 +1,15 @@
 # UnitModel - the default process model
 
+> [!Note]
+> As we shall se, the ``UnitModel`` has five very useful proprieties:
+> 1. the number of parameters is as low as possible, given the model's capability, **reducing the likelihood of over-fitting**,
+> 2. the parameters can be given an intuitive physical interpretation (making the model **"grey-box"** rather than "black box"),
+> 3. the model is **linear-in-parameters**, meaning parameters can be found using linear regression,
+> 4. the model can **describe curvatures**, a nonlinearity in the process gain, and
+> 5. by turning on or off different parameters, the model can take different capabilities, it acts as a **flexible "model set"**.
+
+## Details
+
 The "default" model in this library is ``UnitModel``, intended to be a model that can describe most average process systems. 
 It aims to *avoid over-parametrization*, as this is known to cause issues on real-world datasets with limited excitation.
 
@@ -91,10 +101,6 @@ The process gains become functions of ``u``, so for instance for ``u1``, the pro
 ```
 G1(u1) = b1/(1-a) + c1/(1-a)•2•u1.
 ```
-
-
-
-
 
 
 

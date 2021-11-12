@@ -756,41 +756,6 @@ namespace TimeSeriesAnalysis
             return ret;
         }
 
-
-        /*{
-
-
-
-        }
-
-        /// <summary>
-        /// Linear regression: Fit a linear model to Y based on inputs X
-        /// </summary>
-        /// <param name="Y">one-dimensional vector/array of output paramters y that is to be modelled</param>
-        /// <param name="X">two-dimensonal array of input vectors X that are the inputs </param>
-        /// <returns> returns the parameters(one for each column in X and a bias term) which best regress the two-dimensional array X into the vector Y. Returns null if regression fails.</returns>
-        public static double[] Regress(double[] Y, double[][] X)
-        {
-            return Regress(Y, X, null, out _, out _, out _, out _);
-        }
-        ///<summary>
-        /// regression where the rows corresponding to indices yIndToIgnore are ignored (bad data identified in preprocessing)
-        ///</summary>
-        public static double[] Regress(double[] Y, double[][] X, int[] yIndToIgnore, out double[] param95prcConfInterval, out double[] Y_modelled,
-            out double Rsq)
-        {
-            return Regress(Y, X, yIndToIgnore, out param95prcConfInterval, out _, out Y_modelled, out Rsq);
-        }
-
-        ///<summary>
-        /// regression where the rows corresponding to indices yIndToIgnore are ignored (bad data identified in preprocessing)
-        /// uncertainties in parameters, covariance matrix, modelled output y and R-squared number is also given.
-        ///</summary>
-
-        public static double[] Regress(double[] Y, double[][] X, int[] yIndToIgnore,
-            out double[] param95prcConfInterval, out double[][] varCovarMatrix,
-            out double[] Y_modelled, out double Rsq)
-            */
         /// <summary>
         /// Linear regression
         /// </summary>
@@ -808,7 +773,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Linear regression
         /// </summary>
-        /// <param name="Y">vector of responve variable values (to be modelled)</param>
+        /// <param name="Y">vector of outptu variable values to be modelled</param>
         /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
@@ -1218,7 +1183,7 @@ namespace TimeSeriesAnalysis
         /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
         /// <returns>R2 squared, a value between <c>-1</c> and <c>1</c>. If an error occured, 
         /// <c>Double.PositiveInfinity</c> is returned </returns>
-        public double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt=null)
+        public double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt=null, int ymodOffset = -1)
         {
             if (vector1 == null || vector2 == null)
                 return Double.PositiveInfinity;
@@ -1229,8 +1194,8 @@ namespace TimeSeriesAnalysis
             vector2.CopyTo(x_meas_int, 0);
 
             // protect r-squared from -9999 values.
-            List<int> minus9999ind = FindValues(vector2, nanValue, TimeSeriesAnalysis.VectorFindValueType.Equal);
-            List<int> nanind = FindValues(vector1, Double.NaN, TimeSeriesAnalysis.VectorFindValueType.NaN);
+            List<int> minus9999ind = FindValues(vector2, nanValue, VectorFindValueType.Equal);
+            List<int> nanind = FindValues(vector1, Double.NaN, VectorFindValueType.NaN);
             List<int> indToIgnoreInt = minus9999ind.Union(nanind).ToList();
 
             List<int> indToIgnore;
@@ -1245,7 +1210,10 @@ namespace TimeSeriesAnalysis
                 x_meas_int[ind] = 0;
             }
 
-            double SSres = SumOfSquareErr(x_mod_int, x_meas_int, -1, false);//explainedVariation
+           // Plot.FromList(new List<double[]> { x_mod_int , x_meas_int },new List<string> {"y1=xmod","y1=xmeas" },
+          //      TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, x_mod_int.Length));
+          //  double SSres = SumOfSquareErr(x_mod_int, x_meas_int, 0, false);
+            double SSres = SumOfSquareErr(x_mod_int, x_meas_int, ymodOffset, false);//explainedVariation
             double meanOfMeas = Mean(x_meas_int).Value;
             double SStot = SumOfSquareErr(x_mod_int, meanOfMeas, false); //totalVariation
             double Rsq = 1 - SSres / SStot;

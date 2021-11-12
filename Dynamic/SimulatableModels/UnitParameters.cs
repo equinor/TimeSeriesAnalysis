@@ -89,6 +89,9 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (Curvatures == null)
                 return LinearGains[inputIdx];
+            if (double.IsNaN(Curvatures[inputIdx]) )
+                return LinearGains[inputIdx];
+
             if (inputIdx <= Curvatures.Length - 1)
             {
                 if ( UNorm== null)

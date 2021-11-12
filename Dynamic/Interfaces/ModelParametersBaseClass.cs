@@ -18,13 +18,37 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool WasAbleToIdentify { get; set; }
         /// <summary>
         /// The value of the R2 or root mean square of fitting,higher is better (used to choose among models)
+        /// <para>
+        /// This is the R-squared of the "differences" sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
+        /// </para>>
         /// </summary>
-        public double FittingRsq { get; set; }
+        public double RsqFittingDiff { get; set; }
+
+        /// <summary>
+        /// The value of the R2 or root mean square
+        /// <para>
+        /// This is the R-squared of the "absolute" sum(ymeas[k] - ymod[k] )
+        /// </para>>
+        /// </summary>
+        public double RsqFittingAbs { get; set; }
 
         /// <summary>
         /// The value of the objective function during fitting, lower is better(used to choose among models)
+        /// <para>
+        /// This is the R-squared of the "differences"  sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
+        /// </para>>
         /// </summary>
-        public double FittingObjFunVal { get; set; }
+        public double ObjFunValFittingDiff { get; set; }
+
+        /// <summary>
+        /// The value of the objective function during fitting, lower is better(used to choose among models)
+        /// <para>
+        /// This is the R-squared of the "absolute" sum(ymeas[k]-ymod[k-1])
+        /// </para>>
+        /// </summary>
+
+        public double ObjFunValFittingAbs { get; set; }
+
 
         /// <summary>
         /// Number of bad data points ignored during fitting
@@ -36,16 +60,27 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double NFittingTotalDataPoints { get; set; }
 
+        /// <summary>
+        /// Get the R-squared of the fitting 
+        /// </summary>
+        /// <returns></returns>
         public double GetFittingR2()
         {
-            return FittingRsq;
+            return RsqFittingDiff;
         }
 
+        /// <summary>
+        /// Returns the value of the fitting object function
+        /// </summary>
+        /// <returns></returns>
         public double GetFittingObjFunVal()
         {
-            return FittingObjFunVal;
+            return ObjFunValFittingDiff;
         }
-
+        /// <summary>
+        /// Returns true if identification was able to find a model
+        /// </summary>
+        /// <returns></returns>
         public bool AbleToIdentify()
         {
             return WasAbleToIdentify;

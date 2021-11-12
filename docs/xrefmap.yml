@@ -970,32 +970,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.AbleToIdentify
   nameWithType: ModelParametersBaseClass.AbleToIdentify
-- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal
-  name: FittingObjFunVal
-  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal
-  commentId: P:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal
-  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal
-  nameWithType: ModelParametersBaseClass.FittingObjFunVal
-- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal*
-  name: FittingObjFunVal
-  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingObjFunVal_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingObjFunVal
-  nameWithType: ModelParametersBaseClass.FittingObjFunVal
-- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq
-  name: FittingRsq
-  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq
-  commentId: P:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq
-  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq
-  nameWithType: ModelParametersBaseClass.FittingRsq
-- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq*
-  name: FittingRsq
-  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_FittingRsq_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.FittingRsq
-  nameWithType: ModelParametersBaseClass.FittingRsq
 - uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.GetFittingObjFunVal
   name: GetFittingObjFunVal()
   href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_GetFittingObjFunVal
@@ -1048,6 +1022,58 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.NFittingTotalDataPoints
   nameWithType: ModelParametersBaseClass.NFittingTotalDataPoints
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs
+  name: ObjFunValFittingAbs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingAbs
+  commentId: P:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs
+  nameWithType: ModelParametersBaseClass.ObjFunValFittingAbs
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs*
+  name: ObjFunValFittingAbs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingAbs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingAbs
+  nameWithType: ModelParametersBaseClass.ObjFunValFittingAbs
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff
+  name: ObjFunValFittingDiff
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingDiff
+  commentId: P:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff
+  nameWithType: ModelParametersBaseClass.ObjFunValFittingDiff
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff*
+  name: ObjFunValFittingDiff
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_ObjFunValFittingDiff_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.ObjFunValFittingDiff
+  nameWithType: ModelParametersBaseClass.ObjFunValFittingDiff
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs
+  name: RsqFittingAbs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingAbs
+  commentId: P:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs
+  nameWithType: ModelParametersBaseClass.RsqFittingAbs
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs*
+  name: RsqFittingAbs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingAbs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingAbs
+  nameWithType: ModelParametersBaseClass.RsqFittingAbs
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff
+  name: RsqFittingDiff
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingDiff
+  commentId: P:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff
+  nameWithType: ModelParametersBaseClass.RsqFittingDiff
+- uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff*
+  name: RsqFittingDiff
+  href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_RsqFittingDiff_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.RsqFittingDiff
+  nameWithType: ModelParametersBaseClass.RsqFittingDiff
 - uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.WasAbleToIdentify
   name: WasAbleToIdentify
   href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_WasAbleToIdentify
@@ -2947,6 +2973,12 @@ references:
   fullName.vb: TimeSeriesAnalysis.Dynamic.UnitDataSet.UnitDataSet(System.ValueTuple(Of System.Double(), System.DateTime()), System.ValueTuple(Of System.Double(), System.DateTime()), System.String, System.Nullable(Of System.Int32))
   nameWithType: UnitDataSet.UnitDataSet((Double[], DateTime[]), (Double[], DateTime[]), String, Nullable<Int32>)
   nameWithType.vb: UnitDataSet.UnitDataSet((Double(), DateTime())(Of Double(), DateTime()), (Double(), DateTime())(Of Double(), DateTime()), String, Nullable(Of Int32))
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(TimeSeriesAnalysis.Dynamic.UnitDataSet)
+  name: UnitDataSet(UnitDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_TimeSeriesAnalysis_Dynamic_UnitDataSet_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(TimeSeriesAnalysis.Dynamic.UnitDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.UnitDataSet(TimeSeriesAnalysis.Dynamic.UnitDataSet)
+  nameWithType: UnitDataSet.UnitDataSet(UnitDataSet)
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor*
   name: UnitDataSet
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_
@@ -3177,6 +3209,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify
   nameWithType: UnitIdentifier.Identify
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
+  name: IdentifyStatic(ref UnitDataSet, Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
+  name.vb: IdentifyStatic(ByRef UnitDataSet, Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double(), System.Double())
+  nameWithType: UnitIdentifier.IdentifyStatic(ref UnitDataSet, Double[], Double[])
+  nameWithType.vb: UnitIdentifier.IdentifyStatic(ByRef UnitDataSet, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic*
+  name: IdentifyStatic
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic
+  nameWithType: UnitIdentifier.IdentifyStatic
 - uid: TimeSeriesAnalysis.Dynamic.UnitModel
   name: UnitModel
   href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html
@@ -5365,15 +5413,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.ReplaceValuesBelow
   nameWithType: Vec.ReplaceValuesBelow
-- uid: TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
-  name: RSquared(Double[], Double[], List<Int32>)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_RSquared_System_Double___System_Double___System_Collections_Generic_List_System_Int32__
-  commentId: M:TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
-  name.vb: RSquared(Double(), Double(), List(Of Int32))
-  fullName: TimeSeriesAnalysis.Vec.RSquared(System.Double[], System.Double[], System.Collections.Generic.List<System.Int32>)
-  fullName.vb: TimeSeriesAnalysis.Vec.RSquared(System.Double(), System.Double(), System.Collections.Generic.List(Of System.Int32))
-  nameWithType: Vec.RSquared(Double[], Double[], List<Int32>)
-  nameWithType.vb: Vec.RSquared(Double(), Double(), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32},System.Int32)
+  name: RSquared(Double[], Double[], List<Int32>, Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_RSquared_System_Double___System_Double___System_Collections_Generic_List_System_Int32__System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec.RSquared(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32},System.Int32)
+  name.vb: RSquared(Double(), Double(), List(Of Int32), Int32)
+  fullName: TimeSeriesAnalysis.Vec.RSquared(System.Double[], System.Double[], System.Collections.Generic.List<System.Int32>, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.RSquared(System.Double(), System.Double(), System.Collections.Generic.List(Of System.Int32), System.Int32)
+  nameWithType: Vec.RSquared(Double[], Double[], List<Int32>, Int32)
+  nameWithType.vb: Vec.RSquared(Double(), Double(), List(Of Int32), Int32)
 - uid: TimeSeriesAnalysis.Vec.RSquared*
   name: RSquared
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_RSquared_

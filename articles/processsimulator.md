@@ -6,7 +6,7 @@ Simulating multiple processes together is orchestrated by the class ``PlantSimul
 ## External interface
 
 The intention is that the ``PlantSimulator`` class should be able to simulate any well-formulated
-combination of models that implement the ``ISimulateableModel`` (such as ``PIDModel`` and ``DefaultProcessModel``.)
+combination of models that implement the ``ISimulateableModel`` (such as ``PIDModel``,``Select`` and ``UnitModel``.)
 
 Connections can be done using
 - ``ConnectSignal`` connects a signal to a model

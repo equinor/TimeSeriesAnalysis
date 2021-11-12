@@ -75,14 +75,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double  BadDataID{ get; set; } = -9999;
 
-    /// <summary>
-    /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, 
-    /// rand walks or other disturbancs.
-    /// </summary>
-    /// <param name="timeBase_s">the time base in seconds</param>
-    /// <param name="numDataPoints">the desired nubmer of datapoints of the dataset</param>
-    /// <param name="name">optional internal name of dataset</param>
-    public UnitDataSet(double timeBase_s, int numDataPoints, string name = null)
+        /// <summary>
+        /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, 
+        /// rand walks or other disturbancs.
+        /// </summary>
+        /// <param name="timeBase_s">the time base in seconds</param>
+        /// <param name="numDataPoints">the desired nubmer of datapoints of the dataset</param>
+        /// <param name="name">optional internal name of dataset</param>
+        public UnitDataSet(double timeBase_s, int numDataPoints, string name = null)
         {
             this.warnings = new List<UnitWarnings>(); 
             this.NumDataPoints = numDataPoints;
@@ -91,6 +91,24 @@ namespace TimeSeriesAnalysis.Dynamic
             this.TimeBase_s = timeBase_s;
             this.ProcessName = name;
         }
+
+        /// <summary>
+        /// Create a copy of an existing data set
+        /// </summary>
+        /// <param name="otherDataSet"></param>
+        public UnitDataSet(UnitDataSet otherDataSet)
+        {
+            this.ProcessName = otherDataSet.ProcessName + "copy";
+            this.TimeBase_s = otherDataSet.TimeBase_s;
+            this.NumDataPoints = otherDataSet.NumDataPoints;
+            this.Y_meas = otherDataSet.Y_meas;
+            this.Y_setpoint = otherDataSet.Y_setpoint;
+            this.Y_sim = otherDataSet.Y_sim;
+            this.U = otherDataSet.U;
+            this.U_sim = otherDataSet.U_sim;
+            this.Times = otherDataSet.Times;
+        }
+
 
         /// <summary>
         /// Constructor for data set with inputs <c>U</c>, i.e. where a relationship 
