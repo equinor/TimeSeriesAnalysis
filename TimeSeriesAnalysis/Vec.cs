@@ -333,17 +333,6 @@ namespace TimeSeriesAnalysis
             return indices;
         }
 
-        /// <summary>
-        /// Get the gradient of a time-series
-        /// </summary>
-        /// <param name="valueDateTuple">a value/datetime array tuple</param>
-        /// <param name="sampleTime_sec">sample time in which to present the result</param>
-        /// <param name="indicesToIgnore">indices to ignore</param>
-        /// <returns></returns>
-        public static RegressionResults GetGradient((double[],DateTime[]) valueDateTuple, int sampleTime_sec = 1, int[] indicesToIgnore = null)
-        {
-            return GetGradient(valueDateTuple.Item1, valueDateTuple.Item2, sampleTime_sec, indicesToIgnore);
-        }
 
         /// <summary>
         /// Gets the gradient of a time-series 
@@ -997,6 +986,59 @@ namespace TimeSeriesAnalysis
             return ReplaceValuesAbove(ReplaceValuesBelow(array,lowerThreshold, valueToReplaceWith),higherThreshold,valueToReplaceWith);
         }
 
+        /// <summary>
+        /// R-squared 
+        /// R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent 
+        /// variable that's explained by an independent variable or variables in a regression model. 
+        /// Whereas correlation explains the strength of the relationship between an independent and 
+        /// dependent variable, R-squared explains to what extent the variance of one variable explains the
+        /// variance of the second variable. So, if the R2 of a model is <c>0.50</c>, then approximately 
+        /// half of the observed variation can be explained by the model's inputs.
+        /// </summary>
+        /// <param name="vector1">first vector</param>
+        /// <param name="vector2">second vector</param>
+        /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
+        /// <returns>R2 squared, a value between <c>-1</c> and <c>1</c>. If an error occured, 
+        /// <c>Double.PositiveInfinity</c> is returned </returns>
+        public double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt = null, int ymodOffset = -1)
+        {
+            if (vector1 == null || vector2 == null)
+                return Double.PositiveInfinity;
+
+            double[] x_mod_int = new double[vector1.Length];
+            double[] x_meas_int = new double[vector2.Length];//
+            vector1.CopyTo(x_mod_int, 0);
+            vector2.CopyTo(x_meas_int, 0);
+
+            // protect r-squared from -9999 values.
+            List<int> minus9999ind = FindValues(vector2, nanValue, VectorFindValueType.Equal);
+            List<int> nanind = FindValues(vector1, Double.NaN, VectorFindValueType.NaN);
+            List<int> indToIgnoreInt = minus9999ind.Union(nanind).ToList();
+
+            List<int> indToIgnore;
+            if (indToIgnoreExt != null)
+                indToIgnore = indToIgnoreInt.Union(indToIgnoreExt).ToList();
+            else
+                indToIgnore = indToIgnoreInt;
+
+            foreach (int ind in indToIgnore)
+            {
+                x_mod_int[ind] = 0;
+                x_meas_int[ind] = 0;
+            }
+
+            // Plot.FromList(new List<double[]> { x_mod_int , x_meas_int },new List<string> {"y1=xmod","y1=xmeas" },
+            //      TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, x_mod_int.Length));
+            //  double SSres = SumOfSquareErr(x_mod_int, x_meas_int, 0, false);
+            double SSres = SumOfSquareErr(x_mod_int, x_meas_int, ymodOffset, false);//explainedVariation
+            double meanOfMeas = Mean(x_meas_int).Value;
+            double SStot = SumOfSquareErr(x_mod_int, meanOfMeas, false); //totalVariation
+            double Rsq = 1 - SSres / SStot;
+            return Rsq;
+        }
+
+
+
         ///<summary>
         /// elementwise  subtraction of array1 and array2, assuming they are same size
         ///</summary>
@@ -1169,56 +1211,6 @@ namespace TimeSeriesAnalysis
             return SumOfAbsErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
 
-        /// <summary>
-        /// R-squared 
-        /// R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent 
-        /// variable that's explained by an independent variable or variables in a regression model. 
-        /// Whereas correlation explains the strength of the relationship between an independent and 
-        /// dependent variable, R-squared explains to what extent the variance of one variable explains the
-        /// variance of the second variable. So, if the R2 of a model is <c>0.50</c>, then approximately 
-        /// half of the observed variation can be explained by the model's inputs.
-        /// </summary>
-        /// <param name="vector1">first vector</param>
-        /// <param name="vector2">second vector</param>
-        /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
-        /// <returns>R2 squared, a value between <c>-1</c> and <c>1</c>. If an error occured, 
-        /// <c>Double.PositiveInfinity</c> is returned </returns>
-        public double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt=null, int ymodOffset = -1)
-        {
-            if (vector1 == null || vector2 == null)
-                return Double.PositiveInfinity;
-
-            double[] x_mod_int = new double[vector1.Length];
-            double[] x_meas_int = new double[vector2.Length];//
-            vector1.CopyTo(x_mod_int, 0);
-            vector2.CopyTo(x_meas_int, 0);
-
-            // protect r-squared from -9999 values.
-            List<int> minus9999ind = FindValues(vector2, nanValue, VectorFindValueType.Equal);
-            List<int> nanind = FindValues(vector1, Double.NaN, VectorFindValueType.NaN);
-            List<int> indToIgnoreInt = minus9999ind.Union(nanind).ToList();
-
-            List<int> indToIgnore;
-            if (indToIgnoreExt != null)
-                indToIgnore = indToIgnoreInt.Union(indToIgnoreExt).ToList();
-            else
-                indToIgnore = indToIgnoreInt;
-
-            foreach (int ind in indToIgnore)
-            {
-                x_mod_int[ind] = 0;
-                x_meas_int[ind] = 0;
-            }
-
-           // Plot.FromList(new List<double[]> { x_mod_int , x_meas_int },new List<string> {"y1=xmod","y1=xmeas" },
-          //      TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, x_mod_int.Length));
-          //  double SSres = SumOfSquareErr(x_mod_int, x_meas_int, 0, false);
-            double SSres = SumOfSquareErr(x_mod_int, x_meas_int, ymodOffset, false);//explainedVariation
-            double meanOfMeas = Mean(x_meas_int).Value;
-            double SStot = SumOfSquareErr(x_mod_int, meanOfMeas, false); //totalVariation
-            double Rsq = 1 - SSres / SStot;
-            return Rsq;
-        }
 
 
 

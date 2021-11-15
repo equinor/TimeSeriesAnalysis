@@ -4108,6 +4108,76 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Shared.IsPlottingEnabled
   nameWithType: Shared.IsPlottingEnabled
+- uid: TimeSeriesAnalysis.TimeSeries
+  name: TimeSeries
+  href: api/TimeSeriesAnalysis.TimeSeries.html
+  commentId: T:TimeSeriesAnalysis.TimeSeries
+  fullName: TimeSeriesAnalysis.TimeSeries
+  nameWithType: TimeSeries
+- uid: TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate(System.ValueTuple{System.Double[],System.DateTime[]},System.DateTime)
+  name: GetClosestIndexToDate((Double[], DateTime[]), DateTime)
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_GetClosestIndexToDate_System_ValueTuple_System_Double___System_DateTime____System_DateTime_
+  commentId: M:TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate(System.ValueTuple{System.Double[],System.DateTime[]},System.DateTime)
+  name.vb: GetClosestIndexToDate((Double(), DateTime())(Of Double(), DateTime()), DateTime)
+  fullName: TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate(System.ValueTuple<System.Double[], System.DateTime[]>, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate(System.ValueTuple(Of System.Double(), System.DateTime()), System.DateTime)
+  nameWithType: TimeSeries.GetClosestIndexToDate((Double[], DateTime[]), DateTime)
+  nameWithType.vb: TimeSeries.GetClosestIndexToDate((Double(), DateTime())(Of Double(), DateTime()), DateTime)
+- uid: TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate*
+  name: GetClosestIndexToDate
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_GetClosestIndexToDate_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate
+  nameWithType: TimeSeries.GetClosestIndexToDate
+- uid: TimeSeriesAnalysis.TimeSeries.GetGradient(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32[])
+  name: GetGradient((Double[], DateTime[]), Int32, Int32[])
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_GetGradient_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32___
+  commentId: M:TimeSeriesAnalysis.TimeSeries.GetGradient(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32[])
+  name.vb: GetGradient((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32())
+  fullName: TimeSeriesAnalysis.TimeSeries.GetGradient(System.ValueTuple<System.Double[], System.DateTime[]>, System.Int32, System.Int32[])
+  fullName.vb: TimeSeriesAnalysis.TimeSeries.GetGradient(System.ValueTuple(Of System.Double(), System.DateTime()), System.Int32, System.Int32())
+  nameWithType: TimeSeries.GetGradient((Double[], DateTime[]), Int32, Int32[])
+  nameWithType.vb: TimeSeries.GetGradient((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32())
+- uid: TimeSeriesAnalysis.TimeSeries.GetGradient*
+  name: GetGradient
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_GetGradient_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeries.GetGradient
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeries.GetGradient
+  nameWithType: TimeSeries.GetGradient
+- uid: TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32)
+  name: GetSubsetOfDays((Double[], DateTime[]), Int32, Int32)
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_GetSubsetOfDays_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32)
+  name.vb: GetSubsetOfDays((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32)
+  fullName: TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays(System.ValueTuple<System.Double[], System.DateTime[]>, System.Int32, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays(System.ValueTuple(Of System.Double(), System.DateTime()), System.Int32, System.Int32)
+  nameWithType: TimeSeries.GetSubsetOfDays((Double[], DateTime[]), Int32, Int32)
+  nameWithType.vb: TimeSeries.GetSubsetOfDays((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32)
+- uid: TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays*
+  name: GetSubsetOfDays
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_GetSubsetOfDays_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays
+  nameWithType: TimeSeries.GetSubsetOfDays
+- uid: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32)
+  name: SubSet((Double[], DateTime[]), Int32, Int32)
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_SubSet_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32)
+  name.vb: SubSet((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32)
+  fullName: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple<System.Double[], System.DateTime[]>, System.Int32, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple(Of System.Double(), System.DateTime()), System.Int32, System.Int32)
+  nameWithType: TimeSeries.SubSet((Double[], DateTime[]), Int32, Int32)
+  nameWithType.vb: TimeSeries.SubSet((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32)
+- uid: TimeSeriesAnalysis.TimeSeries.SubSet*
+  name: SubSet
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_SubSet_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeries.SubSet
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeries.SubSet
+  nameWithType: TimeSeries.SubSet
 - uid: TimeSeriesAnalysis.Utility
   name: TimeSeriesAnalysis.Utility
   href: api/TimeSeriesAnalysis.Utility.html
@@ -5063,15 +5133,6 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.GetGradient(System.Double(), System.DateTime(), System.Int32, System.Int32())
   nameWithType: Vec.GetGradient(Double[], DateTime[], Int32, Int32[])
   nameWithType.vb: Vec.GetGradient(Double(), DateTime(), Int32, Int32())
-- uid: TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32[])
-  name: GetGradient((Double[], DateTime[]), Int32, Int32[])
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_GetGradient_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32___
-  commentId: M:TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32[])
-  name.vb: GetGradient((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32())
-  fullName: TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple<System.Double[], System.DateTime[]>, System.Int32, System.Int32[])
-  fullName.vb: TimeSeriesAnalysis.Vec.GetGradient(System.ValueTuple(Of System.Double(), System.DateTime()), System.Int32, System.Int32())
-  nameWithType: Vec.GetGradient((Double[], DateTime[]), Int32, Int32[])
-  nameWithType.vb: Vec.GetGradient((Double(), DateTime())(Of Double(), DateTime()), Int32, Int32())
 - uid: TimeSeriesAnalysis.Vec.GetGradient*
   name: GetGradient
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_GetGradient_

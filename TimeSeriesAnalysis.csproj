@@ -176,6 +176,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Tests\SysIDUnitTests.cs" />
     <Compile Include="TimeSeriesAnalysis\RegressionResults.cs" />
     <Compile Include="TimeSeriesAnalysis\Filters\MovingAvg.cs" />
+    <Compile Include="TimeSeriesAnalysis\TimeSeries.cs" />
     <Compile Include="Utility\CSV.cs" />
     <Compile Include="Utility\StringToFileWriter.cs" />
     <Compile Include="Utility\TimeSeriesCreator.cs" />
