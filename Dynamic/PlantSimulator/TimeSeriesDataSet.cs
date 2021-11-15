@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
+
+using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -20,12 +23,7 @@ namespace TimeSeriesAnalysis.Dynamic
         int? N;
         bool didSimulationReturnOk = false;
 
-        private void Init(int timeBase_s)
-        {
-            this.timeBase_s = timeBase_s;
-            dataset = new Dictionary<string, double[]>();
-            didSimulationReturnOk = false;
-        }
+
 
         /// <summary>
         /// Constructor
@@ -44,82 +42,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             Init(timeBase_s);
             AddSet(inputDataSet); 
-        }
-
-        /// <summary>
-        /// Set the termination status of the simualtion
-        /// </summary>
-        /// <param name="didSimulationTerminateOk"></param>
-        /// <returns>returns the same status given in</returns>
-        public bool SetSimStatus(bool didSimulationTerminateOk)
-        {
-            didSimulationReturnOk = didSimulationTerminateOk;
-            return didSimulationReturnOk;
-        }
-
-        /// <summary>
-        /// Returns the simualtion status
-        /// </summary>
-        /// <returns></returns>
-        public bool GetSimStatus()
-        {
-            return didSimulationReturnOk;
-        }
-
-        /// <summary>
-        /// Add a single data point
-        /// </summary>
-        /// <param name="signalID"></param>
-        /// <param name="idx"></param>
-        /// <param name="value"></param>
-        /// <returns>returns false if signal does not already exist or if index is beyond dataset size</returns>
-        public bool AddDataPoint(string signalID, int idx, double value)
-        {
-            if (ContainsSignal(signalID))
-            {
-                if (dataset[signalID].Length >idx)
-                {
-                    dataset[signalID][idx] = value;
-                    return true;
-                }
-                else
-                    return false;
-
-            }
-            else
-                return false;
-        
-        }
-
-        /// <summary>
-        /// Determine if a specific signal is in the dataset
-        /// </summary>
-        /// <param name="signalID"></param>
-        /// <returns></returns>
-        public bool ContainsSignal(string signalID)
-        {
-            if (signalID == null)
-                return false;
-            return dataset.ContainsKey(signalID);
-        }
-
-        /// <summary>
-        /// Adds all signals in a given set to this set
-        /// </summary>
-        /// <param name="inputDataSet"></param>
-        /// <returns></returns>
-        public bool AddSet(TimeSeriesDataSet inputDataSet)
-        {
-            foreach (string signalName in inputDataSet.GetSignalNames())
-            {
-                double[] values = inputDataSet.GetValues(signalName);
-                N = values.Length;// todo:check that all are equal length
-
-                bool isOk = AddTimeSeries(signalName, values);
-                if (!isOk)
-                    return false;
-            }
-            return true;
         }
 
 
@@ -163,6 +85,73 @@ namespace TimeSeriesAnalysis.Dynamic
             else
                 return null;
         }
+
+        /// <summary>
+        /// Adds all signals in a given set to this set
+        /// </summary>
+        /// <param name="inputDataSet"></param>
+        /// <returns></returns>
+        public bool AddSet(TimeSeriesDataSet inputDataSet)
+        {
+            foreach (string signalName in inputDataSet.GetSignalNames())
+            {
+                double[] values = inputDataSet.GetValues(signalName);
+                N = values.Length;// todo:check that all are equal length
+
+                bool isOk = AddTimeSeries(signalName, values);
+                if (!isOk)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Add a single data point
+        /// </summary>
+        /// <param name="signalID"></param>
+        /// <param name="idx"></param>
+        /// <param name="value"></param>
+        /// <returns>returns false if signal does not already exist or if index is beyond dataset size</returns>
+        public bool AddDataPoint(string signalID, int idx, double value)
+        {
+            if (ContainsSignal(signalID))
+            {
+                if (dataset[signalID].Length >idx)
+                {
+                    dataset[signalID][idx] = value;
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            else
+                return false;
+        
+        }
+
+        /// <summary>
+        /// Determine if a specific signal is in the dataset
+        /// </summary>
+        /// <param name="signalID"></param>
+        /// <returns></returns>
+        public bool ContainsSignal(string signalID)
+        {
+            if (signalID == null)
+                return false;
+            return dataset.ContainsKey(signalID);
+        }
+
+        /// <summary>
+        /// Returns the simualtion status
+        /// </summary>
+        /// <returns></returns>
+        public bool GetSimStatus()
+        {
+            return didSimulationReturnOk;
+        }
+
+
 
         /// <summary>
         /// Get Data for multiple signals at a specific time index
@@ -241,6 +230,75 @@ namespace TimeSeriesAnalysis.Dynamic
                 return null;
             }
         }
+
+        private void Init(int timeBase_s)
+        {
+            this.timeBase_s = timeBase_s;
+            dataset = new Dictionary<string, double[]>();
+            didSimulationReturnOk = false;
+        }
+
+        /// <summary>
+        /// Set the termination status of the simualtion
+        /// </summary>
+        /// <param name="didSimulationTerminateOk"></param>
+        /// <returns>returns the same status given in</returns>
+        public bool SetSimStatus(bool didSimulationTerminateOk)
+        {
+            didSimulationReturnOk = didSimulationTerminateOk;
+            return didSimulationReturnOk;
+        }
+
+        /// <summary>
+        /// Exports the time-series data set to a csv-file
+        /// <para>
+        /// Times are encoded as unix-times(based on t0 and timeBase_s)
+        /// </para>
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="t0">starting date</param>
+        /// <param name="CSVseparator">the separator to use in the csv-file(despite the name, the most common is perhaps ";" which Excel will recognize automatically)</param>
+        /// <param name="nSignificantDigits">the number of singificant digits to include for each variable</param>
+        /// <returns></returns>
+        public bool ToCSV(string fileName, DateTime t0, string CSVseparator = ";", int nSignificantDigits = 5)
+        {
+            StringBuilder sb = new StringBuilder();
+            var signalNames = GetSignalNames();
+            // make header
+            sb.Append("Time" + CSVseparator);
+            sb.Append(string.Join(CSVseparator, signalNames));
+            sb.Append("\r\n");
+
+
+            DateTime curDate = t0;
+            for (int curTimeIdx = 0; curTimeIdx<GetLength(); curTimeIdx++)
+            {
+                var dataAtTime = GetData(signalNames, curTimeIdx);
+                sb.Append(UnixTime.ConvertToUnixTimestamp(curDate));
+                for (int curColIdx = 0; curColIdx < dataAtTime.Length; curColIdx++)
+                {
+                    sb.Append(CSVseparator + SignificantDigits.Format(dataAtTime[curColIdx], nSignificantDigits).ToString(CultureInfo.InvariantCulture));
+                }
+                sb.Append("\r\n");
+                curDate = curDate.AddSeconds(timeBase_s);
+            }
+
+            using (StringToFileWriter writer = new StringToFileWriter(fileName))
+            {
+                try
+                {
+                    writer.Write(sb.ToString());
+                    writer.Close();
+                }
+                catch (Exception)
+                {
+                    Shared.GetParserObj().AddError("Exception writing file:" + fileName);
+                }
+            }
+            return true;
+
+        }
+
 
 
     }

@@ -2934,6 +2934,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus
   nameWithType: TimeSeriesDataSet.SetSimStatus
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.DateTime,System.String,System.Int32)
+  name: ToCSV(String, DateTime, String, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_System_String_System_DateTime_System_String_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.DateTime,System.String,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String, System.DateTime, System.String, System.Int32)
+  nameWithType: TimeSeriesDataSet.ToCSV(String, DateTime, String, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV*
+  name: ToCSV
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV
+  nameWithType: TimeSeriesDataSet.ToCSV
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet
   name: UnitDataSet
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html
