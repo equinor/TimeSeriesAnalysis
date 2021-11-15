@@ -24,6 +24,29 @@ namespace TimeSeriesAnalysis.Dynamic
         bool didSimulationReturnOk = false;
 
 
+        /// <summary>
+        /// Constructor: Reads data form  a csv-file (such as that created by ToCSV) 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public TimeSeriesDataSet(string fileName)
+        {
+            char separator = ';';
+            CSV.LoadDataFromCSV(fileName, separator, out DateTime[] dateTimes, out Dictionary<string, double[]> variableDict);
+
+            didSimulationReturnOk = true;
+
+            dataset = variableDict;
+            N = (int?)dataset[dataset.Keys.First()].Length;
+            if (dateTimes.Length > 1)
+            {
+                timeBase_s = (int)dateTimes[1].Subtract(dateTimes[0]).TotalSeconds;
+            }
+            else
+            {
+                timeBase_s = 0;
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -142,6 +165,8 @@ namespace TimeSeriesAnalysis.Dynamic
             return dataset.ContainsKey(signalID);
         }
 
+
+
         /// <summary>
         /// Returns the simualtion status
         /// </summary>
@@ -252,7 +277,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Exports the time-series data set to a csv-file
         /// <para>
-        /// Times are encoded as unix-times(based on t0 and timeBase_s)
+        /// Times are encoded as "yyyy-MM-dd HH:mm:ss" and be loaded with CSV.LoadFromFile() afterwards
         /// </para>
         /// </summary>
         /// <param name="fileName"></param>
@@ -274,7 +299,9 @@ namespace TimeSeriesAnalysis.Dynamic
             for (int curTimeIdx = 0; curTimeIdx<GetLength(); curTimeIdx++)
             {
                 var dataAtTime = GetData(signalNames, curTimeIdx);
-                sb.Append(UnixTime.ConvertToUnixTimestamp(curDate));
+                //sb.Append(UnixTime.ConvertToUnixTimestamp(curDate));
+                sb.Append(curDate.ToString("yyyy-MM-dd HH:mm:ss"));
+  
                 for (int curColIdx = 0; curColIdx < dataAtTime.Length; curColIdx++)
                 {
                     sb.Append(CSVseparator + SignificantDigits.Format(dataAtTime[curColIdx], nSignificantDigits).ToString(CultureInfo.InvariantCulture));

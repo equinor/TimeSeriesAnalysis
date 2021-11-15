@@ -28,8 +28,35 @@ namespace TimeSeriesAnalysis.Utility
             return LoadDataFromCSV(filename, ';', out doubleData, out variableNames, out stringData);
         }
 
+        /// <summary>
+        /// Loads data from a CSV-file, including parsing the times(first column)
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="separator"></param>
+        /// <param name="dateTimes"></param>
+        /// <param name="variables"></param>
+        /// <param name="dateTimeFormat"></param>
+        /// <returns></returns>
+        public static bool LoadDataFromCSV(string filename, char separator, out DateTime[] dateTimes,
+            out Dictionary<string,double[]> variables, string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            var isOk = LoadDataFromCSV(filename, separator, out double[,] doubleData, out string[] variableNames, out string[,] stringData);
+
+            int indexOfTimeData = 0;
+            dateTimes = Array2D.GetColumnParsedAsDateTime(stringData, indexOfTimeData, dateTimeFormat);
+
+            variables = new Dictionary<string, double[]>();
+            int colIdx = 0;
+            foreach(string variableName in variableNames)
+            {
+                variables.Add(variableName,doubleData.GetColumn(colIdx));
+                colIdx++;
+            }
+            return isOk;
+        }
+
         ///<summary>
-        /// Load time-series data from a CSV-file into variables for further processing
+        /// Load time-series data from a CSV-file, low-level version for further processing
         ///</summary>
         /// <param name="filename"> path of file to be loaded</param>
         /// <param name="separator"> separator character used to separate data in file</param>

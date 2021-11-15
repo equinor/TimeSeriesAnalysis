@@ -187,6 +187,34 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String)">TimeSeriesDataSet(String)</h4>
+  <div class="markdown level1 summary"><p>Constructor: Reads data form  a csv-file (such as that created by ToCSV)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet(string fileName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -708,13 +736,13 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
   <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_System_String_System_DateTime_System_String_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.DateTime,System.String,System.Int32)">ToCSV(String, DateTime, String, Int32)</h4>
   <div class="markdown level1 summary"><p>Exports the time-series data set to a csv-file</p>
 <p>
-Times are encoded as unix-times
+Times are encoded as &quot;yyyy-MM-dd HH:mm:ss&quot; and be loaded with CSV.LoadFromFile() afterwards
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ToCSV(string fileName, DateTime t0, string CSVseparator = &quot;,&quot;, int nSignificantDigits = 5)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ToCSV(string fileName, DateTime t0, string CSVseparator = &quot;;&quot;, int nSignificantDigits = 5)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -740,13 +768,14 @@ Times are encoded as unix-times
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">CSVseparator</span></td>
-        <td><p>the separator to use in the csv-file</p>
+        <td><p>the separator to use in the csv-file(despite the name, the most common is perhaps &quot;;&quot; which Excel will recognize automatically)</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">nSignificantDigits</span></td>
-        <td></td>
+        <td><p>the number of singificant digits to include for each variable</p>
+</td>
       </tr>
     </tbody>
   </table>

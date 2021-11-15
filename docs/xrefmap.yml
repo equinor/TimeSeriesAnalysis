@@ -2776,6 +2776,12 @@ references:
   commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32, TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
   nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(Int32, TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String)
+  name: TimeSeriesDataSet(String)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.String)
+  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(String)
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*
   name: TimeSeriesDataSet
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_
@@ -4203,6 +4209,15 @@ references:
   commentId: T:TimeSeriesAnalysis.Utility.CSV
   fullName: TimeSeriesAnalysis.Utility.CSV
   nameWithType: CSV
+- uid: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.DateTime[]@,System.Collections.Generic.Dictionary{System.String,System.Double[]}@,System.String)
+  name: LoadDataFromCSV(String, Char, out DateTime[], out Dictionary<String, Double[]>, String)
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Char_System_DateTime____System_Collections_Generic_Dictionary_System_String_System_Double_____System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.DateTime[]@,System.Collections.Generic.Dictionary{System.String,System.Double[]}@,System.String)
+  name.vb: LoadDataFromCSV(String, Char, ByRef DateTime(), ByRef Dictionary(Of String, Double()), String)
+  fullName: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String, System.Char, out System.DateTime[], out System.Collections.Generic.Dictionary<System.String, System.Double[]>, System.String)
+  fullName.vb: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String, System.Char, ByRef System.DateTime(), ByRef System.Collections.Generic.Dictionary(Of System.String, System.Double()), System.String)
+  nameWithType: CSV.LoadDataFromCSV(String, Char, out DateTime[], out Dictionary<String, Double[]>, String)
+  nameWithType.vb: CSV.LoadDataFromCSV(String, Char, ByRef DateTime(), ByRef Dictionary(Of String, Double()), String)
 - uid: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)
   name: LoadDataFromCSV(String, Char, out Double[,], out String[], out String[,])
   href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Char_System_Double_0__0____System_String____System_String_0__0____

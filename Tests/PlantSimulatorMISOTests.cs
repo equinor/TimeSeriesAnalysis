@@ -76,8 +76,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             ProcessControl pc = new ProcessControl();
             var dataSet = pc.MinSelect();
-          //  dataSet.ToCSV(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv", new DateTime(2020, 1, 1),";");
-
+          //  dataSet.ToCSV(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv", new DateTime(2020, 1, 1));
+         //   var dataSet2 = new TimeSeriesDataSet(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv");
             Shared.EnablePlots();
         }
     }

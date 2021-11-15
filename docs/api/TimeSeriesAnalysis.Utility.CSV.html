@@ -126,8 +126,71 @@
   
   
   <a id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV*"></a>
+  <h4 id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Char_System_DateTime____System_Collections_Generic_Dictionary_System_String_System_Double_____System_String_" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.DateTime[]@,System.Collections.Generic.Dictionary{System.String,System.Double[]}@,System.String)">LoadDataFromCSV(String, Char, out DateTime[], out Dictionary&lt;String, Double[]&gt;, String)</h4>
+  <div class="markdown level1 summary"><p>Loads data from a CSV-file, including parsing the times(first column)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool LoadDataFromCSV(string filename, char separator, out DateTime[] dateTimes, out Dictionary&lt;string, double[]&gt; variables, string dateTimeFormat = &quot;yyyy-MM-dd HH:mm:ss&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filename</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Char</span></td>
+        <td><span class="parametername">separator</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.DateTime</span>[]</td>
+        <td><span class="parametername">dateTimes</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Double</span>[]&gt;</td>
+        <td><span class="parametername">variables</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dateTimeFormat</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV*"></a>
   <h4 id="TimeSeriesAnalysis_Utility_CSV_LoadDataFromCSV_System_String_System_Char_System_Double_0__0____System_String____System_String_0__0____" data-uid="TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV(System.String,System.Char,System.Double[0:,0:]@,System.String[]@,System.String[0:,0:]@)">LoadDataFromCSV(String, Char, out Double[,], out String[], out String[,])</h4>
-  <div class="markdown level1 summary"><p>Load time-series data from a CSV-file into variables for further processing</p>
+  <div class="markdown level1 summary"><p>Load time-series data from a CSV-file, low-level version for further processing</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
