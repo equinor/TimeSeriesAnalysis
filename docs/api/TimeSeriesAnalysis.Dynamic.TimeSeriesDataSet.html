@@ -83,10 +83,14 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet" class="text-break">Class TimeSeriesDataSet
   </h1>
-  <div class="markdown level0 summary"><p>A class that holds time-series data for a number of tags,
+  <div class="markdown level0 summary"><p>A class that holds time-series data for a number of tags</p>
+<p>
+Time is either treated by giving a timeBase in seconds and a strating time, or by  
+specifying a vector of timestamps.
+</p>
 <remark>
 This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.html">PlantSimulator</a>
-</remark></p>
+</remark>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,13 +133,13 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32)">TimeSeriesDataSet(Int32)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_System_Nullable_System_DateTime__" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,System.Nullable{System.DateTime})">TimeSeriesDataSet(Int32, Nullable&lt;DateTime&gt;)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet(int timeBase_s)</code></pre>
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet(int timeBase_s, DateTime? t0 = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -151,6 +155,12 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">timeBase_s</span></td>
         <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+        <td><span class="parametername">t0</span></td>
+        <td><p>the time of the first sample</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -190,13 +200,13 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String)">TimeSeriesDataSet(String)</h4>
-  <div class="markdown level1 summary"><p>Constructor: Reads data form  a csv-file (such as that created by ToCSV)</p>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_String_System_Char_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String,System.Char,System.String)">TimeSeriesDataSet(String, Char, String)</h4>
+  <div class="markdown level1 summary"><p>Constructor: Reads data form  a csv-file (such as that created by ToCSV())</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet(string fileName)</code></pre>
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet(string fileName, char separator = ';', string dateTimeFormat = &quot;yyyy-MM-dd HH:mm:ss&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -212,6 +222,17 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">fileName</span></td>
         <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Char</span></td>
+        <td><span class="parametername">separator</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dateTimeFormat</span></td>
+        <td><p>format string of the time-series vector to be read</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -592,6 +613,32 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetTimeStamps_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetTimeStamps" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps">GetTimeStamps()</h4>
+  <div class="markdown level1 summary"><p>Get a vector of the timestamps of the data-set</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime[] GetTimeStamps()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues(System.String)">GetValues(String)</h4>
   <div class="markdown level1 summary"><p>Get the values of a specific signal</p>
@@ -732,8 +779,64 @@ This is the return data class of the <a class="xref" href="TimeSeriesAnalysis.Dy
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetT0_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetT0_System_DateTime_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0(System.DateTime)">SetT0(DateTime)</h4>
+  <div class="markdown level1 summary"><p>Set the timestamp of the start of the dataset,from which other time stamps can be found using timebase_s</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetT0(DateTime t0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td><span class="parametername">t0</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetTimeStamps_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetTimeStamps_System_Collections_Generic_List_System_DateTime__" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps(System.Collections.Generic.List{System.DateTime})">SetTimeStamps(List&lt;DateTime&gt;)</h4>
+  <div class="markdown level1 summary"><p>Explicitly sets the timestamps of the time-series (possibly overriding any timeBase_s that was given during init)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetTimeStamps(List&lt;DateTime&gt; times)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_System_String_System_DateTime_System_String_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.DateTime,System.String,System.Int32)">ToCSV(String, DateTime, String, Int32)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_System_String_System_String_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.String,System.Int32)">ToCSV(String, String, Int32)</h4>
   <div class="markdown level1 summary"><p>Exports the time-series data set to a csv-file</p>
 <p>
 Times are encoded as &quot;yyyy-MM-dd HH:mm:ss&quot; and be loaded with CSV.LoadFromFile() afterwards
@@ -742,7 +845,7 @@ Times are encoded as &quot;yyyy-MM-dd HH:mm:ss&quot; and be loaded with CSV.Load
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ToCSV(string fileName, DateTime t0, string CSVseparator = &quot;;&quot;, int nSignificantDigits = 5)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ToCSV(string fileName, string CSVseparator = &quot;;&quot;, int nSignificantDigits = 5)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -758,12 +861,6 @@ Times are encoded as &quot;yyyy-MM-dd HH:mm:ss&quot; and be loaded with CSV.Load
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">fileName</span></td>
         <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td><span class="parametername">t0</span></td>
-        <td><p>starting date</p>
-</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>

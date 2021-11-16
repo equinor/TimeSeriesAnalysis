@@ -2764,24 +2764,27 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet
   nameWithType: TimeSeriesDataSet
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32)
-  name: TimeSeriesDataSet(Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32)
-  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(Int32)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,System.Nullable{System.DateTime})
+  name: TimeSeriesDataSet(Int32, Nullable<DateTime>)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_System_Nullable_System_DateTime__
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,System.Nullable{System.DateTime})
+  name.vb: TimeSeriesDataSet(Int32, Nullable(Of DateTime))
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32, System.Nullable<System.DateTime>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32, System.Nullable(Of System.DateTime))
+  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(Int32, Nullable<DateTime>)
+  nameWithType.vb: TimeSeriesDataSet.TimeSeriesDataSet(Int32, Nullable(Of DateTime))
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
   name: TimeSeriesDataSet(Int32, TimeSeriesDataSet)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_
   commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32, TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
   nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(Int32, TimeSeriesDataSet)
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String)
-  name: TimeSeriesDataSet(String)
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_String_
-  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String)
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.String)
-  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(String)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String,System.Char,System.String)
+  name: TimeSeriesDataSet(String, Char, String)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_String_System_Char_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String,System.Char,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.String, System.Char, System.String)
+  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(String, Char, String)
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*
   name: TimeSeriesDataSet
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_
@@ -2908,6 +2911,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus
   nameWithType: TimeSeriesDataSet.GetSimStatus
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps
+  name: GetTimeStamps()
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetTimeStamps
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps()
+  nameWithType: TimeSeriesDataSet.GetTimeStamps()
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps*
+  name: GetTimeStamps
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetTimeStamps_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps
+  nameWithType: TimeSeriesDataSet.GetTimeStamps
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues(System.String)
   name: GetValues(String)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_System_String_
@@ -2940,12 +2956,41 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus
   nameWithType: TimeSeriesDataSet.SetSimStatus
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.DateTime,System.String,System.Int32)
-  name: ToCSV(String, DateTime, String, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_System_String_System_DateTime_System_String_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.DateTime,System.String,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String, System.DateTime, System.String, System.Int32)
-  nameWithType: TimeSeriesDataSet.ToCSV(String, DateTime, String, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0(System.DateTime)
+  name: SetT0(DateTime)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetT0_System_DateTime_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0(System.DateTime)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0(System.DateTime)
+  nameWithType: TimeSeriesDataSet.SetT0(DateTime)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0*
+  name: SetT0
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetT0_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0
+  nameWithType: TimeSeriesDataSet.SetT0
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps(System.Collections.Generic.List{System.DateTime})
+  name: SetTimeStamps(List<DateTime>)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetTimeStamps_System_Collections_Generic_List_System_DateTime__
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps(System.Collections.Generic.List{System.DateTime})
+  name.vb: SetTimeStamps(List(Of DateTime))
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps(System.Collections.Generic.List<System.DateTime>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps(System.Collections.Generic.List(Of System.DateTime))
+  nameWithType: TimeSeriesDataSet.SetTimeStamps(List<DateTime>)
+  nameWithType.vb: TimeSeriesDataSet.SetTimeStamps(List(Of DateTime))
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps*
+  name: SetTimeStamps
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetTimeStamps_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps
+  nameWithType: TimeSeriesDataSet.SetTimeStamps
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.String,System.Int32)
+  name: ToCSV(String, String, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_System_String_System_String_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String,System.String,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV(System.String, System.String, System.Int32)
+  nameWithType: TimeSeriesDataSet.ToCSV(String, String, Int32)
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCSV*
   name: ToCSV
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCSV_

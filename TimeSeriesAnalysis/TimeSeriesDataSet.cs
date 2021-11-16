@@ -11,36 +11,52 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
-    /// A class that holds time-series data for a number of tags,
+    /// A class that holds time-series data for a number of tags 
+    /// <para>
+    /// Time is either treated by giving a timeBase in seconds and a strating time, or by  
+    /// specifying a vector of timestamps.
+    /// </para>
     /// <remark>
     /// This is the return data class of the <seealso cref="PlantSimulator"/>
     /// </remark>
     /// </summary>
     public class TimeSeriesDataSet
     {
+
         int timeBase_s;
+        DateTime t0;
+
+        List<DateTime> timeStamps = new List<DateTime>();
+
         Dictionary<string, double[]> dataset;
         int? N;
         bool didSimulationReturnOk = false;
 
-
         /// <summary>
-        /// Constructor: Reads data form  a csv-file (such as that created by ToCSV) 
+        /// Constructor: Reads data form  a csv-file (such as that created by ToCSV()) 
         /// </summary>
         /// <param name="fileName"></param>
+        /// <param name="dateTimeFormat">format string of the time-series vector to be read</param>
         /// <returns></returns>
-        public TimeSeriesDataSet(string fileName)
+        public TimeSeriesDataSet(string fileName, char separator=';',string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
-            char separator = ';';
-            CSV.LoadDataFromCSV(fileName, separator, out DateTime[] dateTimes, out Dictionary<string, double[]> variableDict);
+            CSV.LoadDataFromCSV(fileName, separator, out DateTime[] dateTimes, out Dictionary<string, double[]> variableDict, dateTimeFormat);
 
             didSimulationReturnOk = true;
-
+            if (variableDict.ContainsKey("Time"))
+            {
+                variableDict.Remove("Time");
+            }
+            if (variableDict.ContainsKey("time"))
+            {
+                variableDict.Remove("time");
+            }
             dataset = variableDict;
             N = (int?)dataset[dataset.Keys.First()].Length;
             if (dateTimes.Length > 1)
             {
                 timeBase_s = (int)dateTimes[1].Subtract(dateTimes[0]).TotalSeconds;
+                timeStamps = dateTimes.ToList();
             }
             else
             {
@@ -52,9 +68,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Constructor
         /// </summary>
         /// <param name="timeBase_s"></param>
-        public TimeSeriesDataSet(int timeBase_s)
+        /// <param name="t0">the time of the first sample</param>
+        public TimeSeriesDataSet(int timeBase_s,DateTime? t0=null)
         {
-            Init(timeBase_s);
+            Init(timeBase_s, t0);
         }
         /// <summary>
         /// Constructor
@@ -228,6 +245,32 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Get a vector of the timestamps of the data-set
+        /// </summary>
+        /// <returns></returns>
+        public DateTime[] GetTimeStamps()
+        {
+            if (timeStamps != null)
+            {
+                return timeStamps.ToArray();
+            }
+            else
+            {
+                var times = new List<DateTime>();
+                times.Add(t0);
+                DateTime time = t0;
+                for (int i = 0; i < N; i++)
+                {
+                    times.Add(time);
+                    time = time.AddSeconds(timeBase_s);
+                }
+                return times.ToArray();
+            }
+
+        }
+
+
+        /// <summary>
         /// Get the values of a specific signal
         /// </summary>
         /// <param name="processID"></param>
@@ -256,9 +299,15 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-        private void Init(int timeBase_s)
+        private void Init(int timeBase_s,DateTime? t0=null)
         {
             this.timeBase_s = timeBase_s;
+            if (t0.HasValue)
+                this.t0 = t0.Value;
+            else
+            {
+                this.t0 = DateTime.Now;
+            }
             dataset = new Dictionary<string, double[]>();
             didSimulationReturnOk = false;
         }
@@ -275,6 +324,24 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Explicitly sets the timestamps of the time-series (possibly overriding any timeBase_s that was given during init)
+        /// </summary>
+        /// <param name="times"></param>
+        public void SetTimeStamps(List<DateTime> times)
+        {
+            this.timeStamps = times;
+        }
+
+
+        /// <summary>
+        /// Set the timestamp of the start of the dataset,from which other time stamps can be found using timebase_s
+        /// </summary>
+        /// <param name="t0"></param>
+        public void SetT0(DateTime t0)
+        {
+            this.t0 = t0;
+        }
+        /// <summary>
         /// Exports the time-series data set to a csv-file
         /// <para>
         /// Times are encoded as "yyyy-MM-dd HH:mm:ss" and be loaded with CSV.LoadFromFile() afterwards
@@ -285,7 +352,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="CSVseparator">the separator to use in the csv-file(despite the name, the most common is perhaps ";" which Excel will recognize automatically)</param>
         /// <param name="nSignificantDigits">the number of singificant digits to include for each variable</param>
         /// <returns></returns>
-        public bool ToCSV(string fileName, DateTime t0, string CSVseparator = ";", int nSignificantDigits = 5)
+        public bool ToCSV(string fileName, string CSVseparator = ";", int nSignificantDigits = 5)
         {
             StringBuilder sb = new StringBuilder();
             var signalNames = GetSignalNames();
@@ -293,7 +360,6 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.Append("Time" + CSVseparator);
             sb.Append(string.Join(CSVseparator, signalNames));
             sb.Append("\r\n");
-
 
             DateTime curDate = t0;
             for (int curTimeIdx = 0; curTimeIdx<GetLength(); curTimeIdx++)
