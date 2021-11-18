@@ -422,10 +422,8 @@ namespace TimeSeriesAnalysis._Examples
             var ret = MinSelect();
         }
 
-        public TimeSeriesDataSet MinSelect()
+        public TimeSeriesDataSet MinSelect(int N = 600)
         {
-            int N = 600;
-
             #region MinSelect
 
             var processParameters = new UnitParameters

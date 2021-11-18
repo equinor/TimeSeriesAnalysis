@@ -35,7 +35,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Constructor: Reads data form  a csv-file (such as that created by ToCSV()) 
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">csv file name</param>
+        /// <param name="separator">default separator</param>
         /// <param name="dateTimeFormat">format string of the time-series vector to be read</param>
         /// <returns></returns>
         public TimeSeriesDataSet(string fileName, char separator=';',string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
