@@ -14,3 +14,4 @@ Output-Build.txt
 www/plotly/data/
 zips/
 venv/
+minSelect_large.csv

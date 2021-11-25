@@ -159,6 +159,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\Identification\UnitIdentifier.cs" />
     <Compile Include="Dynamic\SimulatableModels\UnitParameters.cs" />
     <Compile Include="Tests\CsvTest.cs" />
+    <Compile Include="Tests\TimeSeriesDataSetTest.cs" />
     <Compile Include="TimeSeriesAnalysis\Filters\BandPass.cs" />
     <Compile Include="TimeSeriesAnalysis\Filters\HighPass.cs" />
     <Compile Include="Dynamic\Interfaces\ISimulateableModel.cs" />
@@ -185,7 +186,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\Identification\ProcessTimeDelayIdentifier.cs" />
     <Compile Include="Dynamic\SysIdBadDataFinder.cs" />
     <Compile Include="Dynamic\TimeDelay\TimeDelay.cs" />
-    <Compile Include="TimeSeriesAnalysis\TimeSeriesDataSet.cs" />
+    <Compile Include="Dynamic\PlantSimulator\TimeSeriesDataSet.cs" />
     <Compile Include="Examples\GettingStarted.cs" />
     <Compile Include="Examples\ProcessControl.cs" />
     <Compile Include="GlobalSuppressions.cs" />
