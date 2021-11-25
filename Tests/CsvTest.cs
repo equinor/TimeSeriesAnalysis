@@ -23,9 +23,11 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(new string[,] { { "var1", "1", "2" }, { "var2", "3", "4" }, { "var3","5", "6"} }, stringData);
             Assert.AreEqual(new double[,] { { Double.NaN, 1, 2 }, { Double.NaN, 3, 4 }, { Double.NaN, 5, 6 } }, doubleData);
 
-
-
-
         }
+        [TestCase, Explicit]
+        public void CSV2()
+        {
+        }
+
     }
 }

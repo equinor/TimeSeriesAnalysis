@@ -114,7 +114,7 @@ namespace TimeSeriesAnalysis.Utility
                         doubleData[k, l] = linesDouble[k][l];
                     }
                 for (int k = 0; k < linesStr.Count; k++)
-                    for (int l = 0; l < Math.Min(linesStr.Count, nColumns); l++)
+                    for (int l = 0; l < Math.Min(linesStr[k].Count(), nColumns); l++)
                     {
                         stringData[k, l] = linesStr[k][l];
                     }
