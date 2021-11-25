@@ -128,7 +128,7 @@ function makePlotlyPlotFromCSV(hash)
     // add the newly created element and its content into the DOM 
     var currentDiv = document.getElementById("ButtonDiv"); 
     document.body.insertBefore(newDiv, currentDiv); 
-    button.addEventListener ("click", function() {        window.location='javascript:history.back()';    });
+    button.addEventListener ("click", function() { window.location='javascript:history.back()';    });
 
    // Plotly.d3.csv("data//"+name+".csv", function(data){ makePlotlyPlotFromCSV_inner(data) } )
 }	

@@ -60,7 +60,7 @@ namespace TimeSeriesAnalysis.Utility
         ///</summary>
         /// <param name="filename"> path of file to be loaded</param>
         /// <param name="separator"> separator character used to separate data in file</param>
-        /// <param name="doubleData">(output) the returned 2D array where each column is the data for one variable</param>
+        /// <param name="doubleData">(output) the returned 2D array where each column is the data for one variable(NaNs if not able to parse as number)</param>
         /// <param name="variableNames">(output) an array of the variable names in <c>doubleData</c></param>
         /// <param name="stringData">(output)the raw data of the entire csv-file in a 2D array, only needed if parsing of other two variables has failed, and useful for retireving timestamps </param>
         /// <returns></returns>
@@ -68,7 +68,7 @@ namespace TimeSeriesAnalysis.Utility
         {
             using (System.IO.StreamReader sr = new System.IO.StreamReader(filename))
             {
-
+                bool isOk = true;
                 doubleData = null;
                 stringData = null;
                 variableNames = null;
@@ -82,22 +82,31 @@ namespace TimeSeriesAnalysis.Utility
                     double[] LineDouble = new double[variableNames.Length];
                     string currentLine = sr.ReadLine();
                     string[] LineStr = currentLine.Split(separator);
-                    for (int k = 0; k < LineStr.Length; k++)
+                    for (int k = 0; k < Math.Min(variableNames.Length,LineStr.Length); k++)
                     {
                         if (LineStr[k].Length > 0)
-                            RobustParseDouble(LineStr[k], out LineDouble[k]);
-                        //   LineD[k] = double.Parse(Line[k], System.Globalization.CultureInfo.InvariantCulture);
+                        {
+                            bool ableToParse = RobustParseDouble(LineStr[k], out LineDouble[k]);
+                            if (!ableToParse)
+                                LineDouble[k] = Double.NaN;
+                        }
+                        else
+                        {
+                            LineDouble[k] = Double.NaN;
+                        }
                     }
                     linesDouble.Add(LineDouble);
                     linesStr.Add(LineStr);
                 }
+                int nColumns = linesStr[0].Count();
+
                 if (linesDouble.Count() > 0)
                 {
-                    doubleData = new double[linesDouble.Count, linesDouble[0].Count()];
+                    doubleData = new double[linesDouble.Count, nColumns];
                 }
                 if (linesStr.Count() > 0)
                 {
-                    stringData = new string[linesDouble.Count, linesStr[0].Count()];
+                    stringData = new string[linesDouble.Count, nColumns];
                 }
                 for (int k = 0; k < linesDouble.Count; k++)
                     for (int l = 0; l < linesDouble[k].Count(); l++)
@@ -105,7 +114,7 @@ namespace TimeSeriesAnalysis.Utility
                         doubleData[k, l] = linesDouble[k][l];
                     }
                 for (int k = 0; k < linesStr.Count; k++)
-                    for (int l = 0; l < linesStr[k].Count(); l++)
+                    for (int l = 0; l < Math.Min(linesStr.Count, nColumns); l++)
                     {
                         stringData[k, l] = linesStr[k][l];
                     }

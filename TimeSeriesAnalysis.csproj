@@ -30,7 +30,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.53</Version>
+    <Version>1.0.54</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 TimeSeriesAnalysis is a class library that allows you to work efficiently with time-series 
@@ -158,6 +158,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Dynamic\SimulatableModels\UnitModel.cs" />
     <Compile Include="Dynamic\Identification\UnitIdentifier.cs" />
     <Compile Include="Dynamic\SimulatableModels\UnitParameters.cs" />
+    <Compile Include="Tests\CsvTest.cs" />
     <Compile Include="TimeSeriesAnalysis\Filters\BandPass.cs" />
     <Compile Include="TimeSeriesAnalysis\Filters\HighPass.cs" />
     <Compile Include="Dynamic\Interfaces\ISimulateableModel.cs" />
