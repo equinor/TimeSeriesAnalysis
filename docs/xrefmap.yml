@@ -56,6 +56,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Convert2DtoJagged
   nameWithType: Array2D<T>.Convert2DtoJagged
   nameWithType.vb: Array2D(Of T).Convert2DtoJagged
+- uid: TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D(`0[][])
+  name: ConvertJaggedTo2D(T[][])
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_ConvertJaggedTo2D__0_____
+  commentId: M:TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D(`0[][])
+  name.vb: ConvertJaggedTo2D(T()())
+  fullName: TimeSeriesAnalysis.Array2D<T>.ConvertJaggedTo2D(T[][])
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).ConvertJaggedTo2D(T()())
+  nameWithType: Array2D<T>.ConvertJaggedTo2D(T[][])
+  nameWithType.vb: Array2D(Of T).ConvertJaggedTo2D(T()())
+- uid: TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D*
+  name: ConvertJaggedTo2D
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_ConvertJaggedTo2D_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.ConvertJaggedTo2D
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).ConvertJaggedTo2D
+  nameWithType: Array2D<T>.ConvertJaggedTo2D
+  nameWithType.vb: Array2D(Of T).ConvertJaggedTo2D
 - uid: TimeSeriesAnalysis.Array2D`1.Create(`0[])
   name: Create(T[])
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Create__0___
@@ -83,6 +101,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Create
   nameWithType: Array2D<T>.Create
   nameWithType.vb: Array2D(Of T).Create
+- uid: TimeSeriesAnalysis.Array2D`1.Downsample(`0[0:,0:],System.Int32)
+  name: Downsample(T[,], Int32)
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Downsample__0_0__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Array2D`1.Downsample(`0[0:,0:],System.Int32)
+  name.vb: Downsample(T(,), Int32)
+  fullName: TimeSeriesAnalysis.Array2D<T>.Downsample(T[,], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Downsample(T(,), System.Int32)
+  nameWithType: Array2D<T>.Downsample(T[,], Int32)
+  nameWithType.vb: Array2D(Of T).Downsample(T(,), Int32)
+- uid: TimeSeriesAnalysis.Array2D`1.Downsample*
+  name: Downsample
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Downsample_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.Downsample
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.Downsample
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Downsample
+  nameWithType: Array2D<T>.Downsample
+  nameWithType.vb: Array2D(Of T).Downsample
 - uid: TimeSeriesAnalysis.Array2D`1.GetColumn(`0[][],System.Int32)
   name: GetColumn(T[][], Int32)
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_GetColumn__0_____System_Int32_
@@ -3043,6 +3079,12 @@ references:
   commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(TimeSeriesAnalysis.Dynamic.UnitDataSet)
   fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.UnitDataSet(TimeSeriesAnalysis.Dynamic.UnitDataSet)
   nameWithType: UnitDataSet.UnitDataSet(UnitDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Int32)
+  name: UnitDataSet(UnitDataSet, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.UnitDataSet(TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Int32)
+  nameWithType: UnitDataSet.UnitDataSet(UnitDataSet, Int32)
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor*
   name: UnitDataSet
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_
@@ -5786,6 +5828,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec(Of T).Concat
   nameWithType: Vec<T>.Concat
   nameWithType.vb: Vec(Of T).Concat
+- uid: TimeSeriesAnalysis.Vec`1.Downsample(`0[],System.Int32)
+  name: Downsample(T[], Int32)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Downsample__0___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec`1.Downsample(`0[],System.Int32)
+  name.vb: Downsample(T(), Int32)
+  fullName: TimeSeriesAnalysis.Vec<T>.Downsample(T[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Downsample(T(), System.Int32)
+  nameWithType: Vec<T>.Downsample(T[], Int32)
+  nameWithType.vb: Vec(Of T).Downsample(T(), Int32)
+- uid: TimeSeriesAnalysis.Vec`1.Downsample*
+  name: Downsample
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Downsample_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.Downsample
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.Downsample
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).Downsample
+  nameWithType: Vec<T>.Downsample
+  nameWithType.vb: Vec(Of T).Downsample
 - uid: TimeSeriesAnalysis.Vec`1.Fill(`0,System.Int32)
   name: Fill(T, Int32)
   href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Fill__0_System_Int32_

@@ -38,7 +38,28 @@ namespace TimeSeriesAnalysis
             return z;
         }
 
-        
+
+        /// <summary>
+        /// Downsample a vector by a given factor(selet only every Nth value)
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="factor"></param>
+        /// <returns></returns>
+        static public T[] Downsample(T[] vec, int factor)
+        {
+            if (vec == null)
+                return null;
+            if (factor <= 1)
+                return vec;
+            var ret = new List<T>();
+            for (int i = 0; i < vec.Length; i += factor)
+            {
+                ret.Add(vec[i]);
+            }
+            return ret.ToArray();
+        }
+
+
         ///<summary>
         /// creates an array of size N where every element has value value
         ///</summary>

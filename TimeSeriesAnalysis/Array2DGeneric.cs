@@ -14,6 +14,49 @@ namespace TimeSeriesAnalysis
     ///</summary>
     public class Array2D<T>
     {
+        ///<summary>
+        /// converts a 2d array into a jagged array
+        ///</summary>
+        static public T[][] Convert2DtoJagged(T[,] matrix)
+        {
+            T[][] ret = new T[matrix.GetLength(0)][];
+
+            for (int curRow = 0; curRow < matrix.GetLength(0); curRow++)
+            {
+                ret[curRow] = GetRow(matrix, curRow);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// COnverta jaged array to a 2d-array
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        static public T[,] ConvertJaggedTo2D(T[][] matrix)
+        {
+            try
+            {
+                int FirstDim = matrix.Length;
+                int SecondDim = matrix.GroupBy(row => row.Length).Single().Key; // throws InvalidOperationException if source is not rectangular
+
+                var result = new T[FirstDim, SecondDim];
+                for (int i = 0; i < FirstDim; ++i)
+                    for (int j = 0; j < SecondDim; ++j)
+                        result[i, j] = matrix[i][j];
+
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+
+
+
         /// <summary>
         /// Initializes a 2D array from a list of arrays representing each column in the array
         /// </summary>
@@ -42,6 +85,8 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
+
+
         /// <summary>
         /// Create 2d-array with only a single column
         /// </summary>
@@ -52,6 +97,29 @@ namespace TimeSeriesAnalysis
             return Create(new List<T[]> { columnArray });
         }
 
+        /// <summary>
+        /// Downsample a matrix where times are rows and variables are columns
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="downsampleFactor"></param>
+        /// <returns></returns>
+        static public T[,] Downsample(T[,] matrix, int downsampleFactor)
+        {
+            if (matrix == null)
+                return null;
+            int nCols = matrix.GetLength(1);
+
+            T[][] ret = new T[nCols][];
+
+            for (int colIdx =0; colIdx< nCols; colIdx++)
+            {
+                T[] curCol = Array2D<T>.GetColumn(matrix, colIdx);
+
+                ret[colIdx] = Vec<T>.Downsample(curCol, downsampleFactor);
+            }
+            var jaggedRet = ConvertJaggedTo2D(ret);
+            return Array2D<T>.Transpose(jaggedRet);
+        }
 
         ///<summary>
         /// returns the column of the matrix with the given index
@@ -132,38 +200,6 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
-        ///<summary>
-        /// converts a 2d array into a jagged array
-        ///</summary>
-
-        static public T[][] Convert2DtoJagged(T[,] matrix)
-        {
-            T[][] ret = new T[matrix.GetLength(0)][];
-
-            for (int curRow = 0; curRow < matrix.GetLength(0); curRow++)
-            {
-                ret[curRow] = GetRow(matrix, curRow);
-            }
-            return ret;
-        }
-
-        ///<summary>
-        /// transposes a 2d-array (rows are turned into columns and vice versa)
-        ///</summary>
-        static public T[,] Transpose(T[,] matrix)
-        {
-            T[,] ret = new T[matrix.GetLength(1), matrix.GetLength(0)];
-
-            for (int curRow = 0; curRow < matrix.GetLength(0); curRow++)
-            {
-                for (int curCol = 0; curCol < matrix.GetLength(1); curCol++)
-                {
-                    ret[curCol, curRow] = matrix[curRow, curCol];
-                }
-            }
-            return ret;
-        }
-
 
         ///<summary>
         /// returns the row of the matrix with the given index as an vector
@@ -184,6 +220,25 @@ namespace TimeSeriesAnalysis
             else
                 return null;
         }
+
+
+        ///<summary>
+        /// transposes a 2d-array (rows are turned into columns and vice versa)
+        ///</summary>
+        static public T[,] Transpose(T[,] matrix)
+        {
+            T[,] ret = new T[matrix.GetLength(1), matrix.GetLength(0)];
+
+            for (int curRow = 0; curRow < matrix.GetLength(0); curRow++)
+            {
+                for (int curCol = 0; curCol < matrix.GetLength(1); curCol++)
+                {
+                    ret[curCol, curRow] = matrix[curRow, curCol];
+                }
+            }
+            return ret;
+        }
+
 
 
     }

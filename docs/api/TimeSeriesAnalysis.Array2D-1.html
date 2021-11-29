@@ -184,6 +184,49 @@ see Matrix.cs</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Array2D_1_ConvertJaggedTo2D_" data-uid="TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_ConvertJaggedTo2D__0_____" data-uid="TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D(`0[][])">ConvertJaggedTo2D(T[][])</h4>
+  <div class="markdown level1 summary"><p>COnverta jaged array to a 2d-array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[, ] ConvertJaggedTo2D(T[][] matrix)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[][]</td>
+        <td><span class="parametername">matrix</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[,]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Array2D_1_Create_" data-uid="TimeSeriesAnalysis.Array2D`1.Create*"></a>
   <h4 id="TimeSeriesAnalysis_Array2D_1_Create__0___" data-uid="TimeSeriesAnalysis.Array2D`1.Create(`0[])">Create(T[])</h4>
   <div class="markdown level1 summary"><p>Create 2d-array with only a single column</p>
@@ -266,6 +309,54 @@ see Matrix.cs</p>
         <td>T[,]</td>
         <td><p>null if list columnList dimensions do not match</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Array2D_1_Downsample_" data-uid="TimeSeriesAnalysis.Array2D`1.Downsample*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_Downsample__0_0__0___System_Int32_" data-uid="TimeSeriesAnalysis.Array2D`1.Downsample(`0[0:,0:],System.Int32)">Downsample(T[,], Int32)</h4>
+  <div class="markdown level1 summary"><p>Downsample a matrix where times are rows and variables are columns</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[, ] Downsample(T[, ] matrix, int downsampleFactor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[,]</td>
+        <td><span class="parametername">matrix</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">downsampleFactor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[,]</td>
+        <td></td>
       </tr>
     </tbody>
   </table>

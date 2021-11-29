@@ -56,6 +56,18 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(cov1, cov2);
         }
 
+        [Test]
+        public void Downsample()
+        {
+            double[] vec1 = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+            double[] expResult = new double[] { 1, 5, 9, 13 };
+            var result =  Vec<double>.Downsample(vec1,4);
+            Assert.AreEqual(expResult, result);
+        }
+
+
+
+
 
         [TestCase(new int[] { 0, 1 }, 3, new int[] { 2 })]
         [TestCase(new int[] { 0, 2 }, 3, new int[] { 1 })]

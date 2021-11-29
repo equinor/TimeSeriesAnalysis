@@ -61,7 +61,19 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(new List<DateTime> { new DateTime(2000, 1, 2) }, result);
         }
 
-        
+        [Test]
+        public void Downsample()
+        {
+            double[,] matrix = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            double[,] expResult = new double[,] { { 1, 2 }, { 5, 6 } };
+
+            double[,] result = Array2D<double>.Downsample(matrix, 2);
+
+            Assert.AreEqual(expResult, result);
+
+        }
+
+
 
 
 

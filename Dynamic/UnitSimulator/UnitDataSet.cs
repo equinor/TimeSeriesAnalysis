@@ -109,6 +109,30 @@ namespace TimeSeriesAnalysis.Dynamic
             this.Times = otherDataSet.Times;
         }
 
+        /// <summary>
+        /// Create a downsampled copy of an existing data set
+        /// </summary>
+        /// <param name="originalDataSet"></param>
+        /// <param name="downsampleFactor">factor by which to downsample the original dataset</param>
+        public UnitDataSet(UnitDataSet originalDataSet, int downsampleFactor)
+        {
+            this.ProcessName = originalDataSet.ProcessName + "downsampledFactor"+ downsampleFactor;
+            this.TimeBase_s = originalDataSet.TimeBase_s* downsampleFactor;
+
+            this.Y_meas = Vec<double>.Downsample(originalDataSet.Y_meas, downsampleFactor);
+            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor); ;
+            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor); ;
+            this.U = Array2D<double>.Downsample(originalDataSet.U, downsampleFactor); 
+            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor); ;
+            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor); ;
+
+            this.NumDataPoints = Y_meas.Length;// originalDataSet.NumDataPoints;
+
+        }
+
+
+
+
 
         /// <summary>
         /// Constructor for data set with inputs <c>U</c>, i.e. where a relationship 

@@ -265,7 +265,6 @@ namespace TimeSeriesAnalysis
 
 
 
-
         ///<summary>
         /// return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
         /// Also capable of finding NaN values

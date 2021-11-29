@@ -40,12 +40,14 @@ namespace TimeSeriesAnalysis.Dynamic
         const double rSquaredMinImprovement = 0.001;
 
 
+
         /// <summary>
         /// Default Constructor
         /// </summary>
         public UnitIdentifier()
         {
         }
+
         /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given
         /// </summary>

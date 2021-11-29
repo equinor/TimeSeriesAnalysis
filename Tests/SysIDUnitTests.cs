@@ -238,6 +238,58 @@ namespace TimeSeriesAnalysis.Test.SysID
             DefaultAsserts(model, designParameters);
         }
 
+
+
+        /// <summary>
+        /// Identification of time-constants seems to get worse as the number of samples increases,
+        /// The noise in the "diffs" drown out the information if there is so-called over-sampling.
+        /// Thus if you are trying to identifiy a time-constant of 15 days, yo may get a better result if you 
+        /// sample once a day, rather than once a minute. To get around this, there is a 
+        /// downsampling feature in the dataset-class.
+        /// </summary>
+        /// <param name="N">number of samples in the dataset,</param>
+        /// <param name="downsampleFactor">Only use every N-th sample for identification</param>
+   /*     [TestCase(100,0),Explicit]//requires no downsampling
+        [TestCase(1000,10)]// downsample by factor 10
+        public void DownsampleOversampledData(int N, int downsampleFactor)
+        {
+            double timeConstant_s = 20;
+            int timeDelay_s = 0 ;
+
+            double bias = 2;
+            double noiseAmplitude = 0.01;
+
+            double[] u1 = TimeSeriesCreator.Step((int)Math.Ceiling(N * 0.4), N, 0, 1) ;
+            double[,] U = Array2D<double>.Create(new List<double[]> { u1 });
+
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 1 },
+                U0 = Vec<double>.Fill(1, 1),
+                Bias = bias
+            };
+
+            var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
+            UnitDataSet dataSetDownsampled;
+            if (downsampleFactor > 1)
+                dataSetDownsampled = new UnitDataSet(dataSet, downsampleFactor);
+            else
+                dataSetDownsampled = new UnitDataSet(dataSet);
+            var modelId = new UnitIdentifier();
+            var model  = modelId.Identify(ref dataSetDownsampled, designParameters.U0, designParameters.UNorm);
+
+            string caseId = TestContext.CurrentContext.Test.Name;
+            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim,
+                model.FittedDataSet.Y_meas, u1 },
+                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
+                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
+
+            DefaultAsserts(model, designParameters);
+        }*/
+
+
         // TODO: testing the uncertainty estimates(after adding them back)
         [TestCase( 0, 0, 0,  Category = "Static")]
         [TestCase(21, 0, 0,  Category = "Static")]
