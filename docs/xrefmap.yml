@@ -3337,6 +3337,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear
   nameWithType: UnitIdentifier.IdentifyLinear
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
+  name: IdentifyLinearAndStatic(ref UnitDataSet, Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
+  name.vb: IdentifyLinearAndStatic(ByRef UnitDataSet, Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double(), System.Double())
+  nameWithType: UnitIdentifier.IdentifyLinearAndStatic(ref UnitDataSet, Double[], Double[])
+  nameWithType.vb: UnitIdentifier.IdentifyLinearAndStatic(ByRef UnitDataSet, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic*
+  name: IdentifyLinearAndStatic
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic
+  nameWithType: UnitIdentifier.IdentifyLinearAndStatic
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
   name: IdentifyStatic(ref UnitDataSet, Double[], Double[])
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___

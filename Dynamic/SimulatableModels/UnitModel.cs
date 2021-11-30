@@ -88,7 +88,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (inputIDs == null)
             {
-                return modelParameters.LinearGains.Length;
+                if (modelParameters.LinearGains != null)
+                    return modelParameters.LinearGains.Length;
+                else
+                    return 0;
             }
             else
             {
@@ -378,14 +381,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="modelParameters">model paramters object</param>
         private void InitSim(double timeBase_s, UnitParameters modelParameters)
         {
-            this.modelParameters = modelParameters;
-            this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
-            this.timeBase_s = timeBase_s;
-            this.lowPass = new LowPass(timeBase_s);
-            this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
             this.isFirstIteration = true;
+            this.modelParameters = modelParameters;
+            this.timeBase_s = timeBase_s;
 
-            this.SetInputIDs(new string[GetLengthOfInputVector()]);
+            if (modelParameters.WasAbleToIdentify)
+            {
+                this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
+                this.lowPass = new LowPass(timeBase_s);
+                this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
+                this.SetInputIDs(new string[GetLengthOfInputVector()]);
+            }
         }
 
         /// <summary>
