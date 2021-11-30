@@ -3144,6 +3144,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.GetTimeSpan
   nameWithType: UnitDataSet.GetTimeSpan
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.IndicesToIgnore
+  name: IndicesToIgnore
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_IndicesToIgnore
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitDataSet.IndicesToIgnore
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.IndicesToIgnore
+  nameWithType: UnitDataSet.IndicesToIgnore
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.NumDataPoints
   name: NumDataPoints
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_NumDataPoints
@@ -5361,6 +5367,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), ByRef System.Int32)
   nameWithType: Vec.Max(Double[], out Int32)
   nameWithType.vb: Vec.Max(Double(), ByRef Int32)
+- uid: TimeSeriesAnalysis.Vec.Max(System.Int32[],System.Int32)
+  name: Max(Int32[], Int32)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Int32___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Int32[],System.Int32)
+  name.vb: Max(Int32(), Int32)
+  fullName: TimeSeriesAnalysis.Vec.Max(System.Int32[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Int32(), System.Int32)
+  nameWithType: Vec.Max(Int32[], Int32)
+  nameWithType.vb: Vec.Max(Int32(), Int32)
 - uid: TimeSeriesAnalysis.Vec.Max*
   name: Max
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_

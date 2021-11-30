@@ -568,7 +568,28 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
-
+        ///<summary>
+        ///  Returns element-wise maximum of array element and value
+        ///</summary>
+        public int[] Max(int[] array, int value)
+        {
+            int[] retArray = new int[array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                int thisNum = array[i];
+          //      if (IsNaN(thisNum))
+          //          continue;
+                if (thisNum > value)
+                {
+                    retArray[i] = thisNum;
+                }
+                else
+                {
+                    retArray[i] = value;
+                }
+            }
+            return retArray;
+        }
 
         ///<summary>
         ///  Returns minimum value of array and index of maximum value 
@@ -796,7 +817,7 @@ namespace TimeSeriesAnalysis
                     // the weight do not always appear to work, sometimes the accord
                     // solver just returns "null" and hard to know why, and this is a
                     // workaround
-                    if (curInd < Y.Length)
+                    if (curInd < Y.Length && curInd>=0)
                     {
                         Y[curInd] = 0;
                         for (int curX = 0; curX < X_T[curInd].Count(); curX++)

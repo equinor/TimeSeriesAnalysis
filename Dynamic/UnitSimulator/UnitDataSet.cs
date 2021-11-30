@@ -55,6 +55,12 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[,] U { get; set; }
 
         /// <summary>
+        /// Indices that are ignored in Y during fitting.
+        /// </summary>
+        public List<int> IndicesToIgnore=null;
+
+
+        /// <summary>
         /// The number of data points 
         /// </summary>
         public int NumDataPoints { get; }
