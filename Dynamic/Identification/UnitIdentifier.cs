@@ -82,26 +82,28 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
+        /// <param name="doEstimateTimeDelay">if set to false, estimation of time delays are disabled</param>
         /// <param name="u0">Optionally sets the local working point for the inputs
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel IdentifyLinear(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)
+        public UnitModel IdentifyLinear(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)
         {
-            return Identify_Internal(ref dataSet, u0, uNorm, true,false);
+            return Identify_Internal(ref dataSet, u0, uNorm, true,false, doEstimateTimeDelay);
         }
         /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given, but disables curvatures and time-constants
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
+        /// <param name="doEstimateTimeDelay">if set to false, modeling does not identify time-delays</param>
         /// <param name="u0">Optionally sets the local working point for the inputs
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel IdentifyLinearAndStatic(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)
+        public UnitModel IdentifyLinearAndStatic(ref UnitDataSet dataSet, bool doEstimateTimeDelay=true,  double[] u0 = null, double[] uNorm = null)
         {
-            return Identify_Internal(ref dataSet, u0, uNorm, false, false);
+            return Identify_Internal(ref dataSet, u0, uNorm, false, false, doEstimateTimeDelay);
         }
 
         /// <summary>
@@ -114,13 +116,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
         private UnitModel Identify_Internal(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm= null,
-            bool doUseDynamicModel=true, bool doEstimateCurvature = true)
+            bool doUseDynamicModel=true, bool doEstimateCurvature = true, bool doEstimateTimeDelay = true)
         {
             var vec = new Vec(dataSet.BadDataID);
 
             bool doNonzeroU0 = true;// should be: true
            // bool doUseDynamicModel = true;// should be:true
-            bool doEstimateTimeDelay = true; // should be:true
+          //  bool doEstimateTimeDelay = true; // should be:true
         //    bool doEstimateCurvature = true;// experimental
             double FilterTc_s = 0;// experimental: by default set to zero.
             bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
@@ -167,7 +169,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 EstimateProcessForAGivenTimeDelay
                 (timeDelayIdx, dataSet, false, allCurvesDisabled,
                 FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
-
+           // processTimeDelayIdentifyObj.AddRun(modelParams_StaticAndNoCurvature);
 
             /////////////////////////////////////////////////////////////////
             // BEGIN WHILE loop to model process for different time delays               
@@ -184,7 +186,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesDisabled,
                     FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
 
-                if (doEstimateCurvature)
+                if (doEstimateCurvature && modelParams_noCurvature.WasAbleToIdentify)
                 {
                    UnitParameters modelParams_allCurvature =
                         EstimateProcessForAGivenTimeDelay
@@ -252,6 +254,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 out List<ProcessTimeDelayIdentWarnings> timeDelayWarnings);
             UnitParameters modelParameters = //modelParams_StaticAndNoCurvature;//TODO:temporary 
                 (UnitParameters)processTimeDelayIdentifyObj.GetRun(bestTimeDelayIdx);
+            // use static and no curvature model as fallback if more complex models failed
+            if (!modelParameters.WasAbleToIdentify && modelParams_StaticAndNoCurvature.WasAbleToIdentify)
+            {
+                modelParameters = modelParams_StaticAndNoCurvature;
+                timeDelayWarnings.Add(ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel);
+            }
+
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
             // END While loop 
             /////////////////////////////////////////////////////////////////
@@ -262,7 +271,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 var simulator = new UnitSimulator(model);
                 simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
                 model.FittedDataSet = dataSet;
-        
             }
             return model;
 
@@ -689,7 +697,19 @@ namespace TimeSeriesAnalysis.Dynamic
             var simulator = new UnitSimulator((ISimulatableModel)model);
             var y_sim = simulator.Simulate(ref internalData);
 
-            double[] diff = (new Vec(nanValue)).Subtract(internalData.Y_meas, y_sim);
+            var yMeas_exceptIgnoredValues = internalData.Y_meas;
+            var ySim_exceptIgnoredValues = y_sim;
+            if (dataSet.IndicesToIgnore != null)
+            {
+                for (int ind = 0; ind < dataSet.IndicesToIgnore.Count(); ind++)
+                {
+                    int indToIgnore = dataSet.IndicesToIgnore.ElementAt(ind);
+                    yMeas_exceptIgnoredValues[indToIgnore] = Double.NaN;//nan values are ignored by Vec.Means
+                    ySim_exceptIgnoredValues[indToIgnore] = Double.NaN;//nan values are ignored by Vec.Means
+                }
+            }
+
+            double[] diff = (new Vec(nanValue)).Subtract(yMeas_exceptIgnoredValues, ySim_exceptIgnoredValues);
             double? bias = (new Vec(nanValue)).Mean(diff) ;
             return bias;
         }

@@ -39,8 +39,11 @@
         /// portion of the dataset is used(some data at the very start needs to be "cut off")
         /// </summary>
         SomeModelRunsFailedToFindSolution = 5,
+        /// <summary>
+        /// Warning that estimation had to fall back on the static/linear model because other model runs failed.
+        /// </summary>
 
-
+        FallbackToLinearStaticModel = 6,
 
 
 

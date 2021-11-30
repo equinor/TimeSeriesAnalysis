@@ -2552,6 +2552,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
   fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
   nameWithType: ProcessTimeDelayIdentWarnings
+- uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel
+  name: FallbackToLinearStaticModel
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_FallbackToLinearStaticModel
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel
+  nameWithType: ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel
 - uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace
   name: NonConvexObjectiveFunctionSolutionSpace
   href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessTimeDelayIdentWarnings_NonConvexObjectiveFunctionSolutionSpace
@@ -3321,15 +3327,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify
   nameWithType: UnitIdentifier.Identify
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name: IdentifyLinear(ref UnitDataSet, Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name.vb: IdentifyLinear(ByRef UnitDataSet, Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double(), System.Double())
-  nameWithType: UnitIdentifier.IdentifyLinear(ref UnitDataSet, Double[], Double[])
-  nameWithType.vb: UnitIdentifier.IdentifyLinear(ByRef UnitDataSet, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
+  name: IdentifyLinear(ref UnitDataSet, Boolean, Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Boolean_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
+  name.vb: IdentifyLinear(ByRef UnitDataSet, Boolean, Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double(), System.Double())
+  nameWithType: UnitIdentifier.IdentifyLinear(ref UnitDataSet, Boolean, Double[], Double[])
+  nameWithType.vb: UnitIdentifier.IdentifyLinear(ByRef UnitDataSet, Boolean, Double(), Double())
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear*
   name: IdentifyLinear
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_
@@ -3337,15 +3343,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear
   nameWithType: UnitIdentifier.IdentifyLinear
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name: IdentifyLinearAndStatic(ref UnitDataSet, Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name.vb: IdentifyLinearAndStatic(ByRef UnitDataSet, Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double(), System.Double())
-  nameWithType: UnitIdentifier.IdentifyLinearAndStatic(ref UnitDataSet, Double[], Double[])
-  nameWithType.vb: UnitIdentifier.IdentifyLinearAndStatic(ByRef UnitDataSet, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
+  name: IdentifyLinearAndStatic(ref UnitDataSet, Boolean, Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Boolean_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
+  name.vb: IdentifyLinearAndStatic(ByRef UnitDataSet, Boolean, Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double(), System.Double())
+  nameWithType: UnitIdentifier.IdentifyLinearAndStatic(ref UnitDataSet, Boolean, Double[], Double[])
+  nameWithType.vb: UnitIdentifier.IdentifyLinearAndStatic(ByRef UnitDataSet, Boolean, Double(), Double())
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic*
   name: IdentifyLinearAndStatic
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_

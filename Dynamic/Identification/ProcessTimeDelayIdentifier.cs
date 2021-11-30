@@ -268,19 +268,22 @@ namespace TimeSeriesAnalysis.Dynamic
                 // the solution space should be "concave", so there should not be several local minimia
                 // as you compare R2list for different time delays-that has happended but indicates something
                 // is wrong. 
-                int R2distanceToRunnerUp = Math.Abs(sortedIndices[1] - sortedIndices[0]);
-                if (R2distanceToRunnerUp > 1)
+                if (sortedIndices.Count() > 1)
                 {
-                    warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace);
-                }
-                if (objR2List.Contains(Double.NaN))
-                {
-                    warnings.Add(ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution);
-                }
-                double R2valueDiffToRunnerUp = objR2List[sortedIndices[0]] - objR2List[sortedIndices[1]];
-                if (R2valueDiffToRunnerUp < 0.1)
-                {
-                    warnings.Add(ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima);
+                    int R2distanceToRunnerUp = Math.Abs(sortedIndices[1] - sortedIndices[0]);
+                    if (R2distanceToRunnerUp > 1)
+                    {
+                        warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace);
+                    }
+                    if (objR2List.Contains(Double.NaN))
+                    {
+                        warnings.Add(ProcessTimeDelayIdentWarnings.SomeModelRunsFailedToFindSolution);
+                    }
+                    double R2valueDiffToRunnerUp = objR2List[sortedIndices[0]] - objR2List[sortedIndices[1]];
+                    if (R2valueDiffToRunnerUp < 0.1)
+                    {
+                        warnings.Add(ProcessTimeDelayIdentWarnings.NoUniqueRsquaredMinima);
+                    }
                 }
             }
             //
@@ -293,16 +296,19 @@ namespace TimeSeriesAnalysis.Dynamic
                 // the solution space should be "concave", so there should not be several local minimia
                 // as you compare R2list for different time delays-that has happended but indicates something
                 // is wrong. 
-                int objFunDistanceToRunnerUp = Math.Abs(objFunSortedIndices[1] - objFunSortedIndices[0]);
-                if (objFunDistanceToRunnerUp > 1)
+                if (objFunSortedIndices.Count() > 1)
                 {
-                    warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace);
-                }
-                double ObjFunvalueDiffToRunnerUp = objObjFunList[objFunSortedIndices[0]] 
-                    - objObjFunList[objFunSortedIndices[1]];
-                if (ObjFunvalueDiffToRunnerUp <= 0.0001)
-                {
-                    warnings.Add(ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima);
+                    int objFunDistanceToRunnerUp = Math.Abs(objFunSortedIndices[1] - objFunSortedIndices[0]);
+                    if (objFunDistanceToRunnerUp > 1)
+                    {
+                        warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace);
+                    }
+                    double ObjFunvalueDiffToRunnerUp = objObjFunList[objFunSortedIndices[0]]
+                        - objObjFunList[objFunSortedIndices[1]];
+                    if (ObjFunvalueDiffToRunnerUp <= 0.0001)
+                    {
+                        warnings.Add(ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima);
+                    }
                 }
             }
 
