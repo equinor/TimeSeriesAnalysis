@@ -30,7 +30,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
-    <Version>1.0.59</Version>
+    <Version>1.0.60</Version>
     <Authors>Steinar Elgsæter</Authors>
     <Description>
 TimeSeriesAnalysis is a class library that allows you to work efficiently with time-series 
