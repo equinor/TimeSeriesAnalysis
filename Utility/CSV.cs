@@ -14,6 +14,19 @@ namespace TimeSeriesAnalysis.Utility
 
     public class CSV
     {
+
+
+        /// <summary>
+        /// Return just string data from a CSV(useful if data contains no numerical data)
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="stringData"></param>
+        /// <returns></returns>
+        public static bool LoadStringsFromCSV(string filename, out string[,] stringData)
+        {
+            return LoadDataFromCSV(filename, out double[,] _, out string[] _, out stringData);
+        }
+
         ///<summary>
         /// Load time-series data from a CSV-file into variables for further processing (using the default ";" separator)
         ///</summary>
@@ -64,7 +77,8 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="variableNames">(output) an array of the variable names in <c>doubleData</c></param>
         /// <param name="stringData">(output)the raw data of the entire csv-file in a 2D array, only needed if parsing of other two variables has failed, and useful for retireving timestamps </param>
         /// <returns></returns>
-        public static bool LoadDataFromCSV(string filename, char separator,out double[,] doubleData, out string[] variableNames, out string[,] stringData)
+        public static bool LoadDataFromCSV(string filename, char separator,out double[,] doubleData,
+            out string[] variableNames, out string[,] stringData)
         {
             using (System.IO.StreamReader sr = new System.IO.StreamReader(filename))
             {
