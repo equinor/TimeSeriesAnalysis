@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         static public List<int> GetAllBadIndicesPlussNext(double[] inData, double badValueIndicatingValue = -9999)
         {
-            return Vec.AppendTrailingIndices(GetAllBadIndices(inData, badValueIndicatingValue));
+            return Index.AppendTrailingIndices(GetAllBadIndices(inData, badValueIndicatingValue));
         }
 
         static public List<int> GetBadValueIndices(double[] inData, double badValueIndicatingValue=-9999)

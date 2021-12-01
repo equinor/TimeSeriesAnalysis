@@ -106,6 +106,7 @@ namespace TimeSeriesAnalysis
             return ret;
         }
 
+
         ///<summary>
         /// returns the intersection of array1 and array2, a list of elements that are in both vectors
         ///</summary>
@@ -113,10 +114,6 @@ namespace TimeSeriesAnalysis
         {
             return vec1.Intersect(vec2).ToList();
         }
-
-
-
-
 
 
         ///<summary>
@@ -128,12 +125,10 @@ namespace TimeSeriesAnalysis
 
             foreach (var list in lists)
             {
-                result =  Intersect(result, list);
+                result = Intersect(result, list);
             }
             return result;
         }
-
-
 
 
         ///<summary>

@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis.Test
         [TestCase(new int[] { 3, 6, 9 }, new int[] { 3, 4, 6, 7, 9, 10 })]
         public void AppendTrailingIndices(int[] ind_in, int[] exp)
         {
-            List<int> outArray = Vec.AppendTrailingIndices(new List<int>(ind_in));
+            List<int> outArray = Index.AppendTrailingIndices(new List<int>(ind_in));
             Assert.AreEqual(exp, outArray);
         }
 
@@ -69,16 +69,7 @@ namespace TimeSeriesAnalysis.Test
 
 
 
-        [TestCase(new int[] { 0, 1 }, 3, new int[] { 2 })]
-        [TestCase(new int[] { 0, 2 }, 3, new int[] { 1 })]
-        [TestCase(new int[] { 1, 2 }, 3, new int[] { 0 })]
-        [TestCase(new int[] { 0, 1, 2 }, 3, new int[] { })]
-        [TestCase(new int[] { 1, 5, 8 }, 10, new int[] { 0, 2, 3, 4, 6, 7, 9 })]
-        public void InverseIndices_isOK(int[] vec, int N, int[] vecExpectedResult)
-        {
-            List<int> vecResult = Vec.InverseIndices(N, vec.ToList());
-            Assert.AreEqual(vecExpectedResult, vecResult);
-        }
+
 
         [Test]
         public void SortAscending_isOk()
@@ -238,28 +229,25 @@ namespace TimeSeriesAnalysis.Test
         [Test]
         public void Intersect()
         {
-            List<int> vecInd = new List<int> { 0, 1,2, 3, 4, 6, 7,8,10};
-            List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
-            List<int> vecResult = Vec<int>.Intersect(vecInd, vecInd2);
-            List<int> vecExpt = new List<int> { 6,8};
-            Assert.AreEqual(vecExpt, vecResult);
-        }
-
-        [Test]
-        public void IntersectMultiple ()
-        {
             List<int> vecInd = new List<int> { 0, 1, 2, 3, 4, 6, 7, 8, 10 };
             List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
-            List<int> vecInd3 = new List<int> { 2, 3, 6, 8 };
-            List<int> vecInd4 = new List<int> { 6, 8, 8,10 };
-
-            List<int> vecResult = Vec<int>.Intersect(new List<List<int>> { vecInd,vecInd2,vecInd3,vecInd4});
+            List<int> vecResult = Vec<int>.Intersect(vecInd, vecInd2);
             List<int> vecExpt = new List<int> { 6, 8 };
             Assert.AreEqual(vecExpt, vecResult);
         }
 
+        [Test]
+        public void IntersectMultiple()
+        {
+            List<int> vecInd = new List<int> { 0, 1, 2, 3, 4, 6, 7, 8, 10 };
+            List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
+            List<int> vecInd3 = new List<int> { 2, 3, 6, 8 };
+            List<int> vecInd4 = new List<int> { 6, 8, 8, 10 };
 
-
+            List<int> vecResult = Vec<int>.Intersect(new List<List<int>> { vecInd, vecInd2, vecInd3, vecInd4 });
+            List<int> vecExpt = new List<int> { 6, 8 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
 
 
         [Test]
@@ -402,15 +390,7 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(vecExpt, vecResult);
         }
 
-        [Test]
-        public void Union()
-        {
-            List<int> vecInd = new List<int> { 0, 1, 2, 3, 4, 6, 7, 8, 10 };
-            List<int> vecInd2 = new List<int> { 5, 6, 8, 9 };
-            List<int> vecResult = Vec.Union(vecInd, vecInd2);
-            List<int> vecExpt = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            Assert.AreEqual(vecExpt, vecResult);
-        }
+
 
         [Test]
         public void VecMax()

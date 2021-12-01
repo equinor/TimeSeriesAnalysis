@@ -78,24 +78,6 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        /// elementwise addition of val2 to array1
-        ///</summary>
-
-        public int[] Add(int[] array1, int val2)
-        {
-            if (array1 == null)
-                return null;
-            int[] retVal = new int[array1.Length];
-            for (int i = 0; i < array1.Length; i++)
-            {
-                if (IsNaN(array1[i]))
-                    retVal[i] = (int)valuteToReturnElementIsNaN;
-                else
-                    retVal[i] = array1[i] + val2;
-            }
-            return retVal;
-        }
 
         ///<summary>
         /// elementwise addition of val2 to array1
@@ -115,29 +97,7 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        /// <summary>
-        ///  When filtering out bad data before identification, before fitting 
-        ///  data to difference equations that depend both y[k] and y[k-1]
-        ///  it will some times be neccessary, to append the trailing indices
-        ///  for instance on 
-        /// 
-        /// </summary>
-        static public List<int> AppendTrailingIndices(List<int> indiceArray)
-        {
-            List<int> appendedIndiceArray = new List<int>(indiceArray);
-            List<int> indicesToAdd = new List<int>();
-            for (int i = 0; i < indiceArray.Count; i++)
-            {
-                int curVal = indiceArray.ElementAt(i);
-                if (!indiceArray.Contains(curVal + 1))
-                    indicesToAdd.Add(curVal + 1);
-            }
-            appendedIndiceArray.AddRange(indicesToAdd);
 
-            appendedIndiceArray.Sort();
-
-            return appendedIndiceArray;
-        }
 
         ///<summary>
         /// Returns true f array contains a "-9999" or NaN indicating missing data
@@ -358,41 +318,7 @@ namespace TimeSeriesAnalysis
             return results;
         }
 
-        ///<summary>
-        /// given a list of sorted indeces and a desired vector size N, returns the indices that are not in "sortedIndices"
-        /// i.e. of the "other vectors
-        ///</summary>
-        public static List<int> InverseIndices(int N, List<int> sortedIndices)
-        {
-            List<int> ret = new List<int>();
 
-            int curInd = 0;
-            bool lastSortedIndFound = false;
-            int nSortedIndices = sortedIndices.Count();
-            for (int i = 0; i < N; i++)
-            {
-                if (curInd < nSortedIndices)
-                {
-                    if (i < sortedIndices[curInd])
-                    {
-                        ret.Add(i);
-                    }
-                    else if (i == sortedIndices[curInd])
-                    {
-                        if (curInd + 1 < sortedIndices.Count)
-                            curInd++;
-                        else
-                            lastSortedIndFound = true;
-
-                    }
-                    else if (lastSortedIndFound)
-                    {
-                        ret.Add(i);
-                    }
-                }
-            }
-            return ret;
-        }
 
 
         ///<summary>
@@ -464,24 +390,7 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        ///  Returns maximum value of array between indices startInd and endInd
-        ///</summary>
-        public double Max(double[] array, int startInd, int endInd)
-        {
-            double maxVal = double.MinValue;
-            for (int i = startInd; i < endInd; i++)
-            {
-                double thisNum = array[i];
-                if (IsNaN(thisNum))
-                    continue;
-                if (thisNum > maxVal)
-                {
-                    maxVal = thisNum;
-                }
-            }
-            return maxVal;
-        }
+
 
         ///<summary>
         ///  Returns minimum value of two array as new array 
@@ -568,28 +477,7 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
-        ///<summary>
-        ///  Returns element-wise maximum of array element and value
-        ///</summary>
-        public int[] Max(int[] array, int value)
-        {
-            int[] retArray = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                int thisNum = array[i];
-          //      if (IsNaN(thisNum))
-          //          continue;
-                if (thisNum > value)
-                {
-                    retArray[i] = thisNum;
-                }
-                else
-                {
-                    retArray[i] = value;
-                }
-            }
-            return retArray;
-        }
+
 
         ///<summary>
         ///  Returns minimum value of array and index of maximum value 
@@ -630,18 +518,6 @@ namespace TimeSeriesAnalysis
             return Max(array, out _);
         }
 
-        ///<summary>
-        ///  creates a monotonically increasing integer (11.12.13...) array starting at startValue and ending at endValue
-        ///</summary>
-        public static int[] MakeIndexArray(int startValue, int endValue)
-        {
-            List<int> retList = new List<int>();
-            for (int i = startValue; i < endValue; i++)
-            {
-                retList.Add(i);
-            }
-            return retList.ToArray();
-        }
 
 
         ///<summary>
@@ -1096,23 +972,7 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        /// subtracts val2 from array2 elements
-        ///</summary>
-        public int[] Subtract(int[] array1, int val2)
-        {
-            if (array1 == null)
-                return null;
-            int[] retVal = new int[array1.Length];
 
-            for (int i = 0; i < array1.Length; i++)
-            {
-                if (IsNaN(array1[i]))
-                    continue;
-                retVal[i] = array1[i] - val2;
-            }
-            return retVal;
-        }
 
 
         ///<summary>
@@ -1309,15 +1169,7 @@ namespace TimeSeriesAnalysis
         }
 
 
-        ///<summary>
-        /// returns the union of array1 and array2, a list of elements that are in either vector
-        ///</summary>
-        public static List<int> Union(List<int> vec1, List<int> vec2)
-        {
-            List<int> c = vec1.Union(vec2).ToList();
-            c.Sort();
-            return c;
-        }
+
 
     }
 }

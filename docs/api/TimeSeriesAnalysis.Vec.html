@@ -305,100 +305,6 @@ and are excluded from all calculations</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_Add_" data-uid="TimeSeriesAnalysis.Vec.Add*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Add_System_Int32___System_Int32_" data-uid="TimeSeriesAnalysis.Vec.Add(System.Int32[],System.Int32)">Add(Int32[], Int32)</h4>
-  <div class="markdown level1 summary"><p>elementwise addition of val2 to array1</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int[] Add(int[] array1, int val2)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span>[]</td>
-        <td><span class="parametername">array1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">val2</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Vec_AppendTrailingIndices_" data-uid="TimeSeriesAnalysis.Vec.AppendTrailingIndices*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_AppendTrailingIndices_System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List{System.Int32})">AppendTrailingIndices(List&lt;Int32&gt;)</h4>
-  <div class="markdown level1 summary"><p>When filtering out bad data before identification, before fitting
-data to difference equations that depend both y[k] and y[k-1]
-it will some times be neccessary, to append the trailing indices
-for instance on</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static List&lt;int&gt; AppendTrailingIndices(List&lt;int&gt; indiceArray)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">indiceArray</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Vec_ContainsBadData_" data-uid="TimeSeriesAnalysis.Vec.ContainsBadData*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_ContainsBadData_System_Double___" data-uid="TimeSeriesAnalysis.Vec.ContainsBadData(System.Double[])">ContainsBadData(Double[])</h4>
   <div class="markdown level1 summary"><p>Returns true f array contains a &quot;-9999&quot; or NaN indicating missing data</p>
@@ -801,55 +707,6 @@ Works by running a regression with time as the &quot;X&quot; variable
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_InverseIndices_" data-uid="TimeSeriesAnalysis.Vec.InverseIndices*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_InverseIndices_System_Int32_System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})">InverseIndices(Int32, List&lt;Int32&gt;)</h4>
-  <div class="markdown level1 summary"><p>given a list of sorted indeces and a desired vector size N, returns the indices that are not in &quot;sortedIndices&quot;
-i.e. of the &quot;other vectors</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static List&lt;int&gt; InverseIndices(int N, List&lt;int&gt; sortedIndices)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">N</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">sortedIndices</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Vec_IsAllNaN_" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])">IsAllNaN(Double[])</h4>
   <div class="markdown level1 summary"><p>Returns true if all elements in array are &quot;-9999&quot; or Double.NaN</p>
@@ -935,54 +792,6 @@ i.e. of the &quot;other vectors</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Vec_MakeIndexArray_" data-uid="TimeSeriesAnalysis.Vec.MakeIndexArray*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_MakeIndexArray_System_Int32_System_Int32_" data-uid="TimeSeriesAnalysis.Vec.MakeIndexArray(System.Int32,System.Int32)">MakeIndexArray(Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>creates a monotonically increasing integer (11.12.13...) array starting at startValue and ending at endValue</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int[] MakeIndexArray(int startValue, int endValue)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">startValue</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">endValue</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span>[]</td>
         <td></td>
       </tr>
     </tbody>
@@ -1129,59 +938,6 @@ i.e. of the &quot;other vectors</p>
   
   
   <a id="TimeSeriesAnalysis_Vec_Max_" data-uid="TimeSeriesAnalysis.Vec.Max*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Max_System_Double___System_Int32_System_Int32_" data-uid="TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32,System.Int32)">Max(Double[], Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>Returns maximum value of array between indices startInd and endInd</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Max(double[] array, int startInd, int endInd)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">array</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">startInd</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">endInd</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Vec_Max_" data-uid="TimeSeriesAnalysis.Vec.Max*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_Max_System_Double___System_Int32__" data-uid="TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32@)">Max(Double[], out Int32)</h4>
   <div class="markdown level1 summary"><p>Returns maximum value of array and index of maximum value</p>
 </div>
@@ -1223,54 +979,6 @@ i.e. of the &quot;other vectors</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Vec_Max_" data-uid="TimeSeriesAnalysis.Vec.Max*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Max_System_Int32___System_Int32_" data-uid="TimeSeriesAnalysis.Vec.Max(System.Int32[],System.Int32)">Max(Int32[], Int32)</h4>
-  <div class="markdown level1 summary"><p>Returns element-wise maximum of array element and value</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int[] Max(int[] array, int value)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span>[]</td>
-        <td><span class="parametername">array</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">value</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span>[]</td>
         <td></td>
       </tr>
     </tbody>
@@ -2396,54 +2104,6 @@ Vector data can then be retreived by companion method <code>Deserialize</code></
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_Subtract_" data-uid="TimeSeriesAnalysis.Vec.Subtract*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Subtract_System_Int32___System_Int32_" data-uid="TimeSeriesAnalysis.Vec.Subtract(System.Int32[],System.Int32)">Subtract(Int32[], Int32)</h4>
-  <div class="markdown level1 summary"><p>subtracts val2 from array2 elements</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int[] Subtract(int[] array1, int val2)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span>[]</td>
-        <td><span class="parametername">array1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">val2</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Vec_Sum_" data-uid="TimeSeriesAnalysis.Vec.Sum*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_Sum_System_Double___" data-uid="TimeSeriesAnalysis.Vec.Sum(System.Double[])">Sum(Double[])</h4>
   <div class="markdown level1 summary"><p>returns the sum of array1</p>
@@ -2706,54 +2366,6 @@ this normalization can be turned off</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Vec_Union_" data-uid="TimeSeriesAnalysis.Vec.Union*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Union_System_Collections_Generic_List_System_Int32__System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})">Union(List&lt;Int32&gt;, List&lt;Int32&gt;)</h4>
-  <div class="markdown level1 summary"><p>returns the union of array1 and array2, a list of elements that are in either vector</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static List&lt;int&gt; Union(List&lt;int&gt; vec1, List&lt;int&gt; vec2)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">vec1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">vec2</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>

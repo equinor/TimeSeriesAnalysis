@@ -5149,15 +5149,6 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Add(System.Double(), System.Double())
   nameWithType: Vec.Add(Double[], Double[])
   nameWithType.vb: Vec.Add(Double(), Double())
-- uid: TimeSeriesAnalysis.Vec.Add(System.Int32[],System.Int32)
-  name: Add(Int32[], Int32)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Add_System_Int32___System_Int32_
-  commentId: M:TimeSeriesAnalysis.Vec.Add(System.Int32[],System.Int32)
-  name.vb: Add(Int32(), Int32)
-  fullName: TimeSeriesAnalysis.Vec.Add(System.Int32[], System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Vec.Add(System.Int32(), System.Int32)
-  nameWithType: Vec.Add(Int32[], Int32)
-  nameWithType.vb: Vec.Add(Int32(), Int32)
 - uid: TimeSeriesAnalysis.Vec.Add*
   name: Add
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Add_
@@ -5165,22 +5156,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Add
   nameWithType: Vec.Add
-- uid: TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List{System.Int32})
-  name: AppendTrailingIndices(List<Int32>)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_AppendTrailingIndices_System_Collections_Generic_List_System_Int32__
-  commentId: M:TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List{System.Int32})
-  name.vb: AppendTrailingIndices(List(Of Int32))
-  fullName: TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List<System.Int32>)
-  fullName.vb: TimeSeriesAnalysis.Vec.AppendTrailingIndices(System.Collections.Generic.List(Of System.Int32))
-  nameWithType: Vec.AppendTrailingIndices(List<Int32>)
-  nameWithType.vb: Vec.AppendTrailingIndices(List(Of Int32))
-- uid: TimeSeriesAnalysis.Vec.AppendTrailingIndices*
-  name: AppendTrailingIndices
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_AppendTrailingIndices_
-  commentId: Overload:TimeSeriesAnalysis.Vec.AppendTrailingIndices
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Vec.AppendTrailingIndices
-  nameWithType: Vec.AppendTrailingIndices
 - uid: TimeSeriesAnalysis.Vec.ContainsBadData(System.Double[])
   name: ContainsBadData(Double[])
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_ContainsBadData_System_Double___
@@ -5299,22 +5274,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.GetGradient
   nameWithType: Vec.GetGradient
-- uid: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
-  name: InverseIndices(Int32, List<Int32>)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_InverseIndices_System_Int32_System_Collections_Generic_List_System_Int32__
-  commentId: M:TimeSeriesAnalysis.Vec.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
-  name.vb: InverseIndices(Int32, List(Of Int32))
-  fullName: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32, System.Collections.Generic.List<System.Int32>)
-  fullName.vb: TimeSeriesAnalysis.Vec.InverseIndices(System.Int32, System.Collections.Generic.List(Of System.Int32))
-  nameWithType: Vec.InverseIndices(Int32, List<Int32>)
-  nameWithType.vb: Vec.InverseIndices(Int32, List(Of Int32))
-- uid: TimeSeriesAnalysis.Vec.InverseIndices*
-  name: InverseIndices
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_InverseIndices_
-  commentId: Overload:TimeSeriesAnalysis.Vec.InverseIndices
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Vec.InverseIndices
-  nameWithType: Vec.InverseIndices
 - uid: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
   name: IsAllNaN(Double[])
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___
@@ -5347,19 +5306,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.IsAllValue
   nameWithType: Vec.IsAllValue
-- uid: TimeSeriesAnalysis.Vec.MakeIndexArray(System.Int32,System.Int32)
-  name: MakeIndexArray(Int32, Int32)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_MakeIndexArray_System_Int32_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Vec.MakeIndexArray(System.Int32,System.Int32)
-  fullName: TimeSeriesAnalysis.Vec.MakeIndexArray(System.Int32, System.Int32)
-  nameWithType: Vec.MakeIndexArray(Int32, Int32)
-- uid: TimeSeriesAnalysis.Vec.MakeIndexArray*
-  name: MakeIndexArray
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_MakeIndexArray_
-  commentId: Overload:TimeSeriesAnalysis.Vec.MakeIndexArray
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Vec.MakeIndexArray
-  nameWithType: Vec.MakeIndexArray
 - uid: TimeSeriesAnalysis.Vec.Max(System.Double[])
   name: Max(Double[])
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___
@@ -5387,15 +5333,6 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), System.Double())
   nameWithType: Vec.Max(Double[], Double[])
   nameWithType.vb: Vec.Max(Double(), Double())
-- uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32,System.Int32)
-  name: Max(Double[], Int32, Int32)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Int32_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32,System.Int32)
-  name.vb: Max(Double(), Int32, Int32)
-  fullName: TimeSeriesAnalysis.Vec.Max(System.Double[], System.Int32, System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), System.Int32, System.Int32)
-  nameWithType: Vec.Max(Double[], Int32, Int32)
-  nameWithType.vb: Vec.Max(Double(), Int32, Int32)
 - uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Int32@)
   name: Max(Double[], out Int32)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Int32__
@@ -5405,15 +5342,6 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), ByRef System.Int32)
   nameWithType: Vec.Max(Double[], out Int32)
   nameWithType.vb: Vec.Max(Double(), ByRef Int32)
-- uid: TimeSeriesAnalysis.Vec.Max(System.Int32[],System.Int32)
-  name: Max(Int32[], Int32)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Int32___System_Int32_
-  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Int32[],System.Int32)
-  name.vb: Max(Int32(), Int32)
-  fullName: TimeSeriesAnalysis.Vec.Max(System.Int32[], System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Int32(), System.Int32)
-  nameWithType: Vec.Max(Int32[], Int32)
-  nameWithType.vb: Vec.Max(Int32(), Int32)
 - uid: TimeSeriesAnalysis.Vec.Max*
   name: Max
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_
@@ -5724,15 +5652,6 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Subtract(System.Double(), System.Double())
   nameWithType: Vec.Subtract(Double[], Double[])
   nameWithType.vb: Vec.Subtract(Double(), Double())
-- uid: TimeSeriesAnalysis.Vec.Subtract(System.Int32[],System.Int32)
-  name: Subtract(Int32[], Int32)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Subtract_System_Int32___System_Int32_
-  commentId: M:TimeSeriesAnalysis.Vec.Subtract(System.Int32[],System.Int32)
-  name.vb: Subtract(Int32(), Int32)
-  fullName: TimeSeriesAnalysis.Vec.Subtract(System.Int32[], System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Vec.Subtract(System.Int32(), System.Int32)
-  nameWithType: Vec.Subtract(Int32[], Int32)
-  nameWithType.vb: Vec.Subtract(Int32(), Int32)
 - uid: TimeSeriesAnalysis.Vec.Subtract*
   name: Subtract
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Subtract_
@@ -5813,22 +5732,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.ToString
   nameWithType: Vec.ToString
-- uid: TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
-  name: Union(List<Int32>, List<Int32>)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Union_System_Collections_Generic_List_System_Int32__System_Collections_Generic_List_System_Int32__
-  commentId: M:TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
-  name.vb: Union(List(Of Int32), List(Of Int32))
-  fullName: TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List<System.Int32>, System.Collections.Generic.List<System.Int32>)
-  fullName.vb: TimeSeriesAnalysis.Vec.Union(System.Collections.Generic.List(Of System.Int32), System.Collections.Generic.List(Of System.Int32))
-  nameWithType: Vec.Union(List<Int32>, List<Int32>)
-  nameWithType.vb: Vec.Union(List(Of Int32), List(Of Int32))
-- uid: TimeSeriesAnalysis.Vec.Union*
-  name: Union
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Union_
-  commentId: Overload:TimeSeriesAnalysis.Vec.Union
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Vec.Union
-  nameWithType: Vec.Union
 - uid: TimeSeriesAnalysis.Vec.Var(System.Double[],System.Boolean)
   name: Var(Double[], Boolean)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Var_System_Double___System_Boolean_

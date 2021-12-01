@@ -390,12 +390,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             yIndicesToIgnore = yIndicesToIgnore.Union(indUbad).ToList();
-            yIndicesToIgnore = yIndicesToIgnore.Union(Vec.AppendTrailingIndices(indYcurBad)).ToList();
+            yIndicesToIgnore = yIndicesToIgnore.Union(Index.AppendTrailingIndices(indYcurBad)).ToList();
             if (dataSet.IndicesToIgnore != null)
             {
-                var indicesMinusOne = vec.Max(vec.Subtract(dataSet.IndicesToIgnore.ToArray(), 1),0).Distinct<int>();
+                var indicesMinusOne = Index.Max(Index.Subtract(dataSet.IndicesToIgnore.ToArray(), 1),0).Distinct<int>();
                 yIndicesToIgnore = yIndicesToIgnore.Union(
-                    Vec.AppendTrailingIndices(indicesMinusOne.ToList()) ).ToList();
+                    Index.AppendTrailingIndices(indicesMinusOne.ToList()) ).ToList();
             }
             yIndicesToIgnore.Sort();
 
