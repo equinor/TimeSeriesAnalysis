@@ -4374,6 +4374,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.CSV.LoadDataFromCSV
   nameWithType: CSV.LoadDataFromCSV
+- uid: TimeSeriesAnalysis.Utility.CSV.LoadStringsFromCSV(System.String,System.String[0:,0:]@)
+  name: LoadStringsFromCSV(String, out String[,])
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadStringsFromCSV_System_String_System_String_0__0____
+  commentId: M:TimeSeriesAnalysis.Utility.CSV.LoadStringsFromCSV(System.String,System.String[0:,0:]@)
+  name.vb: LoadStringsFromCSV(String, ByRef String(,))
+  fullName: TimeSeriesAnalysis.Utility.CSV.LoadStringsFromCSV(System.String, out System.String[,])
+  fullName.vb: TimeSeriesAnalysis.Utility.CSV.LoadStringsFromCSV(System.String, ByRef System.String(,))
+  nameWithType: CSV.LoadStringsFromCSV(String, out String[,])
+  nameWithType.vb: CSV.LoadStringsFromCSV(String, ByRef String(,))
+- uid: TimeSeriesAnalysis.Utility.CSV.LoadStringsFromCSV*
+  name: LoadStringsFromCSV
+  href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_LoadStringsFromCSV_
+  commentId: Overload:TimeSeriesAnalysis.Utility.CSV.LoadStringsFromCSV
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.CSV.LoadStringsFromCSV
+  nameWithType: CSV.LoadStringsFromCSV
 - uid: TimeSeriesAnalysis.Utility.CSV.RobustParseDouble(System.String,System.Double@)
   name: RobustParseDouble(String, out Double)
   href: api/TimeSeriesAnalysis.Utility.CSV.html#TimeSeriesAnalysis_Utility_CSV_RobustParseDouble_System_String_System_Double__
