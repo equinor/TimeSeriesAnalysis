@@ -829,6 +829,9 @@ namespace TimeSeriesAnalysis
         public static double[] ReplaceIndWithValue(double[] array, List<int> indList,
             double valueToReplaceWith)
         {
+            if (indList == null)
+                return array;
+
             int[] vecInd = indList.ToArray();
             double[] outArray = new double[array.Length] ;
             array.CopyTo(outArray,0);
