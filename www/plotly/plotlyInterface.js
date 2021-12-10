@@ -209,7 +209,7 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
         var allRows = dataStorageObj.getData(csvname);
 		if (allRows.length == 0)
 		{
-			AddErrorMessage("Error: file data//"+csvname+".csv empty?");
+			AddErrorMessage("<b>Error:</b> no data in data//"+csvname+".csv?");
 			continue;
 		}
 		
@@ -270,7 +270,7 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
 			else if (csvIdx==15)
             {   colorName  ="MediumSpringGreen";}
 
-            let prettyName = currentValueColumnName.replace(dataStorageObj.casename,'');
+            let prettyName = currentValueColumnName.replace(dataStorageObj.casename+"__",'');
             if (prettyName == "price")
                 prettyName = csvname;
             let trace1 = {
