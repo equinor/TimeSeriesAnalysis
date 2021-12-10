@@ -125,6 +125,54 @@
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_TimeSeries_Concat_" data-uid="TimeSeriesAnalysis.TimeSeries.Concat*"></a>
+  <h4 id="TimeSeriesAnalysis_TimeSeries_Concat_System_ValueTuple_System_Double___System_DateTime____System_ValueTuple_System_Double___System_DateTime____" data-uid="TimeSeriesAnalysis.TimeSeries.Concat(System.ValueTuple{System.Double[],System.DateTime[]},System.ValueTuple{System.Double[],System.DateTime[]})">Concat((Double[], DateTime[]), (Double[], DateTime[]))</h4>
+  <div class="markdown level1 summary"><p>Creates a new timeseries that is var1 and var2 concatenated together</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (double[], DateTime[]) Concat((double[], DateTime[]) var1, (double[], DateTime[]) var2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Double</span>[], <span class="xref">System.DateTime</span>[]&gt;</td>
+        <td><span class="parametername">var1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Double</span>[], <span class="xref">System.DateTime</span>[]&gt;</td>
+        <td><span class="parametername">var2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Double</span>[], <span class="xref">System.DateTime</span>[]&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_TimeSeries_GetClosestIndexToDate_" data-uid="TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate*"></a>
   <h4 id="TimeSeriesAnalysis_TimeSeries_GetClosestIndexToDate_System_ValueTuple_System_Double___System_DateTime____System_DateTime_" data-uid="TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate(System.ValueTuple{System.Double[],System.DateTime[]},System.DateTime)">GetClosestIndexToDate((Double[], DateTime[]), DateTime)</h4>
   <div class="markdown level1 summary"><p>Gt the index of the time-series that is closest to a given date</p>
@@ -225,7 +273,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></td>
-        <td></td>
+        <td><p>The gradient is the gain of the returned object</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -270,6 +319,49 @@ By default it gives the last N days, but optionally
         <td><span class="parametername">nDaysBack</span></td>
         <td><p>the number of days to push the end of the returned dataset back(default is zero, in which case method gets last nSpanDays)</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Double</span>[], <span class="xref">System.DateTime</span>[]&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_TimeSeries_Reverse_" data-uid="TimeSeriesAnalysis.TimeSeries.Reverse*"></a>
+  <h4 id="TimeSeriesAnalysis_TimeSeries_Reverse_System_ValueTuple_System_Double___System_DateTime____" data-uid="TimeSeriesAnalysis.TimeSeries.Reverse(System.ValueTuple{System.Double[],System.DateTime[]})">Reverse((Double[], DateTime[]))</h4>
+  <div class="markdown level1 summary"><p>Reverses the order of the time-series</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (double[], DateTime[]) Reverse((double[], DateTime[]) input)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Double</span>[], <span class="xref">System.DateTime</span>[]&gt;</td>
+        <td><span class="parametername">input</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

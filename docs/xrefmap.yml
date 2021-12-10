@@ -4264,6 +4264,22 @@ references:
   commentId: T:TimeSeriesAnalysis.TimeSeries
   fullName: TimeSeriesAnalysis.TimeSeries
   nameWithType: TimeSeries
+- uid: TimeSeriesAnalysis.TimeSeries.Concat(System.ValueTuple{System.Double[],System.DateTime[]},System.ValueTuple{System.Double[],System.DateTime[]})
+  name: Concat((Double[], DateTime[]), (Double[], DateTime[]))
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_Concat_System_ValueTuple_System_Double___System_DateTime____System_ValueTuple_System_Double___System_DateTime____
+  commentId: M:TimeSeriesAnalysis.TimeSeries.Concat(System.ValueTuple{System.Double[],System.DateTime[]},System.ValueTuple{System.Double[],System.DateTime[]})
+  name.vb: Concat((Double(), DateTime())(Of Double(), DateTime()), (Double(), DateTime())(Of Double(), DateTime()))
+  fullName: TimeSeriesAnalysis.TimeSeries.Concat(System.ValueTuple<System.Double[], System.DateTime[]>, System.ValueTuple<System.Double[], System.DateTime[]>)
+  fullName.vb: TimeSeriesAnalysis.TimeSeries.Concat(System.ValueTuple(Of System.Double(), System.DateTime()), System.ValueTuple(Of System.Double(), System.DateTime()))
+  nameWithType: TimeSeries.Concat((Double[], DateTime[]), (Double[], DateTime[]))
+  nameWithType.vb: TimeSeries.Concat((Double(), DateTime())(Of Double(), DateTime()), (Double(), DateTime())(Of Double(), DateTime()))
+- uid: TimeSeriesAnalysis.TimeSeries.Concat*
+  name: Concat
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_Concat_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeries.Concat
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeries.Concat
+  nameWithType: TimeSeries.Concat
 - uid: TimeSeriesAnalysis.TimeSeries.GetClosestIndexToDate(System.ValueTuple{System.Double[],System.DateTime[]},System.DateTime)
   name: GetClosestIndexToDate((Double[], DateTime[]), DateTime)
   href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_GetClosestIndexToDate_System_ValueTuple_System_Double___System_DateTime____System_DateTime_
@@ -4312,6 +4328,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.TimeSeries.GetSubsetOfDays
   nameWithType: TimeSeries.GetSubsetOfDays
+- uid: TimeSeriesAnalysis.TimeSeries.Reverse(System.ValueTuple{System.Double[],System.DateTime[]})
+  name: Reverse((Double[], DateTime[]))
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_Reverse_System_ValueTuple_System_Double___System_DateTime____
+  commentId: M:TimeSeriesAnalysis.TimeSeries.Reverse(System.ValueTuple{System.Double[],System.DateTime[]})
+  name.vb: Reverse((Double(), DateTime())(Of Double(), DateTime()))
+  fullName: TimeSeriesAnalysis.TimeSeries.Reverse(System.ValueTuple<System.Double[], System.DateTime[]>)
+  fullName.vb: TimeSeriesAnalysis.TimeSeries.Reverse(System.ValueTuple(Of System.Double(), System.DateTime()))
+  nameWithType: TimeSeries.Reverse((Double[], DateTime[]))
+  nameWithType.vb: TimeSeries.Reverse((Double(), DateTime())(Of Double(), DateTime()))
+- uid: TimeSeriesAnalysis.TimeSeries.Reverse*
+  name: Reverse
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_Reverse_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeries.Reverse
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeries.Reverse
+  nameWithType: TimeSeries.Reverse
 - uid: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32)
   name: SubSet((Double[], DateTime[]), Int32, Int32)
   href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_SubSet_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32_

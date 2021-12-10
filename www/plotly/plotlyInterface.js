@@ -1,8 +1,8 @@
 
 function makePlotlyPlotFromCSV(hash)
 {
-    // one or more csvs will be loaded and placed on either left or right y-axis depening on format of hash
-    // reading each csv is asyncrhonous, and plotting is done only after reading all csvs has completed...
+    // one or more csvs will be loaded and placed on either left or right y-axis deepening on format of hash
+    // reading each csv is asynchronous, and plotting is done only after reading all csvs has completed...
     var DataStorage = function(hash){this.hash=hash; this.data = [];this.csvnames=[];this.hasTwoSubplots; 
         this.isVarOnY1=[];this.isVarOnY2=[];this.isVarOnY3=[];this.isVarOnY4=[];this.comment="";this.casename=""};// create object
     DataStorage.prototype.addData = function (csvname,dataIn) 
@@ -16,44 +16,47 @@ function makePlotlyPlotFromCSV(hash)
     DataStorage.prototype.parseHash = function () 
     {
          var splitStr   = this.hash.split(";");
-         this.csvnames  = new Array(splitStr.length);
-         this.isVarOnY2 = new Array(splitStr.length);
+         this.csvnames  = new Array();//splitStr.length);
+         this.isVarOnY2 = new Array();//splitStr.length);
 		 this.nVariablesToPlot=0;
-        for (var i=0; i<this.csvnames.length; i++)
+        for (var i=0; i<splitStr.length; i++)
         {
-            this.isVarOnY1[i]=true;
-            this.isVarOnY2[i]=false;
-            this.isVarOnY3[i]=false;
-            this.isVarOnY4[i]=false;
-   
-            if (splitStr[i].includes("y2="))
-            { 
-                this.isVarOnY1[i]=false;
-                this.isVarOnY2[i]=true;
-                this.isVarOnY3[i]=false;
-                this.isVarOnY4[i]=false;
-            }
-            if (splitStr[i].includes("y3="))
-            { 
-                this.isVarOnY1[i]=false;
-                this.isVarOnY2[i]=false;
-                this.isVarOnY3[i]=true;
-                this.isVarOnY4[i]=false;
-                this.hasTwoSubplots = true;
-            }
-            if (splitStr[i].includes("y4="))
-            { 
-                this.isVarOnY1[i]=false;
-                this.isVarOnY2[i]=false;
-                this.isVarOnY3[i]=false;
-                this.isVarOnY4[i]=true;
-                this.hasTwoSubplots = true;
-            }
 			if (splitStr[i].indexOf("comment:")==-1 && splitStr[i].indexOf("comment=")==-1 && 
 				splitStr[i].indexOf("casename:")==-1)//ignore "comment= "field
 			{
+				if (splitStr[i].includes("y2="))
+				{ 
+					this.isVarOnY1.push(false);
+					this.isVarOnY2.push(true);
+					this.isVarOnY3.push(false);
+					this.isVarOnY4.push(false);
+				}
+				else if (splitStr[i].includes("y3="))
+				{ 
+					this.isVarOnY1.push(false);
+					this.isVarOnY2.push(false);
+					this.isVarOnY3.push(true);
+					this.isVarOnY4.push(false);
+					this.hasTwoSubplots = true;
+				}
+				else if (splitStr[i].includes("y4="))
+				{ 
+					this.isVarOnY1.push(false);
+					this.isVarOnY2.push(false);
+					this.isVarOnY3.push(false);
+					this.isVarOnY4.push(true);
+					this.hasTwoSubplots = true;
+				}
+				else
+				{
+					this.isVarOnY1.push(true);
+					this.isVarOnY2.push(false);
+					this.isVarOnY3.push(false);
+					this.isVarOnY4.push(false);
+				}
+				
 				this.nVariablesToPlot++;
-				this.csvnames[i]= splitStr[i].replace("y1=","").replace("y2=","").replace("y3=","").replace("y4=","");
+				this.csvnames.push(splitStr[i].replace("y1=","").replace("y2=","").replace("y3=","").replace("y4=",""));
 			}
 			else
 			{
@@ -69,7 +72,7 @@ function makePlotlyPlotFromCSV(hash)
 		{
 			for (var i=0; i<this.nVariablesToPlot; i++)
 			{
-				this.csvnames[i]= this.casename + this.csvnames[i];
+				this.csvnames[i]= this.casename +"__"+ this.csvnames[i];
 			}
 		}
 		
@@ -98,6 +101,10 @@ function makePlotlyPlotFromCSV(hash)
     for (let i=0; i<storageObj.csvnames.length; i++)
     {
         let csvname = storageObj.csvnames[i];
+		if ( typeof csvname === 'undefined')
+		{
+			AddErrorMessage("Error: undefined variable found in hash ");
+		}
 		try
 		{
 			Plotly.d3.csv("data//"+csvname+".csv",  
@@ -111,7 +118,7 @@ function makePlotlyPlotFromCSV(hash)
 		}
 		catch(error) 
 		{
-			console.log("an error occurred attempting to read file data//"+csvname );
+			AddErrorMessage("an error occurred attempting to read file data//"+csvname );
 		}	
 		
     }
@@ -133,6 +140,16 @@ function makePlotlyPlotFromCSV(hash)
    // Plotly.d3.csv("data//"+name+".csv", function(data){ makePlotlyPlotFromCSV_inner(data) } )
 }	
     
+function AddErrorMessage(errorString )
+{
+	var newDiv = document.createElement("div"); 
+	// and give it some content 
+	var errorMsg = document.createElement("P"); 
+	errorMsg.innerHTML = errorString;
+	newDiv.appendChild(errorMsg);	
+	var currentDiv = document.getElementById("TableDiv"); 
+    document.body.insertBefore(newDiv, currentDiv); 
+}	
 function csvCallBackFunction(data,csvname,callback,callbackObj)
 {
     callback.call(callbackObj,csvname,data);
@@ -190,8 +207,13 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
     {
         var csvname = dataStorageObj.csvnames[csvIdx];
         var allRows = dataStorageObj.getData(csvname);
+		if (allRows.length == 0)
+		{
+			AddErrorMessage("Error: file data//"+csvname+".csv empty?");
+			continue;
+		}
+		
         var columnNameArray = Object.keys(allRows[0]);
-
 
         for (var columnIdx=0; columnIdx<columnNameArray.length-1;columnIdx=columnIdx+2)
         {
@@ -217,8 +239,6 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
 					 colorName = "DarkGray";
 				else if (columnIdx <= 48)
 					 colorName = "IndianRed";
-				
-				
             }else if(csvIdx==1)
             {   colorName  ="RosyBrown";}
             else if (csvIdx==2)
@@ -249,9 +269,6 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
             {   colorName  ="DarkCyan";}
 			else if (csvIdx==15)
             {   colorName  ="MediumSpringGreen";}
-
-
-		
 
             let prettyName = currentValueColumnName.replace(dataStorageObj.casename,'');
             if (prettyName == "price")

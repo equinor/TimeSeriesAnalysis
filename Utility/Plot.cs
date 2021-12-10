@@ -91,7 +91,9 @@ namespace TimeSeriesAnalysis.Utility
             foreach (var dataDateTuple in dataDateTupleList)
             {
                 string plotName = plotNames.ElementAt(j);
-                string ppTagName = PreprocessTagName(caseName + plotName);
+                string name = plotName;
+                
+                string ppTagName = PreprocessTagName(caseName +"__"+ plotName);
                 string shortPPtagName = PreprocessTagName(plotName);
                 plotURL += shortPPtagName;
                 if (j < plotNames.Count - 1)//dont add semicolon after last variable
@@ -167,7 +169,12 @@ namespace TimeSeriesAnalysis.Utility
             int j = 0;
             foreach (string plotName in plotNames)
             {
-                string ppTagName = PreprocessTagName(caseName + plotName);
+                string csvName = plotName;
+                if (caseName != null)
+                {
+                    csvName = caseName + "__" + plotName;
+                }
+                string ppTagName = PreprocessTagName(csvName);
                 string shortPPtagName = PreprocessTagName(plotName);
                 plotURL += shortPPtagName;
                 if (j < plotNames.Count - 1)//dont add semicolon after last variable
