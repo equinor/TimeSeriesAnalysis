@@ -4,12 +4,13 @@
 
 
 # TimeSeriesAnalysis
-An open-source C# .NET class library, integrable with Matlab and Python,
-intend for efficient test-driven development(TDD) of time-series-based algorithms. 
-Transients/dynamic model identification, dynamic simulation, filtering and advanced industrial PID-control. 
+An open-source library for development and acceptance testing of time-series-based algorithms that may incude
+- Transients/dynamic model identification, 
+- dynamic simulation, 
+- filtering, and
+- advanced industrial PID-control. 
 
-The aim is to support "mining" of industrial time-series data for advanced analytics by automating grey-box modeling and
-simulation.
+The library can be used from C#, Matlab or Python.
 
 ## Documentation:
 
