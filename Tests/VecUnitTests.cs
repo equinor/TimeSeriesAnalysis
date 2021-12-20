@@ -136,18 +136,6 @@ namespace TimeSeriesAnalysis.Test
             Assert.Greater(results.Rsq, 99, "Rsqured should be close to 100");
         }
 
-        /*
-        [Test]
-        public void Regress_SingularMatrixCaught()
-        {
-            double[] Y = { 1, 0, 1, 0 };
-            double[] X1 = { 1, 0, 1, 0 };
-            double[] X2 = { 1, 0, 1, 0 };
-            double[][] X = { X1, X2 };
-            var results = Vec.Regress(Y, X);
-        }
-        */
-
 
         [Test]
         public void Regress_IgnoreIndices()
@@ -161,12 +149,32 @@ namespace TimeSeriesAnalysis.Test
                 4
             };
             var results= (new Vec()).Regress(Y, X, indicesToignore.ToArray());
-            Assert.Less(Math.Abs(1 - results.Param[0]), 0.001);
-            Assert.Less(Math.Abs(2 - results.Param[1]), 0.001);
-            Assert.Less(Math.Abs(4 - results.Y_modelled[4]), 0.0001);
-
-             Assert.Greater(results.Rsq, 99);
+            Assert.IsTrue(results.AbleToIdentify);
+            Assert.Less(Math.Abs(1 - results.Param[0]), 0.005);
+            Assert.Less(Math.Abs(2 - results.Param[1]), 0.005);
+            Assert.Less(Math.Abs(4 - results.Y_modelled[4]), 0.0005);
+            Assert.Greater(results.Rsq, 99);
         }
+
+        [Test,Explicit(reason:"needs regularization turned on to work")]
+        public void Regress_UnobservableInputsCauseLowGain()
+        {
+            double bias = 1;
+
+            double[] common = new double[] { 1, 0, 3, 4, -2, 1, 3, 5, 7, 8, 9, 10, 0, -5, 7, 8, -2 };
+
+            double[] Y = (new Vec()).Add(common,bias);
+            double[] X1 = common; // gain:1
+            double[] X2 = Vec<double>.Fill(0, common.Length);// gain:0
+            double[][] X = { X1, X2 };
+            var results = (new Vec()).Regress(Y, X);
+            Assert.IsTrue(results.AbleToIdentify);
+            Assert.Less(Math.Abs(1 - results.Param[0]), 0.01);
+            Assert.Less(Math.Abs(0 - results.Param[1]), 0.1);
+            Assert.Greater(results.Rsq, 99);
+        }
+
+
 
 
 

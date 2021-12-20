@@ -665,23 +665,27 @@ namespace TimeSeriesAnalysis
         /// some statistics on the fit and uncertainty thereof.</returns>
         public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null)
         {
+            bool doNormalizationToZero = false;//todo: should be true, but verify that this plays well with unitident-unit tests.
+
+            var X_withBias = Array2D<double>.Append(X, Vec<double>.Fill(1, X.GetNColumns()));
+
+
             bool doInterpolateYforBadIndices = true;
             MultipleLinearRegression regression;
             double[][] X_T;
-            if (X.GetNColumns() > X.GetNRows())
+            if (X_withBias.GetNColumns() > X_withBias.GetNRows())
             {
-                //  Accord.Math.Matrix.
-                X_T = Accord.Math.Matrix.Transpose(X);
+                X_T = Accord.Math.Matrix.Transpose(X_withBias);
             }
             else
             {
-                X_T = X;
+                X_T = X_withBias;
             }
             // weight-to-zero all indices which are to be ignored!
-            double[] weights = null;
+            double[] weights = Vec<double>.Fill(1, Y.Length); //null;
             if (yIndToIgnore != null)
             {
-                weights = Vec<double>.Fill(1, Y.Length);
+          //      weights = Vec<double>.Fill(1, Y.Length);
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
                     int curInd = yIndToIgnore[i];
@@ -714,14 +718,41 @@ namespace TimeSeriesAnalysis
 
             OrdinaryLeastSquares accordFittingAlgo = new OrdinaryLeastSquares()
             {
-                IsRobust = false // to use SVD or not.
+                IsRobust = false, // to use SVD or not.
+                UseIntercept = false // default is "true", uses a default bias term, but this does not paly well with regularization.
             };
             RegressionResults results = new RegressionResults();
             //TODO: try to catch rank deficient or singular X instead of generating exception.
             try
             {
-                // note: weights have no effect prior to accord 3.7.0 
-                regression = accordFittingAlgo.Learn(X_T, Y, weights);
+                if (doNormalizationToZero)
+                {
+                    //var X_T_reg = X_T;
+                    List<double[]> regX = new List<double[]>();
+
+                    int nGains = X_T[0].Length-1;//minus one: bias should not be normalized!!!
+
+           
+                    for (int inputIdx = 0; inputIdx < nGains; inputIdx++)
+                    {
+                        var newRow = Vec<double>.Fill(0, nGains+1);
+                        newRow[inputIdx] = 1;
+                        regX.Add(newRow);
+                    }
+                    var X_T_reg = Array2D<double>.Combine(X_T, Array2D<double>.CreateJaggedFromList(regX));
+                    var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, nGains));
+                    double? Y_mean = (new Vec()).Mean(Y);
+                    double regressionWeight = (double)Y.Length / 10000;
+                    var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, nGains)) ;
+
+                    // note: weights have no effect prior to accord 3.7.0 
+                    regression = accordFittingAlgo.Learn(X_T_reg, Y_reg, weights_reg);
+                }
+                else
+                {
+                    // note: weights have no effect prior to accord 3.7.0 
+                    regression = accordFittingAlgo.Learn(X_T, Y, weights);
+                }
                 if (yIndToIgnore == null)
                 {
                     results.NfittingBadDataPoints = 0;
@@ -773,13 +804,13 @@ namespace TimeSeriesAnalysis
                 }
                 results.ObjectiveFunctionValue = (new Vec()).SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
-                results.Bias = regression.Intercept;
-                results.Gains = regression.Weights;
+                results.Bias = regression.Weights.Last();//regression.Intercept;
+                results.Gains = Vec<double>.SubArray(regression.Weights,0, regression.Weights.Length-2);
                 results.Param = Vec<double>.Concat(regression.Weights, regression.Intercept);
 
                 /*
                 // uncertainty estimation
-                if (false)// unceratinty does not take into account weights now?
+                if (false)// uncertainty does not take into account weights now?
                 {
                     //start: estimating uncertainty
                     try
@@ -811,7 +842,7 @@ namespace TimeSeriesAnalysis
                 results.AbleToIdentify = true;
                 return results;
             }
-            catch 
+            catch//(Exception e) 
             {
                 results.AbleToIdentify = false;
                 return results;

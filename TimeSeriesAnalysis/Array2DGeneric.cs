@@ -15,9 +15,9 @@ namespace TimeSeriesAnalysis
     public class Array2D<T>
     {
         ///<summary>
-        /// converts a 2d array into a jagged array
+        /// Convert a 2D array into a jagged array
         ///</summary>
-        static public T[][] Convert2DtoJagged(T[,] matrix)
+        static public T[][] Create2DFromJagged(T[,] matrix)
         {
             T[][] ret = new T[matrix.GetLength(0)][];
 
@@ -29,11 +29,11 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// COnverta jaged array to a 2d-array
+        /// Convert a jagged array to a 2d-array
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        static public T[,] ConvertJaggedTo2D(T[][] matrix)
+        static public T[,] CreatedJaggedFrom2D(T[][] matrix)
         {
             try
             {
@@ -53,6 +53,92 @@ namespace TimeSeriesAnalysis
             }
         }
 
+        /// <summary>
+        /// Convert a list of 1D arrays to a jagged array
+        /// </summary>
+        /// <param name="listOfArrays"></param>
+        /// <returns>null if unsuccessful</returns>
+        static public T[][] CreateJaggedFromList(List<T[]> listOfArrays)
+        {
+            try
+            {
+                T[][] ret = new T[listOfArrays.Count][];
+                for (int i = 0; i < listOfArrays.Count; i++)
+                {
+                    ret[i] = listOfArrays.ElementAt(i);
+                }
+                return ret;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Combine two arrays into a single array(increasing the number of rows)
+        /// </summary>
+        /// <param name="array1"></param>
+        /// <param name="array2"></param>
+        /// <returns>null if unsuccessful</returns>
+        static public T[][] Combine(T[][] array1, T[][] array2)
+        {
+            try
+            {
+                T[][] ret = new T[array1.GetLength(0) + array2.GetLength(0)][];
+                for (int i = 0; i < array1.GetLength(0); i++)
+                {
+                    ret[i] = array1.ElementAt(i);
+                }
+                int j0 = array1.GetLength(0);
+                int k = 0;
+                for (int j = j0; j < j0+ array2.GetLength(0); j++)
+                {
+                    ret[j] = array2.ElementAt(k);
+                    k++;
+                }
+                return ret;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// Combine two arrays into a single array(increasing the number of rows)
+        /// </summary>
+        /// <param name="array1"></param>
+        /// <param name="vector">a vector </param>
+        /// <returns>null if unsuccessful</returns>
+        static public T[][] Append(T[][] array1, T[] vector)
+        {
+            try
+            {
+                T[][] ret = new T[array1.GetLength(0) + 1][];
+                for (int i = 0; i < array1.GetLength(0); i++)
+                {
+                    ret[i] = array1.ElementAt(i);
+                }
+                int j0 = array1.GetLength(0);
+                ret[j0] = vector;
+                return ret;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -62,7 +148,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="columnList"></param>
         /// <returns>null if list columnList dimensions do not match</returns>
-        static public T[,] Create(List<T[]> columnList)
+        static public T[,] CreateFromList(List<T[]> columnList)
         {
             int nColumns = columnList.Count;
             int nRows    = columnList.ElementAt(0).Length;
@@ -87,6 +173,10 @@ namespace TimeSeriesAnalysis
 
 
 
+
+
+
+
         /// <summary>
         /// Create 2d-array with only a single column
         /// </summary>
@@ -94,7 +184,7 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         static public T[,] Create(T[] columnArray)
         {
-            return Create(new List<T[]> { columnArray });
+            return CreateFromList(new List<T[]> { columnArray });
         }
 
         /// <summary>
@@ -117,7 +207,7 @@ namespace TimeSeriesAnalysis
 
                 ret[colIdx] = Vec<T>.Downsample(curCol, downsampleFactor);
             }
-            var jaggedRet = ConvertJaggedTo2D(ret);
+            var jaggedRet = CreatedJaggedFrom2D(ret);
             return Array2D<T>.Transpose(jaggedRet);
         }
 

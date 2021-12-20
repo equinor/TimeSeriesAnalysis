@@ -141,14 +141,14 @@ see Matrix.cs</p>
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Array2D_1_Convert2DtoJagged_" data-uid="TimeSeriesAnalysis.Array2D`1.Convert2DtoJagged*"></a>
-  <h4 id="TimeSeriesAnalysis_Array2D_1_Convert2DtoJagged__0_0__0___" data-uid="TimeSeriesAnalysis.Array2D`1.Convert2DtoJagged(`0[0:,0:])">Convert2DtoJagged(T[,])</h4>
-  <div class="markdown level1 summary"><p>converts a 2d array into a jagged array</p>
+  <a id="TimeSeriesAnalysis_Array2D_1_Append_" data-uid="TimeSeriesAnalysis.Array2D`1.Append*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_Append__0______0___" data-uid="TimeSeriesAnalysis.Array2D`1.Append(`0[][],`0[])">Append(T[][], T[])</h4>
+  <div class="markdown level1 summary"><p>Combine two arrays into a single array(increasing the number of rows)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T[][] Convert2DtoJagged(T[, ] matrix)</code></pre>
+    <pre><code class="lang-csharp hljs">public static T[][] Append(T[][] array1, T[] vector)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -161,8 +161,63 @@ see Matrix.cs</p>
     </thead>
     <tbody>
       <tr>
-        <td>T[,]</td>
-        <td><span class="parametername">matrix</span></td>
+        <td>T[][]</td>
+        <td><span class="parametername">array1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>T[]</td>
+        <td><span class="parametername">vector</span></td>
+        <td><p>a vector</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[][]</td>
+        <td><p>null if unsuccessful</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Array2D_1_Combine_" data-uid="TimeSeriesAnalysis.Array2D`1.Combine*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_Combine__0______0_____" data-uid="TimeSeriesAnalysis.Array2D`1.Combine(`0[][],`0[][])">Combine(T[][], T[][])</h4>
+  <div class="markdown level1 summary"><p>Combine two arrays into a single array(increasing the number of rows)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[][] Combine(T[][] array1, T[][] array2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[][]</td>
+        <td><span class="parametername">array1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>T[][]</td>
+        <td><span class="parametername">array2</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -178,50 +233,8 @@ see Matrix.cs</p>
     <tbody>
       <tr>
         <td>T[][]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Array2D_1_ConvertJaggedTo2D_" data-uid="TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D*"></a>
-  <h4 id="TimeSeriesAnalysis_Array2D_1_ConvertJaggedTo2D__0_____" data-uid="TimeSeriesAnalysis.Array2D`1.ConvertJaggedTo2D(`0[][])">ConvertJaggedTo2D(T[][])</h4>
-  <div class="markdown level1 summary"><p>COnverta jaged array to a 2d-array</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T[, ] ConvertJaggedTo2D(T[][] matrix)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>T[][]</td>
-        <td><span class="parametername">matrix</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>T[,]</td>
-        <td></td>
+        <td><p>null if unsuccessful</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -270,14 +283,100 @@ see Matrix.cs</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Array2D_1_Create_" data-uid="TimeSeriesAnalysis.Array2D`1.Create*"></a>
-  <h4 id="TimeSeriesAnalysis_Array2D_1_Create_System_Collections_Generic_List__0____" data-uid="TimeSeriesAnalysis.Array2D`1.Create(System.Collections.Generic.List{`0[]})">Create(List&lt;T[]&gt;)</h4>
+  <a id="TimeSeriesAnalysis_Array2D_1_Create2DFromJagged_" data-uid="TimeSeriesAnalysis.Array2D`1.Create2DFromJagged*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_Create2DFromJagged__0_0__0___" data-uid="TimeSeriesAnalysis.Array2D`1.Create2DFromJagged(`0[0:,0:])">Create2DFromJagged(T[,])</h4>
+  <div class="markdown level1 summary"><p>Convert a 2D array into a jagged array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[][] Create2DFromJagged(T[, ] matrix)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[,]</td>
+        <td><span class="parametername">matrix</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[][]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Array2D_1_CreatedJaggedFrom2D_" data-uid="TimeSeriesAnalysis.Array2D`1.CreatedJaggedFrom2D*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_CreatedJaggedFrom2D__0_____" data-uid="TimeSeriesAnalysis.Array2D`1.CreatedJaggedFrom2D(`0[][])">CreatedJaggedFrom2D(T[][])</h4>
+  <div class="markdown level1 summary"><p>Convert a jagged array to a 2d-array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[, ] CreatedJaggedFrom2D(T[][] matrix)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[][]</td>
+        <td><span class="parametername">matrix</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[,]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Array2D_1_CreateFromList_" data-uid="TimeSeriesAnalysis.Array2D`1.CreateFromList*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_CreateFromList_System_Collections_Generic_List__0____" data-uid="TimeSeriesAnalysis.Array2D`1.CreateFromList(System.Collections.Generic.List{`0[]})">CreateFromList(List&lt;T[]&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a 2D array from a list of arrays representing each column in the array</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T[, ] Create(List&lt;T[]&gt; columnList)</code></pre>
+    <pre><code class="lang-csharp hljs">public static T[, ] CreateFromList(List&lt;T[]&gt; columnList)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -308,6 +407,50 @@ see Matrix.cs</p>
       <tr>
         <td>T[,]</td>
         <td><p>null if list columnList dimensions do not match</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_" data-uid="TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList*"></a>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_System_Collections_Generic_List__0____" data-uid="TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]})">CreateJaggedFromList(List&lt;T[]&gt;)</h4>
+  <div class="markdown level1 summary"><p>Convert a list of 1D arrays to a jagged array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[][] CreateJaggedFromList(List&lt;T[]&gt; listOfArrays)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;T[]&gt;</td>
+        <td><span class="parametername">listOfArrays</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[][]</td>
+        <td><p>null if unsuccessful</p>
 </td>
       </tr>
     </tbody>
