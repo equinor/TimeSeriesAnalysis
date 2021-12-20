@@ -164,13 +164,14 @@ namespace TimeSeriesAnalysis.Dynamic
             /////////////////////////////////////////////////////////////////
             // Try turning off the dynamic parts and just see the static model
             // 
+            var modelList = new List<UnitParameters>();
             int timeDelayIdx = 0;
             UnitParameters modelParams_StaticAndNoCurvature =
                 EstimateProcessForAGivenTimeDelay
                 (timeDelayIdx, dataSet, false, allCurvesDisabled,
                 FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
-           // processTimeDelayIdentifyObj.AddRun(modelParams_StaticAndNoCurvature);
-
+            // processTimeDelayIdentifyObj.AddRun(modelParams_StaticAndNoCurvature);
+            modelList.Add(modelParams_StaticAndNoCurvature);
             /////////////////////////////////////////////////////////////////
             // BEGIN WHILE loop to model process for different time delays               
             bool continueIncreasingTimeDelayEst = true;
@@ -180,11 +181,12 @@ namespace TimeSeriesAnalysis.Dynamic
             while (continueIncreasingTimeDelayEst)
             {
                 modelParams = null;
-                var modelList = new List<UnitParameters>();
+             
                 UnitParameters modelParams_noCurvature =
                     EstimateProcessForAGivenTimeDelay
                     (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesDisabled,
                     FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
+                modelList.Add(modelParams_noCurvature);
 
                 if (doEstimateCurvature && modelParams_noCurvature.WasAbleToIdentify)
                 {
@@ -192,6 +194,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         EstimateProcessForAGivenTimeDelay
                         (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesEnabled,
                         FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
+                    
 
                     // only try rest of curvature models if it seems like it will help
                     // this is done to save on processing in case of many inputs (3 inputs= 8 identification runs)

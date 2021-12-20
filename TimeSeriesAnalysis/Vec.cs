@@ -661,11 +661,12 @@ namespace TimeSeriesAnalysis
         /// <param name="Y">vector of outptu variable values to be modelled</param>
         /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
+        /// <param name="XindicesToRegularize">(optional) only the indices in this list are to be regularized to zero</param>
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
-        public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null)
+        public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null)
         {
-            bool doNormalizationToZero = false;//todo: should be true, but verify that this plays well with unitident-unit tests.
+            bool doNormalizationToZero = true;//todo: should be true, but verify that this plays well with unitident-unit tests.
 
             var X_withBias = Array2D<double>.Append(X, Vec<double>.Fill(1, X.GetNColumns()));
 
@@ -731,19 +732,34 @@ namespace TimeSeriesAnalysis
                     List<double[]> regX = new List<double[]>();
 
                     int nGains = X_T[0].Length-1;//minus one: bias should not be normalized!!!
-
-           
-                    for (int inputIdx = 0; inputIdx < nGains; inputIdx++)
+                    // if no indices are specified, then apply to all..
+                    if (XindicesToRegularize == null)
                     {
-                        var newRow = Vec<double>.Fill(0, nGains+1);
-                        newRow[inputIdx] = 1;
-                        regX.Add(newRow);
+                        for (int inputIdx = 0; inputIdx < nGains; inputIdx++)
+                        {
+                            var newRow = Vec<double>.Fill(0, nGains + 1);//+1 for bias
+                            newRow[inputIdx] = 1;
+                            regX.Add(newRow);
+                        }
+                    }
+                    else
+                    {
+                        for (int inputIdx = 0; inputIdx < XindicesToRegularize.Count ; inputIdx++)
+                        {
+                            var idx = XindicesToRegularize[inputIdx];
+                            if (idx < nGains)
+                            {
+                                var newRow = Vec<double>.Fill(0, nGains + 1);//+1 for bias
+                                newRow[idx] = 1;
+                                regX.Add(newRow);
+                            }
+                        }
                     }
                     var X_T_reg = Array2D<double>.Combine(X_T, Array2D<double>.CreateJaggedFromList(regX));
-                    var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, nGains));
+                    var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, regX.Count()));
                     double? Y_mean = (new Vec()).Mean(Y);
                     double regressionWeight = (double)Y.Length / 10000;
-                    var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, nGains)) ;
+                    var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, regX.Count())) ;
 
                     // note: weights have no effect prior to accord 3.7.0 
                     regression = accordFittingAlgo.Learn(X_T_reg, Y_reg, weights_reg);
@@ -806,7 +822,7 @@ namespace TimeSeriesAnalysis
 
                 results.Bias = regression.Weights.Last();//regression.Intercept;
                 results.Gains = Vec<double>.SubArray(regression.Weights,0, regression.Weights.Length-2);
-                results.Param = Vec<double>.Concat(regression.Weights, regression.Intercept);
+                results.Param = regression.Weights;//Vec<double>.Concat(regression.Weights, regression.Intercept);
 
                 /*
                 // uncertainty estimation
@@ -842,7 +858,7 @@ namespace TimeSeriesAnalysis
                 results.AbleToIdentify = true;
                 return results;
             }
-            catch//(Exception e) 
+            catch(Exception e) 
             {
                 results.AbleToIdentify = false;
                 return results;

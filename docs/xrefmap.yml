@@ -5592,15 +5592,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Range
   nameWithType: Vec.Range
-- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[])
-  name: Regress(Double[], Double[][], Int32[])
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___
-  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[])
-  name.vb: Regress(Double(), Double()(), Int32())
-  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][], System.Int32[])
-  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32())
-  nameWithType: Vec.Regress(Double[], Double[][], Int32[])
-  nameWithType.vb: Vec.Regress(Double(), Double()(), Int32())
+- uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Collections.Generic.List{System.Int32})
+  name: Regress(Double[], Double[][], Int32[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Collections.Generic.List{System.Int32})
+  name.vb: Regress(Double(), Double()(), Int32(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.Regress(System.Double[], System.Double[][], System.Int32[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.Regress(System.Double(), System.Double()(), System.Int32(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.Regress(Double[], Double[][], Int32[], List<Int32>)
+  nameWithType.vb: Vec.Regress(Double(), Double()(), Int32(), List(Of Int32))
 - uid: TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[0:,0:],System.Int32[])
   name: Regress(Double[], Double[,], Int32[])
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_0__0___System_Int32___

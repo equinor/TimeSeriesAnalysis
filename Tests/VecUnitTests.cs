@@ -159,10 +159,8 @@ namespace TimeSeriesAnalysis.Test
         [Test,Explicit(reason:"needs regularization turned on to work")]
         public void Regress_UnobservableInputsCauseLowGain()
         {
-            double bias = 1;
-
+            double bias = 10000;
             double[] common = new double[] { 1, 0, 3, 4, -2, 1, 3, 5, 7, 8, 9, 10, 0, -5, 7, 8, -2 };
-
             double[] Y = (new Vec()).Add(common,bias);
             double[] X1 = common; // gain:1
             double[] X2 = Vec<double>.Fill(0, common.Length);// gain:0
@@ -174,6 +172,21 @@ namespace TimeSeriesAnalysis.Test
             Assert.Greater(results.Rsq, 99);
         }
 
+        [Test, Explicit(reason: "needs regularization turned on to work")]
+        public void Regress_RegularizeJustSpecificInputs()
+        {
+            double bias = 10000;
+            double[] common = new double[] { 1, 0, 3, 4, -2, 1, 3, 5, 7, 8, 9, 10, 0, -5, 7, 8, -2 };
+            double[] Y = (new Vec()).Add(common, bias);
+            double[] X1 = common; // gain:1
+            double[] X2 = Vec<double>.Fill(0, common.Length);// gain:0
+            double[][] X = { X1, X2 };
+            var results = (new Vec()).Regress(Y, X,null, new List<int> {1});
+            Assert.IsTrue(results.AbleToIdentify);
+            Assert.Less(Math.Abs(1 - results.Param[0]), 0.01);
+            Assert.Less(Math.Abs(0 - results.Param[1]), 0.1);
+            Assert.Greater(results.Rsq, 99);
+        }
 
 
 
