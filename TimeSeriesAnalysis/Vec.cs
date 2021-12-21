@@ -666,14 +666,13 @@ namespace TimeSeriesAnalysis
         /// some statistics on the fit and uncertainty thereof.</returns>
         public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null)
         {
-            bool doNormalizationToZero = true;//todo: should be true, but verify that this plays well with unitident-unit tests.
+            const bool doNormalizationToZero = true;//by default: true
 
-            var X_withBias = Array2D<double>.Append(X, Vec<double>.Fill(1, X.GetNColumns()));
+            RegressionResults results = new RegressionResults();
+            var vec = new Vec();
 
-
-            bool doInterpolateYforBadIndices = true;
-            MultipleLinearRegression regression;
             double[][] X_T;
+            var X_withBias = Array2D<double>.Append(X, Vec<double>.Fill(1, X.GetNColumns()));
             if (X_withBias.GetNColumns() > X_withBias.GetNRows())
             {
                 X_T = Accord.Math.Matrix.Transpose(X_withBias);
@@ -682,11 +681,36 @@ namespace TimeSeriesAnalysis
             {
                 X_T = X_withBias;
             }
+
+            var X_rank =  Accord.Math.Matrix.Rank(Array2D<double>.Created2DFromJagged(X_T));
+            var X_columnsToDisable = new List<int>();
+            if (X_rank < X_T.GetNColumns())
+            {
+                for (int colIdx = 0; colIdx < X_T.GetNColumns()-1; colIdx++)
+                {
+                    var colMax = vec.Max(Array2D<double>.GetColumn(X_T, colIdx));
+                    var colMin = vec.Min(Array2D<double>.GetColumn(X_T, colIdx));
+
+                    if (colMax - colMin < 0.001)
+                    {
+                        X_columnsToDisable.Add(colIdx);
+                    }
+                    // TODO: you could possibly check if two inputs are scaled versions of each other here.
+                }
+                results.RegressionWarnings.Add(RegressionWarnings.InputMatrixIsRankDeficient);
+            }
+
+  
+            //if any columns in X are constant, they trigger a numerical instability where
+            // gain of constant X column is a very big positive number and bias is a very large negative number.
+
+            bool doInterpolateYforBadIndices = true;
+            MultipleLinearRegression regression;
+
             // weight-to-zero all indices which are to be ignored!
             double[] weights = Vec<double>.Fill(1, Y.Length); //null;
             if (yIndToIgnore != null)
             {
-          //      weights = Vec<double>.Fill(1, Y.Length);
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
                     int curInd = yIndToIgnore[i];
@@ -719,10 +743,10 @@ namespace TimeSeriesAnalysis
 
             OrdinaryLeastSquares accordFittingAlgo = new OrdinaryLeastSquares()
             {
-                IsRobust = false, // to use SVD or not.
+                IsRobust = true, // to use SVD or not, has benefits if columns in the X-matrix are constant, otherwise the gains might run up to big values.
                 UseIntercept = false // default is "true", uses a default bias term, but this does not paly well with regularization.
             };
-            RegressionResults results = new RegressionResults();
+
             //TODO: try to catch rank deficient or singular X instead of generating exception.
             try
             {
@@ -757,8 +781,8 @@ namespace TimeSeriesAnalysis
                     }
                     var X_T_reg = Array2D<double>.Combine(X_T, Array2D<double>.CreateJaggedFromList(regX));
                     var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, regX.Count()));
-                    double? Y_mean = (new Vec()).Mean(Y);
-                    double regressionWeight = (double)Y.Length / 10000;
+                    double? Y_mean = vec.Mean(Y);
+                    double regressionWeight = (double)Y.Length / 1000;
                     var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, regX.Count())) ;
 
                     // note: weights have no effect prior to accord 3.7.0 
@@ -818,7 +842,7 @@ namespace TimeSeriesAnalysis
                 {
                     yIndToIgnoreList = yIndToIgnore.ToList();
                 }
-                results.ObjectiveFunctionValue = (new Vec()).SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
+                results.ObjectiveFunctionValue = vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
                 results.Bias = regression.Weights.Last();//regression.Intercept;
                 results.Gains = Vec<double>.SubArray(regression.Weights,0, regression.Weights.Length-2);

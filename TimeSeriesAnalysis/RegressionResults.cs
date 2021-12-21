@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis
 {
+    public enum RegressionWarnings
+    { 
+        NONE =0,
+        InputMatrixIsRankDeficient =1,
+        InputMatrixHasConstantInput =2 // also a type of rank deficiency
+    }
+
+
     /// <summary>
     /// Class that holds the results of a run of <c>Vec.Regress</c>.
     /// </summary>
@@ -23,6 +31,7 @@ namespace TimeSeriesAnalysis
             Y_modelled = null;
             VarCovarMatrix = null;
             NfittingBadDataPoints = 0;
+            RegressionWarnings = new List<RegressionWarnings>();
         }
         /// <summary>
         /// R2-root-means-squared between Y and Y_modelled for the tuning dataset(a value between 0 and 100, higher is better)
@@ -70,7 +79,9 @@ namespace TimeSeriesAnalysis
         /// Total number of data points in the fitting data set
         /// </summary>
         public int NfittingTotalDataPoints { get; set; }
-        
+
+        public List<RegressionWarnings> RegressionWarnings { get; set; }
+
 
 
     }

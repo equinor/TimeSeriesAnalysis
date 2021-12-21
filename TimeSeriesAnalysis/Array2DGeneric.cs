@@ -17,7 +17,7 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// Convert a 2D array into a jagged array
         ///</summary>
-        static public T[][] Create2DFromJagged(T[,] matrix)
+        static public T[][] CreateJaggedFrom2D(T[,] matrix)
         {
             T[][] ret = new T[matrix.GetLength(0)][];
 
@@ -33,7 +33,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        static public T[,] CreatedJaggedFrom2D(T[][] matrix)
+        static public T[,] Created2DFromJagged(T[][] matrix)
         {
             try
             {
@@ -207,7 +207,7 @@ namespace TimeSeriesAnalysis
 
                 ret[colIdx] = Vec<T>.Downsample(curCol, downsampleFactor);
             }
-            var jaggedRet = CreatedJaggedFrom2D(ret);
+            var jaggedRet = Created2DFromJagged(ret);
             return Array2D<T>.Transpose(jaggedRet);
         }
 

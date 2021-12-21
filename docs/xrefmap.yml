@@ -92,42 +92,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Create
   nameWithType: Array2D<T>.Create
   nameWithType.vb: Array2D(Of T).Create
-- uid: TimeSeriesAnalysis.Array2D`1.Create2DFromJagged(`0[0:,0:])
-  name: Create2DFromJagged(T[,])
-  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Create2DFromJagged__0_0__0___
-  commentId: M:TimeSeriesAnalysis.Array2D`1.Create2DFromJagged(`0[0:,0:])
-  name.vb: Create2DFromJagged(T(,))
-  fullName: TimeSeriesAnalysis.Array2D<T>.Create2DFromJagged(T[,])
-  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Create2DFromJagged(T(,))
-  nameWithType: Array2D<T>.Create2DFromJagged(T[,])
-  nameWithType.vb: Array2D(Of T).Create2DFromJagged(T(,))
-- uid: TimeSeriesAnalysis.Array2D`1.Create2DFromJagged*
-  name: Create2DFromJagged
-  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Create2DFromJagged_
-  commentId: Overload:TimeSeriesAnalysis.Array2D`1.Create2DFromJagged
+- uid: TimeSeriesAnalysis.Array2D`1.Created2DFromJagged(`0[][])
+  name: Created2DFromJagged(T[][])
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Created2DFromJagged__0_____
+  commentId: M:TimeSeriesAnalysis.Array2D`1.Created2DFromJagged(`0[][])
+  name.vb: Created2DFromJagged(T()())
+  fullName: TimeSeriesAnalysis.Array2D<T>.Created2DFromJagged(T[][])
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Created2DFromJagged(T()())
+  nameWithType: Array2D<T>.Created2DFromJagged(T[][])
+  nameWithType.vb: Array2D(Of T).Created2DFromJagged(T()())
+- uid: TimeSeriesAnalysis.Array2D`1.Created2DFromJagged*
+  name: Created2DFromJagged
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_Created2DFromJagged_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.Created2DFromJagged
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Array2D<T>.Create2DFromJagged
-  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Create2DFromJagged
-  nameWithType: Array2D<T>.Create2DFromJagged
-  nameWithType.vb: Array2D(Of T).Create2DFromJagged
-- uid: TimeSeriesAnalysis.Array2D`1.CreatedJaggedFrom2D(`0[][])
-  name: CreatedJaggedFrom2D(T[][])
-  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreatedJaggedFrom2D__0_____
-  commentId: M:TimeSeriesAnalysis.Array2D`1.CreatedJaggedFrom2D(`0[][])
-  name.vb: CreatedJaggedFrom2D(T()())
-  fullName: TimeSeriesAnalysis.Array2D<T>.CreatedJaggedFrom2D(T[][])
-  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreatedJaggedFrom2D(T()())
-  nameWithType: Array2D<T>.CreatedJaggedFrom2D(T[][])
-  nameWithType.vb: Array2D(Of T).CreatedJaggedFrom2D(T()())
-- uid: TimeSeriesAnalysis.Array2D`1.CreatedJaggedFrom2D*
-  name: CreatedJaggedFrom2D
-  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreatedJaggedFrom2D_
-  commentId: Overload:TimeSeriesAnalysis.Array2D`1.CreatedJaggedFrom2D
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Array2D<T>.CreatedJaggedFrom2D
-  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreatedJaggedFrom2D
-  nameWithType: Array2D<T>.CreatedJaggedFrom2D
-  nameWithType.vb: Array2D(Of T).CreatedJaggedFrom2D
+  fullName: TimeSeriesAnalysis.Array2D<T>.Created2DFromJagged
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).Created2DFromJagged
+  nameWithType: Array2D<T>.Created2DFromJagged
+  nameWithType.vb: Array2D(Of T).Created2DFromJagged
 - uid: TimeSeriesAnalysis.Array2D`1.CreateFromList(System.Collections.Generic.List{`0[]})
   name: CreateFromList(List<T[]>)
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreateFromList_System_Collections_Generic_List__0____
@@ -146,6 +128,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreateFromList
   nameWithType: Array2D<T>.CreateFromList
   nameWithType.vb: Array2D(Of T).CreateFromList
+- uid: TimeSeriesAnalysis.Array2D`1.CreateJaggedFrom2D(`0[0:,0:])
+  name: CreateJaggedFrom2D(T[,])
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreateJaggedFrom2D__0_0__0___
+  commentId: M:TimeSeriesAnalysis.Array2D`1.CreateJaggedFrom2D(`0[0:,0:])
+  name.vb: CreateJaggedFrom2D(T(,))
+  fullName: TimeSeriesAnalysis.Array2D<T>.CreateJaggedFrom2D(T[,])
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreateJaggedFrom2D(T(,))
+  nameWithType: Array2D<T>.CreateJaggedFrom2D(T[,])
+  nameWithType.vb: Array2D(Of T).CreateJaggedFrom2D(T(,))
+- uid: TimeSeriesAnalysis.Array2D`1.CreateJaggedFrom2D*
+  name: CreateJaggedFrom2D
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreateJaggedFrom2D_
+  commentId: Overload:TimeSeriesAnalysis.Array2D`1.CreateJaggedFrom2D
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Array2D<T>.CreateJaggedFrom2D
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreateJaggedFrom2D
+  nameWithType: Array2D<T>.CreateJaggedFrom2D
+  nameWithType.vb: Array2D(Of T).CreateJaggedFrom2D
 - uid: TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]})
   name: CreateJaggedFromList(List<T[]>)
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_System_Collections_Generic_List__0____
@@ -4224,6 +4224,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
   nameWithType: RegressionResults.Param95prcConfInterval
+- uid: TimeSeriesAnalysis.RegressionResults.RegressionWarnings
+  name: RegressionWarnings
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_RegressionWarnings
+  commentId: P:TimeSeriesAnalysis.RegressionResults.RegressionWarnings
+  fullName: TimeSeriesAnalysis.RegressionResults.RegressionWarnings
+  nameWithType: RegressionResults.RegressionWarnings
+- uid: TimeSeriesAnalysis.RegressionResults.RegressionWarnings*
+  name: RegressionWarnings
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_RegressionWarnings_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.RegressionWarnings
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.RegressionResults.RegressionWarnings
+  nameWithType: RegressionResults.RegressionWarnings
 - uid: TimeSeriesAnalysis.RegressionResults.Rsq
   name: Rsq
   href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Rsq
@@ -4263,6 +4276,30 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.Y_modelled
   nameWithType: RegressionResults.Y_modelled
+- uid: TimeSeriesAnalysis.RegressionWarnings
+  name: RegressionWarnings
+  href: api/TimeSeriesAnalysis.RegressionWarnings.html
+  commentId: T:TimeSeriesAnalysis.RegressionWarnings
+  fullName: TimeSeriesAnalysis.RegressionWarnings
+  nameWithType: RegressionWarnings
+- uid: TimeSeriesAnalysis.RegressionWarnings.InputMatrixHasConstantInput
+  name: InputMatrixHasConstantInput
+  href: api/TimeSeriesAnalysis.RegressionWarnings.html#TimeSeriesAnalysis_RegressionWarnings_InputMatrixHasConstantInput
+  commentId: F:TimeSeriesAnalysis.RegressionWarnings.InputMatrixHasConstantInput
+  fullName: TimeSeriesAnalysis.RegressionWarnings.InputMatrixHasConstantInput
+  nameWithType: RegressionWarnings.InputMatrixHasConstantInput
+- uid: TimeSeriesAnalysis.RegressionWarnings.InputMatrixIsRankDeficient
+  name: InputMatrixIsRankDeficient
+  href: api/TimeSeriesAnalysis.RegressionWarnings.html#TimeSeriesAnalysis_RegressionWarnings_InputMatrixIsRankDeficient
+  commentId: F:TimeSeriesAnalysis.RegressionWarnings.InputMatrixIsRankDeficient
+  fullName: TimeSeriesAnalysis.RegressionWarnings.InputMatrixIsRankDeficient
+  nameWithType: RegressionWarnings.InputMatrixIsRankDeficient
+- uid: TimeSeriesAnalysis.RegressionWarnings.NONE
+  name: NONE
+  href: api/TimeSeriesAnalysis.RegressionWarnings.html#TimeSeriesAnalysis_RegressionWarnings_NONE
+  commentId: F:TimeSeriesAnalysis.RegressionWarnings.NONE
+  fullName: TimeSeriesAnalysis.RegressionWarnings.NONE
+  nameWithType: RegressionWarnings.NONE
 - uid: TimeSeriesAnalysis.Shared
   name: Shared
   href: api/TimeSeriesAnalysis.Shared.html
