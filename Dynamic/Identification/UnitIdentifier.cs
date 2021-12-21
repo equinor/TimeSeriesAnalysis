@@ -661,7 +661,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 
-                double? recalcBias = ReEstimateBias(dataSet, parameters);
+                (double? recalcBias, double[] y_sim_recalc) = SimulateAndReEstimateBias(dataSet, parameters);
+                dataSet.Y_sim = y_sim_recalc;
                 if (recalcBias.HasValue)
                 {
                     parameters.Bias = recalcBias.Value;
@@ -690,7 +691,7 @@ namespace TimeSeriesAnalysis.Dynamic
         // bias is not always accurate for dynamic model identification 
         // as it is as "difference equation" that matches the changes in the 
         //
-        private double? ReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
+        private (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
         {
             UnitDataSet internalData = new UnitDataSet(dataSet);
 
@@ -713,8 +714,13 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double[] diff = (new Vec(nanValue)).Subtract(yMeas_exceptIgnoredValues, ySim_exceptIgnoredValues);
-            double? bias = (new Vec(nanValue)).Mean(diff) ;
-            return bias;
+            double? bias = (new Vec(nanValue)).Mean(diff);
+            double[] y_sim_ret = null;
+            if (bias.HasValue)
+            {
+                y_sim_ret = (new Vec(nanValue)).Add(y_sim, bias.Value);
+            }
+            return (bias,y_sim_ret);
         }
     }
 }
