@@ -134,6 +134,12 @@ namespace TimeSeriesAnalysis.Test
             Assert.Less(Math.Abs(results.Bias- bias), 0.01, "bias should be close to true");
             Assert.Less(results.ObjectiveFunctionValue, 0.01,"obj function value should be close to zero");
             Assert.Greater(results.Rsq, 99, "Rsqured should be close to 100");
+            Assert.IsTrue(results.VarCovarMatrix != null);
+            Assert.IsTrue(results.Param95prcConfidence != null);
+            Assert.IsTrue(results.Param95prcConfidence[0] < 0.2, "confidence interval too large?");
+            Assert.IsTrue(results.Param95prcConfidence[1] < 0.2, "confidence interval too large?");
+        
+
         }
 
 
@@ -154,6 +160,10 @@ namespace TimeSeriesAnalysis.Test
             Assert.Less(Math.Abs(2 - results.Param[1]), 0.05);
             Assert.Less(Math.Abs(4 - results.Y_modelled[4]), 0.005);
             Assert.Greater(results.Rsq, 99);
+
+            Assert.IsTrue(results.Param95prcConfidence[0] < 0.2, "confidence interval too large?");
+            Assert.IsTrue(results.Param95prcConfidence[1] < 0.2, "confidence interval too large?");
+
         }
 
         [Test/*,Explicit(reason:"needs regularization turned on to work")*/]
@@ -170,9 +180,15 @@ namespace TimeSeriesAnalysis.Test
             Assert.Less(Math.Abs(1 - results.Param[0]), 0.01);
             Assert.Less(Math.Abs(0 - results.Param[1]), 0.1);
             Assert.Greater(results.Rsq, 99);
+
+            // uncertainty of second paratmer should be at least ten times larger than the first
+      //      Assert.IsTrue(results.Param95prcConfidence[1]/results.Param95prcConfidence[0] > 10);
+            Assert.IsTrue(results.Param95prcConfidence[0] < 0.2, "confidence interval too large?");
+            Assert.IsTrue(results.Param95prcConfidence[1] < 0.2, "confidence interval too large?");
+
         }
 
-        [Test/*, Explicit(reason: "needs regularization turned on to work")*/]
+        [Test]
         public void Regress_RegularizeJustSpecificInputs()
         {
             double bias = 10000;
@@ -186,10 +202,10 @@ namespace TimeSeriesAnalysis.Test
             Assert.Less(Math.Abs(1 - results.Param[0]), 0.01);
             Assert.Less(Math.Abs(0 - results.Param[1]), 0.1);
             Assert.Greater(results.Rsq, 99);
+
+            Assert.IsTrue(results.Param95prcConfidence[0] < 0.2, "confidence interval too large?");
+            Assert.IsTrue(results.Param95prcConfidence[1] < 0.2, "confidence interval too large?");
         }
-
-
-
 
         [Test]
         public void FindValues_BiggerThan()

@@ -450,6 +450,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("---NOT able to identify---");
             }
+
             // time constant
             if (modelParameters.TimeConstant_s < cutOffForUsingHours_s)
             {
@@ -482,7 +483,19 @@ namespace TimeSeriesAnalysis.Dynamic
            
             if (modelParameters.Curvatures == null)
             {
-                sb.AppendLine("ProcessGains(lin) : " + Vec.ToString(modelParameters.GetProcessGains(), sDigits));
+
+                //    sb.AppendLine("ProcessGains(lin) : " + Vec.ToString(modelParameters.GetProcessGains(), sDigits));
+                //    sb.AppendLine("ProcessGainsUncertainty : " + Vec.ToString(modelParameters.GetProcessGainUncertainties(), sDigits));
+
+                sb.AppendLine("ProcessGains(lin) : ");
+                for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
+                {
+                    sb.AppendLine(
+                        "\t " + SignificantDigits.Format(modelParameters.GetProcessGain(idx), sDigits) + " ± "
+                            + SignificantDigits.Format(modelParameters.GetProcessGainUncertainty(idx), sDigits)
+                        );
+                    }
+
                 sb.AppendLine("ProcessCurvatures : " + "none");
             }
             else
@@ -500,7 +513,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     sb.AppendLine(" -> uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits));
                 }
             }
-            sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
+            if (modelParameters.BiasUnc == null)
+            {
+                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
+            }
+            else
+            {
+                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits) + " ± " + SignificantDigits.Format(modelParameters.BiasUnc.Value, sDigits));
+            }
 
             sb.AppendLine("-------------------------");
             sb.AppendLine("objective(diffs) : " + SignificantDigits.Format(modelParameters.ObjFunValFittingDiff,4) );

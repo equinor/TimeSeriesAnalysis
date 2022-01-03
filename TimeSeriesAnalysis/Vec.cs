@@ -642,7 +642,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Linear regression
+        /// Robust linear regression
         /// </summary>
         /// <param name="Y">vector of responve variable values (to be modelled)</param>
         /// <param name="X">2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
@@ -656,7 +656,12 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Linear regression
+        /// Robust linear regression
+        /// To avoid paramters taking on exteremly high values in the case of little excitation in the inputs, 
+        /// two mitigating actions are implemented by the solver, to be "robust"
+        /// - a "robust" Signular Value Decomposition(SVD)-based solver is used
+        /// - a regularization term is added to the objective function that will bring paramters to zero if (Y,X) does not contain
+        ///  any information to force the parameter away from zero
         /// </summary>
         /// <param name="Y">vector of outptu variable values to be modelled</param>
         /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
@@ -666,7 +671,7 @@ namespace TimeSeriesAnalysis
         /// some statistics on the fit and uncertainty thereof.</returns>
         public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null)
         {
-            const bool doNormalizationToZero = true;//by default: true
+            const bool doNormalizationToZero = true;
 
             RegressionResults results = new RegressionResults();
             var vec = new Vec();
@@ -844,41 +849,40 @@ namespace TimeSeriesAnalysis
                 }
                 results.ObjectiveFunctionValue = vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
-                results.Bias = regression.Weights.Last();//regression.Intercept;
+                results.Bias = regression.Weights.Last();
                 results.Gains = Vec<double>.SubArray(regression.Weights,0, regression.Weights.Length-2);
-                results.Param = regression.Weights;//Vec<double>.Concat(regression.Weights, regression.Intercept);
+                results.Param = regression.Weights;
 
-                /*
+                
                 // uncertainty estimation
-                if (false)// uncertainty does not take into account weights now?
+
+                try
                 {
-                    //start: estimating uncertainty
-                    try
-                    {
-                        double[][] informationMatrix = accordFittingAlgo.GetInformationMatrix();// this should already include weights
-                        double mse = 0;
-                        if (areAllWeightsOne)
-                            mse = regression.GetStandardError(X_T, Y);
-                        else
-                            mse = regression.GetStandardError(X_T, Mult(weights, Y));
-                        double[] SE = regression.GetStandardErrors(mse, informationMatrix);
+                    //re-run regression without regularization, use that to get information matrix.
+                    var regression_noreg = accordFittingAlgo.Learn(X_T, Y, weights);
+                    double[][] informationMatrix = accordFittingAlgo.GetInformationMatrix();// this should already include weights
 
-                        for (int i = 0; i < theta_Length; i++)
+                    double mse = regression.GetStandardError(X_T, vec.Multiply(weights, Y));
+                    double[] SE = regression.GetStandardErrors(mse, informationMatrix);
+
+                    results.Param95prcConfidence = vec.Multiply(SE, 1.96);
+
+                    int thetaLength = regression.Weights.Length;
+
+                    results.VarCovarMatrix = new double[thetaLength][];
+                    for (int i = 0; i < thetaLength; i++)
+                    {
+                        results.VarCovarMatrix[i] = new double[thetaLength];
+                        for (int j = 0; j < thetaLength; j++)
                         {
-                            varCovarMatrix[i] = new double[theta_Length];
-                            for (int j = 0; j < theta_Length; j++)
-                            {
-                                varCovarMatrix[i][j] = mse * Math.Sqrt(Math.Abs(informationMatrix[i][j]));
-                            }
+                            results.VarCovarMatrix[i][j] = mse * Math.Sqrt(Math.Abs(informationMatrix[i][j]));
                         }
-                        param95prcConfInterval = Mult(SE, 1.96);
                     }
-
-                    catch (Exception e)
-                    {
-                        param95prcConfInterval = null;
-                    }
-                }*/
+                }
+                catch
+                {
+                    results.Param95prcConfidence = null;
+                }
                 results.AbleToIdentify = true;
                 return results;
             }

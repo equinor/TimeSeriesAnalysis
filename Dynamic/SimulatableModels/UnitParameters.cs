@@ -28,6 +28,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double TimeConstant_s { get; set; } = 0;
 
+
+        /// <summary>
+        /// The uncertinty of the time constant estimate
+        /// </summary>
+        public double TimeConstantUnc_s { get; set; } = 0;
+
         /// <summary>
         /// The time delay in seconds.This number needs to be a multiple of the sampling rate.
         /// Set to zero to turn of time delay in model.
@@ -37,6 +43,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// An array of gains that determine how much in the steady state each input change affects the output(multiplied with (u-u0))
         /// </summary>
         public double[] LinearGains { get; set; } = null;
+
+        /// <summary>
+        /// An array of 95%  uncertatinty in the linear gains  (u-u0))
+        /// </summary>
+        public double[] LinearGainUnc { get; set; } = null;
+
 
         /// <summary>
         /// The nonlinear curvature of the process gain, this paramter is multiplied + Curvatures*((u-u0)/Unorm)^2.
@@ -61,6 +73,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public  double Bias { get; set; } = 0;
 
+        /// <summary>
+        /// The 95% uncertainty of the bias
+        /// </summary>
+        public double? BiasUnc { get; set; } = null;
+
+
         private List<ProcessIdentWarnings> errorsAndWarningMessages;
         internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
 
@@ -71,6 +89,16 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             errorsAndWarningMessages = new List<ProcessIdentWarnings>();
         }
+        /// <summary>
+        /// Get the number of inputs U to the model.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumInputs()
+        {
+            return LinearGains.Length;
+        }
+
+
 
         /// <summary>
         /// Return the process gain for a given index at u=u0
@@ -106,6 +134,45 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Return the process gain uncertatinty for a given input index at u=u0
+        /// <para>
+        /// Note that for nonlinear processes, the process gain is given by a combination of 
+        /// the linear and curvature terms of the model : dy/du(u=u0)
+        /// </para>
+        /// </summary>
+        /// <param name="inputIdx"></param>
+        /// <returns></returns>
+        public double GetProcessGainUncertainty(int inputIdx)
+        {
+            if (LinearGainUnc == null)
+                return double.NaN;
+
+            if (inputIdx > LinearGainUnc.Length - 1)
+            {
+                return double.NaN;
+            }
+            if (Curvatures == null)
+                return LinearGainUnc[inputIdx];
+            if (double.IsNaN(Curvatures[inputIdx]))
+                return LinearGainUnc[inputIdx];
+
+            if (inputIdx <= Curvatures.Length - 1)
+            {
+                if (UNorm == null)
+                    return LinearGainUnc[inputIdx] + 2 * Curvatures[inputIdx];
+                else
+                    return LinearGainUnc[inputIdx] + 2 * Curvatures[inputIdx] / UNorm[inputIdx];
+            }
+            else
+            {
+                return LinearGainUnc[inputIdx];
+            }
+        }
+
+
+
+
+        /// <summary>
         /// Get all process gains (including both linear and any nonlinear terms)
         /// </summary>
         /// <returns></returns>
@@ -119,6 +186,19 @@ namespace TimeSeriesAnalysis.Dynamic
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Get all the process gain uncertainties
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetProcessGainUncertainties()
+        {
+            var list = new List<double>();
+            for (int inputIdx = 0; inputIdx < U0.Length; inputIdx++)
+            {
+                list.Add(GetProcessGainUncertainty(inputIdx));
+            }
+            return list.ToArray();
+        }
 
 
         /// <summary>

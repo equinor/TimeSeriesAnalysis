@@ -3675,6 +3675,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.Bias
   nameWithType: UnitParameters.Bias
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc
+  name: BiasUnc
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_BiasUnc
+  commentId: P:TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc
+  nameWithType: UnitParameters.BiasUnc
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc*
+  name: BiasUnc
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_BiasUnc_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc
+  nameWithType: UnitParameters.BiasUnc
 - uid: TimeSeriesAnalysis.Dynamic.UnitParameters.Curvatures
   name: Curvatures
   href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_Curvatures
@@ -3688,6 +3701,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.Curvatures
   nameWithType: UnitParameters.Curvatures
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs
+  name: GetNumInputs()
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetNumInputs
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs()
+  nameWithType: UnitParameters.GetNumInputs()
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs*
+  name: GetNumInputs
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetNumInputs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs
+  nameWithType: UnitParameters.GetNumInputs
 - uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGain(System.Int32)
   name: GetProcessGain(Int32)
   href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGain_System_Int32_
@@ -3714,6 +3740,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGains
   nameWithType: UnitParameters.GetProcessGains
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties
+  name: GetProcessGainUncertainties()
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainties
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties()
+  nameWithType: UnitParameters.GetProcessGainUncertainties()
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties*
+  name: GetProcessGainUncertainties
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainties_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties
+  nameWithType: UnitParameters.GetProcessGainUncertainties
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty(System.Int32)
+  name: GetProcessGainUncertainty(Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainty_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty(System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty(System.Int32)
+  nameWithType: UnitParameters.GetProcessGainUncertainty(Int32)
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty*
+  name: GetProcessGainUncertainty
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainty_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty
+  nameWithType: UnitParameters.GetProcessGainUncertainty
 - uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetWarningList
   name: GetWarningList()
   href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetWarningList
@@ -3740,6 +3792,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGains
   nameWithType: UnitParameters.LinearGains
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc
+  name: LinearGainUnc
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_LinearGainUnc
+  commentId: P:TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc
+  nameWithType: UnitParameters.LinearGainUnc
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc*
+  name: LinearGainUnc
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_LinearGainUnc_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc
+  nameWithType: UnitParameters.LinearGainUnc
 - uid: TimeSeriesAnalysis.Dynamic.UnitParameters.SolverID
   name: SolverID
   href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_SolverID
@@ -3759,6 +3824,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstant_s
   nameWithType: UnitParameters.TimeConstant_s
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s
+  name: TimeConstantUnc_s
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_TimeConstantUnc_s
+  commentId: P:TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s
+  nameWithType: UnitParameters.TimeConstantUnc_s
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s*
+  name: TimeConstantUnc_s
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_TimeConstantUnc_s_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s
+  nameWithType: UnitParameters.TimeConstantUnc_s
 - uid: TimeSeriesAnalysis.Dynamic.UnitParameters.TimeDelay_s
   name: TimeDelay_s
   href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_TimeDelay_s
@@ -4223,19 +4301,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.RegressionResults.Param
   nameWithType: RegressionResults.Param
-- uid: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
-  name: Param95prcConfInterval
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param95prcConfInterval
-  commentId: P:TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
-  fullName: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
-  nameWithType: RegressionResults.Param95prcConfInterval
-- uid: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval*
-  name: Param95prcConfInterval
-  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param95prcConfInterval_
-  commentId: Overload:TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
+- uid: TimeSeriesAnalysis.RegressionResults.Param95prcConfidence
+  name: Param95prcConfidence
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param95prcConfidence
+  commentId: P:TimeSeriesAnalysis.RegressionResults.Param95prcConfidence
+  fullName: TimeSeriesAnalysis.RegressionResults.Param95prcConfidence
+  nameWithType: RegressionResults.Param95prcConfidence
+- uid: TimeSeriesAnalysis.RegressionResults.Param95prcConfidence*
+  name: Param95prcConfidence
+  href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_Param95prcConfidence_
+  commentId: Overload:TimeSeriesAnalysis.RegressionResults.Param95prcConfidence
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.RegressionResults.Param95prcConfInterval
-  nameWithType: RegressionResults.Param95prcConfInterval
+  fullName: TimeSeriesAnalysis.RegressionResults.Param95prcConfidence
+  nameWithType: RegressionResults.Param95prcConfidence
 - uid: TimeSeriesAnalysis.RegressionResults.RegressionWarnings
   name: RegressionWarnings
   href: api/TimeSeriesAnalysis.RegressionResults.html#TimeSeriesAnalysis_RegressionResults_RegressionWarnings

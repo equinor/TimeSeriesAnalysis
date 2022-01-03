@@ -27,7 +27,7 @@ namespace TimeSeriesAnalysis
             AbleToIdentify = false;
             Rsq = 0;
             ObjectiveFunctionValue = Double.PositiveInfinity;
-            Param95prcConfInterval = null;
+            Param95prcConfidence = null;
             Y_modelled = null;
             VarCovarMatrix = null;
             NfittingBadDataPoints = 0;
@@ -46,9 +46,10 @@ namespace TimeSeriesAnalysis
         /// </summary>
         public double[] Param { get; set; }
         /// <summary>
-        /// The 95 percent confidence intervals of parameters
+        /// The 95 percent confidence  of parameters 
+        /// The confidence interval will be Param +/- Param95prcConfidence
         /// </summary>
-        public double[] Param95prcConfInterval { get; set; }
+        public double[] Param95prcConfidence { get; set; }
         /// <summary>
         /// The variance/covariance matrix of the regression run
         /// </summary>
@@ -80,6 +81,9 @@ namespace TimeSeriesAnalysis
         /// </summary>
         public int NfittingTotalDataPoints { get; set; }
 
+        /// <summary>
+        /// Regression warnings
+        /// </summary>
         public List<RegressionWarnings> RegressionWarnings { get; set; }
 
 

@@ -272,6 +272,32 @@
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_BiasUnc_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_BiasUnc" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.BiasUnc">BiasUnc</h4>
+  <div class="markdown level1 summary"><p>The 95% uncertainty of the bias</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? BiasUnc { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_Curvatures_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.Curvatures*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_Curvatures" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.Curvatures">Curvatures</h4>
   <div class="markdown level1 summary"><p>The nonlinear curvature of the process gain, this paramter is multiplied + Curvatures*((u-u0)/Unorm)^2.
@@ -325,6 +351,32 @@ If value is <code>null</code>c&gt; then no curvatures are added to the model</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_LinearGainUnc_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_LinearGainUnc" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.LinearGainUnc">LinearGainUnc</h4>
+  <div class="markdown level1 summary"><p>An array of 95%  uncertatinty in the linear gains  (u-u0))</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] LinearGainUnc { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_TimeConstant_s_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstant_s*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_TimeConstant_s" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstant_s">TimeConstant_s</h4>
   <div class="markdown level1 summary"><p>A time constant in seconds, the time a 1. order linear system requires to do 63% of a step response.
@@ -334,6 +386,32 @@ Set to zero to turn off time constant in model.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public double TimeConstant_s { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_TimeConstantUnc_s_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_TimeConstantUnc_s" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.TimeConstantUnc_s">TimeConstantUnc_s</h4>
+  <div class="markdown level1 summary"><p>The uncertinty of the time constant estimate</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double TimeConstantUnc_s { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -463,6 +541,32 @@ If value is <code>null</code>c&gt; then no Unorm is used in the model</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetNumInputs_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetNumInputs" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs">GetNumInputs()</h4>
+  <div class="markdown level1 summary"><p>Get the number of inputs U to the model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetNumInputs()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGain_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGain*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGain_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGain(System.Int32)">GetProcessGain(Int32)</h4>
   <div class="markdown level1 summary"><p>Return the process gain for a given index at u=u0</p>
@@ -530,6 +634,79 @@ the linear and curvature terms of the model : dy/du(u=u0)
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainties_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainties" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainties">GetProcessGainUncertainties()</h4>
+  <div class="markdown level1 summary"><p>Get all the process gain uncertainties</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] GetProcessGainUncertainties()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainty_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitParameters_GetProcessGainUncertainty_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.UnitParameters.GetProcessGainUncertainty(System.Int32)">GetProcessGainUncertainty(Int32)</h4>
+  <div class="markdown level1 summary"><p>Return the process gain uncertatinty for a given input index at u=u0</p>
+<p>
+Note that for nonlinear processes, the process gain is given by a combination of 
+the linear and curvature terms of the model : dy/du(u=u0)
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetProcessGainUncertainty(int inputIdx)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">inputIdx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
