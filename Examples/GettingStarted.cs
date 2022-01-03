@@ -129,7 +129,7 @@ namespace TimeSeriesAnalysis._Examples
 
             double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
-            double[,] U = Array2D<double>.Create(new List<double[]>{u1 ,u2});
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]>{u1 ,u2});
 
             var dataSet = new UnitDataSet(timeBase_s,U);
             var simulator = new UnitSimulator(model);

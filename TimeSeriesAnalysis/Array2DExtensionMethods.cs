@@ -116,7 +116,7 @@ namespace TimeSeriesAnalysis
 
         static public double[][] Convert2DtoJagged(this double[,] matrix)
         {
-            return Array2D<double>.Convert2DtoJagged(matrix);
+            return Array2D<double>.CreateJaggedFrom2D(matrix);
         }
 
         ///<summary>

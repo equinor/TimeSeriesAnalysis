@@ -661,27 +661,56 @@ namespace TimeSeriesAnalysis
         /// <param name="Y">vector of outptu variable values to be modelled</param>
         /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
+        /// <param name="XindicesToRegularize">(optional) only the indices in this list are to be regularized to zero</param>
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
-        public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null)
+        public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null)
         {
-            bool doInterpolateYforBadIndices = true;
-            MultipleLinearRegression regression;
+            const bool doNormalizationToZero = true;//by default: true
+
+            RegressionResults results = new RegressionResults();
+            var vec = new Vec();
+
             double[][] X_T;
-            if (X.GetNColumns() > X.GetNRows())
+            var X_withBias = Array2D<double>.Append(X, Vec<double>.Fill(1, X.GetNColumns()));
+            if (X_withBias.GetNColumns() > X_withBias.GetNRows())
             {
-                //  Accord.Math.Matrix.
-                X_T = Accord.Math.Matrix.Transpose(X);
+                X_T = Accord.Math.Matrix.Transpose(X_withBias);
             }
             else
             {
-                X_T = X;
+                X_T = X_withBias;
             }
+
+            var X_rank =  Accord.Math.Matrix.Rank(Array2D<double>.Created2DFromJagged(X_T));
+            var X_columnsToDisable = new List<int>();
+            if (X_rank < X_T.GetNColumns())
+            {
+                for (int colIdx = 0; colIdx < X_T.GetNColumns()-1; colIdx++)
+                {
+                    var colMax = vec.Max(Array2D<double>.GetColumn(X_T, colIdx));
+                    var colMin = vec.Min(Array2D<double>.GetColumn(X_T, colIdx));
+
+                    if (colMax - colMin < 0.001)
+                    {
+                        X_columnsToDisable.Add(colIdx);
+                    }
+                    // TODO: you could possibly check if two inputs are scaled versions of each other here.
+                }
+                results.RegressionWarnings.Add(RegressionWarnings.InputMatrixIsRankDeficient);
+            }
+
+  
+            //if any columns in X are constant, they trigger a numerical instability where
+            // gain of constant X column is a very big positive number and bias is a very large negative number.
+
+            bool doInterpolateYforBadIndices = true;
+            MultipleLinearRegression regression;
+
             // weight-to-zero all indices which are to be ignored!
-            double[] weights = null;
+            double[] weights = Vec<double>.Fill(1, Y.Length); //null;
             if (yIndToIgnore != null)
             {
-                weights = Vec<double>.Fill(1, Y.Length);
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
                     int curInd = yIndToIgnore[i];
@@ -714,14 +743,56 @@ namespace TimeSeriesAnalysis
 
             OrdinaryLeastSquares accordFittingAlgo = new OrdinaryLeastSquares()
             {
-                IsRobust = false // to use SVD or not.
+                IsRobust = true, // to use SVD or not, has benefits if columns in the X-matrix are constant, otherwise the gains might run up to big values.
+                UseIntercept = false // default is "true", uses a default bias term, but this does not paly well with regularization.
             };
-            RegressionResults results = new RegressionResults();
+
             //TODO: try to catch rank deficient or singular X instead of generating exception.
             try
             {
-                // note: weights have no effect prior to accord 3.7.0 
-                regression = accordFittingAlgo.Learn(X_T, Y, weights);
+                if (doNormalizationToZero)
+                {
+                    //var X_T_reg = X_T;
+                    List<double[]> regX = new List<double[]>();
+
+                    int nGains = X_T[0].Length-1;//minus one: bias should not be normalized!!!
+                    // if no indices are specified, then apply to all..
+                    if (XindicesToRegularize == null)
+                    {
+                        for (int inputIdx = 0; inputIdx < nGains; inputIdx++)
+                        {
+                            var newRow = Vec<double>.Fill(0, nGains + 1);//+1 for bias
+                            newRow[inputIdx] = 1;
+                            regX.Add(newRow);
+                        }
+                    }
+                    else
+                    {
+                        for (int inputIdx = 0; inputIdx < XindicesToRegularize.Count ; inputIdx++)
+                        {
+                            var idx = XindicesToRegularize[inputIdx];
+                            if (idx < nGains)
+                            {
+                                var newRow = Vec<double>.Fill(0, nGains + 1);//+1 for bias
+                                newRow[idx] = 1;
+                                regX.Add(newRow);
+                            }
+                        }
+                    }
+                    var X_T_reg = Array2D<double>.Combine(X_T, Array2D<double>.CreateJaggedFromList(regX));
+                    var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, regX.Count()));
+                    double? Y_mean = vec.Mean(Y);
+                    double regressionWeight = (double)Y.Length / 1000;
+                    var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, regX.Count())) ;
+
+                    // note: weights have no effect prior to accord 3.7.0 
+                    regression = accordFittingAlgo.Learn(X_T_reg, Y_reg, weights_reg);
+                }
+                else
+                {
+                    // note: weights have no effect prior to accord 3.7.0 
+                    regression = accordFittingAlgo.Learn(X_T, Y, weights);
+                }
                 if (yIndToIgnore == null)
                 {
                     results.NfittingBadDataPoints = 0;
@@ -771,15 +842,15 @@ namespace TimeSeriesAnalysis
                 {
                     yIndToIgnoreList = yIndToIgnore.ToList();
                 }
-                results.ObjectiveFunctionValue = (new Vec()).SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
+                results.ObjectiveFunctionValue = vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
 
-                results.Bias = regression.Intercept;
-                results.Gains = regression.Weights;
-                results.Param = Vec<double>.Concat(regression.Weights, regression.Intercept);
+                results.Bias = regression.Weights.Last();//regression.Intercept;
+                results.Gains = Vec<double>.SubArray(regression.Weights,0, regression.Weights.Length-2);
+                results.Param = regression.Weights;//Vec<double>.Concat(regression.Weights, regression.Intercept);
 
                 /*
                 // uncertainty estimation
-                if (false)// unceratinty does not take into account weights now?
+                if (false)// uncertainty does not take into account weights now?
                 {
                     //start: estimating uncertainty
                     try
@@ -811,7 +882,7 @@ namespace TimeSeriesAnalysis
                 results.AbleToIdentify = true;
                 return results;
             }
-            catch 
+            catch(Exception e) 
             {
                 results.AbleToIdentify = false;
                 return results;

@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Array2D-1.html",
-          "hash": "HA1WbaC2bM4cZoCADJEwqtX2uJsBBCf501ECmzLeMwI="
+          "hash": "EVjwzwZ3KM2/Rwshz0FcATEVt2Z74sI6GDlc1nVS98o="
         }
       },
       "is_incremental": false,
@@ -258,7 +258,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html",
-          "hash": "CVIGkHwvKAPNSAmdkr/17h1E7spb1mH1ibGHUsAJ54o="
+          "hash": "ivNG0hr2Msj7dbf0ix81KptlFu+a5N6JsuWZ3+PEonc="
         }
       },
       "is_incremental": false,
@@ -474,7 +474,19 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.RegressionResults.html",
-          "hash": "ZKG/rtWZejLlu/rcTxR/TwI4zQi+bMZlqSSKzyDzgx4="
+          "hash": "ie+jYAsLkLKucNd7jGXLl7sVsvV860xlopKXjOpP4v0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.RegressionWarnings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.RegressionWarnings.html",
+          "hash": "s89K6sHl1p7qyFKv9unY7HWuV3/pylBCr4l5bWF1das="
         }
       },
       "is_incremental": false,
@@ -654,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Vec.html",
-          "hash": "KjhX1udPbPJ8O8o03nU7lbpiehdWoAGrop0oimJOIiQ="
+          "hash": "WUmH+Dr756CKhypDvT+z0Y911jsuf+NGSkfxVtjfzO8="
         }
       },
       "is_incremental": false,
@@ -702,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.html",
-          "hash": "A3SAzGbbTcjBox8Oe56Tm6iO9ptuNPC9bWoGexKMwhY="
+          "hash": "UWYoDpHmoFuadyblo/lXnidM3JJeH4M+Ml+9UfiHoc8="
         }
       },
       "is_incremental": false,
@@ -726,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "oTtWpd4tIIiAA+mL13aSGZQPD9/ZsClLMMAILAQSvP0="
+          "hash": "KQ26OsConntv73+X97uYRTGagTrOiSB0CE9vF/tXXWM="
         }
       },
       "is_incremental": false,
@@ -906,7 +918,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/ex_sysid.html",
-          "hash": "r/vPgeARoDXYB+MclW6LW5nuC8SHAtb2WNAhXu01VdI="
+          "hash": "bzTuX8MZayd2X5QU7iRUhht9ysPMlvzAtaihR5CeWC0="
         }
       },
       "is_incremental": false,
@@ -1661,8 +1673,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 58,
-          "skipped_file_count": 57
+          "total_file_count": 59,
+          "skipped_file_count": 59
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

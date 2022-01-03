@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis.Test
         public void InitFromColumnList()
         {
             List<double[]> inputList = new List<double[]> {new  double[] {  5, 6 },new  double[]{ 4, 3 }};
-            var result=  Array2D<double>.Create(inputList);
+            var result=  Array2D<double>.CreateFromList(inputList);
             Assert.AreEqual(new double[,] { { 5, 4 },{6,3 } }, result) ;
         }
 
@@ -60,6 +60,21 @@ namespace TimeSeriesAnalysis.Test
             DateTime[] result = vec.GetRowsAfterIndex(1);
             Assert.AreEqual(new List<DateTime> { new DateTime(2000, 1, 2) }, result);
         }
+
+        [Test]
+        public void Combine()
+        {
+            double[][] matrix1 = new double[][] { new double[]{ 1, 2 ,3}, new double[] { 4, 5,6} };
+            double[][] matrix2 = new double[][] { new double[] { 7, 8,9 }, new double[] { 10, 11,12 } };
+            double[][] exp  = new double[][] { new double[] { 1, 2, 3 }, new double[] { 4, 5, 6 },
+                new double[] { 7,8,9}, new double[] { 10,11,12 }};
+
+            var comb = Array2D<double>.Combine(matrix1,matrix2);
+            Assert.AreEqual(exp, comb);
+        }
+
+
+
 
         [Test]
         public void Downsample()

@@ -41,11 +41,12 @@ namespace TimeSeriesAnalysis
 
 
 
-            ///<summary>
-            ///  Replace a single row of a matrix 
-            ///</summary>
 
-            static public double[,] ReplaceRow(double[,] matrix, int rowIndex, double[] newRowVec)
+        ///<summary>
+        ///  Replace a single row of a matrix 
+        ///</summary>
+
+        static public double[,] ReplaceRow(double[,] matrix, int rowIndex, double[] newRowVec)
         {
             if (newRowVec.Length != matrix.GetNColumns())
                 return null;

@@ -168,7 +168,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.Y_meas = y_meas;
             NumDataPoints = u.Count();
-            this.U = Array2D<double>.Create(new List<double[]> { u });
+            this.U = Array2D<double>.CreateFromList(new List<double[]> { u });
             this.TimeBase_s = timeBase_s;
             this.ProcessName = name;
         }
@@ -200,7 +200,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             this.Y_meas = Vec<double>.GetValuesAtIndices(y_meas.Item1,indY);
             var newU = Vec<double>.GetValuesAtIndices(u.Item1, indU);
-            this.U = Array2D<double>.Create(new List<double[]> { newU });
+            this.U = Array2D<double>.CreateFromList(new List<double[]> { newU });
             this.ProcessName = name;
         }
 

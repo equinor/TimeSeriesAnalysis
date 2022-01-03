@@ -36,10 +36,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class UnitIdentifier 
     {
-        const double fitMinImprovement = 0.0001;
-        const double rSquaredMinImprovement = 0.001;
-
-
+        const double obFunDiff_MinImprovement = 0.0001;
+        const double rSquaredDiff_MinImprovement = 0.001;
 
         /// <summary>
         /// Default Constructor
@@ -120,10 +118,10 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var vec = new Vec(dataSet.BadDataID);
 
+            var constantInputInds = new List<int>();
+            var correlatedInputInds = new List<int>();
+
             bool doNonzeroU0 = true;// should be: true
-           // bool doUseDynamicModel = true;// should be:true
-          //  bool doEstimateTimeDelay = true; // should be:true
-        //    bool doEstimateCurvature = true;// experimental
             double FilterTc_s = 0;// experimental: by default set to zero.
             bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
             double maxExpectedTc_s = dataSet.GetTimeSpan().TotalSeconds / 4;
@@ -142,9 +140,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var u = dataSet.U.GetColumn(k);
                     uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
-                    if (uNorm[k] == 0)
+                    //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
+                    if (vec.Max(u) == vec.Min(u))// input is constnat
                     {
-                        uNorm[k] = 1;
+                        constantInputInds.Add(k);
+                        uNorm[k] = Double.PositiveInfinity;
+                    }
+                    if (uNorm[k] == 0)// avoid div by zero
+                    {
+                        constantInputInds.Add(k);
+                        uNorm[k] = 0;
                     }
                 }
             }
@@ -164,13 +169,14 @@ namespace TimeSeriesAnalysis.Dynamic
             /////////////////////////////////////////////////////////////////
             // Try turning off the dynamic parts and just see the static model
             // 
+            var modelList = new List<UnitParameters>();
             int timeDelayIdx = 0;
             UnitParameters modelParams_StaticAndNoCurvature =
                 EstimateProcessForAGivenTimeDelay
                 (timeDelayIdx, dataSet, false, allCurvesDisabled,
                 FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
-           // processTimeDelayIdentifyObj.AddRun(modelParams_StaticAndNoCurvature);
-
+            // processTimeDelayIdentifyObj.AddRun(modelParams_StaticAndNoCurvature);
+            modelList.Add(modelParams_StaticAndNoCurvature);
             /////////////////////////////////////////////////////////////////
             // BEGIN WHILE loop to model process for different time delays               
             bool continueIncreasingTimeDelayEst = true;
@@ -180,11 +186,12 @@ namespace TimeSeriesAnalysis.Dynamic
             while (continueIncreasingTimeDelayEst)
             {
                 modelParams = null;
-                var modelList = new List<UnitParameters>();
+             
                 UnitParameters modelParams_noCurvature =
                     EstimateProcessForAGivenTimeDelay
                     (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesDisabled,
                     FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
+                modelList.Add(modelParams_noCurvature);
 
                 if (doEstimateCurvature && modelParams_noCurvature.WasAbleToIdentify)
                 {
@@ -192,12 +199,13 @@ namespace TimeSeriesAnalysis.Dynamic
                         EstimateProcessForAGivenTimeDelay
                         (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesEnabled,
                         FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
+                    
 
                     // only try rest of curvature models if it seems like it will help
                     // this is done to save on processing in case of many inputs (3 inputs= 8 identification runs)
                     //if (modelParams_noCurvature.FittingObjFunVal -modelParams_allCurvature.FittingObjFunVal > fitMinImprovement)
                     if (modelParams_allCurvature.WasAbleToIdentify && 
-                        modelParams_allCurvature.RsqFittingDiff - modelParams_noCurvature.RsqFittingDiff > rSquaredMinImprovement)
+                        modelParams_allCurvature.RsqFittingDiff - modelParams_noCurvature.RsqFittingDiff > rSquaredDiff_MinImprovement)
                     {
                         List<bool[]> allNonZeroCombinations = GetAllNonzeroBitArrays(u0.Count());
                         foreach (bool[] curCurveEnabledConfig in allNonZeroCombinations)
@@ -262,6 +270,14 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
+            if (constantInputInds.Count > 0)
+            {
+                modelParameters.AddWarning(ProcessIdentWarnings.ConstantInputU);
+            }
+            if (correlatedInputInds.Count > 0)
+            {
+                modelParameters.AddWarning(ProcessIdentWarnings.CorrelatedInputsU);
+            }
             // END While loop 
             /////////////////////////////////////////////////////////////////
 
@@ -296,8 +312,12 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+
+
         private UnitParameters ChooseBestModel(UnitParameters fallbackModel,List<UnitParameters> allModels)
         {
+
+
             UnitParameters bestModel = fallbackModel;
 
             // models will be arranged from least to most numbre of curvature terms
@@ -305,15 +325,20 @@ namespace TimeSeriesAnalysis.Dynamic
 
             foreach (UnitParameters curModel in allModels)
             {
-                // objective function: lower is better
-                double improvedRsquared = curModel.RsqFittingDiff - bestModel.RsqFittingDiff ;// positive if curmodel improves on the current best
-               
                 // Rsquared: higher is better
-                double improvedFit = bestModel.ObjFunValFittingDiff- curModel.ObjFunValFittingDiff ;// positive if curmodel improves on the current best
+                double RsqFittingDiff_improvement = curModel.RsqFittingDiff - bestModel.RsqFittingDiff ;
+                double RsqFittingAbs_improvement = curModel.RsqFittingAbs - bestModel.RsqFittingAbs;
 
 
-                if (improvedFit> fitMinImprovement &&
-                   improvedRsquared > rSquaredMinImprovement &&
+                // objective function: lower is better
+                double objFunDiff_improvement = bestModel.ObjFunValFittingDiff  - curModel.ObjFunValFittingDiff ;// positive if curmodel improves on the current best
+                double objFunAbs_improvement = bestModel.ObjFunValFittingAbs - curModel.ObjFunValFittingAbs ;// positive if curmodel improves on the current best
+
+
+                if (objFunDiff_improvement>= obFunDiff_MinImprovement && 
+                   RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
+                   objFunAbs_improvement>=0 &&
+                   RsqFittingAbs_improvement>=0 &&
                    curModel.WasAbleToIdentify
                    )
                 {
@@ -330,6 +355,10 @@ namespace TimeSeriesAnalysis.Dynamic
             )
         {
             Vec vec = new Vec(dataSet.BadDataID);
+
+            var inputIndicesToRegularize = new List<int> { 1 };
+
+
 
             double[] ycur, yprev = null, dcur, dprev = null;
             List<double[]> ucurList = new List<double[]>();
@@ -413,6 +442,8 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] processGains = Vec<double>.Fill(Double.NaN, ucurList.Count);
             double[] processCurvatures = Vec<double>.Fill(Double.NaN, ucurList.Count);
 
+            List<int> phiIndicesToRegularize = new List<int>();
+
             if (useDynamicModel)
             {
                 // Tc *xdot = x[k-1] + B*u[k-1]
@@ -489,7 +520,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
                     {
-                        phi_ols2D.WriteColumn(curIdx + 1, vec.Subtract(ucurList[curIdx], u0[curIdx]));
+                        double uNormCur = uNorm[curIdx];
+                        if (Double.IsInfinity(uNormCur) || Double.IsNaN(uNormCur) || uNormCur == 0)
+                        {
+                            phi_ols2D.WriteColumn(curIdx + 1, Vec<double>.Fill(0,ucurList[curIdx].Length));
+                        }
+                        else
+                        {
+                            phi_ols2D.WriteColumn(curIdx + 1, vec.Subtract(ucurList[curIdx], u0[curIdx]));
+                        }
                     }
                     if (doEstimateCurvature.Contains(true))
                     {
@@ -501,11 +540,11 @@ namespace TimeSeriesAnalysis.Dynamic
                             double uNormCur = 1;
                             if (uNorm != null)
                             {
-                                if (uNorm.Length - 1 > curIdx)
+                                if (curIdx<uNorm.Length )
                                 {
                                     if (uNorm[curIdx] <= 0)
                                     {
-                                        Shared.GetParserObj().AddError("uNorm illegal value, shoudl be positive and nonzero:" 
+                                        Shared.GetParserObj().AddError("uNorm illegal value, should be positive and nonzero:" 
                                             + uNorm[curIdx]);
                                     }
                                     else
@@ -514,13 +553,20 @@ namespace TimeSeriesAnalysis.Dynamic
                                     }
                                 }
                             }
-                            phi_ols2D.WriteColumn(curCurvature + ucurList.Count+ 1,
-                                vec.Div(vec.Pow(vec.Subtract(ucurList[curIdx], u0[curIdx]),2), uNormCur));
+                            if (Double.IsInfinity(uNormCur) || Double.IsNaN(uNormCur) || uNormCur == 0)
+                            {
+                                phi_ols2D.WriteColumn(curIdx + 1, Vec<double>.Fill(0, ucurList[curIdx].Length));
+                            }
+                            else
+                            {
+                                phi_ols2D.WriteColumn(curCurvature + ucurList.Count + 1,
+                                    vec.Div(vec.Pow(vec.Subtract(ucurList[curIdx], u0[curIdx]), 2), uNormCur));
+                            }
                             curCurvature++;
                         }
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
-                    regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
+                    regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(),phiIndicesToRegularize);
                 }
                 // ----------------- v2 -----------
                 // APPROXIMATE x[k-1] = y[k-1]-d[k-1]
@@ -546,7 +592,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         vec.Subtract(ycur, dcur);
                     }
-                    regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray());
+                    regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);
                 }
 
                 if (regResults.Param != null)
@@ -622,7 +668,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     Y_ols = vec.Subtract(ycur, dcur);
                 }
-                regResults = vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray());
+                regResults = vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);
                 timeConstant_s = 0;
                 if (regResults.Param != null)
                 {
@@ -658,7 +704,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 
-                double? recalcBias = ReEstimateBias(dataSet, parameters);
+                (double? recalcBias, double[] y_sim_recalc) = SimulateAndReEstimateBias(dataSet, parameters);
+                dataSet.Y_sim = y_sim_recalc;
                 if (recalcBias.HasValue)
                 {
                     parameters.Bias = recalcBias.Value;
@@ -674,11 +721,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 //
                 parameters.RsqFittingDiff = regResults.Rsq;
                 parameters.ObjFunValFittingDiff = regResults.ObjectiveFunctionValue;
+                parameters.ObjFunValFittingAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim,0);
                 // 
-            //   Plot.FromList(new List<double[]> { dataSet.Y_meas, dataSet.Y_sim }, new List<string> { "y1=xmod", "y1=xmeas" },
-            //          TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, dataSet.Y_meas.Length), "test");
+                //   Plot.FromList(new List<double[]> { dataSet.Y_meas, dataSet.Y_sim }, new List<string> { "y1=xmod", "y1=xmeas" },
+                //          TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, dataSet.Y_meas.Length), "test");
 
-                parameters.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim,null,0);
+                parameters.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim,null,0)*100;
 
                 return parameters;
             }
@@ -687,7 +735,7 @@ namespace TimeSeriesAnalysis.Dynamic
         // bias is not always accurate for dynamic model identification 
         // as it is as "difference equation" that matches the changes in the 
         //
-        private double? ReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
+        private (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
         {
             UnitDataSet internalData = new UnitDataSet(dataSet);
 
@@ -710,8 +758,13 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double[] diff = (new Vec(nanValue)).Subtract(yMeas_exceptIgnoredValues, ySim_exceptIgnoredValues);
-            double? bias = (new Vec(nanValue)).Mean(diff) ;
-            return bias;
+            double? bias = (new Vec(nanValue)).Mean(diff);
+            double[] y_sim_ret = null;
+            if (bias.HasValue)
+            {
+                y_sim_ret = (new Vec(nanValue)).Add(y_sim, bias.Value);
+            }
+            return (bias,y_sim_ret);
         }
     }
 }
