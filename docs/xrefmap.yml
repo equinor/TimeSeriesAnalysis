@@ -2549,6 +2549,18 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings
   fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings
   nameWithType: ProcessIdentWarnings
+- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ConstantInputU
+  name: ConstantInputU
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_ConstantInputU
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ConstantInputU
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ConstantInputU
+  nameWithType: ProcessIdentWarnings.ConstantInputU
+- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.CorrelatedInputsU
+  name: CorrelatedInputsU
+  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_CorrelatedInputsU
+  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.CorrelatedInputsU
+  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.CorrelatedInputsU
+  nameWithType: ProcessIdentWarnings.CorrelatedInputsU
 - uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.DataSetVeryShortComparedtoTMax
   name: DataSetVeryShortComparedtoTMax
   href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_DataSetVeryShortComparedtoTMax

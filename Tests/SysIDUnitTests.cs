@@ -148,13 +148,13 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <summary>
         /// These test criteria shoudl normally pass, unless you are testing the negative
         /// </summary>
-        public void DefaultAsserts(UnitModel model, UnitParameters designParameters)
+        public void DefaultAsserts(UnitModel model, UnitParameters designParameters,int numExpectedWarnings=0)
         {
             Console.WriteLine(model.ToString());
 
             Assert.IsNotNull(model, "returned model should never be null");
             Assert.IsTrue(model.GetModelParameters().AbleToIdentify(), "should be able to identify model");
-            Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == 0, "should give no warnings");
+            Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == numExpectedWarnings, "gave wrong number of warnings");
             //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
             double[] estGains = model.GetModelParameters().GetProcessGains();
@@ -556,7 +556,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
-            double[] u2 = Vec<double>.Fill(0,100);// TimeSeriesCreator.Step(40, 100, 0, 1);
+            double[] u2 = Vec<double>.Fill(0,100);// input is flat - the gain should in this case be zero!;//todo: try with nonzero const value
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
             UnitParameters designParameters = new UnitParameters
@@ -571,7 +571,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
-            DefaultAsserts(model, designParameters);
+            DefaultAsserts(model, designParameters,1);
         }
 
 

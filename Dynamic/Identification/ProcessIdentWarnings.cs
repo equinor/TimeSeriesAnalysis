@@ -57,7 +57,18 @@
         /// Re-estimating bias method returned null, so the bias from the intial estimation is used, be careful the bias 
         /// estimate may be off!
         /// </summary>
-        ReEstimateBiasFailed = 9
+        ReEstimateBiasFailed = 9,
+
+        /// <summary>
+        /// One or more inputs were constant and not identifiable, this can affect other parameters as well, and consider removing the input
+        /// or using a different dataset
+        /// </summary>
+        ConstantInputU = 10,
+
+        /// <summary>
+        /// Correlated inputs
+        /// </summary>
+        CorrelatedInputsU = 11
 
     }
 }

@@ -118,10 +118,10 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var vec = new Vec(dataSet.BadDataID);
 
+            var constantInputInds = new List<int>();
+            var correlatedInputInds = new List<int>();
+
             bool doNonzeroU0 = true;// should be: true
-           // bool doUseDynamicModel = true;// should be:true
-          //  bool doEstimateTimeDelay = true; // should be:true
-        //    bool doEstimateCurvature = true;// experimental
             double FilterTc_s = 0;// experimental: by default set to zero.
             bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
             double maxExpectedTc_s = dataSet.GetTimeSpan().TotalSeconds / 4;
@@ -140,9 +140,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var u = dataSet.U.GetColumn(k);
                     uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
-                    if (uNorm[k] == 0)
+                    //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
+                    if (vec.Max(u) == vec.Min(u))// input is constnat
                     {
-                        uNorm[k] = 1;
+                        constantInputInds.Add(k);
+                        uNorm[k] = Double.PositiveInfinity;
+                    }
+                    if (uNorm[k] == 0)// avoid div by zero
+                    {
+                        constantInputInds.Add(k);
+                        uNorm[k] = 0;
                     }
                 }
             }
@@ -263,6 +270,14 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
+            if (constantInputInds.Count > 0)
+            {
+                modelParameters.AddWarning(ProcessIdentWarnings.ConstantInputU);
+            }
+            if (correlatedInputInds.Count > 0)
+            {
+                modelParameters.AddWarning(ProcessIdentWarnings.CorrelatedInputsU);
+            }
             // END While loop 
             /////////////////////////////////////////////////////////////////
 
@@ -505,7 +520,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     phi_ols2D.WriteColumn(0, phi1_ols);
                     for (int curIdx = 0; curIdx < ucurList.Count; curIdx++)
                     {
-                        phi_ols2D.WriteColumn(curIdx + 1, vec.Subtract(ucurList[curIdx], u0[curIdx]));
+                        double uNormCur = uNorm[curIdx];
+                        if (Double.IsInfinity(uNormCur) || Double.IsNaN(uNormCur) || uNormCur == 0)
+                        {
+                            phi_ols2D.WriteColumn(curIdx + 1, Vec<double>.Fill(0,ucurList[curIdx].Length));
+                        }
+                        else
+                        {
+                            phi_ols2D.WriteColumn(curIdx + 1, vec.Subtract(ucurList[curIdx], u0[curIdx]));
+                        }
                     }
                     if (doEstimateCurvature.Contains(true))
                     {
@@ -517,7 +540,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             double uNormCur = 1;
                             if (uNorm != null)
                             {
-                                if (uNorm.Length - 1 > curIdx)
+                                if (curIdx<uNorm.Length )
                                 {
                                     if (uNorm[curIdx] <= 0)
                                     {
@@ -530,8 +553,15 @@ namespace TimeSeriesAnalysis.Dynamic
                                     }
                                 }
                             }
-                            phi_ols2D.WriteColumn(curCurvature + ucurList.Count+ 1,
-                                vec.Div(vec.Pow(vec.Subtract(ucurList[curIdx], u0[curIdx]),2), uNormCur));
+                            if (Double.IsInfinity(uNormCur) || Double.IsNaN(uNormCur) || uNormCur == 0)
+                            {
+                                phi_ols2D.WriteColumn(curIdx + 1, Vec<double>.Fill(0, ucurList[curIdx].Length));
+                            }
+                            else
+                            {
+                                phi_ols2D.WriteColumn(curCurvature + ucurList.Count + 1,
+                                    vec.Div(vec.Pow(vec.Subtract(ucurList[curIdx], u0[curIdx]), 2), uNormCur));
+                            }
                             curCurvature++;
                         }
                     }

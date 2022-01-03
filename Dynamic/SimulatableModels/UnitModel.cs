@@ -503,16 +503,16 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
 
             sb.AppendLine("-------------------------");
-            sb.AppendLine("objective(fitting,diffs) : " + SignificantDigits.Format(modelParameters.ObjFunValFittingDiff,4) );
-            sb.AppendLine("R2(fitting,diffs): " + SignificantDigits.Format(modelParameters.RsqFittingDiff, 4) );
+            sb.AppendLine("objective(diffs) : " + SignificantDigits.Format(modelParameters.ObjFunValFittingDiff,4) );
+            sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.RsqFittingDiff, 4) );
             sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.RsqFittingAbs, 4));
 
-            sb.AppendLine("fitting data points: " + modelParameters.NFittingTotalDataPoints + " of which " + modelParameters.NFittingBadDataPoints +" were excluded");
+            sb.AppendLine("model fit data points: " + modelParameters.NFittingTotalDataPoints + " of which " + modelParameters.NFittingBadDataPoints +" were excluded");
             foreach (var warning in modelParameters.GetWarningList())
-                sb.AppendLine("fitting warning :" + warning.ToString());
+                sb.AppendLine("model fit warning :" + warning.ToString());
             if (modelParameters.GetWarningList().Count == 0)
             {
-                sb.AppendLine("fitting : no error or warnings");
+                sb.AppendLine("model fit : no error or warnings");
             }
 
             foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
