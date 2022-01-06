@@ -32,7 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// The uncertinty of the time constant estimate
         /// </summary>
-        public double TimeConstantUnc_s { get; set; } = 0;
+        public double? TimeConstantUnc_s { get; set; } = null;
 
         /// <summary>
         /// The time delay in seconds.This number needs to be a multiple of the sampling rate.

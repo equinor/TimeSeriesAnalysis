@@ -434,6 +434,7 @@ namespace TimeSeriesAnalysis.Dynamic
         override public string ToString()
         {
             int sDigits = 3;
+            int sDigitsUnc = 2;
 
             int cutOffForUsingDays_s = 86400;
             int cutOffForUsingHours_s = 3600;
@@ -451,22 +452,30 @@ namespace TimeSeriesAnalysis.Dynamic
                 sb.AppendLine("---NOT able to identify---");
             }
 
+            string timeConstantString = "TimeConstant : ";
+
             // time constant
             if (modelParameters.TimeConstant_s < cutOffForUsingHours_s)
             {
-                sb.AppendLine("TimeConstant : " +
-                    SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec");
+                timeConstantString +=
+                    SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec";
             }
             else if (modelParameters.TimeConstant_s < cutOffForUsingDays_s)
             {
-                sb.AppendLine("TimeConstant : " +
-                    SignificantDigits.Format(modelParameters.TimeConstant_s/3600, sDigits) + " hours");
+                timeConstantString +=
+                    SignificantDigits.Format(modelParameters.TimeConstant_s/3600, sDigits) + " hours";
             }
             else // use days
             {
-                sb.AppendLine("TimeConstant : " +
-                    SignificantDigits.Format(modelParameters.TimeConstant_s/86400, sDigits) + " days");
+                timeConstantString +=
+                    SignificantDigits.Format(modelParameters.TimeConstant_s/86400, sDigits) + " days";
             }
+            if (modelParameters.TimeConstantUnc_s.HasValue)
+            {
+                timeConstantString += " ± " + SignificantDigits.Format(modelParameters.TimeConstantUnc_s.Value, sDigitsUnc);
+            }
+            sb.AppendLine(timeConstantString);
+
             // time delay
             if (modelParameters.TimeDelay_s < cutOffForUsingHours_s)
             {
@@ -492,7 +501,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     sb.AppendLine(
                         "\t " + SignificantDigits.Format(modelParameters.GetProcessGain(idx), sDigits) + " ± "
-                            + SignificantDigits.Format(modelParameters.GetProcessGainUncertainty(idx), sDigits)
+                            + SignificantDigits.Format(modelParameters.GetProcessGainUncertainty(idx), sDigitsUnc)
                         );
                     }
 
@@ -519,11 +528,12 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits) + " ± " + SignificantDigits.Format(modelParameters.BiasUnc.Value, sDigits));
+                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits) + 
+                    " ± " + SignificantDigits.Format(modelParameters.BiasUnc.Value, sDigitsUnc));
             }
 
             sb.AppendLine("-------------------------");
-            sb.AppendLine("objective(diffs) : " + SignificantDigits.Format(modelParameters.ObjFunValFittingDiff,4) );
+            sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.ObjFunValFittingDiff,4) );
             sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.RsqFittingDiff, 4) );
             sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.RsqFittingAbs, 4));
 
@@ -542,7 +552,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 sb.AppendLine("time delay est : no error or warnings");
             }
 
-            sb.AppendLine("solver:"+modelParameters.SolverID);
+            sb.AppendLine("solver: "+modelParameters.SolverID);
 
             return sb.ToString();
         }

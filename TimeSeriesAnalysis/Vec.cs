@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Math;
 using Accord.Statistics.Models.Regression.Linear;
 using Accord.Statistics.Models.Regression.Fitting;
 using System.Globalization;
@@ -869,7 +870,12 @@ namespace TimeSeriesAnalysis
 
                     int thetaLength = regression.Weights.Length;
 
-                    results.VarCovarMatrix = new double[thetaLength][];
+                    //                    results.VarCovarMatrix = Accord.Math.Matrix.Inverse(informationMatrix);
+                    results.VarCovarMatrix = Accord.Math.Matrix.PseudoInverse(informationMatrix);
+
+                    // old and wrong appraoch to calculating the covariance matrix
+                    /*  
+                     * results.VarCovarMatrix = new double[thetaLength][];
                     for (int i = 0; i < thetaLength; i++)
                     {
                         results.VarCovarMatrix[i] = new double[thetaLength];
@@ -877,7 +883,7 @@ namespace TimeSeriesAnalysis
                         {
                             results.VarCovarMatrix[i][j] = mse * Math.Sqrt(Math.Abs(informationMatrix[i][j]));
                         }
-                    }
+                         }*/
                 }
                 catch
                 {

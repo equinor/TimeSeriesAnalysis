@@ -729,7 +729,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim,null,0)*100;
 
                 // add inn uncertainty
-                CalculateUncertainty(regResults, ref parameters);
+                CalculateUncertainty(regResults, dataSet.TimeBase_s, ref parameters);
 
                 return parameters;
             }
@@ -738,7 +738,7 @@ namespace TimeSeriesAnalysis.Dynamic
         // references:
         // http://dept.stat.lsa.umich.edu/~kshedden/Courses/Stat406_2004/Notes/variance.pdf
         //https://stats.stackexchange.com/questions/41896/varx-is-known-how-to-calculate-var1-x
-        private void CalculateUncertainty(RegressionResults regResults, ref UnitParameters parameters)
+        private void CalculateUncertainty(RegressionResults regResults,double timeBase_s, ref UnitParameters parameters)
         {
             var processGainUnc = new List<double>();
 
@@ -746,13 +746,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 return;
 
             double a = regResults.Param[0];
-            for(int inputIdx= 0; inputIdx< parameters.GetNumInputs(); inputIdx++)
+            double varA = regResults.VarCovarMatrix[0][0];
+            double sqrtN = Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints);
+            for (int inputIdx= 0; inputIdx< parameters.GetNumInputs(); inputIdx++)
             { 
                 double b = regResults.Param[1+inputIdx];
                 //
                 // v1: only works for linear models
                 //
-                double varA = regResults.VarCovarMatrix[0][0];
                 double varB = regResults.VarCovarMatrix[inputIdx+1][inputIdx+1];
                 double covAB1 = regResults.VarCovarMatrix[0][inputIdx+1];
 
@@ -775,39 +776,54 @@ namespace TimeSeriesAnalysis.Dynamic
                  double covTerm = a* Math.Pow(1 - a, -2);
                  double varbdivby1minusA = 
                     (Math.Pow(dg_da, 2) * varA + Math.Pow(dg_db, 2) * varB + covTerm * covAB1) ;
-                
+
 
                 // second approach : 
                 // variance of multipled vairables : var(XY) = var(x)*var(y) +var(x)*(E(Y))^2 + varY*E(X)^2
                 // variance of var (b*(1/(1-a))) = var(b)*var(1/(1-a)) + var(b)*E(1/(1-a))^2 +var(1/(1-a))^2 * b
                 // var(1/(1-a)) - >first order linear tayolor approximation.
-               //  double var1divBya = Math.Pow(1-a, -4) * varA;
-               // double varbdivby1minusA = varB * var1divBya + varB * Math.Pow(1 / (1 - a), 2) + Math.Pow(var1divBya, 2) * b;
+                // 
+                // https://stats.stackexchange.com/questions/41896/varx-is-known-how-to-calculate-var1-x
+                // if you use first order taylor expanison, 
+                // Var[g(X)]≈g′(μ)^2Var(X)
+                // var(1/x) = 1/(mu^4)*var(x), where mu is the E
+
+                //  double var1divBya = Math.Pow(1-a, -4) * varA;
+                // double varbdivby1minusA = varB * var1divBya + varB * Math.Pow(1 / (1 - a), 2) + Math.Pow(var1divBya, 2) * b;
 
 
                 // common to both appraoches:
                 // standard error is the population standard deviation divided by square root of the number of samples N
-                double standardError_processGain = varbdivby1minusA / Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints); 
+                double standardError_processGain = varbdivby1minusA / sqrtN; 
 
                 // the 95% conf intern is 1.96 times the standard error for a normal distribution
                 processGainUnc.Add(standardError_processGain * 1.96);//95% uncertainty 
             }
             parameters.LinearGainUnc = processGainUnc.ToArray();
 
+            // time constant uncertainty
+            // Tc = TimeBase_s * (1/a - 1)^1
+            // var(1/(1/a - 1)) - > first order linear tayolor approximation.
+            // // Var[g(X)]≈dg/dmu(μ)^2 * Var(X)
 
-            // bias uncertianty 
+            // derivate(chain rule) : d[(1/a - 1)^-1]/da == (1/a-1)^-2*(a^-2)
 
+            // remmember that Var(cX) = c^2*Var(X)!
+            // thus since Tc = TimeBase_s * (1/a - 1)^-1
+            //var(Tc = TimeBase_s * (1/a - 1)) = TimeBase_s^2 * var(1/a - 1)
+
+
+            // uncertainty = var(Tc*(1/a-1)^-1)*sqrt(N)*1.96
+            double varTc = (Math.Pow(timeBase_s, 2) * Math.Pow(1 / a - 1, -2) * Math.Pow(a, -2) * varA);
+            double standardErrorTc = varTc/ sqrtN;
+             parameters.TimeConstantUnc_s = standardErrorTc *1.96;//95 prc unceratinty
+            //parameters.TimeConstantUnc_s = varTc;
+
+            // bias uncertainty 
             int biasInd = regResults.Param.Length-1;
-            parameters.BiasUnc = regResults.VarCovarMatrix[biasInd][biasInd] * Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints) * 1.96;
-
-
+            //parameters.BiasUnc = regResults.VarCovarMatrix[biasInd][biasInd];
+             parameters.BiasUnc = regResults.VarCovarMatrix[biasInd][biasInd] /sqrtN * 1.96;
         }
-
-
-
-
-
-
 
         // 
         // bias is not always accurate for dynamic model identification 
