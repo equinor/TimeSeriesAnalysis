@@ -4,10 +4,9 @@
 
 
 # TimeSeriesAnalysis
-An open-source library for development and acceptance testing of time-series-based algorithms that may incude
+An open-source library for development and testing of time-series-based algorithms, including
 - Transients/dynamic model identification, 
-- dynamic simulation, 
-- filtering, and
+- dynamic simulation, and
 - advanced industrial PID-control. 
 
 The library can be used from C#, Matlab or Python.
