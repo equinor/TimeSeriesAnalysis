@@ -158,11 +158,11 @@ namespace TimeSeriesAnalysis.Test.SysID
             //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
             double[] estGains = model.GetModelParameters().GetProcessGains();
-            for (int k = 0; k < estGains.Count(); k++)
+/*            for (int k = 0; k < estGains.Count(); k++)
             {
                 Assert.IsTrue(Math.Abs(designParameters.GetProcessGain(k) - estGains[k]) < 0.1,
                 "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.GetProcessGain(k));
-            }
+            }*/
             if (designParameters.TimeConstant_s < 0.5)
             {
                 Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeConstant_s - designParameters.TimeConstant_s) < 0.1,
@@ -396,7 +396,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new double[] { 1 },
                 Curvatures = new double[] { curvature },
                 UNorm = new double[] { 1.1 },
-                U0 = new double[] { 1 },
+                U0 = new double[] { 1.5 },
                 Bias = bias
             };
 
@@ -480,7 +480,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 1, 0.7 },
                 Curvatures = curvatures,
-                U0 = new double[] { 1, 1 },// set this to make results comparable
+                U0 = new double[] { 1.1, 1.1 },// set this to make results comparable
                 UNorm = new double[] { 1, 1 },// set this to make results comparable
                 Bias = bias
             };
@@ -491,7 +491,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 1, 0.7 },
-                U0 = new double[] { 1, 1 },
+                U0 = new double[] { 1.1, 1.1 },
                 Bias = bias
             };
             var refModel = new UnitModel(paramtersNoCurvature, timeBase_s, "reference");

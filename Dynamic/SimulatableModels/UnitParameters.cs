@@ -57,10 +57,16 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[] Curvatures { get; set; } = null;
 
         /// <summary>
+        /// The unceratainties of the curvature term of the process gains 
+        /// </summary>
+        public double[] CurvatureUnc { get; set; } = null;
+
+
+        /// <summary>
         /// The working point of the model, the value of each U around which the model is localized.
         /// If value is <c>null</c>c> then no U0 is used in the model
         /// </summary>
-        public  double[] U0 { get; set; } = null;
+        public double[] U0 { get; set; } = null;
 
         /// <summary>
         /// A "normal range" of U that is used in the nonlinear curvature term ((u-u0)/Unorm)^2.
@@ -101,7 +107,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Return the process gain for a given index at u=u0
+        /// Return the "total combined" process gain for a given index at u=u0, a combination of lineargain and curvature gain
         /// <para>
         /// Note that for nonlinear processes, the process gain is given by a combination of 
         /// the linear and curvature terms of the model : dy/du(u=u0)
@@ -109,7 +115,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputIdx"></param>
         /// <returns></returns>
-        public double GetProcessGain(int inputIdx)
+        public double GetTotalCombinedProcessGain(int inputIdx)
         {
             if (inputIdx > LinearGains.Length-1)
             {
@@ -120,12 +126,18 @@ namespace TimeSeriesAnalysis.Dynamic
             if (double.IsNaN(Curvatures[inputIdx]) )
                 return LinearGains[inputIdx];
 
+            // the "gain" of u is dy/du
+            // d/du [c/(1-a)*(u-u0)^2)]=
+            //      d/du [c/(1-a)*(u^2-2*u*u0 +2u0))]= 
+            //      d/du [c/(1-a)*(u^2-2u*u0)] =
+            //      c/(1-a)*[2*u-2u*u0]
+
             if (inputIdx <= Curvatures.Length - 1)
             {
                 if ( UNorm== null)
-                    return LinearGains[inputIdx] + 2 * Curvatures[inputIdx];
+                    return LinearGains[inputIdx] +  Curvatures[inputIdx];
                 else
-                    return LinearGains[inputIdx] + 2 * Curvatures[inputIdx] / UNorm[inputIdx];
+                    return LinearGains[inputIdx] +  Curvatures[inputIdx] / UNorm[inputIdx];//todo - this is wrong!!!
             }
             else
             {
@@ -142,7 +154,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputIdx"></param>
         /// <returns></returns>
-        public double GetProcessGainUncertainty(int inputIdx)
+        public double GetTotalCombinedProcessGainUncertainty(int inputIdx)
         {
             if (LinearGainUnc == null)
                 return double.NaN;
@@ -151,17 +163,14 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return double.NaN;
             }
-            if (Curvatures == null)
+            if (Curvatures == null|| CurvatureUnc == null)
                 return LinearGainUnc[inputIdx];
-            if (double.IsNaN(Curvatures[inputIdx]))
+            if (double.IsNaN(CurvatureUnc[inputIdx]))
                 return LinearGainUnc[inputIdx];
 
-            if (inputIdx <= Curvatures.Length - 1)
+            if (inputIdx <= CurvatureUnc.Length - 1)
             {
-                if (UNorm == null)
-                    return LinearGainUnc[inputIdx] + 2 * Curvatures[inputIdx];
-                else
-                    return LinearGainUnc[inputIdx] + 2 * Curvatures[inputIdx] / UNorm[inputIdx];
+                return LinearGainUnc[inputIdx] + CurvatureUnc[inputIdx];
             }
             else
             {
@@ -181,7 +190,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var list = new List<double>();
             for (int inputIdx = 0; inputIdx < U0.Length; inputIdx++)
             {
-                list.Add(GetProcessGain(inputIdx));
+                list.Add(GetTotalCombinedProcessGain(inputIdx));
             }
             return list.ToArray();
         }
@@ -195,7 +204,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var list = new List<double>();
             for (int inputIdx = 0; inputIdx < U0.Length; inputIdx++)
             {
-                list.Add(GetProcessGainUncertainty(inputIdx));
+                list.Add(GetTotalCombinedProcessGainUncertainty(inputIdx));
             }
             return list.ToArray();
         }

@@ -90,8 +90,22 @@ This model class is sufficent for real-world linear or weakly nonlinear dynamic 
 parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization
 </p>
 <p>
-The &quot;default&quot; process model is linear-in-paramters, so that it can be solved by linear regression
-and identification should thus be both fast and stable. 
+The &quot;default&quot; process model is identified using a linear-in-parameters paramterization(paramters a,b,c), so that it can be solved by linear regression
+and identification should thus be both fast and stable. The issue with the parametriation(a,b,c) is that the meaning of each paramter is less
+inutitive, for instance the time constant depends on a, but linear gain depends on both a and b, while curvature depends on a and c.
+Looking at the unceratinty of each parameter to determine if the model should be dynamic or static or what the uncertainty of the time constant is,
+is very hard, and this observation motivates re-paramtrizing the model after identification.
+</p>
+<p>
+When assessing and simulating the model, parmaters are converted into more intuitive paramters &quot;time constant&quot;, &quot;linear gains&quot; and &quot;curvature gain&quot;
+which are a different parametrization. The UnitIdentifier, UnitModel and UnitParamters classes handle this transition seamlessly to the user.
+Uncertainty is expressed in terms of this more intuitive parametrization, to allow for a more intuitive assessment of the parameters.
+</p>
+<p>
+Another advantage of the paramterization, is that the model internally separates betwen stedy-state and transient state, you can at any instance
+&quot;turn off&quot; dynamics and request the steady-state model output for the current input. This is useful if you have transient data that you want to 
+analyze in the steady-state, as you can then fit the model to all available data-points without having to select what data points you beleive are at 
+steady state, then you can disable dynamic terms to do a static analysis of the dynamic model.
 </p>
 <p>
 Time-delay is an integer parameter, and finding the time-delay alongside continous paramters
@@ -100,6 +114,9 @@ The time delay identification is done by splitting the time-delay estimation fro
 identification, turning the solver into a sequential optimization solver. 
 This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
 is deferred to <span class="xref">TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentifier</span>
+</p>
+<p>
+Since the aim is to identify transients/dynamics, the regression is done on model differences rather than absolute values
 </p>
 </div>
   <div class="markdown level0 conceptual"></div>

@@ -21,8 +21,22 @@ namespace TimeSeriesAnalysis.Dynamic
     /// parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization
     /// </para>
     /// <para>
-    /// The "default" process model is linear-in-paramters, so that it can be solved by linear regression
-    /// and identification should thus be both fast and stable. 
+    /// The "default" process model is identified using a linear-in-parameters paramterization(paramters a,b,c), so that it can be solved by linear regression
+    /// and identification should thus be both fast and stable. The issue with the parametriation(a,b,c) is that the meaning of each paramter is less
+    /// inutitive, for instance the time constant depends on a, but linear gain depends on both a and b, while curvature depends on a and c.
+    /// Looking at the unceratinty of each parameter to determine if the model should be dynamic or static or what the uncertainty of the time constant is,
+    /// is very hard, and this observation motivates re-paramtrizing the model after identification.
+    /// </para>
+    /// <para>
+    /// When assessing and simulating the model, parmaters are converted into more intuitive paramters "time constant", "linear gains" and "curvature gain"
+    /// which are a different parametrization. The UnitIdentifier, UnitModel and UnitParamters classes handle this transition seamlessly to the user.
+    /// Uncertainty is expressed in terms of this more intuitive parametrization, to allow for a more intuitive assessment of the parameters.
+    /// </para>
+    /// <para>
+    /// Another advantage of the paramterization, is that the model internally separates betwen stedy-state and transient state, you can at any instance
+    /// "turn off" dynamics and request the steady-state model output for the current input. This is useful if you have transient data that you want to 
+    /// analyze in the steady-state, as you can then fit the model to all available data-points without having to select what data points you beleive are at 
+    /// steady state, then you can disable dynamic terms to do a static analysis of the dynamic model.
     /// </para>
     /// <para>
     /// Time-delay is an integer parameter, and finding the time-delay alongside continous paramters
@@ -32,7 +46,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
     /// is deferred to <seealso cref="ProcessTimeDelayIdentifier"/>
     /// </para>
-    /// 
+    /// <para>
+    /// Since the aim is to identify transients/dynamics, the regression is done on model differences rather than absolute values
+    /// </para>
     /// </summary>
     public class UnitIdentifier 
     {
@@ -59,7 +75,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return Identify_Internal(ref dataSet,u0,uNorm);
         }
-
 
         /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given, but no time-constants
@@ -439,7 +454,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             RegressionResults regResults;
             double timeConstant_s = Double.NaN;
-            double[] processGains = Vec<double>.Fill(Double.NaN, ucurList.Count);
+            double[] linearProcessGains = Vec<double>.Fill(Double.NaN, ucurList.Count);
             double[] processCurvatures = Vec<double>.Fill(Double.NaN, ucurList.Count);
 
             List<int> phiIndicesToRegularize = new List<int>();
@@ -616,7 +631,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     if (a > 1)
                         a = 0;
-                    //d_mod_cur = d;
 
                     // the estimation finds "a" in the difference equation 
                     // a = 1/(1 + Ts/Tc)
@@ -629,7 +643,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         timeConstant_s = 0;
                     if (timeConstant_s < 0)
                         timeConstant_s = 0;
-                    processGains = vec.Div(b,1-a);
+
+                    linearProcessGains = vec.Div(b, 1 - a);
 
                     if (doEstimateCurvature.Contains(true) && c != null)
                     {
@@ -672,7 +687,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 timeConstant_s = 0;
                 if (regResults.Param != null)
                 {
-                    processGains = Vec<double>.SubArray(regResults.Param, 0, regResults.Param.Length - 2);
+                    linearProcessGains = Vec<double>.SubArray(regResults.Param, 0, regResults.Param.Length - 2);
                 }
             }
             UnitParameters parameters = new UnitParameters();
@@ -699,7 +714,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.WasAbleToIdentify = true;
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.TimeBase_s;
                 parameters.TimeConstant_s = timeConstant_s;
-                parameters.LinearGains = processGains;
+                parameters.LinearGains = linearProcessGains;
                 parameters.Curvatures = processCurvatures;
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
@@ -740,23 +755,22 @@ namespace TimeSeriesAnalysis.Dynamic
         //https://stats.stackexchange.com/questions/41896/varx-is-known-how-to-calculate-var1-x
         private void CalculateUncertainty(RegressionResults regResults,double timeBase_s, ref UnitParameters parameters)
         {
-            var processGainUnc = new List<double>();
-
             if (regResults.VarCovarMatrix == null)
                 return;
 
             double a = regResults.Param[0];
             double varA = regResults.VarCovarMatrix[0][0];
             double sqrtN = Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints);
+
+            /////////////////////////////////////////////////////
+            /// linear gain unceratinty
+            
+            var LinearGainUnc = new List<double>();
             for (int inputIdx= 0; inputIdx< parameters.GetNumInputs(); inputIdx++)
             { 
                 double b = regResults.Param[1+inputIdx];
-                //
-                // v1: only works for linear models
-                //
                 double varB = regResults.VarCovarMatrix[inputIdx+1][inputIdx+1];
                 double covAB1 = regResults.VarCovarMatrix[0][inputIdx+1];
-
                 // first approach:
                 // process gain uncertainty 
                 // process gain dy/du: b /(1- a) 
@@ -776,8 +790,6 @@ namespace TimeSeriesAnalysis.Dynamic
                  double covTerm = a* Math.Pow(1 - a, -2);
                  double varbdivby1minusA = 
                     (Math.Pow(dg_da, 2) * varA + Math.Pow(dg_db, 2) * varB + covTerm * covAB1) ;
-
-
                 // second approach : 
                 // variance of multipled vairables : var(XY) = var(x)*var(y) +var(x)*(E(Y))^2 + varY*E(X)^2
                 // variance of var (b*(1/(1-a))) = var(b)*var(1/(1-a)) + var(b)*E(1/(1-a))^2 +var(1/(1-a))^2 * b
@@ -791,16 +803,46 @@ namespace TimeSeriesAnalysis.Dynamic
                 //  double var1divBya = Math.Pow(1-a, -4) * varA;
                 // double varbdivby1minusA = varB * var1divBya + varB * Math.Pow(1 / (1 - a), 2) + Math.Pow(var1divBya, 2) * b;
 
-
                 // common to both appraoches:
                 // standard error is the population standard deviation divided by square root of the number of samples N
                 double standardError_processGain = varbdivby1minusA / sqrtN; 
 
                 // the 95% conf intern is 1.96 times the standard error for a normal distribution
-                processGainUnc.Add(standardError_processGain * 1.96);//95% uncertainty 
+                LinearGainUnc.Add(standardError_processGain * 1.96);//95% uncertainty 
             }
-            parameters.LinearGainUnc = processGainUnc.ToArray();
+            parameters.LinearGainUnc = LinearGainUnc.ToArray();
 
+            /////////////////////////////////////////////////
+            /// curvature unceratinty
+            /// 
+            var CurvatureUnc = new List<double>();
+            if (parameters.Curvatures != null)
+            {
+                for (int inputIdx = 0; inputIdx < parameters.Curvatures.Count(); inputIdx++)
+                {
+                    if (Double.IsNaN(parameters.Curvatures[inputIdx]))
+                    {
+                        CurvatureUnc.Add(double.NaN);
+                        continue;
+                    }
+                    // the "gain" of u is dy/du
+                    // d/du [c/(1-a)*(u-u0)^2)]=
+                    //      d/du [c/(1-a)*(u^2-2*u*u0 +2u0))]= 
+                    //      d/du [c/(1-a)*(u^2-2u*u0)] =
+                    //      c/(1-a)*[2*u-2u*u0]
+
+                    double curC = parameters.Curvatures[inputIdx];
+                    double curU0 = parameters.U0[inputIdx];
+                    double curUnorm = parameters.UNorm[inputIdx];
+
+                    double varCurCurvature = Math.Abs(curC/ (1 - a) / curUnorm * (2 * curU0 - 2 * Math.Pow(curU0, 2)));
+           
+                    double standarerrorCurvUnc = varCurCurvature / sqrtN;
+                    CurvatureUnc.Add(standarerrorCurvUnc*1.96);
+                }
+            }
+            parameters.CurvatureUnc = CurvatureUnc.ToArray();
+            /////////////////////////////////////////////////
             // time constant uncertainty
             // Tc = TimeBase_s * (1/a - 1)^1
             // var(1/(1/a - 1)) - > first order linear tayolor approximation.

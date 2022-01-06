@@ -141,8 +141,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         continue;
                     if (i < GetModelInputIDs().Length)//model inputs
                     {
-                        y_otherInputs += CalculateProcessGainTerm(i, givenInputs[i]);
-                        y_otherInputs += CalcuateCurvatureTerm(i, givenInputs[i]);
+                        y_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i]);
+                        y_otherInputs += CalcuateCurvatureProcessGainTerm(i, givenInputs[i]);
                     }
                     else // additive inputs
                     {
@@ -199,7 +199,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
         /// <returns>contribution to the output y, excluding bias and curvature contributions</returns>
-        private double CalculateProcessGainTerm(int inputIndex, double u)
+        private double CalculateLinearProcessGainTerm(int inputIndex, double u)
         {
             double processGainTerm = 0;
             if (modelParameters.U0 != null)
@@ -214,12 +214,12 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Determine the curvature term contribution to the output from a particular input for a particular value
+        /// Determine the curvature term contribution(c*(u-u0)^2/unorm) to the output from a particular input for a particular value
         /// </summary>
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
         /// <returns></returns>
-        private double CalcuateCurvatureTerm(int inputIndex, double u)
+        private double CalcuateCurvatureProcessGainTerm(int inputIndex, double u)
         {
             double curvatureTerm = 0;
 
@@ -273,8 +273,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         lastGoodValuesOfInputs[curInput] = inputs[curInput];
                     }
-                    x_static += CalculateProcessGainTerm(curInput, curUvalue);
-                    x_static += CalcuateCurvatureTerm(curInput, curUvalue);
+                    x_static += CalculateLinearProcessGainTerm(curInput, curUvalue);
+                    x_static += CalcuateCurvatureProcessGainTerm(curInput, curUvalue);
                 }
             }
             return x_static;
@@ -326,6 +326,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     ":Iterate() returned NaN because trying to simulate a model that was not able to be identified." );
                 return Double.NaN;
             }
+
+            // notice! the model does not use the paramters [a,b,c,unorm,td.u0] to simulate the process model
+            // instead it calculates the steady-state and then filters the steady-state with LowPass to get the appropriate time constant
+            //  - so it uses the parmaters [linearGain, curvatureGain, Timeconstant,td]
+
             double x_static = CalculateStaticState(inputs,badValueIndicator);
 
             // nb! if first iteration, start model at steady-state
@@ -500,18 +505,41 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
                 {
                     sb.AppendLine(
-                        "\t " + SignificantDigits.Format(modelParameters.GetProcessGain(idx), sDigits) + " ± "
-                            + SignificantDigits.Format(modelParameters.GetProcessGainUncertainty(idx), sDigitsUnc)
+                        "\t" + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGain(idx), sDigits) + " ± "
+                            + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGainUncertainty(idx), sDigitsUnc)
                         );
-                    }
-
+                }
                 sb.AppendLine("ProcessCurvatures : " + "none");
             }
             else
             {
-                sb.AppendLine("ProcessGains(at u0) : " + Vec.ToString(modelParameters.GetProcessGains(), sDigits));
-                sb.AppendLine(" -> Linear : " + Vec.ToString(modelParameters.LinearGains, sDigits));
-                sb.AppendLine(" -> Curvature : "  + Vec.ToString(modelParameters.Curvatures, sDigits));
+                sb.AppendLine("ProcessGains(at u0) : ");
+                for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
+                {
+                    sb.AppendLine(
+                        "\t" + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGain(idx), sDigits) + " ± "
+                            + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGainUncertainty(idx), sDigitsUnc)
+                        );
+                }
+                sb.AppendLine(" -> Linear Gain : "); //+ Vec.ToString(modelParameters.LinearGains, sDigits));
+                for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
+                {
+                    sb.AppendLine(
+                        "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits) + " ± "
+                            + SignificantDigits.Format(modelParameters.LinearGainUnc[idx], sDigitsUnc)
+                        );
+                }
+
+                sb.AppendLine(" -> Curvature Gain : ");//  + Vec.ToString(modelParameters.Curvatures, sDigits));
+                for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
+                {
+                    sb.AppendLine(
+                        "\t" + SignificantDigits.Format(modelParameters.Curvatures[idx], sDigits) + " ± "
+                            + SignificantDigits.Format(modelParameters.CurvatureUnc[idx], sDigitsUnc)
+                        );
+                }
+
+
                 sb.AppendLine(" -> u0 : " + Vec.ToString(modelParameters.U0, sDigits));
                 if (modelParameters.UNorm == null)
                 {
