@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Test.SysID
     /// </summary>
     class UnitIdentification
     {
-        static bool doPlotting = false;
+        static bool doPlotting = true;
         static Plot4Test plot = new Plot4Test(doPlotting);
         double timeBase_s = 1;
 
@@ -244,6 +244,32 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             DefaultAsserts(model, designParameters);
         }
+        [TestCase(Double.NaN)]
+        [TestCase(-9999)]
+        [TestCase(-99.215)]
+        public void AllBadValues(double badValueId, double bias = 2, double timeConstant_s = 10, int timeDelay_s = 5)
+        {
+            double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
+            double[] u2 = Vec<double>.Fill(badValueId, 300);
+
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 1, 2 },
+                U0 = Vec<double>.Fill(1, 2),
+                Bias = bias
+            };
+
+            bool addInBadDataToYmeas = false;
+            double noiseAmplitude = 0.01;
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude, addInBadDataToYmeas, badValueId);
+
+            Assert.IsFalse(model.GetModelParameters().WasAbleToIdentify);
+            // also: the model shoudl not downright crash!
+        }
+
 
         [TestCase(Double.NaN)]
         [TestCase(-9999)]
@@ -691,6 +717,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue((new Vec()).Max(model.GetModelParameters().GetProcessGains())<3);
             Assert.IsTrue((new Vec()).Max(model.GetModelParameters().GetProcessGains()) > 0.5);
             // DefaultAsserts(model, designParameters);
+
+            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2, u3 },
+                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2", "y3=u3" }, (int)timeBase_s, "NonwhiteNoise_I3");
+
         }
 
 

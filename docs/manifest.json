@@ -1342,7 +1342,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/index.html",
-          "hash": "k3YSSCIXkJ35ByUj8yWP7P92GOgwn3Z98c366/PKyh4="
+          "hash": "QRl9Dg1B5OWnRda+IsWRVaYELZj4NCfJw2tXr+sLcFA="
         }
       },
       "is_incremental": false,
@@ -1589,12 +1589,24 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "articles/sysid_tricks_of_the_trade.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/sysid_tricks_of_the_trade.html",
+          "hash": "PyPI8w3fXVSrLsbDSenowloX65wwLeOYMGBE9ODSPqE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "articles/toc.yml",
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "MT5ko46M6t1I5J8T/wRhavO1wNwDdsxA+F3aMOynrAs="
+          "hash": "Di28UDliNXeBQVoaO06Feam+qBcEQc9IjKk5uDZ6/fw="
         }
       },
       "is_incremental": false,
@@ -1633,7 +1645,7 @@
       "output": {
         ".html": {
           "relative_path": "readme.html",
-          "hash": "nQ+qoqNCCEmZQ7uh0M99q8eXZyPOTdS+vWFGD/k9qaA="
+          "hash": "FcZzJ4zEr8yALYUwTdSoPJtx5MGwOXbQ6nteod3Diuk="
         }
       },
       "is_incremental": false,
@@ -1667,8 +1679,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 45,
-          "skipped_file_count": 45
+          "total_file_count": 46,
+          "skipped_file_count": 46
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

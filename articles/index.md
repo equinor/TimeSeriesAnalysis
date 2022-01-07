@@ -3,11 +3,11 @@
 
 
 ------------------------------------------------------------------
- Source code:   https://github.com/equinor/timeseriesanalysis     
+ **Source code**   https://github.com/equinor/timeseriesanalysis     
 
- Releases      https://github.com/equinor/TimeSeriesAnalysis/releases 
+ **Releases**      https://github.com/equinor/TimeSeriesAnalysis/releases 
 
- Documentation  https://equinor.github.io/TimeSeriesAnalysis  
+ **Documentation**  https://equinor.github.io/TimeSeriesAnalysis  
 
 ------------------------------------------------------------------
 
@@ -15,17 +15,17 @@
 
 **An open-source library of methods to identify,simulate and control industrial process plants**
 
-The library has four main parts:
-1. a *custom dynamic identification algorithm* (built on top of linear regression) that implements many tricks-of-the-trade for finding time-series models 
+The three most significant aspects of the library are:
+1. a **custom dynamic identification algorithm** (built on top of linear regression) that implements many [tricks-of-the-trade](sysid_tricks_of_the_trade.md) for finding time-series models 
 that may include any combination of time-delay, time-constants, linear- and nonlinear gains to create *grey-box unit models*,
-2. a *state-of-the-art advanced industrial PID-controller* implementation,
-3. a *dynamic plant simulator* that is able to simulate joined together *combinations of unit models*, each unit-model may be an identified PID-controller or an identified model, and   
-4. a library of useful utility methods for dealing with matrices and vectors, loading data from CSV-files and quickly plotting time-series from C#/.NET.
+2. a **state-of-the-art advanced industrial PID-controller** unit-model implementation, and 
+3. a **dynamic plant simulator** that is able to simulate joined together *combinations of unit models*, each unit-model may be an identified PID-controller or an identified model.
 
 The main value proposition of the library is that
-- it collects many years combined industrial and academic experience into one a package of tools that are all integrated (compatible with one another), and 
-- because the library can be used to quickly spin-up dynamic simulations with little human interaction, it can serve as a foundation for *advanced analytics* or *data-mining*
-efforts within the field of process control or plant supervision.  
+1. it collects many years combined industrial and academic experience into one a package of tools that are *all integrated/compatible with each other* ,
+2. it aims to be *suitable for industrial implementation*, code-base should be robust  and well-tested, all edge-cases should be handled gracefully, and
+3. the possibility of automated the modeling and simulation, a requirement for *advanced analytics* or *data-mining* within plant supervision and -control.
+ 
 
 ## Motivation - "no black boxes" 
 

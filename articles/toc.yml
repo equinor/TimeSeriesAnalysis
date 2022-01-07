@@ -51,6 +51,10 @@
 - name: System identification
   href: sysid.md
   items:
+  
+        - name: System identification tricks-of-the-trade
+          href: sysid_tricks_of_the_trade.md
+
         - name: Design choices
           href: principles.md
 
