@@ -19,12 +19,13 @@ The three most significant aspects of the library are:
 1. a **custom dynamic identification algorithm** (built on top of linear regression) that implements many [tricks-of-the-trade](sysid_tricks_of_the_trade.md) for finding time-series models 
 that may include any combination of time-delay, time-constants, linear- and nonlinear gains to create *grey-box unit models*,
 2. a **state-of-the-art advanced industrial PID-controller** unit-model implementation, and 
-3. a **dynamic plant simulator** that is able to simulate joined together *combinations of unit models*, each unit-model may be an identified PID-controller or an identified model.
+3. a **dynamic plant simulator** that is able to simulate joined together *combinations of unit models*("plant models"), each unit-model may be an identified PID-controller or an identified model.
 
 The main value proposition of the library is that
 1. it collects many years combined industrial and academic experience into one a package of tools that are *all integrated/compatible with each other* ,
 2. it aims to be *suitable for industrial implementation*, code-base should be robust  and well-tested, all edge-cases should be handled gracefully, and
-3. the possibility of automated the modeling and simulation, a requirement for *advanced analytics* or *data-mining* within plant supervision and -control.
+3. it opens the possibility to *automate modeling and simulation* of plant models. This enables *advanced analytics* or *data-mining*, which by most definitions are automated
+or semi-automated.
  
 
 ## Motivation - "no black boxes" 

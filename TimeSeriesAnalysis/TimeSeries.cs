@@ -130,5 +130,22 @@ namespace TimeSeriesAnalysis
         }
 
 
+        /// <summary>
+        /// Get a subset starting at a specific date
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="startDate"></param>
+        /// <returns></returns>
+        public static (double[], DateTime[]) SubSet((double[], DateTime[]) input, DateTime startDate)
+        {
+            int endInd = input.Item1.Length-1;
+
+            int startInd = GetClosestIndexToDate(input, startDate);
+
+            return SubSet(input,startInd,endInd);
+        }
+
+
+
     }
 }
