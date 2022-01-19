@@ -9,21 +9,43 @@ using System.Globalization;
 
 namespace TimeSeriesAnalysis.Utility
 {
-    public class Table
+    public enum XYlineType
+    {
+        withMarkers=0,
+        noMarkers=1,
+        line=2
+    }
+
+    public class XYTable
     {
         List<string> names;
         List<double[]> values;
         int nValues = 0;
         List<string> columnNames;
+        string tableName;
+
+        XYlineType type;
 
         const int nSignificantDigits = 5;
 
-        public Table(List<string> columnNames)
+        public XYTable(string tableName, List<string> columnNames, XYlineType type = XYlineType.withMarkers)
         {
+            this.type = type;
+            this.tableName = tableName;
             this.nValues = columnNames.Count;
             this.columnNames = columnNames;
             names = new List<string>();
             values = new List<double[]>();
+        }
+
+        public string GetName()
+        {
+            return tableName;
+        }
+
+        public XYlineType GetLineType()
+        {
+            return type;
         }
 
         public void AddRow(double[] rowValues, string rowName="")

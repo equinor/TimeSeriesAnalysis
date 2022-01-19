@@ -5106,12 +5106,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Utility.PlotXY
   fullName: TimeSeriesAnalysis.Utility.PlotXY
   nameWithType: PlotXY
-- uid: TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.Table,System.String,System.String,System.Boolean)
-  name: FromTable(Table, String, String, Boolean)
-  href: api/TimeSeriesAnalysis.Utility.PlotXY.html#TimeSeriesAnalysis_Utility_PlotXY_FromTable_TimeSeriesAnalysis_Utility_Table_System_String_System_String_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.Table,System.String,System.String,System.Boolean)
-  fullName: TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.Table, System.String, System.String, System.Boolean)
-  nameWithType: PlotXY.FromTable(Table, String, String, Boolean)
+- uid: TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.XYTable,System.String,System.String,System.Boolean)
+  name: FromTable(XYTable, String, String, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.PlotXY.html#TimeSeriesAnalysis_Utility_PlotXY_FromTable_TimeSeriesAnalysis_Utility_XYTable_System_String_System_String_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.XYTable,System.String,System.String,System.Boolean)
+  fullName: TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.XYTable, System.String, System.String, System.Boolean)
+  nameWithType: PlotXY.FromTable(XYTable, String, String, Boolean)
 - uid: TimeSeriesAnalysis.Utility.PlotXY.FromTable*
   name: FromTable
   href: api/TimeSeriesAnalysis.Utility.PlotXY.html#TimeSeriesAnalysis_Utility_PlotXY_FromTable_
@@ -5119,6 +5119,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.PlotXY.FromTable
   nameWithType: PlotXY.FromTable
+- uid: TimeSeriesAnalysis.Utility.PlotXY.FromTables(System.Collections.Generic.List{TimeSeriesAnalysis.Utility.XYTable},System.String,System.String,System.Boolean)
+  name: FromTables(List<XYTable>, String, String, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.PlotXY.html#TimeSeriesAnalysis_Utility_PlotXY_FromTables_System_Collections_Generic_List_TimeSeriesAnalysis_Utility_XYTable__System_String_System_String_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.PlotXY.FromTables(System.Collections.Generic.List{TimeSeriesAnalysis.Utility.XYTable},System.String,System.String,System.Boolean)
+  name.vb: FromTables(List(Of XYTable), String, String, Boolean)
+  fullName: TimeSeriesAnalysis.Utility.PlotXY.FromTables(System.Collections.Generic.List<TimeSeriesAnalysis.Utility.XYTable>, System.String, System.String, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Utility.PlotXY.FromTables(System.Collections.Generic.List(Of TimeSeriesAnalysis.Utility.XYTable), System.String, System.String, System.Boolean)
+  nameWithType: PlotXY.FromTables(List<XYTable>, String, String, Boolean)
+  nameWithType.vb: PlotXY.FromTables(List(Of XYTable), String, String, Boolean)
+- uid: TimeSeriesAnalysis.Utility.PlotXY.FromTables*
+  name: FromTables
+  href: api/TimeSeriesAnalysis.Utility.PlotXY.html#TimeSeriesAnalysis_Utility_PlotXY_FromTables_
+  commentId: Overload:TimeSeriesAnalysis.Utility.PlotXY.FromTables
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.PlotXY.FromTables
+  nameWithType: PlotXY.FromTables
 - uid: TimeSeriesAnalysis.Utility.SignificantDigits
   name: SignificantDigits
   href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html
@@ -5259,57 +5275,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Write
   nameWithType: StringToFileWriter.Write
-- uid: TimeSeriesAnalysis.Utility.Table
-  name: Table
-  href: api/TimeSeriesAnalysis.Utility.Table.html
-  commentId: T:TimeSeriesAnalysis.Utility.Table
-  fullName: TimeSeriesAnalysis.Utility.Table
-  nameWithType: Table
-- uid: TimeSeriesAnalysis.Utility.Table.#ctor(System.Collections.Generic.List{System.String})
-  name: Table(List<String>)
-  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table__ctor_System_Collections_Generic_List_System_String__
-  commentId: M:TimeSeriesAnalysis.Utility.Table.#ctor(System.Collections.Generic.List{System.String})
-  name.vb: Table(List(Of String))
-  fullName: TimeSeriesAnalysis.Utility.Table.Table(System.Collections.Generic.List<System.String>)
-  fullName.vb: TimeSeriesAnalysis.Utility.Table.Table(System.Collections.Generic.List(Of System.String))
-  nameWithType: Table.Table(List<String>)
-  nameWithType.vb: Table.Table(List(Of String))
-- uid: TimeSeriesAnalysis.Utility.Table.#ctor*
-  name: Table
-  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Table.#ctor
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Table.Table
-  nameWithType: Table.Table
-- uid: TimeSeriesAnalysis.Utility.Table.AddRow(System.Double[],System.String)
-  name: AddRow(Double[], String)
-  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_AddRow_System_Double___System_String_
-  commentId: M:TimeSeriesAnalysis.Utility.Table.AddRow(System.Double[],System.String)
-  name.vb: AddRow(Double(), String)
-  fullName: TimeSeriesAnalysis.Utility.Table.AddRow(System.Double[], System.String)
-  fullName.vb: TimeSeriesAnalysis.Utility.Table.AddRow(System.Double(), System.String)
-  nameWithType: Table.AddRow(Double[], String)
-  nameWithType.vb: Table.AddRow(Double(), String)
-- uid: TimeSeriesAnalysis.Utility.Table.AddRow*
-  name: AddRow
-  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_AddRow_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Table.AddRow
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Table.AddRow
-  nameWithType: Table.AddRow
-- uid: TimeSeriesAnalysis.Utility.Table.ToCSV(System.String,System.String)
-  name: ToCSV(String, String)
-  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_ToCSV_System_String_System_String_
-  commentId: M:TimeSeriesAnalysis.Utility.Table.ToCSV(System.String,System.String)
-  fullName: TimeSeriesAnalysis.Utility.Table.ToCSV(System.String, System.String)
-  nameWithType: Table.ToCSV(String, String)
-- uid: TimeSeriesAnalysis.Utility.Table.ToCSV*
-  name: ToCSV
-  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_ToCSV_
-  commentId: Overload:TimeSeriesAnalysis.Utility.Table.ToCSV
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Utility.Table.ToCSV
-  nameWithType: Table.ToCSV
 - uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator
   name: TimeSeriesCreator
   href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html
@@ -5426,6 +5391,107 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.UnixTime.GetNowUnixTime
   nameWithType: UnixTime.GetNowUnixTime
+- uid: TimeSeriesAnalysis.Utility.XYlineType
+  name: XYlineType
+  href: api/TimeSeriesAnalysis.Utility.XYlineType.html
+  commentId: T:TimeSeriesAnalysis.Utility.XYlineType
+  fullName: TimeSeriesAnalysis.Utility.XYlineType
+  nameWithType: XYlineType
+- uid: TimeSeriesAnalysis.Utility.XYlineType.line
+  name: line
+  href: api/TimeSeriesAnalysis.Utility.XYlineType.html#TimeSeriesAnalysis_Utility_XYlineType_line
+  commentId: F:TimeSeriesAnalysis.Utility.XYlineType.line
+  fullName: TimeSeriesAnalysis.Utility.XYlineType.line
+  nameWithType: XYlineType.line
+- uid: TimeSeriesAnalysis.Utility.XYlineType.noMarkers
+  name: noMarkers
+  href: api/TimeSeriesAnalysis.Utility.XYlineType.html#TimeSeriesAnalysis_Utility_XYlineType_noMarkers
+  commentId: F:TimeSeriesAnalysis.Utility.XYlineType.noMarkers
+  fullName: TimeSeriesAnalysis.Utility.XYlineType.noMarkers
+  nameWithType: XYlineType.noMarkers
+- uid: TimeSeriesAnalysis.Utility.XYlineType.withMarkers
+  name: withMarkers
+  href: api/TimeSeriesAnalysis.Utility.XYlineType.html#TimeSeriesAnalysis_Utility_XYlineType_withMarkers
+  commentId: F:TimeSeriesAnalysis.Utility.XYlineType.withMarkers
+  fullName: TimeSeriesAnalysis.Utility.XYlineType.withMarkers
+  nameWithType: XYlineType.withMarkers
+- uid: TimeSeriesAnalysis.Utility.XYTable
+  name: XYTable
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html
+  commentId: T:TimeSeriesAnalysis.Utility.XYTable
+  fullName: TimeSeriesAnalysis.Utility.XYTable
+  nameWithType: XYTable
+- uid: TimeSeriesAnalysis.Utility.XYTable.#ctor(System.String,System.Collections.Generic.List{System.String},TimeSeriesAnalysis.Utility.XYlineType)
+  name: XYTable(String, List<String>, XYlineType)
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable__ctor_System_String_System_Collections_Generic_List_System_String__TimeSeriesAnalysis_Utility_XYlineType_
+  commentId: M:TimeSeriesAnalysis.Utility.XYTable.#ctor(System.String,System.Collections.Generic.List{System.String},TimeSeriesAnalysis.Utility.XYlineType)
+  name.vb: XYTable(String, List(Of String), XYlineType)
+  fullName: TimeSeriesAnalysis.Utility.XYTable.XYTable(System.String, System.Collections.Generic.List<System.String>, TimeSeriesAnalysis.Utility.XYlineType)
+  fullName.vb: TimeSeriesAnalysis.Utility.XYTable.XYTable(System.String, System.Collections.Generic.List(Of System.String), TimeSeriesAnalysis.Utility.XYlineType)
+  nameWithType: XYTable.XYTable(String, List<String>, XYlineType)
+  nameWithType.vb: XYTable.XYTable(String, List(Of String), XYlineType)
+- uid: TimeSeriesAnalysis.Utility.XYTable.#ctor*
+  name: XYTable
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Utility.XYTable.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.XYTable.XYTable
+  nameWithType: XYTable.XYTable
+- uid: TimeSeriesAnalysis.Utility.XYTable.AddRow(System.Double[],System.String)
+  name: AddRow(Double[], String)
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_AddRow_System_Double___System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.XYTable.AddRow(System.Double[],System.String)
+  name.vb: AddRow(Double(), String)
+  fullName: TimeSeriesAnalysis.Utility.XYTable.AddRow(System.Double[], System.String)
+  fullName.vb: TimeSeriesAnalysis.Utility.XYTable.AddRow(System.Double(), System.String)
+  nameWithType: XYTable.AddRow(Double[], String)
+  nameWithType.vb: XYTable.AddRow(Double(), String)
+- uid: TimeSeriesAnalysis.Utility.XYTable.AddRow*
+  name: AddRow
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_AddRow_
+  commentId: Overload:TimeSeriesAnalysis.Utility.XYTable.AddRow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.XYTable.AddRow
+  nameWithType: XYTable.AddRow
+- uid: TimeSeriesAnalysis.Utility.XYTable.GetLineType
+  name: GetLineType()
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_GetLineType
+  commentId: M:TimeSeriesAnalysis.Utility.XYTable.GetLineType
+  fullName: TimeSeriesAnalysis.Utility.XYTable.GetLineType()
+  nameWithType: XYTable.GetLineType()
+- uid: TimeSeriesAnalysis.Utility.XYTable.GetLineType*
+  name: GetLineType
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_GetLineType_
+  commentId: Overload:TimeSeriesAnalysis.Utility.XYTable.GetLineType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.XYTable.GetLineType
+  nameWithType: XYTable.GetLineType
+- uid: TimeSeriesAnalysis.Utility.XYTable.GetName
+  name: GetName()
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_GetName
+  commentId: M:TimeSeriesAnalysis.Utility.XYTable.GetName
+  fullName: TimeSeriesAnalysis.Utility.XYTable.GetName()
+  nameWithType: XYTable.GetName()
+- uid: TimeSeriesAnalysis.Utility.XYTable.GetName*
+  name: GetName
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_GetName_
+  commentId: Overload:TimeSeriesAnalysis.Utility.XYTable.GetName
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.XYTable.GetName
+  nameWithType: XYTable.GetName
+- uid: TimeSeriesAnalysis.Utility.XYTable.ToCSV(System.String,System.String)
+  name: ToCSV(String, String)
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_ToCSV_System_String_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.XYTable.ToCSV(System.String,System.String)
+  fullName: TimeSeriesAnalysis.Utility.XYTable.ToCSV(System.String, System.String)
+  nameWithType: XYTable.ToCSV(String, String)
+- uid: TimeSeriesAnalysis.Utility.XYTable.ToCSV*
+  name: ToCSV
+  href: api/TimeSeriesAnalysis.Utility.XYTable.html#TimeSeriesAnalysis_Utility_XYTable_ToCSV_
+  commentId: Overload:TimeSeriesAnalysis.Utility.XYTable.ToCSV
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.XYTable.ToCSV
+  nameWithType: XYTable.ToCSV
 - uid: TimeSeriesAnalysis.Vec
   name: Vec
   href: api/TimeSeriesAnalysis.Vec.html

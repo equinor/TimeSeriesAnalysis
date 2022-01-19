@@ -40,17 +40,55 @@ namespace TimeSeriesAnalysis.Test
             Console.WriteLine(plotURL);
         }
         [TestCase(Explicit = true, Reason = "opens Chrome window")]
-        public void XYPlot_single()
+        public void XYPlot_single_nonames()
         {
-            Table table = new Table(new List<string> { "var1","var2"});
-            table.AddRow(new double[] {1,1});
+            XYTable table = new XYTable("test",new List<string> { "var1","var2"});
+            table.AddRow(new double[] {1, 1 });
             table.AddRow(new double[] { 2, 2 });
             table.AddRow(new double[] { 3, 3 });
             PlotXY.FromTable(table,"XYunitTest1");
        
         }
 
+        [TestCase(Explicit = true, Reason = "opens Chrome window")]
+        public void XYPlot_double_nonames()
+        {
+            XYTable table = new XYTable("test", new List<string> { "var1", "var2" });
+            table.AddRow(new double[] { 1, 1 });
+            table.AddRow(new double[] { 2, 2 });
+            table.AddRow(new double[] { 3, 3 });
+            XYTable table2 = new XYTable("test2", new List<string> { "var1", "var2" });
+            table2.AddRow(new double[] { 1, 2 });
+            table2.AddRow(new double[] { 2, 3 });
+            table2.AddRow(new double[] { 3, 4 });
 
+            PlotXY.FromTables(new List<XYTable> {table,table2 }, "XYunitTest1");
+        }
+
+        [TestCase(Explicit = true, Reason = "opens Chrome window")]
+        public void XYPlot_single_withnames()
+        {
+            XYTable table = new XYTable("test", new List<string> { "var1", "var2" });
+            table.AddRow(new double[] { 1, 1 },"aa");
+            table.AddRow(new double[] { 2, 2 },"bb");
+            table.AddRow(new double[] { 3, 3 },"cc");
+            PlotXY.FromTable(table, "XYunitTest2");
+        }
+
+        [TestCase(Explicit = true, Reason = "opens Chrome window")]
+        public void XYPlot_double_withames()
+        {
+            XYTable table = new XYTable("test", new List<string> { "var1", "var2" });
+            table.AddRow(new double[] { 1, 1 }, "aa");
+            table.AddRow(new double[] { 2, 2 }, "bb");
+            table.AddRow(new double[] { 3, 3 }, "cc");
+            XYTable table2 = new XYTable("test2", new List<string> { "var1", "var2" },XYlineType.line);
+            table2.AddRow(new double[] { 1, 2 }, "aa");
+            table2.AddRow(new double[] { 2, 3 }, "bb");
+            table2.AddRow(new double[] { 3, 4 }, "cc");
+
+            PlotXY.FromTables(new List<XYTable> { table, table2 }, "XYunitTest3");
+        }
 
         [TestCase(Explicit = true, Reason = "opens Chrome window")]
         public void PlotFromTupleList()

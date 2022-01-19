@@ -202,7 +202,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <Compile Include="Utility\CSV.cs" />
     <Compile Include="Utility\PlotXY.cs" />
     <Compile Include="Utility\StringToFileWriter.cs" />
-    <Compile Include="Utility\Table.cs" />
+    <Compile Include="Utility\XYTable.cs" />
     <Compile Include="Utility\TimeSeriesCreator.cs" />
     <Compile Include="Utility\UnixTime.cs" />
     <Compile Include="Utility\Plot.cs" />
