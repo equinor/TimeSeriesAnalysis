@@ -39,6 +39,17 @@ namespace TimeSeriesAnalysis.Test
                 new DateTime(2020,1,1, 0,0,0), "Test_SubplotPositionWorksOk");
             Console.WriteLine(plotURL);
         }
+        [TestCase(Explicit = true, Reason = "opens Chrome window")]
+        public void XYPlot_single()
+        {
+            Table table = new Table(new List<string> { "var1","var2"});
+            table.AddRow(new double[] {1,1});
+            table.AddRow(new double[] { 2, 2 });
+            table.AddRow(new double[] { 3, 3 });
+            PlotXY.FromTable(table,"XYunitTest1");
+       
+        }
+
 
 
         [TestCase(Explicit = true, Reason = "opens Chrome window")]

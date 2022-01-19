@@ -4547,6 +4547,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.TimeSeries.Reverse
   nameWithType: TimeSeries.Reverse
+- uid: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple{System.Double[],System.DateTime[]},System.DateTime)
+  name: SubSet((Double[], DateTime[]), DateTime)
+  href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_SubSet_System_ValueTuple_System_Double___System_DateTime____System_DateTime_
+  commentId: M:TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple{System.Double[],System.DateTime[]},System.DateTime)
+  name.vb: SubSet((Double(), DateTime())(Of Double(), DateTime()), DateTime)
+  fullName: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple<System.Double[], System.DateTime[]>, System.DateTime)
+  fullName.vb: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple(Of System.Double(), System.DateTime()), System.DateTime)
+  nameWithType: TimeSeries.SubSet((Double[], DateTime[]), DateTime)
+  nameWithType.vb: TimeSeries.SubSet((Double(), DateTime())(Of Double(), DateTime()), DateTime)
 - uid: TimeSeriesAnalysis.TimeSeries.SubSet(System.ValueTuple{System.Double[],System.DateTime[]},System.Int32,System.Int32)
   name: SubSet((Double[], DateTime[]), Int32, Int32)
   href: api/TimeSeriesAnalysis.TimeSeries.html#TimeSeriesAnalysis_TimeSeries_SubSet_System_ValueTuple_System_Double___System_DateTime____System_Int32_System_Int32_
@@ -5091,6 +5100,25 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.Plot4Test.GetNumberOfPlotsMade
   nameWithType: Plot4Test.GetNumberOfPlotsMade
+- uid: TimeSeriesAnalysis.Utility.PlotXY
+  name: PlotXY
+  href: api/TimeSeriesAnalysis.Utility.PlotXY.html
+  commentId: T:TimeSeriesAnalysis.Utility.PlotXY
+  fullName: TimeSeriesAnalysis.Utility.PlotXY
+  nameWithType: PlotXY
+- uid: TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.Table,System.String,System.String,System.Boolean)
+  name: FromTable(Table, String, String, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.PlotXY.html#TimeSeriesAnalysis_Utility_PlotXY_FromTable_TimeSeriesAnalysis_Utility_Table_System_String_System_String_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.Table,System.String,System.String,System.Boolean)
+  fullName: TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.Table, System.String, System.String, System.Boolean)
+  nameWithType: PlotXY.FromTable(Table, String, String, Boolean)
+- uid: TimeSeriesAnalysis.Utility.PlotXY.FromTable*
+  name: FromTable
+  href: api/TimeSeriesAnalysis.Utility.PlotXY.html#TimeSeriesAnalysis_Utility_PlotXY_FromTable_
+  commentId: Overload:TimeSeriesAnalysis.Utility.PlotXY.FromTable
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.PlotXY.FromTable
+  nameWithType: PlotXY.FromTable
 - uid: TimeSeriesAnalysis.Utility.SignificantDigits
   name: SignificantDigits
   href: api/TimeSeriesAnalysis.Utility.SignificantDigits.html
@@ -5231,6 +5259,57 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.StringToFileWriter.Write
   nameWithType: StringToFileWriter.Write
+- uid: TimeSeriesAnalysis.Utility.Table
+  name: Table
+  href: api/TimeSeriesAnalysis.Utility.Table.html
+  commentId: T:TimeSeriesAnalysis.Utility.Table
+  fullName: TimeSeriesAnalysis.Utility.Table
+  nameWithType: Table
+- uid: TimeSeriesAnalysis.Utility.Table.#ctor(System.Collections.Generic.List{System.String})
+  name: Table(List<String>)
+  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table__ctor_System_Collections_Generic_List_System_String__
+  commentId: M:TimeSeriesAnalysis.Utility.Table.#ctor(System.Collections.Generic.List{System.String})
+  name.vb: Table(List(Of String))
+  fullName: TimeSeriesAnalysis.Utility.Table.Table(System.Collections.Generic.List<System.String>)
+  fullName.vb: TimeSeriesAnalysis.Utility.Table.Table(System.Collections.Generic.List(Of System.String))
+  nameWithType: Table.Table(List<String>)
+  nameWithType.vb: Table.Table(List(Of String))
+- uid: TimeSeriesAnalysis.Utility.Table.#ctor*
+  name: Table
+  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Table.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.Table.Table
+  nameWithType: Table.Table
+- uid: TimeSeriesAnalysis.Utility.Table.AddRow(System.Double[],System.String)
+  name: AddRow(Double[], String)
+  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_AddRow_System_Double___System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.Table.AddRow(System.Double[],System.String)
+  name.vb: AddRow(Double(), String)
+  fullName: TimeSeriesAnalysis.Utility.Table.AddRow(System.Double[], System.String)
+  fullName.vb: TimeSeriesAnalysis.Utility.Table.AddRow(System.Double(), System.String)
+  nameWithType: Table.AddRow(Double[], String)
+  nameWithType.vb: Table.AddRow(Double(), String)
+- uid: TimeSeriesAnalysis.Utility.Table.AddRow*
+  name: AddRow
+  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_AddRow_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Table.AddRow
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.Table.AddRow
+  nameWithType: Table.AddRow
+- uid: TimeSeriesAnalysis.Utility.Table.ToCSV(System.String,System.String)
+  name: ToCSV(String, String)
+  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_ToCSV_System_String_System_String_
+  commentId: M:TimeSeriesAnalysis.Utility.Table.ToCSV(System.String,System.String)
+  fullName: TimeSeriesAnalysis.Utility.Table.ToCSV(System.String, System.String)
+  nameWithType: Table.ToCSV(String, String)
+- uid: TimeSeriesAnalysis.Utility.Table.ToCSV*
+  name: ToCSV
+  href: api/TimeSeriesAnalysis.Utility.Table.html#TimeSeriesAnalysis_Utility_Table_ToCSV_
+  commentId: Overload:TimeSeriesAnalysis.Utility.Table.ToCSV
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.Table.ToCSV
+  nameWithType: Table.ToCSV
 - uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator
   name: TimeSeriesCreator
   href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html

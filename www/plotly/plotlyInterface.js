@@ -1,10 +1,27 @@
+// can parse create either
+// a) time-series plots with up to two subplots and up to four y-axes, (each time-series in seprate csv-file) or
+// b) x-y scatterplot (data must be in a single xy-plot)
+// how to plot data is determined by parsing the hash of the url (the part after "#")
 
 function makePlotlyPlotFromCSV(hash)
 {
     // one or more csvs will be loaded and placed on either left or right y-axis deepening on format of hash
     // reading each csv is asynchronous, and plotting is done only after reading all csvs has completed...
-    var DataStorage = function(hash){this.hash=hash; this.data = [];this.csvnames=[];this.hasTwoSubplots; 
-        this.isVarOnY1=[];this.isVarOnY2=[];this.isVarOnY3=[];this.isVarOnY4=[];this.comment="";this.casename=""};// create object
+    var DataStorage = function(hash){
+		this.hash=hash; 
+		this.data = [];
+		this.csvnames=[];
+		this.hasTwoSubplots; 
+        this.isVarOnY1=[];
+		this.isVarOnY2=[];
+		this.isVarOnY3=[];
+		this.isVarOnY4=[];
+		this.comment="";
+		this.casename=""
+		this.isXY = false;
+		this.isXYwithMarkers = [];
+		this.isXYwithLine = [];
+		};// create object
     DataStorage.prototype.addData = function (csvname,dataIn) 
     {
         this.data[csvname] = dataIn; 
@@ -15,16 +32,32 @@ function makePlotlyPlotFromCSV(hash)
     }
     DataStorage.prototype.parseHash = function () 
     {
-         var splitStr   = this.hash.split(";");
-         this.csvnames  = new Array();//splitStr.length);
-         this.isVarOnY2 = new Array();//splitStr.length);
-		 this.nVariablesToPlot=0;
+        var splitStr   = this.hash.split(";");
+        this.nVariablesToPlot=0;
         for (var i=0; i<splitStr.length; i++)
         {
 			if (splitStr[i].indexOf("comment:")==-1 && splitStr[i].indexOf("comment=")==-1 && 
 				splitStr[i].indexOf("casename:")==-1)//ignore "comment= "field
 			{
-				if (splitStr[i].includes("y2="))
+				if (splitStr[i].includes("xy="))
+				{
+					this.isXY=true;
+					this.isXYwithMarkers.push(false);
+					this.isXYwithLine.push(false);
+				}
+				else if (splitStr[i].includes("xym="))
+				{
+					this.isXY=true;
+					this.isXYwithMarkers.push(true);
+					this.isXYwithLine.push(false);
+				}
+				else if (splitStr[i].includes("xyl="))
+				{
+					this.isXY=true;
+					this.isXYwithMarkers.push(false);
+					this.isXYwithLine.push(true);
+				}
+				else if (splitStr[i].includes("y2="))
 				{ 
 					this.isVarOnY1.push(false);
 					this.isVarOnY2.push(true);
@@ -54,9 +87,11 @@ function makePlotlyPlotFromCSV(hash)
 					this.isVarOnY3.push(false);
 					this.isVarOnY4.push(false);
 				}
-				
 				this.nVariablesToPlot++;
-				this.csvnames.push(splitStr[i].replace("y1=","").replace("y2=","").replace("y3=","").replace("y4=",""));
+				this.csvnames.push(splitStr[i].replace("y1=","").replace("y2=","").
+					replace("y3=","").replace("y4=","").
+					replace("xy=","").replace("xym=","").replace("xyl=","")
+				);
 			}
 			else
 			{
@@ -67,7 +102,6 @@ function makePlotlyPlotFromCSV(hash)
 			}
 			
         }
-		
 		if (this.caseName !== "")
 		{
 			for (var i=0; i<this.nVariablesToPlot; i++)
@@ -75,12 +109,10 @@ function makePlotlyPlotFromCSV(hash)
 				this.csvnames[i]= this.casename +"__"+ this.csvnames[i];
 			}
 		}
-		
         for (var i=0; i<this.nVariablesToPlot; i++)
         {
             this.data[this.csvnames[i]]= null;
         }
-	
         return;
     }
     DataStorage.prototype.HasAllDataArrived = function () 
@@ -159,12 +191,69 @@ function callbackCreatePlotIfAllDataIsHere(dataStorageObj)
 {
     var hasAllArrived = dataStorageObj.HasAllDataArrived();
     if (dataStorageObj.HasAllDataArrived())
-        makePlotlyPlotFromCSV_inner(dataStorageObj);
+	{
+		if (dataStorageObj.isXY == true)
+			makePlotyXYPlot(dataStorageObj);
+		else
+			makePlotyTimeSeriesPlot(dataStorageObj);
+	}
     return hasAllArrived;
 }
 
 
-function makePlotlyPlotFromCSV_inner(dataStorageObj)
+function makePlotyXYPlot(dataStorageObj)
+{
+    function unpack(rows, key)
+    {
+	  	return rows.map(function(row) { return row[key]; });	// map: convert string of number to double..
+    }
+	function unpackDouble(rows, key)
+    {
+	  	return rows.map(function(row) { return parseFloat(row[key]); });	// map: convert string of number to double..
+    }
+
+	// load data
+	var data = new Array();
+	for(let csvIdx=0;csvIdx<dataStorageObj.nVariablesToPlot;csvIdx++)
+	{
+		var csvname = dataStorageObj.csvnames[csvIdx];
+		var allRows = dataStorageObj.getData(csvname);
+		var columnNameArray = Object.keys(allRows[0]);
+		let trace1 = {
+			x: unpackDouble(allRows,columnNameArray[1]),
+			y: unpackDouble(allRows,columnNameArray[2]),
+			mode: 'markers',
+			type: 'scatter',
+			name: csvname.replace(dataStorageObj.casename+"__",'').replace(".csv",""),
+			text: unpack(allRows,columnNameArray[0]),
+			  textfont : {family:'Times New Roman'},
+			  textposition: 'bottom center',
+			  marker: { size: 12 }
+		};
+		if(dataStorageObj.isXYwithMarkers[csvIdx]==true)
+		{
+			trace1.mode = 'markers+text';
+		}
+		if(dataStorageObj.isXYwithLine[csvIdx]==true)
+		{
+			trace1.mode = 'lines';
+			trace1.text = '';
+		}
+		data.push(trace1);
+	}
+	// load layout
+	var layout = {
+		title:  columnNameArray[2] ,
+		xaxis: {title: columnNameArray[1]}
+	};
+	if(dataStorageObj.comment)
+	{
+		layout.title+="("+dataStorageObj.comment+")";
+	}
+	Plotly.newPlot('PlotDiv', data,layout);
+}
+
+function makePlotyTimeSeriesPlot(dataStorageObj)
 {
     // local function
     function unpack(rows, key)
@@ -207,12 +296,13 @@ function makePlotlyPlotFromCSV_inner(dataStorageObj)
     {
         var csvname = dataStorageObj.csvnames[csvIdx];
         var allRows = dataStorageObj.getData(csvname);
+		
 		if (allRows.length == 0)
 		{
 			AddErrorMessage("<b>Error:</b> no data in data//"+csvname+".csv?");
 			continue;
 		}
-		
+	
         var columnNameArray = Object.keys(allRows[0]);
 
         for (var columnIdx=0; columnIdx<columnNameArray.length-1;columnIdx=columnIdx+2)

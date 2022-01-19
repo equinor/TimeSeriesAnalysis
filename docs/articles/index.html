@@ -91,13 +91,14 @@
 <li>a <strong>custom dynamic identification algorithm</strong> (built on top of linear regression) that implements many <a href="sysid_tricks_of_the_trade.html">tricks-of-the-trade</a> for finding time-series models
 that may include any combination of time-delay, time-constants, linear- and nonlinear gains to create <em>grey-box unit models</em>,</li>
 <li>a <strong>state-of-the-art advanced industrial PID-controller</strong> unit-model implementation, and</li>
-<li>a <strong>dynamic plant simulator</strong> that is able to simulate joined together <em>combinations of unit models</em>, each unit-model may be an identified PID-controller or an identified model.</li>
+<li>a <strong>dynamic plant simulator</strong> that is able to simulate joined together <em>combinations of unit models</em>(&quot;plant models&quot;), each unit-model may be an identified PID-controller or an identified model.</li>
 </ol>
 <p>The main value proposition of the library is that</p>
 <ol>
 <li>it collects many years combined industrial and academic experience into one a package of tools that are <em>all integrated/compatible with each other</em> ,</li>
 <li>it aims to be <em>suitable for industrial implementation</em>, code-base should be robust  and well-tested, all edge-cases should be handled gracefully, and</li>
-<li>the possibility of automated the modeling and simulation, a requirement for <em>advanced analytics</em> or <em>data-mining</em> within plant supervision and -control.</li>
+<li>it opens the possibility to <em>automate modeling and simulation</em> of plant models. This enables <em>advanced analytics</em> or <em>data-mining</em>, which by most definitions are automated
+or semi-automated.</li>
 </ol>
 <h2 id="motivation---no-black-boxes">Motivation - &quot;no black boxes&quot;</h2>
 <p>To support

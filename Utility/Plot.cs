@@ -112,6 +112,8 @@ namespace TimeSeriesAnalysis.Utility
             {
                 chromePathInternal = chromePathAppConfig[0];
             }
+
+
             if (doStartChrome)
             {
                 Start(chromePathInternal, command + plotURL, out bool returnVal);
@@ -150,12 +152,8 @@ namespace TimeSeriesAnalysis.Utility
             if (!ShouldPlottingBeDone())
                 return "";
 
-            var plotlyURLinternal = plotlyURL;
-            var plotlyULRAppConfig = ConfigurationManager.AppSettings.GetValues("PlotlyURL");
-            if (plotlyULRAppConfig != null)
-            {
-                plotlyURLinternal = plotlyULRAppConfig[0];
-            }
+            var plotlyURLinternal = GetPlotlyURL();
+
 
             string command = @"-r " + plotlyURLinternal + "#";
             string plotURL = ""; ;
@@ -186,12 +184,8 @@ namespace TimeSeriesAnalysis.Utility
             if (caseName.Length > 0)
                 plotURL += ";casename:" + caseName;
 
-            var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
-            var chromePathInternal = chromePath;
-            if (chromePathAppConfig != null)
-            {
-                chromePathInternal = chromePathAppConfig[0];
-            }
+            var chromePathInternal = GetChromePath();
+
             if (doStartChrome)
             {
                 Start(chromePathInternal, command + plotURL, out bool returnVal);
@@ -199,22 +193,44 @@ namespace TimeSeriesAnalysis.Utility
             return plotURL;
         }
 
+        internal static string GetPlotlyURL()
+        {
+            var plotlyURLinternal = plotlyURL;
+            var plotlyULRAppConfig = ConfigurationManager.AppSettings.GetValues("PlotlyURL");
+            if (plotlyULRAppConfig != null)
+            {
+                plotlyURLinternal = plotlyULRAppConfig[0];
+            }
+            return plotlyURLinternal;
+        }
 
 
-        /// <summary>
-        /// Plot values in a list of vectors <c>dataList</c>, when all vectors start at <c>t0</c> and have a stedy sampling rate
-        /// </summary>
-        /// <param name="dataList">List of doubles, one entry for each time-series to be plotted</param>
-        /// <param name="plotNames">List of string  of unique names to describe each plot, prefixed by either "y1="(top left),"y2="(top right),"y3="(bottom left) 
-        /// or "y4="(bottom right) to denote what y-axis to plot the variable on</param>
-        /// <param name="dT_s">the time between data samples in seconds</param>
-        /// <param name="comment">a comment that is shown in the plot</param>
-        /// <param name="t0">the DateTime of the first data point </param>
-        /// <param name="caseName">give each plot a casename if creating multiple plots with the re-occurring variable names</param>
-        /// <param name="doStartChrome">By setting doStartChrome to false, you can skip opening up chrome, the link to figure
-        ///   will instead be returned </param>
-        /// <returns>The url of the resulting plot is returned</returns>
-        public static string FromList(List<double[]> dataList, List<string> plotNames,
+        internal static string GetChromePath()
+        {
+            var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
+            var chromePathInternal = chromePath;
+            if (chromePathAppConfig != null)
+            {
+                chromePathInternal = chromePathAppConfig[0];
+            }
+            return chromePathInternal;
+        }
+
+
+    /// <summary>
+    /// Plot values in a list of vectors <c>dataList</c>, when all vectors start at <c>t0</c> and have a stedy sampling rate
+    /// </summary>
+    /// <param name="dataList">List of doubles, one entry for each time-series to be plotted</param>
+    /// <param name="plotNames">List of string  of unique names to describe each plot, prefixed by either "y1="(top left),"y2="(top right),"y3="(bottom left) 
+    /// or "y4="(bottom right) to denote what y-axis to plot the variable on</param>
+    /// <param name="dT_s">the time between data samples in seconds</param>
+    /// <param name="comment">a comment that is shown in the plot</param>
+    /// <param name="t0">the DateTime of the first data point </param>
+    /// <param name="caseName">give each plot a casename if creating multiple plots with the re-occurring variable names</param>
+    /// <param name="doStartChrome">By setting doStartChrome to false, you can skip opening up chrome, the link to figure
+    ///   will instead be returned </param>
+    /// <returns>The url of the resulting plot is returned</returns>
+    public static string FromList(List<double[]> dataList, List<string> plotNames,
             int dT_s, string comment = null, DateTime t0 = new DateTime(),
             string caseName = "", bool doStartChrome = true)
         {
@@ -287,7 +303,7 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="arguments">arguemnts to be passed to executable via the command line</param>
         /// <param name="returnValue"></param>
         /// <returns>returns a the process object</returns>
-        static private Process Start(string procname, string arguments, out bool returnValue)
+        static internal Process Start(string procname, string arguments, out bool returnValue)
         {
             Process proc = new Process();
             try
@@ -303,6 +319,22 @@ namespace TimeSeriesAnalysis.Utility
             }
             return proc;
         }
+
+        internal static string GetPlotlyDataPath()
+        {
+            var plotDataPathInternal = plotDataPath;
+            var plotDataPathAppConfig = ConfigurationManager.AppSettings.GetValues("PlotDataPath");
+            if (plotDataPathAppConfig != null)
+            {
+                plotDataPathInternal = plotDataPathAppConfig[0];
+            }
+            if (!plotDataPathInternal.EndsWith("\\"))
+                plotDataPathInternal += "\\";
+
+            return  plotDataPathInternal;
+        }
+
+
 
         static private void WriteSingleDataToCSV(DateTime[] time, double[] data, string tagName, string comment = null, 
             string customPlotDataPath=null)
@@ -342,7 +374,7 @@ namespace TimeSeriesAnalysis.Utility
                 }
             }
 
-            var plotDataPathInternal = plotDataPath;
+            /*var plotDataPathInternal = plotDataPath;
             var plotDataPathAppConfig = ConfigurationManager.AppSettings.GetValues("PlotDataPath");
             if (plotDataPathAppConfig != null)
             {
@@ -350,8 +382,12 @@ namespace TimeSeriesAnalysis.Utility
             }
             if (!plotDataPathInternal.EndsWith("\\"))
                 plotDataPathInternal += "\\";
+            */
+            var plotDataPathInternal = GetPlotlyDataPath();
 
             string fileName = plotDataPathInternal + tagName + ".csv";
+
+
             if (customPlotDataPath!=null)
             {
                 fileName = customPlotDataPath;

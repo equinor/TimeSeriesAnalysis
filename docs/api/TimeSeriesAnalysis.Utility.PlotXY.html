@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace TimeSeriesAnalysis.Utility
+    <title>Class PlotXY
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace TimeSeriesAnalysis.Utility
+    <meta name="title" content="Class PlotXY
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.58.4.0">
     
@@ -78,81 +78,92 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Utility">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Utility.PlotXY">
   
-  <h1 id="TimeSeriesAnalysis_Utility" data-uid="TimeSeriesAnalysis.Utility" class="text-break">Namespace TimeSeriesAnalysis.Utility
+  
+  <h1 id="TimeSeriesAnalysis_Utility_PlotXY" data-uid="TimeSeriesAnalysis.Utility.PlotXY" class="text-break">Class PlotXY
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">PlotXY</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Utility.html">TimeSeriesAnalysis.Utility</a></h6>
+  <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
+  <h5 id="TimeSeriesAnalysis_Utility_PlotXY_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PlotXY</code></pre>
+  </div>
+  <h3 id="methods">Methods
   </h3>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.CSV.html">CSV</a></h4>
-      <section><p>IO Utility class for loading time-series data from a plain text comma-separated variable(CSV) file</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.ParserFeedback.html">ParserFeedback</a></h4>
-      <section><p>Utility class is responsible for collecting feedback lines, such as warnings,error or info text to either the console window,
-visual-studio output/debug window, to a file structure or all.</p>
-<p>
-The class makes it easy to switch between displaying output to a console while debugging while
-to outputting to file when code moves to a server. 
-Suitable for collecting debugging info from services that run many cases repeatedly.
-</p>
-<p>
- log levels:  INFO,WARN,ERROR,FATAL  (no debug messages here)
-</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.Plot.html">Plot</a></h4>
-      <section><p>Static methods for plotting one or more time-series across one or more y-axes and one or more subplots by opening up Chrome
-calling a set of JavaScript plotting methods based on plotly.js</p>
-<p>
-Time-series are written as CSV-files to a specific folder on disk <code>plotDataPath</code>, before starting a chrome-window
-that loads a specific &quot;localhost&quot; <code>plotlyURL</code> that reads said CSV-files and initates an in-browser plot using plotly.js.
-</p>
-<p>
-For this method to work you need to be running a web server such as IIS that serves up a &quot;localhost&quot; <code>plotlyURL</code> as described
-in the documentation.
-</p>
-<p>
-If you sometimes need to disable plots (for instance if plotting code is included in unit tests) see Plot4Test
-</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.Plot4Test.html">Plot4Test</a></h4>
-      <section><p>Version of Plot class where plots code can be Enabled()/Disabled() programatically.
-This allows you to keep all your &quot;Plot&quot; calls in your unit tests and turn them on as needed to
-debug a single test, while avoid being overwhelmed with plots if for instance re-running all unit tests.</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.PlotXY.html">PlotXY</a></h4>
-      <section></section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.SignificantDigits.html">SignificantDigits</a></h4>
-      <section><p>Utility class to round double variables to a given nubmer of signficant digits.</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.StringToFileWriter.html">StringToFileWriter</a></h4>
-      <section><p>IO Utility class to write to file that implements IDisposable interface.</p>
-<p>
-Suggest to use this objects of this class within the <code>using</code> keyword
-so that file-resources are automatically freed in case your code is terminated before
-it has completed. 
-</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.Table.html">Table</a></h4>
-      <section></section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.TimeSeriesCreator.html">TimeSeriesCreator</a></h4>
-      <section><p>Class for static methods create different types of time-series for testing.</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.UnixTime.html">UnixTime</a></h4>
-      <section><p>Utility class to work with unix time stamps</p>
-</section>
-    <h3 id="structs">Structs
-  </h3>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.ParserFeedbackLogLine.html">ParserFeedbackLogLine</a></h4>
-      <section><p>Struct for each log message of ParserFeedback</p>
-</section>
-    <h3 id="enums">Enums
-  </h3>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Utility.ParserfeedbackMessageLevel.html">ParserfeedbackMessageLevel</a></h4>
-      <section><p>Enum to set the log level of ParserFeedback</p>
-</section>
+  
+  
+  <a id="TimeSeriesAnalysis_Utility_PlotXY_FromTable_" data-uid="TimeSeriesAnalysis.Utility.PlotXY.FromTable*"></a>
+  <h4 id="TimeSeriesAnalysis_Utility_PlotXY_FromTable_TimeSeriesAnalysis_Utility_Table_System_String_System_String_System_Boolean_" data-uid="TimeSeriesAnalysis.Utility.PlotXY.FromTable(TimeSeriesAnalysis.Utility.Table,System.String,System.String,System.Boolean)">FromTable(Table, String, String, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void FromTable(Table table, string caseName, string comment = null, bool doStartChrome = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Utility.Table.html">Table</a></td>
+        <td><span class="parametername">table</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">caseName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">comment</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doStartChrome</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
