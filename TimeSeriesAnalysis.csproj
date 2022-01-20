@@ -31,7 +31,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>bin\debug\</PackageOutputPath>
     <Version>1.0.63</Version>
-    <Authors>Steinar Elgsæter</Authors>
+    <Authors>Equinor</Authors>
     <Description>
 TimeSeriesAnalysis is a class library that allows you to work efficiently with time-series 
 in .NET that may include transients or dynamics, including an identification of dynamic models,
