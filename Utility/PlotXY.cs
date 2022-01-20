@@ -8,7 +8,7 @@ namespace TimeSeriesAnalysis.Utility
 {
     public class PlotXY
     {
-        public static void FromTable(XYTable table,  string caseName, string comment = null,
+        public static string FromTable(XYTable table,  string caseName, string comment = null,
             bool doStartChrome = true)
         {
 
@@ -30,6 +30,7 @@ namespace TimeSeriesAnalysis.Utility
             {
                 Plot.Start(chromePath, command + plotURL, out bool returnVal);
             }
+            return plotURL;
         }
 
         private static string GetCodeFromType(XYlineType type)
@@ -44,7 +45,7 @@ namespace TimeSeriesAnalysis.Utility
         }
 
 
-        public static void FromTables(List<XYTable> tables, string caseName, string comment = null,
+        public static string FromTables(List<XYTable> tables, string caseName, string comment = null,
             bool doStartChrome = true)
         {
             var dataPath = Plot.GetPlotlyDataPath();
@@ -67,6 +68,8 @@ namespace TimeSeriesAnalysis.Utility
             {
                 Plot.Start(chromePath, command + plotURL, out bool returnVal);
             }
+
+            return plotURL;
         }
 
 

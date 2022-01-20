@@ -46,7 +46,7 @@ namespace TimeSeriesAnalysis.Test
             table.AddRow(new double[] {1, 1 });
             table.AddRow(new double[] { 2, 2 });
             table.AddRow(new double[] { 3, 3 });
-            PlotXY.FromTable(table,"XYunitTest1");
+            var url = PlotXY.FromTable(table,"XYunitTest1");
        
         }
 
@@ -62,7 +62,7 @@ namespace TimeSeriesAnalysis.Test
             table2.AddRow(new double[] { 2, 3 });
             table2.AddRow(new double[] { 3, 4 });
 
-            PlotXY.FromTables(new List<XYTable> {table,table2 }, "XYunitTest1");
+            var url =  PlotXY.FromTables(new List<XYTable> {table,table2 }, "XYunitTest1");
         }
 
         [TestCase(Explicit = true, Reason = "opens Chrome window")]
@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Test
             table.AddRow(new double[] { 1, 1 },"aa");
             table.AddRow(new double[] { 2, 2 },"bb");
             table.AddRow(new double[] { 3, 3 },"cc");
-            PlotXY.FromTable(table, "XYunitTest2");
+            var url = PlotXY.FromTable(table, "XYunitTest2");
         }
 
         [TestCase(Explicit = true, Reason = "opens Chrome window")]
@@ -87,7 +87,7 @@ namespace TimeSeriesAnalysis.Test
             table2.AddRow(new double[] { 2, 3 }, "bb");
             table2.AddRow(new double[] { 3, 4 }, "cc");
 
-            PlotXY.FromTables(new List<XYTable> { table, table2 }, "XYunitTest3");
+            var url = PlotXY.FromTables(new List<XYTable> { table, table2 }, "XYunitTest3");
         }
 
         [TestCase(Explicit = true, Reason = "opens Chrome window")]
