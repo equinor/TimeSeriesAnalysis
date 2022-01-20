@@ -70,4 +70,3 @@ in the [github discussion pages](https://github.com/equinor/TimeSeriesAnalysis/d
 
 ## License
 TimeSeriesAnalysis is distributed under the [MIT license](LICENSE).
-
