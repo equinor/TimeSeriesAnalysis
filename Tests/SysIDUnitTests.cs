@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Test.SysID
     /// </summary>
     class UnitIdentification
     {
-        static bool doPlotting = true;
+        static bool doPlotting = false;
         static Plot4Test plot = new Plot4Test(doPlotting);
         double timeBase_s = 1;
 

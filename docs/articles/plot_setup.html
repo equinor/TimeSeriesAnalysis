@@ -131,15 +131,31 @@ and you can swap the given file for other versions if needed.</p>
 <h3 id="changing-the-paths-by-editing-timeseriesanalysisdllconfig">Changing the paths by editing TimeSeriesAnalysis.dll.config</h3>
 <p>If the paths described above for whatever reason conflict with the setup of your computer, you can change these paths
 by editing the file <code>TimeSeriesAnalysis.dll.config</code>, which by default has the following content:</p>
-<pre><code class="lang-csharp" name="Example">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+<pre><code class="lang-csharp" name="Example">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;configuration&gt;
-    &lt;appSettings&gt;
-      &lt;add key=&quot;PlotsAreEnabled&quot; value= &quot;true&quot;/&gt;
-      &lt;add key=&quot;ChromePath&quot; 
-           value=&quot;C:\Program Files (x86)\Google\Chrome\Application\chrome.exe&quot;/&gt;
-      &lt;add key=&quot;PlotlyURL&quot; value=&quot;localhost\plotly\index.html&quot;/&gt;
-      &lt;add key=&quot;PlotDataPath&quot; value= &quot;C:\Appl\ProcessDataFramework\www\plotly\Data&quot;/&gt;
-    &lt;/appSettings&gt;
+    &lt;startup&gt;
+        &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.7.2&quot;/&gt;
+    &lt;/startup&gt;	
+    
+  &lt;appSettings&gt;
+    &lt;add key=&quot;PlotsAreEnabled&quot; value=&quot;true&quot; /&gt;
+    &lt;add key=&quot;ChromePath&quot; value=&quot;C:\Program Files (x86)\Google\Chrome\Application\chrome.exe&quot; /&gt;
+    &lt;add key=&quot;PlotlyURL&quot; value=&quot;localhost\plotly\index.html&quot; /&gt;
+    &lt;add key=&quot;PlotDataPath&quot; value=&quot;C:\Appl\ProcessDataFramework\www\plotly\Data&quot; /&gt;
+    &lt;add key=&quot;ClientSettingsProvider.ServiceUri&quot; value=&quot;&quot; /&gt;
+  &lt;/appSettings&gt;
+  &lt;system.web&gt;
+    &lt;membership defaultProvider=&quot;ClientAuthenticationMembershipProvider&quot;&gt;
+      &lt;providers&gt;
+        &lt;add name=&quot;ClientAuthenticationMembershipProvider&quot; type=&quot;System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&quot; serviceUri=&quot;&quot; /&gt;
+      &lt;/providers&gt;
+    &lt;/membership&gt;
+    &lt;roleManager defaultProvider=&quot;ClientRoleProvider&quot; enabled=&quot;true&quot;&gt;
+      &lt;providers&gt;
+        &lt;add name=&quot;ClientRoleProvider&quot; type=&quot;System.Web.ClientServices.Providers.ClientRoleProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&quot; serviceUri=&quot;&quot; cacheTimeout=&quot;86400&quot; /&gt;
+      &lt;/providers&gt;
+    &lt;/roleManager&gt;
+  &lt;/system.web&gt;
 &lt;/configuration&gt;
 </code></pre><h4 id="disabling-all-plots">Disabling all plots</h4>
 <p>It is possible to entirely disable all plotting by setting the variable <code>PlotsAreEnabled</code> in the above mention filed to <code>false</code>.
