@@ -1534,7 +1534,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/plot_setup.html",
-          "hash": "QczecvnpiGXdncP3Juy7e+eSI8gQn0R85gOqQNm3gk8="
+          "hash": "O0QG2WC5eIku8tzRqhJ8beMdrDiZ0mXPmX1NslDHVYk="
         }
       },
       "is_incremental": false,
@@ -1716,13 +1716,13 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 46,
-          "skipped_file_count": 46
+          "skipped_file_count": 45
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 62,
-          "skipped_file_count": 56
+          "skipped_file_count": 62
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
