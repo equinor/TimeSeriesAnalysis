@@ -47,7 +47,7 @@ dynamic simulation, filtering and PID-control.The aim of the library is to suppo
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TimeSeriesAnalysis</RootNamespace>
     <AssemblyName>TimeSeriesAnalysis</AssemblyName>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
