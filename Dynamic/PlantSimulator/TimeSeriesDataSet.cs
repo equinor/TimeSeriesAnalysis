@@ -11,7 +11,7 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary>
-    /// A class that holds time-series data for a number of tags 
+    /// A class that holds time-series data for any number of tags 
     /// <para>
     /// Time is either treated by giving a timeBase in seconds and a strating time, or by  
     /// specifying a vector of timestamps.

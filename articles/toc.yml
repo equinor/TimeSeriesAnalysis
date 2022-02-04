@@ -64,7 +64,10 @@
         - name: Unit Model identification
           href: unitidentifier.md
 
-
+        - name: System identification code examples
+          items:
+            - name: Nonlinear unit model identification
+              href: sysid_ex_nonlin.md 
 
 - name: Dynamic simulation
   href: dynsim.md
