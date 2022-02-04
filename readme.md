@@ -9,7 +9,7 @@ An open-source library for development and testing of time-series-based algorith
 - dynamic simulation, and
 - advanced industrial PID-control. 
 
-The library can be used from C#, Matlab or Python.
+The library can be used from C# or any other .NET language, Matlab or Python. The target framework is <i>.NET Standard 2.0.</i>
 
 ## Documentation:
 
