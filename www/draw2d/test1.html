@@ -19,11 +19,9 @@
 <SCRIPT src="./lib/pathfinding-browser.min.js"></SCRIPT>
 <SCRIPT src="draw2d.js"></SCRIPT>
 
-<body>
-<div class ="gfx_holder" style="width: 1500px; height: 1500px; cursor: default;">
-</div>
-
 <script type="text/javascript">
+$(window).load(function () {
+
       var canvas = new draw2d.Canvas("gfx_holder");
           
       // Create two standard nodes for "start" and "end" and link
@@ -41,7 +39,14 @@
       connection.setSource(start.getOutputPort(0));
       connection.setTarget(end.getInputPort(0));
       canvas.addFigure(connection);
-</script>
+	 
+});
 
+</script>
+</head>
+
+<body>
+<div onselectstart="javascript:/*IE8 hack*/return false" id="gfx_holder" style="width:3000px; height:3000px;">
+</div>
 </body>
 </html>
