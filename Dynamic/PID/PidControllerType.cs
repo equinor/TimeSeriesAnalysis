@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    public enum ControllerType
+    public enum PidControllerType
     {
         Unset = 0,
         Flow = 1,

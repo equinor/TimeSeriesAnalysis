@@ -26,17 +26,16 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private bool doDebugging = true;
 
-        //private PIDidResults result;
 
         private PidScaling pidScaling;
 
-        private ControllerType type;
+        private PidControllerType type;
 
         private Vec vec;
 
 
         public PidIdentifier(double TimeBase_s, double maxExpectedTc_s, double badValueIndicatingValue,
-            PidScaling pidScaling, ControllerType type = ControllerType.Unset)
+            PidScaling pidScaling, PidControllerType type = PidControllerType.Unset)
         {
             this.TimeBase_s = TimeBase_s;
             this.maxExpectedTc_s = maxExpectedTc_s;

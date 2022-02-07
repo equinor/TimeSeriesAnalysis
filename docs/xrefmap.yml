@@ -1611,6 +1611,54 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidController.WarmStart
   nameWithType: PidController.WarmStart
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType
+  name: PidControllerType
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidControllerType
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType
+  nameWithType: PidControllerType
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType.AntiSurge
+  name: AntiSurge
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html#TimeSeriesAnalysis_Dynamic_PidControllerType_AntiSurge
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidControllerType.AntiSurge
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType.AntiSurge
+  nameWithType: PidControllerType.AntiSurge
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType.Duty
+  name: Duty
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html#TimeSeriesAnalysis_Dynamic_PidControllerType_Duty
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidControllerType.Duty
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType.Duty
+  nameWithType: PidControllerType.Duty
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType.Flow
+  name: Flow
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html#TimeSeriesAnalysis_Dynamic_PidControllerType_Flow
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidControllerType.Flow
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType.Flow
+  nameWithType: PidControllerType.Flow
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType.Level
+  name: Level
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html#TimeSeriesAnalysis_Dynamic_PidControllerType_Level
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidControllerType.Level
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType.Level
+  nameWithType: PidControllerType.Level
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType.Pressure
+  name: Pressure
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html#TimeSeriesAnalysis_Dynamic_PidControllerType_Pressure
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidControllerType.Pressure
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType.Pressure
+  nameWithType: PidControllerType.Pressure
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType.Temperature
+  name: Temperature
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html#TimeSeriesAnalysis_Dynamic_PidControllerType_Temperature
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidControllerType.Temperature
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType.Temperature
+  nameWithType: PidControllerType.Temperature
+- uid: TimeSeriesAnalysis.Dynamic.PidControllerType.Unset
+  name: Unset
+  href: api/TimeSeriesAnalysis.Dynamic.PidControllerType.html#TimeSeriesAnalysis_Dynamic_PidControllerType_Unset
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidControllerType.Unset
+  fullName: TimeSeriesAnalysis.Dynamic.PidControllerType.Unset
+  nameWithType: PidControllerType.Unset
 - uid: TimeSeriesAnalysis.Dynamic.PidFeedForward
   name: PidFeedForward
   href: api/TimeSeriesAnalysis.Dynamic.PidFeedForward.html
@@ -1762,6 +1810,90 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActiveTi_b
   fullName: TimeSeriesAnalysis.Dynamic.PidGainScheduling.GSActiveTi_b
   nameWithType: PidGainScheduling.GSActiveTi_b
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning
+  name: PidIdentWarning
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidIdentWarning
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning
+  nameWithType: PidIdentWarning
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.DataSetVeryShortComparedtoTMax
+  name: DataSetVeryShortComparedtoTMax
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_DataSetVeryShortComparedtoTMax
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.DataSetVeryShortComparedtoTMax
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.DataSetVeryShortComparedtoTMax
+  nameWithType: PidIdentWarning.DataSetVeryShortComparedtoTMax
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.InputSaturation_UcloseToUmax
+  name: InputSaturation_UcloseToUmax
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_InputSaturation_UcloseToUmax
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.InputSaturation_UcloseToUmax
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.InputSaturation_UcloseToUmax
+  nameWithType: PidIdentWarning.InputSaturation_UcloseToUmax
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.InputSaturation_UcloseToUmin
+  name: InputSaturation_UcloseToUmin
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_InputSaturation_UcloseToUmin
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.InputSaturation_UcloseToUmin
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.InputSaturation_UcloseToUmin
+  nameWithType: PidIdentWarning.InputSaturation_UcloseToUmin
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NegativeEstimatedTi
+  name: NegativeEstimatedTi
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_NegativeEstimatedTi
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.NegativeEstimatedTi
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NegativeEstimatedTi
+  nameWithType: PidIdentWarning.NegativeEstimatedTi
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.Nothing
+  name: Nothing
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_Nothing
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.Nothing
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.Nothing
+  nameWithType: PidIdentWarning.Nothing
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData
+  name: NotPossibleToIdentifyPIDcontroller_BadInputData
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_NotPossibleToIdentifyPIDcontroller_BadInputData
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData
+  nameWithType: PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY
+  name: NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY
+  nameWithType: PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad
+  name: NotPossibleToIdentifyPIDcontroller_YsetIsBad
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_NotPossibleToIdentifyPIDcontroller_YsetIsBad
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad
+  nameWithType: PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto
+  name: PIDControllerDoesNotAppearToBeInAuto
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_PIDControllerDoesNotAppearToBeInAuto
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto
+  nameWithType: PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerIsInCascadeModeWithFrequentSetpointChanges
+  name: PIDControllerIsInCascadeModeWithFrequentSetpointChanges
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_PIDControllerIsInCascadeModeWithFrequentSetpointChanges
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerIsInCascadeModeWithFrequentSetpointChanges
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerIsInCascadeModeWithFrequentSetpointChanges
+  nameWithType: PidIdentWarning.PIDControllerIsInCascadeModeWithFrequentSetpointChanges
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerPossiblyInTracking
+  name: PIDControllerPossiblyInTracking
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_PIDControllerPossiblyInTracking
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerPossiblyInTracking
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PIDControllerPossiblyInTracking
+  nameWithType: PidIdentWarning.PIDControllerPossiblyInTracking
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PoorModelFit
+  name: PoorModelFit
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_PoorModelFit
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.PoorModelFit
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.PoorModelFit
+  nameWithType: PidIdentWarning.PoorModelFit
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning.RegressionProblemFailedToYieldSolution
+  name: RegressionProblemFailedToYieldSolution
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html#TimeSeriesAnalysis_Dynamic_PidIdentWarning_RegressionProblemFailedToYieldSolution
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidIdentWarning.RegressionProblemFailedToYieldSolution
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentWarning.RegressionProblemFailedToYieldSolution
+  nameWithType: PidIdentWarning.RegressionProblemFailedToYieldSolution
 - uid: TimeSeriesAnalysis.Dynamic.PidModel
   name: PidModel
   href: api/TimeSeriesAnalysis.Dynamic.PidModel.html
@@ -1935,6 +2067,32 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.PidParameters
   fullName: TimeSeriesAnalysis.Dynamic.PidParameters
   nameWithType: PidParameters
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.#ctor
+  name: PidParameters()
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidParameters.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.PidParameters()
+  nameWithType: PidParameters.PidParameters()
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.#ctor*
+  name: PidParameters
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidParameters.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.PidParameters
+  nameWithType: PidParameters.PidParameters
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning(TimeSeriesAnalysis.Dynamic.PidIdentWarning)
+  name: AddWarning(PidIdentWarning)
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_AddWarning_TimeSeriesAnalysis_Dynamic_PidIdentWarning_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning(TimeSeriesAnalysis.Dynamic.PidIdentWarning)
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning(TimeSeriesAnalysis.Dynamic.PidIdentWarning)
+  nameWithType: PidParameters.AddWarning(PidIdentWarning)
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning*
+  name: AddWarning
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_AddWarning_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning
+  nameWithType: PidParameters.AddWarning
 - uid: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams
   name: AntiSugeParams
   href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_AntiSugeParams
@@ -2543,84 +2701,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState
   nameWithType: PlantSimulatorInitalizer.ToSteadyState
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings
-  name: ProcessIdentWarnings
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings
-  nameWithType: ProcessIdentWarnings
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ConstantInputU
-  name: ConstantInputU
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_ConstantInputU
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ConstantInputU
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ConstantInputU
-  nameWithType: ProcessIdentWarnings.ConstantInputU
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.CorrelatedInputsU
-  name: CorrelatedInputsU
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_CorrelatedInputsU
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.CorrelatedInputsU
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.CorrelatedInputsU
-  nameWithType: ProcessIdentWarnings.CorrelatedInputsU
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.DataSetVeryShortComparedtoTMax
-  name: DataSetVeryShortComparedtoTMax
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_DataSetVeryShortComparedtoTMax
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.DataSetVeryShortComparedtoTMax
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.DataSetVeryShortComparedtoTMax
-  nameWithType: ProcessIdentWarnings.DataSetVeryShortComparedtoTMax
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.Nothing
-  name: Nothing
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_Nothing
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.Nothing
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.Nothing
-  nameWithType: ProcessIdentWarnings.Nothing
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.NotPossibleToIdentify
-  name: NotPossibleToIdentify
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_NotPossibleToIdentify
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.NotPossibleToIdentify
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.NotPossibleToIdentify
-  nameWithType: ProcessIdentWarnings.NotPossibleToIdentify
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ReEstimateBiasFailed
-  name: ReEstimateBiasFailed
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_ReEstimateBiasFailed
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ReEstimateBiasFailed
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.ReEstimateBiasFailed
-  nameWithType: ProcessIdentWarnings.ReEstimateBiasFailed
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.RegressionProblemFailedToYieldSolution
-  name: RegressionProblemFailedToYieldSolution
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_RegressionProblemFailedToYieldSolution
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.RegressionProblemFailedToYieldSolution
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.RegressionProblemFailedToYieldSolution
-  nameWithType: ProcessIdentWarnings.RegressionProblemFailedToYieldSolution
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantEstimateNotConsistent
-  name: TimeConstantEstimateNotConsistent
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeConstantEstimateNotConsistent
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantEstimateNotConsistent
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantEstimateNotConsistent
-  nameWithType: ProcessIdentWarnings.TimeConstantEstimateNotConsistent
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantEstimateTooBig
-  name: TimeConstantEstimateTooBig
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeConstantEstimateTooBig
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantEstimateTooBig
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantEstimateTooBig
-  nameWithType: ProcessIdentWarnings.TimeConstantEstimateTooBig
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantNotIdentifiable
-  name: TimeConstantNotIdentifiable
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeConstantNotIdentifiable
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantNotIdentifiable
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeConstantNotIdentifiable
-  nameWithType: ProcessIdentWarnings.TimeConstantNotIdentifiable
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayAtMaximumConstraint
-  name: TimeDelayAtMaximumConstraint
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeDelayAtMaximumConstraint
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayAtMaximumConstraint
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayAtMaximumConstraint
-  nameWithType: ProcessIdentWarnings.TimeDelayAtMaximumConstraint
-- uid: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
-  name: TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
-  href: api/TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html#TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
-  commentId: F:TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
-  fullName: TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
-  nameWithType: ProcessIdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
 - uid: TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings
   name: ProcessTimeDelayIdentWarnings
   href: api/TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html
@@ -3367,6 +3447,84 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.Y_sim
   nameWithType: UnitDataSet.Y_sim
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings
+  name: UnitdentWarnings
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.UnitdentWarnings
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings
+  nameWithType: UnitdentWarnings
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ConstantInputU
+  name: ConstantInputU
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ConstantInputU
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ConstantInputU
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ConstantInputU
+  nameWithType: UnitdentWarnings.ConstantInputU
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.CorrelatedInputsU
+  name: CorrelatedInputsU
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_CorrelatedInputsU
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.CorrelatedInputsU
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.CorrelatedInputsU
+  nameWithType: UnitdentWarnings.CorrelatedInputsU
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DataSetVeryShortComparedtoTMax
+  name: DataSetVeryShortComparedtoTMax
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_DataSetVeryShortComparedtoTMax
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DataSetVeryShortComparedtoTMax
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DataSetVeryShortComparedtoTMax
+  nameWithType: UnitdentWarnings.DataSetVeryShortComparedtoTMax
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.Nothing
+  name: Nothing
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_Nothing
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.Nothing
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.Nothing
+  nameWithType: UnitdentWarnings.Nothing
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NotPossibleToIdentify
+  name: NotPossibleToIdentify
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_NotPossibleToIdentify
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NotPossibleToIdentify
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NotPossibleToIdentify
+  nameWithType: UnitdentWarnings.NotPossibleToIdentify
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ReEstimateBiasFailed
+  name: ReEstimateBiasFailed
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ReEstimateBiasFailed
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ReEstimateBiasFailed
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ReEstimateBiasFailed
+  nameWithType: UnitdentWarnings.ReEstimateBiasFailed
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.RegressionProblemFailedToYieldSolution
+  name: RegressionProblemFailedToYieldSolution
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_RegressionProblemFailedToYieldSolution
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.RegressionProblemFailedToYieldSolution
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.RegressionProblemFailedToYieldSolution
+  nameWithType: UnitdentWarnings.RegressionProblemFailedToYieldSolution
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantEstimateNotConsistent
+  name: TimeConstantEstimateNotConsistent
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_TimeConstantEstimateNotConsistent
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantEstimateNotConsistent
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantEstimateNotConsistent
+  nameWithType: UnitdentWarnings.TimeConstantEstimateNotConsistent
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantEstimateTooBig
+  name: TimeConstantEstimateTooBig
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_TimeConstantEstimateTooBig
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantEstimateTooBig
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantEstimateTooBig
+  nameWithType: UnitdentWarnings.TimeConstantEstimateTooBig
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantNotIdentifiable
+  name: TimeConstantNotIdentifiable
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_TimeConstantNotIdentifiable
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantNotIdentifiable
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeConstantNotIdentifiable
+  nameWithType: UnitdentWarnings.TimeConstantNotIdentifiable
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeDelayAtMaximumConstraint
+  name: TimeDelayAtMaximumConstraint
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_TimeDelayAtMaximumConstraint
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeDelayAtMaximumConstraint
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeDelayAtMaximumConstraint
+  nameWithType: UnitdentWarnings.TimeDelayAtMaximumConstraint
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
+  name: TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
+  nameWithType: UnitdentWarnings.TimeDelayInternalInconsistencyBetweenObjFunAndUncertainty
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier
   name: UnitIdentifier
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html
@@ -3649,12 +3807,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.UnitParameters
   nameWithType: UnitParameters.UnitParameters
-- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.AddWarning(TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings)
-  name: AddWarning(ProcessIdentWarnings)
-  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_AddWarning_TimeSeriesAnalysis_Dynamic_ProcessIdentWarnings_
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitParameters.AddWarning(TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings)
-  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.AddWarning(TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings)
-  nameWithType: UnitParameters.AddWarning(ProcessIdentWarnings)
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.AddWarning(TimeSeriesAnalysis.Dynamic.UnitdentWarnings)
+  name: AddWarning(UnitdentWarnings)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_AddWarning_TimeSeriesAnalysis_Dynamic_UnitdentWarnings_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitParameters.AddWarning(TimeSeriesAnalysis.Dynamic.UnitdentWarnings)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.AddWarning(TimeSeriesAnalysis.Dynamic.UnitdentWarnings)
+  nameWithType: UnitParameters.AddWarning(UnitdentWarnings)
 - uid: TimeSeriesAnalysis.Dynamic.UnitParameters.AddWarning*
   name: AddWarning
   href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_AddWarning_
