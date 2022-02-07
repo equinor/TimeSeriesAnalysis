@@ -1,0 +1,535 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using TimeSeriesAnalysis;
+using TimeSeriesAnalysis.Dynamic;
+
+
+namespace TimeSeriesAnalysis.Dynamic
+{
+    class PidIdentifier
+    {
+        private const double CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC = 0.005;
+        private const int MAX_ESTIMATIONS_PER_DATASET = 10;
+
+        private const double MIN_DATASUBSET_URANGE_PRC = 0;
+
+        private double badValueIndicatingValue = -9999;//Double.NaN
+
+        private double TimeBase_s;
+        private double maxExpectedTc_s;
+
+        private bool enableKPchangeDetection = true;
+        private bool enableTichangeDetection = true;
+
+        private bool doDebugging = true;
+
+        private PIDidResults result;
+
+        private PidScaling pidScaling;
+
+        private ControllerType type;
+
+        private Vec vec;
+
+
+        public PidIdentifier(double TimeBase_s, double maxExpectedTc_s, double badValueIndicatingValue,
+            PidScaling pidScaling, ControllerType type = ControllerType.Unset)
+        {
+            this.TimeBase_s = TimeBase_s;
+            this.maxExpectedTc_s = maxExpectedTc_s;
+            this.badValueIndicatingValue = badValueIndicatingValue;
+            this.pidScaling = pidScaling;
+            this.type = type;
+            this.vec = new Vec();
+        }
+
+        public void TurnOffDebuggingPlots()
+        {
+            doDebugging = false;
+        }
+
+
+        public void SetTiChangeDetect(bool doChangeDetect)
+        {
+            enableTichangeDetection = doChangeDetect;
+        }
+        public void SetKPChangeDetect(bool doChangeDetect)
+        {
+            enableKPchangeDetection = doChangeDetect;
+        }
+        public bool GetTiChangeDetect()
+        {
+            return enableTichangeDetection;
+        }
+
+        public bool GetKPChangeDetect()
+        {
+            return enableKPchangeDetection;
+        }
+
+        private void DetermineUminUmax(UnitDataSet dataSet, out double uMin, out double uMax)
+        {
+            double[] e = dataSet.GetYerrorTerm();
+
+            // output constraints will cause multiple equal values u of next to each other.
+            uMin = 0; // default value
+            uMax = 100; //default value
+            // because real u close to a constraint often "jitters" becasuse of P-action on controller or noise
+            // on the ouput measurement, we might need to accept values very close to umin and umax as also part of 
+
+            // uTol: changes in u below this value are considered "negligable changes"
+            double uTol = 0.1;// values inside range but very close to min/max might also be considere
+
+            double[] uMinusFF = GetUMinusFF(dataSet);
+
+            double uMinObserved = vec.Min(uMinusFF);
+            double uMaxObserved = vec.Max(uMinusFF);
+
+            // logic to count 
+            int N = dataSet.NumDataPoints;
+            const int minNumberOfIndicesToConsider = 5;
+            const double minFracAtConstraintConsidered = 0.10;//0.1 = 10%
+
+            const double E_TRESHOLDFACTOR = 1.5;//"tuning factor">>1
+
+            if (uMaxObserved - uMinObserved < uTol)
+            {
+                return;
+            }
+
+            // UMIN
+            if (uMinObserved > uMin + uTol)
+            {
+                List<int> uMinInd = vec.FindValues(uMinusFF, uMinObserved + uTol, VectorFindValueType.SmallerOrEqual);
+
+                if (uMinInd.Count > minNumberOfIndicesToConsider && (double)uMinInd.Count / N > minFracAtConstraintConsidered)
+                {
+
+                    List<int> notUMinInd = Index.InverseIndices(dataSet.NumDataPoints, uMinInd);
+                    double[] eAtUmin = Vec<double>.GetValuesAtIndices(e, uMinInd);
+                    double[] eAtNotUmin = Vec<double>.GetValuesAtIndices(e, notUMinInd);
+                    double eMeanAtUmin = vec.Mean(eAtUmin).Value;
+                    double eMeanAtNotUmin = vec.Mean(eAtNotUmin).Value;
+                    double eDifferenceFactor = Math.Abs(eMeanAtUmin - eMeanAtNotUmin) / Math.Abs(eMeanAtNotUmin);
+                    if (eDifferenceFactor > E_TRESHOLDFACTOR)
+                    {
+                        uMin = uMinObserved;
+                    }
+                }
+            }
+            // UMAX
+            if (uMaxObserved < uMax - uTol)
+            {
+                List<int> uMaxInd = vec.FindValues(uMinusFF, uMaxObserved - uTol, VectorFindValueType.BiggerOrEqual);
+                if (uMaxInd.Count > minNumberOfIndicesToConsider && (double)uMaxInd.Count / N > minFracAtConstraintConsidered)
+                {
+                    List<int> notUMaxInd = Index.InverseIndices(dataSet.NumDataPoints, uMaxInd);
+                    double[] eAtUmax = Vec<double>.GetValuesAtIndices(e, uMaxInd);
+                    double[] eAtNotUax = Vec<double>.GetValuesAtIndices(e, notUMaxInd);
+
+                    double eMeanAtUmax = vec.Mean(eAtUmax).Value;
+                    double eMeanAtNotUmax = vec.Mean(eAtNotUax).Value;
+
+                    double eDifferenceFactor = Math.Abs(eMeanAtUmax - eMeanAtNotUmax) / Math.Abs(eMeanAtNotUmax);
+
+                    if (eDifferenceFactor > E_TRESHOLDFACTOR)
+                    {
+                        uMax = uMaxObserved;
+                    }
+                }
+                //Test2
+                /*  if (uMaxInd.Count() / N > NthresholdValuesFrac)
+                       uMax = uMaxObserved;*/
+            }
+
+        }
+
+        public PidModel Identify(UnitDataSet dataSet)
+        {
+            PidModel results_withDelay = IdentifyInternal(dataSet, true);
+            const bool checkIfNoDelayPIDfitsDataBetter = true;//should be true unless debugging.
+            if (checkIfNoDelayPIDfitsDataBetter)
+            {
+                PidModel results_noDelay = IdentifyInternal(dataSet, false);
+
+                if (results_noDelay.GoodnessOfFit_prc > results_withDelay.GoodnessOfFit_prc)
+                    return results_noDelay;
+                else
+                    return results_withDelay;
+            }
+            else
+                return results_withDelay;
+        }
+
+        const double rSquaredCutoffForInTrackingWarning = 0.02;//must be between 0 and 1
+
+
+        private double[] GetUMinusFF(UnitDataSet dataSet)
+        {
+            // todo: how to treat/remove feedforward term here???
+            if (dataSet.U.GetNColumns() == 1)
+                return dataSet.U.GetColumn(0);
+            else if (dataSet.U.GetNColumns() == 2)
+            {
+                return vec.Subtract(dataSet.U.GetColumn(0), dataSet.U.GetColumn(1));
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        private PidModel IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
+        {
+
+            PidParameters pidParam = new PidParameters();
+
+            PidModel result = new PidModel(pidScaling, isPIDoutputDelayOneSample);
+            if (vec.IsAllNaN(dataSet.Y_setpoint))
+            {
+                result.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
+            }
+
+            double[] e_unscaled = vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);//dataSet.GetYerrorTerm();
+
+            if (pidScaling.IsDefault())
+            {
+                double umin, umax;
+                DetermineUminUmax(dataSet, out umin, out umax);
+                // TODO: the check for this should be better.
+                bool foundEstimatedUmax = false;
+                if (umax < 100)
+                {
+                    result.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmax);
+                    foundEstimatedUmax = true;
+                }
+                if (umin > 0)
+                {
+                    result.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmin);
+                    foundEstimatedUmax = true;
+                }
+                if (foundEstimatedUmax)
+                {
+                    pidScaling.SetEstimatedUminUmax(umin, umax);
+                }
+            }
+
+            int bufferLengthShortest = (int)Math.Ceiling(maxExpectedTc_s * 4 / TimeBase_s);// shortest possible to have at least one settling time in it.
+            int bufferLengthLongest = dataSet.NumDataPoints / MAX_ESTIMATIONS_PER_DATASET;
+            int bufferLength = Math.Max(bufferLengthShortest, bufferLengthLongest);
+            int numEstimations = dataSet.NumDataPoints / bufferLength;
+            if (numEstimations < 3)
+            {
+                result.AddWarning(PidIdentWarning.DataSetVeryShortComparedtoTMax);
+            }
+            if (!enableKPchangeDetection && !enableTichangeDetection)
+            {
+                bufferLength = dataSet.NumDataPoints - 1;
+                numEstimations = 1;
+            }
+
+            double[] uMinusFF = GetUMinusFF(dataSet);
+
+            double uRange = vec.Max(uMinusFF) - vec.Min(uMinusFF);
+            double[] X1_ols = new double[bufferLength];
+            double[] X2_ols = new double[bufferLength];
+            double[] Y_ols = new double[bufferLength];
+
+            int nIndexesBetweenWindows = (int)Math.Floor((double)dataSet.NumDataPoints / numEstimations);
+            double[] Kpest = new double[numEstimations];
+            double[] Tiest = new double[numEstimations];
+            DateTime[] t_result = new DateTime[numEstimations];
+            int[] ind_result = new int[numEstimations];
+            double[] objFunEst = new double[numEstimations];
+            List<double[]> yModList = new List<double[]>();
+
+            double[] Rsq = new double[numEstimations];
+
+            for (int curEstidx = 0; curEstidx < numEstimations; curEstidx++)
+            {
+                int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iteration back.
+
+                int idxStart = nIndexesBetweenWindows * curEstidx + nIterationsToLookBack;
+                int idxEnd = nIndexesBetweenWindows * (curEstidx + 1) - 1;//+ nIterationsToLookBack
+                ind_result[curEstidx] = idxEnd;
+
+                double[] ucur, uprev, ecur, eprev;
+
+                List<int> indicesToIgnore = new List<int>();
+
+                double[] uMinusFF = GetUMinusFF(dataSet);
+                double[] e_scaled;
+                double yScaleFactor = 1;
+                if (pidScaling.IsKpScalingOn())
+                {
+                    yScaleFactor = 1 / pidScaling.GetKpScalingFactor();
+                }
+                if (yScaleFactor == 1)
+                {
+                    e_scaled = e_unscaled;
+                }
+                else
+                {
+                    e_scaled = vec.Multiply(e_unscaled, yScaleFactor);
+                }
+                ucur = Vec<double>.SubArray(uMinusFF, idxStart, idxEnd);
+                uprev = Vec<double>.SubArray(uMinusFF, idxStart - 1, idxEnd - 1);
+                int nSamplesToLookBack = 0;
+                if (isPIDoutputDelayOneSample)
+                {
+                    nSamplesToLookBack = 1;
+                }
+                ecur = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
+                eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
+
+                // replace -9999 in dataset
+                List<int> indBadU = BadDataFinder.GetAllBadIndicesPlussNext(ucur);
+                //                List<int> indUMinus9999     = Vec.FindValues(ucur, -9999, FindValues.Equal);
+                //        List<int> indUprevMinus9999 = Vec.Sub(indUMinus9999.ToArray(), -1).ToList();
+                List<int> indBadEcur = vec.FindValues(ecur, -9999, VectorFindValueType.Equal);
+                List<int> indBadEprev = vec.Subtract(indBadEcur.ToArray(), -1).ToList();
+
+                List<int> umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidScaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
+                List<int> uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidScaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
+
+                // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
+                /*
+                if (type == ControllerType.AntiSurge)
+                {
+                    List<int> indAntiSurgeKicks = PIDantiSurgeID.FindKicks(ucur, indicesToIgnore, TimeBase_s,
+                        out int nKicksFound, out double? estFFdownRampLimit_prcPerMin);
+                    indicesToIgnore = indicesToIgnore.Union(indAntiSurgeKicks).ToList();
+                    //   result.antiSurgeParams      = PIDantiSurgeID.Ident(ecur, ucur, indicesToIgnore, TimeBase_s);//TODO: find these values!
+                    result.antiSurgeParams = new AntiSurgePIDParams(50 / TimeBase_s,
+                        estFFdownRampLimit_prcPerMin, nKicksFound);
+                    // for anti-surge "ymeas" contains "CtrlDev" and yset=0.
+                    //   List<int> indAntiSurge = Vec.FindValues(ecur, result.antiSurgeParams.kickBelowThresholdE, FindValues.SmallerThan);
+                }
+                */
+
+
+                indicesToIgnore = indicesToIgnore.Union(indBadU).ToList();
+                indicesToIgnore = indicesToIgnore.Union(indBadEcur).ToList();
+                indicesToIgnore = indicesToIgnore.Union(indBadEprev).ToList();
+                //TODO: need to remove indice if _previous_ value was umax or umin
+                indicesToIgnore = indicesToIgnore.Union(umaxInd).ToList();
+                indicesToIgnore = indicesToIgnore.Union(uminInd).ToList();
+                indicesToIgnore.Sort();
+
+
+                if (indicesToIgnore.Count() > ucur.Count() * 0.5)
+                {
+                    result.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData);
+                    continue;
+                }
+                double uCurRange = vec.Max(ucur) - vec.Min(ucur);
+                if (uCurRange < uRange * MIN_DATASUBSET_URANGE_PRC / 100)
+                {
+                    continue;
+                }
+
+                Y_ols = vec.Subtract(ucur, uprev);
+                X1_ols = vec.Subtract(ecur, eprev);
+                X2_ols = vec.Multiply(ecur, TimeBase_s);
+
+                double[][] inputs = { X1_ols, X2_ols };
+                
+                /*
+                if (doDebugging)
+                {
+                    //   Plot.Three(Y_ols, X1_ols, X2_ols, (int)TimeBase_s, "Y", "X1", "X2");
+                }*/
+
+                var regressResults = vec.Regress(Y_ols, inputs, indicesToIgnore.ToArray());
+                //  out double[] notUsed, out double[] Y_mod, out double Rsq_cur;
+                var b = regressResults.Param;
+
+                Rsq[curEstidx] = regressResults.Rsq;
+                yModList.Add(regressResults.Y_modelled);
+
+                if (b == null)
+                {
+                    Tiest[curEstidx] = badValueIndicatingValue;
+                    Kpest[curEstidx] = badValueIndicatingValue;
+                    if (numEstimations == 1)
+                        result.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
+                    continue;
+                }
+                else
+                {
+                    Kpest[curEstidx] = -b[0];
+                }
+                double eMax = vec.Max(ecur);
+                double eMin = vec.Min(ecur);
+                double uMax = vec.Max(ucur);
+                double uMin = vec.Min(ucur);
+
+                double expectedRoughtEstimateForKp = Math.Abs((uMax - uMin) / (eMax - eMin));
+                if (Math.Abs(Kpest[curEstidx]) < expectedRoughtEstimateForKp * CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC)
+                {
+                    //       result.AddWarning(PIDidentWarnings.PIDControllerDoesNotAppearToBeInAuto);
+                    Kpest[curEstidx] = badValueIndicatingValue;
+                    Tiest[curEstidx] = badValueIndicatingValue;
+                    continue;
+                }
+
+                if (b[1] == 0)
+                {
+                    // this seems to happen in for instance entire Y is constant, for instance in case 
+                    /// of input saturation, or if the controller is in manual the entire time or is the wrong signal
+                    result.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY);
+                    Tiest[curEstidx] = badValueIndicatingValue;
+                    continue;
+                }
+                else
+                    Tiest[curEstidx] = Math.Abs(b[0] / b[1]);
+
+                if (dataSet.t != null)
+                {
+                    t_result[curEstidx] = dataSet.t[idxEnd];
+                }
+            }
+            // fill result in full-size vector
+            result.Kpest_raw = new double[dataSet.NumDataPoints];
+            result.Tiest_raw = new double[dataSet.NumDataPoints];
+            int curEstInd = 0;
+            if (Kpest.Length > 0 && Tiest.Length > 0)
+            {
+                for (int i = 0; i < dataSet.NumDataPoints; i++)
+                {
+                    if (ind_result[curEstInd] < i && curEstInd < Kpest.Length - 2)
+                        curEstInd++;
+                    result.Kpest_raw[i] = Kpest[curEstInd];
+                    result.Tiest_raw[i] = Tiest[curEstInd];
+                }
+            }
+            result.test_raw = t_result;
+            result.Kpest = Kpest;
+            result.Tiest = Tiest;
+
+            PIDidResultsPP.evaluateTimeSeriesForStepChange(ind_result, Kpest, enableKPchangeDetection,
+                out double Kpmean1, out double Kpmean2, out int? KpchangeT);
+
+            result.Kpest_val1 = Kpmean1;
+            result.Kpest_val2 = Kpmean2;
+            result.Kpest_changeInd = KpchangeT;
+            if (dataSet.t != null && result.Kpest_changeInd.HasValue)
+                result.Kpest_changeTime = dataSet.t[result.Kpest_changeInd.Value];
+
+            result.Kpest = PIDidResultsPP.createReturnableTimeSeriesFromMeans(Kpmean1, Kpmean2, KpchangeT, dataSet.GetUMinusFF());
+
+            PIDidResultsPP.evaluateTimeSeriesForStepChange(ind_result, Tiest, enableTichangeDetection,
+                out double Timean1, out double Timean2, out int? TichangeT);
+
+            if (Timean1 > 50)
+                Timean1 = Math.Round(Timean1);
+            if (Timean2 > 50)
+                Timean2 = Math.Round(Timean2);
+            result.Tiest_val1 = Timean1;
+            result.Tiest_val2 = Timean2;
+            result.Tiest_changeInd = TichangeT;
+            if (dataSet.t != null && result.Tiest_changeInd.HasValue)
+                result.Kpest_changeTime = dataSet.t[result.Tiest_changeInd.Value];
+
+            result.Tiest = PIDidResultsPP.createReturnableTimeSeriesFromMeans(Timean1, Timean2, TichangeT, dataSet.GetUMinusFF());
+
+            // this forward-integration of modelledU will be subject to a slight drift-off
+            // over time and so will start off similar to output of the simulatiing with 
+            // PIDcontroller.cs but will end up being off by a growing margin.
+
+            result.modelledU_minusFF = GetSimulatedU(Kpmean1, Timean1, dataSet.Y_meas, dataSet.Y_setpoint, uMinusFF, result.isPIDoutputDelayOneSample);
+
+            List<int> indToIgnoreEntireVec = BadDataFinder.GetAllBadIndices(dataSet.GetUinclFF());
+            result.GoodnessOfFit_prc = Vec.RSquared(result.modelledU_minusFF, dataSet.GetUMinusFF(), indToIgnoreEntireVec) * 100;
+
+            if (0 <= result.GoodnessOfFit_prc && result.GoodnessOfFit_prc < rSquaredCutoffForInTrackingWarning * 100)
+            {
+                result.AddWarning(PidIdentWarning.PIDControllerPossiblyInTracking);
+            }
+
+
+
+            double uObjFun = Vec.SumOfSquareErr(result.modelledU_minusFF, uMinusFF);
+            double uSelfObjFun = Vec.SelfSumOfSquareErr(uMinusFF);
+
+            // see if using "next value= last value" gives better objective function than the model found"
+            // if so it is an indication that something is wrong
+            // if data is "only noise" then the two can be very close even if model is good, for that reason add
+            // a little margin 
+
+            const double poorModelFitMaringFrac = 1.1;// should be equal or above 1
+            if (uObjFun > uSelfObjFun * poorModelFitMaringFrac)
+            {
+                result.AddWarning(PidIdentWarning.PoorModelFit);
+            }
+            // if there is too little variation in U, then Kp tends to close to zero.
+            if (Math.Abs(Kpmean1) < 0.0001)//in some cases the value can be less than 0.01 on real plants
+            {
+                result.AddWarning(PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto);
+            }
+            return result;
+        }
+
+        // todo: this code should be replaced after porting code into TimeSeriesAnalysis. Re-use common simulation rather than re-doing it.
+
+        public Double[] GetSimulatedU(double Kp, double Ti, Double[] ymeas, Double[] yset, Double[] u, bool outputDelayedOneSample = false)
+        {
+            int firstGoodDataPointToStartSimIdx = 0;
+            while ((yset[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
+                ymeas[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
+                u[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue) &&
+                 firstGoodDataPointToStartSimIdx < ymeas.Length - 2)
+            {
+                firstGoodDataPointToStartSimIdx++;
+            }
+            double u_init = u[firstGoodDataPointToStartSimIdx];
+
+            Double[] simulatedU = new Double[yset.Length];
+
+            PidController pid = new PidController(TimeBase_s);
+            pid.SetKp(Kp);
+            pid.SetTi(Ti);
+            pid.SetTd(0);
+            pid.SetScaling(pidScaling);
+
+            pid.WarmStart(ymeas[firstGoodDataPointToStartSimIdx], yset[firstGoodDataPointToStartSimIdx], u_init);
+
+            int samplesToDelayOutput = 0;
+            if (outputDelayedOneSample)
+            {
+                simulatedU[0] = u_init;
+                samplesToDelayOutput = 1;
+            }
+            if (firstGoodDataPointToStartSimIdx > 0)
+            {
+                for (int i = 0; i < firstGoodDataPointToStartSimIdx; i++)
+                {
+                    simulatedU[i] = u_init;
+                }
+            }
+
+            double lastGoodU = 0, nextU;
+            for (int i = firstGoodDataPointToStartSimIdx; i < simulatedU.Length - samplesToDelayOutput; i++)
+            {
+                if (ymeas[i] == -9999 || Double.IsNaN(ymeas[i]) || Double.IsInfinity(ymeas[i]))
+                {
+                    nextU = lastGoodU;
+                }
+                else
+                {
+                    nextU = pid.Iterate(ymeas[i], yset[i]);
+                    lastGoodU = nextU;
+                }
+                simulatedU[i + samplesToDelayOutput] = nextU;
+            }
+            return simulatedU;
+        }
+    }
+
+}
+
+

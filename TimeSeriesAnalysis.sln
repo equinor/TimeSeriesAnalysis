@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSeriesAnalysis", "TimeSeriesAnalysis.csproj", "{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeSeriesAnalysis", "TimeSeriesAnalysis.csproj", "{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x64.ActiveCfg = Debug|x64
-		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x64.Build.0 = Debug|x64
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x64.Build.0 = Debug|Any CPU
 		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Debug|x86.Build.0 = Debug|Any CPU
 		{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
