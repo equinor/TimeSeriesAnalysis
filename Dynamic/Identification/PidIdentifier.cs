@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Dynamic
     class PidIdentifier
     {
         private const double CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC = 0.005;
-        private const int MAX_ESTIMATIONS_PER_DATASET = 10;
+        private const int MAX_ESTIMATIONS_PER_DATASET = 1;
 
         private const double MIN_DATASUBSET_URANGE_PRC = 0;
 
@@ -26,7 +26,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private bool doDebugging = true;
 
-        private PIDidResults result;
+        //private PIDidResults result;
 
         private PidScaling pidScaling;
 
@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private void DetermineUminUmax(UnitDataSet dataSet, out double uMin, out double uMax)
         {
-            double[] e = dataSet.GetYerrorTerm();
+            double[] e = GetErrorTerm(dataSet);
 
             // output constraints will cause multiple equal values u of next to each other.
             uMin = 0; // default value
@@ -147,13 +147,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
         }
 
-        public PidModel Identify(UnitDataSet dataSet)
+        public PidParameters Identify(UnitDataSet dataSet)
         {
-            PidModel results_withDelay = IdentifyInternal(dataSet, true);
-            const bool checkIfNoDelayPIDfitsDataBetter = true;//should be true unless debugging.
+            PidParameters results_withDelay = IdentifyInternal(dataSet, true);
+            return results_withDelay;
+            /*const bool checkIfNoDelayPIDfitsDataBetter = true;//should be true unless debugging.
             if (checkIfNoDelayPIDfitsDataBetter)
             {
-                PidModel results_noDelay = IdentifyInternal(dataSet, false);
+                PidParameters results_noDelay = IdentifyInternal(dataSet, false);
 
                 if (results_noDelay.GoodnessOfFit_prc > results_withDelay.GoodnessOfFit_prc)
                     return results_noDelay;
@@ -161,7 +162,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return results_withDelay;
             }
             else
-                return results_withDelay;
+                return results_withDelay;*/
         }
 
         const double rSquaredCutoffForInTrackingWarning = 0.02;//must be between 0 and 1
@@ -182,19 +183,25 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
+        private double[] GetErrorTerm(UnitDataSet dataSet)
+        {
+            return vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);
+        }
 
-        private PidModel IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
+
+        private PidParameters IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
         {
 
             PidParameters pidParam = new PidParameters();
+            pidParam.Scaling = pidScaling;
 
-            PidModel result = new PidModel(pidScaling, isPIDoutputDelayOneSample);
+//          PidModel result = new PidModel(pidScaling, isPIDoutputDelayOneSample);
             if (vec.IsAllNaN(dataSet.Y_setpoint))
             {
-                result.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
+                pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
             }
 
-            double[] e_unscaled = vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);//dataSet.GetYerrorTerm();
+            double[] e_unscaled = GetErrorTerm(dataSet);// vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);//dataSet.GetYerrorTerm();
 
             if (pidScaling.IsDefault())
             {
@@ -204,12 +211,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 bool foundEstimatedUmax = false;
                 if (umax < 100)
                 {
-                    result.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmax);
+                    pidParam.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmax);
                     foundEstimatedUmax = true;
                 }
                 if (umin > 0)
                 {
-                    result.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmin);
+                    pidParam.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmin);
                     foundEstimatedUmax = true;
                 }
                 if (foundEstimatedUmax)
@@ -224,7 +231,7 @@ namespace TimeSeriesAnalysis.Dynamic
             int numEstimations = dataSet.NumDataPoints / bufferLength;
             if (numEstimations < 3)
             {
-                result.AddWarning(PidIdentWarning.DataSetVeryShortComparedtoTMax);
+                pidParam.AddWarning(PidIdentWarning.DataSetVeryShortComparedtoTMax);
             }
             if (!enableKPchangeDetection && !enableTichangeDetection)
             {
@@ -261,7 +268,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 List<int> indicesToIgnore = new List<int>();
 
-                double[] uMinusFF = GetUMinusFF(dataSet);
+             //   double[] uMinusFF = GetUMinusFF(dataSet);
                 double[] e_scaled;
                 double yScaleFactor = 1;
                 if (pidScaling.IsKpScalingOn())
@@ -287,11 +294,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
 
                 // replace -9999 in dataset
-                List<int> indBadU = BadDataFinder.GetAllBadIndicesPlussNext(ucur);
+                List<int> indBadU = SysIdBadDataFinder.GetAllBadIndicesPlussNext(ucur);
                 //                List<int> indUMinus9999     = Vec.FindValues(ucur, -9999, FindValues.Equal);
                 //        List<int> indUprevMinus9999 = Vec.Sub(indUMinus9999.ToArray(), -1).ToList();
                 List<int> indBadEcur = vec.FindValues(ecur, -9999, VectorFindValueType.Equal);
-                List<int> indBadEprev = vec.Subtract(indBadEcur.ToArray(), -1).ToList();
+                List<int> indBadEprev = Index.Subtract(indBadEcur.ToArray(), 1).ToList();
 
                 List<int> umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidScaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
                 List<int> uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidScaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
@@ -320,10 +327,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 indicesToIgnore = indicesToIgnore.Union(uminInd).ToList();
                 indicesToIgnore.Sort();
 
-
                 if (indicesToIgnore.Count() > ucur.Count() * 0.5)
                 {
-                    result.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData);
+                    pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData);
                     continue;
                 }
                 double uCurRange = vec.Max(ucur) - vec.Min(ucur);
@@ -356,7 +362,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     Tiest[curEstidx] = badValueIndicatingValue;
                     Kpest[curEstidx] = badValueIndicatingValue;
                     if (numEstimations == 1)
-                        result.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
+                        pidParam.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
                     continue;
                 }
                 else
@@ -381,18 +387,19 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     // this seems to happen in for instance entire Y is constant, for instance in case 
                     /// of input saturation, or if the controller is in manual the entire time or is the wrong signal
-                    result.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY);
+                    pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY);
                     Tiest[curEstidx] = badValueIndicatingValue;
                     continue;
                 }
                 else
                     Tiest[curEstidx] = Math.Abs(b[0] / b[1]);
 
-                if (dataSet.t != null)
+                if (dataSet.Times != null)
                 {
-                    t_result[curEstidx] = dataSet.t[idxEnd];
+                    t_result[curEstidx] = dataSet.Times[idxEnd];
                 }
             }
+            /*
             // fill result in full-size vector
             result.Kpest_raw = new double[dataSet.NumDataPoints];
             result.Tiest_raw = new double[dataSet.NumDataPoints];
@@ -436,42 +443,46 @@ namespace TimeSeriesAnalysis.Dynamic
                 result.Kpest_changeTime = dataSet.t[result.Tiest_changeInd.Value];
 
             result.Tiest = PIDidResultsPP.createReturnableTimeSeriesFromMeans(Timean1, Timean2, TichangeT, dataSet.GetUMinusFF());
-
+            */
             // this forward-integration of modelledU will be subject to a slight drift-off
             // over time and so will start off similar to output of the simulatiing with 
             // PIDcontroller.cs but will end up being off by a growing margin.
 
-            result.modelledU_minusFF = GetSimulatedU(Kpmean1, Timean1, dataSet.Y_meas, dataSet.Y_setpoint, uMinusFF, result.isPIDoutputDelayOneSample);
+
+            /*
+            pidParam.modelledU_minusFF = GetSimulatedU(Kpmean1, Timean1, dataSet.Y_meas, dataSet.Y_setpoint, uMinusFF, pidParam.isPIDoutputDelayOneSample);
+
 
             List<int> indToIgnoreEntireVec = BadDataFinder.GetAllBadIndices(dataSet.GetUinclFF());
-            result.GoodnessOfFit_prc = Vec.RSquared(result.modelledU_minusFF, dataSet.GetUMinusFF(), indToIgnoreEntireVec) * 100;
+            pidParam.GoodnessOfFit_prc = Vec.RSquared(pidParam.modelledU_minusFF, dataSet.GetUMinusFF(), indToIgnoreEntireVec) * 100;
 
-            if (0 <= result.GoodnessOfFit_prc && result.GoodnessOfFit_prc < rSquaredCutoffForInTrackingWarning * 100)
+            if (0 <= pidParam.GoodnessOfFit_prc && pidParam.GoodnessOfFit_prc < rSquaredCutoffForInTrackingWarning * 100)
             {
-                result.AddWarning(PidIdentWarning.PIDControllerPossiblyInTracking);
+                pidParam.AddWarning(PidIdentWarning.PIDControllerPossiblyInTracking);
             }
 
 
+            double uObjFun = Vec.SumOfSquareErr(pidParam.modelledU_minusFF, uMinusFF);
+            double uSelfObjFun = vec.SelfSumOfSquareErr(uMinusFF);
+            */
 
-            double uObjFun = Vec.SumOfSquareErr(result.modelledU_minusFF, uMinusFF);
-            double uSelfObjFun = Vec.SelfSumOfSquareErr(uMinusFF);
 
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong
             // if data is "only noise" then the two can be very close even if model is good, for that reason add
             // a little margin 
-
+            /*
             const double poorModelFitMaringFrac = 1.1;// should be equal or above 1
             if (uObjFun > uSelfObjFun * poorModelFitMaringFrac)
             {
-                result.AddWarning(PidIdentWarning.PoorModelFit);
+                pidParam.AddWarning(PidIdentWarning.PoorModelFit);
             }
             // if there is too little variation in U, then Kp tends to close to zero.
             if (Math.Abs(Kpmean1) < 0.0001)//in some cases the value can be less than 0.01 on real plants
             {
-                result.AddWarning(PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto);
-            }
-            return result;
+                pidParam.AddWarning(PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto);
+            }*/
+            return pidParam;
         }
 
         // todo: this code should be replaced after porting code into TimeSeriesAnalysis. Re-use common simulation rather than re-doing it.
