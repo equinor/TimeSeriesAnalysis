@@ -578,6 +578,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.AddConnection
   nameWithType: ConnectionParser.AddConnection
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.connections
+  name: connections
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_connections
+  commentId: F:TimeSeriesAnalysis.Dynamic.ConnectionParser.connections
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.connections
+  nameWithType: ConnectionParser.connections
 - uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.DetermineCalculationOrderOfModels
   name: DetermineCalculationOrderOfModels()
   href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_DetermineCalculationOrderOfModels
@@ -656,6 +662,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID
   nameWithType: ConnectionParser.HasUpstreamPID
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.modelDict
+  name: modelDict
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_modelDict
+  commentId: F:TimeSeriesAnalysis.Dynamic.ConnectionParser.modelDict
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.modelDict
+  nameWithType: ConnectionParser.modelDict
 - uid: TimeSeriesAnalysis.Dynamic.INDEX
   name: INDEX
   href: api/TimeSeriesAnalysis.Dynamic.INDEX.html
@@ -2451,15 +2463,15 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.PlantSimulator
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator
   nameWithType: PlantSimulator
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
-  name: PlantSimulator(Int32, List<ISimulatableModel>)
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_System_Int32_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel})
-  name.vb: PlantSimulator(Int32, List(Of ISimulatableModel))
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List<TimeSeriesAnalysis.Dynamic.ISimulatableModel>)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List(Of TimeSeriesAnalysis.Dynamic.ISimulatableModel))
-  nameWithType: PlantSimulator.PlantSimulator(Int32, List<ISimulatableModel>)
-  nameWithType.vb: PlantSimulator.PlantSimulator(Int32, List(Of ISimulatableModel))
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String)
+  name: PlantSimulator(Int32, List<ISimulatableModel>, String)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_System_Int32_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String)
+  name.vb: PlantSimulator(Int32, List(Of ISimulatableModel), String)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List<TimeSeriesAnalysis.Dynamic.ISimulatableModel>, System.String)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List(Of TimeSeriesAnalysis.Dynamic.ISimulatableModel), System.String)
+  nameWithType: PlantSimulator.PlantSimulator(Int32, List<ISimulatableModel>, String)
+  nameWithType.vb: PlantSimulator.PlantSimulator(Int32, List(Of ISimulatableModel), String)
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor*
   name: PlantSimulator
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_
@@ -2483,6 +2495,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal
   nameWithType: PlantSimulator.AddSignal
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.connections
+  name: connections
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_connections
+  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.connections
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.connections
+  nameWithType: PlantSimulator.connections
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectModels(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Nullable{System.Int32})
   name: ConnectModels(ISimulatableModel, ISimulatableModel, Nullable<Int32>)
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectModels_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Nullable_System_Int32__
@@ -2525,6 +2543,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal
   nameWithType: PlantSimulator.ConnectSignal
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignals
+  name: externalInputSignals
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_externalInputSignals
+  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignals
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignals
+  nameWithType: PlantSimulator.externalInputSignals
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections
   name: GetConnections()
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetConnections
@@ -2564,6 +2588,18 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels
   nameWithType: PlantSimulator.GetModels
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.modelDict
+  name: modelDict
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_modelDict
+  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.modelDict
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.modelDict
+  nameWithType: PlantSimulator.modelDict
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName
+  name: plantName
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_plantName
+  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName
+  nameWithType: PlantSimulator.plantName
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize
   name: Serialize()
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize
@@ -2593,6 +2629,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate
   nameWithType: PlantSimulator.Simulate
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.timeBase_s
+  name: timeBase_s
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_timeBase_s
+  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.timeBase_s
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.timeBase_s
+  nameWithType: PlantSimulator.timeBase_s
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer
   name: PlantSimulatorInitalizer
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html
@@ -3673,19 +3715,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitModel.Iterate
   nameWithType: UnitModel.Iterate
-- uid: TimeSeriesAnalysis.Dynamic.UnitModel.TimeDelayEstWarnings
-  name: TimeDelayEstWarnings
-  href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html#TimeSeriesAnalysis_Dynamic_UnitModel_TimeDelayEstWarnings
-  commentId: P:TimeSeriesAnalysis.Dynamic.UnitModel.TimeDelayEstWarnings
-  fullName: TimeSeriesAnalysis.Dynamic.UnitModel.TimeDelayEstWarnings
-  nameWithType: UnitModel.TimeDelayEstWarnings
-- uid: TimeSeriesAnalysis.Dynamic.UnitModel.TimeDelayEstWarnings*
-  name: TimeDelayEstWarnings
-  href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html#TimeSeriesAnalysis_Dynamic_UnitModel_TimeDelayEstWarnings_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitModel.TimeDelayEstWarnings
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.UnitModel.TimeDelayEstWarnings
-  nameWithType: UnitModel.TimeDelayEstWarnings
+- uid: TimeSeriesAnalysis.Dynamic.UnitModel.modelParameters
+  name: modelParameters
+  href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html#TimeSeriesAnalysis_Dynamic_UnitModel_modelParameters
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitModel.modelParameters
+  fullName: TimeSeriesAnalysis.Dynamic.UnitModel.modelParameters
+  nameWithType: UnitModel.modelParameters
 - uid: TimeSeriesAnalysis.Dynamic.UnitModel.ToString
   name: ToString()
   href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html#TimeSeriesAnalysis_Dynamic_UnitModel_ToString

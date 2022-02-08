@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Text.Json;
+//using System.Text.Json;
+//using System.Text.Json.Serialization;
+
+using Newtonsoft.Json;
 
 using TimeSeriesAnalysis;
+using TimeSeriesAnalysis.Utility;
+
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -32,19 +37,34 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class PlantSimulator
     {
-        int timeBase_s;
-        Dictionary<string, ISimulatableModel> modelDict;
-        TimeSeriesDataSet externalInputSignals;
+    //    [JsonInclude]
+        public string plantName;
+
+     //   [JsonInclude]
+        public int timeBase_s;
+
+     //   [JsonInclude]
+        public Dictionary<string, ISimulatableModel> modelDict;
+
+      //  [JsonInclude]
+        public TimeSeriesDataSet externalInputSignals;
+
+       // [JsonInclude]
+        public ConnectionParser connections;
+
         private int nConnections = 0;
-        ConnectionParser connections;
+
+
+   
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="timeBase_s"></param>
         /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
+        /// <param name="plantName">optional name of plant, used when serializing</param>
         public PlantSimulator(int timeBase_s, List<ISimulatableModel>
-            processModelList)
+            processModelList, string plantName=null)
         {
             externalInputSignals = new TimeSeriesDataSet(timeBase_s);
 
@@ -53,6 +73,8 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return;
             }
+
+            this.plantName = plantName;
 
             modelDict = new Dictionary<string, ISimulatableModel>();
             connections = new ConnectionParser();
@@ -343,12 +365,22 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         public void Serialize()
-        { 
-            
-        
-        
-        
-        
+        {
+            string fileName = "PlantSim";
+            if (plantName != null)
+            {
+                fileName += plantName;
+            }
+            fileName += ".json";
+
+            /// var options = new JsonSerializerOptions { WriteIndented = true };
+            //  var serializedTxt =  JsonSerializer.Serialize(this,options);
+
+            var serializedTxt = JsonConvert.SerializeObject(this,Formatting.Indented);
+
+            var fileWriter = new StringToFileWriter(fileName);
+            fileWriter.Write(serializedTxt);
+            fileWriter.Close();
         }
 
     }

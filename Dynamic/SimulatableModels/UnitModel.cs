@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using System.Text;
+
+using Newtonsoft.Json;
+
 using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -39,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class UnitModel : ModelBaseClass, ISimulatableModel 
     {
-        private UnitParameters modelParameters;
+        public  UnitParameters modelParameters;
         private LowPass lowPass;
         private double timeBase_s;
         private TimeDelay delayObj;
@@ -48,8 +51,11 @@ namespace TimeSeriesAnalysis.Dynamic
         private double[] lastGoodValuesOfInputs;
 
         // todo:Remove/refactor these
+
+
         public UnitDataSet FittedDataSet { get; internal set; }
-        public List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; internal set; }
+
+        private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
         /// <summary>
         /// Constructor

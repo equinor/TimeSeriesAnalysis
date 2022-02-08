@@ -97,11 +97,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void Serial2_RunsAndConverges()
         {
             var processSim = new Dynamic.PlantSimulator(timeBase_s,
-                new List<ISimulatableModel> { processModel1, processModel2 });
+                new List<ISimulatableModel> { processModel1, processModel2 },"Serial2");
 
             processSim.ConnectModels(processModel1, processModel2);
             processSim.AddSignal(processModel1,SignalType.External_U, TimeSeriesCreator.Step(N / 4, N, 50, 55));
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+
+            processSim.Serialize();
 
             Assert.IsTrue(isOk);
             CommonAsserts(simData);

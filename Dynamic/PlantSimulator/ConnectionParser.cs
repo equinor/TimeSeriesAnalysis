@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
@@ -16,9 +19,11 @@ namespace TimeSeriesAnalysis.Dynamic
     public class ConnectionParser
     {
 
-        Dictionary<string, ISimulatableModel> modelDict;
+        [JsonInclude]
+        public Dictionary<string, ISimulatableModel> modelDict;
 
-        List<(string, string)> connections;
+        [JsonInclude]
+        public List<(string, string)> connections;
 
         /// <summary>
         /// Constructor
@@ -28,11 +33,6 @@ namespace TimeSeriesAnalysis.Dynamic
             connections = new List<(string, string)>();
             modelDict = new Dictionary<string, ISimulatableModel>();
         }
-
-
-
-
-
 
 
         /// <summary>
