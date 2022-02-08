@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis
     /// There are some special features of indices: they should never be negative,
     /// and indice vectors are often monotonically increasing.
     /// </summary>
-    class Index
+    public class Index
     {
         private static double valuteToReturnElementIsNaN = double.NaN;// so fi an element is either NaN or "-9999", what value shoudl a calculation return?
 

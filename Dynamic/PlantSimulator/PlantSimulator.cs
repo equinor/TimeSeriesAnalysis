@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Text.Json;
+
 using TimeSeriesAnalysis;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -338,8 +340,16 @@ namespace TimeSeriesAnalysis.Dynamic
             return simData.SetSimStatus(true);
         }
 
-   
 
+
+        public void Serialize()
+        { 
+            
+        
+        
+        
+        
+        }
 
     }
 }

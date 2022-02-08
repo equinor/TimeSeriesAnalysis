@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="value">constant value of time-series</param>
         /// <param name="N">number of data points of time-series</param>
         /// <returns></returns>
-        internal static double[] Constant(double value, int N)
+        public static double[] Constant(double value, int N)
         {
             //(wrapper for Vec.Fill, added for code readability)
             return Vec<double>.Fill(value, N);
