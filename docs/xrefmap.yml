@@ -656,6 +656,42 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.HasUpstreamPID
   nameWithType: ConnectionParser.HasUpstreamPID
+- uid: TimeSeriesAnalysis.Dynamic.INDEX
+  name: INDEX
+  href: api/TimeSeriesAnalysis.Dynamic.INDEX.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.INDEX
+  fullName: TimeSeriesAnalysis.Dynamic.INDEX
+  nameWithType: INDEX
+- uid: TimeSeriesAnalysis.Dynamic.INDEX.FIFTH
+  name: FIFTH
+  href: api/TimeSeriesAnalysis.Dynamic.INDEX.html#TimeSeriesAnalysis_Dynamic_INDEX_FIFTH
+  commentId: F:TimeSeriesAnalysis.Dynamic.INDEX.FIFTH
+  fullName: TimeSeriesAnalysis.Dynamic.INDEX.FIFTH
+  nameWithType: INDEX.FIFTH
+- uid: TimeSeriesAnalysis.Dynamic.INDEX.FIRST
+  name: FIRST
+  href: api/TimeSeriesAnalysis.Dynamic.INDEX.html#TimeSeriesAnalysis_Dynamic_INDEX_FIRST
+  commentId: F:TimeSeriesAnalysis.Dynamic.INDEX.FIRST
+  fullName: TimeSeriesAnalysis.Dynamic.INDEX.FIRST
+  nameWithType: INDEX.FIRST
+- uid: TimeSeriesAnalysis.Dynamic.INDEX.FOURTH
+  name: FOURTH
+  href: api/TimeSeriesAnalysis.Dynamic.INDEX.html#TimeSeriesAnalysis_Dynamic_INDEX_FOURTH
+  commentId: F:TimeSeriesAnalysis.Dynamic.INDEX.FOURTH
+  fullName: TimeSeriesAnalysis.Dynamic.INDEX.FOURTH
+  nameWithType: INDEX.FOURTH
+- uid: TimeSeriesAnalysis.Dynamic.INDEX.SECOND
+  name: SECOND
+  href: api/TimeSeriesAnalysis.Dynamic.INDEX.html#TimeSeriesAnalysis_Dynamic_INDEX_SECOND
+  commentId: F:TimeSeriesAnalysis.Dynamic.INDEX.SECOND
+  fullName: TimeSeriesAnalysis.Dynamic.INDEX.SECOND
+  nameWithType: INDEX.SECOND
+- uid: TimeSeriesAnalysis.Dynamic.INDEX.THIRD
+  name: THIRD
+  href: api/TimeSeriesAnalysis.Dynamic.INDEX.html#TimeSeriesAnalysis_Dynamic_INDEX_THIRD
+  commentId: F:TimeSeriesAnalysis.Dynamic.INDEX.THIRD
+  fullName: TimeSeriesAnalysis.Dynamic.INDEX.THIRD
+  nameWithType: INDEX.THIRD
 - uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel
   name: ISimulatableModel
   href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html
@@ -1929,6 +1965,42 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidModel.WarmStart
   nameWithType: PidModel.WarmStart
+- uid: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx
+  name: PidModelInputsIdx
+  href: api/TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.PidModelInputsIdx
+  fullName: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx
+  nameWithType: PidModelInputsIdx
+- uid: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.FeedForward
+  name: FeedForward
+  href: api/TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html#TimeSeriesAnalysis_Dynamic_PidModelInputsIdx_FeedForward
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.FeedForward
+  fullName: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.FeedForward
+  nameWithType: PidModelInputsIdx.FeedForward
+- uid: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.GainScheduling
+  name: GainScheduling
+  href: api/TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html#TimeSeriesAnalysis_Dynamic_PidModelInputsIdx_GainScheduling
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.GainScheduling
+  fullName: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.GainScheduling
+  nameWithType: PidModelInputsIdx.GainScheduling
+- uid: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Tracking
+  name: Tracking
+  href: api/TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html#TimeSeriesAnalysis_Dynamic_PidModelInputsIdx_Tracking
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Tracking
+  fullName: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Tracking
+  nameWithType: PidModelInputsIdx.Tracking
+- uid: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Y_meas
+  name: Y_meas
+  href: api/TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html#TimeSeriesAnalysis_Dynamic_PidModelInputsIdx_Y_meas
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Y_meas
+  fullName: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Y_meas
+  nameWithType: PidModelInputsIdx.Y_meas
+- uid: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Y_setpoint
+  name: Y_setpoint
+  href: api/TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html#TimeSeriesAnalysis_Dynamic_PidModelInputsIdx_Y_setpoint
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Y_setpoint
+  fullName: TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.Y_setpoint
+  nameWithType: PidModelInputsIdx.Y_setpoint
 - uid: TimeSeriesAnalysis.Dynamic.PidParameters
   name: PidParameters
   href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html
@@ -2492,6 +2564,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels
   nameWithType: PlantSimulator.GetModels
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize
+  name: Serialize()
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize()
+  nameWithType: PlantSimulator.Serialize()
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize*
+  name: Serialize
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize
+  nameWithType: PlantSimulator.Serialize
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
   name: Simulate(out TimeSeriesDataSet)
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
@@ -4027,6 +4112,130 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.HighPass.Filter
   nameWithType: HighPass.Filter
+- uid: TimeSeriesAnalysis.Index
+  name: Index
+  href: api/TimeSeriesAnalysis.Index.html
+  commentId: T:TimeSeriesAnalysis.Index
+  fullName: TimeSeriesAnalysis.Index
+  nameWithType: Index
+- uid: TimeSeriesAnalysis.Index.Add(System.Int32[],System.Int32)
+  name: Add(Int32[], Int32)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Add_System_Int32___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Index.Add(System.Int32[],System.Int32)
+  name.vb: Add(Int32(), Int32)
+  fullName: TimeSeriesAnalysis.Index.Add(System.Int32[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Index.Add(System.Int32(), System.Int32)
+  nameWithType: Index.Add(Int32[], Int32)
+  nameWithType.vb: Index.Add(Int32(), Int32)
+- uid: TimeSeriesAnalysis.Index.Add*
+  name: Add
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Add_
+  commentId: Overload:TimeSeriesAnalysis.Index.Add
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.Add
+  nameWithType: Index.Add
+- uid: TimeSeriesAnalysis.Index.AppendTrailingIndices(System.Collections.Generic.List{System.Int32})
+  name: AppendTrailingIndices(List<Int32>)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_AppendTrailingIndices_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Index.AppendTrailingIndices(System.Collections.Generic.List{System.Int32})
+  name.vb: AppendTrailingIndices(List(Of Int32))
+  fullName: TimeSeriesAnalysis.Index.AppendTrailingIndices(System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Index.AppendTrailingIndices(System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Index.AppendTrailingIndices(List<Int32>)
+  nameWithType.vb: Index.AppendTrailingIndices(List(Of Int32))
+- uid: TimeSeriesAnalysis.Index.AppendTrailingIndices*
+  name: AppendTrailingIndices
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_AppendTrailingIndices_
+  commentId: Overload:TimeSeriesAnalysis.Index.AppendTrailingIndices
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.AppendTrailingIndices
+  nameWithType: Index.AppendTrailingIndices
+- uid: TimeSeriesAnalysis.Index.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
+  name: InverseIndices(Int32, List<Int32>)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_InverseIndices_System_Int32_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Index.InverseIndices(System.Int32,System.Collections.Generic.List{System.Int32})
+  name.vb: InverseIndices(Int32, List(Of Int32))
+  fullName: TimeSeriesAnalysis.Index.InverseIndices(System.Int32, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Index.InverseIndices(System.Int32, System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Index.InverseIndices(Int32, List<Int32>)
+  nameWithType.vb: Index.InverseIndices(Int32, List(Of Int32))
+- uid: TimeSeriesAnalysis.Index.InverseIndices*
+  name: InverseIndices
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_InverseIndices_
+  commentId: Overload:TimeSeriesAnalysis.Index.InverseIndices
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.InverseIndices
+  nameWithType: Index.InverseIndices
+- uid: TimeSeriesAnalysis.Index.MakeIndexArray(System.Int32,System.Int32)
+  name: MakeIndexArray(Int32, Int32)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_MakeIndexArray_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Index.MakeIndexArray(System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.Index.MakeIndexArray(System.Int32, System.Int32)
+  nameWithType: Index.MakeIndexArray(Int32, Int32)
+- uid: TimeSeriesAnalysis.Index.MakeIndexArray*
+  name: MakeIndexArray
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_MakeIndexArray_
+  commentId: Overload:TimeSeriesAnalysis.Index.MakeIndexArray
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.MakeIndexArray
+  nameWithType: Index.MakeIndexArray
+- uid: TimeSeriesAnalysis.Index.Max(System.Double[],System.Int32,System.Int32)
+  name: Max(Double[], Int32, Int32)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Max_System_Double___System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Index.Max(System.Double[],System.Int32,System.Int32)
+  name.vb: Max(Double(), Int32, Int32)
+  fullName: TimeSeriesAnalysis.Index.Max(System.Double[], System.Int32, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Index.Max(System.Double(), System.Int32, System.Int32)
+  nameWithType: Index.Max(Double[], Int32, Int32)
+  nameWithType.vb: Index.Max(Double(), Int32, Int32)
+- uid: TimeSeriesAnalysis.Index.Max(System.Int32[],System.Int32)
+  name: Max(Int32[], Int32)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Max_System_Int32___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Index.Max(System.Int32[],System.Int32)
+  name.vb: Max(Int32(), Int32)
+  fullName: TimeSeriesAnalysis.Index.Max(System.Int32[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Index.Max(System.Int32(), System.Int32)
+  nameWithType: Index.Max(Int32[], Int32)
+  nameWithType.vb: Index.Max(Int32(), Int32)
+- uid: TimeSeriesAnalysis.Index.Max*
+  name: Max
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Max_
+  commentId: Overload:TimeSeriesAnalysis.Index.Max
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.Max
+  nameWithType: Index.Max
+- uid: TimeSeriesAnalysis.Index.Subtract(System.Int32[],System.Int32)
+  name: Subtract(Int32[], Int32)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Subtract_System_Int32___System_Int32_
+  commentId: M:TimeSeriesAnalysis.Index.Subtract(System.Int32[],System.Int32)
+  name.vb: Subtract(Int32(), Int32)
+  fullName: TimeSeriesAnalysis.Index.Subtract(System.Int32[], System.Int32)
+  fullName.vb: TimeSeriesAnalysis.Index.Subtract(System.Int32(), System.Int32)
+  nameWithType: Index.Subtract(Int32[], Int32)
+  nameWithType.vb: Index.Subtract(Int32(), Int32)
+- uid: TimeSeriesAnalysis.Index.Subtract*
+  name: Subtract
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Subtract_
+  commentId: Overload:TimeSeriesAnalysis.Index.Subtract
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.Subtract
+  nameWithType: Index.Subtract
+- uid: TimeSeriesAnalysis.Index.Union(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
+  name: Union(List<Int32>, List<Int32>)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Union_System_Collections_Generic_List_System_Int32__System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Index.Union(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})
+  name.vb: Union(List(Of Int32), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Index.Union(System.Collections.Generic.List<System.Int32>, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Index.Union(System.Collections.Generic.List(Of System.Int32), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Index.Union(List<Int32>, List<Int32>)
+  nameWithType.vb: Index.Union(List(Of Int32), List(Of Int32))
+- uid: TimeSeriesAnalysis.Index.Union*
+  name: Union
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Union_
+  commentId: Overload:TimeSeriesAnalysis.Index.Union
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.Union
+  nameWithType: Index.Union
 - uid: TimeSeriesAnalysis.LowPass
   name: LowPass
   href: api/TimeSeriesAnalysis.LowPass.html
@@ -5281,6 +5490,19 @@ references:
   commentId: T:TimeSeriesAnalysis.Utility.TimeSeriesCreator
   fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator
   nameWithType: TimeSeriesCreator
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Constant(System.Double,System.Int32)
+  name: Constant(Double, Int32)
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Constant_System_Double_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Constant(System.Double,System.Int32)
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Constant(System.Double, System.Int32)
+  nameWithType: TimeSeriesCreator.Constant(Double, Int32)
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Constant*
+  name: Constant
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Constant_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Constant
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Constant
+  nameWithType: TimeSeriesCreator.Constant
 - uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray(System.DateTime,System.Int32,System.Int32)
   name: CreateDateStampArray(DateTime, Int32, Int32)
   href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_CreateDateStampArray_System_DateTime_System_Int32_System_Int32_
