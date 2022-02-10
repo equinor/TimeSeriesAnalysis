@@ -364,10 +364,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
 
-        public void Serialize()
+        public void Serialize(string newPlantName = null)
         {
             string fileName = "PlantSim";
-            if (plantName != null)
+            if (newPlantName!=null)
+            {
+                fileName += newPlantName;
+            }
+            else if (plantName != null)
             {
                 fileName += plantName;
             }

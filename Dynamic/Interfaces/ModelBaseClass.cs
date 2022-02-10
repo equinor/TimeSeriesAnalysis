@@ -13,11 +13,11 @@ namespace TimeSeriesAnalysis.Dynamic
     public abstract class ModelBaseClass
     {
         private string ID = "not_named";
-        private string[] modelInputIDs;
-        private List<string> additiveInputIDs;
-        private string outputID;
+        public string[] modelInputIDs;
+        public List<string> additiveInputIDs;
+        public string outputID;
 
-        internal ModelType processModelType = ModelType.UnTyped;
+        public ModelType processModelType = ModelType.UnTyped;
 
 
         /// <summary>

@@ -133,6 +133,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(N / 4, N, 50, 55));
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
 
+            processSim.Serialize("SISO_Serial3");
+
             Assert.IsTrue(isOk);
             CommonAsserts(simData);
 
@@ -216,6 +218,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, 
                 TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
             bool isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+
+
+            processSim.Serialize("SISO_basicPID");
 
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - newSetpoint);

@@ -926,6 +926,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.ModelBaseClass
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass
   nameWithType: ModelBaseClass
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.additiveInputIDs
+  name: additiveInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_additiveInputIDs
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.additiveInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.additiveInputIDs
+  nameWithType: ModelBaseClass.additiveInputIDs
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput(System.String)
   name: AddSignalToOutput(String)
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_AddSignalToOutput_System_String_
@@ -1043,6 +1049,24 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetProcessModelType
   nameWithType: ModelBaseClass.GetProcessModelType
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.modelInputIDs
+  name: modelInputIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_modelInputIDs
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.modelInputIDs
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.modelInputIDs
+  nameWithType: ModelBaseClass.modelInputIDs
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputID
+  name: outputID
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_outputID
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputID
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputID
+  nameWithType: ModelBaseClass.outputID
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.processModelType
+  name: processModelType
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_processModelType
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.processModelType
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.processModelType
+  nameWithType: ModelBaseClass.processModelType
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.SetID(System.String)
   name: SetID(String)
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetID_System_String_
@@ -1916,6 +1940,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidModel.Iterate
   nameWithType: PidModel.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.PidModel.pidParameters
+  name: pidParameters
+  href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel_pidParameters
+  commentId: F:TimeSeriesAnalysis.Dynamic.PidModel.pidParameters
+  fullName: TimeSeriesAnalysis.Dynamic.PidModel.pidParameters
+  nameWithType: PidModel.pidParameters
 - uid: TimeSeriesAnalysis.Dynamic.PidModel.SetManualOutput(System.Double)
   name: SetManualOutput(Double)
   href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel_SetManualOutput_System_Double_
@@ -2600,12 +2630,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName
   nameWithType: PlantSimulator.plantName
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize
-  name: Serialize()
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize()
-  nameWithType: PlantSimulator.Serialize()
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize(System.String)
+  name: Serialize(String)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize(System.String)
+  nameWithType: PlantSimulator.Serialize(String)
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize*
   name: Serialize
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize_

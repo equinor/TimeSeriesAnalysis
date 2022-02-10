@@ -190,6 +190,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
             processSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
 
+            processSim.Serialize();
+
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(simData);
@@ -210,6 +212,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             processSim.ConnectModels(processModel1, maxSelect1, (int)INDEX.FIRST);
             processSim.ConnectModels(processModel2, maxSelect1, (int)INDEX.SECOND);
+
+            processSim.Serialize("MISO_MaxSelect");
 
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
@@ -316,7 +320,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         }
 
         // try placing models in different order, this should not affect the result at all
-        [TestCase(0,Description = "this is the easiest,as this is the order that requires no sorting ")]
+        [TestCase(0, Description = "this is the easiest,as this is the order that requires no sorting ")]
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]
@@ -338,7 +342,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             }
             else if (ver == 3)
             {
-                modelList = new List<ISimulatableModel> {processModel1, pidModel1,processModel2 };
+                modelList = new List<ISimulatableModel> { processModel1, pidModel1, processModel2 };
             }
             else if (ver == 4)
             {
@@ -358,10 +362,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             if (ver == 4)
             {
                 processSim.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
-                processSim.AddSignal(processModel3, SignalType.External_U, TimeSeriesCreator.Constant(0,N), (int)INDEX.SECOND);
+                processSim.AddSignal(processModel3, SignalType.External_U, TimeSeriesCreator.Constant(0, N), (int)INDEX.SECOND);
             }
 
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+
+            if (ver == 4)
+            { 
+                processSim.Serialize("MISO_PIDandSerial2");
+            }
 
             Assert.IsTrue(isOk,"simulation returned false, it failed");
  /*
@@ -435,6 +444,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.AddSignal(processModel3, SignalType.External_U, TimeSeriesCreator.Step(300, N, 30, 40), (int)INDEX.SECOND);
 
             var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+
+            if (ver == 2)
+            {
+                processSim.Serialize("MISO_Serial3");
+            }
+
+
 
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(simData);

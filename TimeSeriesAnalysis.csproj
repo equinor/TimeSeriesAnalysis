@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>Analysis of fime-series that may include transients or dynamics, focusing on industrial automation.
+    <Description>Analysis of time-series that may include transients or dynamics, focusing on industrial automation.
 Identification of dynamic models, dynamic simulation, filtering and PID-control.
 </Description>
     <Copyright>Equinor 2022</Copyright>

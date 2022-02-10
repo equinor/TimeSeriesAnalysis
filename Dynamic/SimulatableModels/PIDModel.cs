@@ -45,9 +45,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class PidModel : ModelBaseClass,ISimulatableModel
     {
-        int timeBase_s;
-        PidParameters pidParameters;
-        PidController pid;
+        public PidParameters pidParameters;
+        private int timeBase_s;
+        private PidController pid;
 
         /// <summary>
         /// Constructor
