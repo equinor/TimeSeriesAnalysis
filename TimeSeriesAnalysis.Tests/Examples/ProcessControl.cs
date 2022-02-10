@@ -486,7 +486,7 @@ namespace TimeSeriesAnalysis._Examples
                 simResult.GetValues(pid2.GetID(),SignalType.PID_U),
                 simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),
                 },
-            new List<string> { "y1=y1","y1=yHH", "y1=y1_set", "y1=y2_set",
+                new List<string> { "y1=y1","y1=yHH", "y1=y1_set", "y1=y2_set",
                 "y3=u_pid1", "y3=u_pid2","y3=u_select" }, timeBase_s, "MinSelectEx");
             #endregion
 

@@ -342,46 +342,61 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.t0 = t0;
         }
+
+
+        /// <summary>
+        /// Create a comma-separated-variable(CSV) string of the dataset
+        /// </summary>
+        /// <param name="csvSeparator">symbol used to separate columns in the string</param>
+        /// <param name="nSignificantDigits">number of significant digits per value</param>
+        /// <returns>The CSV-string </returns>
+        public string ToCsvText(string csvSeparator = ";", int nSignificantDigits = 5)
+        {
+            StringBuilder sb = new StringBuilder();
+            var signalNames = GetSignalNames();
+            // make header
+            sb.Append("Time" + csvSeparator);
+            sb.Append(string.Join(csvSeparator, signalNames));
+            sb.Append("\r\n");
+
+            DateTime curDate = t0;
+            for (int curTimeIdx = 0; curTimeIdx < GetLength(); curTimeIdx++)
+            {
+                var dataAtTime = GetData(signalNames, curTimeIdx);
+                //sb.Append(UnixTime.ConvertToUnixTimestamp(curDate));
+                sb.Append(curDate.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                for (int curColIdx = 0; curColIdx < dataAtTime.Length; curColIdx++)
+                {
+                    sb.Append(csvSeparator + SignificantDigits.Format(dataAtTime[curColIdx], nSignificantDigits).ToString(CultureInfo.InvariantCulture));
+                }
+                sb.Append("\r\n");
+                curDate = curDate.AddSeconds(timeBase_s);
+            }
+            return sb.ToString();
+
+        }
+
+
         /// <summary>
         /// Exports the time-series data set to a csv-file
         /// <para>
         /// Times are encoded as "yyyy-MM-dd HH:mm:ss" and be loaded with CSV.LoadFromFile() afterwards
         /// </para>
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="t0">starting date</param>
-        /// <param name="CSVseparator">the separator to use in the csv-file(despite the name, the most common is perhaps ";" which Excel will recognize automatically)</param>
+        /// <param name="fileName">The CSV-file name</param>
+        /// <param name="csvSeparator">the separator to use in the csv-file(despite the name, the most common is perhaps ";" which Excel will recognize automatically)</param>
         /// <param name="nSignificantDigits">the number of singificant digits to include for each variable</param>
         /// <returns></returns>
-        public bool ToCSV(string fileName, string CSVseparator = ";", int nSignificantDigits = 5)
+        public bool ToCsv(string fileName, string csvSeparator = ";", int nSignificantDigits = 5)
         {
-            StringBuilder sb = new StringBuilder();
-            var signalNames = GetSignalNames();
-            // make header
-            sb.Append("Time" + CSVseparator);
-            sb.Append(string.Join(CSVseparator, signalNames));
-            sb.Append("\r\n");
-
-            DateTime curDate = t0;
-            for (int curTimeIdx = 0; curTimeIdx<GetLength(); curTimeIdx++)
-            {
-                var dataAtTime = GetData(signalNames, curTimeIdx);
-                //sb.Append(UnixTime.ConvertToUnixTimestamp(curDate));
-                sb.Append(curDate.ToString("yyyy-MM-dd HH:mm:ss"));
-  
-                for (int curColIdx = 0; curColIdx < dataAtTime.Length; curColIdx++)
-                {
-                    sb.Append(CSVseparator + SignificantDigits.Format(dataAtTime[curColIdx], nSignificantDigits).ToString(CultureInfo.InvariantCulture));
-                }
-                sb.Append("\r\n");
-                curDate = curDate.AddSeconds(timeBase_s);
-            }
+            string csvTxt = ToCsvText(csvSeparator, nSignificantDigits);
 
             using (StringToFileWriter writer = new StringToFileWriter(fileName))
             {
                 try
                 {
-                    writer.Write(sb.ToString());
+                    writer.Write(csvTxt);
                     writer.Close();
                 }
                 catch (Exception)
@@ -390,10 +405,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             return true;
-
         }
-
-
-
     }
 }

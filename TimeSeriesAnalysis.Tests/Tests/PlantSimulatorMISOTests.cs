@@ -14,6 +14,13 @@ using TimeSeriesAnalysis._Examples;
 
 namespace TimeSeriesAnalysis.Test.PlantSimulations
 {
+
+
+
+
+
+
+
     /// <summary>
     /// Tests that run the Processcontrol examples but with plotting disabled.
     /// <para>
@@ -152,11 +159,46 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         }
 
+        [Test,Explicit(reason:"fails_wip")]
+        public void DeserializedObjectIsAbleToSimulate()
+        {
+            // 1. create a plantsimulator in 
+            // based on  PIDandSerial2_RunsAndConverges ver 4
+            List<ISimulatableModel> modelList = new List<ISimulatableModel>();
+            modelList = new List<ISimulatableModel> { processModel1, pidModel1, processModel2, processModel3 };
+
+            int pidIndex = 1;
+            int externalUIndex = 0;
+            var plantSim1 = new Dynamic.PlantSimulator(timeBase_s, modelList);
+            plantSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(150, N));
+            plantSim1.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), externalUIndex);
+            plantSim1.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
+            plantSim1.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Step(240, N, 50, 40), (int)INDEX.SECOND);
+            plantSim1.ConnectModels(processModel2, pidModel1);
+            plantSim1.ConnectModels(pidModel1, processModel1, pidIndex);
+            plantSim1.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
+            plantSim1.AddSignal(processModel3, SignalType.External_U, TimeSeriesCreator.Constant(0, N), (int)INDEX.SECOND);
+
+            // 2. serialize to text
+            var jsonTxt = plantSim1.SerializeTxt();
+
+            // 3. deserialize to a new object
+            var plantSim2 = PlantSimulatorHelper.LoadFromJson(jsonTxt);
+
+            // 4. simulate the plant object created from Json
+            var isOk = plantSim2.Simulate(out TimeSeriesDataSet simData);
+
+            Assert.IsTrue(isOk);
+        }
+
+
+
+
 
         [TestCase]
         public void MISO_Single_RunsAndConverges()
         {
-            var processSim = new Dynamic.PlantSimulator(timeBase_s,
+            var processSim = new PlantSimulator(timeBase_s,
                 new List<ISimulatableModel> { processModel1 });
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), (int)INDEX.FIRST);
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(180, N, 50, 45), (int)INDEX.SECOND);

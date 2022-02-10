@@ -37,19 +37,15 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class PlantSimulator
     {
-    //    [JsonInclude]
         public string plantName;
 
-     //   [JsonInclude]
         public int timeBase_s;
 
-     //   [JsonInclude]
+        [JsonConverter(typeof(ModelInterfaceDictionaryConverter<Dictionary<string, ISimulatableModel>>))]
         public Dictionary<string, ISimulatableModel> modelDict;
 
-      //  [JsonInclude]
         public TimeSeriesDataSet externalInputSignals;
 
-       // [JsonInclude]
         public ConnectionParser connections;
 
         private int nConnections = 0;
@@ -362,8 +358,20 @@ namespace TimeSeriesAnalysis.Dynamic
             return simData.SetSimStatus(true);
         }
 
+        /// <summary>
+        /// Creates a JSON text string serialization of this object
+        /// </summary>
+        /// <returns></returns>
+        public string SerializeTxt()
+        {
+            // https://khalidabuhakmeh.com/serialize-interface-instances-system-text-json
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
 
-
+        /// <summary>
+        /// Creates a file JSON representation of this object
+        /// </summary>
+        /// <param name="newPlantName"></param>
         public void Serialize(string newPlantName = null)
         {
             string fileName = "PlantSim";
@@ -380,7 +388,7 @@ namespace TimeSeriesAnalysis.Dynamic
             /// var options = new JsonSerializerOptions { WriteIndented = true };
             //  var serializedTxt =  JsonSerializer.Serialize(this,options);
 
-            var serializedTxt = JsonConvert.SerializeObject(this,Formatting.Indented);
+            var serializedTxt = SerializeTxt();
 
             var fileWriter = new StringToFileWriter(fileName);
             fileWriter.Write(serializedTxt);
@@ -388,4 +396,23 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
     }
+
+    
+    public class ModelInterfaceDictionaryConverter<T> : JsonConverter
+    {
+        public override bool CanConvert(Type objectType) => true;
+
+        public override object ReadJson(JsonReader reader,
+         Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            return serializer.Deserialize<T>(reader);
+        }
+
+        public override void WriteJson(JsonWriter writer,
+            object value, JsonSerializer serializer)
+        {
+            serializer.Serialize(writer, value);
+        }
+    }
+    
 }

@@ -110,6 +110,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html",
+          "hash": "IghPe3hl+yr9acXZe5BOODr/KzJgvNrk4KnHHXXDbIY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.yml",
       "output": {
         ".html": {
@@ -282,7 +294,19 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html",
-          "hash": "HfgiobKZJfclmymO5e5EStEEztJ0zhL/j38qnhkZJyA="
+          "hash": "GrQw5C2EExxdA50x9g6iQzJC8vRRUn5ue0dJHuOljI4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PlantSimulatorHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PlantSimulatorHelper.html",
+          "hash": "kBEDqvxrRKaN6Zymtbg2LPsgFaNuJ2PjmznXhtSWg9U="
         }
       },
       "is_incremental": false,
@@ -366,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html",
-          "hash": "Kv/S30w8nI6nmZebRMb45A4cj7WY/1INHQRqFo2l1lU="
+          "hash": "H6itMX5Pv/rH7cQ0zmVjWPC6of6M1+qCg65nlnYZXVM="
         }
       },
       "is_incremental": false,
@@ -462,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "bCBkR2Xq00RBBoTJZophXQPwszxTK1rxC37N67v4VY4="
+          "hash": "vjY+EqpEFGYY3JRWQm54GH8H6kM0mM7ZLL5Az7ZnPRg="
         }
       },
       "is_incremental": false,
@@ -834,7 +858,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "P/0yrLTAsEZ3DUp3tsxvbr7W0bPxbQuthPqa/KCCvHQ="
+          "hash": "b8jwVTPqw8gXcSocEA31aooVrs7hXxh5Drm1+xvGFSM="
         }
       },
       "is_incremental": false,
@@ -1804,8 +1828,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 67,
-          "skipped_file_count": 61
+          "total_file_count": 69,
+          "skipped_file_count": 66
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
