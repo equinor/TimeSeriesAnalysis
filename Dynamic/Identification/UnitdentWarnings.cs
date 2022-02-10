@@ -3,7 +3,7 @@
     /// <summary>
     /// Enum of recognized warning or error states during identification of process model
     /// </summary>
-    public enum ProcessIdentWarnings
+    public enum UnitdentWarnings
     {
         /// <summary>
         /// No errors or warnings

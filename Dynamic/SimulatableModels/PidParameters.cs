@@ -13,6 +13,14 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class PidParameters:ModelParametersBaseClass 
     {
+        private List<PidIdentWarning> warnings;
+
+        public PidParameters()
+        {
+            warnings = new List<PidIdentWarning>();
+        }
+
+
         /// <summary>
         /// Proportional gain of controller
         /// </summary>
@@ -51,6 +59,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// PID anti-surge paramters objet. This is optional, set to null if not anti-surge PID
         /// </summary>
         public PidAntiSurgeParams AntiSugeParams { get; set; } = null;
+
+        public void AddWarning(PidIdentWarning warning)
+        {
+            warnings.Add(warning);
+        }
+
 
     }
 }

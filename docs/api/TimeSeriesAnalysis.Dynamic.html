@@ -260,7 +260,7 @@ turns the identification problem into a linear mixed-integer problem.
 The time delay identification is done by splitting the time-delay estimation from continous parameter
 identification, turning the solver into a sequential optimization solver. 
 This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
-is deferred to <span class="xref">TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentifier</span>
+is deferred to <span class="xref">TimeSeriesAnalysis.Dynamic.UnitTimeDelayIdentifier</span>
 </p>
 <p>
 Since the aim is to identify transients/dynamics, the regression is done on model differences rather than absolute values
@@ -318,14 +318,15 @@ simulated by <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.htm
 This type is used to set the unit model unique identifier and is also used 
 in internal logic in the large-scale dynamic simulations</p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidControllerType.html">PidControllerType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidIdentWarning.html">PidIdentWarning</a></h4>
+      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html">PidModelInputsIdx</a></h4>
       <section><p>This determines the position in the U-vector given to Iterate for the class <code>PIDModel</code></p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidStatus.html">PidStatus</a></h4>
       <section><p>Enum to classify the status output of PidController.cs</p>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessIdentWarnings.html">ProcessIdentWarnings</a></h4>
-      <section><p>Enum of recognized warning or error states during identification of process model</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ProcessTimeDelayIdentWarnings.html">ProcessTimeDelayIdentWarnings</a></h4>
       <section><p>Enum of recognized warning or error states during identification of time delays</p>
@@ -335,6 +336,9 @@ in internal logic in the large-scale dynamic simulations</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SignalType.html">SignalType</a></h4>
       <section><p>Enum of types of signals that ProcessSimulator must differentiate between</p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html">UnitdentWarnings</a></h4>
+      <section><p>Enum of recognized warning or error states during identification of process model</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitWarnings.html">UnitWarnings</a></h4>
       <section><p>Enum of recognized warning or error states during identification of process model</p>

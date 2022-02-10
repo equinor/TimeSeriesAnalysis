@@ -44,7 +44,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// The time delay identification is done by splitting the time-delay estimation from continous parameter
     /// identification, turning the solver into a sequential optimization solver. 
     /// This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
-    /// is deferred to <seealso cref="ProcessTimeDelayIdentifier"/>
+    /// is deferred to <seealso cref="UnitTimeDelayIdentifier"/>
     /// </para>
     /// <para>
     /// Since the aim is to identify transients/dynamics, the regression is done on model differences rather than absolute values
@@ -169,8 +169,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            ProcessTimeDelayIdentifier processTimeDelayIdentifyObj =
-                new ProcessTimeDelayIdentifier(dataSet.TimeBase_s, maxExpectedTc_s);
+            UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
+                new UnitTimeDelayIdentifier(dataSet.TimeBase_s, maxExpectedTc_s);
 
             // logic for all curves off an all curves on, treated as special cases
             bool[] allCurvesDisabled = new bool[u0.Count()];
@@ -254,7 +254,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // fail-to-safe
                 if (timeDelayIdx * dataSet.TimeBase_s > maxExpectedTc_s)
                 {
-                    modelParams.AddWarning(ProcessIdentWarnings.TimeDelayAtMaximumConstraint);
+                    modelParams.AddWarning(UnitdentWarnings.TimeDelayAtMaximumConstraint);
                     continueIncreasingTimeDelayEst = false;
                 }
                 if (doEstimateTimeDelay == false)
@@ -287,11 +287,11 @@ namespace TimeSeriesAnalysis.Dynamic
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
             if (constantInputInds.Count > 0)
             {
-                modelParameters.AddWarning(ProcessIdentWarnings.ConstantInputU);
+                modelParameters.AddWarning(UnitdentWarnings.ConstantInputU);
             }
             if (correlatedInputInds.Count > 0)
             {
-                modelParameters.AddWarning(ProcessIdentWarnings.CorrelatedInputsU);
+                modelParameters.AddWarning(UnitdentWarnings.CorrelatedInputsU);
             }
             // END While loop 
             /////////////////////////////////////////////////////////////////
@@ -700,13 +700,13 @@ namespace TimeSeriesAnalysis.Dynamic
             if (regResults.Param == null || !regResults.AbleToIdentify)
             {
                 parameters.WasAbleToIdentify = false;
-                parameters.AddWarning(ProcessIdentWarnings.RegressionProblemFailedToYieldSolution);
+                parameters.AddWarning(UnitdentWarnings.RegressionProblemFailedToYieldSolution);
                 return parameters;
             }
             else if (Math.Abs(regResults.Param[1]) > maxAbsValueRegression)
             {
                 parameters.WasAbleToIdentify = false;
-                parameters.AddWarning(ProcessIdentWarnings.NotPossibleToIdentify);
+                parameters.AddWarning(UnitdentWarnings.NotPossibleToIdentify);
                 return parameters;
             }
             else // able to identify
@@ -727,7 +727,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    parameters.AddWarning(ProcessIdentWarnings.ReEstimateBiasFailed);
+                    parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
                     parameters.Bias = regResults.Param.Last();
                 }
                 // TODO:add back uncertainty estimates

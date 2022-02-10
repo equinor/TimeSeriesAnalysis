@@ -85,7 +85,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double? BiasUnc { get; set; } = null;
 
 
-        private List<ProcessIdentWarnings> errorsAndWarningMessages;
+        private List<UnitdentWarnings> errorsAndWarningMessages;
         internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public UnitParameters()
         {
-            errorsAndWarningMessages = new List<ProcessIdentWarnings>();
+            errorsAndWarningMessages = new List<UnitdentWarnings>();
         }
         /// <summary>
         /// Get the number of inputs U to the model.
@@ -214,7 +214,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Adds a identifiation warning to the object
         /// </summary>
         /// <param name="warning"></param>
-        public void AddWarning(ProcessIdentWarnings warning)
+        public void AddWarning(UnitdentWarnings warning)
         {
             if (!errorsAndWarningMessages.Contains(warning))
                 errorsAndWarningMessages.Add(warning);
@@ -224,7 +224,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the list of all warnings given during identification of the model
         /// </summary>
         /// <returns></returns>
-        public List<ProcessIdentWarnings> GetWarningList()
+        public List<UnitdentWarnings> GetWarningList()
         {
             return errorsAndWarningMessages;
         }

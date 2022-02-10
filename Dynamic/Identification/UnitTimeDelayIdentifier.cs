@@ -29,7 +29,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// <seealso cref="UnitIdentifier"/>
     /// </summary>
-    class ProcessTimeDelayIdentifier
+    class UnitTimeDelayIdentifier
     {
         private double TimeBase_s;
 
@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private List<ModelParametersBaseClass> modelRuns;
 
 
-        public ProcessTimeDelayIdentifier(double TimeBase_s, double maxExpectedTc_s)
+        public UnitTimeDelayIdentifier(double TimeBase_s, double maxExpectedTc_s)
         {
             this.TimeBase_s = TimeBase_s;
             modelRuns = new List<ModelParametersBaseClass>();
