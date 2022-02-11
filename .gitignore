@@ -12,9 +12,9 @@ _site/articles/intro.html
 _site/articles/toc.html
 Output-Build.txt
 www/plotly/data/
-zips/
 venv/
 minSelect_large.csv
 UpgradeLog.htm
 UpgradeLog2.htm
 TimeSeriesAnalysis.targetnetstandard20.notworking.csproj
+*.zip
