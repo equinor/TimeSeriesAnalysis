@@ -64,7 +64,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="timeBase_s">the timebase in seconds, the time interval between samples 
         /// and between calls to Iterate</param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
-
+        [JsonConstructor]
         public UnitModel(UnitParameters modelParameters, double timeBase_s,
             string ID="not_named")
         {
@@ -388,7 +388,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Initalize the process model with a sampling time
         /// </summary>
-        /// <param name="timeBase_s">the timebase in seconds, the length of time between calls to Iterate(data sampling time interval)</param>
+        /// <param name="timeBase_s">the timebase in seconds>0, the length of time between calls to Iterate(data sampling time interval)</param>
         /// <param name="modelParameters">model paramters object</param>
         private void InitSim(double timeBase_s, UnitParameters modelParameters)
         {

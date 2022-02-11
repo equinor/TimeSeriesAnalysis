@@ -41,17 +41,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public int timeBase_s;
 
-        [JsonConverter(typeof(ModelInterfaceDictionaryConverter<Dictionary<string, ISimulatableModel>>))]
         public Dictionary<string, ISimulatableModel> modelDict;
 
         public TimeSeriesDataSet externalInputSignals;
 
         public ConnectionParser connections;
 
-        private int nConnections = 0;
-
-
-   
+  
 
         /// <summary>
         /// Constructor
@@ -99,7 +95,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="model"></param>
         /// <param name="type"></param>
         /// <param name="values"></param>
-        /// <param name="index">the index of the signal, this is only needed if this is an input to a multip-input model</param>
+        /// <param name="index">the index of the signal, this is only needed if this is an input to a multi-input model</param>
 
         public string AddSignal(ISimulatableModel model, SignalType type, double[] values, int index = 0)
         {
@@ -175,7 +171,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             model.AddSignalToOutput(disturbanceModel.GetOutputID());
             connections.AddConnection(disturbanceModel.GetID(), model.GetID());
-            nConnections++;
             return true;
         }
 
@@ -240,7 +235,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             connections.AddConnection(upstreamModel.GetID(), downstreamModel.GetID());
-            nConnections++;
             return outputId;
         }
 
@@ -364,8 +358,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public string SerializeTxt()
         {
+
+            var settings = new JsonSerializerSettings();
+            settings.TypeNameHandling = TypeNameHandling.Auto;
+            settings.Formatting = Formatting.Indented;
+
             // https://khalidabuhakmeh.com/serialize-interface-instances-system-text-json
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            return JsonConvert.SerializeObject(this, settings);
+
+
         }
 
         /// <summary>
@@ -397,9 +398,21 @@ namespace TimeSeriesAnalysis.Dynamic
 
     }
 
-    
+    //https://stackoverflow.com/questions/15880574/deserialize-collection-of-interface-instances
+
+    /*
     public class ModelInterfaceDictionaryConverter<T> : JsonConverter
     {
+        JsonSerializerSettings settings;
+
+        public ModelInterfaceDictionaryConverter()
+         {
+           var settings = new JsonSerializerSettings();
+            settings.TypeNameHandling = TypeNameHandling.Auto;
+            settings.Formatting = Formatting.Indented;
+        }
+
+
         public override bool CanConvert(Type objectType) => true;
 
         public override object ReadJson(JsonReader reader,
@@ -411,8 +424,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public override void WriteJson(JsonWriter writer,
             object value, JsonSerializer serializer)
         {
-            serializer.Serialize(writer, value);
+            serializer.Serialize(writer, value,);
         }
-    }
+    }*/
     
 }

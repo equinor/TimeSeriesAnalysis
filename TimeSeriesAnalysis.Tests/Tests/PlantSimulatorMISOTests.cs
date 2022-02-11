@@ -170,13 +170,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             int pidIndex = 1;
             int externalUIndex = 0;
             var plantSim1 = new Dynamic.PlantSimulator(timeBase_s, modelList);
-            plantSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(150, N));
-            plantSim1.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), externalUIndex);
+
             plantSim1.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
-            plantSim1.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Step(240, N, 50, 40), (int)INDEX.SECOND);
             plantSim1.ConnectModels(processModel2, pidModel1);
             plantSim1.ConnectModels(pidModel1, processModel1, pidIndex);
             plantSim1.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
+
+            plantSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(150, N));
+            plantSim1.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), externalUIndex);
+            plantSim1.AddSignal(processModel2, SignalType.External_U, TimeSeriesCreator.Step(240, N, 50, 40), (int)INDEX.SECOND);
             plantSim1.AddSignal(processModel3, SignalType.External_U, TimeSeriesCreator.Constant(0, N), (int)INDEX.SECOND);
 
             // 2. serialize to text
@@ -394,7 +396,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             int pidIndex = 1;
             int externalUIndex = 0;
-            var processSim = new Dynamic.PlantSimulator(timeBase_s, modelList);
+            var processSim = new PlantSimulator(timeBase_s, modelList);
             processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(150, N));
             processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(60, N, 50, 55), externalUIndex);
             processSim.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);

@@ -1122,66 +1122,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.SetProcessModelType
   nameWithType: ModelBaseClass.SetProcessModelType
-- uid: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1
-  name: ModelInterfaceDictionaryConverter<T>
-  href: api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html
-  commentId: T:TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1
-  name.vb: ModelInterfaceDictionaryConverter(Of T)
-  fullName: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter<T>
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter(Of T)
-  nameWithType: ModelInterfaceDictionaryConverter<T>
-  nameWithType.vb: ModelInterfaceDictionaryConverter(Of T)
-- uid: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.CanConvert(System.Type)
-  name: CanConvert(Type)
-  href: api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html#TimeSeriesAnalysis_Dynamic_ModelInterfaceDictionaryConverter_1_CanConvert_System_Type_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.CanConvert(System.Type)
-  fullName: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter<T>.CanConvert(System.Type)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter(Of T).CanConvert(System.Type)
-  nameWithType: ModelInterfaceDictionaryConverter<T>.CanConvert(Type)
-  nameWithType.vb: ModelInterfaceDictionaryConverter(Of T).CanConvert(Type)
-- uid: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.CanConvert*
-  name: CanConvert
-  href: api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html#TimeSeriesAnalysis_Dynamic_ModelInterfaceDictionaryConverter_1_CanConvert_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.CanConvert
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter<T>.CanConvert
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter(Of T).CanConvert
-  nameWithType: ModelInterfaceDictionaryConverter<T>.CanConvert
-  nameWithType.vb: ModelInterfaceDictionaryConverter(Of T).CanConvert
-- uid: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)
-  name: ReadJson(JsonReader, Type, Object, JsonSerializer)
-  href: api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html#TimeSeriesAnalysis_Dynamic_ModelInterfaceDictionaryConverter_1_ReadJson_Newtonsoft_Json_JsonReader_System_Type_System_Object_Newtonsoft_Json_JsonSerializer_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)
-  fullName: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter<T>.ReadJson(Newtonsoft.Json.JsonReader, System.Type, System.Object, Newtonsoft.Json.JsonSerializer)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter(Of T).ReadJson(Newtonsoft.Json.JsonReader, System.Type, System.Object, Newtonsoft.Json.JsonSerializer)
-  nameWithType: ModelInterfaceDictionaryConverter<T>.ReadJson(JsonReader, Type, Object, JsonSerializer)
-  nameWithType.vb: ModelInterfaceDictionaryConverter(Of T).ReadJson(JsonReader, Type, Object, JsonSerializer)
-- uid: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.ReadJson*
-  name: ReadJson
-  href: api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html#TimeSeriesAnalysis_Dynamic_ModelInterfaceDictionaryConverter_1_ReadJson_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.ReadJson
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter<T>.ReadJson
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter(Of T).ReadJson
-  nameWithType: ModelInterfaceDictionaryConverter<T>.ReadJson
-  nameWithType.vb: ModelInterfaceDictionaryConverter(Of T).ReadJson
-- uid: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)
-  name: WriteJson(JsonWriter, Object, JsonSerializer)
-  href: api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html#TimeSeriesAnalysis_Dynamic_ModelInterfaceDictionaryConverter_1_WriteJson_Newtonsoft_Json_JsonWriter_System_Object_Newtonsoft_Json_JsonSerializer_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)
-  fullName: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter<T>.WriteJson(Newtonsoft.Json.JsonWriter, System.Object, Newtonsoft.Json.JsonSerializer)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter(Of T).WriteJson(Newtonsoft.Json.JsonWriter, System.Object, Newtonsoft.Json.JsonSerializer)
-  nameWithType: ModelInterfaceDictionaryConverter<T>.WriteJson(JsonWriter, Object, JsonSerializer)
-  nameWithType.vb: ModelInterfaceDictionaryConverter(Of T).WriteJson(JsonWriter, Object, JsonSerializer)
-- uid: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.WriteJson*
-  name: WriteJson
-  href: api/TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter-1.html#TimeSeriesAnalysis_Dynamic_ModelInterfaceDictionaryConverter_1_WriteJson_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter`1.WriteJson
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter<T>.WriteJson
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ModelInterfaceDictionaryConverter(Of T).WriteJson
-  nameWithType: ModelInterfaceDictionaryConverter<T>.WriteJson
-  nameWithType.vb: ModelInterfaceDictionaryConverter(Of T).WriteJson
 - uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass
   name: ModelParametersBaseClass
   href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html
@@ -3210,15 +3150,6 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet
   nameWithType: TimeSeriesDataSet
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,System.Nullable{System.DateTime})
-  name: TimeSeriesDataSet(Int32, Nullable<DateTime>)
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_System_Nullable_System_DateTime__
-  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,System.Nullable{System.DateTime})
-  name.vb: TimeSeriesDataSet(Int32, Nullable(Of DateTime))
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32, System.Nullable<System.DateTime>)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32, System.Nullable(Of System.DateTime))
-  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(Int32, Nullable<DateTime>)
-  nameWithType.vb: TimeSeriesDataSet.TimeSeriesDataSet(Int32, Nullable(Of DateTime))
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
   name: TimeSeriesDataSet(Int32, TimeSeriesDataSet)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_

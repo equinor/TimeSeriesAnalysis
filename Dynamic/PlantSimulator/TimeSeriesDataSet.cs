@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 
+using Newtonsoft.Json;
+
 using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -13,11 +15,11 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// A class that holds time-series data for any number of tags 
     /// <para>
-    /// Time is either treated by giving a timeBase in seconds and a strating time, or by  
+    /// Time is either treated by giving a timeBase in seconds and a starting time, or by  
     /// specifying a vector of timestamps.
     /// </para>
     /// <remark>
-    /// This is the return data class of the <seealso cref="PlantSimulator"/>
+    /// This is the return data class of <seealso cref="PlantSimulator"/>
     /// </remark>
     /// </summary>
     public class TimeSeriesDataSet
@@ -69,20 +71,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Constructor
         /// </summary>
         /// <param name="timeBase_s"></param>
-        /// <param name="t0">the time of the first sample</param>
-        public TimeSeriesDataSet(int timeBase_s,DateTime? t0=null)
-        {
-            Init(timeBase_s, t0);
-        }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="timeBase_s"></param>
         /// <param name="inputDataSet"></param>
-        public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet)
+        [JsonConstructor]
+        public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet=null)
         {
             Init(timeBase_s);
-            AddSet(inputDataSet); 
+            if (inputDataSet != null)
+            {
+                AddSet(inputDataSet);
+            }
         }
 
 

@@ -17,10 +17,11 @@ namespace TimeSeriesAnalysis.Dynamic
     public class TimeDelay
     {
         private double timeBase_s;
+        private double timeDelay_s;
+
         private double[] delayBuffer;
         private int delayBufferPosition;
         private int delaySignalCounter;
-
         private int nBufferSize;
 
         /// <summary>
@@ -30,13 +31,22 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="timeDelay_s">the time delay to be simulated(in seconds). Note that the time delay will be rounded up to neares whole number factor of <c>timeBase_s</c></param>
         public TimeDelay(double timeBase_s, double timeDelay_s)
         {
+            this.timeDelay_s = timeDelay_s;
             this.timeBase_s = timeBase_s;
-            this.nBufferSize = (int)Math.Ceiling((double)(timeDelay_s / timeBase_s));
-            if (delayBuffer == null)
+            if (timeBase_s > 0)
             {
-                delayBuffer = new double[this.nBufferSize];
-                delayBufferPosition = 0;
+                this.nBufferSize = (int)Math.Ceiling((double)(timeDelay_s / timeBase_s));
+                if (delayBuffer == null)
+                {
+                    delayBuffer = new double[this.nBufferSize];
+                    delayBufferPosition = 0;
+                }
             }
+            else
+            {
+                this.nBufferSize = 0;
+            }
+
         }
 
         /// <summary>
@@ -46,7 +56,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a version of <c>inputSignal</c> that is delayed</returns>
         public double Delay(double inputSignal)
         {
-          
+
+            // fail-to-safe
+            if (timeBase_s == 0 || timeDelay_s ==0)
+            {
+                return inputSignal;
+            }
+
             // handle first nBufferSize timesteps differently
             if (delaySignalCounter < nBufferSize)
             {

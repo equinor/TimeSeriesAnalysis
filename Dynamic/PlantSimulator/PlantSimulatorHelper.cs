@@ -17,7 +17,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // todo: need to write jsonconverter to handle interface objects
             // https://www.c-sharpcorner.com/UploadFile/20c06b/deserializing-interface-properties-with-json-net/
 
-            return JsonConvert.DeserializeObject<PlantSimulator>(serializedPlantSimulatorJson);
+
+            var settings = new JsonSerializerSettings();
+            settings.TypeNameHandling = TypeNameHandling.Auto;
+
+            return JsonConvert.DeserializeObject<PlantSimulator>(serializedPlantSimulatorJson, settings);
         }
     }
 }
