@@ -39,11 +39,13 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         public string plantName;
 
-        public int timeBase_s;
+//        public int timeBase_s;
 
         public Dictionary<string, ISimulatableModel> modelDict;
 
-        public TimeSeriesDataSet externalInputSignals;
+        //   public TimeSeriesDataSet externalInputSignals;
+
+        public List<string> externalInputSignalIDs;
 
         public ConnectionParser connections;
 
@@ -52,15 +54,16 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="timeBase_s"></param>
         /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
         /// <param name="plantName">optional name of plant, used when serializing</param>
-        public PlantSimulator(int timeBase_s, List<ISimulatableModel>
+        public PlantSimulator(List<ISimulatableModel>
             processModelList, string plantName=null)
         {
-            externalInputSignals = new TimeSeriesDataSet(timeBase_s);
+            //     externalInputSignals = new TimeSeriesDataSet(timeBase_s);
 
-            this.timeBase_s = timeBase_s;
+            externalInputSignalIDs = new List<string>();
+
+          //  this.timeBase_s = timeBase_s;
             if (processModelList == null)
             {
                 return;
@@ -90,17 +93,19 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Both connects and adds data to signal that is to be inputted into a specific sub-model, 
+        /// Informs the plantSimaultor that a specific sub-model has a specifc signal at its input, 
         /// </summary>
         /// <param name="model"></param>
         /// <param name="type"></param>
         /// <param name="values"></param>
         /// <param name="index">the index of the signal, this is only needed if this is an input to a multi-input model</param>
 
-        public string AddSignal(ISimulatableModel model, SignalType type, double[] values, int index = 0)
+        public string AddSignal(ISimulatableModel model, SignalType type/*, double[] values*/, int index = 0)
         {
             ModelType modelType = model.GetProcessModelType();
-            string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
+
+            string signalID = SignalNamer.GetSignalName(model.GetID(), type, index);
+            // string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
             if (signalID == null)
             {
                 Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");
@@ -115,7 +120,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 model.AddSignalToOutput(signalID);
 
-                return null;
+                return signalID;
             }
             else if (type == SignalType.External_U && modelType == ModelType.SubProcess)
             {
@@ -242,9 +247,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get a TimeSeriesDataSet of all external signals of model
         /// </summary>
         /// <returns></returns>
-        public TimeSeriesDataSet GetExternalSignals()
+        public string[] GetExternalSignalIDs()
         {
-            return externalInputSignals;
+            return externalInputSignalIDs.ToArray();
         }
 
         /// <summary>
@@ -270,11 +275,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Perform a dynamic simulation of the model provided, given the specified connections and external signals 
         /// </summary>
-        /// <param name="simData">the simulated data set to be outputted(includes the external signals)</param>
+        /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
+        /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
         /// <returns></returns>
-        public bool Simulate (out TimeSeriesDataSet simData)
+        public bool Simulate (TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
         {
-            int? N = externalInputSignals.GetLength();
+            int timeBase_s = inputData.timeBase_s;
+
+            int? N = inputData.GetLength();
             if (!N.HasValue)
             {
                 Shared.GetParserObj().AddError("PlantSimulator could not run, no external signal provided.");
@@ -283,11 +291,11 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
-            simData = new TimeSeriesDataSet(timeBase_s,externalInputSignals);
+            simData = new TimeSeriesDataSet(timeBase_s);
 
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
-            var didInit = init.ToSteadyState(ref simData);
+            var didInit = init.ToSteadyState(inputData, ref simData) ;
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
@@ -304,7 +312,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         "\" has null inputIDs.");
                     return simData.SetSimStatus(false);
                 }
-                double[] inputVals = simData.GetData(inputIDs, timeIdx);
+                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx,simData,inputData);
 
                 string outputID = model.GetOutputID(); 
                 if (outputID==null)
@@ -313,7 +321,9 @@ namespace TimeSeriesAnalysis.Dynamic
                         "\" has null outputID.");
                     return simData.SetSimStatus(false);
                 }
-                double[] outputVals = simData.GetData(new string[]{outputID}, timeIdx);
+                double[] outputVals =
+                    GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
+                // simData.GetData(new string[]{outputID}, timeIdx);
                 if (outputVals != null)
                 {
                     model.WarmStart(inputVals, outputVals[0]);
@@ -332,7 +342,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         inputDataLookBackIdx = 1;
                     }
-                    double[] inputVals = simData.GetData(inputIDs, timeIdx- inputDataLookBackIdx);
+                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx - inputDataLookBackIdx, simData,inputData);
+                    //double[] inputVals = simData.GetData(inputIDs, timeIdx- inputDataLookBackIdx);
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -350,6 +361,36 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             return simData.SetSimStatus(true);
+        }
+
+        private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
+        {
+            double[] retVals = new double[inputIDs.Length];
+
+            int index = 0;
+            foreach (var inputId in inputIDs)
+            {
+                double? retVal=null;
+                if (dataSet1.ContainsSignal(inputId))
+                {
+                    retVal = dataSet1.GetValue(inputId, timeIndex);
+                }
+                else if (dataSet2.ContainsSignal(inputId))
+                {
+                    retVal= dataSet2.GetValue(inputId, timeIndex);
+                }
+                if (!retVal.HasValue)
+                {
+                    retVals[index] = Double.NaN;
+                }
+                else
+                {
+                    retVals[index] = retVal.Value;
+                }
+
+                index++;
+            }
+            return retVals;
         }
 
         /// <summary>

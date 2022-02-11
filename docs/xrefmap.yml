@@ -2651,15 +2651,15 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.PlantSimulator
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator
   nameWithType: PlantSimulator
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String)
-  name: PlantSimulator(Int32, List<ISimulatableModel>, String)
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_System_Int32_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__System_String_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Int32,System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String)
-  name.vb: PlantSimulator(Int32, List(Of ISimulatableModel), String)
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List<TimeSeriesAnalysis.Dynamic.ISimulatableModel>, System.String)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Int32, System.Collections.Generic.List(Of TimeSeriesAnalysis.Dynamic.ISimulatableModel), System.String)
-  nameWithType: PlantSimulator.PlantSimulator(Int32, List<ISimulatableModel>, String)
-  nameWithType.vb: PlantSimulator.PlantSimulator(Int32, List(Of ISimulatableModel), String)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String)
+  name: PlantSimulator(List<ISimulatableModel>, String)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String)
+  name.vb: PlantSimulator(List(Of ISimulatableModel), String)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Collections.Generic.List<TimeSeriesAnalysis.Dynamic.ISimulatableModel>, System.String)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator(System.Collections.Generic.List(Of TimeSeriesAnalysis.Dynamic.ISimulatableModel), System.String)
+  nameWithType: PlantSimulator.PlantSimulator(List<ISimulatableModel>, String)
+  nameWithType.vb: PlantSimulator.PlantSimulator(List(Of ISimulatableModel), String)
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor*
   name: PlantSimulator
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_
@@ -2667,15 +2667,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.PlantSimulator
   nameWithType: PlantSimulator.PlantSimulator
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
-  name: AddSignal(ISimulatableModel, SignalType, Double[], Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_AddSignal_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_SignalType_System_Double___System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
-  name.vb: AddSignal(ISimulatableModel, SignalType, Double(), Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double[], System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Double(), System.Int32)
-  nameWithType: PlantSimulator.AddSignal(ISimulatableModel, SignalType, Double[], Int32)
-  nameWithType.vb: PlantSimulator.AddSignal(ISimulatableModel, SignalType, Double(), Int32)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)
+  name: AddSignal(ISimulatableModel, SignalType, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_AddSignal_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_SignalType_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel, TimeSeriesAnalysis.Dynamic.SignalType, System.Int32)
+  nameWithType: PlantSimulator.AddSignal(ISimulatableModel, SignalType, Int32)
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.AddSignal*
   name: AddSignal
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_AddSignal_
@@ -2731,12 +2728,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal
   nameWithType: PlantSimulator.ConnectSignal
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignals
-  name: externalInputSignals
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_externalInputSignals
-  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignals
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignals
-  nameWithType: PlantSimulator.externalInputSignals
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignalIDs
+  name: externalInputSignalIDs
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_externalInputSignalIDs
+  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignalIDs
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignalIDs
+  nameWithType: PlantSimulator.externalInputSignalIDs
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections
   name: GetConnections()
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetConnections
@@ -2750,19 +2747,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetConnections
   nameWithType: PlantSimulator.GetConnections
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
-  name: GetExternalSignals()
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetExternalSignals
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals()
-  nameWithType: PlantSimulator.GetExternalSignals()
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals*
-  name: GetExternalSignals
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetExternalSignals_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignalIDs
+  name: GetExternalSignalIDs()
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetExternalSignalIDs
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignalIDs
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignalIDs()
+  nameWithType: PlantSimulator.GetExternalSignalIDs()
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignalIDs*
+  name: GetExternalSignalIDs
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetExternalSignalIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignalIDs
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignals
-  nameWithType: PlantSimulator.GetExternalSignals
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetExternalSignalIDs
+  nameWithType: PlantSimulator.GetExternalSignalIDs
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.GetModels
   name: GetModels()
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_GetModels
@@ -2814,15 +2811,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.SerializeTxt
   nameWithType: PlantSimulator.SerializeTxt
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name: Simulate(out TimeSeriesDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name.vb: Simulate(ByRef TimeSeriesDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(out TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  nameWithType: PlantSimulator.Simulate(out TimeSeriesDataSet)
-  nameWithType.vb: PlantSimulator.Simulate(ByRef TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name: Simulate(TimeSeriesDataSet, out TimeSeriesDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name.vb: Simulate(TimeSeriesDataSet, ByRef TimeSeriesDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet, out TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet, ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  nameWithType: PlantSimulator.Simulate(TimeSeriesDataSet, out TimeSeriesDataSet)
+  nameWithType.vb: PlantSimulator.Simulate(TimeSeriesDataSet, ByRef TimeSeriesDataSet)
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate*
   name: Simulate
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_
@@ -2830,12 +2827,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate
   nameWithType: PlantSimulator.Simulate
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.timeBase_s
-  name: timeBase_s
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_timeBase_s
-  commentId: F:TimeSeriesAnalysis.Dynamic.PlantSimulator.timeBase_s
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.timeBase_s
-  nameWithType: PlantSimulator.timeBase_s
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorHelper
   name: PlantSimulatorHelper
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorHelper.html
@@ -2874,15 +2865,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.PlantSimulatorInitalizer
   nameWithType: PlantSimulatorInitalizer.PlantSimulatorInitalizer
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name: ToSteadyState(ref TimeSeriesDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyState_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
-  name.vb: ToSteadyState(ByRef TimeSeriesDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(ref TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
-  nameWithType: PlantSimulatorInitalizer.ToSteadyState(ref TimeSeriesDataSet)
-  nameWithType.vb: PlantSimulatorInitalizer.ToSteadyState(ByRef TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name: ToSteadyState(TimeSeriesDataSet, ref TimeSeriesDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyState_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)
+  name.vb: ToSteadyState(TimeSeriesDataSet, ByRef TimeSeriesDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet, ref TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet, ByRef TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)
+  nameWithType: PlantSimulatorInitalizer.ToSteadyState(TimeSeriesDataSet, ref TimeSeriesDataSet)
+  nameWithType.vb: PlantSimulatorInitalizer.ToSteadyState(TimeSeriesDataSet, ByRef TimeSeriesDataSet)
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState*
   name: ToSteadyState
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyState_
@@ -3169,6 +3160,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet
   nameWithType: TimeSeriesDataSet.TimeSeriesDataSet
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add(System.String,System.Double[])
+  name: Add(String, Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_Add_System_String_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add(System.String,System.Double[])
+  name.vb: Add(String, Double())
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add(System.String, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add(System.String, System.Double())
+  nameWithType: TimeSeriesDataSet.Add(String, Double[])
+  nameWithType.vb: TimeSeriesDataSet.Add(String, Double())
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add*
+  name: Add
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_Add_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add
+  nameWithType: TimeSeriesDataSet.Add
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddDataPoint(System.String,System.Int32,System.Double)
   name: AddDataPoint(String, Int32, Double)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddDataPoint_System_String_System_Int32_System_Double_
@@ -3195,15 +3202,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddSet
   nameWithType: TimeSeriesDataSet.AddSet
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String,System.Double[])
-  name: AddTimeSeries(String, Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddTimeSeries_System_String_System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String,System.Double[])
-  name.vb: AddTimeSeries(String, Double())
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String, System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String, System.Double())
-  nameWithType: TimeSeriesDataSet.AddTimeSeries(String, Double[])
-  nameWithType.vb: TimeSeriesDataSet.AddTimeSeries(String, Double())
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Double[],System.Int32)
   name: AddTimeSeries(String, SignalType, Double[], Int32)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddTimeSeries_System_String_TimeSeriesAnalysis_Dynamic_SignalType_System_Double___System_Int32_
@@ -3301,6 +3299,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeStamps
   nameWithType: TimeSeriesDataSet.GetTimeStamps
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue(System.String,System.Int32)
+  name: GetValue(String, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValue_System_String_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue(System.String,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue(System.String, System.Int32)
+  nameWithType: TimeSeriesDataSet.GetValue(String, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue*
+  name: GetValue
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValue_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue
+  nameWithType: TimeSeriesDataSet.GetValue
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValues(System.String)
   name: GetValues(String)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValues_System_String_
@@ -3362,6 +3373,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps
   nameWithType: TimeSeriesDataSet.SetTimeStamps
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s
+  name: timeBase_s
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_timeBase_s
+  commentId: P:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s
+  nameWithType: TimeSeriesDataSet.timeBase_s
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s*
+  name: timeBase_s
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_timeBase_s_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s
+  nameWithType: TimeSeriesDataSet.timeBase_s
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.ToCsv(System.String,System.String,System.Int32)
   name: ToCsv(String, String, Int32)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_ToCsv_System_String_System_String_System_Int32_

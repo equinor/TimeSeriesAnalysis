@@ -205,8 +205,83 @@ public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet = null)<
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_timeBase_s_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_timeBase_s" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s">timeBase_s</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int timeBase_s { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_Add_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_Add_System_String_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Add(System.String,System.Double[])">Add(String, Double[])</h4>
+  <div class="markdown level1 summary"><p>Add an entire time-series to the dataset</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Add(string signalName, double[] values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">signalName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">values</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddDataPoint_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddDataPoint*"></a>
@@ -285,54 +360,6 @@ public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet = null)<
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
         <td><span class="parametername">inputDataSet</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddTimeSeries_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_AddTimeSeries_System_String_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.AddTimeSeries(System.String,System.Double[])">AddTimeSeries(String, Double[])</h4>
-  <div class="markdown level1 summary"><p>Add an entire time-series to the dataset</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool AddTimeSeries(string signalName, double[] values)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">signalName</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">values</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -603,6 +630,55 @@ public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet = null)<
       <tr>
         <td><span class="xref">System.DateTime</span>[]</td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValue_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetValue_System_String_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetValue(System.String,System.Int32)">GetValue(String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Get Data for multiple signals at a specific time index</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? GetValue(string signalName, int timeIdx)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">signalName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">timeIdx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><p>May return null if an error occured</p>
+</td>
       </tr>
     </tbody>
   </table>

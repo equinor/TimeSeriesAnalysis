@@ -220,23 +220,24 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 20
             };
             var pidModel = new PidModel(pidParameters, timeBase_s,"PID1");
-            var sim = new PlantSimulator (timeBase_s, 
+            var sim = new PlantSimulator (
                 new List<ISimulatableModel> { pidModel, processModel  });
             sim.ConnectModels(processModel,pidModel);
             sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
-            sim.AddSignal(processModel,SignalType.Disturbance_D,
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(sim.AddSignal(processModel,SignalType.Disturbance_D),
                 TimeSeriesCreator.Step(N/4,N,0,1));
-            sim.AddSignal(pidModel,SignalType.Setpoint_Yset,
+            inputData.Add(sim.AddSignal(pidModel,SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(50,N));
-            sim.AddSignal(processModel,SignalType.External_U,
-                TimeSeriesCreator.Step(N/2,N,0,1),(int)INDEX.SECOND);
+            inputData.Add(sim.AddSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
+                TimeSeriesCreator.Step(N/2,N,0,1));
 
-            var isOk = sim.Simulate(out var simData);
+            var isOk = sim.Simulate(inputData,out var simData);
 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
                 simData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
-                simData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                inputData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
                 simData.GetValues(pidModel.GetID(),SignalType.PID_U)
                 },
                 new List<string> { "y1=y_sim", "y2=disturbance", "y2=u_external","y3=u_pid"  },

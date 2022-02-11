@@ -438,9 +438,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var refModel = new UnitModel(paramtersNoCurvature,timeBase_s,"reference");
 
-            var sim = new PlantSimulator((int)timeBase_s,new List<ISimulatableModel> { refModel });
-            sim.AddSignal(refModel, SignalType.External_U, u1);
-            var isOk = sim.Simulate(out TimeSeriesDataSet refData);
+            var sim = new PlantSimulator(new List<ISimulatableModel> { refModel });
+            var inputData = new TimeSeriesDataSet((int)timeBase_s);
+            inputData.Add(sim.AddSignal(refModel, SignalType.External_U), u1);
+            var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
@@ -522,11 +523,12 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var refModel = new UnitModel(paramtersNoCurvature, timeBase_s, "reference");
 
-            var sim = new PlantSimulator((int)timeBase_s, new List<ISimulatableModel> { refModel });
-            sim.AddSignal(refModel, SignalType.External_U, u1, (int)INDEX.FIRST);
-            sim.AddSignal(refModel, SignalType.External_U, u2, (int)INDEX.SECOND);
+            var sim = new PlantSimulator( new List<ISimulatableModel> { refModel });
+            var inputData = new TimeSeriesDataSet((int)timeBase_s);
+            inputData.Add(sim.AddSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), u1);
+            inputData.Add(sim.AddSignal(refModel, SignalType.External_U, (int)INDEX.SECOND),u2 );
 
-            var isOk = sim.Simulate(out TimeSeriesDataSet refData);
+            var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
@@ -599,10 +601,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
             DefaultAsserts(model, designParameters,1);
         }
-
-
-
-
 
 
         [TestCase(1, 0, 2, Category = "Delayed")]

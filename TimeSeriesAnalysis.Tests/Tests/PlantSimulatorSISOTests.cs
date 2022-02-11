@@ -76,10 +76,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase]
         public void Single_RunsAndConverges()
         {
-            var processSim = new Dynamic.PlantSimulator(timeBase_s,
+            var processSim = new Dynamic.PlantSimulator(
                 new List<ISimulatableModel> { processModel1 });
-            processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(N / 4, N, 50, 55));
-            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(processSim.AddSignal(processModel1, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             CommonAsserts(simData);
             double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim);
@@ -96,12 +98,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase]
         public void Serial2_RunsAndConverges()
         {
-            var processSim = new Dynamic.PlantSimulator(timeBase_s,
+            var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1, processModel2 },"Serial2");
 
             processSim.ConnectModels(processModel1, processModel2);
-            processSim.AddSignal(processModel1,SignalType.External_U, TimeSeriesCreator.Step(N / 4, N, 50, 55));
-            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(processSim.AddSignal(processModel1,SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             processSim.Serialize();
 
@@ -124,14 +127,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase]
         public void Serial3_RunsAndConverges()
         {
-            var processSim = new Dynamic.PlantSimulator(timeBase_s,
+            var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1, processModel2, processModel3 });
 
             processSim.ConnectModels(processModel1, processModel2);
             processSim.ConnectModels(processModel2, processModel3);
 
-            processSim.AddSignal(processModel1, SignalType.External_U, TimeSeriesCreator.Step(N / 4, N, 50, 55));
-            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(processSim.AddSignal(processModel1, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             processSim.Serialize("SISO_Serial3");
 
@@ -190,13 +194,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             [TestCase]
         public void BasicPID_DisturbanceStep_RunsAndConverges()
         {
-            var processSim = new Dynamic.PlantSimulator(timeBase_s,
+            var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-            processSim.AddSignal(processModel1, SignalType.Disturbance_D, TimeSeriesCreator.Step(N / 4, N, 0, 1));
-            processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            var distID = processSim.AddSignal(processModel1, SignalType.Disturbance_D); 
+            inputData.Add(distID, TimeSeriesCreator.Step(N / 4, N, 0, 1));
+            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - Ysetpoint);
@@ -211,13 +217,14 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void BasicPID_SetpointStep_RunsAndConverges()
         {
             double newSetpoint = 51;
-            var processSim = new Dynamic.PlantSimulator(timeBase_s,
+            var processSim = new Dynamic.PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-            processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, 
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), 
                 TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
-            bool isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            bool isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
 
             processSim.Serialize("SISO_basicPID");

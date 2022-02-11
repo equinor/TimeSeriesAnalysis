@@ -70,8 +70,7 @@ namespace TimeSeriesAnalysis._Examples
             var pid1 = new PidModel(pidParameters1, timeBase_s, "PID1");
             var pid2 = new PidModel(pidParameters2, timeBase_s, "PID2");
 
-            var sim = new PlantSimulator(timeBase_s,
-                new List<ISimulatableModel> { process1, process2, pid1, pid2 });
+            var sim = new PlantSimulator(new List<ISimulatableModel> { process1, process2, pid1, pid2 });
 
          //  pid1.SetManualOutput(50);
          //   pid1.SetToManualMode();
@@ -85,17 +84,19 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(process2, pid2);
             sim.ConnectModels(pid2, pid1,(int)PidModelInputsIdx.Y_setpoint);
 
-            sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
-            sim.AddSignal(process1,SignalType.Disturbance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
-            sim.AddSignal(process2,SignalType.Disturbance_D,TimeSeriesCreator.Step(300, N, 0, 1));
+            var inputData = new TimeSeriesDataSet(timeBase_s);
 
-            var isOK = sim.Simulate(out var simResult);
+            inputData.Add(sim.AddSignal(pid2,SignalType.Setpoint_Yset),TimeSeriesCreator.Constant(50, N));
+            inputData.Add(sim.AddSignal(process1,SignalType.Disturbance_D),TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+            inputData.Add(sim.AddSignal(process2,SignalType.Disturbance_D),TimeSeriesCreator.Step(300, N, 0, 1));
+
+            var isOK = sim.Simulate(inputData,out var simResult);
 
             Plot.FromList(new List<double[]>
                 {
                 simResult.GetValues(process1.GetID(),SignalType.Output_Y_sim),
                 simResult.GetValues(process2.GetID(),SignalType.Output_Y_sim),
-                simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+                inputData.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
                 simResult.GetValues(pid1.GetID(),SignalType.PID_U),
                 simResult.GetValues(pid2.GetID(),SignalType.PID_U)
                 },
@@ -147,27 +148,30 @@ namespace TimeSeriesAnalysis._Examples
                 = new UnitModel(disturbanceParameters, timeBase_s, "Disturbance1");
             var pidModel = new PidModel(pidParameters, timeBase_s, "PID");
 
-            var simNoFeedF = new PlantSimulator(timeBase_s,
+            var simNoFeedF = new PlantSimulator(
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
 
             simNoFeedF.ConnectModels(pidModel, processModel);
             simNoFeedF.ConnectModels(processModel, pidModel);
             simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-            simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+
+            inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(60, 600));
-            simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+            inputData.Add(simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U),
                 TimeSeriesCreator.Step(300, 600, 25, 0));
 
-            var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+            var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
             Plot.FromList(new List<double[]>
-                {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
-                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
-                    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
-                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
-                    },
+                {
+                dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+                dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+                dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
+                inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+                },
                 new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
 
             #endregion
@@ -227,28 +231,33 @@ namespace TimeSeriesAnalysis._Examples
                 = new UnitModel(disturbanceParameters, timeBase_s, "Disturbance1");
             var pidModel = new PidModel(pidParameters, timeBase_s, "PID");
 
-            var simNoFeedF = new PlantSimulator(timeBase_s,
+            var simNoFeedF = new PlantSimulator(
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
 
             simNoFeedF.ConnectModels(pidModel, processModel);
             simNoFeedF.ConnectModels(processModel, pidModel);
             simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-            simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+
+            inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(60, 600));
-            string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
-                TimeSeriesCreator.Step(300, 600, 25, 0));
+            string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U);
+            inputData.Add(dSignalID, TimeSeriesCreator.Step(300, 600, 25, 0));
+
+
             simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
 
-            var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+            var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
             Plot.FromList(new List<double[]>
-                {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+                { 
+                    dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                    inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
                     dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
                     dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
-                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
-                    },
+                    inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+                },
                 new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, 
                 timeBase_s, "FeedForwardEx2");
             #endregion
@@ -283,17 +292,20 @@ namespace TimeSeriesAnalysis._Examples
             var processModel
                 = new UnitModel(modelParameters, timeBase_s, "Process1");
             
-            var openLoopSim1 = new PlantSimulator(timeBase_s,
+            var openLoopSim1 = new PlantSimulator(
                 new List<ISimulatableModel> { processModel });
-            openLoopSim1.AddSignal(processModel, SignalType.External_U,
-                TimeSeriesCreator.Step(50, 200, 80, 90));
-            openLoopSim1.Simulate(out var openLoopData1);
 
-            var openLoopSim2 = new PlantSimulator(timeBase_s,
+            var inputDataSim1 = new TimeSeriesDataSet(timeBase_s);
+            inputDataSim1.Add(openLoopSim1.AddSignal(processModel, SignalType.External_U),
+                TimeSeriesCreator.Step(50, 200, 80, 90));
+            openLoopSim1.Simulate(inputDataSim1,out var openLoopData1);
+
+            var openLoopSim2 = new PlantSimulator(
                 new List<ISimulatableModel> { processModel });
-            openLoopSim2.AddSignal(processModel, SignalType.External_U,
+            var inputDataSim2 = new TimeSeriesDataSet(timeBase_s);
+            inputDataSim2.Add(openLoopSim2.AddSignal(processModel, SignalType.External_U),
                 TimeSeriesCreator.Step(50, 200, 20, 30));
-            var isOk1 = openLoopSim2.Simulate(out var openLoopData2);
+            var isOk1 = openLoopSim2.Simulate(inputDataSim2,out var openLoopData2);
 
             Plot.FromList(new List<double[]>
                 {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
@@ -313,14 +325,16 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 20
             };
             var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
-            var closedLoopSim1 = new PlantSimulator(timeBase_s,
+            var closedLoopSim1 = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel });
             closedLoopSim1.ConnectModels(pidModel1,processModel);
             closedLoopSim1.ConnectModels(processModel, pidModel1);
-            closedLoopSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset,
+
+            var inputData1 = new TimeSeriesDataSet(timeBase_s);
+            inputData1.Add(closedLoopSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(20,400));
-            closedLoopSim1.AddSignal(processModel,SignalType.Disturbance_D, TimeSeriesCreator.Step(100,400,0,10));
-            var isOk =closedLoopSim1.Simulate(out var closedLoopData1);
+            inputData1.Add(closedLoopSim1.AddSignal(processModel,SignalType.Disturbance_D), TimeSeriesCreator.Step(100,400,0,10));
+            var isOk =closedLoopSim1.Simulate(inputData1,out var closedLoopData1);
 
             //  the system rejecting a disturbance at y=70 with pidModel2
             var pidParameters2 = new PidParameters()
@@ -329,21 +343,23 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 20
             };
             var pidModel2 = new PidModel(pidParameters2, timeBase_s, "PID2");
-            var closedLoopSim2 = new PlantSimulator(timeBase_s,
+            var closedLoopSim2 = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel2, processModel });
             closedLoopSim2.ConnectModels(pidModel2, processModel);
             closedLoopSim2.ConnectModels(processModel, pidModel2);
-            closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset,
+            var inputData2 = new TimeSeriesDataSet(timeBase_s);
+            inputData2.Add(closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(70, 400));
-            closedLoopSim2.AddSignal(processModel, SignalType.Disturbance_D, TimeSeriesCreator.Step(100, 400, 0, 10));
-            var isOk2 = closedLoopSim2.Simulate(out var closedLoopData2);
+            inputData2.Add(closedLoopSim2.AddSignal(processModel, SignalType.Disturbance_D),
+                TimeSeriesCreator.Step(100, 400, 0, 10));
+            var isOk2 = closedLoopSim2.Simulate(inputData2,out var closedLoopData2);
 
             Plot.FromList(new List<double[]>
                 {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                 closedLoopData1.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
+                 inputData1.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
                  closedLoopData1.GetValues(pidModel1.GetID(),SignalType.PID_U),
                  closedLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                 closedLoopData2.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
+                 inputData2.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
                  closedLoopData2.GetValues(pidModel2.GetID(),SignalType.PID_U),
                  },
                 new List<string> { "y1=y_run1","y1=y_setpoint(run1)", "y2=u_run1(right)","y3=y-run2",
@@ -372,36 +388,39 @@ namespace TimeSeriesAnalysis._Examples
 
             var pidModelGS = new PidModel(pidParametersGS, timeBase_s, "PID_GS");
 
-            var closedLoopSimGS_1 = new PlantSimulator(timeBase_s,
+            var closedLoopSimGS_1 = new PlantSimulator(
                 new List<ISimulatableModel> { pidModelGS, processModel });
             closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
             closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
-            closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
+            var inputDataGS1 = new TimeSeriesDataSet(timeBase_s);
+            inputDataGS1.Add(closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset),
                   TimeSeriesCreator.Constant(20, 400));
-            closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D, 
+            inputDataGS1.Add(closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D), 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PidModelInputsIdx.GainScheduling);
-           var isOk3 = closedLoopSimGS_1.Simulate(out var closedLoopDataGS_1);
+           var isOk3 = closedLoopSimGS_1.Simulate(inputDataGS1,out var closedLoopDataGS_1);
 
-            var closedLoopSimGS_2 = new PlantSimulator(timeBase_s,
+            var closedLoopSimGS_2 = new PlantSimulator(
                 new List<ISimulatableModel> { pidModelGS, processModel });
             closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
-            closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset,
+
+            var inputDataGS2 = new TimeSeriesDataSet(timeBase_s);
+            inputDataGS2.Add(closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(70, 400));
-            closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D, 
+            inputDataGS2.Add(closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D), 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PidModelInputsIdx.GainScheduling);
-            var isOk4 = closedLoopSimGS_2.Simulate(out var closedLoopDataGS_2);
+            var isOk4 = closedLoopSimGS_2.Simulate(inputDataGS2, out var closedLoopDataGS_2);
 
             Plot.FromList(new List<double[]>
                 {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                 closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
+                 inputDataGS1.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
                  closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.PID_U),
                  closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                 closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
+                 inputDataGS2.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
                  closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.PID_U)
                  },
                 new List<string> { "y1=y_run1","y1=y_setpoint(run1)", "y2=u_run1(right)","y3=y-run2",
@@ -455,7 +474,7 @@ namespace TimeSeriesAnalysis._Examples
             var pid2 = new PidModel(pidParameters2, timeBase_s, "PID2");
             var minSelect = new Select(SelectType.MIN,"minSelect");
 
-            var sim = new PlantSimulator(timeBase_s,
+            var sim = new PlantSimulator(
                 new List<ISimulatableModel> { process, pid1, pid2,minSelect });
 
             // tracking and min select-related
@@ -467,21 +486,22 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectSignal(selectSignalID,pid1,(int)PidModelInputsIdx.Tracking);
             sim.ConnectSignal(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
 
-            sim.AddSignal(pid1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            sim.AddSignal(pid2, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(70, N));
-            sim.AddSignal(process, SignalType.Disturbance_D,
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(sim.AddSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.Add(sim.AddSignal(pid2, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(70, N));
+            inputData.Add(sim.AddSignal(process, SignalType.Disturbance_D),
                 new Vec().Add(TimeSeriesCreator.Sinus(5,50,timeBase_s,N),
                 TimeSeriesCreator.TwoSteps(N*2/8,N*3/8,N,0,80,0))
                 );
 
-            var isOK = sim.Simulate(out var simResult);
+            var isOK = sim.Simulate(inputData, out var simResult);
             
             Plot.FromList(new List<double[]>
                 {
                 simResult.GetValues(process.GetID(),SignalType.Output_Y_sim),
                 Vec<double>.Fill(85,N),
-                simResult.GetValues(pid1.GetID(),SignalType.Setpoint_Yset),
-                simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+                inputData.GetValues(pid1.GetID(),SignalType.Setpoint_Yset),
+                inputData.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
                 simResult.GetValues(pid1.GetID(),SignalType.PID_U),
                 simResult.GetValues(pid2.GetID(),SignalType.PID_U),
                 simResult.GetValues(minSelect.GetID(),SignalType.SelectorOut),

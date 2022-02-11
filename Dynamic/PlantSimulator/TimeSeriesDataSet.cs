@@ -25,7 +25,7 @@ namespace TimeSeriesAnalysis.Dynamic
     public class TimeSeriesDataSet
     {
 
-        int timeBase_s;
+        public int timeBase_s { get; set; }
         DateTime t0;
 
         List<DateTime> timeStamps = new List<DateTime>();
@@ -89,7 +89,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="signalName"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        public bool AddTimeSeries(string signalName, double[] values)
+        public bool Add(string signalName, double[] values)
         {
             if (signalName == null)
             {
@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             string signalName = SignalNamer.GetSignalName(processID, type, index);
 
-            bool isOk = AddTimeSeries(signalName, values);
+            bool isOk = Add(signalName, values);
             if (isOk)
                 return signalName;
             else
@@ -136,7 +136,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] values = inputDataSet.GetValues(signalName);
                 N = values.Length;// todo:check that all are equal length
 
-                bool isOk = AddTimeSeries(signalName, values);
+                bool isOk = Add(signalName, values);
                 if (!isOk)
                     return false;
             }
@@ -191,6 +191,29 @@ namespace TimeSeriesAnalysis.Dynamic
             return didSimulationReturnOk;
         }
 
+
+        /// <summary>
+        /// Get Data for multiple signals at a specific time index
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="timeIdx"></param>
+        /// <returns>May return null if an error occured</returns>
+        public double? GetValue(string signalName, int timeIdx)
+        {
+            if (signalName == null)
+            {
+                return Double.NaN;
+            }
+            if (!dataset.ContainsKey(signalName))
+            {
+                return null;
+            }
+            else if (timeIdx > dataset[signalName].Count())
+            {
+                return null;
+            }
+            return dataset[signalName][timeIdx];
+        }
 
 
         /// <summary>

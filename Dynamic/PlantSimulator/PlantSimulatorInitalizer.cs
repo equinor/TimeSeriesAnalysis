@@ -42,15 +42,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </para>
         /// </summary>
         /// <param name="simData">simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</param>
-        public bool ToSteadyState( ref TimeSeriesDataSet simData)
+        public bool ToSteadyState(TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
         {
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
             // the inital value will be calculated .Value, but is NaN unit calculated.
             var signalValuesAtT0 = new Dictionary<string, double>();
             // add external signals to simSiganlValueDIct
-            foreach (var signalId in simData.GetSignalNames())
+            foreach (var signalId in inputData.GetSignalNames())
             {
-                signalValuesAtT0.Add(signalId,simData.GetValues(signalId).First());
+                signalValuesAtT0.Add(signalId, inputData.GetValues(signalId).First());
             }
             // forward-calculate the output for those systems where the inputs are given. 
             var isOk = ForwardCalcNonPID(ref signalValuesAtT0);
@@ -89,14 +89,14 @@ namespace TimeSeriesAnalysis.Dynamic
             // last step is to actually write all the values, and create otherwise empty vector to be filled.
             {
                 double nonYetSimulatedValue = Double.NaN;
-                var externalInputSignals = simulator.GetExternalSignals();
-                int? N = externalInputSignals.GetLength();
+                var externalInputSignals = simulator.GetExternalSignalIDs();
+                int? N = inputData.GetLength();
                 foreach (string signalID in signalValuesAtT0.Keys)
                 {
                     // external signals are already rpesent in simData, do not add twice
-                    if (!simData.ContainsSignal(signalID))
+                    if (!simData.ContainsSignal(signalID) && !inputData.ContainsSignal(signalID))
                     {
-                        simData.AddTimeSeries(signalID, Vec<double>.Concat(new double[] { signalValuesAtT0[signalID] },
+                        simData.Add(signalID, Vec<double>.Concat(new double[] { signalValuesAtT0[signalID] },
                         Vec<double>.Fill(nonYetSimulatedValue, N.Value - 1)));
                     }
                 }

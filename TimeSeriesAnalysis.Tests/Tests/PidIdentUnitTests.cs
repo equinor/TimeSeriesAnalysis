@@ -41,13 +41,14 @@ namespace TimeSeriesAnalysis.Tests.PidID
                 Ti_s = 20
             };
             var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
-            var processSim = new PlantSimulator(timeBase_s,
+            var processSim = new PlantSimulator(
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-   //         processSim.AddSignal(processModel1, SignalType.Disturbance_D, //TimeSeriesCreator.Step(N / 4, N, 0, 1));
-            processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset, TimeSeriesCreator.Constant(50, N));
-            var isOk = processSim.Simulate(out TimeSeriesDataSet simData);
+            //         processSim.AddSignal(processModel1, SignalType.Disturbance_D, //TimeSeriesCreator.Step(N / 4, N, 0, 1));
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
 
             //TODO: veriy 
