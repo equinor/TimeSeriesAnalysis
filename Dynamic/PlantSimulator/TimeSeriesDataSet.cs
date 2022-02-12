@@ -66,15 +66,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 timeBase_s = 0;
             }
         }
+        [JsonConstructor]
+        public TimeSeriesDataSet(int timeBase_s)
+        {
+            Init(timeBase_s);
+        }
+
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="timeBase_s"></param>
         /// <param name="inputDataSet"></param>
-        [JsonConstructor]
-        public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet=null)
+
+        public TimeSeriesDataSet(TimeSeriesDataSet inputDataSet)
         {
+            timeBase_s = inputDataSet.timeBase_s;
             Init(timeBase_s);
             if (inputDataSet != null)
             {
@@ -142,6 +148,26 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return true;
         }
+
+        /// <summary>
+        /// Combine this data set with the inputDataset into a new set
+        /// </summary>
+        /// <param name="inputDataSet"></param>
+        /// <returns>the newly created dataset</returns>
+        public TimeSeriesDataSet Combine(TimeSeriesDataSet inputDataSet)
+        {
+            TimeSeriesDataSet dataSet = new TimeSeriesDataSet(this) ;
+            foreach (string signalName in inputDataSet.GetSignalNames())
+            {
+                double[] values = inputDataSet.GetValues(signalName);
+                N = values.Length;// todo:check that all are equal length
+
+                bool isOk = dataSet.Add(signalName, values);
+            }
+            return dataSet;
+        }
+
+
 
         /// <summary>
         /// Add a single data point

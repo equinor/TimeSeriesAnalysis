@@ -39,17 +39,45 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         public string plantName;
 
-//        public int timeBase_s;
-
         public Dictionary<string, ISimulatableModel> modelDict;
-
-        //   public TimeSeriesDataSet externalInputSignals;
 
         public List<string> externalInputSignalIDs;
 
         public ConnectionParser connections;
 
-  
+        public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
+        {
+            UnitDataSet dataset = new UnitDataSet(inputData.timeBase_s, inputData.GetLength().Value);
+      //      dataset.U.WriteColumn(0, inputData.GetValues(outputID));
+            dataset.U = new double[inputData.GetLength().Value,1];
+            dataset.U.WriteColumn(0, inputData.GetValues(pidModel.outputID));
+
+            var inputIDs = pidModel.GetModelInputIDs();
+            foreach (var inputID in inputIDs)
+            {
+                var type = SignalNamer.GetSignalType(inputID);
+
+                if (type == SignalType.Setpoint_Yset)
+                {
+                    dataset.Y_setpoint = inputData.GetValues(inputID);
+                }
+                else if (type == SignalType.Output_Y_sim)
+                {
+                    dataset.Y_meas = inputData.GetValues(inputID );
+                }//todo: feedforward?
+                /*else if (type == SignalType.Output_Y_sim)
+                {
+                    dataset.U.WriteColumn(1, inputData.GetValues(inputID));
+                }
+                else
+                {
+                    throw new Exception("unexepcted signal type");
+                }*/
+            }
+            return dataset;
+        }
+
+
 
         /// <summary>
         /// Constructor

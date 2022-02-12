@@ -9,35 +9,29 @@ using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    class PidIdentifier
+    /// <summary>
+    /// Class that attempts to identify the parameters(such as Kp and Ti) of a PID-controller from a 
+    /// given set of time-series of the input and output of said controller.
+    /// </summary>
+    public class PidIdentifier
     {
         private const double CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC = 0.005;
         private const int MAX_ESTIMATIONS_PER_DATASET = 1;
-
         private const double MIN_DATASUBSET_URANGE_PRC = 0;
+        private double badValueIndicatingValue;
 
-        private double badValueIndicatingValue = -9999;//Double.NaN
-
-        private double TimeBase_s;
         private double maxExpectedTc_s;
-
         private bool enableKPchangeDetection = true;
         private bool enableTichangeDetection = true;
-
         private bool doDebugging = true;
-
-
         private PidScaling pidScaling;
-
         private PidControllerType type;
-
         private Vec vec;
+        private double timeBase_s;
 
-
-        public PidIdentifier(double TimeBase_s, double maxExpectedTc_s, double badValueIndicatingValue,
-            PidScaling pidScaling, PidControllerType type = PidControllerType.Unset)
+        public PidIdentifier(PidScaling pidScaling=null, double maxExpectedTc_s=0, double badValueIndicatingValue=-9999,
+            PidControllerType type = PidControllerType.Unset)
         {
-            this.TimeBase_s = TimeBase_s;
             this.maxExpectedTc_s = maxExpectedTc_s;
             this.badValueIndicatingValue = badValueIndicatingValue;
             this.pidScaling = pidScaling;
@@ -146,6 +140,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
         }
 
+        /// <summary>
+        /// Identifies a PID-controller from a UnitDataSet
+        /// </summary>
+        /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
+        /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(UnitDataSet dataSet)
         {
             PidParameters results_withDelay = IdentifyInternal(dataSet, true);
@@ -190,19 +189,20 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private PidParameters IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
         {
-
+            this.timeBase_s = dataSet.TimeBase_s;
             PidParameters pidParam = new PidParameters();
-            pidParam.Scaling = pidScaling;
-
-//          PidModel result = new PidModel(pidScaling, isPIDoutputDelayOneSample);
+            if (pidScaling!=null)
+                pidParam.Scaling = pidScaling;
+            else
+                pidParam.Scaling = new PidScaling();//default scaling
             if (vec.IsAllNaN(dataSet.Y_setpoint))
             {
                 pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
             }
 
-            double[] e_unscaled = GetErrorTerm(dataSet);// vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);//dataSet.GetYerrorTerm();
+            double[] e_unscaled = GetErrorTerm(dataSet);
 
-            if (pidScaling.IsDefault())
+            if (pidParam.Scaling.IsDefault())
             {
                 double umin, umax;
                 DetermineUminUmax(dataSet, out umin, out umax);
@@ -224,20 +224,20 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            int bufferLengthShortest = (int)Math.Ceiling(maxExpectedTc_s * 4 / TimeBase_s);// shortest possible to have at least one settling time in it.
-            int bufferLengthLongest = dataSet.NumDataPoints / MAX_ESTIMATIONS_PER_DATASET;
-            int bufferLength = Math.Max(bufferLengthShortest, bufferLengthLongest);
-            int numEstimations = dataSet.NumDataPoints / bufferLength;
-            if (numEstimations < 3)
-            {
-                pidParam.AddWarning(PidIdentWarning.DataSetVeryShortComparedtoTMax);
-            }
-            if (!enableKPchangeDetection && !enableTichangeDetection)
-            {
-                bufferLength = dataSet.NumDataPoints - 1;
-                numEstimations = 1;
-            }
+            int numEstimations = 1;
+            int bufferLength = dataSet.NumDataPoints - 1;
 
+            if (maxExpectedTc_s > 0 && (enableKPchangeDetection || enableTichangeDetection))
+            {
+                int bufferLengthShortest = (int)Math.Ceiling(maxExpectedTc_s * 4 / timeBase_s);// shortest possible to have at least one settling time in it.
+                int bufferLengthLongest = dataSet.NumDataPoints / MAX_ESTIMATIONS_PER_DATASET;
+                bufferLength = Math.Max(bufferLengthShortest, bufferLengthLongest);
+                numEstimations = dataSet.NumDataPoints / bufferLength;
+                if (numEstimations < 3)
+                {
+                    pidParam.AddWarning(PidIdentWarning.DataSetVeryShortComparedtoTMax);
+                }
+            }
             double[] uMinusFF = GetUMinusFF(dataSet);
 
             double uRange = vec.Max(uMinusFF) - vec.Min(uMinusFF);
@@ -267,10 +267,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 List<int> indicesToIgnore = new List<int>();
 
-             //   double[] uMinusFF = GetUMinusFF(dataSet);
                 double[] e_scaled;
                 double yScaleFactor = 1;
-                if (pidScaling.IsKpScalingOn())
+                if (pidParam.Scaling.IsKpScalingOn())
                 {
                     yScaleFactor = 1 / pidScaling.GetKpScalingFactor();
                 }
@@ -299,8 +298,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 List<int> indBadEcur = vec.FindValues(ecur, -9999, VectorFindValueType.Equal);
                 List<int> indBadEprev = Index.Subtract(indBadEcur.ToArray(), 1).ToList();
 
-                List<int> umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidScaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
-                List<int> uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidScaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
+                List<int> umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
+                List<int> uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
 
                 // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
                 /*
@@ -339,7 +338,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 Y_ols = vec.Subtract(ucur, uprev);
                 X1_ols = vec.Subtract(ecur, eprev);
-                X2_ols = vec.Multiply(ecur, TimeBase_s);
+                X2_ols = vec.Multiply(ecur, timeBase_s);
 
                 double[][] inputs = { X1_ols, X2_ols };
                 
@@ -500,7 +499,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             Double[] simulatedU = new Double[yset.Length];
 
-            PidController pid = new PidController(TimeBase_s);
+            PidController pid = new PidController(timeBase_s);
             pid.SetKp(Kp);
             pid.SetTi(Ti);
             pid.SetTd(0);

@@ -7,7 +7,7 @@ using NUnit.Framework;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.Tests.PidID
+namespace TimeSeriesAnalysis.Test.PidID
 {
     [TestFixture]
     class PidIdentUnitTests
@@ -32,6 +32,7 @@ namespace TimeSeriesAnalysis.Tests.PidID
             Shared.GetParserObj().EnableDebugOutput();
             processModel1 = new UnitModel(modelParameters1, timeBase_s, "SubProcess1");
         }
+        /*
         [Test]
         public void YsetpointStepChange_KpAndTiEstimatedOk()
         {
@@ -51,10 +52,13 @@ namespace TimeSeriesAnalysis.Tests.PidID
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
 
+            var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+            var idResult = new PidIdentifier().Identify(pidDataSet);
+
             //TODO: veriy 
 
         }
-
+        */
 
 
     }

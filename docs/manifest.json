@@ -206,6 +206,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidIdentifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html",
+          "hash": "7rFHBcWJeZKzDxIduc2eShEYRhKGXvmUCM7U098BBPE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/TimeSeriesAnalysis.Dynamic.PidModel.yml",
       "output": {
         ".html": {
@@ -282,7 +294,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html",
-          "hash": "e78A566YdPbUahrx3amSK8VoKcdKTOd8a/Axy3zZOfo="
+          "hash": "nqFvmlMVRMekaGYXboqy91cI4eKU1jZ8I2plcMxUDVs="
         }
       },
       "is_incremental": false,
@@ -378,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html",
-          "hash": "AL4w7XKkH+/CI6r9cKJegkmCWG7kr8uNPb8VUZOMHEw="
+          "hash": "aG/4z9Q4a+e12nH9j5a2kSKV7DwiBkmdFSLC0ps2aEs="
         }
       },
       "is_incremental": false,
@@ -474,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.html",
-          "hash": "QSgK9rqAVNMiKh9SdMtiZ4JggFVgjFRAZGZkToCinek="
+          "hash": "HIR2GGY0jEvn+G0RRHgflvibolFLzBSM6zuAYyvcGps="
         }
       },
       "is_incremental": false,
@@ -846,7 +858,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "PcbIy1aY6tfPrbtAcd3DvmDFRHEyTP2UWkaGkUY0sEQ="
+          "hash": "L13Re3us0HarlxmPXqDW8nWKOwB72JpWPdJ/H0dqEeE="
         }
       },
       "is_incremental": false,
@@ -1816,8 +1828,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 68,
-          "skipped_file_count": 68
+          "total_file_count": 69,
+          "skipped_file_count": 69
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

@@ -133,14 +133,13 @@ This is the return data class of <a class="xref" href="TimeSeriesAnalysis.Dynami
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)">TimeSeriesDataSet(Int32, TimeSeriesDataSet)</h4>
-  <div class="markdown level1 summary"><p>Constructor</p>
-</div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32)">TimeSeriesDataSet(Int32)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonConstructor]
-public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet = null)</code></pre>
+public TimeSeriesDataSet(int timeBase_s)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,11 +154,6 @@ public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet = null)<
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">timeBase_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
-        <td><span class="parametername">inputDataSet</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -202,6 +196,34 @@ public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet = null)<
         <td><span class="parametername">dateTimeFormat</span></td>
         <td><p>format string of the time-series vector to be read</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)">TimeSeriesDataSet(TimeSeriesDataSet)</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet(TimeSeriesDataSet inputDataSet)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">inputDataSet</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -434,6 +456,50 @@ public TimeSeriesDataSet(int timeBase_s, TimeSeriesDataSet inputDataSet = null)<
       <tr>
         <td><span class="xref">System.String</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_Combine_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Combine*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_Combine_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.Combine(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet)">Combine(TimeSeriesDataSet)</h4>
+  <div class="markdown level1 summary"><p>Combine this data set with the inputDataset into a new set</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet Combine(TimeSeriesDataSet inputDataSet)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">inputDataSet</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><p>the newly created dataset</p>
+</td>
       </tr>
     </tbody>
   </table>
