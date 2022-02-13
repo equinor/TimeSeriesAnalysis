@@ -46,7 +46,6 @@ namespace TimeSeriesAnalysis.Test.PidID
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-            //         processSim.AddSignal(processModel1, SignalType.Disturbance_D, //TimeSeriesCreator.Step(N / 4, N, 0, 1));
             var inputData = new TimeSeriesDataSet(timeBase_s);
             inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/2, N,50,55));
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
@@ -55,7 +54,6 @@ namespace TimeSeriesAnalysis.Test.PidID
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var idResult = new PidIdentifier().Identify(pidDataSet);
 
-            //TODO: veriy 
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp)< pidParameters1.Kp/10);
             if (pidParameters1.Ti_s > 0)
             {
@@ -65,9 +63,42 @@ namespace TimeSeriesAnalysis.Test.PidID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-
-
         }
+
+        [TestCase(5)]
+        public void DisturbanceStepChange_KpAndTiEstimatedOk(double stepAmplitude)
+        {
+            var pidParameters1 = new PidParameters()
+            {
+                Kp = 0.5,
+                Ti_s = 20
+            };
+            var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var processSim = new PlantSimulator(
+             new List<ISimulatableModel> { pidModel1, processModel1 });
+            processSim.ConnectModels(processModel1, pidModel1);
+            processSim.ConnectModels(pidModel1, processModel1);
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50,N));
+            inputData.Add(processSim.AddSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Step(N/2,N,0,stepAmplitude));
+            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+
+            var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+            var idResult = new PidIdentifier().Identify(pidDataSet);
+
+            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp / 10);
+            if (pidParameters1.Ti_s > 0)
+            {
+                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s / 10);
+            }
+            else
+            {
+                Assert.IsTrue(idResult.Ti_s < 1);
+            }
+        }
+
+        // TODO: test that feedforward is handled correclty
 
 
 
