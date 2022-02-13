@@ -32,7 +32,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             Shared.GetParserObj().EnableDebugOutput();
             processModel1 = new UnitModel(modelParameters1, timeBase_s, "SubProcess1");
         }
-        /*
+        
         [Test]
         public void YsetpointStepChange_KpAndTiEstimatedOk()
         {
@@ -48,7 +48,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             processSim.ConnectModels(pidModel1, processModel1);
             //         processSim.AddSignal(processModel1, SignalType.Disturbance_D, //TimeSeriesCreator.Step(N / 4, N, 0, 1));
             var inputData = new TimeSeriesDataSet(timeBase_s);
-            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/2, N,50,55));
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
 
@@ -56,9 +56,19 @@ namespace TimeSeriesAnalysis.Test.PidID
             var idResult = new PidIdentifier().Identify(pidDataSet);
 
             //TODO: veriy 
+            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp)< pidParameters1.Kp/10);
+            if (pidParameters1.Ti_s > 0)
+            {
+                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s / 10);
+            }
+            else
+            {
+                Assert.IsTrue(idResult.Ti_s < 1);
+            }
+
 
         }
-        */
+
 
 
     }

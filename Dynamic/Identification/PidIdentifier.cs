@@ -480,6 +480,11 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 pidParam.AddWarning(PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto);
             }*/
+            pidParam.Kp = Kpest[0];
+            pidParam.Ti_s = Tiest[0];
+            pidParam.WasAbleToIdentify = true;
+
+
             return pidParam;
         }
 
