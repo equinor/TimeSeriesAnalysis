@@ -23,7 +23,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double maxExpectedTc_s;
         private bool enableKPchangeDetection = true;
         private bool enableTichangeDetection = true;
-        private bool doDebugging = true;
+        //private bool doDebugging = true;
         private PidScaling pidScaling;
         private PidControllerType type;
         private Vec vec;
@@ -38,11 +38,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.type = type;
             this.vec = new Vec();
         }
-
+        /*
         public void TurnOffDebuggingPlots()
         {
             doDebugging = false;
-        }
+        }*/
 
 
         public void SetTiChangeDetect(bool doChangeDetect)
@@ -145,10 +145,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
         /// <returns>the identified parameters of the PID-controller</returns>
-        public PidParameters Identify(UnitDataSet dataSet)
+        public PidParameters Identify(ref UnitDataSet dataSet)
         {
+
             PidParameters results_withDelay = IdentifyInternal(dataSet, true);
-            return results_withDelay;
+
             /*const bool checkIfNoDelayPIDfitsDataBetter = true;//should be true unless debugging.
             if (checkIfNoDelayPIDfitsDataBetter)
             {
@@ -161,6 +162,12 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
                 return results_withDelay;*/
+
+            dataSet.U_sim = Array2D<double>.Create(GetSimulatedU(results_withDelay,dataSet,true));
+
+            return results_withDelay;
+
+
         }
 
         const double rSquaredCutoffForInTrackingWarning = 0.02;//must be between 0 and 1
@@ -490,30 +497,32 @@ namespace TimeSeriesAnalysis.Dynamic
 
         // todo: this code should be replaced after porting code into TimeSeriesAnalysis. Re-use common simulation rather than re-doing it.
 
-        public Double[] GetSimulatedU(double Kp, double Ti, Double[] ymeas, Double[] yset, Double[] u, bool outputDelayedOneSample = false)
+        //public Double[] GetSimulatedU(double Kp, double Ti, Double[] ymeas, Double[] yset, Double[] u, bool outputDelayedOneSample = false)
+        public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample)
         {
             int firstGoodDataPointToStartSimIdx = 0;
-            while ((yset[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
-                ymeas[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
-                u[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue) &&
-                 firstGoodDataPointToStartSimIdx < ymeas.Length - 2)
+            while ((dataset.Y_setpoint[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
+                dataset.Y_meas[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
+                dataset.U[firstGoodDataPointToStartSimIdx,0] == badValueIndicatingValue) &&
+                 firstGoodDataPointToStartSimIdx < dataset.Y_meas.Length - 2)
             {
                 firstGoodDataPointToStartSimIdx++;
             }
-            double u_init = u[firstGoodDataPointToStartSimIdx];
+            double u_init = dataset.U[firstGoodDataPointToStartSimIdx,0];
 
-            Double[] simulatedU = new Double[yset.Length];
+            Double[] simulatedU = new Double[dataset.Y_setpoint.Length];
 
             PidController pid = new PidController(timeBase_s);
-            pid.SetKp(Kp);
-            pid.SetTi(Ti);
-            pid.SetTd(0);
-            pid.SetScaling(pidScaling);
+            pid.SetKp(pidParams.Kp);
+            pid.SetTi(pidParams.Ti_s);
+            pid.SetTd(pidParams.Td_s);
+            pid.SetScaling(pidParams.Scaling);
 
-            pid.WarmStart(ymeas[firstGoodDataPointToStartSimIdx], yset[firstGoodDataPointToStartSimIdx], u_init);
+            pid.WarmStart(dataset.Y_meas[firstGoodDataPointToStartSimIdx], 
+                dataset.Y_setpoint[firstGoodDataPointToStartSimIdx], u_init);
 
             int samplesToDelayOutput = 0;
-            if (outputDelayedOneSample)
+            if (isPIDoutputDelayOneSample)
             {
                 simulatedU[0] = u_init;
                 samplesToDelayOutput = 1;
@@ -529,13 +538,13 @@ namespace TimeSeriesAnalysis.Dynamic
             double lastGoodU = 0, nextU;
             for (int i = firstGoodDataPointToStartSimIdx; i < simulatedU.Length - samplesToDelayOutput; i++)
             {
-                if (ymeas[i] == -9999 || Double.IsNaN(ymeas[i]) || Double.IsInfinity(ymeas[i]))
+                if (dataset.Y_meas[i] == -9999 || Double.IsNaN(dataset.Y_meas[i]) || Double.IsInfinity(dataset.Y_meas[i]))
                 {
                     nextU = lastGoodU;
                 }
                 else
                 {
-                    nextU = pid.Iterate(ymeas[i], yset[i]);
+                    nextU = pid.Iterate(dataset.Y_meas[i], dataset.Y_setpoint[i]);
                     lastGoodU = nextU;
                 }
                 simulatedU[i + samplesToDelayOutput] = nextU;

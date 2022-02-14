@@ -21,6 +21,11 @@ namespace TimeSeriesAnalysis._Examples
             NonlinearUnitModel();
         }
 
+        [TestCase, Explicit]
+        public void PidIdent_Ex()
+        {
+            PidModelId();
+        }
 
 
         #region ex_NONLINEAR_UNIT_MODEL
@@ -82,12 +87,59 @@ namespace TimeSeriesAnalysis._Examples
                  (int)timeBase_s, "NonlinearUnitModelEx", default);
 
             Console.WriteLine(idModel.ToString());
-
-
         }
 
-        #endregion 
+        #endregion
 
+
+        #region ex_PID_ID
+        void PidModelId()
+        {
+            // create a PlantSimulator simulated dataset with known paramters
+            double timeBase_s = 1;
+            int N = 200;
+            double noiseAmplitude = 0.1;
+            var pidParameters1 = new PidParameters()
+            {
+                Kp = 0.5,
+                Ti_s = 20
+            };
+            UnitParameters modelParameters1 = new UnitParameters
+            {
+                WasAbleToIdentify = true,
+                TimeConstant_s = 10,
+                LinearGains = new double[] { 1 },
+                TimeDelay_s = 5,
+                Bias = 5
+            };
+            var processModel1 = new UnitModel(modelParameters1, timeBase_s, "Process1");
+            var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var processSim = new PlantSimulator(
+             new List<ISimulatableModel> { pidModel1, processModel1 });
+            processSim.ConnectModels(processModel1, pidModel1);
+            processSim.ConnectModels(pidModel1, processModel1);
+            var inputData = new TimeSeriesDataSet(timeBase_s);
+            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), 
+                TimeSeriesCreator.Step(N / 4, N, 50, 55));
+            inputData.Add(processSim.AddSignal(processModel1, SignalType.Disturbance_D), 
+                TimeSeriesCreator.Noise(N, noiseAmplitude)) ;
+            processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            // do the actual identification
+            var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+            var pidId = new PidIdentifier();
+            var idResult = pidId.Identify(ref pidDataSet);
+
+            // view results
+            Console.WriteLine(idResult.ToString());
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
+                simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                Array2D<double>.GetColumn(pidDataSet.U_sim,(int)INDEX.FIRST) },
+                new List<string>{ "y1=y_sim", "y1=y_set","y3=u_pid","y3=u_pid(id)" },timeBase_s); 
+        }
+        #endregion 
 
     }
 }

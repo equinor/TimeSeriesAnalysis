@@ -105,7 +105,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         UnitParameters modelParameters1;
         UnitParameters modelParameters2;
-        UnitParameters modelParameters3;
+        UnitParameters modelParameters3 ;
         UnitModel processModel1;
         UnitModel processModel2;
         UnitModel processModel3;

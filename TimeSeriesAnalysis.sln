@@ -4,7 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeSeriesAnalysis", "TimeSeriesAnalysis.csproj", "{CAF2F174-6259-4FE6-8ADA-BDB1FD54C23A}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSeriesAnalysis.Tests", "TimeSeriesAnalysis.Tests\TimeSeriesAnalysis.Tests.csproj", "{76B4E4C6-DE9F-49CC-A554-3F44CF9E5354}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeSeriesAnalysis.Tests", "TimeSeriesAnalysis.Tests\TimeSeriesAnalysis.Tests.csproj", "{76B4E4C6-DE9F-49CC-A554-3F44CF9E5354}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{15357E2B-5402-4228-A03F-F4FC3E9CEF82}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

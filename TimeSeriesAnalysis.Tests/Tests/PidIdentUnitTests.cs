@@ -52,7 +52,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             Assert.IsTrue(isOk);
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
-            var idResult = new PidIdentifier().Identify(pidDataSet);
+            var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp)< pidParameters1.Kp/10);
             if (pidParameters1.Ti_s > 0)
@@ -85,7 +85,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             Assert.IsTrue(isOk);
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
-            var idResult = new PidIdentifier().Identify(pidDataSet);
+            var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp / 10);
             if (pidParameters1.Ti_s > 0)

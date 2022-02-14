@@ -450,9 +450,8 @@ namespace TimeSeriesAnalysis.Dynamic
             int cutOffForUsingDays_s = 86400;
             int cutOffForUsingHours_s = 3600;
 
-
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("DefaultProcessModel");
+            sb.AppendLine(this.GetType().ToString());
             sb.AppendLine("-------------------------");
             if (modelParameters.AbleToIdentify())
             {

@@ -65,7 +65,7 @@ after the simulation.
 
 The entire code:
 
-[!code-csharp[Examples](../Examples/GettingStarted.cs?name=ex_6)]
+[!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_6)]
 
 The resulting dynamic simulation:
 ![Example 6 result](images/ex6_results.png)

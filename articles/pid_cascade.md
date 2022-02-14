@@ -11,7 +11,7 @@ A sinusoidal disturbance ``D1`` is introduced on process1, wheras a step disturb
 the simulation in ``D2``, and the aim is for the cascade controllers to reject both disturbances as well as possible. 
 
 The code to implement the controllers:
-[!code-csharp[Example](../Examples/ProcessControl.cs?name=CascadeControl)]
+[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=CascadeControl)]
 
 The resulting results.
 

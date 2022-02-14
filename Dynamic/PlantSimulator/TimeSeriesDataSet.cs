@@ -25,7 +25,7 @@ namespace TimeSeriesAnalysis.Dynamic
     public class TimeSeriesDataSet
     {
 
-        public int timeBase_s { get; set; }
+        public double timeBase_s { get; set; }
         DateTime t0;
 
         List<DateTime> timeStamps = new List<DateTime>();
@@ -67,7 +67,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
         [JsonConstructor]
-        public TimeSeriesDataSet(int timeBase_s)
+        public TimeSeriesDataSet(double timeBase_s)
         {
             Init(timeBase_s);
         }
@@ -346,7 +346,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-        private void Init(int timeBase_s,DateTime? t0=null)
+        private void Init(double timeBase_s,DateTime? t0=null)
         {
             this.timeBase_s = timeBase_s;
             if (t0.HasValue)

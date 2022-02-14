@@ -892,7 +892,7 @@ namespace TimeSeriesAnalysis
                 results.AbleToIdentify = true;
                 return results;
             }
-            catch(Exception e) 
+            catch 
             {
                 results.AbleToIdentify = false;
                 return results;

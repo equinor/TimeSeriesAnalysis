@@ -6,7 +6,7 @@ In this example, a step disturbance influences a linear subprocess that is contr
 
 ``SubProcessSimulator.CoSimulateProcessAndPID`` co-simulates a single PID-controller/processes combination such as this.
 
-[!code-csharp[Examples](../Examples/GettingStarted.cs?name=ex_5)]
+[!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_5)]
 
 The resulting dynamic simulation:
 ![Example 5 result](images/ex5_results.png)

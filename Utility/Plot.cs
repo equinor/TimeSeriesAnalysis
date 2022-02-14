@@ -231,7 +231,7 @@ namespace TimeSeriesAnalysis.Utility
     ///   will instead be returned </param>
     /// <returns>The url of the resulting plot is returned</returns>
     public static string FromList(List<double[]> dataList, List<string> plotNames,
-            int dT_s, string comment = null, DateTime t0 = new DateTime(),
+            double dT_s, string comment = null, DateTime t0 = new DateTime(),
             string caseName = "", bool doStartChrome = true)
         {
             if (dataList == null)
@@ -265,7 +265,7 @@ namespace TimeSeriesAnalysis.Utility
         ///<summary>
         /// Creates a monotonically increasing list of DataTimes starting at t0, with length N and step time dT_s
         ///</summary>
-        static private List<DateTime> InitTimeList(DateTime t0, int dT_s, int N)
+        static private List<DateTime> InitTimeList(DateTime t0, double dT_s, int N)
         {
             DateTime defaultT0 = new DateTime(2000, 1, 1, 0, 0, 0);
 

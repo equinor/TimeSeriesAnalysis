@@ -308,7 +308,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
         {
-            int timeBase_s = inputData.timeBase_s;
+            var timeBase_s = inputData.timeBase_s;
 
             int? N = inputData.GetLength();
             if (!N.HasValue)

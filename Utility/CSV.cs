@@ -82,7 +82,7 @@ namespace TimeSeriesAnalysis.Utility
         {
             using (System.IO.StreamReader sr = new System.IO.StreamReader(filename))
             {
-                bool isOk = true;
+               // bool isOk = true;
                 doubleData = null;
                 stringData = null;
                 variableNames = null;

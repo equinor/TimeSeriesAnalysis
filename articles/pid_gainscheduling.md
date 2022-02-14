@@ -15,14 +15,14 @@ The system considered is given a *negative curvature*, meaning that the gain wil
 Firstly, the system is defined and the two simulation runs are done, one run at a low value of input, where the 
 gain is *high*, and a second at a high value of the input, where the gain is *low*.
 
-[!code-csharp[Example](../Examples/ProcessControl.cs?name=GainScheduling_Part1)]
+[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=GainScheduling_Part1)]
 
 The resulting plot is shown below:
 
 ![Example 5 result](images/ex_gainscheduling_part1.png)
 
 ## Simulating the use of two standard PID-controllers
-[!code-csharp[Example](../Examples/ProcessControl.cs?name=GainScheduling_Part2)]
+[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=GainScheduling_Part2)]
 
 
 The resulting plot is shown below:
@@ -40,7 +40,7 @@ In the final part of this example, a gain-scheduling controller that performs eq
 cases is created.
 
 The code to create the gain-scheduling controller and simulate both runs:
-[!code-csharp[Example](../Examples/ProcessControl.cs?name=GainScheduling_Part3)]
+[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=GainScheduling_Part3)]
 
 The resulting plot is shown below:
 ![Example 5 result](images/ex_gainscheduling_part3.png)

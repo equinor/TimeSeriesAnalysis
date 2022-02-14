@@ -115,27 +115,30 @@ var disturbanceModel
     = new UnitModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
 var pidModel = new PidModel(pidParameters, timeBase_s, &quot;PID&quot;);
 
-var simNoFeedF = new PlantSimulator(timeBase_s,
+var simNoFeedF = new PlantSimulator(
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
 
 simNoFeedF.ConnectModels(pidModel, processModel);
 simNoFeedF.ConnectModels(processModel, pidModel);
 simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+var inputData = new TimeSeriesDataSet(timeBase_s);
+
+inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
     TimeSeriesCreator.Constant(60, 600));
-simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
+inputData.Add(simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U),
     TimeSeriesCreator.Step(300, 600, 25, 0));
 
-var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
 Plot.FromList(new List&lt;double[]&gt;
-    {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-        dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
-        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
-        dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
-        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
-        },
+    {
+    dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+    inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+    dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
+    inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+    },
     new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist[right]&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, timeBase_s, &quot;FeedForwardEx1&quot;);
 
 </code></pre>
@@ -187,28 +190,33 @@ var disturbanceModel
     = new UnitModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
 var pidModel = new PidModel(pidParameters, timeBase_s, &quot;PID&quot;);
 
-var simNoFeedF = new PlantSimulator(timeBase_s,
+var simNoFeedF = new PlantSimulator(
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
 
 simNoFeedF.ConnectModels(pidModel, processModel);
 simNoFeedF.ConnectModels(processModel, pidModel);
 simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset,
+var inputData = new TimeSeriesDataSet(timeBase_s);
+
+inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
     TimeSeriesCreator.Constant(60, 600));
-string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U,
-    TimeSeriesCreator.Step(300, 600, 25, 0));
+string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U);
+inputData.Add(dSignalID, TimeSeriesCreator.Step(300, 600, 25, 0));
+
+
 simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
 
-var isOk = simNoFeedF.Simulate(out var dataNoFeedF);
+var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
 Plot.FromList(new List&lt;double[]&gt;
-    {dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-        dataNoFeedF.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
+    { 
+        dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
         dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
         dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
-        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.External_U)
-        },
+        inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
+    },
     new List&lt;string&gt; { &quot;y1=y_run1&quot;, &quot;y1=y_setpoint&quot;, &quot;y2=y_dist[right]&quot;, &quot;y3=u_pid&quot;, &quot;y3=u_dist&quot; }, 
     timeBase_s, &quot;FeedForwardEx2&quot;);
 </code></pre>

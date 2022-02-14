@@ -3,7 +3,7 @@ This example shows how the ``UnitIdentifier`` can be used to identify a model th
 can include nonlinearities, time-delay and time-constant simultaneously.
 
 The code for this example:
-[!code-csharp[Examples](../Examples/SystemIdent.cs?name=ex_NONLINEAR_UNIT_MODEL)]
+[!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/SystemIdent.cs?name=ex_NONLINEAR_UNIT_MODEL)]
 
 It can be hard to see with the naked eye that a combination of inputs (U) and output (y) 
 are related non-linearly to another. For this reason, a reference linear model is also 
@@ -12,11 +12,11 @@ simulated and plotted for comparison purposes. The significant difference betwee
 
 The resulting figure, containing the dataset, the fitted model and the reference linear model. 
 
-![Example 6](images/sysid_ex_nonlin1.png)
+![Example](images/sysid_ex_nonlin1.png)
 
 The output of ``idModel.ToString()`` gives details on the model:
 ```
-DefaultProcessModel
+UnitModel
 -------------------------
 ABLE to identify
 TimeConstant : 9,22 sec ± 3,5

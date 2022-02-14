@@ -62,9 +62,15 @@ namespace TimeSeriesAnalysis.Utility
                 list.Add(newVal);
             }
             return list.ToArray();
-
-
         }
+
+        static public double[] Noise(int N, double noiseAmplitude, int? seed=null)
+        {
+            return Vec.Rand(N, -noiseAmplitude, noiseAmplitude, null);
+        }
+
+
+
 
         /// <summary>
         /// Create a step change vector of a given length <c>N</c> starting at value 

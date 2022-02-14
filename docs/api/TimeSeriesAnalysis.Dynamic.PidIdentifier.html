@@ -196,12 +196,12 @@ given set of time-series of the input and output of said controller.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PidIdentifier_GetSimulatedU_" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidIdentifier_GetSimulatedU_System_Double_System_Double_System_Double___System_Double___System_Double___System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(System.Double,System.Double,System.Double[],System.Double[],System.Double[],System.Boolean)">GetSimulatedU(Double, Double, Double[], Double[], Double[], Boolean)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidIdentifier_GetSimulatedU_TimeSeriesAnalysis_Dynamic_PidParameters_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(TimeSeriesAnalysis.Dynamic.PidParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Boolean)">GetSimulatedU(PidParameters, UnitDataSet, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] GetSimulatedU(double Kp, double Ti, double[] ymeas, double[] yset, double[] u, bool outputDelayedOneSample = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset, bool isPIDoutputDelayOneSample)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -214,33 +214,18 @@ given set of time-series of the input and output of said controller.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">Kp</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></td>
+        <td><span class="parametername">pidParams</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">Ti</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">ymeas</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">yset</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">u</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataset</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">outputDelayedOneSample</span></td>
+        <td><span class="parametername">isPIDoutputDelayOneSample</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -288,13 +273,13 @@ given set of time-series of the input and output of said controller.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PidIdentifier_Identify_" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet)">Identify(UnitDataSet)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@)">Identify(ref UnitDataSet)</h4>
   <div class="markdown level1 summary"><p>Identifies a PID-controller from a UnitDataSet</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidParameters Identify(UnitDataSet dataSet)</code></pre>
+    <pre><code class="lang-csharp hljs">public PidParameters Identify(ref UnitDataSet dataSet)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -384,16 +369,6 @@ given set of time-series of the input and output of said controller.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PidIdentifier_TurnOffDebuggingPlots_" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidIdentifier_TurnOffDebuggingPlots" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots">TurnOffDebuggingPlots()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void TurnOffDebuggingPlots()</code></pre>
-  </div>
 </article>
           </div>
           

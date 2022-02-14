@@ -139,8 +139,6 @@ can include nonlinearities, time-delay and time-constant simultaneously.</p>
          (int)timeBase_s, &quot;NonlinearUnitModelEx&quot;, default);
 
     Console.WriteLine(idModel.ToString());
-
-
 }
 
 </code></pre>
@@ -149,9 +147,9 @@ are related non-linearly to another. For this reason, a reference linear model i
 simulated and plotted for comparison purposes. The significant difference between
 <code>ymeas</code> and <code>yref(linear)</code> in the below plot illustrate that the process is significantly non-linear.</p>
 <p>The resulting figure, containing the dataset, the fitted model and the reference linear model.</p>
-<p><img src="images/sysid_ex_nonlin1.png" alt="Example 6"></p>
+<p><img src="images/sysid_ex_nonlin1.png" alt="Example"></p>
 <p>The output of <code>idModel.ToString()</code> gives details on the model:</p>
-<pre><code>DefaultProcessModel
+<pre><code>UnitModel
 -------------------------
 ABLE to identify
 TimeConstant : 9,22 sec ± 3,5

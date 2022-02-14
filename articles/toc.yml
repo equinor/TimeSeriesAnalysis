@@ -68,6 +68,9 @@
           items:
             - name: Nonlinear unit model identification
               href: sysid_ex_nonlin.md 
+            - name: PID model identification
+              href: sysid_ex_pid.md              
+ 
 
 - name: Dynamic simulation
   href: dynsim.md

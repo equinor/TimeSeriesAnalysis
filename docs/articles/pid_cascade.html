@@ -124,8 +124,7 @@ the simulation in <code>D2</code>, and the aim is for the cascade controllers to
    var pid1 = new PidModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
    var pid2 = new PidModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
 
-   var sim = new PlantSimulator(timeBase_s,
-       new List&lt;ISimulatableModel&gt; { process1, process2, pid1, pid2 });
+   var sim = new PlantSimulator(new List&lt;ISimulatableModel&gt; { process1, process2, pid1, pid2 });
 
 //  pid1.SetManualOutput(50);
 //   pid1.SetToManualMode();
@@ -139,17 +138,19 @@ the simulation in <code>D2</code>, and the aim is for the cascade controllers to
    sim.ConnectModels(process2, pid2);
    sim.ConnectModels(pid2, pid1,(int)PidModelInputsIdx.Y_setpoint);
 
-   sim.AddSignal(pid2,SignalType.Setpoint_Yset,TimeSeriesCreator.Constant(50, N));
-   sim.AddSignal(process1,SignalType.Disturbance_D,TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
-   sim.AddSignal(process2,SignalType.Disturbance_D,TimeSeriesCreator.Step(300, N, 0, 1));
+   var inputData = new TimeSeriesDataSet(timeBase_s);
 
-   var isOK = sim.Simulate(out var simResult);
+   inputData.Add(sim.AddSignal(pid2,SignalType.Setpoint_Yset),TimeSeriesCreator.Constant(50, N));
+   inputData.Add(sim.AddSignal(process1,SignalType.Disturbance_D),TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+   inputData.Add(sim.AddSignal(process2,SignalType.Disturbance_D),TimeSeriesCreator.Step(300, N, 0, 1));
+
+   var isOK = sim.Simulate(inputData,out var simResult);
 
    Plot.FromList(new List&lt;double[]&gt;
        {
        simResult.GetValues(process1.GetID(),SignalType.Output_Y_sim),
        simResult.GetValues(process2.GetID(),SignalType.Output_Y_sim),
-       simResult.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+       inputData.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
        simResult.GetValues(pid1.GetID(),SignalType.PID_U),
        simResult.GetValues(pid2.GetID(),SignalType.PID_U)
        },

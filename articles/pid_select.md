@@ -22,4 +22,4 @@ The output ``Y`` could for instance be the level in the tank, and the input ``U`
 
 ![pid-tracking](./images/ex_minselect.png). 
 
-[!code-csharp[Example](../Examples/ProcessControl.cs?name=MinSelect)]
+[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=MinSelect)]

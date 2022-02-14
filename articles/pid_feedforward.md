@@ -10,7 +10,7 @@ a step change occurs in the disturbance signal.
 Note that while the PID-controller is able to stabilize the process, it does create significant 
 offset in ``y``, it falls to about ``y=46.5`` at its lowest. 
 
-[!code-csharp[Example](../Examples/ProcessControl.cs?name=Feedforward_Part1)]
+[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=Feedforward_Part1)]
 
 ![Example 5 result](images/ex_feedforward_part1.png)
 
@@ -27,6 +27,6 @@ a feed-forward from this variable should improve performance.
 As seen, the offset between ``y`` and ``y_set`` is less during the same disturbance step as in the previous part of this example,
 with ``y`` falling to just `` y=50.4`` at its lowest, but at the expense of a slight ``overshoot`` in ``y``.
 
-[!code-csharp[Example](../Examples/ProcessControl.cs?name=Feedforward_Part2)]
+[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=Feedforward_Part2)]
 
 ![Example 5 result](images/ex_feedforward_part2.png)

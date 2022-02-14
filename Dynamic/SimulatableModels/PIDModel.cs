@@ -43,10 +43,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <seealso cref="PidScaling"/>
     /// <seealso cref="PidTuning"/>
     /// </summary>
-    public class PidModel : ModelBaseClass,ISimulatableModel
+    public class PidModel : ModelBaseClass, ISimulatableModel
     {
         public PidParameters pidParameters;
-        private int timeBase_s;
+        private double timeBase_s;
         private PidController pid;
 
         /// <summary>
@@ -55,13 +55,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParameters">object containing the paramters of the controller</param>
         /// <param name="timeBase_s">sampling time, a steady time between each call to Iterate</param>
         /// <param name="ID">Each controller shoudl be given a unique ID</param>
-        public PidModel(PidParameters pidParameters, int timeBase_s, string ID="not_named")
+        public PidModel(PidParameters pidParameters, double timeBase_s, string ID = "not_named")
         {
             processModelType = ModelType.PID;
             SetID(ID);
-            this.timeBase_s     = timeBase_s;
-            this.pidParameters  = pidParameters;
-            pid                 = new PidController(timeBase_s,pidParameters.Kp, 
+            this.timeBase_s = timeBase_s;
+            this.pidParameters = pidParameters;
+            pid = new PidController(timeBase_s, pidParameters.Kp,
                 pidParameters.Ti_s, pidParameters.Td_s, pidParameters.NanValue);
             if (pidParameters.Scaling != null)
             {
@@ -83,7 +83,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputIdx"></param>
         /// <param name="givenInputValues"></param>
         /// <returns></returns>
-        public double? GetSteadyStateInput(double y0, int inputIdx=0, double[] givenInputValues = null)
+        public double? GetSteadyStateInput(double y0, int inputIdx = 0, double[] givenInputValues = null)
         {
             return null;
         }
@@ -105,7 +105,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="output"></param>
         public void WarmStart(double[] inputs, double output)
         {
-            WarmStart(inputs[0], inputs[1],output); 
+            WarmStart(inputs[0], inputs[1], output);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 feedForwardVariable = inputs[(int)PidModelInputsIdx.FeedForward];
             }
 
-            return pid.Iterate(y_process_abs,y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable);
+            return pid.Iterate(y_process_abs, y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return null;
         }
-          
+
         /// <summary>
         /// Set controller in auto
         /// </summary>
@@ -228,5 +228,15 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Create a nice human-readable summary of all the important data contained in the model object. 
+        /// This is especially useful for unit-testing and development.
+        /// </summary>
+        /// <returns></returns>
+        override public string ToString()
+        {
+            return pidParameters.ToString();
+        }
     }
+
 }

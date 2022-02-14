@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	<DefineConstants>$(DefineConstants);WithDocs</DefineConstants>
     <Description>Analysis of time-series that may include transients or dynamics, focusing on industrial automation.
 Identification of dynamic models, dynamic simulation, filtering and PID-control.
 </Description>
@@ -14,11 +15,11 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <PackageLicenseFile></PackageLicenseFile>
     <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-    <AssemblyVersion>1.0.65</AssemblyVersion>
     <RepositoryUrl>https://github.com/equinor/timeseriesanalysis</RepositoryUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <Version>1.0.66</Version>
+    <Version>1.0.67</Version>
   </PropertyGroup>
+
 
   <ItemGroup>
     <Compile Remove="api\**" />
@@ -54,7 +55,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <PackageReference Include="Accord" Version="3.8.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0" />
     <PackageReference Include="Accord.Statistics" Version="3.8.0" />
-    <PackageReference Include="docfx.console" Version="2.59.0">
+    <PackageReference Include="docfx.console" Version="2.59.0" Condition="'$(Configuration)'=='Release'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

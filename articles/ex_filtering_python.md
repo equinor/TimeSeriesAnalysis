@@ -1,4 +1,4 @@
 # Example 3 : Filtering
 
-[!code[Examples](../Examples/Pythonnet-examples/ex3_filtering.py)]
+[!code[Examples](../TimeSeriesAnalysis.Tests/Examples/Pythonnet-examples/ex3_filtering.py)]
 

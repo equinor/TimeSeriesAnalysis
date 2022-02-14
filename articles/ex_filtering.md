@@ -16,7 +16,7 @@ By a similar logic,as ``sinus2`` has a period of ``25`` seconds will go from max
 thus motivating a filter time-constant of about ``~3`` seconds.
 
 The example code(runnable through the ``Test Explorer``):
-[!code-csharp[Examples](../Examples/GettingStarted.cs?name=ex_3)]
+[!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_3)]
 
 Running the above code results in the below plot. 
 

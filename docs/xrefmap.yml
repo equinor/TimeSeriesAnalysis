@@ -1914,15 +1914,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetKPChangeDetect
   nameWithType: PidIdentifier.GetKPChangeDetect
-- uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(System.Double,System.Double,System.Double[],System.Double[],System.Double[],System.Boolean)
-  name: GetSimulatedU(Double, Double, Double[], Double[], Double[], Boolean)
-  href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_GetSimulatedU_System_Double_System_Double_System_Double___System_Double___System_Double___System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(System.Double,System.Double,System.Double[],System.Double[],System.Double[],System.Boolean)
-  name.vb: GetSimulatedU(Double, Double, Double(), Double(), Double(), Boolean)
-  fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(System.Double, System.Double, System.Double[], System.Double[], System.Double[], System.Boolean)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(System.Double, System.Double, System.Double(), System.Double(), System.Double(), System.Boolean)
-  nameWithType: PidIdentifier.GetSimulatedU(Double, Double, Double[], Double[], Double[], Boolean)
-  nameWithType.vb: PidIdentifier.GetSimulatedU(Double, Double, Double(), Double(), Double(), Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(TimeSeriesAnalysis.Dynamic.PidParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Boolean)
+  name: GetSimulatedU(PidParameters, UnitDataSet, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_GetSimulatedU_TimeSeriesAnalysis_Dynamic_PidParameters_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(TimeSeriesAnalysis.Dynamic.PidParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU(TimeSeriesAnalysis.Dynamic.PidParameters, TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean)
+  nameWithType: PidIdentifier.GetSimulatedU(PidParameters, UnitDataSet, Boolean)
 - uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetSimulatedU*
   name: GetSimulatedU
   href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_GetSimulatedU_
@@ -1943,12 +1940,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.GetTiChangeDetect
   nameWithType: PidIdentifier.GetTiChangeDetect
-- uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  name: Identify(UnitDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  nameWithType: PidIdentifier.Identify(UnitDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@)
+  name: Identify(ref UnitDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@)
+  name.vb: Identify(ByRef UnitDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(ref TimeSeriesAnalysis.Dynamic.UnitDataSet)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet)
+  nameWithType: PidIdentifier.Identify(ref UnitDataSet)
+  nameWithType.vb: PidIdentifier.Identify(ByRef UnitDataSet)
 - uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.Identify*
   name: Identify
   href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_Identify_
@@ -1982,19 +1982,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.SetTiChangeDetect
   nameWithType: PidIdentifier.SetTiChangeDetect
-- uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots
-  name: TurnOffDebuggingPlots()
-  href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_TurnOffDebuggingPlots
-  commentId: M:TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots
-  fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots()
-  nameWithType: PidIdentifier.TurnOffDebuggingPlots()
-- uid: TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots*
-  name: TurnOffDebuggingPlots
-  href: api/TimeSeriesAnalysis.Dynamic.PidIdentifier.html#TimeSeriesAnalysis_Dynamic_PidIdentifier_TurnOffDebuggingPlots_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PidIdentifier.TurnOffDebuggingPlots
-  nameWithType: PidIdentifier.TurnOffDebuggingPlots
 - uid: TimeSeriesAnalysis.Dynamic.PidIdentWarning
   name: PidIdentWarning
   href: api/TimeSeriesAnalysis.Dynamic.PidIdentWarning.html
@@ -2085,12 +2072,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.PidModel
   fullName: TimeSeriesAnalysis.Dynamic.PidModel
   nameWithType: PidModel
-- uid: TimeSeriesAnalysis.Dynamic.PidModel.#ctor(TimeSeriesAnalysis.Dynamic.PidParameters,System.Int32,System.String)
-  name: PidModel(PidParameters, Int32, String)
-  href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel__ctor_TimeSeriesAnalysis_Dynamic_PidParameters_System_Int32_System_String_
-  commentId: M:TimeSeriesAnalysis.Dynamic.PidModel.#ctor(TimeSeriesAnalysis.Dynamic.PidParameters,System.Int32,System.String)
-  fullName: TimeSeriesAnalysis.Dynamic.PidModel.PidModel(TimeSeriesAnalysis.Dynamic.PidParameters, System.Int32, System.String)
-  nameWithType: PidModel.PidModel(PidParameters, Int32, String)
+- uid: TimeSeriesAnalysis.Dynamic.PidModel.#ctor(TimeSeriesAnalysis.Dynamic.PidParameters,System.Double,System.String)
+  name: PidModel(PidParameters, Double, String)
+  href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel__ctor_TimeSeriesAnalysis_Dynamic_PidParameters_System_Double_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidModel.#ctor(TimeSeriesAnalysis.Dynamic.PidParameters,System.Double,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.PidModel.PidModel(TimeSeriesAnalysis.Dynamic.PidParameters, System.Double, System.String)
+  nameWithType: PidModel.PidModel(PidParameters, Double, String)
 - uid: TimeSeriesAnalysis.Dynamic.PidModel.#ctor*
   name: PidModel
   href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel__ctor_
@@ -2230,6 +2217,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidModel.SetToManualMode
   nameWithType: PidModel.SetToManualMode
+- uid: TimeSeriesAnalysis.Dynamic.PidModel.ToString
+  name: ToString()
+  href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel_ToString
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidModel.ToString
+  fullName: TimeSeriesAnalysis.Dynamic.PidModel.ToString()
+  nameWithType: PidModel.ToString()
+- uid: TimeSeriesAnalysis.Dynamic.PidModel.ToString*
+  name: ToString
+  href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel_ToString_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidModel.ToString
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PidModel.ToString
+  nameWithType: PidModel.ToString
 - uid: TimeSeriesAnalysis.Dynamic.PidModel.WarmStart(System.Double,System.Double,System.Double)
   name: WarmStart(Double, Double, Double)
   href: api/TimeSeriesAnalysis.Dynamic.PidModel.html#TimeSeriesAnalysis_Dynamic_PidModel_WarmStart_System_Double_System_Double_System_Double_
@@ -2424,6 +2424,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidParameters.Ti_s
   nameWithType: PidParameters.Ti_s
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.ToString
+  name: ToString()
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_ToString
+  commentId: M:TimeSeriesAnalysis.Dynamic.PidParameters.ToString
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.ToString()
+  nameWithType: PidParameters.ToString()
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.ToString*
+  name: ToString
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_ToString_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidParameters.ToString
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.ToString
+  nameWithType: PidParameters.ToString
 - uid: TimeSeriesAnalysis.Dynamic.PidScaling
   name: PidScaling
   href: api/TimeSeriesAnalysis.Dynamic.PidScaling.html
@@ -3267,12 +3280,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet
   fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet
   nameWithType: TimeSeriesDataSet
-- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32)
-  name: TimeSeriesDataSet(Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Int32)
-  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(Int32)
+- uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Double)
+  name: TimeSeriesDataSet(Double)
+  href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.TimeSeriesDataSet(System.Double)
+  nameWithType: TimeSeriesDataSet.TimeSeriesDataSet(Double)
 - uid: TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.String,System.Char,System.String)
   name: TimeSeriesDataSet(String, Char, String)
   href: api/TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html#TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_String_System_Char_System_String_
@@ -5638,15 +5651,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.DateTime(), System.String, System.String, System.Boolean)
   nameWithType: Plot.FromList(List<Double[]>, List<String>, DateTime[], String, String, Boolean)
   nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), DateTime(), String, String, Boolean)
-- uid: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)
-  name: FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean)
-  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Int32_System_String_System_DateTime_System_String_System_Boolean_
-  commentId: M:TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Int32,System.String,System.DateTime,System.String,System.Boolean)
-  name.vb: FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean)
-  fullName: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Int32, System.String, System.DateTime, System.String, System.Boolean)
-  fullName.vb: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Int32, System.String, System.DateTime, System.String, System.Boolean)
-  nameWithType: Plot.FromList(List<Double[]>, List<String>, Int32, String, DateTime, String, Boolean)
-  nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), Int32, String, DateTime, String, Boolean)
+- uid: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Double,System.String,System.DateTime,System.String,System.Boolean)
+  name: FromList(List<Double[]>, List<String>, Double, String, DateTime, String, Boolean)
+  href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_Double____System_Collections_Generic_List_System_String__System_Double_System_String_System_DateTime_System_String_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.String},System.Double,System.String,System.DateTime,System.String,System.Boolean)
+  name.vb: FromList(List(Of Double()), List(Of String), Double, String, DateTime, String, Boolean)
+  fullName: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List<System.Double[]>, System.Collections.Generic.List<System.String>, System.Double, System.String, System.DateTime, System.String, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List(Of System.Double()), System.Collections.Generic.List(Of System.String), System.Double, System.String, System.DateTime, System.String, System.Boolean)
+  nameWithType: Plot.FromList(List<Double[]>, List<String>, Double, String, DateTime, String, Boolean)
+  nameWithType.vb: Plot.FromList(List(Of Double()), List(Of String), Double, String, DateTime, String, Boolean)
 - uid: TimeSeriesAnalysis.Utility.Plot.FromList(System.Collections.Generic.List{System.ValueTuple{System.Double[],System.DateTime[]}},System.Collections.Generic.List{System.String},System.String,System.String,System.Boolean)
   name: FromList(List<(Double[], DateTime[])>, List<String>, String, String, Boolean)
   href: api/TimeSeriesAnalysis.Utility.Plot.html#TimeSeriesAnalysis_Utility_Plot_FromList_System_Collections_Generic_List_System_ValueTuple_System_Double___System_DateTime_____System_Collections_Generic_List_System_String__System_String_System_String_System_Boolean_
@@ -5944,6 +5957,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.CreateDateStampArray
   nameWithType: TimeSeriesCreator.CreateDateStampArray
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Noise(System.Int32,System.Double,System.Nullable{System.Int32})
+  name: Noise(Int32, Double, Nullable<Int32>)
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Noise_System_Int32_System_Double_System_Nullable_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Noise(System.Int32,System.Double,System.Nullable{System.Int32})
+  name.vb: Noise(Int32, Double, Nullable(Of Int32))
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Noise(System.Int32, System.Double, System.Nullable<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Noise(System.Int32, System.Double, System.Nullable(Of System.Int32))
+  nameWithType: TimeSeriesCreator.Noise(Int32, Double, Nullable<Int32>)
+  nameWithType.vb: TimeSeriesCreator.Noise(Int32, Double, Nullable(Of Int32))
+- uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Noise*
+  name: Noise
+  href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Noise_
+  commentId: Overload:TimeSeriesAnalysis.Utility.TimeSeriesCreator.Noise
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Noise
+  nameWithType: TimeSeriesCreator.Noise
 - uid: TimeSeriesAnalysis.Utility.TimeSeriesCreator.Sinus(System.Double,System.Double,System.Int32,System.Int32)
   name: Sinus(Double, Double, Int32, Int32)
   href: api/TimeSeriesAnalysis.Utility.TimeSeriesCreator.html#TimeSeriesAnalysis_Utility_TimeSeriesCreator_Sinus_System_Double_System_Double_System_Int32_System_Int32_
