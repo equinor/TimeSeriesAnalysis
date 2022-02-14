@@ -21,6 +21,8 @@ jobs:
               run: nuget restore TimeSeriesAnalysis.sln
             - name: Build 
               run: dotnet build TimeSeriesAnalysis.sln -c Release
+            - name: Pack
+              run: dotnet pack TimeSeriesAnalysis.sln -c Release
             - name: Nuget Set API key
               run: nuget setapikey ${{secrets.NUGET_API_KEY}} -source https://nuget.pkg.github.com/equinor/
             - name: Nuget publish 

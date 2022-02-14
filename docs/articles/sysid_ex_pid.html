@@ -126,7 +126,7 @@ code of this example:</p>
         inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
         simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
         Array2D&lt;double&gt;.GetColumn(pidDataSet.U_sim,(int)INDEX.FIRST) },
-        new List&lt;string&gt;{ &quot;y1=y_sim&quot;, &quot;y1=y_set&quot;,&quot;y3=u_pid&quot;,&quot;y3=u_pid(id)&quot; },timeBase_s); ;
+        new List&lt;string&gt;{ &quot;y1=y_sim&quot;, &quot;y1=y_set&quot;,&quot;y3=u_pid&quot;,&quot;y3=u_pid(id)&quot; },timeBase_s); 
 }
 </code></pre>
 <p>The code generates the following figure, showing that the estimated
@@ -147,7 +147,7 @@ Ymax : 100
 NO gainsceduling
 NO feedforward
 </code></pre>
-<p>Note that the estimated paramters are very close to the actual paramters.</p>
+<p>Note that the estimated parameters <code>Kp=0.496</code> and <code>Ti_s=19.7</code> are very close to the actual paramters.</p>
 </article>
           </div>
           
