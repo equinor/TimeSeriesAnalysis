@@ -489,7 +489,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }*/
             pidParam.Kp = Kpest[0];
             pidParam.Ti_s = Tiest[0];
-            pidParam.WasAbleToIdentify = true;
+            pidParam.Fitting = new FittingInfo();
+            pidParam.Fitting.WasAbleToIdentify = true;
 
 
             return pidParam;

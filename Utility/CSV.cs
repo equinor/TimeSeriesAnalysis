@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,22 @@ using System.Globalization;
 
 namespace TimeSeriesAnalysis.Utility
 {
+
+    /// <summary>
+    /// A class that contains the text content of a csv-file.
+    /// This class is introduced as a convenience to avoid confusing filenames and csv-content string
+    /// in overloaded methods.
+    /// </summary>
+    public class CsvContent
+    {
+        public string CsvTxt { get; }
+
+        public CsvContent(string csvTxt)
+        {
+            this.CsvTxt = csvTxt;
+        }
+    }
+
 
     ///<summary>
     /// IO Utility class for loading time-series data from a plain text comma-separated variable(CSV) file
@@ -50,7 +67,7 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="variables"></param>
         /// <param name="dateTimeFormat"></param>
         /// <returns></returns>
-        public static bool LoadDataFromCSV(string filename, char separator, out DateTime[] dateTimes,
+        public static bool LoadDataFromCsvAsTimeSeries(string filename, char separator, out DateTime[] dateTimes,
             out Dictionary<string,double[]> variables, string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
             var isOk = LoadDataFromCSV(filename, separator, out double[,] doubleData, out string[] variableNames, out string[,] stringData);
@@ -68,6 +85,7 @@ namespace TimeSeriesAnalysis.Utility
             return isOk;
         }
 
+
         ///<summary>
         /// Load time-series data from a CSV-file, low-level version for further processing
         ///</summary>
@@ -80,9 +98,49 @@ namespace TimeSeriesAnalysis.Utility
         public static bool LoadDataFromCSV(string filename, char separator,out double[,] doubleData,
             out string[] variableNames, out string[,] stringData)
         {
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(filename))
+            var sr = new StreamReader(filename);
+            return LoadDataFromCSV(sr,separator,out doubleData, out variableNames, out stringData);
+        }
+
+
+
+        /// <summary>
+        /// Version of  <c>LoadDataFromCSV</c> that accepts a <c>CSVcontent </c> containting the contents of a CSV-file as input
+        /// </summary>
+        /// <param name="csvString"></param>
+        /// <param name="separator"></param>
+        /// <param name="doubleData"></param>
+        /// <param name="variableNames"></param>
+        /// <param name="stringData"></param>
+        /// <param name="dateTimeFormat"></param>
+        /// <returns></returns>
+        public static bool LoadDataFromCsvContentAsTimeSeries(CsvContent csvString, char separator, out DateTime[] dateTimes,
+            out Dictionary<string, double[]> variables, string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            var sr = new StringReader(csvString.CsvTxt);
+            var isOk = LoadDataFromCSV(sr, separator, out double[,] doubleData, out string[] variableNames, out string[,] stringData);
+
+            int indexOfTimeData = 0;
+            dateTimes = Array2D.GetColumnParsedAsDateTime(stringData, indexOfTimeData, dateTimeFormat);
+
+            variables = new Dictionary<string, double[]>();
+            int colIdx = 0;
+            foreach (string variableName in variableNames)
             {
-               // bool isOk = true;
+                variables.Add(variableName, doubleData.GetColumn(colIdx));
+                colIdx++;
+            }
+            return isOk;
+
+
+        }
+
+        private static bool LoadDataFromCSV(TextReader sr, char separator, out double[,] doubleData,
+            out string[] variableNames, out string[,] stringData)
+        {
+            using (sr)
+            {
+                // bool isOk = true;
                 doubleData = null;
                 stringData = null;
                 variableNames = null;
@@ -91,12 +149,15 @@ namespace TimeSeriesAnalysis.Utility
                 var linesStr = new List<string[]>();
                 // readheader
                 variableNames = sr.ReadLine().Split(separator);
-                while (!sr.EndOfStream)
+                string currentLine = sr.ReadLine();
+                while (currentLine != null)
                 {
                     double[] LineDouble = new double[variableNames.Length];
-                    string currentLine = sr.ReadLine();
+                    currentLine = sr.ReadLine();
+                    if (currentLine == null)
+                        continue;
                     string[] LineStr = currentLine.Split(separator);
-                    for (int k = 0; k < Math.Min(variableNames.Length,LineStr.Length); k++)
+                    for (int k = 0; k < Math.Min(variableNames.Length, LineStr.Length); k++)
                     {
                         if (LineStr[k].Length > 0)
                         {
@@ -134,7 +195,9 @@ namespace TimeSeriesAnalysis.Utility
                     }
             }
             return true;
+
         }
+
 
 
 

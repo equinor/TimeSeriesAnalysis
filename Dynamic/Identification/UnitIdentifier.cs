@@ -208,7 +208,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
                 modelList.Add(modelParams_noCurvature);
 
-                if (doEstimateCurvature && modelParams_noCurvature.WasAbleToIdentify)
+                if (doEstimateCurvature && modelParams_noCurvature.Fitting.WasAbleToIdentify)
                 {
                    UnitParameters modelParams_allCurvature =
                         EstimateProcessForAGivenTimeDelay
@@ -219,8 +219,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     // only try rest of curvature models if it seems like it will help
                     // this is done to save on processing in case of many inputs (3 inputs= 8 identification runs)
                     //if (modelParams_noCurvature.FittingObjFunVal -modelParams_allCurvature.FittingObjFunVal > fitMinImprovement)
-                    if (modelParams_allCurvature.WasAbleToIdentify && 
-                        modelParams_allCurvature.RsqFittingDiff - modelParams_noCurvature.RsqFittingDiff > rSquaredDiff_MinImprovement)
+                    if (modelParams_allCurvature.Fitting.WasAbleToIdentify && 
+                        modelParams_allCurvature.Fitting.RsqFittingDiff - modelParams_noCurvature.Fitting.RsqFittingDiff > rSquaredDiff_MinImprovement)
                     {
                         List<bool[]> allNonZeroCombinations = GetAllNonzeroBitArrays(u0.Count());
                         foreach (bool[] curCurveEnabledConfig in allNonZeroCombinations)
@@ -278,7 +278,7 @@ namespace TimeSeriesAnalysis.Dynamic
             UnitParameters modelParameters = //modelParams_StaticAndNoCurvature;//TODO:temporary 
                 (UnitParameters)processTimeDelayIdentifyObj.GetRun(bestTimeDelayIdx);
             // use static and no curvature model as fallback if more complex models failed
-            if (!modelParameters.WasAbleToIdentify && modelParams_StaticAndNoCurvature.WasAbleToIdentify)
+            if (!modelParameters.Fitting.WasAbleToIdentify && modelParams_StaticAndNoCurvature.Fitting.WasAbleToIdentify)
             {
                 modelParameters = modelParams_StaticAndNoCurvature;
                 timeDelayWarnings.Add(ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel);
@@ -297,11 +297,11 @@ namespace TimeSeriesAnalysis.Dynamic
             /////////////////////////////////////////////////////////////////
 
             var model = new UnitModel(modelParameters, dataSet);
-            if (modelParameters.WasAbleToIdentify)
+            if (modelParameters.Fitting.WasAbleToIdentify)
             {
                 var simulator = new UnitSimulator(model);
                 simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
-                model.FittedDataSet = dataSet;
+                model.SetFittedDataSet(dataSet);
             }
             return model;
 
@@ -341,20 +341,20 @@ namespace TimeSeriesAnalysis.Dynamic
             foreach (UnitParameters curModel in allModels)
             {
                 // Rsquared: higher is better
-                double RsqFittingDiff_improvement = curModel.RsqFittingDiff - bestModel.RsqFittingDiff ;
-                double RsqFittingAbs_improvement = curModel.RsqFittingAbs - bestModel.RsqFittingAbs;
+                double RsqFittingDiff_improvement = curModel.Fitting.RsqFittingDiff - bestModel.Fitting.RsqFittingDiff ;
+                double RsqFittingAbs_improvement = curModel.Fitting.RsqFittingAbs - bestModel.Fitting.RsqFittingAbs;
 
 
                 // objective function: lower is better
-                double objFunDiff_improvement = bestModel.ObjFunValFittingDiff  - curModel.ObjFunValFittingDiff ;// positive if curmodel improves on the current best
-                double objFunAbs_improvement = bestModel.ObjFunValFittingAbs - curModel.ObjFunValFittingAbs ;// positive if curmodel improves on the current best
+                double objFunDiff_improvement = bestModel.Fitting.ObjFunValFittingDiff  - curModel.Fitting.ObjFunValFittingDiff ;// positive if curmodel improves on the current best
+                double objFunAbs_improvement = bestModel.Fitting.ObjFunValFittingAbs - curModel.Fitting.ObjFunValFittingAbs ;// positive if curmodel improves on the current best
 
 
                 if (objFunDiff_improvement>= obFunDiff_MinImprovement && 
                    RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
                    objFunAbs_improvement>=0 &&
                    RsqFittingAbs_improvement>=0 &&
-                   curModel.WasAbleToIdentify
+                   curModel.Fitting.WasAbleToIdentify
                    )
                 {
                     bestModel = curModel;
@@ -691,27 +691,29 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             UnitParameters parameters = new UnitParameters();
-            parameters.SolverID = solverID;
-
+        
+            parameters.Fitting = new FittingInfo();
+            parameters.Fitting.SolverID = solverID;
             // Vec.Regress can return very large values if y is noisy and u is stationary. 
             // in these cases varCovarMatrix is null
 
             const double maxAbsValueRegression = 10000;
             if (regResults.Param == null || !regResults.AbleToIdentify)
             {
-                parameters.WasAbleToIdentify = false;
+                parameters.Fitting.WasAbleToIdentify = false;
                 parameters.AddWarning(UnitdentWarnings.RegressionProblemFailedToYieldSolution);
                 return parameters;
             }
             else if (Math.Abs(regResults.Param[1]) > maxAbsValueRegression)
             {
-                parameters.WasAbleToIdentify = false;
+                parameters.Fitting.WasAbleToIdentify = false;
                 parameters.AddWarning(UnitdentWarnings.NotPossibleToIdentify);
                 return parameters;
             }
             else // able to identify
             {
-                parameters.WasAbleToIdentify = true;
+               
+                parameters.Fitting.WasAbleToIdentify = true;
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.TimeBase_s;
                 parameters.TimeConstant_s = timeConstant_s;
                 parameters.LinearGains = linearProcessGains;
@@ -731,17 +733,17 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.Bias = regResults.Param.Last();
                 }
                 // TODO:add back uncertainty estimates
-                parameters.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
-                parameters.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
+                parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
+                parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 //
-                parameters.RsqFittingDiff = regResults.Rsq;
-                parameters.ObjFunValFittingDiff = regResults.ObjectiveFunctionValue;
-                parameters.ObjFunValFittingAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim,0);
+                parameters.Fitting.RsqFittingDiff = regResults.Rsq;
+                parameters.Fitting.ObjFunValFittingDiff = regResults.ObjectiveFunctionValue;
+                parameters.Fitting.ObjFunValFittingAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim,0);
                 // 
                 //   Plot.FromList(new List<double[]> { dataSet.Y_meas, dataSet.Y_sim }, new List<string> { "y1=xmod", "y1=xmeas" },
                 //          TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, dataSet.Y_meas.Length), "test");
 
-                parameters.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim,null,0)*100;
+                parameters.Fitting.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim,null,0)*100;
 
                 // add inn uncertainty
                 CalculateUncertainty(regResults, dataSet.TimeBase_s, ref parameters);

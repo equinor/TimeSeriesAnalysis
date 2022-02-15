@@ -119,7 +119,6 @@ namespace TimeSeriesAnalysis._Examples
             double noiseAmplitude = 0.05;
             var parameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 15,
                 LinearGains = new double[] {1,2},
                 TimeDelay_s = 5,
@@ -141,16 +140,16 @@ namespace TimeSeriesAnalysis._Examples
             var modelId = new UnitIdentifier();
             var identifiedModel = modelId.Identify(ref dataSet);
     
-            Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas, 
-                identifiedModel.FittedDataSet.Y_sim },
+            Plot.FromList(new List<double[]> { identifiedModel.GetFittedDataSet().Y_meas, 
+                identifiedModel.GetFittedDataSet().Y_sim },
                 new List<string> { "y1=y_meas", "y1=y_sim"}, timeBase_s, "ex4_results");
 
             Console.WriteLine(identifiedModel.ToString());
 
             // compare dynamic to static identification
             var regResults = (new Vec()).Regress(dataSet.Y_meas, U);
-            Plot.FromList(new List<double[]> { identifiedModel.FittedDataSet.Y_meas,
-                identifiedModel.FittedDataSet.Y_sim,regResults.Y_modelled },
+            Plot.FromList(new List<double[]> { identifiedModel.GetFittedDataSet().Y_meas,
+                identifiedModel.GetFittedDataSet().Y_sim,regResults.Y_modelled },
                 new List<string> { "y1=y_meas", "y1=y_dynamic","y1=y_static" }, timeBase_s,
                  "ex4_static_vs_dynamic");
 
@@ -170,7 +169,6 @@ namespace TimeSeriesAnalysis._Examples
             int N = 500;
             var modelParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 10,
                 LinearGains = new double[] { 1 },
                 TimeDelay_s = 0,
@@ -205,7 +203,6 @@ namespace TimeSeriesAnalysis._Examples
 
             UnitParameters modelParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 10,
                 LinearGains = new double[] { 1,2 },
                 TimeDelay_s = 0,
@@ -225,11 +222,11 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(processModel,pidModel);
             sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
             var inputData = new TimeSeriesDataSet(timeBase_s);
-            inputData.Add(sim.AddSignal(processModel,SignalType.Disturbance_D),
+            inputData.Add(sim.AddExternalSignal(processModel,SignalType.Disturbance_D),
                 TimeSeriesCreator.Step(N/4,N,0,1));
-            inputData.Add(sim.AddSignal(pidModel,SignalType.Setpoint_Yset),
+            inputData.Add(sim.AddExternalSignal(pidModel,SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(50,N));
-            inputData.Add(sim.AddSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
+            inputData.Add(sim.AddExternalSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
                 TimeSeriesCreator.Step(N/2,N,0,1));
 
             var isOk = sim.Simulate(inputData,out var simData);

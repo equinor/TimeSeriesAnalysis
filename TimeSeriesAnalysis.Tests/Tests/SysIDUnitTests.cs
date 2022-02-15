@@ -23,7 +23,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             var timeBase_s = 1;
             var parameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 LinearGains = new double []{ 1},
                 TimeConstant_s = 0,
                 TimeDelay_s = timeDelay_s,
@@ -61,7 +60,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN,
             bool doNonWhiteNoise=false)
         {
-            designParameters.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
+          //  designParameters.Fitting.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
 
             UnitModel model = new UnitModel(designParameters, timeBase_s);
             this.timeBase_s = timeBase_s;
@@ -153,7 +152,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Console.WriteLine(model.ToString());
 
             Assert.IsNotNull(model, "returned model should never be null");
-            Assert.IsTrue(model.GetModelParameters().AbleToIdentify(), "should be able to identify model");
+            Assert.IsTrue(model.GetModelParameters().Fitting.WasAbleToIdentify, "should be able to identify model");
             Assert.IsTrue(model.GetModelParameters().GetWarningList().Count == numExpectedWarnings, "gave wrong number of warnings");
             //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
@@ -239,7 +238,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var modelId = new UnitIdentifier();
             var model = modelId.IdentifyLinear(ref dataSet,false);
 
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1 },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1"}, (int)timeBase_s);
 
             DefaultAsserts(model, designParameters);
@@ -266,7 +265,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double noiseAmplitude = 0.01;
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude, addInBadDataToYmeas, badValueId);
 
-            Assert.IsFalse(model.GetModelParameters().WasAbleToIdentify);
+            Assert.IsFalse(model.GetModelParameters().Fitting.WasAbleToIdentify);
             // also: the model shoudl not downright crash!
         }
 
@@ -294,7 +293,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude,addInBadDataToYmeas, badValueId);
 
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2 },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
 
             DefaultAsserts(model, designParameters);
@@ -343,8 +342,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             var model  = modelId.Identify(ref dataSetDownsampled, designParameters.U0, designParameters.UNorm);
 
             string caseId = TestContext.CurrentContext.Test.Name;
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim,
-                model.FittedDataSet.Y_meas, u1 },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas, u1 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
@@ -378,8 +377,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var model = CreateDataAndIdentify(designParameters, U,timeBase_s,noiseAmplitude);
             string caseId = NUnit.Framework.TestContext.CurrentContext.Test.Name; 
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, 
-                model.FittedDataSet.Y_meas, u1 },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, 
+                model.GetFittedDataSet().Y_meas, u1 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(","").Replace(")","").Replace(",","_"));
 
@@ -428,7 +427,6 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             UnitParameters paramtersNoCurvature = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 1 },
@@ -440,13 +438,13 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             var sim = new PlantSimulator(new List<ISimulatableModel> { refModel });
             var inputData = new TimeSeriesDataSet((int)timeBase_s);
-            inputData.Add(sim.AddSignal(refModel, SignalType.External_U), u1);
+            inputData.Add(sim.AddExternalSignal(refModel, SignalType.External_U), u1);
             var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim,
-                model.FittedDataSet.Y_meas,
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas,
                 refData.GetValues(refModel.GetID(),SignalType.Output_Y_sim),
                 u1 },
                  new List<string> { "y1=ysim", "y1=ymeas","y1=yref(linear)", "y3=u1" }, (int)timeBase_s, caseId, default,
@@ -514,7 +512,6 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             UnitParameters paramtersNoCurvature = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 1, 0.7 },
@@ -525,15 +522,15 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             var sim = new PlantSimulator( new List<ISimulatableModel> { refModel });
             var inputData = new TimeSeriesDataSet((int)timeBase_s);
-            inputData.Add(sim.AddSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), u1);
-            inputData.Add(sim.AddSignal(refModel, SignalType.External_U, (int)INDEX.SECOND),u2 );
+            inputData.Add(sim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), u1);
+            inputData.Add(sim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.SECOND),u2 );
 
             var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim,
-                model.FittedDataSet.Y_meas,
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas,
                 refData.GetValues(refModel.GetID(),SignalType.Output_Y_sim),
                 u1, u2 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1", "y3=u2" }, (int)timeBase_s, caseId, default,
@@ -569,7 +566,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var model = CreateDataAndIdentify(designParameters,U,timeBase_s, noiseAmplitude);
 
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1,u2 },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1,u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
             DefaultAsserts(model, designParameters);
         }
@@ -597,7 +594,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
 
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2 },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
             DefaultAsserts(model, designParameters,1);
         }
@@ -629,7 +626,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.D = disturbance;
             var model = Identify(dataSet, designParameters);
 
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2, disturbance },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2, disturbance },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y4=dist" }, (int)timeBase_s,"excl_disturbance");
 
             DefaultAsserts(model, designParameters);
@@ -701,8 +698,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             var model = CreateDataWithNonWhiteNoiseAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
 
             string caseId = TestContext.CurrentContext.Test.Name;
-            plotLocal.FromList(new List<double[]> { model.FittedDataSet.Y_sim,
-                model.FittedDataSet.Y_meas,            
+            plotLocal.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas,            
                 u1, u2,u3 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y3=u3" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
@@ -711,12 +708,12 @@ namespace TimeSeriesAnalysis.Test.SysID
             // It is also the case that the time constant tends to be non-zero even if the underlying process is static
             Console.WriteLine(model.ToString());
             Assert.IsNotNull(model, "returned model should never be null");
-            Assert.IsTrue(model.GetModelParameters().AbleToIdentify(), "should be able to identify model");
+            Assert.IsTrue(model.GetModelParameters().Fitting.WasAbleToIdentify, "should be able to identify model");
             Assert.IsTrue((new Vec()).Max(model.GetModelParameters().GetProcessGains())<3);
             Assert.IsTrue((new Vec()).Max(model.GetModelParameters().GetProcessGains()) > 0.5);
             // DefaultAsserts(model, designParameters);
 
-            plot.FromList(new List<double[]> { model.FittedDataSet.Y_sim, model.FittedDataSet.Y_meas, u1, u2, u3 },
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2, u3 },
                   new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2", "y3=u3" }, (int)timeBase_s, "NonwhiteNoise_I3");
 
         }

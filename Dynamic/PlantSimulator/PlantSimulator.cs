@@ -48,7 +48,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
         {
             UnitDataSet dataset = new UnitDataSet(inputData.timeBase_s, inputData.GetLength().Value);
-      //      dataset.U.WriteColumn(0, inputData.GetValues(outputID));
             dataset.U = new double[inputData.GetLength().Value,1];
             dataset.U.WriteColumn(0, inputData.GetValues(pidModel.outputID));
 
@@ -87,11 +86,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public PlantSimulator(List<ISimulatableModel>
             processModelList, string plantName=null)
         {
-            //     externalInputSignals = new TimeSeriesDataSet(timeBase_s);
-
             externalInputSignalIDs = new List<string>();
 
-          //  this.timeBase_s = timeBase_s;
             if (processModelList == null)
             {
                 return;
@@ -121,19 +117,20 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Informs the plantSimaultor that a specific sub-model has a specifc signal at its input, 
+        /// Informs the PlantSimulator that a specific sub-model has a specifc signal at its input, 
         /// </summary>
         /// <param name="model"></param>
         /// <param name="type"></param>
         /// <param name="values"></param>
         /// <param name="index">the index of the signal, this is only needed if this is an input to a multi-input model</param>
 
-        public string AddSignal(ISimulatableModel model, SignalType type/*, double[] values*/, int index = 0)
+        public string AddExternalSignal(ISimulatableModel model, SignalType type/*, double[] values*/, int index = 0)
         {
             ModelType modelType = model.GetProcessModelType();
 
             string signalID = SignalNamer.GetSignalName(model.GetID(), type, index);
             // string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
+            externalInputSignalIDs.Add(signalID);
             if (signalID == null)
             {
                 Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");

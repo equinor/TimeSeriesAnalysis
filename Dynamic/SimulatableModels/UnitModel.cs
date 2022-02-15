@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Dynamic
         // todo:Remove/refactor these
 
 
-        public UnitDataSet FittedDataSet { get; internal set; }
+        private UnitDataSet FittedDataSet=null;
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
@@ -80,6 +80,16 @@ namespace TimeSeriesAnalysis.Dynamic
         public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet)
         {
             InitSim(dataSet.TimeBase_s, modelParameters);
+        }
+
+        public void SetFittedDataSet(UnitDataSet dataset)
+        {
+            FittedDataSet = dataset;
+        }
+
+        public UnitDataSet GetFittedDataSet()
+        {
+            return FittedDataSet;
         }
 
 
@@ -326,11 +336,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </returns>
         public double Iterate(double[] inputs, double badValueIndicator=-9999)
         {
-            if (!modelParameters.AbleToIdentify())
+            if (modelParameters.Fitting!= null)
             {
-                Shared.GetParserObj().AddError(GetID()+
-                    ":Iterate() returned NaN because trying to simulate a model that was not able to be identified." );
-                return Double.NaN;
+                if (!modelParameters.Fitting.WasAbleToIdentify)
+                {
+                    Shared.GetParserObj().AddError(GetID() +
+                        ":Iterate() returned NaN because trying to simulate a model that was not able to be identified.");
+                    return Double.NaN;
+                }
             }
 
             // notice! the model does not use the paramters [a,b,c,unorm,td.u0] to simulate the process model
@@ -396,7 +409,21 @@ namespace TimeSeriesAnalysis.Dynamic
             this.modelParameters = modelParameters;
             this.timeBase_s = timeBase_s;
 
-            if (modelParameters.WasAbleToIdentify)
+            bool doSim = false;
+            if (modelParameters.Fitting != null)
+            {
+                if (modelParameters.Fitting.WasAbleToIdentify)
+                {
+                    doSim = true;
+                }
+            }
+            else
+            {
+                doSim = true;
+            }
+
+
+            if (doSim)
             {
                 this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
                 this.lowPass = new LowPass(timeBase_s);
@@ -453,13 +480,20 @@ namespace TimeSeriesAnalysis.Dynamic
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(this.GetType().ToString());
             sb.AppendLine("-------------------------");
-            if (modelParameters.AbleToIdentify())
+            if (modelParameters.Fitting == null)
             {
-                sb.AppendLine("ABLE to identify");
+                sb.AppendLine("a priori model");
             }
             else
             {
-                sb.AppendLine("---NOT able to identify---");
+                if (modelParameters.Fitting.WasAbleToIdentify)
+                {
+                    sb.AppendLine("ABLE to identify");
+                }
+                else
+                {
+                    sb.AppendLine("---NOT able to identify---");
+                }
             }
 
             string timeConstantString = "TimeConstant : ";
@@ -566,27 +600,28 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             sb.AppendLine("-------------------------");
-            sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.ObjFunValFittingDiff,4) );
-            sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.RsqFittingDiff, 4) );
-            sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.RsqFittingAbs, 4));
-
-            sb.AppendLine("model fit data points: " + modelParameters.NFittingTotalDataPoints + " of which " + modelParameters.NFittingBadDataPoints +" were excluded");
-            foreach (var warning in modelParameters.GetWarningList())
-                sb.AppendLine("model fit warning :" + warning.ToString());
-            if (modelParameters.GetWarningList().Count == 0)
+            if (modelParameters.Fitting != null)
             {
-                sb.AppendLine("model fit : no error or warnings");
+                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValFittingDiff, 4));
+                sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqFittingDiff, 4));
+                sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqFittingAbs, 4));
+
+                sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were excluded");
+                foreach (var warning in modelParameters.GetWarningList())
+                    sb.AppendLine("model fit warning :" + warning.ToString());
+                if (modelParameters.GetWarningList().Count == 0)
+                {
+                    sb.AppendLine("model fit : no error or warnings");
+                }
+
+                foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
+                    sb.AppendLine("time delay est. warning :" + warning.ToString());
+                if (modelParameters.TimeDelayEstimationWarnings.Count == 0)
+                {
+                    sb.AppendLine("time delay est : no error or warnings");
+                }
+                sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
             }
-
-            foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
-                sb.AppendLine("time delay est. warning :" + warning.ToString());
-            if (modelParameters.TimeDelayEstimationWarnings.Count == 0)
-            {
-                sb.AppendLine("time delay est : no error or warnings");
-            }
-
-            sb.AppendLine("solver: "+modelParameters.SolverID);
-
             return sb.ToString();
         }
 

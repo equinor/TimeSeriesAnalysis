@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.IO;
 
 using Newtonsoft.Json;
 
@@ -11,6 +12,7 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+
 
     /// <summary>
     /// A class that holds time-series data for any number of tags 
@@ -43,8 +45,23 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public TimeSeriesDataSet(string fileName, char separator=';',string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
-            CSV.LoadDataFromCSV(fileName, separator, out DateTime[] dateTimes, out Dictionary<string, double[]> variableDict, dateTimeFormat);
+            CSV.LoadDataFromCsvAsTimeSeries(fileName, separator, out DateTime[] dateTimes, 
+                out Dictionary<string, double[]> variableDict, dateTimeFormat);
 
+            CommonInit(dateTimes, variableDict);
+        }
+
+        public TimeSeriesDataSet(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            CSV.LoadDataFromCsvContentAsTimeSeries(csvContent, separator, out DateTime[] dateTimes, 
+                out Dictionary<string, double[]> variableDict, dateTimeFormat);
+
+            CommonInit(dateTimes, variableDict);
+        }
+
+
+        private void CommonInit(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
+        {
             didSimulationReturnOk = true;
             if (variableDict.ContainsKey("Time"))
             {
@@ -66,6 +83,25 @@ namespace TimeSeriesAnalysis.Dynamic
                 timeBase_s = 0;
             }
         }
+
+
+        static public TimeSeriesDataSet FromCsvText(string csvText)
+        {
+            var ret = new TimeSeriesDataSet();
+
+//            LoadDataFromCSVstring
+
+
+            return ret;
+        }
+
+
+        public TimeSeriesDataSet()
+        { 
+        
+        }
+
+
         [JsonConstructor]
         public TimeSeriesDataSet(double timeBase_s)
         {

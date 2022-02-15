@@ -99,9 +99,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    if (modelRuns[i].AbleToIdentify())
+                    if (modelRuns[i].Fitting.WasAbleToIdentify)
                     {
-                        objR2List.Add(modelRuns[i].GetFittingR2());
+                        objR2List.Add(modelRuns[i].Fitting.RsqFittingDiff);
                     }
                     else
                     {
@@ -128,9 +128,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    if (modelRuns[i].AbleToIdentify())
+                    if (modelRuns[i].Fitting.WasAbleToIdentify)
                     {
-                        objFunValList.Add(modelRuns[i].GetFittingObjFunVal());
+                        objFunValList.Add(modelRuns[i].Fitting.ObjFunValFittingDiff);
                     }
                     else
                     {

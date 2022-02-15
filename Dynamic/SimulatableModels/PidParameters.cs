@@ -78,7 +78,7 @@ namespace TimeSeriesAnalysis.Dynamic
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(this.GetType().ToString());
             sb.AppendLine("-------------------------");
-            if (AbleToIdentify())
+            if (Fitting.WasAbleToIdentify)
             {
                 sb.AppendLine("ABLE to identify");
             }

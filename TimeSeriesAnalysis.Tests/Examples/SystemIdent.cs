@@ -46,7 +46,6 @@ namespace TimeSeriesAnalysis._Examples
             // simulate a linear reference model for comparison
             UnitParameters paramtersNoCurvature = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 2, -0.05 },
@@ -61,7 +60,6 @@ namespace TimeSeriesAnalysis._Examples
             // simulate the nonlinear model 
             UnitParameters designParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 1, 0.7 },
@@ -79,8 +77,8 @@ namespace TimeSeriesAnalysis._Examples
             var modelId = new UnitIdentifier();
             UnitModel idModel = modelId.Identify(ref idDataSet, designParameters.U0, designParameters.UNorm);
 
-            Plot.FromList(new List<double[]> { idModel.FittedDataSet.Y_sim,
-                idModel.FittedDataSet.Y_meas,
+            Plot.FromList(new List<double[]> { idModel.GetFittedDataSet().Y_sim,
+                idModel.GetFittedDataSet().Y_meas,
                 refData.Y_sim,
                 u1, u2 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1", "y3=u2" },
@@ -106,7 +104,6 @@ namespace TimeSeriesAnalysis._Examples
             };
             UnitParameters modelParameters1 = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 10,
                 LinearGains = new double[] { 1 },
                 TimeDelay_s = 5,
@@ -119,9 +116,9 @@ namespace TimeSeriesAnalysis._Examples
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet(timeBase_s);
-            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), 
+            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), 
                 TimeSeriesCreator.Step(N / 4, N, 50, 55));
-            inputData.Add(processSim.AddSignal(processModel1, SignalType.Disturbance_D), 
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), 
                 TimeSeriesCreator.Noise(N, noiseAmplitude)) ;
             processSim.Simulate(inputData, out TimeSeriesDataSet simData);
 

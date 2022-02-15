@@ -36,7 +36,6 @@ namespace TimeSeriesAnalysis._Examples
 
             var processParameters1 = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 2,//rapid
                 LinearGains = new double[] { 1.1 },
                 U0 = new double[] { 50 },
@@ -46,7 +45,6 @@ namespace TimeSeriesAnalysis._Examples
 
             var processParameters2 = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 30,//slow
                 LinearGains = new double[] { 1 },
                 U0 = new double[] { 50 },
@@ -86,9 +84,9 @@ namespace TimeSeriesAnalysis._Examples
 
             var inputData = new TimeSeriesDataSet(timeBase_s);
 
-            inputData.Add(sim.AddSignal(pid2,SignalType.Setpoint_Yset),TimeSeriesCreator.Constant(50, N));
-            inputData.Add(sim.AddSignal(process1,SignalType.Disturbance_D),TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
-            inputData.Add(sim.AddSignal(process2,SignalType.Disturbance_D),TimeSeriesCreator.Step(300, N, 0, 1));
+            inputData.Add(sim.AddExternalSignal(pid2,SignalType.Setpoint_Yset),TimeSeriesCreator.Constant(50, N));
+            inputData.Add(sim.AddExternalSignal(process1,SignalType.Disturbance_D),TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
+            inputData.Add(sim.AddExternalSignal(process2,SignalType.Disturbance_D),TimeSeriesCreator.Step(300, N, 0, 1));
 
             var isOK = sim.Simulate(inputData,out var simResult);
 
@@ -120,7 +118,6 @@ namespace TimeSeriesAnalysis._Examples
             #region Feedforward_Part1
             var processParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 30,
                 LinearGains = new double[] { 1.1 },
                 U0 = new double[] { 50 },
@@ -129,7 +126,6 @@ namespace TimeSeriesAnalysis._Examples
             };
             var disturbanceParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 30,
                 LinearGains = new double[] { 1 },
                 U0 = new double[] { 0 },
@@ -157,9 +153,9 @@ namespace TimeSeriesAnalysis._Examples
 
             var inputData = new TimeSeriesDataSet(timeBase_s);
 
-            inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
+            inputData.Add(simNoFeedF.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(60, 600));
-            inputData.Add(simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U),
+            inputData.Add(simNoFeedF.AddExternalSignal(disturbanceModel, SignalType.External_U),
                 TimeSeriesCreator.Step(300, 600, 25, 0));
 
             var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
@@ -194,7 +190,6 @@ namespace TimeSeriesAnalysis._Examples
 
             var processParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 30,
                 LinearGains = new double[] { 1.1 },
                 U0 = new double[] { 50 },
@@ -203,7 +198,6 @@ namespace TimeSeriesAnalysis._Examples
             };
             var disturbanceParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 30,
                 LinearGains = new double[] { 1 },
                 U0 = new double[] { 0 },
@@ -240,9 +234,9 @@ namespace TimeSeriesAnalysis._Examples
 
             var inputData = new TimeSeriesDataSet(timeBase_s);
 
-            inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
+            inputData.Add(simNoFeedF.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(60, 600));
-            string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U);
+            string dSignalID = simNoFeedF.AddExternalSignal(disturbanceModel, SignalType.External_U);
             inputData.Add(dSignalID, TimeSeriesCreator.Step(300, 600, 25, 0));
 
 
@@ -280,7 +274,6 @@ namespace TimeSeriesAnalysis._Examples
 
         var modelParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 0,
                 LinearGains = new double[] { 1.1 },
                 Curvatures = new double[] { -0.7 },
@@ -296,14 +289,14 @@ namespace TimeSeriesAnalysis._Examples
                 new List<ISimulatableModel> { processModel });
 
             var inputDataSim1 = new TimeSeriesDataSet(timeBase_s);
-            inputDataSim1.Add(openLoopSim1.AddSignal(processModel, SignalType.External_U),
+            inputDataSim1.Add(openLoopSim1.AddExternalSignal(processModel, SignalType.External_U),
                 TimeSeriesCreator.Step(50, 200, 80, 90));
             openLoopSim1.Simulate(inputDataSim1,out var openLoopData1);
 
             var openLoopSim2 = new PlantSimulator(
                 new List<ISimulatableModel> { processModel });
             var inputDataSim2 = new TimeSeriesDataSet(timeBase_s);
-            inputDataSim2.Add(openLoopSim2.AddSignal(processModel, SignalType.External_U),
+            inputDataSim2.Add(openLoopSim2.AddExternalSignal(processModel, SignalType.External_U),
                 TimeSeriesCreator.Step(50, 200, 20, 30));
             var isOk1 = openLoopSim2.Simulate(inputDataSim2,out var openLoopData2);
 
@@ -331,9 +324,9 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSim1.ConnectModels(processModel, pidModel1);
 
             var inputData1 = new TimeSeriesDataSet(timeBase_s);
-            inputData1.Add(closedLoopSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset),
+            inputData1.Add(closedLoopSim1.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(20,400));
-            inputData1.Add(closedLoopSim1.AddSignal(processModel,SignalType.Disturbance_D), TimeSeriesCreator.Step(100,400,0,10));
+            inputData1.Add(closedLoopSim1.AddExternalSignal(processModel,SignalType.Disturbance_D), TimeSeriesCreator.Step(100,400,0,10));
             var isOk =closedLoopSim1.Simulate(inputData1,out var closedLoopData1);
 
             //  the system rejecting a disturbance at y=70 with pidModel2
@@ -348,9 +341,9 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSim2.ConnectModels(pidModel2, processModel);
             closedLoopSim2.ConnectModels(processModel, pidModel2);
             var inputData2 = new TimeSeriesDataSet(timeBase_s);
-            inputData2.Add(closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset),
+            inputData2.Add(closedLoopSim2.AddExternalSignal(pidModel2, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(70, 400));
-            inputData2.Add(closedLoopSim2.AddSignal(processModel, SignalType.Disturbance_D),
+            inputData2.Add(closedLoopSim2.AddExternalSignal(processModel, SignalType.Disturbance_D),
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             var isOk2 = closedLoopSim2.Simulate(inputData2,out var closedLoopData2);
 
@@ -393,9 +386,9 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
             closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
             var inputDataGS1 = new TimeSeriesDataSet(timeBase_s);
-            inputDataGS1.Add(closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset),
+            inputDataGS1.Add(closedLoopSimGS_1.AddExternalSignal(pidModelGS, SignalType.Setpoint_Yset),
                   TimeSeriesCreator.Constant(20, 400));
-            inputDataGS1.Add(closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D), 
+            inputDataGS1.Add(closedLoopSimGS_1.AddExternalSignal(processModel, SignalType.Disturbance_D), 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PidModelInputsIdx.GainScheduling);
@@ -407,9 +400,9 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
 
             var inputDataGS2 = new TimeSeriesDataSet(timeBase_s);
-            inputDataGS2.Add(closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset),
+            inputDataGS2.Add(closedLoopSimGS_2.AddExternalSignal(pidModelGS, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(70, 400));
-            inputDataGS2.Add(closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D), 
+            inputDataGS2.Add(closedLoopSimGS_2.AddExternalSignal(processModel, SignalType.Disturbance_D), 
                 TimeSeriesCreator.Step(100, 400, 0, 10));
             // Gain-scheduling variable:
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PidModelInputsIdx.GainScheduling);
@@ -447,7 +440,6 @@ namespace TimeSeriesAnalysis._Examples
 
             var processParameters = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 10,
                 LinearGains = new double[] { 1 },
                 U0 = new double[] { 50 },
@@ -487,9 +479,9 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectSignal(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
 
             var inputData = new TimeSeriesDataSet(timeBase_s);
-            inputData.Add(sim.AddSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
-            inputData.Add(sim.AddSignal(pid2, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(70, N));
-            inputData.Add(sim.AddSignal(process, SignalType.Disturbance_D),
+            inputData.Add(sim.AddExternalSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.Add(sim.AddExternalSignal(pid2, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(70, N));
+            inputData.Add(sim.AddExternalSignal(process, SignalType.Disturbance_D),
                 new Vec().Add(TimeSeriesCreator.Sinus(5,50,timeBase_s,N),
                 TimeSeriesCreator.TwoSteps(N*2/8,N*3/8,N,0,80,0))
                 );

@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public abstract class ModelBaseClass
     {
-        private string ID = "not_named";
+        public string ID = "not_named";
         public string[] modelInputIDs;
         public List<string> additiveInputIDs;
         public string outputID;

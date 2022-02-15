@@ -14,7 +14,6 @@ namespace TimeSeriesAnalysis.Test.PidID
     {
         UnitParameters modelParameters1 = new UnitParameters
             {
-                WasAbleToIdentify = true,
                 TimeConstant_s = 10,
                 LinearGains = new double[] { 1 },
                 TimeDelay_s = 5,
@@ -47,7 +46,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet(timeBase_s);
-            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/2, N,50,55));
+            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/2, N,50,55));
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
 
@@ -79,8 +78,8 @@ namespace TimeSeriesAnalysis.Test.PidID
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet(timeBase_s);
-            inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50,N));
-            inputData.Add(processSim.AddSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Step(N/2,N,0,stepAmplitude));
+            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50,N));
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Step(N/2,N,0,stepAmplitude));
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
 
