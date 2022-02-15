@@ -113,6 +113,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         PidModel pidModel1;
         Select minSelect1;
         Select maxSelect1;
+
+        bool writeTestDataToDisk = true;
+
         [SetUp]
         public void SetUp()
         {
@@ -236,8 +239,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
             processSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
 
-            processSim.Serialize();
-
+            if (writeTestDataToDisk)
+            {
+                processSim.Serialize();
+                inputData.ToCsv("MinSelect");
+            }
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(simData);
@@ -260,7 +266,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.ConnectModels(processModel1, maxSelect1, (int)INDEX.FIRST);
             processSim.ConnectModels(processModel2, maxSelect1, (int)INDEX.SECOND);
 
-            processSim.Serialize("MISO_MaxSelect");
+            if (writeTestDataToDisk)
+            {
+                processSim.Serialize("MISO_MaxSelect");
+                inputData.ToCsv("MISO_MaxSelect");
+            }
 
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
@@ -422,8 +432,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             if (ver == 4)
-            { 
-                processSim.Serialize("MISO_PIDandSerial2");
+            {
+                if (writeTestDataToDisk)
+                {
+                    processSim.Serialize("MISO_PIDandSerial2");
+                    inputData.ToCsv("MISO_PIDandSerial2");
+                }
             }
 
             Assert.IsTrue(isOk,"simulation returned false, it failed");
@@ -502,7 +516,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             if (ver == 2)
             {
-                processSim.Serialize("MISO_Serial3");
+                if (writeTestDataToDisk)
+                {
+                    processSim.Serialize("MISO_Serial3");
+                    inputData.ToCsv("MISO_Serial3");
+                }
             }
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(simData);

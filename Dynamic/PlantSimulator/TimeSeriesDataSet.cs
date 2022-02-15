@@ -474,6 +474,11 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             string csvTxt = ToCsvText(csvSeparator, nSignificantDigits);
 
+            if (!fileName.ToLower().EndsWith(".csv"))
+            {
+                fileName += ".csv";
+            }
+
             using (StringToFileWriter writer = new StringToFileWriter(fileName))
             {
                 try
