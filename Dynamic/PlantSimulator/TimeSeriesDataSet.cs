@@ -26,15 +26,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class TimeSeriesDataSet
     {
-
-        public double timeBase_s { get; set; }
-        DateTime t0;
-
         List<DateTime> timeStamps = new List<DateTime>();
-
         Dictionary<string, double[]> dataset;
         int? N;
-        bool didSimulationReturnOk = false;
 
         /// <summary>
         /// Constructor: Reads data form  a csv-file (such as that created by ToCSV()) 
@@ -48,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
             CSV.LoadDataFromCsvAsTimeSeries(fileName, separator, out DateTime[] dateTimes, 
                 out Dictionary<string, double[]> variableDict, dateTimeFormat);
 
-            CommonInit(dateTimes, variableDict);
+            Fill(dateTimes, variableDict);
         }
 
         public TimeSeriesDataSet(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
@@ -56,13 +50,23 @@ namespace TimeSeriesAnalysis.Dynamic
             CSV.LoadDataFromCsvContentAsTimeSeries(csvContent, separator, out DateTime[] dateTimes, 
                 out Dictionary<string, double[]> variableDict, dateTimeFormat);
 
-            CommonInit(dateTimes, variableDict);
+            Fill(dateTimes, variableDict);
         }
 
 
-        private void CommonInit(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
+        public double GetTimeBase()
         {
-            didSimulationReturnOk = true;
+            if (timeStamps.Count > 2)
+            {
+                return timeStamps[2].Subtract(timeStamps[1]).TotalSeconds;
+            }
+            else
+                return 0;
+        }
+
+
+        private void Fill(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
+        {
             if (variableDict.ContainsKey("Time"))
             {
                 variableDict.Remove("Time");
@@ -75,40 +79,16 @@ namespace TimeSeriesAnalysis.Dynamic
             N = (int?)dataset[dataset.Keys.First()].Length;
             if (dateTimes.Length > 1)
             {
-                timeBase_s = (int)dateTimes[1].Subtract(dateTimes[0]).TotalSeconds;
                 timeStamps = dateTimes.ToList();
             }
-            else
-            {
-                timeBase_s = 0;
-            }
         }
-
-
-        static public TimeSeriesDataSet FromCsvText(string csvText)
-        {
-            var ret = new TimeSeriesDataSet();
-
-//            LoadDataFromCSVstring
-
-
-            return ret;
-        }
-
-
-        public TimeSeriesDataSet()
-        { 
-        
-        }
-
 
         [JsonConstructor]
-        public TimeSeriesDataSet(double timeBase_s)
+        public TimeSeriesDataSet()
         {
-            Init(timeBase_s);
+            dataset = new Dictionary<string, double[]>();
+            //didSimulationReturnOk = false;
         }
-
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -116,8 +96,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public TimeSeriesDataSet(TimeSeriesDataSet inputDataSet)
         {
-            timeBase_s = inputDataSet.timeBase_s;
-            Init(timeBase_s);
+            dataset = new Dictionary<string, double[]>();
             if (inputDataSet != null)
             {
                 AddSet(inputDataSet);
@@ -154,7 +133,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 N = values.Length;
             }
             dataset.Add(signalName, values);
-            SetTimeStamps();
             return true;
         }
 
@@ -212,6 +190,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 bool isOk = dataSet.Add(signalName, values);
             }
+            dataSet.SetTimeStamps(inputDataSet.GetTimeStamps().ToList());
+
             return dataSet;
         }
 
@@ -252,17 +232,6 @@ namespace TimeSeriesAnalysis.Dynamic
             if (signalID == null)
                 return false;
             return dataset.ContainsKey(signalID);
-        }
-
-
-
-        /// <summary>
-        /// Returns the simualtion status
-        /// </summary>
-        /// <returns></returns>
-        public bool GetSimStatus()
-        {
-            return didSimulationReturnOk;
         }
 
 
@@ -352,10 +321,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return timeStamps.ToArray();
                 }
             }
-            // create default timestamps based on timeBase and t0
-            SetTimeStamps();
-
-            return timeStamps.ToArray();
+            return null;
         }
 
 
@@ -388,28 +354,27 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-        private void Init(double timeBase_s,DateTime? t0=null)
-        {
-            this.timeBase_s = timeBase_s;
-            if (t0.HasValue)
-                this.t0 = t0.Value;
-            else
-            {
-                this.t0 = DateTime.Now;
-            }
-            dataset = new Dictionary<string, double[]>();
-            didSimulationReturnOk = false;
-        }
-
         /// <summary>
-        /// Set the termination status of the simualtion
+        /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
         /// </summary>
-        /// <param name="didSimulationTerminateOk"></param>
-        /// <returns>returns the same status given in</returns>
-        public bool SetSimStatus(bool didSimulationTerminateOk)
+        /// <param name="timeBase_s"></param>
+        /// <param name="t0"></param>
+        public void CreateTimestamps(double timeBase_s, DateTime? t0= null)
         {
-            didSimulationReturnOk = didSimulationTerminateOk;
-            return didSimulationReturnOk;
+            if (t0 == null)
+            {
+                t0 = new DateTime(2010, 1, 1);//intended for testing
+            }
+
+            var times = new List<DateTime>();
+            times.Add(t0.Value);
+            DateTime time = t0.Value;
+            for (int i = 1; i < N; i++)
+            {
+                times.Add(time);
+                time = time.AddSeconds(timeBase_s);
+            }
+            this.timeStamps = times;
         }
 
         /// <summary>
@@ -417,40 +382,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// If times is null, then the method creates timestamps based on timeBase_s and t0.
         /// </summary>
         /// <param name="times"></param>
-        public void SetTimeStamps(List<DateTime> times=null)
+        public void SetTimeStamps(List<DateTime> times)
         {
-            void CreateTimestamps()
-            {
-                times = new List<DateTime>();
-                times.Add(t0);
-                DateTime time = t0;
-                for (int i = 1; i < N; i++)
-                {
-                    times.Add(time);
-                    time = time.AddSeconds(timeBase_s);
-                }
-                this.timeStamps = times;
-                return;
-            }
-
-            if (times == null)
-            {
-                if (this.timeStamps == null)
-                {
-                    CreateTimestamps();
-                } else if (this.timeStamps.Count() == 0)
-                {
-                    CreateTimestamps();
-                }
-                else
-                {
-                    return;
-                }
-               
-            }
-            this.timeStamps = times;
-            return;
-
+            timeStamps = times;
         }
 
 
@@ -458,11 +392,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Set the timestamp of the start of the dataset,from which other time stamps can be found using timebase_s
         /// </summary>
         /// <param name="t0"></param>
-        public void SetT0(DateTime t0)
+       /* public void SetT0(DateTime t0)
         {
             this.t0 = t0;
         }
-
+        */
 
         /// <summary>
         /// Create a comma-separated-variable(CSV) string of the dataset
@@ -479,9 +413,10 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.Append(string.Join(csvSeparator, signalNames));
             sb.Append("\r\n");
 
-            DateTime curDate = t0;
+           
             for (int curTimeIdx = 0; curTimeIdx < GetLength(); curTimeIdx++)
             {
+                DateTime curDate = timeStamps.ElementAt(curTimeIdx); ;
                 var dataAtTime = GetData(signalNames, curTimeIdx);
                 //sb.Append(UnixTime.ConvertToUnixTimestamp(curDate));
                 sb.Append(curDate.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -491,7 +426,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     sb.Append(csvSeparator + SignificantDigits.Format(dataAtTime[curColIdx], nSignificantDigits).ToString(CultureInfo.InvariantCulture));
                 }
                 sb.Append("\r\n");
-                curDate = curDate.AddSeconds(timeBase_s);
+                //curDate = curDate.AddSeconds(timeBase_s);
             }
             return sb.ToString();
 

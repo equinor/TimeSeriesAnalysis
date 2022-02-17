@@ -23,7 +23,7 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
 
             ProcessControl pc = new ProcessControl();
             var dataSet = pc.MinSelect(N);
-            dataSet.SetT0(new DateTime(2021, 1, 1));
+           // dataSet.SetT0(new DateTime(2021, 1, 1));
             var isOk = dataSet.ToCsv(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv");
             Assert.IsTrue(isOk);
             var dataSet2 = new TimeSeriesDataSet(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv");
@@ -46,7 +46,7 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
                 Shared.DisablePlots();
                 ProcessControl pc = new ProcessControl();
                 var dataSet = pc.MinSelect(N);
-                dataSet.SetT0(new DateTime(2021, 1, 1));
+                //dataSet.SetT0(new DateTime(2021, 1, 1));
                 var isOk = dataSet.ToCsv(@"C:\Appl\source\TimeSeriesAnalysis\minSelect_large.csv");
                 Assert.IsTrue(isOk);
                 Shared.EnablePlots();

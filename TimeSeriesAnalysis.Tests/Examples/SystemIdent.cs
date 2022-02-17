@@ -115,11 +115,12 @@ namespace TimeSeriesAnalysis._Examples
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-            var inputData = new TimeSeriesDataSet(timeBase_s);
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), 
                 TimeSeriesCreator.Step(N / 4, N, 50, 55));
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), 
                 TimeSeriesCreator.Noise(N, noiseAmplitude)) ;
+            inputData.CreateTimestamps(timeBase_s);
             processSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             // do the actual identification

@@ -47,7 +47,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
         {
-            UnitDataSet dataset = new UnitDataSet(inputData.timeBase_s, inputData.GetLength().Value);
+            UnitDataSet dataset = new UnitDataSet(inputData.GetTimeBase(), inputData.GetLength().Value); 
             dataset.U = new double[inputData.GetLength().Value,1];
             dataset.U.WriteColumn(0, inputData.GetValues(pidModel.outputID));
 
@@ -305,18 +305,18 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
         {
-            var timeBase_s = inputData.timeBase_s;
+            var timeBase_s = inputData.GetTimeBase(); ;
 
             int? N = inputData.GetLength();
             if (!N.HasValue)
             {
                 Shared.GetParserObj().AddError("PlantSimulator could not run, no external signal provided.");
                 simData = null;
-                return simData.SetSimStatus(false);
+                return false;
             }
 
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
-            simData = new TimeSeriesDataSet(timeBase_s);
+            simData = new TimeSeriesDataSet();
 
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
@@ -324,7 +324,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
-                return simData.SetSimStatus(false);
+                return false;
             }
             int timeIdx = 0;
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
@@ -335,7 +335,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \""+ model.GetID() +
                         "\" has null inputIDs.");
-                    return simData.SetSimStatus(false);
+                    return false;
                 }
                 double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx,simData,inputData);
 
@@ -344,7 +344,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
                         "\" has null outputID.");
-                    return simData.SetSimStatus(false);
+                    return false;
                 }
                 double[] outputVals =
                     GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
@@ -373,7 +373,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
                             "\" error retreiving input values.");
-                        return simData.SetSimStatus(false);
+                        return false;
                     }
                     double outputVal = model.Iterate(inputVals);
                     bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
@@ -381,12 +381,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \"" 
                             + model.GetOutputID() + "\", indicating an error in initalizing. ");
-                        return simData.SetSimStatus(false);
+                        return false;
                     }
                 }
             }
             simData.SetTimeStamps(inputData.GetTimeStamps().ToList());//.GetRange(1, inputData.GetTimeStamps().Count()-1
-            return simData.SetSimStatus(true);
+            return true;
         }
 
         private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
