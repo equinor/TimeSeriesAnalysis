@@ -195,8 +195,23 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim2.Simulate(inputData2, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
+
+            Assert.AreEqual(plantSim1.modelDict["PID1"], plantSim2.modelDict["PID1"]);
+            Assert.AreEqual(plantSim1.modelDict["SubProcess1"], plantSim2.modelDict["SubProcess1"]);
+
+            /*
+           Plot.FromList(new List<double[]> {
+               simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+               simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
+               simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+               inputData2.GetValues(processModel1.GetID(),SignalType.External_U,externalUIndex),
+               inputData2.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
+           },
+               new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
+               timeBase_s, "UnitTest_PIDandSerial2");
+            */
         }
-        
+
 
 
 
@@ -444,7 +459,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             }
 
             Assert.IsTrue(isOk,"simulation returned false, it failed");
- /*
+ 
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
                 simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
@@ -453,7 +468,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 simData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
             },
                 new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
-                timeBase_s, "UnitTest_PIDandSerial2");*/
+                timeBase_s, "UnitTest_PIDandSerial2");
             
             SISOTests.CommonAsserts(inputData, simData);
             double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y_sim);

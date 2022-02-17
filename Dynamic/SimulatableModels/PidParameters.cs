@@ -78,15 +78,17 @@ namespace TimeSeriesAnalysis.Dynamic
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(this.GetType().ToString());
             sb.AppendLine("-------------------------");
-            if (Fitting.WasAbleToIdentify)
+            if (Fitting != null)
             {
-                sb.AppendLine("ABLE to identify");
+                if (Fitting.WasAbleToIdentify)
+                {
+                    sb.AppendLine("ABLE to identify");
+                }
+                else
+                {
+                    sb.AppendLine("---NOT able to identify---");
+                }
             }
-            else
-            {
-                sb.AppendLine("---NOT able to identify---");
-            }
-
             sb.AppendLine("Kp : " + SignificantDigits.Format(Kp,sDigits));
 
             string timeConstantString = "Ti : ";

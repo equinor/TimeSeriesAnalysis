@@ -51,8 +51,6 @@ namespace TimeSeriesAnalysis.Dynamic
         private double[] lastGoodValuesOfInputs;
 
         // todo:Remove/refactor these
-
-
         private UnitDataSet FittedDataSet=null;
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
