@@ -385,6 +385,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
+            simData.SetTimeStamps(inputData.GetTimeStamps().ToList());//.GetRange(1, inputData.GetTimeStamps().Count()-1
             return simData.SetSimStatus(true);
         }
 

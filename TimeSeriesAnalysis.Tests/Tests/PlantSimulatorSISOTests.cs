@@ -80,7 +80,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
-            CommonAsserts(simData);
+            CommonAsserts(inputData, simData);
             double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim);
             Assert.IsTrue(Math.Abs(simY[0]- 55)<0.01);
             Assert.IsTrue(Math.Abs(simY.Last()- 60)<0.01);
@@ -106,7 +106,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.Serialize();
 
             Assert.IsTrue(isOk);
-            CommonAsserts(simData);
+            CommonAsserts(inputData, simData);
 
             double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y_sim);
             Assert.IsTrue(Math.Abs(simY[0] - (55 * 1.1 + 5)) < 0.01);
@@ -137,7 +137,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.Serialize("SISO_Serial3");
 
             Assert.IsTrue(isOk);
-            CommonAsserts(simData);
+            CommonAsserts(inputData, simData);
 
             double[] simY = simData.GetValues(processModel3.GetID(), SignalType.Output_Y_sim);
             Assert.IsTrue(Math.Abs(simY[0] - ((55 * 1.1 + 5)*1.1+5)) < 0.01);
@@ -148,7 +148,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                  simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
                  simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
                  simData.GetValues(processModel3.GetID(),SignalType.Output_Y_sim),
-                 simData.GetValues(processModel1.GetID(),SignalType.External_U)},
+                 inputData.GetValues(processModel1.GetID(),SignalType.External_U)},
             new List<string> { "y1=y_sim1", "y1=y_sim2", "y1=y_sim3", "y3=u" },
             timeBase_s, "UnitTest_SerialProcess");*/
         }
@@ -161,7 +161,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
 
 
-        public static void CommonAsserts(TimeSeriesDataSet simData)
+        public static void CommonAsserts(TimeSeriesDataSet inputData,TimeSeriesDataSet simData)
         {
             var signalNames = simData.GetSignalNames();
 
@@ -172,9 +172,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 double firstTwoValuesDiff = Math.Abs(signal.ElementAt(0) - signal.ElementAt(1));
                 double lastTwoValuesDiff = Math.Abs(signal.ElementAt(signal.Length - 2) - signal.ElementAt(signal.Length - 1));
 
+                Assert.AreEqual(signal.Count(), simData.GetLength(),"all signals should be same length as N");
                 Assert.IsTrue(firstTwoValuesDiff < 0.01, "system should start up in steady-state");
                 Assert.IsTrue(lastTwoValuesDiff < 0.01, "system should end up in stedy-state");
             }
+            Assert.AreEqual(simData.GetLength(), simData.GetTimeStamps().Count(), "number of timestamps shoudl match number of data points in sim");
+            Assert.AreEqual(simData.GetTimeStamps().Last(), inputData.GetTimeStamps().Last(),"datasets should end at same timestamp");
         }
 
 

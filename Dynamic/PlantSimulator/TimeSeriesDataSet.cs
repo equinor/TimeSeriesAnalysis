@@ -141,8 +141,20 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return false;
             }
-            N = values.Length;
+            if (N.HasValue)
+               {
+                   if (N != values.Length)
+                   {
+                       dataset.Add(signalName, values);
+                       return false;//incorrect size of signal
+                   }
+               }
+            else
+            {
+                N = values.Length;
+            }
             dataset.Add(signalName, values);
+            SetTimeStamps();
             return true;
         }
 
@@ -335,21 +347,15 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (timeStamps != null)
             {
-                return timeStamps.ToArray();
-            }
-            else
-            {
-                var times = new List<DateTime>();
-                times.Add(t0);
-                DateTime time = t0;
-                for (int i = 0; i < N; i++)
+                if (timeStamps.Count() > 0)
                 {
-                    times.Add(time);
-                    time = time.AddSeconds(timeBase_s);
+                    return timeStamps.ToArray();
                 }
-                return times.ToArray();
             }
+            // create default timestamps based on timeBase and t0
+            SetTimeStamps();
 
+            return timeStamps.ToArray();
         }
 
 
@@ -408,11 +414,43 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Explicitly sets the timestamps of the time-series (possibly overriding any timeBase_s that was given during init)
+        /// If times is null, then the method creates timestamps based on timeBase_s and t0.
         /// </summary>
         /// <param name="times"></param>
-        public void SetTimeStamps(List<DateTime> times)
+        public void SetTimeStamps(List<DateTime> times=null)
         {
+            void CreateTimestamps()
+            {
+                times = new List<DateTime>();
+                times.Add(t0);
+                DateTime time = t0;
+                for (int i = 1; i < N; i++)
+                {
+                    times.Add(time);
+                    time = time.AddSeconds(timeBase_s);
+                }
+                this.timeStamps = times;
+                return;
+            }
+
+            if (times == null)
+            {
+                if (this.timeStamps == null)
+                {
+                    CreateTimestamps();
+                } else if (this.timeStamps.Count() == 0)
+                {
+                    CreateTimestamps();
+                }
+                else
+                {
+                    return;
+                }
+               
+            }
             this.timeStamps = times;
+            return;
+
         }
 
 
