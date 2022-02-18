@@ -124,13 +124,14 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 5,
                 Bias = 5
             };
-            var model = new UnitModel(parameters, timeBase_s);
+            var model = new UnitModel(parameters);
 
             double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]>{u1 ,u2});
 
-            var dataSet = new UnitDataSet(timeBase_s,U);
+            var dataSet = new UnitDataSet();
+            dataSet.U = U;
             var simulator = new UnitSimulator(model);
             simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
 
@@ -165,7 +166,7 @@ namespace TimeSeriesAnalysis._Examples
         public void Ex5_pid_cosimulation()
         {
             #region ex_5
-            int timeBase_s = 1;
+            double timeBase_s = 1;
             int N = 500;
             var modelParameters = new UnitParameters
             {
@@ -174,16 +175,17 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            var processModel = new UnitModel(modelParameters, timeBase_s);
+            var processModel = new UnitModel(modelParameters);
             var pidParameters = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pid = new PidModel(pidParameters, timeBase_s);
-            var dataSet = new UnitDataSet(timeBase_s,N);
+            var pid = new PidModel(pidParameters);
+            var dataSet = new UnitDataSet();
             dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
             dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
+            dataSet.CreateTimeStamps(timeBase_s);
             var simulator = new UnitSimulator(processModel);
             simulator.CoSimulate( pid, ref dataSet);
 
@@ -198,7 +200,7 @@ namespace TimeSeriesAnalysis._Examples
         #region ex_6
         public void Ex6_process_simulation()
         {
-            int timeBase_s = 1;
+            double timeBase_s = 1;
             int N = 500;
 
             UnitParameters modelParameters = new UnitParameters
@@ -209,14 +211,14 @@ namespace TimeSeriesAnalysis._Examples
                 Bias = 5
             };
             UnitModel processModel 
-                = new UnitModel(modelParameters, timeBase_s,"SubProcess1");
+                = new UnitModel(modelParameters, "SubProcess1");
             
             var pidParameters = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pidModel = new PidModel(pidParameters, timeBase_s,"PID1");
+            var pidModel = new PidModel(pidParameters, "PID1");
             var sim = new PlantSimulator (
                 new List<ISimulatableModel> { pidModel, processModel  });
             sim.ConnectModels(processModel,pidModel);

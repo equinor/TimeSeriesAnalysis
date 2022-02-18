@@ -43,14 +43,13 @@ namespace TimeSeriesAnalysis.Dynamic
     public class UnitModel : ModelBaseClass, ISimulatableModel 
     {
         public  UnitParameters modelParameters;
+
         private LowPass lowPass;
-        private double timeBase_s;
         private TimeDelay delayObj;
 
         private bool isFirstIteration;
         private double[] lastGoodValuesOfInputs;
 
-        // todo:Remove/refactor these
         private UnitDataSet FittedDataSet=null;
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
@@ -59,16 +58,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Constructor
         /// </summary>
         /// <param name="modelParameters">model paramter object</param>
-        /// <param name="timeBase_s">the timebase in seconds, the time interval between samples 
-        /// and between calls to Iterate</param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
         [JsonConstructor]
-        public UnitModel(UnitParameters modelParameters, double timeBase_s,
-            string ID="not_named")
+        public UnitModel(UnitParameters modelParameters, string ID="not_named")
         {
             processModelType = ModelType.SubProcess;
             SetID(ID);
-            InitSim(timeBase_s,modelParameters);
+            InitSim(modelParameters);
         }
         /// <summary>
         /// Initalizer of model that for the given dataSet also creates the resulting y_sim
@@ -77,8 +73,38 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet)
         {
-            InitSim(dataSet.TimeBase_s, modelParameters);
+            InitSim(modelParameters);
         }
+
+        /// <summary>
+        /// Initalize the process model with a sampling time
+        /// </summary>
+        /// <param name="timeBase_s">the timebase in seconds>0, the length of time between calls to Iterate(data sampling time interval)</param>
+        /// <param name="modelParameters">model paramters object</param>
+        private void InitSim(UnitParameters modelParameters)
+        {
+            this.isFirstIteration = true;
+            this.modelParameters = modelParameters;
+
+            bool doSim = false;
+            if (modelParameters.Fitting != null)
+            {
+                if (modelParameters.Fitting.WasAbleToIdentify)
+                {
+                    doSim = true;
+                }
+            }
+            else
+            {
+                doSim = true;
+            }
+            if (doSim)
+            {
+                this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
+                 this.SetInputIDs(new string[GetLengthOfInputVector()]);
+            }
+        }
+
 
         public void SetFittedDataSet(UnitDataSet dataset)
         {
@@ -332,7 +358,7 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
         ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
         /// </returns>
-        public double Iterate(double[] inputs, double badValueIndicator=-9999)
+        public double Iterate(double[] inputs, double timeBase_s,double badValueIndicator=-9999)
         {
             if (modelParameters.Fitting!= null)
             {
@@ -342,6 +368,14 @@ namespace TimeSeriesAnalysis.Dynamic
                         ":Iterate() returned NaN because trying to simulate a model that was not able to be identified.");
                     return Double.NaN;
                 }
+            }
+            if (this.lowPass == null)
+            {
+                this.lowPass = new LowPass(timeBase_s);
+            }
+            if (this.delayObj == null)
+            {
+                this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
             }
 
             // notice! the model does not use the paramters [a,b,c,unorm,td.u0] to simulate the process model
@@ -396,39 +430,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        /// <summary>
-        /// Initalize the process model with a sampling time
-        /// </summary>
-        /// <param name="timeBase_s">the timebase in seconds>0, the length of time between calls to Iterate(data sampling time interval)</param>
-        /// <param name="modelParameters">model paramters object</param>
-        private void InitSim(double timeBase_s, UnitParameters modelParameters)
-        {
-            this.isFirstIteration = true;
-            this.modelParameters = modelParameters;
-            this.timeBase_s = timeBase_s;
 
-            bool doSim = false;
-            if (modelParameters.Fitting != null)
-            {
-                if (modelParameters.Fitting.WasAbleToIdentify)
-                {
-                    doSim = true;
-                }
-            }
-            else
-            {
-                doSim = true;
-            }
-
-
-            if (doSim)
-            {
-                this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
-                this.lowPass = new LowPass(timeBase_s);
-                this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
-                this.SetInputIDs(new string[GetLengthOfInputVector()]);
-            }
-        }
 
         /// <summary>
         /// Sovel quadratic equation "a x^2 + b*x +c =0" (second order of polynomial  equation in a single variable x)

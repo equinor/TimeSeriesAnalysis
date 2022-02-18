@@ -46,8 +46,13 @@ namespace TimeSeriesAnalysis.Dynamic
     public class PidModel : ModelBaseClass, ISimulatableModel
     {
         public PidParameters pidParameters;
-        private double timeBase_s;
+   //     private double timeBase_s;
         private PidController pid;
+
+        private double? WarmStart_y_process_abs ;
+        private double? WarmStart_y_set;
+        private double? WarmStart_u;
+
 
         /// <summary>
         /// Constructor
@@ -55,25 +60,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParameters">object containing the paramters of the controller</param>
         /// <param name="timeBase_s">sampling time, a steady time between each call to Iterate</param>
         /// <param name="ID">Each controller shoudl be given a unique ID</param>
-        public PidModel(PidParameters pidParameters, double timeBase_s, string ID = "not_named")
+        public PidModel(PidParameters pidParameters, string ID = "not_named")
         {
             processModelType = ModelType.PID;
             SetID(ID);
-            this.timeBase_s = timeBase_s;
             this.pidParameters = pidParameters;
-            pid = new PidController(timeBase_s, pidParameters.Kp,
-                pidParameters.Ti_s, pidParameters.Td_s, pidParameters.NanValue);
-            if (pidParameters.Scaling != null)
-            {
-                pid.SetScaling(pidParameters.Scaling);
-            }
-            else
-            {// write back default scaling
-                this.pidParameters.Scaling = pid.GetScaling();
-            }
-            pid.SetGainScehduling(pidParameters.GainScheduling);
-            pid.SetAntiSurgeParams(pidParameters.AntiSugeParams);
-            pid.SetFeedForward(pidParameters.FeedForward);
         }
 
         /// <summary>
@@ -94,7 +85,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public void WarmStart(double y_process_abs, double y_set, double u)
         {
-            pid.WarmStart(y_process_abs, y_set, u);
+            WarmStart_y_process_abs = y_process_abs;
+            WarmStart_y_set = y_set;
+            WarmStart_u = u;
+
+//            pid.WarmStart(y_process_abs, y_set, u);
         }
 
         /// <summary>
@@ -117,12 +112,36 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </param>
         /// <param name="badDataID">value of inputs that is to be treated as <c>NaN</c></param>
         /// <returns>the output <c>u</c> of the pid-controller. If not enough inputs, it returns <c>NaN</c></returns>
-        public double Iterate(double[] inputs, double badDataID = -9999)
+        public double Iterate(double[] inputs, double timeBase_s,double badDataID = -9999)
         {
             if (inputs.Length < 2)
             {
                 return Double.NaN;
             }
+            if (pid == null)//init PidController object on first run
+            {
+                pid = new PidController(timeBase_s, pidParameters.Kp,
+                    pidParameters.Ti_s, pidParameters.Td_s, pidParameters.NanValue);
+                if (pidParameters.Scaling != null)
+                {
+                    pid.SetScaling(pidParameters.Scaling);
+                }
+                else
+                {// write back default scaling
+                    this.pidParameters.Scaling = pid.GetScaling();
+                }
+                pid.SetGainScehduling(pidParameters.GainScheduling);
+                pid.SetAntiSurgeParams(pidParameters.AntiSugeParams);
+                pid.SetFeedForward(pidParameters.FeedForward);
+
+                if (WarmStart_y_process_abs.HasValue)
+                {
+                    pid.WarmStart(WarmStart_y_process_abs.Value, 
+                        WarmStart_y_set.Value, WarmStart_u.Value);
+                }
+
+            }
+
             double y_process_abs = inputs[(int)PidModelInputsIdx.Y_meas];
             double y_set_abs = inputs[(int)PidModelInputsIdx.Y_setpoint];
             double? uTrackSignal = null;

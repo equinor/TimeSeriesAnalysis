@@ -357,8 +357,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
         /// </summary>
-        /// <param name="timeBase_s"></param>
-        /// <param name="t0"></param>
+        /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
+        /// <param name="t0">start time, can be null, which can be usedful for testing</param>
         public void CreateTimestamps(double timeBase_s, DateTime? t0= null)
         {
             if (t0 == null)

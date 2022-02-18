@@ -82,7 +82,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double uMaxObserved = vec.Max(uMinusFF);
 
             // logic to count 
-            int N = dataSet.NumDataPoints;
+            int N = dataSet.GetNumDataPoints(); 
             const int minNumberOfIndicesToConsider = 5;
             const double minFracAtConstraintConsidered = 0.10;//0.1 = 10%
 
@@ -101,7 +101,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (uMinInd.Count > minNumberOfIndicesToConsider && (double)uMinInd.Count / N > minFracAtConstraintConsidered)
                 {
 
-                    List<int> notUMinInd = Index.InverseIndices(dataSet.NumDataPoints, uMinInd);
+                    List<int> notUMinInd = Index.InverseIndices(dataSet.GetNumDataPoints(), uMinInd);
                     double[] eAtUmin = Vec<double>.GetValuesAtIndices(e, uMinInd);
                     double[] eAtNotUmin = Vec<double>.GetValuesAtIndices(e, notUMinInd);
                     double eMeanAtUmin = vec.Mean(eAtUmin).Value;
@@ -119,7 +119,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 List<int> uMaxInd = vec.FindValues(uMinusFF, uMaxObserved - uTol, VectorFindValueType.BiggerOrEqual);
                 if (uMaxInd.Count > minNumberOfIndicesToConsider && (double)uMaxInd.Count / N > minFracAtConstraintConsidered)
                 {
-                    List<int> notUMaxInd = Index.InverseIndices(dataSet.NumDataPoints, uMaxInd);
+                    List<int> notUMaxInd = Index.InverseIndices(dataSet.GetNumDataPoints(), uMaxInd);
                     double[] eAtUmax = Vec<double>.GetValuesAtIndices(e, uMaxInd);
                     double[] eAtNotUax = Vec<double>.GetValuesAtIndices(e, notUMaxInd);
 
@@ -196,7 +196,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private PidParameters IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
         {
-            this.timeBase_s = dataSet.TimeBase_s;
+            this.timeBase_s = dataSet.GetTimeBase();
             PidParameters pidParam = new PidParameters();
             if (pidScaling!=null)
                 pidParam.Scaling = pidScaling;
@@ -232,14 +232,14 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             int numEstimations = 1;
-            int bufferLength = dataSet.NumDataPoints - 1;
+            int bufferLength = dataSet.GetNumDataPoints() - 1;
 
             if (maxExpectedTc_s > 0 && (enableKPchangeDetection || enableTichangeDetection))
             {
                 int bufferLengthShortest = (int)Math.Ceiling(maxExpectedTc_s * 4 / timeBase_s);// shortest possible to have at least one settling time in it.
-                int bufferLengthLongest = dataSet.NumDataPoints / MAX_ESTIMATIONS_PER_DATASET;
+                int bufferLengthLongest = dataSet.GetNumDataPoints() / MAX_ESTIMATIONS_PER_DATASET;
                 bufferLength = Math.Max(bufferLengthShortest, bufferLengthLongest);
-                numEstimations = dataSet.NumDataPoints / bufferLength;
+                numEstimations = dataSet.GetNumDataPoints() / bufferLength;
                 if (numEstimations < 3)
                 {
                     pidParam.AddWarning(PidIdentWarning.DataSetVeryShortComparedtoTMax);
@@ -252,7 +252,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] X2_ols = new double[bufferLength];
             double[] Y_ols = new double[bufferLength];
 
-            int nIndexesBetweenWindows = (int)Math.Floor((double)dataSet.NumDataPoints / numEstimations);
+            int nIndexesBetweenWindows = (int)Math.Floor((double)dataSet.GetNumDataPoints() / numEstimations);
             double[] Kpest = new double[numEstimations];
             double[] Tiest = new double[numEstimations];
             DateTime[] t_result = new DateTime[numEstimations];

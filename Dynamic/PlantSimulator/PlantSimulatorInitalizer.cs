@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // try to treat this now
             if (uninitalizedPID_IDs.Count > 0)
             {
-                isOk = SelectLoopsCalc(ref signalValuesAtT0, ref uninitalizedPID_IDs);
+                isOk = SelectLoopsCalc(inputData.GetTimeBase(),ref signalValuesAtT0, ref uninitalizedPID_IDs);
                 if (!isOk)
                     return false;
             }
@@ -353,7 +353,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="simSignalValueDict"></param>
         /// <param name="uninitalizedPID_IDs"></param>
         /// <returns></returns>
-        private bool SelectLoopsCalc(ref Dictionary<string, double> simSignalValueDict, 
+        private bool SelectLoopsCalc(double timeBase_s,ref Dictionary<string, double> simSignalValueDict, 
             ref List<string> uninitalizedPID_IDs)
         {
             var modelDict = simulator.GetModels();
@@ -441,7 +441,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // run inputs through select block
             var selectModel = modelDict[downstreamModelIDs.First()];
-            var selectOutput = selectModel.Iterate(selectInputs.ToArray());
+            var selectOutput = selectModel.Iterate(selectInputs.ToArray(), timeBase_s);
             var indOfActivePID = (new Vec()).FindValues(selectInputs.ToArray(),
                 selectOutput, VectorFindValueType.Equal);
             var y0 = pidSetpoints.ElementAt(indOfActivePID.First());
@@ -472,7 +472,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
                 pidModel.WarmStart(pidInputsU, y0);
-                double u0 = pidModel.Iterate(pidInputsU.ToArray());
+                double u0 = pidModel.Iterate(pidInputsU.ToArray(),timeBase_s);
                 simSignalValueDict[pidModel.GetOutputID()] = u0 + 0.5;
             }
             uninitalizedPID_IDs = new List<string>();//Todo:generalize

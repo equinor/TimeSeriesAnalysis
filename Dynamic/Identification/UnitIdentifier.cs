@@ -170,7 +170,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
-                new UnitTimeDelayIdentifier(dataSet.TimeBase_s, maxExpectedTc_s);
+                new UnitTimeDelayIdentifier(dataSet.GetTimeBase(), maxExpectedTc_s);
 
             // logic for all curves off an all curves on, treated as special cases
             bool[] allCurvesDisabled = new bool[u0.Count()];
@@ -252,7 +252,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 continueIncreasingTimeDelayEst = processTimeDelayIdentifyObj.
                     DetermineIfContinueIncreasingTimeDelay(timeDelayIdx);
                 // fail-to-safe
-                if (timeDelayIdx * dataSet.TimeBase_s > maxExpectedTc_s)
+                if (timeDelayIdx * dataSet.GetTimeBase() > maxExpectedTc_s)
                 {
                     modelParams.AddWarning(UnitdentWarnings.TimeDelayAtMaximumConstraint);
                     continueIncreasingTimeDelayEst = false;
@@ -445,9 +445,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (FilterTc_s > 0)
             {
-                LowPass yLp = new LowPass(dataSet.TimeBase_s);
-                LowPass yLpPrev = new LowPass(dataSet.TimeBase_s);
-                LowPass uLp = new LowPass(dataSet.TimeBase_s);
+                LowPass yLp = new LowPass(dataSet.GetTimeBase());
+                LowPass yLpPrev = new LowPass(dataSet.GetTimeBase());
+                LowPass uLp = new LowPass(dataSet.GetTimeBase());
                 ycur = yLp.Filter(ycur, FilterTc_s);//todo:disturbance
                 yprev = yLpPrev.Filter(yprev, FilterTc_s);//todo:disturbance
             }
@@ -638,7 +638,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // Tc = Ts/(1/a-1)
 
                     if (a != 0)
-                        timeConstant_s = dataSet.TimeBase_s / (1 / a - 1);
+                        timeConstant_s = dataSet.GetTimeBase() / (1 / a - 1);
                     else
                         timeConstant_s = 0;
                     if (timeConstant_s < 0)
@@ -714,7 +714,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                
                 parameters.Fitting.WasAbleToIdentify = true;
-                parameters.TimeDelay_s = timeDelay_samples * dataSet.TimeBase_s;
+                parameters.TimeDelay_s = timeDelay_samples * dataSet.GetTimeBase();
                 parameters.TimeConstant_s = timeConstant_s;
                 parameters.LinearGains = linearProcessGains;
                 parameters.Curvatures = processCurvatures;
@@ -746,7 +746,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.Fitting.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim,null,0)*100;
 
                 // add inn uncertainty
-                CalculateUncertainty(regResults, dataSet.TimeBase_s, ref parameters);
+                CalculateUncertainty(regResults, dataSet.GetTimeBase(), ref parameters);
 
                 return parameters;
             }
@@ -879,7 +879,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             parameters.Bias = 0;
             double nanValue = internalData.BadDataID;
-            var model = new UnitModel(parameters, internalData.TimeBase_s);
+            var model = new UnitModel(parameters);
             var simulator = new UnitSimulator((ISimulatableModel)model);
             var y_sim = simulator.Simulate(ref internalData);
 

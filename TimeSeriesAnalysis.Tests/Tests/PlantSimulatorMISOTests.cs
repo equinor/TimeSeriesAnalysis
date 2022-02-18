@@ -143,16 +143,16 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Bias = 5
             };
 
-            processModel1 = new UnitModel(modelParameters1, timeBase_s, "SubProcess1");
-            processModel2 = new UnitModel(modelParameters2, timeBase_s, "SubProcess2");
-            processModel3 = new UnitModel(modelParameters3, timeBase_s, "SubProcess3");
+            processModel1 = new UnitModel(modelParameters1,  "SubProcess1");
+            processModel2 = new UnitModel(modelParameters2,  "SubProcess2");
+            processModel3 = new UnitModel(modelParameters3,  "SubProcess3");
 
             pidParameters1 = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            pidModel1 = new PidModel(pidParameters1,  "PID1");
 
             minSelect1 = new Select(SelectType.MIN,"MINSELECT");
             maxSelect1 = new Select(SelectType.MAX, "MAXSELECT");
@@ -196,10 +196,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             Assert.IsTrue(isOk);
 
-            Assert.AreEqual(plantSim1.modelDict["PID1"], plantSim2.modelDict["PID1"]);
-            Assert.AreEqual(plantSim1.modelDict["SubProcess1"], plantSim2.modelDict["SubProcess1"]);
-
-            /*
+/*           
            Plot.FromList(new List<double[]> {
                simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
                simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
@@ -208,8 +205,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                inputData2.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
            },
                new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
-               timeBase_s, "UnitTest_PIDandSerial2");
-            */
+               timeBase_s, "UnitTest_PIDandSerial2");*/
+            
         }
 
 

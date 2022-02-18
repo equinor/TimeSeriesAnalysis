@@ -57,9 +57,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Iterate simulation
         /// </summary>
         /// <param name="inputsU"></param>
+        /// <param name="timeBase_s"></param>
         /// <param name="badDataID"></param>
         /// <returns></returns>
-        public double Iterate(double[] inputsU, double badDataID = -9999)
+        public double Iterate(double[] inputsU, double timeBase_s,double badDataID = -9999)
         {
             if (type == SelectType.MAX)
             {
@@ -101,7 +102,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>the steady-state value, if it is not possible to calculate, a <c>null</c> is returned</returns>
         public  double? GetSteadyStateOutput(double[] u0)
         {
-            return Iterate(u0);
+            return Iterate(u0,1);
         }
 
         /// <summary>

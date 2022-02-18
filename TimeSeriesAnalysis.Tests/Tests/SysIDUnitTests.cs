@@ -28,11 +28,12 @@ namespace TimeSeriesAnalysis.Test.SysID
                 TimeDelay_s = timeDelay_s,
                 Bias =0
             };
-            var model   = new UnitModel(parameters, timeBase_s);
+            var model   = new UnitModel(parameters);
             double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 31),
                 Vec<double>.Fill(1, 30));
-            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1});
-            UnitDataSet dataSet = new UnitDataSet(timeBase_s, U);
+            UnitDataSet dataSet = new UnitDataSet();
+            dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
+            dataSet.CreateTimeStamps(timeBase_s);
             var simulator = new UnitSimulator(model);
             var ret  = simulator.Simulate(ref dataSet);
 
@@ -60,13 +61,13 @@ namespace TimeSeriesAnalysis.Test.SysID
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN,
             bool doNonWhiteNoise=false)
         {
-          //  designParameters.Fitting.WasAbleToIdentify = true;//only if this flag is set will the process simulator simulate
-
-            UnitModel model = new UnitModel(designParameters, timeBase_s);
+            UnitModel model = new UnitModel(designParameters);
             this.timeBase_s = timeBase_s;
 
-            UnitDataSet dataSet = new UnitDataSet(timeBase_s, U);
+            UnitDataSet dataSet = new UnitDataSet();
+            dataSet.U = U;
             dataSet.BadDataID = badValueId;
+            dataSet.CreateTimeStamps(timeBase_s);
             var simulator = new UnitSimulator(model);
             if (doNonWhiteNoise)
             {
@@ -203,7 +204,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         //    Plot.FromList(new List<double[]> { data.U.GetColumn(0),data.Y_sim, data.Y_meas},
          //       new List<string> { "y3=u", "y1=y_sim", "y1=y_meas" }, data.Times, "partlyoverlaptest");
 
-            Assert.IsTrue(data.NumDataPoints == 180);
+            Assert.IsTrue(data.GetNumDataPoints() == 180);
             Assert.IsTrue(model.GetModelParameters().LinearGains.First()< 1.02);
             Assert.IsTrue(model.GetModelParameters().LinearGains.First() >0.98);
         }
@@ -376,7 +377,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Bias            = bias
             };
             var model = CreateDataAndIdentify(designParameters, U,timeBase_s,noiseAmplitude);
-            string caseId = NUnit.Framework.TestContext.CurrentContext.Test.Name; 
+            string caseId = TestContext.CurrentContext.Test.Name; 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, 
                 model.GetFittedDataSet().Y_meas, u1 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
@@ -434,7 +435,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = new double[] { 1 },
                 Bias = bias
             };
-            var refModel = new UnitModel(paramtersNoCurvature,timeBase_s,"reference");
+            var refModel = new UnitModel(paramtersNoCurvature,"reference");
 
             var sim = new PlantSimulator(new List<ISimulatableModel> { refModel });
             var inputData = new TimeSeriesDataSet();
@@ -519,7 +520,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = new double[] { 1.1, 1.1 },
                 Bias = bias
             };
-            var refModel = new UnitModel(paramtersNoCurvature, timeBase_s, "reference");
+            var refModel = new UnitModel(paramtersNoCurvature, "reference");
 
             var sim = new PlantSimulator( new List<ISimulatableModel> { refModel });
             var inputData = new TimeSeriesDataSet();

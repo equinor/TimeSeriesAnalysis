@@ -47,10 +47,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
         {
-            UnitDataSet dataset = new UnitDataSet(inputData.GetTimeBase(), inputData.GetLength().Value); 
+            UnitDataSet dataset = new UnitDataSet(); 
             dataset.U = new double[inputData.GetLength().Value,1];
             dataset.U.WriteColumn(0, inputData.GetValues(pidModel.outputID));
-
+            dataset.Times = inputData.GetTimeStamps();
             var inputIDs = pidModel.GetModelInputIDs();
             foreach (var inputID in inputIDs)
             {
@@ -375,7 +375,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             "\" error retreiving input values.");
                         return false;
                     }
-                    double outputVal = model.Iterate(inputVals);
+                    double outputVal = model.Iterate(inputVals, timeBase_s);
                     bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
                     if (!isOk)
                     {

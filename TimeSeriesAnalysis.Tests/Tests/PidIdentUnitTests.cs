@@ -30,7 +30,7 @@ namespace TimeSeriesAnalysis.Test.PidID
         public void SetUp()
         {
             Shared.GetParserObj().EnableDebugOutput();
-            processModel1 = new UnitModel(modelParameters1, timeBase_s, "SubProcess1");
+            processModel1 = new UnitModel(modelParameters1, "SubProcess1");
         }
         
         [Test]
@@ -41,7 +41,7 @@ namespace TimeSeriesAnalysis.Test.PidID
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var pidModel1 = new PidModel(pidParameters1, "PID1");
             var processSim = new PlantSimulator(
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
@@ -74,7 +74,7 @@ namespace TimeSeriesAnalysis.Test.PidID
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var pidModel1 = new PidModel(pidParameters1, "PID1");
             var processSim = new PlantSimulator(
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);

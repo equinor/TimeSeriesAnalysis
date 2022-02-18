@@ -43,7 +43,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // errors.
                 Random rand = new Random(1232);
 
-                for (int k = 0; k < processDataSet.NumDataPoints; k++)
+                for (int k = 0; k < processDataSet.GetNumDataPoints(); k++)
                 {
                     processDataSet.Y_meas[k] += (rand.NextDouble()-0.5)*2* noiseAmplitude;
                 }
@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
             }
 
-            int N = processDataSet.NumDataPoints;
+            int N = processDataSet.GetNumDataPoints();
             double[] Y = Vec<double>.Fill(0, N);
             double[] U = Vec<double>.Fill(0, N);
             double y0,u0,y, u;
@@ -148,8 +148,9 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[] Simulate(ref UnitDataSet processDataSet,
             bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY=false)
         {
-            int N = processDataSet.NumDataPoints;
+            int N = processDataSet.GetNumDataPoints(); ;
             double[] output = Vec<double>.Fill(0, N);
+            double timeBase_s = processDataSet.GetTimeBase();
 
             if (processDataSet.D != null)
             {
@@ -163,6 +164,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
                     output[rowIdx] += model.Iterate(processDataSet.U.GetRow(rowIdx),
+                        timeBase_s,
                         processDataSet.BadDataID);
                 }
             }
@@ -170,7 +172,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
-                    output[rowIdx] += model.Iterate(null, processDataSet.BadDataID);
+                    output[rowIdx] += model.Iterate(null, timeBase_s,processDataSet.BadDataID);
                 }
             }
             var vec = new Vec(processDataSet.BadDataID);

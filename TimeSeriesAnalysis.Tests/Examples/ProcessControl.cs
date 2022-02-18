@@ -62,11 +62,11 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 40 //slow
             };
             var process1
-                = new UnitModel(processParameters1, timeBase_s, "Process1");
+                = new UnitModel(processParameters1, "Process1");
             var process2
-                = new UnitModel(processParameters2, timeBase_s, "Process2");
-            var pid1 = new PidModel(pidParameters1, timeBase_s, "PID1");
-            var pid2 = new PidModel(pidParameters2, timeBase_s, "PID2");
+                = new UnitModel(processParameters2, "Process2");
+            var pid1 = new PidModel(pidParameters1, "PID1");
+            var pid2 = new PidModel(pidParameters2, "PID2");
 
             var sim = new PlantSimulator(new List<ISimulatableModel> { process1, process2, pid1, pid2 });
 
@@ -140,10 +140,10 @@ namespace TimeSeriesAnalysis._Examples
             };
             
             var processModel
-                = new UnitModel(processParameters, timeBase_s, "Process1");
+                = new UnitModel(processParameters,  "Process1");
             var disturbanceModel
-                = new UnitModel(disturbanceParameters, timeBase_s, "Disturbance1");
-            var pidModel = new PidModel(pidParameters, timeBase_s, "PID");
+                = new UnitModel(disturbanceParameters, "Disturbance1");
+            var pidModel = new PidModel(pidParameters, "PID");
 
             var simNoFeedF = new PlantSimulator(
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
@@ -221,10 +221,10 @@ namespace TimeSeriesAnalysis._Examples
             };
 
             var processModel
-                = new UnitModel(processParameters, timeBase_s, "Process1");
+                = new UnitModel(processParameters, "Process1");
             var disturbanceModel
-                = new UnitModel(disturbanceParameters, timeBase_s, "Disturbance1");
-            var pidModel = new PidModel(pidParameters, timeBase_s, "PID");
+                = new UnitModel(disturbanceParameters, "Disturbance1");
+            var pidModel = new PidModel(pidParameters, "PID");
 
             var simNoFeedF = new PlantSimulator(
                 new List<ISimulatableModel> { processModel, disturbanceModel, pidModel });
@@ -284,7 +284,7 @@ namespace TimeSeriesAnalysis._Examples
                 Bias = 50
             };
             var processModel
-                = new UnitModel(modelParameters, timeBase_s, "Process1");
+                = new UnitModel(modelParameters, "Process1");
             
             var openLoopSim1 = new PlantSimulator(
                 new List<ISimulatableModel> { processModel });
@@ -320,7 +320,7 @@ namespace TimeSeriesAnalysis._Examples
                 Kp = 0.3,
                 Ti_s = 20
             };
-            var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var pidModel1 = new PidModel(pidParameters1, "PID1");
             var closedLoopSim1 = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel });
             closedLoopSim1.ConnectModels(pidModel1,processModel);
@@ -339,7 +339,7 @@ namespace TimeSeriesAnalysis._Examples
                 Kp = 1,//NB! higher Kp
                 Ti_s = 20
             };
-            var pidModel2 = new PidModel(pidParameters2, timeBase_s, "PID2");
+            var pidModel2 = new PidModel(pidParameters2, "PID2");
             var closedLoopSim2 = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel2, processModel });
             closedLoopSim2.ConnectModels(pidModel2, processModel);
@@ -384,7 +384,7 @@ namespace TimeSeriesAnalysis._Examples
                 }
             };
 
-            var pidModelGS = new PidModel(pidParametersGS, timeBase_s, "PID_GS");
+            var pidModelGS = new PidModel(pidParametersGS, "PID_GS");
 
             var closedLoopSimGS_1 = new PlantSimulator(
                 new List<ISimulatableModel> { pidModelGS, processModel });
@@ -468,9 +468,9 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 15 // faster control(avoid carryover, aggressivley use valve when needed)
             };
             var process
-                = new UnitModel(processParameters, timeBase_s, "Process");
-            var pid1 = new PidModel(pidParameters1, timeBase_s, "PID1");
-            var pid2 = new PidModel(pidParameters2, timeBase_s, "PID2");
+                = new UnitModel(processParameters, "Process");
+            var pid1 = new PidModel(pidParameters1, "PID1");
+            var pid2 = new PidModel(pidParameters2, "PID2");
             var minSelect = new Select(SelectType.MIN,"minSelect");
 
             var sim = new PlantSimulator(

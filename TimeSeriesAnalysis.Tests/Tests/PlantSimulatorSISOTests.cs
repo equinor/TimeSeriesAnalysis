@@ -55,16 +55,16 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Bias = 5
             };
 
-            processModel1 = new UnitModel(modelParameters1, timeBase_s, "SubProcess1");
-            processModel2 = new UnitModel(modelParameters2, timeBase_s, "SubProcess2");
-            processModel3 = new UnitModel(modelParameters3, timeBase_s, "SubProcess3");
+            processModel1 = new UnitModel(modelParameters1, "SubProcess1");
+            processModel2 = new UnitModel(modelParameters2, "SubProcess2");
+            processModel3 = new UnitModel(modelParameters3, "SubProcess3");
 
             pidParameters1 = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 20
             };
-            pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            pidModel1 = new PidModel(pidParameters1, "PID1");
         }
 
         // MISO= multiple-input/single-output
@@ -73,7 +73,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase]
         public void Single_RunsAndConverges()
         {
-            var processSim = new Dynamic.PlantSimulator(
+            var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1 });
 
             var inputData = new TimeSeriesDataSet();

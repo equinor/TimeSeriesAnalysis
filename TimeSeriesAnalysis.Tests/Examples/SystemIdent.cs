@@ -52,9 +52,10 @@ namespace TimeSeriesAnalysis._Examples
                 U0 = new double[] { 1.1, 1.1 },
                 Bias = bias
             };
-            var refModel = new UnitModel(paramtersNoCurvature, timeBase_s, "Reference");
+            var refModel = new UnitModel(paramtersNoCurvature, "Reference");
             var refSim  = new UnitSimulator(refModel);
-            var refData = new UnitDataSet(timeBase_s,U);
+            var refData = new UnitDataSet();
+            refData.U = U;
             refSim.Simulate(ref refData);
 
             // simulate the nonlinear model 
@@ -68,9 +69,11 @@ namespace TimeSeriesAnalysis._Examples
                 UNorm = new double[] { 1, 1 },// set this to make results comparable
                 Bias = bias
             };
-            var trueModel = new UnitModel(designParameters, timeBase_s, "NonlinearModel1");
+            var trueModel = new UnitModel(designParameters, "NonlinearModel1");
             var sim = new UnitSimulator(trueModel);
-            var idDataSet = new UnitDataSet(timeBase_s,U);
+            var idDataSet = new UnitDataSet();
+            idDataSet.U = U;
+            idDataSet.CreateTimeStamps(timeBase_s);
             sim.SimulateYmeas(ref idDataSet, noiseAmplitude);
 
             // do identification
@@ -109,8 +112,8 @@ namespace TimeSeriesAnalysis._Examples
                 TimeDelay_s = 5,
                 Bias = 5
             };
-            var processModel1 = new UnitModel(modelParameters1, timeBase_s, "Process1");
-            var pidModel1 = new PidModel(pidParameters1, timeBase_s, "PID1");
+            var processModel1 = new UnitModel(modelParameters1, "Process1");
+            var pidModel1 = new PidModel(pidParameters1, "PID1");
             var processSim = new PlantSimulator(
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
