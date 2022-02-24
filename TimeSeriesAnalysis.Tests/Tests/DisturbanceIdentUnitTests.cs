@@ -58,10 +58,14 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
 
-            var modelId = new UnitIdentifier();
-            UnitModel identifiedModel = modelId.Identify(ref pidDataSet);
-           
+            // var modelId = new UnitIdentifier();
+            // UnitModel identifiedModel = modelId.Identify(ref pidDataSet);
 
+            var modelId = new UnitIdentifierWithDisturbance();
+            UnitModel identifiedModel = modelId.Identify(ref pidDataSet,ref simData);
+
+
+            identifiedModel
 
 
 

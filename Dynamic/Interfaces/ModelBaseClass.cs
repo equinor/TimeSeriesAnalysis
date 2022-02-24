@@ -12,8 +12,16 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public abstract class ModelBaseClass
     {
-        public string ID = "not_named";
-        public string[] modelInputIDs;
+        /// <summary>
+        /// A unique ID string that is used to identify the model uniquely in a PlantSimulation
+        /// </summary>
+        public string ID { get; set; } = "not_named";
+
+        /// <summary>
+        /// Unique signal IDs that are mapped to the non-additive model inputs 
+        /// </summary>
+        public string[] ModelInputIDs;
+
         public List<string> additiveInputIDs;
         public string outputID;
 
@@ -27,15 +35,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public string GetID()
         {
             return ID;
-        }
-
-        /// <summary>
-        /// Set the ID of the model
-        /// </summary>
-        /// <param name="ID"></param>
-        public void  SetID(string ID)
-        {
-            this.ID = ID;
         }
 
         /// <summary>
@@ -68,33 +67,33 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (idx == null)
             {
-                modelInputIDs = U_stringIDs;
+                ModelInputIDs = U_stringIDs;
             }
             else
             {
-                if (modelInputIDs == null)
+                if (ModelInputIDs == null)
                 {
-                    modelInputIDs = new string[GetLengthOfInputVector()];
+                    ModelInputIDs = new string[GetLengthOfInputVector()];
                 }
                 if (idx.Value < GetLengthOfInputVector())
                 {
-                    if (modelInputIDs == null)
+                    if (ModelInputIDs == null)
                     {
-                        modelInputIDs = new string[GetLengthOfInputVector()];
+                        ModelInputIDs = new string[GetLengthOfInputVector()];
                     }
-                    modelInputIDs[idx.Value] = U_stringIDs[0];
+                    ModelInputIDs[idx.Value] = U_stringIDs[0];
                 }
                 else // append the inputIDs string()
                 {
-                    var oldInputIds = modelInputIDs;
-                    modelInputIDs = new string[idx.Value + 1];
+                    var oldInputIds = ModelInputIDs;
+                    ModelInputIDs = new string[idx.Value + 1];
                     int k = 0;
                     foreach (string oldId in oldInputIds)
                     {
-                        modelInputIDs[k] = oldId;
+                        ModelInputIDs[k] = oldId;
                         k++;
                     }
-                    modelInputIDs[idx.Value] = U_stringIDs[0];
+                    ModelInputIDs[idx.Value] = U_stringIDs[0];
                     if (U_stringIDs.Length == 1)
                         return true;
                     else
@@ -132,7 +131,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public string[] GetModelInputIDs()
         {
-            return modelInputIDs;
+            return ModelInputIDs;
         }
 
         /// <summary>
@@ -155,9 +154,9 @@ namespace TimeSeriesAnalysis.Dynamic
         public string[] GetBothKindsOfInputIDs()
         {
             List<string> ret = new List<string>();
-            if (modelInputIDs != null)
+            if (ModelInputIDs != null)
             {
-                ret.AddRange(modelInputIDs);
+                ret.AddRange(ModelInputIDs);
             }
             if (additiveInputIDs!=null)
             {

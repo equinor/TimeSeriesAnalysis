@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public UnitModel(UnitParameters modelParameters, string ID="not_named")
         {
             processModelType = ModelType.SubProcess;
-            SetID(ID);
+            this.ID = ID;
             InitSim(modelParameters);
         }
         /// <summary>

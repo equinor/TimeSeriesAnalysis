@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public PidModel(PidParameters pidParameters, string ID = "not_named")
         {
             processModelType = ModelType.PID;
-            SetID(ID);
+            this.ID = ID;
             this.pidParameters = pidParameters;
         }
 

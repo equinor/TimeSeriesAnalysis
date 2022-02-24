@@ -7,8 +7,9 @@ using TimeSeriesAnalysis;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Attempt to re-create the additive output disturbance signal that acts on a given 
-    /// output of a system that is under closed-loop (feedback)control, such as with PID-control.
+    /// Identification that attempts to identify a unit model jointly with 
+    /// estimating the additive signal acting on the output(disturbance signal) yet is
+    /// counter-acted by closed-loop (feedback)control, such as with PID-control.
     /// 
     /// The approach requires combining information in the measured output signal with the 
     /// information in the manipulated variable(determined by active control)
@@ -18,10 +19,17 @@ namespace TimeSeriesAnalysis.Dynamic
     /// are estimted together.
     /// 
     /// </summary>
-    internal class DisturbanceIdentifier
+    public class ClosedLooopUnitIdentifier
     {
-        public void Ident(PIDDataSet dataSet, PIDidResults pidIDresults,
-            ProcessIdResults referenceProcessIDresult = null)
+
+        /// <summary>
+        /// Identify the unit model of a closed-loop system and the distrubance (additive output signal)
+        /// </summary>
+        /// <param name="dataSet">the unit data set, containing both the input to the unit and the output</param>
+        /// <param name="simData">the data set of simulated variables, to which the algorithm adds the estimated disturbance signal</param>
+        /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
+        public UnitModel Identify(UnitDataSet dataSet, ref TimeSeriesDataSet simData/* PIDidResults pidIDresults,
+            ProcessIdResults referenceProcessIDresult = null*/)
         {
             const bool estimateTimeDelay = true;// should be true, but can be set false for debugging only
                                                 //  Warn.If(estiamteTimeDelay,"temproary turned off");

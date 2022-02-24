@@ -50,7 +50,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             processModelType = ModelType.Select;
             this.type = type;
-            SetID(ID);
+            this.ID = ID;
         }
 
         /// <summary>
