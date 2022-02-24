@@ -100,7 +100,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             }
         }
 
-        // TODO: test that feedforward is handled correclty
+        // TODO: test that feedforward is handled correctly
 
 
 
