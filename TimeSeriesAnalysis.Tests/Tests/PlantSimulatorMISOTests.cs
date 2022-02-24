@@ -335,7 +335,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 externalUIndex = 0;
             }
 
-            var processSim = new Dynamic.PlantSimulator(
+            var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
 
             processSim.ConnectModels(processModel1, pidModel1);
@@ -347,6 +347,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
+
+         //   processSim.Serialize("PIDandSingle");
+         //   inputData.ToCsv("PIDandSingle.csv");
 
            /* Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
