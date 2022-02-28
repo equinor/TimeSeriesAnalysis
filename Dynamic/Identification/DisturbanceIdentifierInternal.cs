@@ -45,7 +45,7 @@ namespace TimeSeriesAnalysis.Dynamic
         
         public DisturbanceIdResult(UnitDataSet dataSet)
         {
-            N = dataSet.GetUMinusFF().Count();
+            N = dataSet.GetNumDataPoints();
             SetToZero();
         }
 
@@ -106,26 +106,39 @@ namespace TimeSeriesAnalysis.Dynamic
         //  AND:
         // unit tests whene there is both a yset step and a disturbance step fail and sinus disturbances also fail. 
 
-        public static DisturbanceIdResult EstimateDisturbance(PIDDataSet tuningDataSet, PIDidResults pidid, 
-            ProcessIdResults referenceProcessId, bool tryToModelDisturbanceIfSetpointChangesInDataset = false)
+
+
+
+
+        /// <summary>
+        /// Estimates the disturbance time-series over a given unit data set 
+        /// given an estimate of the unit model (reference unit model)
+        /// </summary>
+        /// <param name="unitDataSet">the dataset descrbing the unit, over which the disturbance is to be found</param>
+        /// <param name="referenceUnitModel">the estiamte of the unit</param>
+        /// <returns></returns>
+        public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet,  
+            UnitModel referenceUnitModel)
         {
-            DisturbanceIdResult result = new DisturbanceIdResult(tuningDataSet);
+            // TODO: determine sign of process gain
+            var inputIdx = 0;// TODO:Generalize for multivariable systems
+
+            bool tryToModelDisturbanceIfSetpointChangesInDataset = false;
+            var vec = new Vec();
+
+            DisturbanceIdResult result = new DisturbanceIdResult(unitDataSet);
 
             double[] e;// part of disturbance as oberved by deviations (ymeas-yset)
-       //     double[] d_LF;// part of disturbance as observed by different u being required at get same ymeas at steady-state
 
             double candidateGainD = 0;
 
-            bool doesSetpointChange = !(Vec.Max(tuningDataSet.yset) == Vec.Min(tuningDataSet.yset));
+            bool doesSetpointChange = !(vec.Max(unitDataSet.Y_setpoint) == vec.Min(unitDataSet.Y_setpoint));
             if (!tryToModelDisturbanceIfSetpointChangesInDataset && doesSetpointChange)
             {
                 result.SetToZero();//the default anyway,added for clarity.
                 return result;
             }
-            Vec vec = new Vec();
-
-            e = vec.Subtract(tuningDataSet.ymeas, tuningDataSet.yset);// this under-estimates disturbance because the controller has rejected some of it.
-
+            e = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);// this under-estimates disturbance because the controller has rejected some of it.
 
             // d_u : (low-pass) back-estimation of disturbances by the effect that they have on u as the pid-controller integrates to 
             // counteract them
@@ -135,33 +148,30 @@ namespace TimeSeriesAnalysis.Dynamic
             // will influence the process model identification afterwards.
 
             double[] deltaU  = null;
-            double[] deltaE = null;
             // the way that the pid-controller is implemented pid Kp and process K should be same sign.
             // pid Kp is known when running this algo
             double processGainSign = 1;
-            if (pidid.Kpest_val1.Value<0)
+            /*if (pidid.Kpest_val1.Value<0)
             {
                 processGainSign = -1;
-            }
-   
-            const int candidateGainVersion = 1;
+            }*/
 
             // v1: just use first value as "u0", just perturbing this value 
             // a little will cause unit test to fail ie.algorithm is sensitive to its choice.
-            double[] u0 = Vec<double>.Fill(tuningDataSet.GetUinclFF()[0], tuningDataSet.GetLength());//NB! algorithm is sensitive to choice of u0!!!
+            double[] u0 = Vec<double>.Fill(unitDataSet.U[inputIdx,0], unitDataSet.GetNumDataPoints());//NB! algorithm is sensitive to choice of u0!!!
 
             // v2: try to "highpass" u
-            if (candidateGainVersion == 3)
+          /*  if (candidateGainVersion == 3)
             {
                 LowPass lpFilt = new LowPass(tuningDataSet.timeBase_s);
                 double[] uLPfilt = lpFilt.Filter(tuningDataSet.GetUMinusFF(), pidid.Tiest_val1.Value * 6);
                 double[] uHPfilt = vec.Sub(tuningDataSet.GetUMinusFF(), uLPfilt);
                 u0 = Vec.Add(uHPfilt, tuningDataSet.GetUMinusFF()[0]);
                 double y0 = tuningDataSet.ymeas[0];
-            }
-            double yset0 = tuningDataSet.yset[0];
-            deltaU          = vec.Subtract(tuningDataSet.GetUinclFF(), u0);
-            LowPass lowPass = new LowPass(tuningDataSet.timeBase_s);
+            }*/
+            double yset0 = unitDataSet.Y_setpoint[0];
+            deltaU          = vec.Subtract(unitDataSet.U.GetRow(inputIdx), u0);//TODO : U including feed-forward?
+            LowPass lowPass = new LowPass(unitDataSet.GetTimeBase());
             // filter is experimental, consider removing if cannot be made to work.
             double FilterTc_s = 0;// tuningDataSet.timeBase_s;
             /*if (referenceProcessId != null)
@@ -170,8 +180,7 @@ namespace TimeSeriesAnalysis.Dynamic
             } */
 
             double[] deltaU_lp = lowPass.Filter(deltaU, FilterTc_s,2);
-
-            double[] deltaYset = vec.Subtract(tuningDataSet.yset, yset0);
+            double[] deltaYset = vec.Subtract(unitDataSet.Y_setpoint, yset0);
             double[] du_contributionFromU = deltaU_lp;
             double[] dest_f2_proptoGain = du_contributionFromU;
             double[] dest_f2_constTerm = vec.Add(deltaYset, e);
@@ -179,30 +188,28 @@ namespace TimeSeriesAnalysis.Dynamic
             // y0,u0 is at the first data point
             // disadvantage, is that you are not sure that the time series starts at steady state
             // but works better than candiate 2 when disturbance is a step
-         
-            if (candidateGainVersion ==1)
-            {
-                bool candidateGainSet = false;
-                if (referenceProcessId != null)
-                {
-                    if (!Double.IsNaN(referenceProcessId.processGain))
-                    {
-                        candidateGainD = referenceProcessId.processGain;
-                        candidateGainSet = true;
-                    }
-                }
-                // fallback: this should only be used as an inital guess on the first
-                // run when no process model exists!
-                if (!candidateGainSet)
-                {
-                    double[] eFiltered = lowPass.Filter(e, FilterTc_s, 2);
-                    double maxDE = vec.Max(vec.Abs(eFiltered));                      // this has to be sensitive to noise?
-                    double[] uFiltered = lowPass.Filter(deltaU, FilterTc_s, 2);
 
-                    double maxU = vec.Max(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot
-                    double minU = vec.Min(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot  
-                    candidateGainD = processGainSign * maxDE / (maxU - minU);
+            bool candidateGainSet = false;
+            if (referenceUnitModel != null)
+            {
+                var processGains = referenceUnitModel.modelParameters.GetProcessGains();
+
+                if (!Double.IsNaN(processGains[inputIdx]))
+                {
+                    candidateGainD = processGains[inputIdx];
+                    candidateGainSet = true;
                 }
+            }
+            // fallback: this should only be used as an inital guess on the first
+            // run when no process model exists!
+            if (!candidateGainSet)
+            {
+                double[] eFiltered = lowPass.Filter(e, FilterTc_s, 2);
+                double maxDE = vec.Max(vec.Abs(eFiltered));       // this has to be sensitive to noise?
+                double[] uFiltered = lowPass.Filter(deltaU, FilterTc_s, 2);
+                double maxU = vec.Max(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot
+                double minU = vec.Min(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot  
+                candidateGainD = processGainSign * maxDE / (maxU - minU);
             }
 
             //
@@ -224,18 +231,18 @@ namespace TimeSeriesAnalysis.Dynamic
             // where setpoint is constant - wonder if it is possible to unify these two appraoches???
             // very bad form to have lots of "if" statements in this estiamtor.
 
-            if (referenceProcessId != null && doesSetpointChange)
+            if (referenceUnitModel != null && doesSetpointChange)
             {
                 // if a process model is available, try to subtract the process transients
                 // from e when estimating d_HF.
-                if (referenceProcessId.modelledY != null)
+                if (unitDataSet.Y_sim != null)
                 {
                     d_HF = null;
                     d_LF = null;
                     // be careful! the inital value of modelledY is often NaN.
-                    double[] e_mod = vec.Subtract(referenceProcessId.modelledY, tuningDataSet.ymeas);
+                    double[] e_mod = vec.Subtract(unitDataSet.Y_sim, unitDataSet.Y_meas);
                     double filterTc_s = 200;
-                    LowPass lp = new LowPass(tuningDataSet.timeBase_s);
+                    LowPass lp = new LowPass(unitDataSet.GetTimeBase());
                     double[] e_mod_LP = lp.Filter(e_mod, filterTc_s, 1);
                     double[] e_mod_HF = vec.Subtract(e_mod, e_mod_LP);
                     // because of time-delay e_mod is generally shorter than e if timeDelay_samples>0
@@ -251,13 +258,13 @@ namespace TimeSeriesAnalysis.Dynamic
                         d_HF[nanIndices[i]] = e[i];
                     }
                     */
-                    d_HF = Vec<double>.Fill(0, tuningDataSet.ymeas.Length);
+                    d_HF = Vec<double>.Fill(0, unitDataSet.Y_meas.Length);
 
                     //d_LF
                     //   double[] du_contributionFromYset = Vec.Mult(/*deltaYset*/e_mod, 1 / -candidateGainD);// will be zero if yset is constant.
                     //double[] d_LF_internal = Vec.Add(du_contributionFromU, du_contributionFromYset);
                     // d_LF = Vec.Mult(d_LF_internal, -candidateGainD);
-                    d_LF = vec.Subtract(tuningDataSet.ymeas, referenceProcessId.modelledY);
+                    d_LF = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_sim);
                     d_LF[0] = d_LF[1];//first modelledY is NaN
                     d_est = d_LF;
                 }

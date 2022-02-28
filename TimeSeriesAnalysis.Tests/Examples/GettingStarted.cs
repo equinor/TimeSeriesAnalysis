@@ -181,7 +181,7 @@ namespace TimeSeriesAnalysis._Examples
                 Kp = 0.5,
                 Ti_s = 20
             };
-            var pid = new PidModel(pidParameters);
+            var pid = new PidModel(pidParameters,"PID1");
             var dataSet = new UnitDataSet();
             dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
             dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);

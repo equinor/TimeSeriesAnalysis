@@ -59,12 +59,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public List<int> IndicesToIgnore = null;
 
-
-        /// <summary>
-        /// The number of data points 
-        /// </summary>
-      //  public int NumDataPoints { get; }
-
         /// <summary>
         /// Some systems for storing data do not support "NaN", but instead some other magic 
         /// value is reserved for indicating that a value is bad or missing. 

@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// are estimted together.
     /// 
     /// </summary>
-    public class ClosedLooopUnitIdentifier
+    public class ClosedLoopUnitIdentifier
     {
 
         /// <summary>
@@ -28,16 +28,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet">the unit data set, containing both the input to the unit and the output</param>
         /// <param name="simData">the data set of simulated variables, to which the algorithm adds the estimated disturbance signal</param>
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
-        public UnitModel Identify(UnitDataSet dataSet, ref TimeSeriesDataSet simData/* PIDidResults pidIDresults,
-            ProcessIdResults referenceProcessIDresult = null*/)
+        public (UnitModel,double[]) Identify(UnitDataSet dataSet )
         {
-            const bool estimateTimeDelay = true;// should be true, but can be set false for debugging only
-                                                //  Warn.If(estiamteTimeDelay,"temproary turned off");
-            ProcessIdResults bestResult = null;
+            // this variable holds the "newest" unit model run and is updated
+            // over multiple runs, and as it improves, the 
+            // estimate of the disturbance improves along with it.
+            UnitModel identUnitModel = null;
 
-            List<DisturbanceIdResult> d_est_List = new List<DisturbanceIdResult>();
-            List<ProcessIdResults> processIdList = new List<ProcessIdResults>();
-            List<PIDidResults> pidIDresultsList = new List<PIDidResults>();
+            List<DisturbanceIdResult> idDisturbancesList = new List<DisturbanceIdResult>();
+            List<UnitModel> idUnitModelsList = new List<UnitModel>();
             List<double> processGainList = new List<double>();
 
             DisturbanceIdResult noDisturbance = new DisturbanceIdResult(dataSet);
@@ -58,37 +57,33 @@ namespace TimeSeriesAnalysis.Dynamic
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a process gains, 
             // to give afirst estimate of the disturbance
-            // this is often a quite good estimate of the process gain, which is the most improtant paramter
+            // this is often a quite good estimate of the process gain, which is the most improtant parameter
             // withtout a reference model which has the correct time constant and time delays, 
             // dynamic "overshoots" will enter into the estimated disturbance, try to fix this by doing 
             // "refinement" runs afterwards.
-            DisturbanceIdResult distIdResult1 = DisturbanceIdentifierInternal.EstimateDisturbance(
-                dataSet, pidIDresults, referenceProcessIDresult);
-            // you would think you could turn dynamics off here, but this gives noticably worse performance
-            bool useDynamicModel_run1 = false;
-            ProcessIdResults processIDresult_run1 = Ident_internal(dataSet, useDynamicModel_run1, distIdResult1, 0, estimateTimeDelay, true);
-            d_est_List.Add(distIdResult1);
-            processIdList.Add(processIDresult_run1);
-            pidIDresultsList.Add(pidIDresults);
-            processGainList.Add(processIDresult_run1.processGain);
+            DisturbanceIdResult distIdResult1 = DisturbanceIdentifierInternal.EstimateDisturbance
+                (dataSet, identUnitModel);
+            var id = new UnitIdentifier(); 
+            UnitModel processIDresult_run1 = id.IdentifyStatic(ref dataSet);
+            idDisturbancesList.Add(distIdResult1);
+            idUnitModelsList.Add(processIDresult_run1);
 
             // ----------------
             // run 2: now we have a decent first estimate of the distubance and the process gain, but 
             // we have disturbance vector estimate that has some process dynamics in it, so we need to refine the 
             // model to get the correct dynamics.
 
-            referenceProcessIDresult = processIDresult_run1;// likely a good estimate of process gain and hence a good first approx of d here.
+            identUnitModel = processIDresult_run1;// likely a good estimate of process gain and hence a good first approx of d here.
                                                             //     referenceProcessIDresult.timeConstant_s = 0; //these two will be false after run 0, just set to zero 
                                                             //     referenceProcessIDresult.timeDelay_s = 0;//these two will be false after run 0, just set to zero 
                                                             //    referenceProcessIDresult.UpdateModelledXandY(dataSet);
 
             DisturbanceIdResult distIdResult2 = DisturbanceIdentifierInternal.EstimateDisturbance(
-                dataSet, pidIDresults, referenceProcessIDresult);
-            bool useDynamicModel_run2 = true;
-            ProcessIdResults processIDresult_run2 = Ident_internal(dataSet, useDynamicModel_run2, distIdResult1, 0, estimateTimeDelay, true);
-            d_est_List.Add(distIdResult2);
-            processIdList.Add(processIDresult_run2);
-            processGainList.Add(processIDresult_run2.processGain);
+                dataSet, identUnitModel);
+            dataSet.D = distIdResult2.dest_f1;
+            var processIDresult_run2 = id.IdentifyStatic(ref dataSet);
+            idDisturbancesList.Add(distIdResult2);
+            idUnitModelsList.Add(processIDresult_run2);
 
             // NB! in some cases such as if there is a step in the setpoint and the disturbance is small and 
             //      be approximated as zero, then the estimation will not keep improving beyond this point.
@@ -97,16 +92,16 @@ namespace TimeSeriesAnalysis.Dynamic
             // run 3: use the result of the last run to try to improve the disturbance estimate and take 
             // out some of the dynamics from the disturbance vector and see if this improves estiamtion.
 
-            referenceProcessIDresult = processIDresult_run2;// likely a good estimate of process gain and hence a good first approx of d here.
+            identUnitModel = processIDresult_run2;// likely a good estimate of process gain and hence a good first approx of d here.
 
             DisturbanceIdResult distIdResult3 = DisturbanceIdentifierInternal.EstimateDisturbance
-                (dataSet, pidIDresults, referenceProcessIDresult);
-            ProcessIdResults processIDresult_run3 = Ident_internal(dataSet, true, distIdResult3, 0, estimateTimeDelay, true);
-            d_est_List.Add(distIdResult3);
-            processIdList.Add(processIDresult_run3);
-            processGainList.Add(processIDresult_run3.processGain);
+                (dataSet, identUnitModel);
+            dataSet.D = distIdResult3.dest_f1;
+            var processIDresult_run3 = id.IdentifyStatic(ref dataSet);
+            idDisturbancesList.Add(distIdResult3);
+            idUnitModelsList.Add(processIDresult_run3);
 
-            referenceProcessIDresult = processIDresult_run3;// likely a good estimate of process gain and hence a good first approx of d here.
+            identUnitModel = processIDresult_run3;// likely a good estimate of process gain and hence a good first approx of d here.
 
 
 
@@ -125,9 +120,7 @@ namespace TimeSeriesAnalysis.Dynamic
             //      - a very large time constant that does not match the validation (unclear why)
             //      - the gain is likely a little too big in these cases.
 
-            ProcessIdResults processIDresult;
-
-            if (referenceProcessIDresult.GetWarningList().Contains(ProcessIdentWarnings.TimeConstantEstimateNotConsistent))
+         /*   if (referenceProcessIDresult.GetWarningList().Contains(ProcessIdentWarnings.TimeConstantEstimateNotConsistent))
             {
                 referenceProcessIDresult = processIDresult_run1;// run1 is static, re-use that.
                 bool tryToModelDisturbanceIfSetpointChangesInDataset = true;
@@ -138,8 +131,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 ProcessIdResults processIDresult_runEX0 = Ident_internal(dataSet, useDynamicModel_EX, distIdResult_ex0, 0,
                    estimateTimeDelay_EX, false);
 
-                d_est_List.Add(distIdResult_ex0);
-                processIdList.Add(processIDresult_runEX0);
+                idDisturbancesList.Add(distIdResult_ex0);
+                idUnitModelsList.Add(processIDresult_runEX0);
                 processGainList.Add(processIDresult_runEX0.processGain);
                 processIDresult = processIDresult_runEX0;
 
@@ -150,23 +143,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 ProcessIdResults processIDresult_runEX = Ident_internal(dataSet, useDynamicModel_EX, distIdResult_ex, 0,
                     estimateTimeDelay_EX, false);
 
-                d_est_List.Add(distIdResult_ex);
-                processIdList.Add(processIDresult_runEX);
+                idDisturbancesList.Add(distIdResult_ex);
+                idUnitModelsList.Add(processIDresult_runEX);
                 processGainList.Add(processIDresult_runEX.processGain);
                 processIDresult = processIDresult_runEX;
             }
-            else
+            else*/
             {
-                // run4: do a run where it is no longer assumed that x[k-1] = y[k], 
-                // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
-                DisturbanceIdResult distIdResult4 = DisturbanceIdentifierInternal.EstimateDisturbance
-                    (dataSet, pidIDresults, referenceProcessIDresult);
-                ProcessIdResults processIDresult_run4 = Ident_internal(dataSet, true, distIdResult4, 0, estimateTimeDelay, false);
-                d_est_List.Add(distIdResult4);
-                processIdList.Add(processIDresult_run4);
-                processGainList.Add(processIDresult_run4.processGain);
 
-                // 18.06.2020: 
+
                 // - issue is that after run 4 modelled output does not match measurement.
                 // - the reason that we want this run is that after run3 the time constant and 
                 // time delays are way off if the process is excited mainly by disturbances.
@@ -176,20 +161,28 @@ namespace TimeSeriesAnalysis.Dynamic
                 bool doRunNumberFour = false;
                 if (doRunNumberFour)
                 {
-                    processIDresult = processIDresult_run4;//nb! update as more steps are added.
+                    // run4: do a run where it is no longer assumed that x[k-1] = y[k], 
+                    // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
+                    DisturbanceIdResult distIdResult4 = DisturbanceIdentifierInternal.EstimateDisturbance
+                        (dataSet, identUnitModel);
+                    dataSet.D = distIdResult4.dest_f1;
+                    var processIDresult_run4 = id.Identify(ref dataSet);
+                    idDisturbancesList.Add(distIdResult4);
+                    idUnitModelsList.Add(processIDresult_run4);
+                    identUnitModel = processIDresult_run4;//nb! update as more steps are added.
                 }
                 else
                 {
                     // give the result out 
-                    processIDresult = processIDresult_run3;//nb! update as more steps are added.
+                    identUnitModel = processIDresult_run3;//nb! update as more steps are added.
                 }
             }
             // Todo:consider using Kc_lower/upper based on theory insted and taking min and max of them.
-            processIDresult.Kc_upper = processGainList.ToArray().Max();
-            processIDresult.Kc_lower = processGainList.ToArray().Min();
+            //    processIDresult.Kc_upper = processGainList.ToArray().Max();
+            //    processIDresult.Kc_lower = processGainList.ToArray().Min();
 
 
-            string lastRunDesc = "EX";
+            // string lastRunDesc = "EX";
             /*
               if (doDebugging)
               {
@@ -225,9 +218,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // match exactly(a good thing? coudl give insight on model fit?)
             // - coudl we make a function that gives out the closed loop step response of the 
             // pid controller/process in closed loop, to see if the closed loop has overshoot/undershoot? 
+            double[] disturbance = idDisturbancesList.ToArray()[idDisturbancesList.Count-1].dest_f1;
 
-
-            return processIDresult;
+            return (identUnitModel,disturbance);
 
         }
     }

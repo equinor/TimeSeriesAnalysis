@@ -50,8 +50,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
+            var trueDisturbance = TimeSeriesCreator.Step(N / 2, N, 0, stepAmplitude);
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50,N));
-            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Step(N/2,N,0,stepAmplitude));
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), trueDisturbance);
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
@@ -61,14 +62,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             // var modelId = new UnitIdentifier();
             // UnitModel identifiedModel = modelId.Identify(ref pidDataSet);
 
-            var modelId = new UnitIdentifierWithDisturbance();
-            UnitModel identifiedModel = modelId.Identify(ref pidDataSet,ref simData);
+            var modelId = new ClosedLoopUnitIdentifier();
+            (var identifiedModel,var disturbance) = modelId.Identify(pidDataSet);
 
-
-            identifiedModel
-
-
-
+            // todo: get disturbance signal out of simData and match with 
+            Assert.IsTrue(disturbance!= null);
         }
 
         [TestCase(5,20)]
