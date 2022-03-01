@@ -1211,6 +1211,10 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         public static string ToString(double[] array, int nSignificantDigits, string dividerStr = ";")
         {
+            var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
+            var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
+            numberFormat.NumberDecimalSeparator = ".";
+
             StringBuilder sb = new StringBuilder();
             if (array == null)
             {
@@ -1219,11 +1223,11 @@ namespace TimeSeriesAnalysis
             if (array.Length > 0)
             {
                 sb.Append("[");
-                sb.Append(SignificantDigits.Format(array[0], nSignificantDigits).ToString("", CultureInfo.InvariantCulture));
+                sb.Append(SignificantDigits.Format(array[0], nSignificantDigits).ToString("", writeCulture));
                 for (int i = 1; i < array.Length; i++)
                 {
                     sb.Append(dividerStr);
-                    sb.Append(SignificantDigits.Format(array[i], nSignificantDigits).ToString("", CultureInfo.InvariantCulture));
+                    sb.Append(SignificantDigits.Format(array[i], nSignificantDigits).ToString("", writeCulture));
                 }
                 sb.Append("]");
             }

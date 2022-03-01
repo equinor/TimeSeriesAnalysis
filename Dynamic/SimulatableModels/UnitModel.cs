@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 using System.Text;
 
@@ -471,6 +472,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         override public string ToString()
         {
+            var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
+            var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
+            numberFormat.NumberDecimalSeparator = ".";
+
             int sDigits = 3;
             int sDigitsUnc = 2;
 
@@ -502,36 +507,36 @@ namespace TimeSeriesAnalysis.Dynamic
             if (modelParameters.TimeConstant_s < cutOffForUsingHours_s)
             {
                 timeConstantString +=
-                    SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits) + " sec";
+                    SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits).ToString(writeCulture) + " sec";
             }
             else if (modelParameters.TimeConstant_s < cutOffForUsingDays_s)
             {
                 timeConstantString +=
-                    SignificantDigits.Format(modelParameters.TimeConstant_s/3600, sDigits) + " hours";
+                    SignificantDigits.Format(modelParameters.TimeConstant_s/3600, sDigits).ToString(writeCulture) + " hours";
             }
             else // use days
             {
                 timeConstantString +=
-                    SignificantDigits.Format(modelParameters.TimeConstant_s/86400, sDigits) + " days";
+                    SignificantDigits.Format(modelParameters.TimeConstant_s/86400, sDigits).ToString(writeCulture) + " days";
             }
             if (modelParameters.TimeConstantUnc_s.HasValue)
             {
-                timeConstantString += " ± " + SignificantDigits.Format(modelParameters.TimeConstantUnc_s.Value, sDigitsUnc);
+                timeConstantString += " ± " + SignificantDigits.Format(modelParameters.TimeConstantUnc_s.Value, sDigitsUnc).ToString(writeCulture);
             }
             sb.AppendLine(timeConstantString);
 
             // time delay
             if (modelParameters.TimeDelay_s < cutOffForUsingHours_s)
             {
-                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s + " sec");
+                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s.ToString(writeCulture) + " sec");
             }
             else if (modelParameters.TimeDelay_s < cutOffForUsingDays_s)
             {
-                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s/3600 + " sec");
+                sb.AppendLine("TimeDelay : " + (modelParameters.TimeDelay_s/3600).ToString(writeCulture) + " sec");
             }
             else
             {
-                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s/86400 + " days");
+                sb.AppendLine("TimeDelay : " + (modelParameters.TimeDelay_s/86400).ToString(writeCulture) + " days");
             }
            
             if (modelParameters.Curvatures == null)
@@ -544,8 +549,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
                 {
                     sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGain(idx), sDigits) + " ± "
-                            + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGainUncertainty(idx), sDigitsUnc)
+                        "\t" + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGain(idx), sDigits).ToString(writeCulture) + " ± "
+                            + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGainUncertainty(idx), sDigitsUnc).ToString(writeCulture)
                         );
                 }
                 sb.AppendLine("ProcessCurvatures : " + "none");
@@ -556,16 +561,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
                 {
                     sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGain(idx), sDigits) + " ± "
-                            + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGainUncertainty(idx), sDigitsUnc)
+                        "\t" + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGain(idx), sDigits).ToString(writeCulture) + " ± "
+                            + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGainUncertainty(idx), sDigitsUnc).ToString(writeCulture)
                         );
                 }
                 sb.AppendLine(" -> Linear Gain : "); //+ Vec.ToString(modelParameters.LinearGains, sDigits));
                 for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
                 {
                     sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits) + " ± "
-                            + SignificantDigits.Format(modelParameters.LinearGainUnc[idx], sDigitsUnc)
+                        "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits).ToString(writeCulture) + " ± "
+                            + SignificantDigits.Format(modelParameters.LinearGainUnc[idx], sDigitsUnc).ToString(writeCulture)
                         );
                 }
 
@@ -573,38 +578,39 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
                 {
                     sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.Curvatures[idx], sDigits) + " ± "
-                            + SignificantDigits.Format(modelParameters.CurvatureUnc[idx], sDigitsUnc)
+                        "\t" + SignificantDigits.Format(modelParameters.Curvatures[idx], sDigits).ToString(writeCulture) + " ± "
+                            + SignificantDigits.Format(modelParameters.CurvatureUnc[idx], sDigitsUnc).ToString(writeCulture)
                         );
                 }
-
-
-                sb.AppendLine(" -> u0 : " + Vec.ToString(modelParameters.U0, sDigits));
-                if (modelParameters.UNorm == null)
-                {
-                    sb.AppendLine(" -> uNorm : " + "none");
-                }
-                else
-                {
-                    sb.AppendLine(" -> uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits));
-                }
             }
-            if (modelParameters.BiasUnc == null)
+
+
+            sb.AppendLine(" -> u0 : " + Vec.ToString(modelParameters.U0, sDigits).ToString(writeCulture));
+            if (modelParameters.UNorm == null)
             {
-                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits));
+                sb.AppendLine(" -> uNorm : " + "none");
             }
             else
             {
-                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits) + 
-                    " ± " + SignificantDigits.Format(modelParameters.BiasUnc.Value, sDigitsUnc));
+                sb.AppendLine(" -> uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits).ToString(writeCulture));
+            }
+
+            if (modelParameters.BiasUnc == null)
+            {
+                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits).ToString(writeCulture));
+            }
+            else
+            {
+                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits).ToString(writeCulture) + 
+                    " ± " + SignificantDigits.Format(modelParameters.BiasUnc.Value, sDigitsUnc).ToString(writeCulture));
             }
 
             sb.AppendLine("-------------------------");
             if (modelParameters.Fitting != null)
             {
-                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValFittingDiff, 4));
-                sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqFittingDiff, 4));
-                sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqFittingAbs, 4));
+                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValFittingDiff, 4).ToString(writeCulture));
+                sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqFittingDiff, 4).ToString(writeCulture));
+                sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqFittingAbs, 4).ToString(writeCulture));
 
                 sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were excluded");
                 foreach (var warning in modelParameters.GetWarningList())

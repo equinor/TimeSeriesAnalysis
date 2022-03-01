@@ -355,6 +355,11 @@ namespace TimeSeriesAnalysis.Utility
             sb.Append("time,"+ tagName);
             sb.Append("\r\n");
 
+
+            var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
+            var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
+            numberFormat.NumberDecimalSeparator = ".";
+
             // add data. 
             if (data != null)
             {
@@ -364,11 +369,14 @@ namespace TimeSeriesAnalysis.Utility
                     {
                         if (time.Length > row)
                         {
-                            sb.Append(UnixTime.ConvertToUnixTimestamp(time.ElementAt(row)));
+                            sb.Append(UnixTime.ConvertToUnixTimestamp(time.ElementAt(row)).ToString(writeCulture));
                         }
                     }
                     sb.Append(CSVseparator);
-                    sb.Append(data[row].ToString(CultureInfo.InvariantCulture));
+                    // this works for .net framework, but gives a "," separator in .net standard 2.0:
+                    string value = data[row].ToString(writeCulture);
+
+                    sb.Append(value);
                     // sb.Append(CSVseparator);
                     sb.Append("\r\n");
                 }

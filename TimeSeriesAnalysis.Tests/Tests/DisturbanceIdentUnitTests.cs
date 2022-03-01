@@ -40,6 +40,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             processModel1 = new UnitModel(modelParameters1, "SubProcess1");
         }
 
+        // todo: test for all four combinations of gain sign and disturbance sign
+
+        // TODO: currently the sign of the gain changes from run1 to run2, indicating 
+        // a programming error
+
         [TestCase(5)]
         public void StepChangeDisturbance_ProcessAndDisturbanceEstimatedOk(double stepAmplitude)
         {
@@ -59,14 +64,21 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
 
-            // var modelId = new UnitIdentifier();
-            // UnitModel identifiedModel = modelId.Identify(ref pidDataSet);
-
             var modelId = new ClosedLoopUnitIdentifier();
-            (var identifiedModel,var disturbance) = modelId.Identify(pidDataSet);
+            (var identifiedModel,var estDisturbance) = modelId.Identify(pidDataSet);
 
-            // todo: get disturbance signal out of simData and match with 
-            Assert.IsTrue(disturbance!= null);
+            Assert.IsTrue(estDisturbance != null);
+
+            Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
+                pidDataSet.U.GetColumn(0),
+                estDisturbance, trueDisturbance },
+                new List<string>{"y1=y meas", "y1=y set", "y2=u(right)","y3=est disturbance", "y3=total disturbance" },
+                inputData.GetTimeBase());
+
+            Vec vec = new Vec();
+            Assert.IsTrue(vec.Mean(vec.Abs(vec.Subtract(trueDisturbance,estDisturbance)))< stepAmplitude/10);
+
+   //         Assert.IsTrue(Math.Abs(modelParameters1.GetTotalCombinedProcessGain()- identifiedModel.modelParameters.GetTotalCombinedProcessGain()));
         }
 
         [TestCase(5,20)]

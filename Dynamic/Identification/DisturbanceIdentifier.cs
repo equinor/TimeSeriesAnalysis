@@ -95,7 +95,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// An algorithm that attempts to re-create the additive output disturbance acting on 
     /// a signal Y while PID-control attempts to counter-act the disturbance by adjusting its manipulated output u. 
     /// </summary>
-    internal class DisturbanceIdentifierInternal
+    internal class DisturbanceIdentifier
     {
         const double numberOfTiConstantsToWaitAfterSetpointChange = 5;
         // TODO: issue
@@ -120,7 +120,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet,  
             UnitModel referenceUnitModel)
         {
-            // TODO: determine sign of process gain
             var inputIdx = 0;// TODO:Generalize for multivariable systems
 
             bool tryToModelDisturbanceIfSetpointChangesInDataset = false;
@@ -151,9 +150,12 @@ namespace TimeSeriesAnalysis.Dynamic
             // the way that the pid-controller is implemented pid Kp and process K should be same sign.
             // pid Kp is known when running this algo
             double processGainSign = 1;
-            /*if (pidid.Kpest_val1.Value<0)
+         /*   if (referenceUnitModel != null)
             {
-                processGainSign = -1;
+                if (referenceUnitModel.modelParameters.GetTotalCombinedProcessGain(inputIdx) < 0)
+                {
+                    processGainSign = -1;
+                }
             }*/
 
             // v1: just use first value as "u0", just perturbing this value 
@@ -170,14 +172,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 double y0 = tuningDataSet.ymeas[0];
             }*/
             double yset0 = unitDataSet.Y_setpoint[0];
-            deltaU          = vec.Subtract(unitDataSet.U.GetRow(inputIdx), u0);//TODO : U including feed-forward?
+            deltaU          = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), u0);//TODO : U including feed-forward?
             LowPass lowPass = new LowPass(unitDataSet.GetTimeBase());
             // filter is experimental, consider removing if cannot be made to work.
             double FilterTc_s = 0;// tuningDataSet.timeBase_s;
-            /*if (referenceProcessId != null)
+            if (referenceUnitModel != null)
             {
-                FilterTc_s = referenceProcessId.TimeConstant_s;
-            } */
+                FilterTc_s = referenceUnitModel.modelParameters.TimeConstant_s;
+            } 
 
             double[] deltaU_lp = lowPass.Filter(deltaU, FilterTc_s,2);
             double[] deltaYset = vec.Subtract(unitDataSet.Y_setpoint, yset0);
@@ -196,7 +198,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (!Double.IsNaN(processGains[inputIdx]))
                 {
-                    candidateGainD = processGains[inputIdx];
+                    candidateGainD = -processGains[inputIdx];
                     candidateGainSet = true;
                 }
             }
