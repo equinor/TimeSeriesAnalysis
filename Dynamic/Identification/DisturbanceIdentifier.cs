@@ -174,11 +174,11 @@ namespace TimeSeriesAnalysis.Dynamic
             LowPass lowPass = new LowPass(unitDataSet.GetTimeBase());
             // filter is experimental, consider removing if cannot be made to work.
             double FilterTc_s = 0;// tuningDataSet.timeBase_s;
-            if (unitModel != null)
+       /*     if (unitModel != null)
             {
                 FilterTc_s = unitModel.modelParameters.TimeConstant_s;
             } 
-            
+         */   
 
             /*double[] dest_f2_proptoGain = du_contributionFromU;
             double[] dest_f2_constTerm = vec.Add(deltaYset, e);

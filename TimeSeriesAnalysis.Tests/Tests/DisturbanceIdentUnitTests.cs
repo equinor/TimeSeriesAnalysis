@@ -75,7 +75,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(5)]
         public void Static_StepChangeDisturbance_ProcessAndDisturbanceEstimatedOk(double stepAmplitude)
         {
-            var trueDisturbance = TimeSeriesCreator.Step(N / 4, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
 

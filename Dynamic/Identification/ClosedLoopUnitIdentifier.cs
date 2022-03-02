@@ -32,9 +32,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </para>
         /// </remarks>
         /// <param name="dataSet">the unit data set, containing both the input to the unit and the output</param>
-        /// <param name="simData">the data set of simulated variables, to which the algorithm adds the estimated disturbance signal</param>
+        /// <param name="plantSim">an optional PidModel that is used to co-simulate the model and disturbance, improving identification</param>
+        /// <param name="inputIdx">the index of the input</param>
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
-        public (UnitModel,double[]) Identify(UnitDataSet dataSet )
+        public (UnitModel,double[]) Identify(UnitDataSet dataSet, PidModel pidModel=null, int inputIdx = 0 )
         {
             const bool doDebuggingPlot = true;
 
@@ -48,9 +49,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
             double[] u0 = dataSet.U.GetRow(0);
 
-            var inputIdx = 0;// TODO: make general
-
+            bool isOK;
             Vec vec = new Vec();
+
+            var dataSet1 = new UnitDataSet(dataSet);
+            var dataSet2 = new UnitDataSet(dataSet);
+            var dataSet3 = new UnitDataSet(dataSet);
+
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a process gains, 
             // to give afirst estimate of the disturbance
@@ -59,24 +64,27 @@ namespace TimeSeriesAnalysis.Dynamic
             // dynamic "overshoots" will enter into the estimated disturbance, try to fix this by doing 
             // "refinement" runs afterwards.
             DisturbanceIdResult distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet, null,inputIdx);
+                (dataSet1, null,inputIdx);
             var id = new UnitIdentifier();
-            dataSet.D = distIdResult1.d_est;
-            var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet,false,u0);
+
+            dataSet1.D = distIdResult1.d_est;
+            var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1,false,u0);
             idDisturbancesList.Add(distIdResult1);
             idUnitModelsList.Add(unitModel_run1);
-
+     //       isOK = ClosedLoopSim(dataSet,unitModel_run1, pidModel, distIdResult1.d_est);
             // ----------------
             // run 2: now we have a decent first estimate of the distubance and the process gain, but 
             // we have disturbance vector estimate that has some process dynamics in it, so we need to refine the 
             // model to get the correct dynamics.
 
             DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
-                dataSet, unitModel_run1, inputIdx);
-            dataSet.D = distIdResult2.d_est;
-            var unitModel_run2 = id.IdentifyLinear(ref dataSet,true, u0);
+                dataSet2, unitModel_run1, inputIdx);
+
+            dataSet2.D = distIdResult2.d_est;
+            var unitModel_run2 = id.IdentifyLinear(ref dataSet2,true, u0);
             idDisturbancesList.Add(distIdResult2);
             idUnitModelsList.Add(unitModel_run2);
+       //     isOK = ClosedLoopSim(dataSet, unitModel_run2, pidModel, distIdResult2.d_est);
 
             // NB! in some cases such as if there is a step in the setpoint and the disturbance is small and 
             //      be approximated as zero, then the estimation will not keep improving beyond this point.
@@ -86,12 +94,13 @@ namespace TimeSeriesAnalysis.Dynamic
             // out some of the dynamics from the disturbance vector and see if this improves estiamtion.
 
             DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet, unitModel_run2, inputIdx);
-            dataSet.D = distIdResult3.d_est;
-            var unitModel_run3 = id.IdentifyLinear(ref dataSet, true, u0);
+                (dataSet3, unitModel_run2, inputIdx);
+
+            dataSet3.D = distIdResult3.d_est;
+            var unitModel_run3 = id.IdentifyLinear(ref dataSet3, true, u0);
             idDisturbancesList.Add(distIdResult3);
             idUnitModelsList.Add(unitModel_run3);
-
+        //    isOK = ClosedLoopSim(dataSet, unitModel_run3, pidModel, distIdResult3.d_est);
             // ----------------
             // after run 3:
             // if (the data shows just excited by disturbances)
@@ -225,5 +234,17 @@ namespace TimeSeriesAnalysis.Dynamic
             UnitModel  identUnitModel = idUnitModelsList.ToArray()[idUnitModelsList.Count - 1];
             return (identUnitModel,disturbance);
         }
+
+        /*
+        public bool ClosedLoopSim(UnitDataSet unitData, UnitModel model, PidModel pid, double[] disturbance)
+        {
+            if (pid == null)
+            {
+                return false;
+            }
+            var sim = new UnitSimulator(model);
+            unitData.D = disturbance;
+            return sim.CoSimulate(pid, ref unitData);
+        }*/
     }
 }
