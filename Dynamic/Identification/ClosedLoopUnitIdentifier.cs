@@ -26,6 +26,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Identify the unit model of a closed-loop system and the distrubance (additive output signal)
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Currently always assumes that PID-index is first index of unit model(can be improved)
+        /// </para>
+        /// </remarks>
         /// <param name="dataSet">the unit data set, containing both the input to the unit and the output</param>
         /// <param name="simData">the data set of simulated variables, to which the algorithm adds the estimated disturbance signal</param>
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
@@ -43,6 +48,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             double[] u0 = dataSet.U.GetRow(0);
 
+            var inputIdx = 0;// TODO: make general
+
             Vec vec = new Vec();
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a process gains, 
@@ -52,9 +59,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // dynamic "overshoots" will enter into the estimated disturbance, try to fix this by doing 
             // "refinement" runs afterwards.
             DisturbanceIdResult distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet, null);
+                (dataSet, null,inputIdx);
             var id = new UnitIdentifier();
-            dataSet.D = distIdResult1.dest_f1;
+            dataSet.D = distIdResult1.d_est;
             var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet,false,u0);
             idDisturbancesList.Add(distIdResult1);
             idUnitModelsList.Add(unitModel_run1);
@@ -65,8 +72,8 @@ namespace TimeSeriesAnalysis.Dynamic
             // model to get the correct dynamics.
 
             DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
-                dataSet, unitModel_run1);
-            dataSet.D = distIdResult2.dest_f1;
+                dataSet, unitModel_run1, inputIdx);
+            dataSet.D = distIdResult2.d_est;
             var unitModel_run2 = id.IdentifyLinear(ref dataSet,true, u0);
             idDisturbancesList.Add(distIdResult2);
             idUnitModelsList.Add(unitModel_run2);
@@ -79,8 +86,8 @@ namespace TimeSeriesAnalysis.Dynamic
             // out some of the dynamics from the disturbance vector and see if this improves estiamtion.
 
             DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet, unitModel_run2);
-            dataSet.D = distIdResult3.dest_f1;
+                (dataSet, unitModel_run2, inputIdx);
+            dataSet.D = distIdResult3.d_est;
             var unitModel_run3 = id.IdentifyLinear(ref dataSet, true, u0);
             idDisturbancesList.Add(distIdResult3);
             idUnitModelsList.Add(unitModel_run3);
@@ -146,7 +153,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
                     DisturbanceIdResult distIdResult4 = DisturbanceIdentifier.EstimateDisturbance
                         (dataSet, unitModel_run3);
-                    dataSet.D = distIdResult4.dest_f1;
+                    dataSet.D = distIdResult4.d_est;
                     var unitModel_run4 = id.Identify(ref dataSet);
                     idDisturbancesList.Add(distIdResult4);
                     idUnitModelsList.Add(unitModel_run4);
@@ -169,43 +176,43 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 Plot.FromList(
                     new List<double[]> { 
-                        idDisturbancesList[0].dest_f1,
-                        idDisturbancesList[1].dest_f1,
-                        idDisturbancesList[2].dest_f1,
+                        idDisturbancesList[0].d_est,
+                        idDisturbancesList[1].d_est,
+                        idDisturbancesList[2].d_est,
                         idDisturbancesList[0].d_HF,
                         idDisturbancesList[1].d_HF,
                         idDisturbancesList[2].d_HF,
-                        idDisturbancesList[0].d_LF,
-                        idDisturbancesList[1].d_LF,
-                        idDisturbancesList[2].d_LF,
+                        idDisturbancesList[0].d_u,
+                        idDisturbancesList[1].d_u,
+                        idDisturbancesList[2].d_u,
                     },
                     new List<string> {"y1=d_run1", "y1=d_run2", "y1=d_run3",
                     "y3=dHF_run1", "y3=dHF_run2", "y3=dHF_run3",
                     "y3=dLF_run1", "y3=dLF_run2", "y3=dLF_run3"
                     },
-                    dataSet.GetTimeBase());
+                    dataSet.GetTimeBase(), "ClosedLoopUnitId_debug1");
                 dataSet.D = null;
 
                 var sim1 = new UnitSimulator(idUnitModelsList[0]);
-                var sim1results = sim1.Simulate(ref dataSet);
+                var sim1results = sim1.Simulate(ref dataSet,false,true);
                 var sim2 = new UnitSimulator(idUnitModelsList[1]);
-                var sim2results = sim2.Simulate(ref dataSet);
+                var sim2results = sim2.Simulate(ref dataSet, false, true);
                 var sim3 = new UnitSimulator(idUnitModelsList[2]);
-                var sim3results = sim3.Simulate(ref dataSet);
+                var sim3results = sim3.Simulate(ref dataSet, false, true);
 
                 Plot.FromList(
                     new List<double[]> {
                         dataSet.Y_meas,
-                        vec.Add(sim1results, idDisturbancesList[0].dest_f1),
-                        vec.Add(sim2results, idDisturbancesList[1].dest_f1),
-                        vec.Add(sim3results, idDisturbancesList[2].dest_f1),
+                        vec.Add(sim1results, idDisturbancesList[0].d_est),
+                        vec.Add(sim2results, idDisturbancesList[1].d_est),
+                        vec.Add(sim3results, idDisturbancesList[2].d_est),
                         sim1results,
                         sim2results,
                         sim3results,
                     },
                     new List<string> {"y1=y_meas","y1=xd_run1", "y1=xd_run2", "y1=xd_run3",
                     "y3=x_run1","y3=x_run2","y3=x_run3"},
-                    dataSet.GetTimeBase());
+                    dataSet.GetTimeBase(),"ClosedLoopUnitId_debug2");
             }
 
             // - note that by tuning rules often Kp = 0.5 * Kc approximately. 
@@ -214,7 +221,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // match exactly(a good thing? coudl give insight on model fit?)
             // - could we make a function that gives out the closed loop step response of the 
             // pid controller/process in closed loop, to see if the closed loop has overshoot/undershoot? 
-            double[] disturbance = idDisturbancesList.ToArray()[idDisturbancesList.Count-1].dest_f1;
+            double[] disturbance = idDisturbancesList.ToArray()[idDisturbancesList.Count-1].d_est;
             UnitModel  identUnitModel = idUnitModelsList.ToArray()[idUnitModelsList.Count - 1];
             return (identUnitModel,disturbance);
         }

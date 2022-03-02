@@ -96,7 +96,8 @@ variable <code>u</code> by feedback control, thus moving the effect of the distu
 manipualted <code>u</code>.</p>
 <p>Observing the offset between setpoint and measurement gives a <em>&quot;high-frequency&quot;</em> <code>d_HF</code> response and is seen
 first, while the change in <code>u</code> is gradual and <em>&quot;low-frequency&quot;</em> <code>d_LF</code> and the approach
-will attempt to combine the two <img src="images/sysid_disturbance_ex2.png" alt="ex3"></p>
+will attempt to combine the two as shown below</p>
+<p><img src="images/sysid_disturbance_ex3.png" alt="ex3"></p>
 <p><em>The aim of this section is to develop an algorithm to estimate the the un-meausred disturbance <code>d</code>
 indirectly based on the measured <code>u</code> and <code>e</code></em></p>
 <h2 id="why-is-distrubance-signal-estimation-important">Why is distrubance signal estimation important?</h2>
@@ -152,6 +153,7 @@ is found by the approximation</p>
 done on the un-meausred <code>x</code> found from</p>
 <pre><code>x = y-d
 </code></pre>
+<h3 id="section"></h3>
 <h3 id="algorithm">Algorithm</h3>
 <pre><code>(In the case of no setpoint changes in the data set)
 - Guess the process gain, as shown above

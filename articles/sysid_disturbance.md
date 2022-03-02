@@ -27,14 +27,12 @@ manipualted ``u``.
 
 Observing the offset between setpoint and measurement gives a *"high-frequency"* ``d_HF`` response and is seen 
 first, while the change in ``u`` is gradual and *"low-frequency"* ``d_LF`` and the approach
-will attempt to combine the two ![ex3](./images/sysid_disturbance_ex2.png)
+will attempt to combine the two as shown below
 
-
+![ex3](./images/sysid_disturbance_ex3.png)
 
 *The aim of this section is to develop an algorithm to estimate the the un-meausred disturbance ``d``
 indirectly based on the measured ``u`` and ``e``*
-
-
 
 ## Why is distrubance signal estimation important?
 
@@ -111,6 +109,13 @@ done on the un-meausred ``x`` found from
 ```
 x = y-d
 ```
+
+### 
+
+
+
+
+
 
 ### Algorithm
 ```

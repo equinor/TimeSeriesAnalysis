@@ -65,24 +65,13 @@ namespace TimeSeriesAnalysis.Utility
         ///</summary>
         public static double Format(double number, int digits, out int exponent)
         {
-
+            // scientific format : coefficient(double) times E^(exponent, an integer)
             string gridIntervalScientific = number.ToString("E" + (digits - 1));
             double parsed = Double.Parse(gridIntervalScientific);
             string[] splitStr = gridIntervalScientific.Split('E');
             if (splitStr.Length > 1)
             {
-                exponent = Int32.Parse(splitStr[1]);//"4e+001"->001
-
-                if (number > 0)
-                {
-                    if (number < parsed)
-                        parsed -= - Math.Pow(10, exponent - digits + 1);
-                }
-                else if (number < 0)
-                {
-                    if (number > parsed)
-                        parsed +=  Math.Pow(10, exponent - digits + 1);
-                }
+                exponent = Int32.Parse(splitStr[1].Replace("+",""));//"4e+001"->001
                 return parsed;
             }
             else
