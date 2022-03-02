@@ -128,38 +128,37 @@ after the simulation.</p>
 <p>The entire code:</p>
 <pre><code class="lang-csharp" name="Examples">public void Ex6_process_simulation()
 {
-    int timeBase_s = 1;
+    double timeBase_s = 1;
     int N = 500;
 
     UnitParameters modelParameters = new UnitParameters
     {
-        WasAbleToIdentify = true,
         TimeConstant_s = 10,
         LinearGains = new double[] { 1,2 },
         TimeDelay_s = 0,
         Bias = 5
     };
     UnitModel processModel 
-        = new UnitModel(modelParameters, timeBase_s,&quot;SubProcess1&quot;);
+        = new UnitModel(modelParameters, &quot;SubProcess1&quot;);
     
     var pidParameters = new PidParameters()
     {
         Kp = 0.5,
         Ti_s = 20
     };
-    var pidModel = new PidModel(pidParameters, timeBase_s,&quot;PID1&quot;);
+    var pidModel = new PidModel(pidParameters, &quot;PID1&quot;);
     var sim = new PlantSimulator (
         new List&lt;ISimulatableModel&gt; { pidModel, processModel  });
     sim.ConnectModels(processModel,pidModel);
     sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
-    var inputData = new TimeSeriesDataSet(timeBase_s);
-    inputData.Add(sim.AddSignal(processModel,SignalType.Disturbance_D),
+    var inputData = new TimeSeriesDataSet();
+    inputData.Add(sim.AddExternalSignal(processModel,SignalType.Disturbance_D),
         TimeSeriesCreator.Step(N/4,N,0,1));
-    inputData.Add(sim.AddSignal(pidModel,SignalType.Setpoint_Yset),
+    inputData.Add(sim.AddExternalSignal(pidModel,SignalType.Setpoint_Yset),
         TimeSeriesCreator.Constant(50,N));
-    inputData.Add(sim.AddSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
+    inputData.Add(sim.AddExternalSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
         TimeSeriesCreator.Step(N/2,N,0,1));
-
+    inputData.CreateTimestamps(timeBase_s);
     var isOk = sim.Simulate(inputData,out var simData);
 
     Plot.FromList(new List&lt;double[]&gt; {

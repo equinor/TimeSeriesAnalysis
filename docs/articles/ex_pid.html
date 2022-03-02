@@ -82,26 +82,26 @@
 <p>In this example, a step disturbance influences a linear subprocess that is controlled by a PID-controller toward a constant setpoint of <code>y=50</code>, like depicted in the below figure:</p>
 <p><img src="images/fig_pidprocess.png" alt="Example 5 result"></p>
 <p><code>SubProcessSimulator.CoSimulateProcessAndPID</code> co-simulates a single PID-controller/processes combination such as this.</p>
-<pre><code class="lang-csharp" name="Examples">int timeBase_s = 1;
+<pre><code class="lang-csharp" name="Examples">double timeBase_s = 1;
 int N = 500;
 var modelParameters = new UnitParameters
 {
-    WasAbleToIdentify = true,
     TimeConstant_s = 10,
     LinearGains = new double[] { 1 },
     TimeDelay_s = 0,
     Bias = 5
 };
-var processModel = new UnitModel(modelParameters, timeBase_s);
+var processModel = new UnitModel(modelParameters);
 var pidParameters = new PidParameters()
 {
     Kp = 0.5,
     Ti_s = 20
 };
-var pid = new PidModel(pidParameters, timeBase_s);
-var dataSet = new UnitDataSet(timeBase_s,N);
+var pid = new PidModel(pidParameters,&quot;PID1&quot;);
+var dataSet = new UnitDataSet();
 dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
 dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
+dataSet.CreateTimeStamps(timeBase_s);
 var simulator = new UnitSimulator(processModel);
 simulator.CoSimulate( pid, ref dataSet);
 

@@ -95,23 +95,23 @@ code of this example:</p>
     };
     UnitParameters modelParameters1 = new UnitParameters
     {
-        WasAbleToIdentify = true,
         TimeConstant_s = 10,
         LinearGains = new double[] { 1 },
         TimeDelay_s = 5,
         Bias = 5
     };
-    var processModel1 = new UnitModel(modelParameters1, timeBase_s, &quot;Process1&quot;);
-    var pidModel1 = new PidModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
+    var processModel1 = new UnitModel(modelParameters1, &quot;Process1&quot;);
+    var pidModel1 = new PidModel(pidParameters1, &quot;PID1&quot;);
     var processSim = new PlantSimulator(
      new List&lt;ISimulatableModel&gt; { pidModel1, processModel1 });
     processSim.ConnectModels(processModel1, pidModel1);
     processSim.ConnectModels(pidModel1, processModel1);
-    var inputData = new TimeSeriesDataSet(timeBase_s);
-    inputData.Add(processSim.AddSignal(pidModel1, SignalType.Setpoint_Yset), 
+    var inputData = new TimeSeriesDataSet();
+    inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), 
         TimeSeriesCreator.Step(N / 4, N, 50, 55));
-    inputData.Add(processSim.AddSignal(processModel1, SignalType.Disturbance_D), 
+    inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), 
         TimeSeriesCreator.Noise(N, noiseAmplitude)) ;
+    inputData.CreateTimestamps(timeBase_s);
     processSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
     // do the actual identification

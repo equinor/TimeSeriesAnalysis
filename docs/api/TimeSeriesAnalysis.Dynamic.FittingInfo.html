@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PidParameters
+    <title>Class FittingInfo
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PidParameters
+    <meta name="title" content="Class FittingInfo
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.59.0.0">
     
@@ -78,27 +78,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_PidParameters" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters" class="text-break">Class PidParameters
+  <h1 id="TimeSeriesAnalysis_Dynamic_FittingInfo" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo" class="text-break">Class FittingInfo
   </h1>
-  <div class="markdown level0 summary"><p>Parameters of the PIDModel
-<a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
-<a class="xref" href="TimeSeriesAnalysis.Dynamic.PidController.html">PidController</a></p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html">ModelParametersBaseClass</a></div>
-    <div class="level2"><span class="xref">PidParameters</span></div>
+    <div class="level1"><span class="xref">FittingInfo</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelParametersBaseClass_Fitting">ModelParametersBaseClass.Fitting</a>
-    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -117,115 +110,28 @@
     <div>
       <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_PidParameters_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_FittingInfo_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PidParameters : ModelParametersBaseClass</code></pre>
-  </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters__ctor" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.#ctor">PidParameters()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidParameters()</code></pre>
+    <pre><code class="lang-csharp hljs">public class FittingInfo</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_AntiSugeParams_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_AntiSugeParams" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams">AntiSugeParams</h4>
-  <div class="markdown level1 summary"><p>PID anti-surge paramters objet. This is optional, set to null if not anti-surge PID</p>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_NFittingBadDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.NFittingBadDataPoints*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_NFittingBadDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.NFittingBadDataPoints">NFittingBadDataPoints</h4>
+  <div class="markdown level1 summary"><p>Number of bad data points ignored during fitting</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidAntiSurgeParams AntiSugeParams { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidAntiSurgeParams.html">PidAntiSurgeParams</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_FeedForward_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.FeedForward*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_FeedForward" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.FeedForward">FeedForward</h4>
-  <div class="markdown level1 summary"><p>Feed-forward parameters object. This is optional, set to null when feedforward is not in use.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidFeedForward FeedForward { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidFeedForward.html">PidFeedForward</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_GainScheduling_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.GainScheduling*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_GainScheduling" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.GainScheduling">GainScheduling</h4>
-  <div class="markdown level1 summary"><p>Gain-scheduling object. This is optional, set to null gain-scheduling is not in use.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidGainScheduling GainScheduling { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidGainScheduling.html">PidGainScheduling</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_Kp_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Kp*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_Kp" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Kp">Kp</h4>
-  <div class="markdown level1 summary"><p>Proportional gain of controller</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Kp { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double NFittingBadDataPoints { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -244,14 +150,14 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_NanValue_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.NanValue*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_NanValue" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.NanValue">NanValue</h4>
-  <div class="markdown level1 summary"><p>If the PID-controller is to be protected from a specific value that is used to identify bad or missing data, specify here</p>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_NFittingTotalDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.NFittingTotalDataPoints*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_NFittingTotalDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.NFittingTotalDataPoints">NFittingTotalDataPoints</h4>
+  <div class="markdown level1 summary"><p>Number of total data points (good and bad) available for fitting</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double NanValue { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double NFittingTotalDataPoints { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,40 +176,17 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_Scaling_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Scaling*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_Scaling" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Scaling">Scaling</h4>
-  <div class="markdown level1 summary"><p>PID-scaling object. This is optional, set to null to use unscaled PID.</p>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingAbs_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingAbs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingAbs" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingAbs">ObjFunValFittingAbs</h4>
+  <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
+<p>
+This is the R-squared of the &quot;absolute&quot; sum(ymeas[k]-ymod[k-1])
+</p>>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidScaling Scaling { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidScaling.html">PidScaling</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_Td_s_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Td_s*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_Td_s" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Td_s">Td_s</h4>
-  <div class="markdown level1 summary"><p>Derivative term time constant[in seconds], 0 = no derivative term</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Td_s { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double ObjFunValFittingAbs { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -322,14 +205,17 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_Ti_s_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Ti_s*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_Ti_s" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Ti_s">Ti_s</h4>
-  <div class="markdown level1 summary"><p>Integral time constant [in seconds], 0 = no integral term</p>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingDiff_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingDiff" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingDiff">ObjFunValFittingDiff</h4>
+  <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
+<p>
+This is the R-squared of the &quot;differences&quot;  sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
+</p>>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Ti_s { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double ObjFunValFittingDiff { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -346,46 +232,76 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_AddWarning_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_AddWarning_TimeSeriesAnalysis_Dynamic_PidIdentWarning_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning(TimeSeriesAnalysis.Dynamic.PidIdentWarning)">AddWarning(PidIdentWarning)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingAbs_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingAbs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingAbs" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingAbs">RsqFittingAbs</h4>
+  <div class="markdown level1 summary"><p>The value of the R2 or root mean square</p>
+<p>
+This is the R-squared of the &quot;absolute&quot; sum(ymeas[k] - ymod[k] )
+</p>>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddWarning(PidIdentWarning warning)</code></pre>
+    <pre><code class="lang-csharp hljs">public double RsqFittingAbs { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidIdentWarning.html">PidIdentWarning</a></td>
-        <td><span class="parametername">warning</span></td>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_ToString_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.ToString*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_ToString" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingDiff_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingDiff" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingDiff">RsqFittingDiff</h4>
+  <div class="markdown level1 summary"><p>The value of the R2 or root mean square of fitting,higher is better (used to choose among models)</p>
+<p>
+This is the R-squared of the &quot;differences&quot; sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
+</p>>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public double RsqFittingDiff { get; set; }</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_SolverID_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.SolverID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_SolverID" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.SolverID">SolverID</h4>
+  <div class="markdown level1 summary"><p>A string that identifies the solver that was used to find the model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string SolverID { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -400,8 +316,32 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.ToString()</span></div>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_WasAbleToIdentify_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.WasAbleToIdentify*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_WasAbleToIdentify" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.WasAbleToIdentify">WasAbleToIdentify</h4>
+  <div class="markdown level1 summary"><p>True if identification was able to identify, otherwise false.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool WasAbleToIdentify { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

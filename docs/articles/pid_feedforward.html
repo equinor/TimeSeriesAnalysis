@@ -87,7 +87,6 @@ Note that while the PID-controller is able to stabilize the process, it does cre
 offset in <code>y</code>, it falls to about <code>y=46.5</code> at its lowest.</p>
 <pre><code class="lang-csharp" name="Example">var processParameters = new UnitParameters
 {
-    WasAbleToIdentify = true,
     TimeConstant_s = 30,
     LinearGains = new double[] { 1.1 },
     U0 = new double[] { 50 },
@@ -96,7 +95,6 @@ offset in <code>y</code>, it falls to about <code>y=46.5</code> at its lowest.</
 };
 var disturbanceParameters = new UnitParameters
 {
-    WasAbleToIdentify = true,
     TimeConstant_s = 30,
     LinearGains = new double[] { 1 },
     U0 = new double[] { 0 },
@@ -110,10 +108,10 @@ var pidParameters = new PidParameters()
 };
 
 var processModel
-    = new UnitModel(processParameters, timeBase_s, &quot;Process1&quot;);
+    = new UnitModel(processParameters,  &quot;Process1&quot;);
 var disturbanceModel
-    = new UnitModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
-var pidModel = new PidModel(pidParameters, timeBase_s, &quot;PID&quot;);
+    = new UnitModel(disturbanceParameters, &quot;Disturbance1&quot;);
+var pidModel = new PidModel(pidParameters, &quot;PID&quot;);
 
 var simNoFeedF = new PlantSimulator(
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
@@ -122,13 +120,13 @@ simNoFeedF.ConnectModels(pidModel, processModel);
 simNoFeedF.ConnectModels(processModel, pidModel);
 simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-var inputData = new TimeSeriesDataSet(timeBase_s);
+var inputData = new TimeSeriesDataSet();
 
-inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
+inputData.Add(simNoFeedF.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
     TimeSeriesCreator.Constant(60, 600));
-inputData.Add(simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U),
+inputData.Add(simNoFeedF.AddExternalSignal(disturbanceModel, SignalType.External_U),
     TimeSeriesCreator.Step(300, 600, 25, 0));
-
+inputData.CreateTimestamps(timeBase_s);
 var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
 Plot.FromList(new List&lt;double[]&gt;
@@ -153,7 +151,6 @@ with <code>y</code> falling to just <code> y=50.4</code> at its lowest, but at t
 <pre><code class="lang-csharp" name="Example">
 var processParameters = new UnitParameters
 {
-    WasAbleToIdentify = true,
     TimeConstant_s = 30,
     LinearGains = new double[] { 1.1 },
     U0 = new double[] { 50 },
@@ -162,7 +159,6 @@ var processParameters = new UnitParameters
 };
 var disturbanceParameters = new UnitParameters
 {
-    WasAbleToIdentify = true,
     TimeConstant_s = 30,
     LinearGains = new double[] { 1 },
     U0 = new double[] { 0 },
@@ -185,10 +181,10 @@ var pidParameters = new PidParameters()
 };
 
 var processModel
-    = new UnitModel(processParameters, timeBase_s, &quot;Process1&quot;);
+    = new UnitModel(processParameters, &quot;Process1&quot;);
 var disturbanceModel
-    = new UnitModel(disturbanceParameters, timeBase_s, &quot;Disturbance1&quot;);
-var pidModel = new PidModel(pidParameters, timeBase_s, &quot;PID&quot;);
+    = new UnitModel(disturbanceParameters, &quot;Disturbance1&quot;);
+var pidModel = new PidModel(pidParameters, &quot;PID&quot;);
 
 var simNoFeedF = new PlantSimulator(
     new List&lt;ISimulatableModel&gt; { processModel, disturbanceModel, pidModel });
@@ -197,13 +193,13 @@ simNoFeedF.ConnectModels(pidModel, processModel);
 simNoFeedF.ConnectModels(processModel, pidModel);
 simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-var inputData = new TimeSeriesDataSet(timeBase_s);
+var inputData = new TimeSeriesDataSet();
 
-inputData.Add(simNoFeedF.AddSignal(pidModel, SignalType.Setpoint_Yset),
+inputData.Add(simNoFeedF.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
     TimeSeriesCreator.Constant(60, 600));
-string dSignalID = simNoFeedF.AddSignal(disturbanceModel, SignalType.External_U);
+string dSignalID = simNoFeedF.AddExternalSignal(disturbanceModel, SignalType.External_U);
 inputData.Add(dSignalID, TimeSeriesCreator.Step(300, 600, 25, 0));
-
+inputData.CreateTimestamps(timeBase_s);
 
 simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
 

@@ -87,6 +87,16 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html">ClosedLoopUnitIdentifier</a></h4>
+      <section><p>Identification that attempts to identify a unit model jointly with
+estimating the additive signal acting on the output(disturbance signal) yet is
+counter-acted by closed-loop (feedback)control, such as with PID-control.</p>
+<p>The approach requires combining information in the measured output signal with the
+information in the manipulated variable(determined by active control)
+that is inputted into the process</p>
+<p>In order to accomplish this estimation, the process model and the disturbance signal
+are estimted together.</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ConnectionParser.html">ConnectionParser</a></h4>
       <section><p>Class that tracks which model is connected to which in a set of models.</p>
 <p>
@@ -94,6 +104,8 @@ This is important when traversing the models when simulating with the
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.html">PlantSimulator</a>, as these models need to be
 run in a specific order</p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingInfo.html">FittingInfo</a></h4>
+      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html">ModelBaseClass</a></h4>
       <section><p>Abstract base class that contains common functionality across all models which are to implement
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a></p>
@@ -315,6 +327,8 @@ simulated by <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.htm
 </section>
     <h3 id="enums">Enums
   </h3>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.html">DisturbanceSetToZeroReason</a></h4>
+      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.INDEX.html">INDEX</a></h4>
       <section><p>Enum to provide more readable code, for the input instance <code>(int)INDEX.FIRST</code> may be more readable than &quot;0&quot;</p>
 </section>

@@ -126,105 +126,14 @@
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_System_Double_System_Double___System_Double___System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(System.Double,System.Double[],System.Double[],System.String)">UnitDataSet(Double, Double[], Double[], String)</h4>
-  <div class="markdown level1 summary"><p>Constructor for when data set only has a single inut u</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitDataSet(double timeBase_s, double[] u, double[] y_meas = null, string name = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">u</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">y_meas</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">name</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_System_Double_System_Double_0__0___System_Double___System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(System.Double,System.Double[0:,0:],System.Double[],System.String)">UnitDataSet(Double, Double[,], Double[], String)</h4>
-  <div class="markdown level1 summary"><p>Constructor for data set with inputs <code>U</code>, i.e. where a relationship
-that at least partially explains <code>y_meas</code> is konwn</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitDataSet(double timeBase_s, double[, ] U, double[] y_meas = null, string name = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td><p>the time base in seconds</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[,]</td>
-        <td><span class="parametername">U</span></td>
-        <td><p>The number of rows of the 2D-array U determines the duration dataset</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">y_meas</span></td>
-        <td><p>the measured output of the system, can be null</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>optional internal name of dataset</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_System_Double_System_Int32_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(System.Double,System.Int32,System.String)">UnitDataSet(Double, Int32, String)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(System.String)">UnitDataSet(String)</h4>
   <div class="markdown level1 summary"><p>Constructor for data set without inputs - for &quot;autonomous&quot; processes such as sinusoids,
 rand walks or other disturbancs.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitDataSet(double timeBase_s, int numDataPoints, string name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitDataSet(string name = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -237,18 +146,6 @@ rand walks or other disturbancs.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td><p>the time base in seconds</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">numDataPoints</span></td>
-        <td><p>the desired nubmer of datapoints of the dataset</p>
-</td>
-      </tr>
-      <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
         <td><p>optional internal name of dataset</p>
@@ -259,14 +156,14 @@ rand walks or other disturbancs.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_System_ValueTuple_System_Double___System_DateTime____System_ValueTuple_System_Double___System_DateTime____System_String_System_Nullable_System_Int32__" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(System.ValueTuple{System.Double[],System.DateTime[]},System.ValueTuple{System.Double[],System.DateTime[]},System.String,System.Nullable{System.Int32})">UnitDataSet((Double[], DateTime[]), (Double[], DateTime[]), String, Nullable&lt;Int32&gt;)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet__ctor_System_ValueTuple_System_Double___System_DateTime____System_ValueTuple_System_Double___System_DateTime____System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.#ctor(System.ValueTuple{System.Double[],System.DateTime[]},System.ValueTuple{System.Double[],System.DateTime[]},System.String)">UnitDataSet((Double[], DateTime[]), (Double[], DateTime[]), String)</h4>
   <div class="markdown level1 summary"><p>Create a dataset for single-input system from two signals that have separate but overlapping
 time-series(each given as value-date tuples)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitDataSet((double[], DateTime[]) u, (double[], DateTime[]) y_meas, string name = null, int? timeBase_s = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitDataSet((double[], DateTime[]) u, (double[], DateTime[]) y_meas, string name = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -294,12 +191,6 @@ time-series(each given as value-date tuples)</p>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
         <td><p>name of dataset</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td><p>optinally, hard code the timebase in seconds</p>
 </td>
       </tr>
     </tbody>
@@ -393,31 +284,6 @@ time-series(each given as value-date tuples)</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_t0" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.t0">t0</h4>
-  <div class="markdown level1 summary"><p>The time stamp of the start of the dataset</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DateTime t0</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -475,32 +341,6 @@ value is reserved for indicating that a value is bad or missing.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_NumDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.NumDataPoints*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_NumDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.NumDataPoints">NumDataPoints</h4>
-  <div class="markdown level1 summary"><p>The number of data points</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int NumDataPoints { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_ProcessName_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.ProcessName*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_ProcessName" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.ProcessName">ProcessName</h4>
   <div class="markdown level1 summary"><p>Name</p>
@@ -527,32 +367,6 @@ value is reserved for indicating that a value is bad or missing.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeBase_s_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.TimeBase_s*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeBase_s" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.TimeBase_s">TimeBase_s</h4>
-  <div class="markdown level1 summary"><p>The sampling time</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double TimeBase_s { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_Times_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.Times*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_Times" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.Times">Times</h4>
   <div class="markdown level1 summary"><p>Timestamps</p>
@@ -560,7 +374,7 @@ value is reserved for indicating that a value is bad or missing.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DateTime[] Times { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public DateTime[] Times { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -737,6 +551,38 @@ value is reserved for indicating that a value is bad or missing.</p>
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_CreateTimeStamps_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.CreateTimeStamps*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_CreateTimeStamps_System_Double_System_Nullable_System_DateTime__" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.CreateTimeStamps(System.Double,System.Nullable{System.DateTime})">CreateTimeStamps(Double, Nullable&lt;DateTime&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateTimeStamps(double timeBase_s, DateTime? t0 = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+        <td><span class="parametername">t0</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_GetAverageU_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.GetAverageU*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_GetAverageU" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.GetAverageU">GetAverageU()</h4>
   <div class="markdown level1 summary"><p>Get the average value of each input in the dataset.
@@ -761,6 +607,57 @@ This is useful when defining model local around a working point.</p>
         <td><p>an array of averages, each corrsponding to one column of U.
 Returns null if it was not possible to calculate averages</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_GetNumDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.GetNumDataPoints*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_GetNumDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.GetNumDataPoints">GetNumDataPoints()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetNumDataPoints()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_GetTimeBase_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.GetTimeBase*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_GetTimeBase" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.GetTimeBase">GetTimeBase()</h4>
+  <div class="markdown level1 summary"><p>Gets the time between samples in seconds, returns  zero if times are not set</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetTimeBase()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

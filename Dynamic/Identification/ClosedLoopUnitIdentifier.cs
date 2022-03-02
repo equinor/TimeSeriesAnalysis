@@ -41,8 +41,6 @@ namespace TimeSeriesAnalysis.Dynamic
             List<UnitModel> idUnitModelsList = new List<UnitModel>();
             List<double> processGainList = new List<double>();
 
-            //    DisturbanceIdResult noDisturbance = new DisturbanceIdResult(dataSet);
-
             double[] u0 = dataSet.U.GetRow(0);
 
             Vec vec = new Vec();
@@ -186,6 +184,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     "y3=dLF_run1", "y3=dLF_run2", "y3=dLF_run3"
                     },
                     dataSet.GetTimeBase());
+                dataSet.D = null;
 
                 var sim1 = new UnitSimulator(idUnitModelsList[0]);
                 var sim1results = sim1.Simulate(ref dataSet);
@@ -196,11 +195,16 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 Plot.FromList(
                     new List<double[]> {
+                        dataSet.Y_meas,
+                        vec.Add(sim1results, idDisturbancesList[0].dest_f1),
+                        vec.Add(sim2results, idDisturbancesList[1].dest_f1),
+                        vec.Add(sim3results, idDisturbancesList[2].dest_f1),
                         sim1results,
                         sim2results,
                         sim3results,
                     },
-                    new List<string> {"y1=y_run1", "y1=y_run2", "y1=y_run3" },
+                    new List<string> {"y1=y_meas","y1=xd_run1", "y1=xd_run2", "y1=xd_run3",
+                    "y3=x_run1","y3=x_run2","y3=x_run3"},
                     dataSet.GetTimeBase());
             }
 

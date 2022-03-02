@@ -133,31 +133,14 @@ This is the return data class of <a class="xref" href="TimeSeriesAnalysis.Dynami
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(System.Double)">TimeSeriesDataSet(Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor">TimeSeriesDataSet()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonConstructor]
-public TimeSeriesDataSet(double timeBase_s)</code></pre>
+public TimeSeriesDataSet()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
@@ -227,29 +210,39 @@ public TimeSeriesDataSet(double timeBase_s)</code></pre>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_timeBase_s_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_timeBase_s" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.timeBase_s">timeBase_s</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__ctor_TimeSeriesAnalysis_Utility_CsvContent_System_Char_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.#ctor(TimeSeriesAnalysis.Utility.CsvContent,System.Char,System.String)">TimeSeriesDataSet(CsvContent, Char, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double timeBase_s { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet(CsvContent csvContent, char separator = ';', string dateTimeFormat = &quot;yyyy-MM-dd HH:mm:ss&quot;)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Utility.CsvContent.html">CsvContent</a></td>
+        <td><span class="parametername">csvContent</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Char</span></td>
+        <td><span class="parametername">separator</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dateTimeFormat</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -548,6 +541,41 @@ public TimeSeriesDataSet(double timeBase_s)</code></pre>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_CreateTimestamps_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.CreateTimestamps*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_CreateTimestamps_System_Double_System_Nullable_System_DateTime__" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.CreateTimestamps(System.Double,System.Nullable{System.DateTime})">CreateTimestamps(Double, Nullable&lt;DateTime&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates internal timestamps from a given start time and timebase, must be called after filling the values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateTimestamps(double timeBase_s, DateTime? t0 = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
+        <td><p>the time between samples in the dataset, in total seconds</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+        <td><span class="parametername">t0</span></td>
+        <td><p>start time, can be null, which can be usedful for testing</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetData_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetData*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetData_System_String___System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetData(System.String[],System.Int32)">GetData(String[], Int32)</h4>
   <div class="markdown level1 summary"><p>Get Data for multiple signals at a specific time index</p>
@@ -649,14 +677,13 @@ public TimeSeriesDataSet(double timeBase_s)</code></pre>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSimStatus_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetSimStatus" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetSimStatus">GetSimStatus()</h4>
-  <div class="markdown level1 summary"><p>Returns the simualtion status</p>
-</div>
+  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetTimeBase_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeBase*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_GetTimeBase" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.GetTimeBase">GetTimeBase()</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool GetSimStatus()</code></pre>
+    <pre><code class="lang-csharp hljs">public double GetTimeBase()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -668,7 +695,7 @@ public TimeSeriesDataSet(double timeBase_s)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -846,81 +873,10 @@ public TimeSeriesDataSet(double timeBase_s)</code></pre>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetSimStatus_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetSimStatus_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetSimStatus(System.Boolean)">SetSimStatus(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Set the termination status of the simualtion</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SetSimStatus(bool didSimulationTerminateOk)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">didSimulationTerminateOk</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>returns the same status given in</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetT0_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetT0_System_DateTime_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetT0(System.DateTime)">SetT0(DateTime)</h4>
-  <div class="markdown level1 summary"><p>Set the timestamp of the start of the dataset,from which other time stamps can be found using timebase_s</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetT0(DateTime t0)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.DateTime</span></td>
-        <td><span class="parametername">t0</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetTimeStamps_" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_SetTimeStamps_System_Collections_Generic_List_System_DateTime__" data-uid="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.SetTimeStamps(System.Collections.Generic.List{System.DateTime})">SetTimeStamps(List&lt;DateTime&gt;)</h4>
-  <div class="markdown level1 summary"><p>Explicitly sets the timestamps of the time-series (possibly overriding any timeBase_s that was given during init)</p>
+  <div class="markdown level1 summary"><p>Explicitly sets the timestamps of the time-series (possibly overriding any timeBase_s that was given during init)
+If times is null, then the method creates timestamps based on timeBase_s and t0.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

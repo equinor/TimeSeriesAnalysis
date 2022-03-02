@@ -125,7 +125,10 @@ See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_modelInputIDs">ModelBaseClass.modelInputIDs</a>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_ID">ModelBaseClass.ID</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_ModelInputIDs">ModelBaseClass.ModelInputIDs</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_additiveInputIDs">ModelBaseClass.additiveInputIDs</a>
@@ -138,9 +141,6 @@ See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID">ModelBaseClass.GetID()</a>
-    </div>
-    <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetID_System_String_">ModelBaseClass.SetID(String)</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ModelType_">ModelBaseClass.SetProcessModelType(ModelType)</a>
@@ -199,14 +199,14 @@ See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel__ctor_TimeSeriesAnalysis_Dynamic_UnitParameters_System_Double_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,System.Double,System.String)">UnitModel(UnitParameters, Double, String)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel__ctor_TimeSeriesAnalysis_Dynamic_UnitParameters_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,System.String)">UnitModel(UnitParameters, String)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonConstructor]
-public UnitModel(UnitParameters modelParameters, double timeBase_s, string ID = &quot;not_named&quot;)</code></pre>
+public UnitModel(UnitParameters modelParameters, string ID = &quot;not_named&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,13 +222,6 @@ public UnitModel(UnitParameters modelParameters, double timeBase_s, string ID = 
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">UnitParameters</a></td>
         <td><span class="parametername">modelParameters</span></td>
         <td><p>model paramter object</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td><p>the timebase in seconds, the time interval between samples
-and between calls to Iterate</p>
 </td>
       </tr>
       <tr>
@@ -298,19 +291,19 @@ and between calls to Iterate</p>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
+  <h3 id="methods">Methods
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_UnitModel_FittedDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.FittedDataSet*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_FittedDataSet" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.FittedDataSet">FittedDataSet</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_UnitModel_GetFittedDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.GetFittedDataSet*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_GetFittedDataSet" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.GetFittedDataSet">GetFittedDataSet()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitDataSet FittedDataSet { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitDataSet GetFittedDataSet()</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -325,8 +318,6 @@ and between calls to Iterate</p>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitModel_GetLengthOfInputVector_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.GetLengthOfInputVector*"></a>
@@ -537,13 +528,13 @@ added to the output in addition to the other signals.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
   <div class="markdown level1 summary"><p>Iterates the process model state one time step, based on the inputs given</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double badValueIndicator = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double timeBase_s, double badValueIndicator = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -560,6 +551,11 @@ added to the output in addition to the other signals.</p>
         <td><span class="parametername">inputs</span></td>
         <td><p>vector of inputs U. Optionally the output disturbance D can be added as the last value.</p>
 </td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
@@ -584,6 +580,33 @@ added to the output in addition to the other signals.</p>
 NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
 If some data points in U inputsU are NaN or equal to <code>badValueIndicator</code>, the last good value is returned</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitModel_SetFittedDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.SetFittedDataSet*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_SetFittedDataSet_TimeSeriesAnalysis_Dynamic_UnitDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.SetFittedDataSet(TimeSeriesAnalysis.Dynamic.UnitDataSet)">SetFittedDataSet(UnitDataSet)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetFittedDataSet(UnitDataSet dataset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataset</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

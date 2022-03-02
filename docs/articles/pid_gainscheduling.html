@@ -94,7 +94,6 @@ gain is <em>high</em>, and a second at a high value of the input, where the gain
 <pre><code class="lang-csharp" name="Example">
 var modelParameters = new UnitParameters
     {
-        WasAbleToIdentify = true,
         TimeConstant_s = 0,
         LinearGains = new double[] { 1.1 },
         Curvatures = new double[] { -0.7 },
@@ -104,21 +103,23 @@ var modelParameters = new UnitParameters
         Bias = 50
     };
     var processModel
-        = new UnitModel(modelParameters, timeBase_s, &quot;Process1&quot;);
+        = new UnitModel(modelParameters, &quot;Process1&quot;);
     
     var openLoopSim1 = new PlantSimulator(
         new List&lt;ISimulatableModel&gt; { processModel });
 
-    var inputDataSim1 = new TimeSeriesDataSet(timeBase_s);
-    inputDataSim1.Add(openLoopSim1.AddSignal(processModel, SignalType.External_U),
+    var inputDataSim1 = new TimeSeriesDataSet();
+    inputDataSim1.Add(openLoopSim1.AddExternalSignal(processModel, SignalType.External_U),
         TimeSeriesCreator.Step(50, 200, 80, 90));
+    inputDataSim1.CreateTimestamps(timeBase_s);
     openLoopSim1.Simulate(inputDataSim1,out var openLoopData1);
 
     var openLoopSim2 = new PlantSimulator(
         new List&lt;ISimulatableModel&gt; { processModel });
-    var inputDataSim2 = new TimeSeriesDataSet(timeBase_s);
-    inputDataSim2.Add(openLoopSim2.AddSignal(processModel, SignalType.External_U),
+    var inputDataSim2 = new TimeSeriesDataSet();
+    inputDataSim2.Add(openLoopSim2.AddExternalSignal(processModel, SignalType.External_U),
         TimeSeriesCreator.Step(50, 200, 20, 30));
+    inputDataSim2.CreateTimestamps(timeBase_s);
     var isOk1 = openLoopSim2.Simulate(inputDataSim2,out var openLoopData2);
 
     Plot.FromList(new List&lt;double[]&gt;
@@ -139,16 +140,17 @@ var pidParameters1 = new PidParameters()
     Kp = 0.3,
     Ti_s = 20
 };
-var pidModel1 = new PidModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
+var pidModel1 = new PidModel(pidParameters1, &quot;PID1&quot;);
 var closedLoopSim1 = new PlantSimulator(
     new List&lt;ISimulatableModel&gt; { pidModel1, processModel });
 closedLoopSim1.ConnectModels(pidModel1,processModel);
 closedLoopSim1.ConnectModels(processModel, pidModel1);
 
-var inputData1 = new TimeSeriesDataSet(timeBase_s);
-inputData1.Add(closedLoopSim1.AddSignal(pidModel1, SignalType.Setpoint_Yset),
+var inputData1 = new TimeSeriesDataSet();
+inputData1.Add(closedLoopSim1.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
     TimeSeriesCreator.Constant(20,400));
-inputData1.Add(closedLoopSim1.AddSignal(processModel,SignalType.Disturbance_D), TimeSeriesCreator.Step(100,400,0,10));
+inputData1.Add(closedLoopSim1.AddExternalSignal(processModel,SignalType.Disturbance_D), TimeSeriesCreator.Step(100,400,0,10));
+inputData1.CreateTimestamps(timeBase_s);
 var isOk =closedLoopSim1.Simulate(inputData1,out var closedLoopData1);
 
 //  the system rejecting a disturbance at y=70 with pidModel2
@@ -157,16 +159,17 @@ var pidParameters2 = new PidParameters()
     Kp = 1,//NB! higher Kp
     Ti_s = 20
 };
-var pidModel2 = new PidModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
+var pidModel2 = new PidModel(pidParameters2, &quot;PID2&quot;);
 var closedLoopSim2 = new PlantSimulator(
     new List&lt;ISimulatableModel&gt; { pidModel2, processModel });
 closedLoopSim2.ConnectModels(pidModel2, processModel);
 closedLoopSim2.ConnectModels(processModel, pidModel2);
-var inputData2 = new TimeSeriesDataSet(timeBase_s);
-inputData2.Add(closedLoopSim2.AddSignal(pidModel2, SignalType.Setpoint_Yset),
+var inputData2 = new TimeSeriesDataSet();
+inputData2.Add(closedLoopSim2.AddExternalSignal(pidModel2, SignalType.Setpoint_Yset),
     TimeSeriesCreator.Constant(70, 400));
-inputData2.Add(closedLoopSim2.AddSignal(processModel, SignalType.Disturbance_D),
+inputData2.Add(closedLoopSim2.AddExternalSignal(processModel, SignalType.Disturbance_D),
     TimeSeriesCreator.Step(100, 400, 0, 10));
+inputData2.CreateTimestamps(timeBase_s);
 var isOk2 = closedLoopSim2.Simulate(inputData2,out var closedLoopData2);
 
 Plot.FromList(new List&lt;double[]&gt;
@@ -212,17 +215,18 @@ cases is created.</p>
      }
  };
 
- var pidModelGS = new PidModel(pidParametersGS, timeBase_s, &quot;PID_GS&quot;);
+ var pidModelGS = new PidModel(pidParametersGS, &quot;PID_GS&quot;);
 
  var closedLoopSimGS_1 = new PlantSimulator(
      new List&lt;ISimulatableModel&gt; { pidModelGS, processModel });
  closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
  closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
- var inputDataGS1 = new TimeSeriesDataSet(timeBase_s);
- inputDataGS1.Add(closedLoopSimGS_1.AddSignal(pidModelGS, SignalType.Setpoint_Yset),
+ var inputDataGS1 = new TimeSeriesDataSet();
+ inputDataGS1.Add(closedLoopSimGS_1.AddExternalSignal(pidModelGS, SignalType.Setpoint_Yset),
        TimeSeriesCreator.Constant(20, 400));
- inputDataGS1.Add(closedLoopSimGS_1.AddSignal(processModel, SignalType.Disturbance_D), 
+ inputDataGS1.Add(closedLoopSimGS_1.AddExternalSignal(processModel, SignalType.Disturbance_D), 
      TimeSeriesCreator.Step(100, 400, 0, 10));
+ inputDataGS1.CreateTimestamps(timeBase_s);
  // Gain-scheduling variable:
  closedLoopSimGS_1.ConnectModels(processModel,pidModelGS,(int)PidModelInputsIdx.GainScheduling);
 var isOk3 = closedLoopSimGS_1.Simulate(inputDataGS1,out var closedLoopDataGS_1);
@@ -232,11 +236,12 @@ var isOk3 = closedLoopSimGS_1.Simulate(inputDataGS1,out var closedLoopDataGS_1);
  closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
  closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
 
- var inputDataGS2 = new TimeSeriesDataSet(timeBase_s);
- inputDataGS2.Add(closedLoopSimGS_2.AddSignal(pidModelGS, SignalType.Setpoint_Yset),
+ var inputDataGS2 = new TimeSeriesDataSet();
+ inputDataGS2.Add(closedLoopSimGS_2.AddExternalSignal(pidModelGS, SignalType.Setpoint_Yset),
      TimeSeriesCreator.Constant(70, 400));
- inputDataGS2.Add(closedLoopSimGS_2.AddSignal(processModel, SignalType.Disturbance_D), 
+ inputDataGS2.Add(closedLoopSimGS_2.AddExternalSignal(processModel, SignalType.Disturbance_D), 
      TimeSeriesCreator.Step(100, 400, 0, 10));
+ inputDataGS2.CreateTimestamps(timeBase_s);
  // Gain-scheduling variable:
  closedLoopSimGS_2.ConnectModels(processModel, pidModelGS, (int)PidModelInputsIdx.GainScheduling);
  var isOk4 = closedLoopSimGS_2.Simulate(inputDataGS2, out var closedLoopDataGS_2);

@@ -102,7 +102,6 @@ the tank completely.</li>
 <pre><code class="lang-csharp" name="Example">
  var processParameters = new UnitParameters
  {
-     WasAbleToIdentify = true,
      TimeConstant_s = 10,
      LinearGains = new double[] { 1 },
      U0 = new double[] { 50 },
@@ -124,9 +123,9 @@ the tank completely.</li>
      Ti_s = 15 // faster control(avoid carryover, aggressivley use valve when needed)
  };
  var process
-     = new UnitModel(processParameters, timeBase_s, &quot;Process&quot;);
- var pid1 = new PidModel(pidParameters1, timeBase_s, &quot;PID1&quot;);
- var pid2 = new PidModel(pidParameters2, timeBase_s, &quot;PID2&quot;);
+     = new UnitModel(processParameters, &quot;Process&quot;);
+ var pid1 = new PidModel(pidParameters1, &quot;PID1&quot;);
+ var pid2 = new PidModel(pidParameters2, &quot;PID2&quot;);
  var minSelect = new Select(SelectType.MIN,&quot;minSelect&quot;);
 
  var sim = new PlantSimulator(
@@ -141,14 +140,14 @@ the tank completely.</li>
  sim.ConnectSignal(selectSignalID,pid1,(int)PidModelInputsIdx.Tracking);
  sim.ConnectSignal(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
 
- var inputData = new TimeSeriesDataSet(timeBase_s);
- inputData.Add(sim.AddSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
- inputData.Add(sim.AddSignal(pid2, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(70, N));
- inputData.Add(sim.AddSignal(process, SignalType.Disturbance_D),
+ var inputData = new TimeSeriesDataSet();
+ inputData.Add(sim.AddExternalSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+ inputData.Add(sim.AddExternalSignal(pid2, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(70, N));
+ inputData.Add(sim.AddExternalSignal(process, SignalType.Disturbance_D),
      new Vec().Add(TimeSeriesCreator.Sinus(5,50,timeBase_s,N),
      TimeSeriesCreator.TwoSteps(N*2/8,N*3/8,N,0,80,0))
      );
-
+ inputData.CreateTimestamps(timeBase_s);
  var isOK = sim.Simulate(inputData, out var simResult);
  
  Plot.FromList(new List&lt;double[]&gt;

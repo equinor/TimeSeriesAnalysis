@@ -104,7 +104,10 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_modelInputIDs">ModelBaseClass.modelInputIDs</a>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_ID">ModelBaseClass.ID</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_ModelInputIDs">ModelBaseClass.ModelInputIDs</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_additiveInputIDs">ModelBaseClass.additiveInputIDs</a>
@@ -117,9 +120,6 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID">ModelBaseClass.GetID()</a>
-    </div>
-    <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetID_System_String_">ModelBaseClass.SetID(String)</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ModelType_">ModelBaseClass.SetProcessModelType(ModelType)</a>
@@ -345,13 +345,13 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
   
   
   <a id="TimeSeriesAnalysis_Dynamic_Select_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.Select.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_Select_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
   <div class="markdown level1 summary"><p>Iterate simulation</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputsU, double badDataID = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputsU, double timeBase_s, double badDataID = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -366,6 +366,11 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">inputsU</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
         <td></td>
       </tr>
       <tr>

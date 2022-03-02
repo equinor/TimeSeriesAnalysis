@@ -121,7 +121,10 @@ data-classes, linked below:
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_modelInputIDs">ModelBaseClass.modelInputIDs</a>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_ID">ModelBaseClass.ID</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_ModelInputIDs">ModelBaseClass.ModelInputIDs</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_additiveInputIDs">ModelBaseClass.additiveInputIDs</a>
@@ -134,9 +137,6 @@ data-classes, linked below:
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID">ModelBaseClass.GetID()</a>
-    </div>
-    <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetID_System_String_">ModelBaseClass.SetID(String)</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ModelType_">ModelBaseClass.SetProcessModelType(ModelType)</a>
@@ -195,13 +195,13 @@ data-classes, linked below:
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PidModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidModel__ctor_TimeSeriesAnalysis_Dynamic_PidParameters_System_Double_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.#ctor(TimeSeriesAnalysis.Dynamic.PidParameters,System.Double,System.String)">PidModel(PidParameters, Double, String)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidModel__ctor_TimeSeriesAnalysis_Dynamic_PidParameters_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.#ctor(TimeSeriesAnalysis.Dynamic.PidParameters,System.String)">PidModel(PidParameters, String)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PidModel(PidParameters pidParameters, double timeBase_s, string ID = &quot;not_named&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public PidModel(PidParameters pidParameters, string ID = &quot;not_named&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -217,12 +217,6 @@ data-classes, linked below:
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></td>
         <td><span class="parametername">pidParameters</span></td>
         <td><p>object containing the paramters of the controller</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td><p>sampling time, a steady time between each call to Iterate</p>
 </td>
       </tr>
       <tr>
@@ -445,13 +439,13 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PidModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidModel_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidModel_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
   <div class="markdown level1 summary"><p>Iterate the PID controller one step</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double badDataID = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double timeBase_s, double badDataID = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -470,6 +464,11 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
 First value is<code>y_process_abs</code>,  second value is <code>y_set_abs</code>, optional third value is
 <code>uTrackSignal</code>, optional fourth value is <code>gainSchedulingVariable</code></p>
 </td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>

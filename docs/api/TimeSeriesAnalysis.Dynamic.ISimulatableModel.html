@@ -436,13 +436,13 @@ This method is used when starting a method at steady-state.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_Iterate_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.Iterate(System.Double[],System.Double)">Iterate(Double[], Double)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
   <div class="markdown level1 summary"><p>Iterate the process model one timestep forward</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">double Iterate(double[] inputsU, double badDataID = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">double Iterate(double[] inputsU, double timeBase_s, double badDataID = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -459,6 +459,11 @@ This method is used when starting a method at steady-state.</p>
         <td><span class="parametername">inputsU</span></td>
         <td><p>a 2d array of inputs, one row for each time step, or <code>null</code> if model is autonomous</p>
 </td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>

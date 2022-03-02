@@ -98,22 +98,21 @@ can include nonlinearities, time-delay and time-constant simultaneously.</p>
     // simulate a linear reference model for comparison
     UnitParameters paramtersNoCurvature = new UnitParameters
     {
-        WasAbleToIdentify = true,
         TimeConstant_s = timeConstant_s,
         TimeDelay_s = timeDelay_s,
         LinearGains = new double[] { 2, -0.05 },
         U0 = new double[] { 1.1, 1.1 },
         Bias = bias
     };
-    var refModel = new UnitModel(paramtersNoCurvature, timeBase_s, &quot;Reference&quot;);
+    var refModel = new UnitModel(paramtersNoCurvature, &quot;Reference&quot;);
     var refSim  = new UnitSimulator(refModel);
-    var refData = new UnitDataSet(timeBase_s,U);
+    var refData = new UnitDataSet();
+    refData.U = U;
     refSim.Simulate(ref refData);
 
     // simulate the nonlinear model 
     UnitParameters designParameters = new UnitParameters
     {
-        WasAbleToIdentify = true,
         TimeConstant_s = timeConstant_s,
         TimeDelay_s = timeDelay_s,
         LinearGains = new double[] { 1, 0.7 },
@@ -122,17 +121,19 @@ can include nonlinearities, time-delay and time-constant simultaneously.</p>
         UNorm = new double[] { 1, 1 },// set this to make results comparable
         Bias = bias
     };
-    var trueModel = new UnitModel(designParameters, timeBase_s, &quot;NonlinearModel1&quot;);
+    var trueModel = new UnitModel(designParameters, &quot;NonlinearModel1&quot;);
     var sim = new UnitSimulator(trueModel);
-    var idDataSet = new UnitDataSet(timeBase_s,U);
+    var idDataSet = new UnitDataSet();
+    idDataSet.U = U;
+    idDataSet.CreateTimeStamps(timeBase_s);
     sim.SimulateYmeas(ref idDataSet, noiseAmplitude);
 
     // do identification
     var modelId = new UnitIdentifier();
     UnitModel idModel = modelId.Identify(ref idDataSet, designParameters.U0, designParameters.UNorm);
 
-    Plot.FromList(new List&lt;double[]&gt; { idModel.FittedDataSet.Y_sim,
-        idModel.FittedDataSet.Y_meas,
+    Plot.FromList(new List&lt;double[]&gt; { idModel.GetFittedDataSet().Y_sim,
+        idModel.GetFittedDataSet().Y_meas,
         refData.Y_sim,
         u1, u2 },
          new List&lt;string&gt; { &quot;y1=ysim&quot;, &quot;y1=ymeas&quot;, &quot;y1=yref(linear)&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; },

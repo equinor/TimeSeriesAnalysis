@@ -64,12 +64,17 @@
         - name: Unit Model identification
           href: unitidentifier.md
 
+        - name: Closed-loop disturbance estimation
+          href: sysid_disturbance.md
+
         - name: System identification code examples
           items:
             - name: Nonlinear unit model identification
               href: sysid_ex_nonlin.md 
             - name: PID model identification
               href: sysid_ex_pid.md              
+
+ 
  
 
 - name: Dynamic simulation
