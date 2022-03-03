@@ -60,15 +60,22 @@
         ReEstimateBiasFailed = 9,
 
         /// <summary>
+        /// If disturbance is nonzero, then re-estimation of bias is turned off
+        /// </summary>
+
+        ReEstimateBiasDisabled = 10,
+
+
+        /// <summary>
         /// One or more inputs were constant and not identifiable, this can affect other parameters as well, and consider removing the input
         /// or using a different dataset
         /// </summary>
-        ConstantInputU = 10,
+        ConstantInputU = 11,
 
         /// <summary>
         /// Correlated inputs
         /// </summary>
-        CorrelatedInputsU = 11
+        CorrelatedInputsU = 12
 
     }
 }

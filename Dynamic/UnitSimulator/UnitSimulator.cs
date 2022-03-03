@@ -52,17 +52,21 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Co-simulate a process model and pid-controller
+        /// Co-simulate a process model and pid-controller(both Y_sim and U_sim)
         /// </summary>
-          /// <param name="pid">the </param>
-        /// <param name="processDataSet">the process will read the <c>.Disturbance</c> and <c>.TimeBase_s</c>, 
-        /// and write simulated inputs to <c>.U</c> and <c>.Y_sim</c></param>
+        /// <param name="pid">the </param>
+        /// <param name="processDataSet">the process will read the <c>.Y_set</c> and <c>.Times</c> and 
+        /// possibly <c>.D</c>c>, 
+        /// and write simulated inputs to <c>U_sim</c> and <c>Y_sim</c></param>
         /// <param name="writeResultToYmeasInsteadOfYsim">write data to <c>processDataSet.Y_meas</c> 
         /// instead of <c>processDataSet.Y_sim</c></param>
         /// <returns>Returns true if able to simulate, otherwise false (simulation is written into processDataSet )</returns>
         public bool CoSimulate
             ( PidModel pid, ref UnitDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
         {
+            processDataSet.Y_sim = null;
+            processDataSet.U_sim = null;
+
             if (processDataSet.Y_setpoint == null)
             {
                 return false;
@@ -86,6 +90,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 y0 = processDataSet.Y_setpoint[0];
             }
+            // this assumes that the disturbance is zero?
             u0 = model.GetSteadyStateInput(y0).Value;
             double umax = pid.GetModelParameters().Scaling.GetUmax();
             double umin = pid.GetModelParameters().Scaling.GetUmin();
@@ -98,10 +103,12 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                processDataSet.warnings.Add(UnitWarnings.FailedToInitializePIDcontroller);
+                processDataSet.Warnings.Add(UnitWarnings.FailedToInitializePIDcontroller);
                 Debug.WriteLine("Failed to initalize PID-contoller.");
                 u = umin + (umax-umin)/2;
             }
+
+            double timeBase_s = processDataSet.GetTimeBase();
 
             for (int rowIdx = 0; rowIdx < N; rowIdx++)
             {
@@ -109,14 +116,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     return false;
                 }
-                double x= model.Iterate(new double[] { u}, processDataSet.BadDataID);
+                double x= model.Iterate(new double[] { u}, timeBase_s,processDataSet.BadDataID);
                 y = x;
                 if (processDataSet.D != null)
                 {
                     y += processDataSet.D[rowIdx];
                 }
                 double[] pidInputs = new double[] { y, processDataSet.Y_setpoint[rowIdx] };
-                u = pid.Iterate(pidInputs, processDataSet.BadDataID);
+                u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID);
                 if (Double.IsNaN(u))
                 {
                     Debug.WriteLine("pid.iterate returned NaN!");

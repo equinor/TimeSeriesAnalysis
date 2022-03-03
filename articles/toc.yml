@@ -95,6 +95,10 @@
             - name: Select control and tracking
               href: pid_select.md
 
+
+- name: List of known limitations 
+  href: limitations.md
+
 - name: Glossary 
   href: glossary.md
 

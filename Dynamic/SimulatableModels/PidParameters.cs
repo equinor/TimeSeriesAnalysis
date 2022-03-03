@@ -20,6 +20,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public PidParameters()
         {
             warnings = new List<PidIdentWarning>();
+            Scaling = new PidScaling();
         }
 
 

@@ -153,6 +153,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Calcuate the steady-state input if the output and all-but-one input are known
         /// </summary>
+        /// <para>
+        /// This method has no concept of disturbances, so a nonzero disturbane at time zero may throw it off.
+        /// </para>
         /// <param name="y0"></param>
         /// <param name="inputIdx"></param>
         /// <param name="givenInputs"></param>
@@ -163,7 +166,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // x = G*(u-u0)+bias ==>
             // y (approx) x
             // u =  (y-bias)/G+ u0 
-            if (givenInputs == null)
+        /*    if (givenInputs == null)
             {
                 u0 = (y0 - modelParameters.Bias) / modelParameters.LinearGains[inputIdx];
                 if (modelParameters.U0 != null)
@@ -172,27 +175,41 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 return u0;
             }
-            else
+            else*/
             {
                 double y_otherInputs = modelParameters.Bias;
                 //nb! input may include a disturbance!
-                for (int i = 0; i < givenInputs.Length; i++)
+                if (givenInputs != null)
                 {
-                    if (Double.IsNaN(givenInputs[i]))
-                        continue;
-                    if (i < GetModelInputIDs().Length)//model inputs
+                    for (int i = 0; i < givenInputs.Length; i++)
                     {
-                        y_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i]);
-                        y_otherInputs += CalcuateCurvatureProcessGainTerm(i, givenInputs[i]);
-                    }
-                    else // additive inputs
-                    {
-                        y_otherInputs += givenInputs[i]; 
+                        if (Double.IsNaN(givenInputs[i]))
+                            continue;
+                        if (i < GetModelInputIDs().Length)//model inputs
+                        {
+                            y_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i]);
+                            y_otherInputs += CalcuateCurvatureProcessGainTerm(i, givenInputs[i]);
+                        }
+                        else // additive inputs
+                        {
+                            y_otherInputs += givenInputs[i];
+                        }
                     }
                 }
 
                 double y_contributionFromInput = y0 - y_otherInputs;
-                if (modelParameters.Curvatures == null)
+
+                bool hasCurvature = false;
+                if (modelParameters.Curvatures != null)
+                {
+                    Vec vec = new Vec();
+                    if (!vec.ContainsBadData(modelParameters.Curvatures))
+                    {
+                        hasCurvature = true;
+                    }
+                }
+
+                if (!hasCurvature)
                 {
                     u0 = 0;
                     if (modelParameters.U0 != null)

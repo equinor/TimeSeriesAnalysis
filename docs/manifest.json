@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html",
-          "hash": "SAZv2bUXkR19DX/j3o6o+lwqRif03KCjN4HBiT6fb2w="
+          "hash": "LlPy0U2x1k6AUOD7qXtkkFJA+ZFy9dLJFX0sr2QO6Ps="
         }
       },
       "is_incremental": false,
@@ -486,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.Dynamic.UnitSimulator.html",
-          "hash": "pcuGPuQD/Ntnr2jsdEstEgHb12FbTHPVOYIil0IhrLg="
+          "hash": "3XUBIoOGf3G2J20EUvN9/gyxKfM5PKf3VwY1TckKUaY="
         }
       },
       "is_incremental": false,
@@ -1619,6 +1619,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/limitations.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/limitations.html",
+          "hash": "lUBpnVuy9eCF9LrB45X54qoinLzblG05rzRgfShBVCE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/matlab.md",
       "output": {
         ".html": {
@@ -1887,7 +1899,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "zydBGZAJZjIN5XsJzCaBnLq7UMwDcD+QPr/S36v7ldg="
+          "hash": "KNctZ9u+rI4DWAu6BCtC5a9U8Re9OJEx5QbU6i3lcVE="
         }
       },
       "is_incremental": false,
@@ -1960,14 +1972,14 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 49,
-          "skipped_file_count": 48
+          "total_file_count": 50,
+          "skipped_file_count": 50
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 73,
-          "skipped_file_count": 72
+          "skipped_file_count": 73
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

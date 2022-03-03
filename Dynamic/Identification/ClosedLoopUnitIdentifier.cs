@@ -22,7 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ClosedLoopUnitIdentifier
     {
-
+        const bool doDebuggingPlot = false;
         /// <summary>
         /// Identify the unit model of a closed-loop system and the distrubance (additive output signal)
         /// </summary>
@@ -35,9 +35,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="plantSim">an optional PidModel that is used to co-simulate the model and disturbance, improving identification</param>
         /// <param name="inputIdx">the index of the input</param>
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
-        public (UnitModel,double[]) Identify(UnitDataSet dataSet, PidModel pidModel=null, int inputIdx = 0 )
+        public (UnitModel,double[]) Identify(UnitDataSet dataSet, PidParameters pidParams=null, int inputIdx = 0 )
         {
-            const bool doDebuggingPlot = true;
+
 
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
@@ -48,6 +48,7 @@ namespace TimeSeriesAnalysis.Dynamic
             List<double> processGainList = new List<double>();
 
             double[] u0 = dataSet.U.GetRow(0);
+            double y0 = dataSet.Y_meas[0];
 
             bool isOK;
             Vec vec = new Vec();
@@ -71,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1,false,u0);
             idDisturbancesList.Add(distIdResult1);
             idUnitModelsList.Add(unitModel_run1);
-     //       isOK = ClosedLoopSim(dataSet,unitModel_run1, pidModel, distIdResult1.d_est);
+            isOK = ClosedLoopSim(dataSet1,unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est,"run1");
             // ----------------
             // run 2: now we have a decent first estimate of the distubance and the process gain, but 
             // we have disturbance vector estimate that has some process dynamics in it, so we need to refine the 
@@ -84,7 +85,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitModel_run2 = id.IdentifyLinear(ref dataSet2,true, u0);
             idDisturbancesList.Add(distIdResult2);
             idUnitModelsList.Add(unitModel_run2);
-       //     isOK = ClosedLoopSim(dataSet, unitModel_run2, pidModel, distIdResult2.d_est);
+            isOK = ClosedLoopSim(dataSet2, unitModel_run2.GetModelParameters(), pidParams, distIdResult2.d_est, "run2");
 
             // NB! in some cases such as if there is a step in the setpoint and the disturbance is small and 
             //      be approximated as zero, then the estimation will not keep improving beyond this point.
@@ -100,7 +101,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitModel_run3 = id.IdentifyLinear(ref dataSet3, true, u0);
             idDisturbancesList.Add(distIdResult3);
             idUnitModelsList.Add(unitModel_run3);
-        //    isOK = ClosedLoopSim(dataSet, unitModel_run3, pidModel, distIdResult3.d_est);
+            isOK = ClosedLoopSim(dataSet3, unitModel_run3.GetModelParameters(), pidParams, distIdResult3.d_est, "run3");
             // ----------------
             // after run 3:
             // if (the data shows just excited by disturbances)
@@ -235,16 +236,29 @@ namespace TimeSeriesAnalysis.Dynamic
             return (identUnitModel,disturbance);
         }
 
-        /*
-        public bool ClosedLoopSim(UnitDataSet unitData, UnitModel model, PidModel pid, double[] disturbance)
+       // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
+       // 
+        public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
+            double[] disturbance,string name)
         {
-            if (pid == null)
+            if (pidParams == null)
             {
                 return false;
             }
-            var sim = new UnitSimulator(model);
+            var sim = new UnitSimulator(new UnitModel(modelParams));
             unitData.D = disturbance;
-            return sim.CoSimulate(pid, ref unitData);
-        }*/
+
+            var pid = new PidModel(pidParams);
+
+            bool isOk = sim.CoSimulate(pid, ref unitData);
+            if (doDebuggingPlot)
+            {
+                Plot.FromList(new List<double[]> { unitData.Y_sim,unitData.Y_meas, 
+                    unitData.U_sim.GetColumn(0),  unitData.U.GetColumn(0)},
+                    new List<string> { "y1=y_sim", "y1=y_meas", "y3=u_sim","y3=u_meas" },unitData.GetTimeBase(),"closedloop"+name); 
+            }
+
+            return isOk;
+        }
     }
 }

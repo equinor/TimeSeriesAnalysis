@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// list of warings during identification
         /// </summary>
-        public List<UnitWarnings> warnings { get; set; }
+        public List<UnitWarnings> Warnings { get; set; }
         /// <summary>
         /// Name
         /// </summary>
@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="name">optional internal name of dataset</param>
         public UnitDataSet(string name = null)
         {
-            this.warnings = new List<UnitWarnings>();
+            this.Warnings = new List<UnitWarnings>();
             // this.NumDataPoints = numDataPoints;
             this.Y_meas = null;
             this.U = null;
@@ -94,6 +94,7 @@ namespace TimeSeriesAnalysis.Dynamic
             this.U = otherDataSet.U;
             this.U_sim = otherDataSet.U_sim;
             this.Times = otherDataSet.Times;
+            this.Warnings = otherDataSet.Warnings; 
         }
 
         /// <summary>

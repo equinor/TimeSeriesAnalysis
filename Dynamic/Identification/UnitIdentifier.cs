@@ -50,6 +50,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Since the aim is to identify transients/dynamics, the regression is done on model differences rather than absolute values
     /// </para>
     /// </summary>
+    /// make static?
     public class UnitIdentifier 
     {
         const double obFunDiff_MinImprovement = 0.0001;
@@ -721,17 +722,33 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 
-                (double? recalcBias, double[] y_sim_recalc) = SimulateAndReEstimateBias(dataSet, parameters);
-                dataSet.Y_sim = y_sim_recalc;
-                if (recalcBias.HasValue)
+                if (dataSet.D == null)
                 {
-                    parameters.Bias = recalcBias.Value;
+                    (double? recalcBias, double[] y_sim_recalc) =
+                        SimulateAndReEstimateBias(dataSet, parameters);
+                    dataSet.Y_sim = y_sim_recalc;
+                    if (recalcBias.HasValue)
+                    {
+                        parameters.Bias = recalcBias.Value;
+                    }
+                    else
+                    {
+                        parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
+                        parameters.Bias = regResults.Param.Last();
+                    }
                 }
                 else
                 {
-                    parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
+                    // if system has disturbance, then bias seems to be better set at original value
+                    parameters.AddWarning(UnitdentWarnings.ReEstimateBiasDisabled);
                     parameters.Bias = regResults.Param.Last();
+
+                    var model = new UnitModel(parameters);
+                    var simulator = new UnitSimulator((ISimulatableModel)model);
+                    var internalData = new UnitDataSet(dataSet);
+                    dataSet.Y_sim = simulator.Simulate(ref internalData);
                 }
+
                 // TODO:add back uncertainty estimates
                 parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;

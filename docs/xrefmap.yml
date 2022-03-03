@@ -536,12 +536,28 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier
   fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier
   nameWithType: ClosedLoopUnitIdentifier
-- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  name: Identify(UnitDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  nameWithType: ClosedLoopUnitIdentifier.Identify(UnitDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,TimeSeriesAnalysis.Dynamic.PidModel,System.Double[],System.String)
+  name: ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double[], String)
+  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_TimeSeriesAnalysis_Dynamic_PidModel_System_Double___System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,TimeSeriesAnalysis.Dynamic.PidModel,System.Double[],System.String)
+  name.vb: ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double(), String)
+  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitModel, TimeSeriesAnalysis.Dynamic.PidModel, System.Double[], System.String)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitModel, TimeSeriesAnalysis.Dynamic.PidModel, System.Double(), System.String)
+  nameWithType: ClosedLoopUnitIdentifier.ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double[], String)
+  nameWithType.vb: ClosedLoopUnitIdentifier.ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double(), String)
+- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim*
+  name: ClosedLoopSim
+  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim
+  nameWithType: ClosedLoopUnitIdentifier.ClosedLoopSim
+- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidModel,System.Int32)
+  name: Identify(UnitDataSet, PidModel, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_PidModel_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidModel,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.PidModel, System.Int32)
+  nameWithType: ClosedLoopUnitIdentifier.Identify(UnitDataSet, PidModel, Int32)
 - uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify*
   name: Identify
   href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_

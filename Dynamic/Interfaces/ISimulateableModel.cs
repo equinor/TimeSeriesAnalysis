@@ -35,11 +35,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Calculates the value u0 of u that at steady-state will give the output value y0.
-        /// This method is used when starting a method at steady-state.
+        /// This method is used when starting a method at steady-state (assumes that disturbance is zero!)
         /// </summary>
         /// <param name="y0">value of y for which to find matching u0</param>
         /// <param name="inputIdx">index of input(only applicable if multiple inputs)</param>
-        /// <param name="givenInputValues">for multip-input systems, all values except one must be given to calculate the steady-state u0</param>
+        /// <param name="givenInputValues">for multi-input systems, all values except one must be given to calculate the steady-state u0</param>
         /// <returns></returns>
         double? GetSteadyStateInput(double y0, int inputIdx=0,double[] givenInputValues=null);
 
