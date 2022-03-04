@@ -131,7 +131,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     this.pidParameters.Scaling = pid.GetScaling();
                 }
                 pid.SetGainScehduling(pidParameters.GainScheduling);
-                pid.SetAntiSurgeParams(pidParameters.AntiSugeParams);
+                pid.SetAntiSurgeParams(pidParameters.AntiSurgeParams);
                 pid.SetFeedForward(pidParameters.FeedForward);
 
                 if (WarmStart_y_process_abs.HasValue)
