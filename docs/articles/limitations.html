@@ -79,19 +79,26 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="list-of-known-limitations">List of known limitations</h1>
 
-<p>This is a working list of limitations of capability that may be addressed in further work</p>
+<p>This is a working list of currenlty known limitations of capability.
+The aim is generally to address these in further work, if possible.</p>
 <h2 id="plant-simulator">Plant Simulator</h2>
 <ul>
 <li><code>PlantSimulator</code> initalizes systems only to steady-state, it is not possible to
 start in a transient state</li>
 <li>The code is not tested for a wide variety of complex configurations, so it is likely
 that the simulator may fail to initialize in some complex scenarios, as of yet undiscovered.</li>
+<li>simulations will currently likely fail if more than one select controller is present</li>
 </ul>
 <h3 id="unit-simulator">Unit Simulator</h3>
 <ul>
 <li><code>UnitSimulator</code> does not support advanced control involoving more than
-one PID-controller like cascade, select control/tracking or split range (this can be simualted
-using PlantSimulator)</li>
+one PID-controller like cascade, select control/tracking or split range (this can be simulated
+using <code>PlantSimulator</code>, though)</li>
+</ul>
+<h3 id="unit-identifier">Unit Identifier</h3>
+<ul>
+<li><code>UnitIdentifier</code> has no functionality to simultanously discover multiple time-constants
+acting through different inputs u on the outputl</li>
 </ul>
 <h3 id="pid-controller">PID-Controller</h3>
 <ul>
@@ -100,15 +107,18 @@ the example of tracking is unfinished as a result</li>
 <li>split range has not been verified in a test</li>
 <li>the uncertainty of estimated PID-paramters is currently not calculated or stored, but it is
 possible to do so</li>
+<li>the &quot;warm-start&quot; capability does not appear to be able to reset a controller object that
+has already been run.</li>
 </ul>
-<h3 id="disturbance-estimaton">Disturbance estimaton</h3>
+<h3 id="disturbance-closed-loop-estimaton">Disturbance (closed-loop) estimaton</h3>
 <ul>
-<li>a disturbance signal is always assumed to be zero at the start of the dataset</li>
+<li>a disturbance signal is always assumed to be zero at the start of the dataset, and for
+pracitical reasons the bias thus always comes back as <code>y=y[0]</code> in closed loopd</li>
 <li>the disturbance estimation makes assumptions about <code>u[0]</code> being at steady-state and
 formulates model related to this <code>u0=u[0]</code></li>
 <li>the current closed-loop unit identifier cannot find dynamic models, for dynamic
 models some of the transients thus bleed into the estimated disturbance</li>
-<li>disturbance estimation is only availabe currently for systems that the UnitSimulator can
+<li>disturbance estimation is only availabe currently for systems that the <code>UnitSimulator</code> can
 simulate, so not for advanced control schemes.</li>
 </ul>
 </article>

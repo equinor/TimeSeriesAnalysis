@@ -365,10 +365,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     int inputDataLookBackIdx = 0; 
                     if (model.GetProcessModelType() == ModelType.PID && timeIdx > 0)
                     {
-                        inputDataLookBackIdx = 1;
+                        inputDataLookBackIdx = 1;//if set to zero, model fails(requires changing model order).
                     }
                     double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx - inputDataLookBackIdx, simData,inputData);
-                    //double[] inputVals = simData.GetData(inputIDs, timeIdx- inputDataLookBackIdx);
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -385,7 +384,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-            simData.SetTimeStamps(inputData.GetTimeStamps().ToList());//.GetRange(1, inputData.GetTimeStamps().Count()-1
+            simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
             return true;
         }
 

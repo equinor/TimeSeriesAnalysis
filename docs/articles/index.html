@@ -109,14 +109,20 @@ the emphasis on modeling PID-controllers and on time-series models that are able
 to describe the dynamics of typical industrial plants. The methods themselves are
 general and it is feasible to apply these methods to other types of datasets.</p>
 </div>
-<h2 id="motivation---no-black-boxes">Motivation - &quot;no black boxes&quot;</h2>
-<p>To support
-a. development of data-driven dynamic <em>digital twins</em> and
-b. &quot;mining&quot; of industrial time-series data for <em>advanced analytics</em>.</p>
-<p>Specifically, the intention is to be able to easily code <strong>&quot;plant simulators&quot;</strong> by connecting<br>
+<p>The intention is to be able to easily code <strong>&quot;plant simulators&quot;</strong> by connecting<br>
 <strong>&quot;grey box&quot;</strong> unit models. The intention is to make the process
 of identifying unit models, connecting models and simulating as easy as possible, and to automate
 wherever possible.</p>
+<h2 id="motivation---grey-box-rather-than-black-box">Motivation - &quot;grey-box&quot; rather than &quot;black box&quot;</h2>
+<div class="NOTE">
+<h5>Note</h5>
+<p><strong>A grey-box model set</strong> is built to have paramters fitted
+to time-series data(like black-box models), but at the same time each parameter has an
+intuitive phyiscal interpretation(like a white-box model).</p>
+</div>
+<p>Grey-box models are a &quot;best of both worlds&quot; compromise
+between &quot;white box&quot; models(where paramters are set using prior knowlege)
+and &quot;black-box&quot; models (where parameters are determiend by fitting and have no direct physical interpretation.)</p>
 <p>The aim is to make models that can represent large and complex plants, yet where the meaning of
 each parameter in each unit models is still intuitive,
 representing some intuitive physical property like for instance <em>&quot;gain&quot;</em>,<em>&quot;time delay&quot;</em> or <em>&quot;time constant&quot;</em>.
@@ -125,8 +131,10 @@ Grey-box models have two very interesting properties:</p>
 <li>parameters of automatically identified models can be <em>inspected</em> by users to <em>gain insight</em>, and also</li>
 <li>users can <em>add insight</em> by <em>changing</em> parameters where needed.</li>
 </ul>
-<p>Unit models are in this library <em>should not</em> be designed as &quot;black-boxes&quot;, in the sense of being too complex
-to interpret, and thus the term &quot;grey-box&quot; is used to differentiate the approach taken.</p>
+<p>Grey-box modeling will have an advantage in cases where it is
+fitted to real-world data that has some information but perhaps has certain gaps.
+Since parameters have a phyiscal interpretation, it is possible to fill in gaps in the model
+using a priori knowledge.</p>
 <h3 id="advanced-analytics">Advanced analytics</h3>
 <p>The above concepts are related to the term &quot;advanced analytics&quot;.</p>
 <p>Advanced analytics is <a href="https://www.gartner.com/en/information-technology/glossary/advanced-analytics">defined</a> as :</p>

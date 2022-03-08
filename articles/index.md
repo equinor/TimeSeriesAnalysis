@@ -35,17 +35,25 @@ or semi-automated.
 > to describe the dynamics of typical industrial plants. The methods themselves are 
 > general and it is feasible to apply these methods to other types of datasets.
 
+The intention is to be able to easily code **"plant simulators"** by connecting  
+**"grey box"** unit models. The intention is to make the process of identifying unit models, 
+connecting models and simulating as easy as possible, and to automate wherever possible. 
 
-## Motivation - "no black boxes" 
+Because the code is written as a .NET Standard class library, it is equally possible 
+to run the library in the cloud on a Linux instance, to call the library for development
+on your desktop through Python or Matlab, or to integrate the library into "edge" computing
+in industrial control. 
 
-To support 
-a. development of data-driven dynamic *digital twins* and 
-b. "mining" of industrial time-series data for *advanced analytics*.
+## Motivation - "grey-box" rather than "black box" 
 
-Specifically, the intention is to be able to easily code **"plant simulators"** by connecting  
-**"grey box"** unit models. The intention is to make the process
-of identifying unit models, connecting models and simulating as easy as possible, and to automate
-wherever possible. 
+> [!Note]
+> **A grey-box model** is built to have parameters fitted 
+> to time-series data (like black-box models), but at the same time each parameter has an
+> intuitive phyiscal interpretation (like a white-box model).
+
+Grey-box models are a "best of both worlds" compromise 
+between "white box" models (where paramters are set using prior knowlege)
+and "black-box" models (where parameters are determiend by fitting and have no direct physical interpretation.)
 
 The aim is to make models that can represent large and complex plants, yet where the meaning of 
 each parameter in each unit models is still intuitive, 
@@ -54,8 +62,16 @@ Grey-box models have two very interesting properties:
 - parameters of automatically identified models can be *inspected* by users to *gain insight*, and also
 - users can *add insight* by *changing* parameters where needed. 
 
-Unit models are in this library *should not* be designed as "black-boxes", in the sense of being too complex
-to interpret, and thus the term "grey-box" is used to differentiate the approach taken.
+Grey-box modeling will have an advantage in cases where it is 
+fitted to real-world data that has some information but perhaps has some 
+information missing because some inputs do not vary enough independelty. 
+This situation is the norm when attempting to use real-world time-series data sets rather
+than using data of designed experiments. 
+ 
+Since parameters have a phyiscal interpretation, it is possible to fill in gaps in the model
+using a priori knowledge.
+
+
 
 ### Advanced analytics
 

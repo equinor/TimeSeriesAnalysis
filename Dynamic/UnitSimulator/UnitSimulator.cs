@@ -58,11 +58,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="processDataSet">the process will read the <c>.Y_set</c> and <c>.Times</c> and 
         /// possibly <c>.D</c>c>, 
         /// and write simulated inputs to <c>U_sim</c> and <c>Y_sim</c></param>
+        /// <param name="pidActsOnPastStep">pid-controller looks at e[k-1] if true, otherwise e[k]</c> 
         /// <param name="writeResultToYmeasInsteadOfYsim">write data to <c>processDataSet.Y_meas</c> 
         /// instead of <c>processDataSet.Y_sim</c></param>
         /// <returns>Returns true if able to simulate, otherwise false (simulation is written into processDataSet )</returns>
         public bool CoSimulate
-            ( PidModel pid, ref UnitDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false)
+            ( PidModel pid, ref UnitDataSet processDataSet, bool pidActsOnPastStep=true, bool writeResultToYmeasInsteadOfYsim = false)
         {
             processDataSet.Y_sim = null;
             processDataSet.U_sim = null;
@@ -90,8 +91,14 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 y0 = processDataSet.Y_setpoint[0];
             }
+            double x0 = y0;
+            if (processDataSet.D != null)
+            {
+                x0 -= processDataSet.D[0];
+            }
+
             // this assumes that the disturbance is zero?
-            u0 = model.GetSteadyStateInput(y0).Value;
+            u0 = model.GetSteadyStateInput(x0).Value;
             double umax = pid.GetModelParameters().Scaling.GetUmax();
             double umin = pid.GetModelParameters().Scaling.GetUmin();
 
@@ -109,6 +116,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double timeBase_s = processDataSet.GetTimeBase();
+            double y_prev = y0;
 
             for (int rowIdx = 0; rowIdx < N; rowIdx++)
             {
@@ -116,18 +124,35 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     return false;
                 }
-                double x= model.Iterate(new double[] { u}, timeBase_s,processDataSet.BadDataID);
-                y = x;
-                if (processDataSet.D != null)
+
+                if (pidActsOnPastStep)
                 {
-                    y += processDataSet.D[rowIdx];
+                    double[] pidInputs = new double[] { y_prev, processDataSet.Y_setpoint[Math.Max(0,rowIdx-1)] };
+                    u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID);
+                    double x = model.Iterate(new double[] { u }, timeBase_s, processDataSet.BadDataID);
+                    y = x;
+                    if (processDataSet.D != null)
+                    {
+                        y += processDataSet.D[rowIdx];
+                    }
                 }
-                double[] pidInputs = new double[] { y, processDataSet.Y_setpoint[rowIdx] };
-                u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID);
+                else
+                { // pid acts on current step
+                    double x = model.Iterate(new double[] { u }, timeBase_s, processDataSet.BadDataID);
+                    y = x;
+                    if (processDataSet.D != null)
+                    {
+                        y += processDataSet.D[rowIdx];
+                    }
+                    double[] pidInputs = new double[] { y, processDataSet.Y_setpoint[rowIdx] };
+                    u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID);
+                }
+                
                 if (Double.IsNaN(u))
                 {
                     Debug.WriteLine("pid.iterate returned NaN!");
                 }
+                y_prev = y;
                 Y[rowIdx] = y;
                 U[rowIdx] = u;
             }

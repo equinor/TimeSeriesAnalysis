@@ -133,12 +133,12 @@ are estimted together.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_TimeSeriesAnalysis_Dynamic_PidModel_System_Double___System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,TimeSeriesAnalysis.Dynamic.PidModel,System.Double[],System.String)">ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double[], String)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitParameters_TimeSeriesAnalysis_Dynamic_PidParameters_System_Double___System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.PidParameters,System.Double[],System.String)">ClosedLoopSim(UnitDataSet, UnitParameters, PidParameters, Double[], String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ClosedLoopSim(UnitDataSet unitData, UnitModel model, PidModel pid, double[] disturbance, string name)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams, double[] disturbance, string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,13 +156,13 @@ are estimted together.</p>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
-        <td><span class="parametername">model</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">UnitParameters</a></td>
+        <td><span class="parametername">modelParams</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a></td>
-        <td><span class="parametername">pid</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></td>
+        <td><span class="parametername">pidParams</span></td>
         <td></td>
       </tr>
       <tr>
@@ -195,13 +195,13 @@ are estimted together.</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_PidModel_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidModel,System.Int32)">Identify(UnitDataSet, PidModel, Int32)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_PidParameters_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidParameters,System.Int32)">Identify(UnitDataSet, PidParameters, Int32)</h4>
   <div class="markdown level1 summary"><p>Identify the unit model of a closed-loop system and the distrubance (additive output signal)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidModel pidModel = null, int inputIdx = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int inputIdx = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -220,8 +220,8 @@ are estimted together.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a></td>
-        <td><span class="parametername">pidModel</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></td>
+        <td><span class="parametername">pidParams</span></td>
         <td></td>
       </tr>
       <tr>
@@ -248,7 +248,7 @@ are estimted together.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_PidModel_System_Int32__remarks">Remarks</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_PidParameters_System_Int32__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>
 Currently always assumes that PID-index is first index of unit model(can be improved)
 </p>

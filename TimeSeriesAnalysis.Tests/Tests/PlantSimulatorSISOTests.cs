@@ -194,8 +194,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(UlastTwoValuesDiff  < 0.01, "PID output should end up steady");
         }
 
-            [TestCase]
-        public void BasicPID_DisturbanceStep_RunsAndConverges()
+        [TestCase(0)]
+        [TestCase(1)]
+        public void BasicPID_DisturbanceStep_RunsAndConverges(double disurbanceStartValue)
         {
             var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
@@ -203,13 +204,23 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
             var distID = processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D); 
-            inputData.Add(distID, TimeSeriesCreator.Step(N / 4, N, 0, 1));
+            inputData.Add(distID, TimeSeriesCreator.Step(N / 4, N, disurbanceStartValue, disurbanceStartValue+1));
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - Ysetpoint);
+
+            if (true)
+            {
+                Plot.FromList(new List<double[]> {
+                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                 simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                 inputData.GetValues(processModel1.GetID(),SignalType.Disturbance_D) },
+                 new List<string> { "y1=y_sim1", "y3=u", "y4=d" },
+                 timeBase_s, "BasicPID_DisturbanceStep"); ;
+            }
 
             Assert.IsTrue(isOk);
             Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");

@@ -56,7 +56,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             double distTrueAmplitude = vec.Max(vec.Abs(trueDisturbance));
 
             Assert.IsTrue(estDisturbance != null);
-            string caseId = TestContext.CurrentContext.Test.Name+"y";
+            string caseId = TestContext.CurrentContext.Test.Name.Replace("(","_").
+                Replace(")","_").Replace(",","_")+"y";
             if (doPlot)
             {
                 Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,

@@ -536,15 +536,15 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier
   fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier
   nameWithType: ClosedLoopUnitIdentifier
-- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,TimeSeriesAnalysis.Dynamic.PidModel,System.Double[],System.String)
-  name: ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double[], String)
-  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_TimeSeriesAnalysis_Dynamic_PidModel_System_Double___System_String_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,TimeSeriesAnalysis.Dynamic.PidModel,System.Double[],System.String)
-  name.vb: ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double(), String)
-  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitModel, TimeSeriesAnalysis.Dynamic.PidModel, System.Double[], System.String)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitModel, TimeSeriesAnalysis.Dynamic.PidModel, System.Double(), System.String)
-  nameWithType: ClosedLoopUnitIdentifier.ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double[], String)
-  nameWithType.vb: ClosedLoopUnitIdentifier.ClosedLoopSim(UnitDataSet, UnitModel, PidModel, Double(), String)
+- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.PidParameters,System.Double[],System.String)
+  name: ClosedLoopSim(UnitDataSet, UnitParameters, PidParameters, Double[], String)
+  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitParameters_TimeSeriesAnalysis_Dynamic_PidParameters_System_Double___System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.PidParameters,System.Double[],System.String)
+  name.vb: ClosedLoopSim(UnitDataSet, UnitParameters, PidParameters, Double(), String)
+  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitParameters, TimeSeriesAnalysis.Dynamic.PidParameters, System.Double[], System.String)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitParameters, TimeSeriesAnalysis.Dynamic.PidParameters, System.Double(), System.String)
+  nameWithType: ClosedLoopUnitIdentifier.ClosedLoopSim(UnitDataSet, UnitParameters, PidParameters, Double[], String)
+  nameWithType.vb: ClosedLoopUnitIdentifier.ClosedLoopSim(UnitDataSet, UnitParameters, PidParameters, Double(), String)
 - uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim*
   name: ClosedLoopSim
   href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_
@@ -552,12 +552,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim
   nameWithType: ClosedLoopUnitIdentifier.ClosedLoopSim
-- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidModel,System.Int32)
-  name: Identify(UnitDataSet, PidModel, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_PidModel_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidModel,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.PidModel, System.Int32)
-  nameWithType: ClosedLoopUnitIdentifier.Identify(UnitDataSet, PidModel, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidParameters,System.Int32)
+  name: Identify(UnitDataSet, PidParameters, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_PidParameters_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.PidParameters,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.PidParameters, System.Int32)
+  nameWithType: ClosedLoopUnitIdentifier.Identify(UnitDataSet, PidParameters, Int32)
 - uid: TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.Identify*
   name: Identify
   href: api/TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.html#TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_Identify_
@@ -2366,19 +2366,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PidParameters.AddWarning
   nameWithType: PidParameters.AddWarning
-- uid: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams
-  name: AntiSugeParams
-  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_AntiSugeParams
-  commentId: P:TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams
-  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams
-  nameWithType: PidParameters.AntiSugeParams
-- uid: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams*
-  name: AntiSugeParams
-  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_AntiSugeParams_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSurgeParams
+  name: AntiSurgeParams
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_AntiSurgeParams
+  commentId: P:TimeSeriesAnalysis.Dynamic.PidParameters.AntiSurgeParams
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSurgeParams
+  nameWithType: PidParameters.AntiSurgeParams
+- uid: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSurgeParams*
+  name: AntiSurgeParams
+  href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_AntiSurgeParams_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PidParameters.AntiSurgeParams
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSugeParams
-  nameWithType: PidParameters.AntiSugeParams
+  fullName: TimeSeriesAnalysis.Dynamic.PidParameters.AntiSurgeParams
+  nameWithType: PidParameters.AntiSurgeParams
 - uid: TimeSeriesAnalysis.Dynamic.PidParameters.FeedForward
   name: FeedForward
   href: api/TimeSeriesAnalysis.Dynamic.PidParameters.html#TimeSeriesAnalysis_Dynamic_PidParameters_FeedForward
@@ -3791,19 +3791,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.U_sim
   nameWithType: UnitDataSet.U_sim
-- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.warnings
-  name: warnings
-  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_warnings
-  commentId: P:TimeSeriesAnalysis.Dynamic.UnitDataSet.warnings
-  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.warnings
-  nameWithType: UnitDataSet.warnings
-- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.warnings*
-  name: warnings
-  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_warnings_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitDataSet.warnings
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.Warnings
+  name: Warnings
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_Warnings
+  commentId: P:TimeSeriesAnalysis.Dynamic.UnitDataSet.Warnings
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.Warnings
+  nameWithType: UnitDataSet.Warnings
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.Warnings*
+  name: Warnings
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_Warnings_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitDataSet.Warnings
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.warnings
-  nameWithType: UnitDataSet.warnings
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.Warnings
+  nameWithType: UnitDataSet.Warnings
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.Y_meas
   name: Y_meas
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_Y_meas
@@ -3879,6 +3879,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NotPossibleToIdentify
   fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NotPossibleToIdentify
   nameWithType: UnitdentWarnings.NotPossibleToIdentify
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ReEstimateBiasDisabled
+  name: ReEstimateBiasDisabled
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ReEstimateBiasDisabled
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ReEstimateBiasDisabled
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ReEstimateBiasDisabled
+  nameWithType: UnitdentWarnings.ReEstimateBiasDisabled
 - uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ReEstimateBiasFailed
   name: ReEstimateBiasFailed
   href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ReEstimateBiasFailed

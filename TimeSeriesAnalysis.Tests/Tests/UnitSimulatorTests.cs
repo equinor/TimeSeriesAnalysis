@@ -72,8 +72,8 @@ namespace TimeSeriesAnalysis.Test.UnitSim
         }
 
         // Work-in-progress
-        [TestCase(Explicit=true)]
-        public void NOT_WORKING_CoSim_WithDisturbance_InitalizesSteady()
+        [TestCase()]
+        public void CoSim_WithDisturbance_InitalizesSteady()
         {
             UnitDataSet unitData = new UnitDataSet("test");
             unitData.Y_setpoint = TimeSeriesCreator.Constant(Ysetpoint, N);
@@ -83,12 +83,12 @@ namespace TimeSeriesAnalysis.Test.UnitSim
 
             var sim = new UnitSimulator(processModel1);
             sim.CoSimulate(pidModel1, ref unitData);
-            
+         /*   
             Plot.FromList(new List<double[]> { unitData.Y_sim,
                     unitData.U_sim.GetColumn(0) },
              new List<string> { "y1=y_sim", "y3=u_sim", }, unitData.GetTimeBase(),
                 "UnitTestCoSimulate");
-
+         */
             Assert.IsTrue(unitData.Y_sim[1] == unitData.Y_sim[0]);
             Assert.IsTrue(unitData.U_sim.GetColumn(0)[1] == unitData.U_sim.GetColumn(0)[0]);
         }

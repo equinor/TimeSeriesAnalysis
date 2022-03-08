@@ -135,7 +135,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), 
                     SignalType.External_U);
                 string[] additiveInputs = model.GetAdditiveInputIDs();
-                bool isXgiven = true;
+                bool isXgiven = true;// y = x + sum(additive signals)
                 if (additiveInputs != null)
                 {
                     foreach (string additiveInput in additiveInputs)
@@ -190,7 +190,20 @@ namespace TimeSeriesAnalysis.Dynamic
                             }
                         }
                     }
-                    double? u0 = model.GetSteadyStateInput(y0, uPidIndex, givenInputValues);
+                    
+                    double x0 = y0;
+                    // todo:this code may be needed  if process is not in closed-loop control
+                    /*if (additiveInputs != null)
+                    {
+                        foreach (string additiveInput in additiveInputs)
+                        {
+                            if (simSignalValueDict.ContainsKey(additiveInput))
+                            {
+                                x0 -= simSignalValueDict[additiveInput];
+                            }
+                        }
+                    }*/
+                    double? u0 = model.GetSteadyStateInput(x0, uPidIndex, givenInputValues);
                     if (u0.HasValue)
                     {
                         // write value

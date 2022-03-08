@@ -59,7 +59,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public PidScaling Scaling { get; set; }
 
         /// <summary>
-        /// PID anti-surge paramters objet. This is optional, set to null if not anti-surge PID
+        /// PID anti-surge parameters object. This is optional, set to null if not anti-surge PID
         /// </summary>
         public PidAntiSurgeParams AntiSurgeParams { get; set; } = null;
 

@@ -22,7 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ClosedLoopUnitIdentifier
     {
-        const bool doDebuggingPlot = false;
+        const bool doDebuggingPlot = true;
         /// <summary>
         /// Identify the unit model of a closed-loop system and the distrubance (additive output signal)
         /// </summary>
@@ -200,7 +200,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     "y3=dHF_run1", "y3=dHF_run2", "y3=dHF_run3",
                     "y3=dLF_run1", "y3=dLF_run2", "y3=dLF_run3"
                     },
-                    dataSet.GetTimeBase(), "ClosedLoopUnitId_debug1");
+                    dataSet.GetTimeBase(), "doDebuggingPlot_disturbanceHLandLF");
                 dataSet.D = null;
 
                 var sim1 = new UnitSimulator(idUnitModelsList[0]);
@@ -222,7 +222,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     },
                     new List<string> {"y1=y_meas","y1=xd_run1", "y1=xd_run2", "y1=xd_run3",
                     "y3=x_run1","y3=x_run2","y3=x_run3"},
-                    dataSet.GetTimeBase(),"ClosedLoopUnitId_debug2");
+                    dataSet.GetTimeBase(), "doDebuggingPlot_states");
             }
 
             // - note that by tuning rules often Kp = 0.5 * Kc approximately. 
@@ -241,6 +241,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             double[] disturbance,string name)
         {
+      //      modelParams.LinearGains = new double[] { 1 };
+
             if (pidParams == null)
             {
                 return false;
@@ -255,9 +257,9 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 Plot.FromList(new List<double[]> { unitData.Y_sim,unitData.Y_meas, 
                     unitData.U_sim.GetColumn(0),  unitData.U.GetColumn(0)},
-                    new List<string> { "y1=y_sim", "y1=y_meas", "y3=u_sim","y3=u_meas" },unitData.GetTimeBase(),"closedloop"+name); 
+                    new List<string> { "y1=y_sim", "y1=y_meas", "y3=u_sim","y3=u_meas" },
+                    unitData.GetTimeBase(), "doDebuggingPlot" + "_closedlooopsim_"+name); 
             }
-
             return isOk;
         }
     }

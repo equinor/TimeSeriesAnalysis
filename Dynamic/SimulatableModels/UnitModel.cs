@@ -156,11 +156,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <para>
         /// This method has no concept of disturbances, so a nonzero disturbane at time zero may throw it off.
         /// </para>
-        /// <param name="y0"></param>
+        /// <param name="x0">If no additive inputs y=x, otherwise subtract additive inputs from y to get x</param>
         /// <param name="inputIdx"></param>
         /// <param name="givenInputs"></param>
         /// <returns></returns>
-        public double? GetSteadyStateInput(double y0, int inputIdx=0, double[] givenInputs=null)
+        public double? GetSteadyStateInput(double x0, int inputIdx=0, double[] givenInputs=null)
         {
             double u0=0;
             // x = G*(u-u0)+bias ==>
@@ -177,7 +177,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else*/
             {
-                double y_otherInputs = modelParameters.Bias;
+                double x_otherInputs = modelParameters.Bias;
                 //nb! input may include a disturbance!
                 if (givenInputs != null)
                 {
@@ -187,17 +187,17 @@ namespace TimeSeriesAnalysis.Dynamic
                             continue;
                         if (i < GetModelInputIDs().Length)//model inputs
                         {
-                            y_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i]);
-                            y_otherInputs += CalcuateCurvatureProcessGainTerm(i, givenInputs[i]);
+                            x_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i]);
+                            x_otherInputs += CalcuateCurvatureProcessGainTerm(i, givenInputs[i]);
                         }
                         else // additive inputs
                         {
-                            y_otherInputs += givenInputs[i];
+                            x_otherInputs += givenInputs[i];
                         }
                     }
                 }
 
-                double y_contributionFromInput = y0 - y_otherInputs;
+                double y_contributionFromInput = x0 - x_otherInputs;
 
                 bool hasCurvature = false;
                 if (modelParameters.Curvatures != null)
