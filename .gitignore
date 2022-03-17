@@ -18,3 +18,4 @@ UpgradeLog.htm
 UpgradeLog2.htm
 TimeSeriesAnalysis.targetnetstandard20.notworking.csproj
 *.zip
+runtest.bat
