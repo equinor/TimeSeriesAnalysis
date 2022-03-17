@@ -631,7 +631,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2, disturbance },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y4=dist" }, (int)timeBase_s,"excl_disturbance");
 
-            DefaultAsserts(model, designParameters);
+            DefaultAsserts(model, designParameters,1);
         }
 
 

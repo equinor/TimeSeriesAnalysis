@@ -740,7 +740,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                 {
                     // if system has disturbance, then bias seems to be better set at original value
-                    parameters.AddWarning(UnitdentWarnings.ReEstimateBiasDisabled);
+                    parameters.AddWarning(UnitdentWarnings.ReEstimateBiasDisabledDueToNonzeroDisturbance);
                     parameters.Bias = regResults.Param.Last();
 
                     var model = new UnitModel(parameters);

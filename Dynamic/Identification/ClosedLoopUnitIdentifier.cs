@@ -22,7 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ClosedLoopUnitIdentifier
     {
-        const bool doDebuggingPlot = true;
+        const bool doDebuggingPlot = false;
         /// <summary>
         /// Identify the unit model of a closed-loop system and the distrubance (additive output signal)
         /// </summary>
@@ -82,7 +82,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 dataSet2, unitModel_run1, inputIdx);
 
             dataSet2.D = distIdResult2.d_est;
-            var unitModel_run2 = id.IdentifyLinear(ref dataSet2,true, u0);
+            // IdentifyLinear appears to give quite a poor model for Static_Longstep 
+            var unitModel_run2 = id.IdentifyLinearAndStatic(ref dataSet2,true, u0);
             idDisturbancesList.Add(distIdResult2);
             idUnitModelsList.Add(unitModel_run2);
             isOK = ClosedLoopSim(dataSet2, unitModel_run2.GetModelParameters(), pidParams, distIdResult2.d_est, "run2");
@@ -98,7 +99,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 (dataSet3, unitModel_run2, inputIdx);
 
             dataSet3.D = distIdResult3.d_est;
-            var unitModel_run3 = id.IdentifyLinear(ref dataSet3, true, u0);
+            var unitModel_run3 = id.IdentifyLinearAndStatic(ref dataSet3, true, u0);
             idDisturbancesList.Add(distIdResult3);
             idUnitModelsList.Add(unitModel_run3);
             isOK = ClosedLoopSim(dataSet3, unitModel_run3.GetModelParameters(), pidParams, distIdResult3.d_est, "run3");
@@ -241,7 +242,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             double[] disturbance,string name)
         {
-      //      modelParams.LinearGains = new double[] { 1 };
+            // used for debugging:
+        //l    modelParams.LinearGains = new double[] { 1 };
 
             if (pidParams == null)
             {

@@ -63,7 +63,7 @@
         /// If disturbance is nonzero, then re-estimation of bias is turned off
         /// </summary>
 
-        ReEstimateBiasDisabled = 10,
+        ReEstimateBiasDisabledDueToNonzeroDisturbance = 10,
 
 
         /// <summary>

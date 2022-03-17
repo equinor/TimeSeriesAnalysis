@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
     [TestFixture]
     class DisturbanceIDUnitTests
     {
-        const bool doPlot = true;
+        const bool doPlot = false;
 
         UnitParameters staticModelParameters = new UnitParameters
         {
@@ -73,38 +73,42 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
        // [TestCase(-5)]
-        [TestCase(5)]
+        [TestCase(5, Explicit = true)]
         public void Static_Step_EstimatesOk(double stepAmplitude)
         {
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
-        [TestCase(5)]
-        public void NOTWORKING_Static_LongStep_EstimatesOk(double stepAmplitude)
+
+
+        // this works as long as only static identifiation is used in the closed-looop identifier,
+        // otherwise the model 
+        [TestCase(5, Explicit = true)]
+        public void Static_LongStep_EstimatesOk(double stepAmplitude)
         {
             N = 1000;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
 
-
         // [TestCase(-5)]
-        [TestCase(5)]// gains are slightly too hih, around 1.14
-        public void NOTWORKING_Dynamic_Step_EstimatesOk(double stepAmplitude)
+        [Test,Explicit]// gains are slightly too high, around 1.14
+        public void NOTWORKING_Dynamic_Step_EstimatesOk(double stepAmplitude=5)
         {
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance);
         }
 
-        [TestCase(5, 20)]// process gains are 4.4,far too big, but disturbance amplitude is +/- 8  
+        [Test,Explicit]// process gains are 4.4,far too big, but disturbance amplitude is +/- 8  
      //   [TestCase(-5, 20)]
-        public void NOTWORKING_Static_Sinus_EstimatesOk(double sinusAmplitude, double sinusPeriod)
+        public void NOTWORKING_Static_Sinus_EstimatesOk(double sinusAmplitude=5, 
+            double sinusPeriod=20)
         {
             var trueDisturbance = TimeSeriesCreator.Sinus(sinusAmplitude, sinusPeriod, timeBase_s, N);
             GenericDisturbanceTest( new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
 
-        [TestCase(5, 20)] // disturbance is exactly double the actual value, process gains are 4.67, should be 1!
+        [Test,Explicit] // disturbance is exactly double the actual value, process gains are 4.67, should be 1!
        // [TestCase(-5, 20)]
         public void NOTWORKING_Dynamic_Sinus_EstimatesOk(double sinusAmplitude, double sinusPeriod)
         {

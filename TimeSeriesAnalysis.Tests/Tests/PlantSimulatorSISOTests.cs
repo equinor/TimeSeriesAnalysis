@@ -212,7 +212,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - Ysetpoint);
 
-            if (true)
+            if (false)
             {
                 Plot.FromList(new List<double[]> {
                  simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
