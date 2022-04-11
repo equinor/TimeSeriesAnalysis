@@ -46,7 +46,6 @@ namespace TimeSeriesAnalysis.Dynamic
     public class PidModel : ModelBaseClass, ISimulatableModel
     {
         public PidParameters pidParameters;
-   //     private double timeBase_s;
         private PidController pid;
 
         private double? WarmStart_y_process_abs ;

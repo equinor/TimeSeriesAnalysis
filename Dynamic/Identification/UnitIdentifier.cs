@@ -713,7 +713,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else // able to identify
             {
-               
                 parameters.Fitting.WasAbleToIdentify = true;
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.GetTimeBase();
                 parameters.TimeConstant_s = timeConstant_s;
@@ -749,7 +748,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.Y_sim = simulator.Simulate(ref internalData);
                 }
 
-                // TODO:add back uncertainty estimates
                 parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 //

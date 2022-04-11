@@ -348,7 +348,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
 
-         //   processSim.Serialize("PIDandSingle");
+            processSim.Serialize("PIDandSingle");
          //   inputData.ToCsv("PIDandSingle.csv");
 
            /* Plot.FromList(new List<double[]> {

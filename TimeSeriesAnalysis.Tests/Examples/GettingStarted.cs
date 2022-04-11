@@ -159,8 +159,6 @@ namespace TimeSeriesAnalysis._Examples
         }
 
 
-
-
         [Test, Explicit]
 
         public void Ex5_pid_cosimulation()

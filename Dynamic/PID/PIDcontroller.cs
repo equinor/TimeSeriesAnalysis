@@ -114,6 +114,7 @@ namespace TimeSeriesAnalysis.Dynamic
             this.isInAuto = true;
 
             this.gsObj = new PidGainScheduling();
+            this.ffObj = new PidFeedForward();
 
             this.TimeBase_s = TimeBase_s;
             this.yFilt1 = new LowPass(TimeBase_s);

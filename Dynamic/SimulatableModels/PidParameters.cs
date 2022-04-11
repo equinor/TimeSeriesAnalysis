@@ -21,6 +21,8 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             warnings = new List<PidIdentWarning>();
             Scaling = new PidScaling();
+            GainScheduling = new PidGainScheduling();
+            FeedForward = new PidFeedForward();
         }
 
 

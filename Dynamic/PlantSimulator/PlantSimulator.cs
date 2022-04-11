@@ -432,7 +432,6 @@ namespace TimeSeriesAnalysis.Dynamic
             // https://khalidabuhakmeh.com/serialize-interface-instances-system-text-json
             return JsonConvert.SerializeObject(this, settings);
 
-
         }
 
         /// <summary>

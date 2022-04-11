@@ -22,14 +22,14 @@ namespace TimeSeriesAnalysis.Dynamic
         // AIM "PIDcon": does _not_ scale KP and TI
         // AIM "PIDx" : _DOES_ scale KP and TI
 
-        private bool sasPIDimplementationScalesKp = false;   
+        public bool doesSasPidScaleKp = false;
 
-        private double y_min;
-        private double y_max;
-        private double u_min;
-        private double u_max;
-        private bool   isDefault;
-        private bool isEstimated; // if no scaling info is given, in some cases we may guess/estimate umin/umax if constraint is active
+        public double y_min;
+        public double y_max;
+        public double u_min;
+        public double u_max;
+        public bool isDefault;
+        public bool isEstimated; // if no scaling info is given, in some cases we may guess/estimate umin/umax if constraint is active
 
         /// <summary>
         /// Constructor
@@ -60,7 +60,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             isEstimated = false;
             isDefault = true;
-            sasPIDimplementationScalesKp = false;
+            doesSasPidScaleKp = false;
             /* ySP_min = 0;
              ySP_max = 100;
              yMeas_min = 0;
@@ -88,7 +88,7 @@ namespace TimeSeriesAnalysis.Dynamic
             this.y_max = y_max;
             this.u_min = u_min;
             this.u_max = u_max;
-            this.sasPIDimplementationScalesKp = isKpScalingKpOn;
+            this.doesSasPidScaleKp = isKpScalingKpOn;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double GetYScaleFactor()
         {
-            if (sasPIDimplementationScalesKp)
+            if (doesSasPidScaleKp)
             {
                 double yRange = y_max - y_min;
                 if (yRange > 0)
@@ -149,7 +149,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double GetUScaleFactor()
         {
-            if (sasPIDimplementationScalesKp)
+            if (doesSasPidScaleKp)
             {
                 double uRange = u_max - u_min;
                 if (uRange > 0)
@@ -177,7 +177,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="isKpScalingKpOn"></param>
         public void  SetKpScalingOn(bool isKpScalingKpOn)
         {
-            sasPIDimplementationScalesKp = isKpScalingKpOn;
+            doesSasPidScaleKp = isKpScalingKpOn;
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool IsKpScalingOn()
         {
-            return sasPIDimplementationScalesKp;
+            return doesSasPidScaleKp;
         }
 
         /// <summary>
