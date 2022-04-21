@@ -209,6 +209,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
+
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - Ysetpoint);
 
@@ -221,6 +222,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                  new List<string> { "y1=y_sim1", "y3=u", "y4=d" },
                  timeBase_s, "BasicPID_DisturbanceStep"); ;
             }
+
+            processSim.Serialize("SISO_basicPID");
+            inputData.Combine(simData).ToCsv("SISO_basicPID");
+
+
 
             Assert.IsTrue(isOk);
             Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");
@@ -242,8 +248,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.CreateTimestamps(timeBase_s);
             bool isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
-
-            processSim.Serialize("SISO_basicPID");
 
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - newSetpoint);
