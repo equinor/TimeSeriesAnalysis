@@ -215,11 +215,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                     return false;
-
             }
             else
                 return false;
-        
         }
 
         /// <summary>

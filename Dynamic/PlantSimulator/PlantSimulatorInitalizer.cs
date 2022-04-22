@@ -47,7 +47,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
             // the inital value will be calculated .Value, but is NaN unit calculated.
             var signalValuesAtT0 = new Dictionary<string, double>();
-            // add external signals to simSiganlValueDIct
+            // add external signals to simSignalValueDict
             foreach (var signalId in inputData.GetSignalNames())
             {
                 signalValuesAtT0.Add(signalId, inputData.GetValues(signalId).First());
@@ -93,15 +93,27 @@ namespace TimeSeriesAnalysis.Dynamic
                 int? N = inputData.GetLength();
                 foreach (string signalID in signalValuesAtT0.Keys)
                 {
-                    // external signals are already rpesent in simData, do not add twice
-                    if (!simData.ContainsSignal(signalID) && !inputData.ContainsSignal(signalID))
+                    // simData should not contain the "external signals"
+                    if (externalInputSignals.Contains(signalID))
+                    {
+                        continue;
+                    }
+
+                    // external signals are already present in simData, do not add twice
+                   // if (!simData.ContainsSignal(signalID) && !inputData.ContainsSignal(signalID))
                     {
                         simData.Add(signalID, Vec<double>.Concat(new double[] { signalValuesAtT0[signalID] },
                         Vec<double>.Fill(nonYetSimulatedValue, N.Value - 1)));
                     }
                 }
             }
-            return true;
+            if (simData.GetSignalNames().Length == 0)
+            {
+                Shared.GetParserObj().AddError("PlantSimulatorInitalizer initalized zero simulated variables");
+                return false;
+            }
+            else
+                return true;
         }
         /// <summary>
         /// Initalizes sub-processes inside PID-feedback loops "from right-to-left"(backwards,finds  for a given y what is u)

@@ -379,7 +379,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (!isOk)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \"" 
-                            + model.GetOutputID() + "\", indicating an error in initalizing. ");
+                            + model.GetOutputID() + "\", indicating an error in initalization. ");
                         return false;
                     }
                 }
@@ -388,7 +388,8 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
 
-        private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
+        private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, 
+            TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
         {
             double[] retVals = new double[inputIDs.Length];
 

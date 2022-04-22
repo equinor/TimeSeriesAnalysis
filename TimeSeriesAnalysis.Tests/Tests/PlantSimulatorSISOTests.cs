@@ -209,7 +209,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
-
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - Ysetpoint);
 
@@ -223,15 +222,21 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                  timeBase_s, "BasicPID_DisturbanceStep"); ;
             }
 
-            processSim.Serialize("SISO_basicPID");
-            inputData.Combine(simData).ToCsv("SISO_basicPID");
-
-
-
             Assert.IsTrue(isOk);
             Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");
-            Assert.IsTrue(lastYsimE <0.01,"PID should bring system to setpoint after setpoint change");
+            Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after setpoint change");
             BasicPIDCommonTests(simData);
+
+            processSim.Serialize("SISO_basicPID");
+            
+            var combinedData = inputData.Combine(simData);
+            combinedData.ToCsv("SISO_basicPID");
+
+            // step 2: check that if given an inputDataset that includes simData-variables, the 
+            // plant simulator is still able to run
+            var isOk2 = processSim.Simulate(combinedData, out TimeSeriesDataSet simData2);
+            Assert.IsTrue(isOk2);
+
         }
 
         [TestCase]
