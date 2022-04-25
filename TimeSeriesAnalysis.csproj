@@ -19,7 +19,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <Version>1.1.4</Version>
     <Company>Equinor</Company>
-    <Authors>Steinar Elgsæter</Authors>
+    <Authors>Equinor</Authors>
   </PropertyGroup>
 
 
