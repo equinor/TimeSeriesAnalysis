@@ -58,7 +58,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         const int nDigits = 5;// number of significant digits in result parameters
 
-        const bool doUnityUNorm = false;// if set true, then Unorm is always one
+        const bool doUnityUNorm = true;// if set true, then Unorm is always one
 
         /// <summary>
         /// Default Constructor
