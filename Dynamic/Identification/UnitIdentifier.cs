@@ -737,12 +737,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.Y_sim = y_sim_recalc;
                     if (recalcBias.HasValue)
                     {
-                        parameters.Bias = recalcBias.Value;
+                        parameters.Bias = SignificantDigits.Format(recalcBias.Value, nDigits);
                     }
                     else
                     {
                         parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
-                        parameters.Bias = regResults.Param.Last();
+                        parameters.Bias = SignificantDigits.Format(regResults.Param.Last(),nDigits);
                     }
                 }
                 else
