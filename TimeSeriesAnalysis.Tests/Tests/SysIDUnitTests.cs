@@ -542,9 +542,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             return model;
         }
 
-
-
-
         [TestCase(0,0,0,Category="Static")]
         [TestCase(1,0,0, Category ="Static")]
         [TestCase(0,15,0, Category ="Dynamic")]
@@ -572,6 +569,38 @@ namespace TimeSeriesAnalysis.Test.SysID
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
             DefaultAsserts(model, designParameters);
         }
+
+        [TestCase(0, 0, 0, Category = "Static")]
+        [TestCase(1, 0, 0, Category = "Static")]
+        [TestCase(0, 15, 0, Category = "Dynamic")]
+        [TestCase(1, 15, 0, Category = "Dynamic")]
+        [TestCase(1, 0, 2, Category = "Delayed")]
+
+        // test that specifying a non-unity Unorm is identified and simulated 
+        // correctly
+       /* public void I2_Linear_WithUNorm(double bias, double timeConstant_s, int timeDelay_s)
+        {
+            double noiseAmplitude = 0.01;
+            double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(40, 100, 0, 1);
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
+
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 1, 2 },
+                U0 = Vec<double>.Fill(1, 2),
+                UNorm = Vec<double>.Fill(2, 2),// by default woudl be one
+                Bias = bias
+            };
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
+                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
+            DefaultAsserts(model, designParameters);
+        }*/
+
 
         [TestCase(0, 0, 0, Category = "Static")]
         [TestCase(1, 0, 0, Category = "Static")]

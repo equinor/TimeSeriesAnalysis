@@ -56,6 +56,10 @@ namespace TimeSeriesAnalysis.Dynamic
         const double obFunDiff_MinImprovement = 0.0001;
         const double rSquaredDiff_MinImprovement = 0.001;
 
+        const int nDigits = 5;// number of significant digits in result parameters
+
+        const bool doUnityUNorm = false;// if set true, then Unorm is always one
+
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -146,28 +150,34 @@ namespace TimeSeriesAnalysis.Dynamic
                 u0 = Vec<double>.Fill(dataSet.U.GetNColumns(), 0);
                 if (doNonzeroU0)
                 {
-                    u0 = dataSet.GetAverageU();
+                    u0 = SignificantDigits.Format(dataSet.GetAverageU(),nDigits);
                 }
             }
             if (uNorm == null)
             {
                 uNorm = Vec<double>.Fill(1, dataSet.U.GetNColumns());
-                for (int k=0;k<dataSet.U.GetNColumns(); k++)
-                {
-                    var u = dataSet.U.GetColumn(k);
-                    uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
-                    //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
-                    if (vec.Max(u) == vec.Min(u))// input is constnat
+
+                    for (int k = 0; k < dataSet.U.GetNColumns(); k++)
                     {
-                        constantInputInds.Add(k);
-                        uNorm[k] = Double.PositiveInfinity;
+                        var u = dataSet.U.GetColumn(k);
+                        if (!doUnityUNorm)
+                        {
+                            uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
+                        }
+                        //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
+                        if (vec.Max(u) == vec.Min(u))// input is constnat
+                        {
+                            constantInputInds.Add(k);
+                            uNorm[k] = Double.PositiveInfinity;
+                        }
+                        if (uNorm[k] == 0)// avoid div by zero
+                        {
+                            constantInputInds.Add(k);
+                            uNorm[k] = 0;
+                        }
                     }
-                    if (uNorm[k] == 0)// avoid div by zero
-                    {
-                        constantInputInds.Add(k);
-                        uNorm[k] = 0;
-                    }
-                }
+                
+                uNorm = SignificantDigits.Format(uNorm, nDigits);
             }
 
             UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
@@ -191,7 +201,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 EstimateProcessForAGivenTimeDelay
                 (timeDelayIdx, dataSet, false, allCurvesDisabled,
                 FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
-            // processTimeDelayIdentifyObj.AddRun(modelParams_StaticAndNoCurvature);
             modelList.Add(modelParams_StaticAndNoCurvature);
             /////////////////////////////////////////////////////////////////
             // BEGIN WHILE loop to model process for different time delays               
@@ -276,7 +285,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // the the time delay which caused the smallest object function value
             int bestTimeDelayIdx = processTimeDelayIdentifyObj.ChooseBestTimeDelay(
                 out List<ProcessTimeDelayIdentWarnings> timeDelayWarnings);
-            UnitParameters modelParameters = //modelParams_StaticAndNoCurvature;//TODO:temporary 
+            UnitParameters modelParameters =  
                 (UnitParameters)processTimeDelayIdentifyObj.GetRun(bestTimeDelayIdx);
             // use static and no curvature model as fallback if more complex models failed
             if (!modelParameters.Fitting.WasAbleToIdentify && modelParams_StaticAndNoCurvature.Fitting.WasAbleToIdentify)
@@ -373,8 +382,6 @@ namespace TimeSeriesAnalysis.Dynamic
             Vec vec = new Vec(dataSet.BadDataID);
 
             var inputIndicesToRegularize = new List<int> { 1 };
-
-
 
             double[] ycur, yprev = null, dcur, dprev = null;
             List<double[]> ucurList = new List<double[]>();
@@ -713,11 +720,13 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else // able to identify
             {
+
+
                 parameters.Fitting.WasAbleToIdentify = true;
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.GetTimeBase();
-                parameters.TimeConstant_s = timeConstant_s;
-                parameters.LinearGains = linearProcessGains;
-                parameters.Curvatures = processCurvatures;
+                parameters.TimeConstant_s = SignificantDigits.Format(timeConstant_s, nDigits);
+                parameters.LinearGains = SignificantDigits.Format(linearProcessGains, nDigits);
+                parameters.Curvatures = SignificantDigits.Format(processCurvatures, nDigits);
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 

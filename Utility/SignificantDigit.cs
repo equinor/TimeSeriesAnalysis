@@ -54,12 +54,27 @@ namespace TimeSeriesAnalysis.Utility
         }
 
         ///<summary>
-        /// Rounds down to number of significant digits (26->20 if digits=1 for instance)
+        /// Rounds scalar down to number of significant digits (26->20 if digits=1 for instance)
         ///</summary>
         public static double Format(double number, int digits)
         {
             return Format(number, digits, out _);
         }
+        ///<summary>
+        /// Rounds array down to number of significant digits (26->20 if digits=1 for instance)
+        ///</summary>
+
+        public static double[] Format(double[] numbers, int digits)
+        {
+            if (numbers == null)
+                return null;
+            for (int i = 0; i < numbers.Length; i++)
+            { 
+                numbers[i] = Format(numbers[i], digits);
+            }
+            return numbers;
+        }
+
         ///<summary>
         /// Rounds down to number of significant digits (26->20 if digits=1 for instance)
         ///</summary>

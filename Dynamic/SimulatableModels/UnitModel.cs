@@ -433,8 +433,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     y = modelParameters.Y_min;
                 }
             }
-
-
             return y; 
          }
 
