@@ -158,11 +158,17 @@ namespace TimeSeriesAnalysis.Test.SysID
             //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
             double[] estGains = model.GetModelParameters().GetProcessGains();
-/*            for (int k = 0; k < estGains.Count(); k++)
-            {
-                Assert.IsTrue(Math.Abs(designParameters.GetProcessGain(k) - estGains[k]) < 0.1,
-                "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.GetProcessGain(k));
-            }*/
+            /*            for (int k = 0; k < estGains.Count(); k++)
+                        {
+                            Assert.IsTrue(Math.Abs(designParameters.GetProcessGain(k) - estGains[k]) < 0.1,
+                            "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.GetProcessGain(k));
+                        }*/
+
+            // TODO:
+            var avgError = (new Vec()).Subtract(model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas);
+
+
             if (designParameters.TimeConstant_s < 0.5)
             {
                 Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeConstant_s - designParameters.TimeConstant_s) < 0.1,
@@ -650,9 +656,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
             // introduce disturbance signal in y
-            var sin_amplitude = 0.1;
-            var sin_period_s = 30;
-            var disturbance = TimeSeriesCreator.Sinus(sin_amplitude, sin_period_s,(int)timeBase_s,U.GetNRows());
+            var disturbance = TimeSeriesCreator.Step(U.GetNRows() / 2, U.GetNRows(), 0, 1);
             dataSet.Y_meas = (new Vec()).Add(dataSet.Y_meas,disturbance);
             dataSet.D = disturbance;
             var model = Identify(dataSet, designParameters);
@@ -660,7 +664,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2, disturbance },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y4=dist" }, (int)timeBase_s,"excl_disturbance");
 
-            DefaultAsserts(model, designParameters,1);
+            DefaultAsserts(model, designParameters,0);
         }
 
 

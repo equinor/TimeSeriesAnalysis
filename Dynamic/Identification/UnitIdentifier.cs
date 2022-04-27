@@ -730,7 +730,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 
-                if (dataSet.D == null)
+              //  if (dataSet.D == null)
                 {
                     (double? recalcBias, double[] y_sim_recalc) =
                         SimulateAndReEstimateBias(dataSet, parameters);
@@ -745,17 +745,17 @@ namespace TimeSeriesAnalysis.Dynamic
                         parameters.Bias = SignificantDigits.Format(regResults.Param.Last(),nDigits);
                     }
                 }
-                else
+         /*       else
                 {
                     // if system has disturbance, then bias seems to be better set at original value
                     parameters.AddWarning(UnitdentWarnings.ReEstimateBiasDisabledDueToNonzeroDisturbance);
-                    parameters.Bias = regResults.Param.Last();
+                    parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
 
                     var model = new UnitModel(parameters);
                     var simulator = new UnitSimulator((ISimulatableModel)model);
                     var internalData = new UnitDataSet(dataSet);
                     dataSet.Y_sim = simulator.Simulate(ref internalData);
-                }
+                }*/
 
                 parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;

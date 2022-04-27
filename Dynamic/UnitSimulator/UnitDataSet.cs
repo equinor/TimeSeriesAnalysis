@@ -95,6 +95,7 @@ namespace TimeSeriesAnalysis.Dynamic
             this.U_sim = otherDataSet.U_sim;
             this.Times = otherDataSet.Times;
             this.Warnings = otherDataSet.Warnings; 
+            this.D = otherDataSet.D;
         }
 
         /// <summary>
