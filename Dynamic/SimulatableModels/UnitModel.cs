@@ -97,11 +97,13 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                doSim = true;
+                if (modelParameters.LinearGains != null)
+                    doSim = true;
             }
             if (doSim)
             {
-                this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, GetLengthOfInputVector());
+                this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, 
+                    GetLengthOfInputVector());
                  this.SetInputIDs(new string[GetLengthOfInputVector()]);
             }
         }
@@ -136,7 +138,10 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                return Math.Max(modelParameters.LinearGains.Length, inputIDs.Length);
+                if (modelParameters.LinearGains != null)
+                    return Math.Max(modelParameters.LinearGains.Length, inputIDs.Length);
+                else
+                    return inputIDs.Length;
             }
         }
         
