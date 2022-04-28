@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class Select : ModelBaseClass, ISimulatableModel 
     {
-        private SelectType type;
+        public SelectType type;
 
         /// <summary>
         /// Constructor
