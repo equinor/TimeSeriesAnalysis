@@ -252,19 +252,54 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
             processSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
 
-            if (writeTestDataToDisk)
-            {
-                processSim.Serialize();
-                inputData.ToCsv("MinSelect");
-            }
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData,simData);
             double[] simY = simData.GetValues(minSelect1.GetID(), SignalType.SelectorOut);
-
+            /*
+            if (writeTestDataToDisk)
+            {
+                processSim.Serialize("MISO_MinSelect");
+                var combinedData = inputData.Combine(simData);
+                combinedData.ToCsv("MISO_MinSelect");
+            }*/
             Assert.IsTrue(Math.Abs(simY[0] - (6.5)) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() - (6.5)) < 0.01);
         }
+
+        [Test]
+        public void MinSelectWithPID_RunsAndConverges()
+        {
+            var processSim = new Dynamic.PlantSimulator(
+                new List<ISimulatableModel> { processModel1, processModel2, minSelect1 });
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(N/4, N,0,1));
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(N*3/4, N,0,1));
+            inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(N*2/5, N,0,1));
+            inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(N*4/5, N,0,1));
+            inputData.CreateTimestamps(timeBase_s);
+            processSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
+            processSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
+
+            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            SISOTests.CommonAsserts(inputData, simData);
+            double[] simY = simData.GetValues(minSelect1.GetID(), SignalType.SelectorOut);
+            
+            if (writeTestDataToDisk)
+            {
+                processSim.Serialize("MISO_MinSelectWithPID");
+                var combinedData = inputData.Combine(simData);
+                combinedData.ToCsv("MISO_MinSelectWithPID");
+            }
+            //Assert.IsTrue(Math.Abs(simY[0] - (6.5)) < 0.01);
+            //Assert.IsTrue(Math.Abs(simY.Last() - (6.5)) < 0.01);
+        }
+
+
+
+
+
         [Test]
         public void MaxSelect_RunsAndConverges()
         {

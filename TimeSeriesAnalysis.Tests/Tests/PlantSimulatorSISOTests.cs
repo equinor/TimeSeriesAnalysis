@@ -228,7 +228,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             BasicPIDCommonTests(simData);
 
             processSim.Serialize("SISO_basicPID");
-            
             var combinedData = inputData.Combine(simData);
             combinedData.ToCsv("SISO_basicPID");
 
