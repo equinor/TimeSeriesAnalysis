@@ -28,7 +28,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.simulator = simulator;
             var connections = simulator.GetConnections();
-            orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
+            orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(simulator.GetModels());
         }
         /// <summary>
         /// Initalize the empty datasets to their steady-state values 
@@ -225,10 +225,10 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         // if the subprocess is in an inner loop of a cascade control, then 
                         // having determined "y" also now allows us to set the inital value for "yset"
-                        bool hasUpstreamPID = connections.HasUpstreamPID(model.GetID());
+                        bool hasUpstreamPID = connections.HasUpstreamPID(model.GetID(),modelDict);
                         if (hasUpstreamPID)
                         {
-                            var pidID = connections.GetUpstreamPIDId(model.GetID());
+                            var pidID = connections.GetUpstreamPIDId(model.GetID(), modelDict);
                             if (uninitalizedPID_IDs.Contains(pidID))
                             {
                                 string[] pidInputIDs = modelDict[pidID].GetBothKindsOfInputIDs();
@@ -260,7 +260,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var modelDict = simulator.GetModels();
             var connections = simulator.GetConnections();
-            var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
+            var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(modelDict);
             // forward-calculate the output for those systems where the inputs are given. 
             for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             {
@@ -355,7 +355,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                 {
                     // if the pid is in a cascade, it cannot be initalized before all the outer-loop models have run.
-                    if (connections.HasUpstreamPID(model.GetID()))
+                    if (connections.HasUpstreamPID(model.GetID(), modelDict))
                     {
                         uninitalizedPID_IDs.Add(model.GetID());
                     }

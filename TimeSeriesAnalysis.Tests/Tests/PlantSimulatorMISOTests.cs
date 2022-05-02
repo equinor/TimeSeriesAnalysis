@@ -270,7 +270,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [Test]
         public void MinSelectWithPID_RunsAndConverges()
         {
-            var processSim = new Dynamic.PlantSimulator(
+            var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1, processModel2, minSelect1 });
             var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(N/4, N,0,1));

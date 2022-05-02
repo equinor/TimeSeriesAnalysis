@@ -19,8 +19,8 @@ namespace TimeSeriesAnalysis.Dynamic
     public class ConnectionParser
     {
 
-        [JsonInclude]
-        public Dictionary<string, ISimulatableModel> modelDict;
+    //    [JsonInclude]
+   //     public Dictionary<string, ISimulatableModel> modelDict;
 
         [JsonInclude]
         public List<(string, string)> connections;
@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public ConnectionParser()
         {
             connections = new List<(string, string)>();
-            modelDict = new Dictionary<string, ISimulatableModel>();
+       //     modelDict = new Dictionary<string, ISimulatableModel>();
         }
 
 
@@ -39,10 +39,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Adds a list of all the model IDs that make up a process simulation
         /// </summary>
         /// <param name="allModels"></param>
-        public void AddAllModelObjects( Dictionary<string, ISimulatableModel> allModels)
+        /*public void AddAllModelObjects( Dictionary<string, ISimulatableModel> allModels)
         {
             this.modelDict = allModels;
-        }
+        }*/
 
 
         /// <summary>
@@ -61,7 +61,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Determine the order in which the models must be solved
         /// </summary>
         /// <returns>returns the string of sorted model IDs, the order in which modelDict models are to be run</returns>
-        public List<string> DetermineCalculationOrderOfModels()
+        public List<string> DetermineCalculationOrderOfModels(
+            Dictionary<string, ISimulatableModel> modelDict)
         {
             List<string> unprocessedModels = modelDict.Keys.ToList();
             List<string> orderedModels = new List<string>();
@@ -70,7 +71,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // forward-coupled models (i.e. models in series with no feedbacks and not dependant on feedbacks)
             {
                 // 1.any purely forward-coupled models should be processed from left->right
-                List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections();
+                List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections(modelDict);
                 foreach (string forwardModelID in forwardModelIDs)
                 {
                     orderedModels.Add(forwardModelID);
@@ -271,7 +272,6 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool DoesModelDependOnlyOnGivenModels(string modelId, List<string> givenModelIDs)
         {
             List<string> upstreamModelIds = GetUpstreamModels(modelId);
-            // return DoesArrayContainAll(upstreamModelIds, givenModelIDs);
             return DoesArrayContainAll(givenModelIDs, upstreamModelIds);
         }
 
@@ -293,8 +293,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return downstreamModels.ToList();
         }
 
-
-
         /// <summary>
         /// Get all the models which are connected to a given model one level directly upstream of it
         /// </summary>
@@ -313,11 +311,11 @@ namespace TimeSeriesAnalysis.Dynamic
             return upstreamModels.ToList();
         }
 
-
+        /*
         private string[] GetAllModelIDs()
         {
             return this.modelDict.Keys.ToArray();
-        }
+        }*/
 
 
         /// <summary>
@@ -325,7 +323,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelID"></param>
         /// <returns></returns>
-        public bool HasUpstreamPID(string modelID)
+        public bool HasUpstreamPID(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
             var upstreamModelIDs = GetUpstreamModels(modelID);
 
@@ -344,7 +342,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelID"></param>
         /// <returns></returns>
-        public string GetUpstreamPIDId(string modelID)
+        public string GetUpstreamPIDId(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
             var upstreamModelIDs = GetUpstreamModels(modelID);
 
@@ -365,9 +363,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// (models are then either signal generators or get their input from external signals)
         /// </summary>
         /// <returns></returns>
-        public List<string> GetModelsWithNoUpstreamConnections()
+        public List<string> GetModelsWithNoUpstreamConnections(
+             Dictionary<string, ISimulatableModel> modelDict)
         {
-            var modelsIDsToReturn = new List<string>(GetAllModelIDs());
+            var modelsIDsToReturn = new List<string>(modelDict.Keys.ToArray());//GetAllModelIDs());
             foreach ((string, string) connection in connections)
             {
                 modelsIDsToReturn.Remove(connection.Item2);

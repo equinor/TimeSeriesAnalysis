@@ -111,7 +111,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     modelDict.Add(modelID, model);
                 }
             }
-            connections.AddAllModelObjects(modelDict);
+          //  connections.AddAllModelObjects(modelDict);
         }
 
 
@@ -315,7 +315,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
             }
 
-            var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels();
+            var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(modelDict);
             simData = new TimeSeriesDataSet();
 
             // initalize the new time-series to be created in simData.
