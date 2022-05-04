@@ -271,15 +271,20 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void MinSelectWithPID_RunsAndConverges()
         {
             var processSim = new PlantSimulator(
-                new List<ISimulatableModel> { processModel1, processModel2, minSelect1 });
+                new List<ISimulatableModel> { processModel1, processModel2, minSelect1, pidModel1 });
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(N/4, N,0,1));
+            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/4, N,0,1));
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(N*3/4, N,0,1));
             inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(N*2/5, N,0,1));
             inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(N*4/5, N,0,1));
             inputData.CreateTimestamps(timeBase_s);
+            
+            processSim.ConnectModels(processModel1, pidModel1);
+            processSim.ConnectModels(pidModel1,processModel1, (int)INDEX.FIRST);
+
             processSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
             processSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
+
 
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
@@ -288,9 +293,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             
             if (writeTestDataToDisk)
             {
-                processSim.Serialize("MISO_MinSelectWithPID");
+                processSim.Serialize("MISO_MinSelectWithPID2");
                 var combinedData = inputData.Combine(simData);
-                combinedData.ToCsv("MISO_MinSelectWithPID");
+                combinedData.ToCsv("MISO_MinSelectWithPID2");
             }
             //Assert.IsTrue(Math.Abs(simY[0] - (6.5)) < 0.01);
             //Assert.IsTrue(Math.Abs(simY.Last() - (6.5)) < 0.01);
