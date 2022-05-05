@@ -103,6 +103,7 @@ namespace TimeSeriesAnalysis._Examples
                 timeBase_s, "CascadeEx");
             #endregion
 
+            SerializeHelper.Serialize("CascadeControl", sim, inputData, simResult);
             Assert.IsTrue(isOK);
             return simResult;
         }

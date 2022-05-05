@@ -198,16 +198,16 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase(1)]
         public void BasicPID_DisturbanceStep_RunsAndConverges(double disurbanceStartValue)
         {
-            var processSim = new PlantSimulator(
+            var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
-            processSim.ConnectModels(processModel1, pidModel1);
-            processSim.ConnectModels(pidModel1, processModel1);
+            plantSim.ConnectModels(processModel1, pidModel1);
+            plantSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
-            var distID = processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D); 
+            var distID = plantSim.AddExternalSignal(processModel1, SignalType.Disturbance_D); 
             inputData.Add(distID, TimeSeriesCreator.Step(N / 4, N, disurbanceStartValue, disurbanceStartValue+1));
-            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
+            var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - Ysetpoint);
@@ -227,13 +227,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after setpoint change");
             BasicPIDCommonTests(simData);
 
-            processSim.Serialize("SISO_basicPID");
+            SerializeHelper.Serialize("BasicPID_disturbanceStep",plantSim,inputData,simData);
             var combinedData = inputData.Combine(simData);
-            combinedData.ToCsv("SISO_basicPID");
-
             // step 2: check that if given an inputDataset that includes simData-variables, the 
             // plant simulator is still able to run
-            var isOk2 = processSim.Simulate(combinedData, out TimeSeriesDataSet simData2);
+            var isOk2 = plantSim.Simulate(combinedData, out TimeSeriesDataSet simData2);
             Assert.IsTrue(isOk2);
 
         }
@@ -242,15 +240,17 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void BasicPID_SetpointStep_RunsAndConverges()
         {
             double newSetpoint = 51;
-            var processSim = new Dynamic.PlantSimulator(
+            var plantSim = new Dynamic.PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
-            processSim.ConnectModels(processModel1, pidModel1);
-            processSim.ConnectModels(pidModel1, processModel1);
+            plantSim.ConnectModels(processModel1, pidModel1);
+            plantSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), 
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), 
                 TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
             inputData.CreateTimestamps(timeBase_s);
-            bool isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
+            bool isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
+
+            SerializeHelper.Serialize("BasicPID_setpointStep", plantSim, inputData, simData);
 
 
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);

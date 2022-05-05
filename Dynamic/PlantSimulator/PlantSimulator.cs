@@ -425,10 +425,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public string SerializeTxt()
         {
-
             var settings = new JsonSerializerSettings();
             settings.TypeNameHandling = TypeNameHandling.Auto;
             settings.Formatting = Formatting.Indented;
+
+            // models outputs that are not connected to anyting are "null"
+
+            foreach (var keyvalue in this.modelDict)
+            {
+                var outputID = this.modelDict[keyvalue.Key].GetOutputID();
+                this.modelDict[keyvalue.Key].SetOutputID(outputID);
+            }
 
             // https://khalidabuhakmeh.com/serialize-interface-instances-system-text-json
             return JsonConvert.SerializeObject(this, settings);
@@ -441,7 +448,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="newPlantName"></param>
         public void Serialize(string newPlantName = null)
         {
-            string fileName = "PlantSim";
+            string fileName = "";
             if (newPlantName!=null)
             {
                 fileName += newPlantName;
