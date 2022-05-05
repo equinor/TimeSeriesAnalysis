@@ -428,6 +428,9 @@ namespace TimeSeriesAnalysis._Examples
                     "y3=y_setpoint(run2)", "y4=u_run2(right)" }, timeBase_s, "GainSchedulingEx_3");
             #endregion
 
+            SerializeHelper.Serialize("GainScheduling", closedLoopSimGS_2, inputDataGS2, closedLoopDataGS_2);
+
+
             Assert.IsTrue(isOk1);
             Assert.IsTrue(isOk2);
             Assert.IsTrue(isOk3);
