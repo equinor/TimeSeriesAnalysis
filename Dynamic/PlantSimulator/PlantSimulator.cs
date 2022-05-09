@@ -52,26 +52,32 @@ namespace TimeSeriesAnalysis.Dynamic
             dataset.U.WriteColumn(0, inputData.GetValues(pidModel.outputID));
             dataset.Times = inputData.GetTimeStamps();
             var inputIDs = pidModel.GetModelInputIDs();
-            foreach (var inputID in inputIDs)
-            {
-                var type = SignalNamer.GetSignalType(inputID);
 
-                if (type == SignalType.Setpoint_Yset)
+
+//            PidModelInputsIdx
+
+            for (int inputIDidx=0; inputIDidx<inputIDs.Length; inputIDidx++)
+            {
+                var inputID = inputIDs[inputIDidx];
+                //  var type = SignalNamer.GetSignalType(inputID);
+
+                if (inputIDidx == (int)PidModelInputsIdx.Y_setpoint)
                 {
                     dataset.Y_setpoint = inputData.GetValues(inputID);
                 }
-                else if (type == SignalType.Output_Y_sim)
+                else if (inputIDidx == (int)PidModelInputsIdx.Y_meas)
                 {
-                    dataset.Y_meas = inputData.GetValues(inputID );
-                }//todo: feedforward?
-                /*else if (type == SignalType.Output_Y_sim)
-                {
-                    dataset.U.WriteColumn(1, inputData.GetValues(inputID));
+                    dataset.Y_meas = inputData.GetValues(inputID);
                 }
-                else
-                {
-                    throw new Exception("unexepcted signal type");
-                }*/
+                //todo: feedforward?
+                    /*else if (type == SignalType.Output_Y_sim)
+                    {
+                        dataset.U.WriteColumn(1, inputData.GetValues(inputID));
+                    }
+                    else
+                    {
+                        throw new Exception("unexepcted signal type");
+                    }*/
             }
             return dataset;
         }
