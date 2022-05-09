@@ -326,6 +326,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
                 return false;
             }
+            if (simData.GetSignalNames().Length < orderedSimulatorIDs.Count())
+            {
+                Shared.GetParserObj().AddError("PlantSimulator initalized only "+ simData.GetSignalNames().Length+
+                    ". Expected "+ orderedSimulatorIDs.Count());
+                return false;
+            }
+
+
             int timeIdx = 0;
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
             {

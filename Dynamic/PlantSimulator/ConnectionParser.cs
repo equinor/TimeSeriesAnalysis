@@ -90,6 +90,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     List<string> downstreamModelIDs = GetDownstreamModelIDs(forwardModelId);
                     foreach (string downstreamModelID in downstreamModelIDs)
                     {
+                        if (unprocessedModels.Count == 0)
+                            continue;
                         List<string> upstreamModelIDs = GetUpstreamModels(downstreamModelID);
                         if (DoesArrayContainAll(orderedModels, upstreamModelIDs))
                         {
@@ -109,6 +111,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // Note that controllers may be in cascades, so the order in they are processed may be signficant
             // the calculation order should always be to start with the outermost pid-controllers and to 
             // work your way in.
+            if(unprocessedModels.Count>0)
             {
                 bool areUnprocessedPIDModelsLeft = true;
                 int whileLoopIterations = 0;
@@ -162,6 +165,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // if there are multiple pid loops, then these should be added "left-to-right"
             // but "pidModels" is unordered.
+            if (unprocessedModels.Count > 0)
             { 
             List<string> pidModelsLeftToParse = pidModels;
 

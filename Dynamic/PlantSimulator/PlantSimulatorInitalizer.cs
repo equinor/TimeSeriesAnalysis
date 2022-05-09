@@ -65,7 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // after the PID-controlled "Y" have been set, go through each "SubProcess" model and back-calculate 
             // the steady-state u for those subsytems that have a defined "Y".
             // assume that subsystems are ordered from left->right, go throught them right->left to propage pid-output backwards!
-            isOk = BackwardsCalcNonPID(ref signalValuesAtT0,ref uninitalizedPID_IDs);
+            isOk = BackwardsCalcFeedbackLoops(ref signalValuesAtT0,ref uninitalizedPID_IDs);
             if (!isOk)
                 return false;
             // if will still be uninitalized pids if simulator contains a select-block, 
@@ -77,6 +77,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
             }
             // the final step is if there are any final processes "to the right of" the already initalized signals
+
             isOk = ForwardCalcNonPID(ref signalValuesAtT0);
             if (!isOk)
                 return false;
@@ -122,7 +123,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="simSignalValueDict"></param>
         /// <param name="uninitalizedPID_IDs"></param>
         /// <returns></returns>
-        private bool BackwardsCalcNonPID(ref Dictionary<string, double> simSignalValueDict,
+        private bool BackwardsCalcFeedbackLoops(ref Dictionary<string, double> simSignalValueDict,
             ref List<string> uninitalizedPID_IDs)
         {
             var modelDict = simulator.GetModels();
