@@ -145,7 +145,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="values"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string AddTimeSeries(string processID, SignalType type, double[] values, int index = 0)
+       /* public string AddTimeSeries(string processID, SignalType type, double[] values, int index = 0)
         {
             string signalName = SignalNamer.GetSignalName(processID, type, index);
 
@@ -154,7 +154,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return signalName;
             else
                 return null;
-        }
+        }*/
 
         /// <summary>
         /// Adds all signals in a given set to this set

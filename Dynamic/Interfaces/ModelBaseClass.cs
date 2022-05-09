@@ -23,7 +23,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public string[] ModelInputIDs;
 
         public List<string> additiveInputIDs;
-        public string outputID;
+        public string outputID=null;
 
         public ModelType processModelType = ModelType.UnTyped;
 
@@ -123,8 +123,6 @@ namespace TimeSeriesAnalysis.Dynamic
             } 
         }
 
-
-
         /// <summary>
         /// Get the type of the process model
         /// </summary>
@@ -181,7 +179,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns> may return <c>null</c> if output is not set</returns>
         public string GetOutputID()
         {
-             return SignalNamer.GetSignalName(GetID(), GetOutputSignalType());
+             if (this.outputID == null)
+                return SignalNamer.GetSignalName(GetID(), GetOutputSignalType());
+             else
+                return this.outputID;
         }
 
         /// <summary>

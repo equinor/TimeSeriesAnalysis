@@ -30,9 +30,9 @@
         /// </summary>
         Disturbance_D = 5,//SubProcess
         /// <summary>
-        /// The simulated output of a "Process"
+        /// The output of a "SubProcess"
         /// </summary>
-        Output_Y_sim = 6,
+        Output_Y = 6,
         /// <summary>
         /// The output of a select block
         /// </summary>

@@ -82,7 +82,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             CommonAsserts(inputData, simData);
-            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
             Assert.IsTrue(Math.Abs(simY[0]- 55)<0.01);
             Assert.IsTrue(Math.Abs(simY.Last()- 60)<0.01);
             /*
@@ -110,7 +110,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(isOk);
             CommonAsserts(inputData, simData);
 
-            double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y);
             Assert.IsTrue(Math.Abs(simY[0] - (55 * 1.1 + 5)) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() - (60 * 1.1 + 5)) < 0.01);
 
@@ -142,7 +142,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(isOk);
             CommonAsserts(inputData, simData);
 
-            double[] simY = simData.GetValues(processModel3.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel3.GetID(), SignalType.Output_Y);
             Assert.IsTrue(Math.Abs(simY[0] - ((55 * 1.1 + 5)*1.1+5)) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() - ((60 * 1.1 + 5)*1.1+5)) < 0.01);
 
@@ -209,13 +209,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.CreateTimestamps(timeBase_s);
             var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
-            double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
-            double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - Ysetpoint);
+            double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).First() - Ysetpoint);
+            double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).Last() - Ysetpoint);
 
             if (false)
             {
                 Plot.FromList(new List<double[]> {
-                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
                  simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
                  inputData.GetValues(processModel1.GetID(),SignalType.Disturbance_D) },
                  new List<string> { "y1=y_sim1", "y3=u", "y4=d" },
@@ -253,8 +253,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             SerializeHelper.Serialize("BasicPID_setpointStep", plantSim, inputData, simData);
 
 
-            double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).First() - Ysetpoint);
-            double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim).Last() - newSetpoint);
+            double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).First() - Ysetpoint);
+            double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).Last() - newSetpoint);
             Assert.IsTrue(isOk);
             Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");
             Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after disturbance");

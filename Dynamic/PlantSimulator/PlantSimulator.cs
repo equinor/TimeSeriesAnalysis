@@ -120,22 +120,17 @@ namespace TimeSeriesAnalysis.Dynamic
           //  connections.AddAllModelObjects(modelDict);
         }
 
-
-
         /// <summary>
-        /// Informs the PlantSimulator that a specific sub-model has a specifc signal at its input, 
+        /// Add an external signal. Preferred implementation, as signal can have any ID without naming convention.
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="signalID"></param>
         /// <param name="type"></param>
-        /// <param name="values"></param>
-        /// <param name="index">the index of the signal, this is only needed if this is an input to a multi-input model</param>
-
-        public string AddExternalSignal(ISimulatableModel model, SignalType type/*, double[] values*/, int index = 0)
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string AddExternalSignal(ISimulatableModel model,string signalID, SignalType type, int index = 0)
         {
             ModelType modelType = model.GetProcessModelType();
-
-            string signalID = SignalNamer.GetSignalName(model.GetID(), type, index);
-            // string signalID = externalInputSignals.AddTimeSeries(model.GetID(), type, values, index);
             externalInputSignalIDs.Add(signalID);
             if (signalID == null)
             {
@@ -182,6 +177,23 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");
                 return null;
             }
+
+        }
+
+
+        /// <summary>
+        /// Informs the PlantSimulator that a specific sub-model has a specifc signal at its input, 
+        /// (use for unit testing only, using a naming conventino to name signal)
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="type"></param>
+        /// <param name="values"></param>
+        /// <param name="index">the index of the signal, this is only needed if this is an input to a multi-input model</param>
+
+        public string AddExternalSignal(ISimulatableModel model, SignalType type, int index = 0)
+        {
+            string signalID = SignalNamer.GetSignalName(model.GetID(), type, index);
+            return AddExternalSignal(model,signalID,type,index);
         }
 
         /// <summary>

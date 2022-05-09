@@ -93,8 +93,8 @@ namespace TimeSeriesAnalysis._Examples
 
             Plot.FromList(new List<double[]>
                 {
-                simResult.GetValues(process1.GetID(),SignalType.Output_Y_sim),
-                simResult.GetValues(process2.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(process1.GetID(),SignalType.Output_Y),
+                simResult.GetValues(process2.GetID(),SignalType.Output_Y),
                 inputData.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
                 simResult.GetValues(pid1.GetID(),SignalType.PID_U),
                 simResult.GetValues(pid2.GetID(),SignalType.PID_U)
@@ -164,9 +164,9 @@ namespace TimeSeriesAnalysis._Examples
 
             Plot.FromList(new List<double[]>
                 {
-                dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y),
                 inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
-                dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+                dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y),
                 dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
                 inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
                 },
@@ -248,9 +248,9 @@ namespace TimeSeriesAnalysis._Examples
 
             Plot.FromList(new List<double[]>
                 { 
-                    dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                    dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y),
                     inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
-                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+                    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y),
                     dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
                     inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
                 },
@@ -305,8 +305,8 @@ namespace TimeSeriesAnalysis._Examples
             var isOk1 = openLoopSim2.Simulate(inputDataSim2,out var openLoopData2);
 
             Plot.FromList(new List<double[]>
-                {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-                 openLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y),
+                 openLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y),
                  openLoopData1.GetValues(processModel.GetID(),SignalType.External_U),
                  openLoopData2.GetValues(processModel.GetID(),SignalType.External_U)
                  },
@@ -354,10 +354,10 @@ namespace TimeSeriesAnalysis._Examples
             var isOk2 = closedLoopSim2.Simulate(inputData2,out var closedLoopData2);
 
             Plot.FromList(new List<double[]>
-                {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y),
                  inputData1.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
                  closedLoopData1.GetValues(pidModel1.GetID(),SignalType.PID_U),
-                 closedLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                 closedLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y),
                  inputData2.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
                  closedLoopData2.GetValues(pidModel2.GetID(),SignalType.PID_U),
                  },
@@ -417,10 +417,10 @@ namespace TimeSeriesAnalysis._Examples
             var isOk4 = closedLoopSimGS_2.Simulate(inputDataGS2, out var closedLoopDataGS_2);
 
             Plot.FromList(new List<double[]>
-                {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y),
                  inputDataGS1.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
                  closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.PID_U),
-                 closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                 closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y),
                  inputDataGS2.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
                  closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.PID_U)
                  },
@@ -501,7 +501,7 @@ namespace TimeSeriesAnalysis._Examples
             
             Plot.FromList(new List<double[]>
                 {
-                simResult.GetValues(process.GetID(),SignalType.Output_Y_sim),
+                simResult.GetValues(process.GetID(),SignalType.Output_Y),
                 Vec<double>.Fill(85,N),
                 inputData.GetValues(pid1.GetID(),SignalType.Setpoint_Yset),
                 inputData.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),

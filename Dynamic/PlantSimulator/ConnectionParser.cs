@@ -248,6 +248,39 @@ namespace TimeSeriesAnalysis.Dynamic
             return orderedModels;
         }
 
+        internal int[] GetFreeIndices(string modelID, PlantSimulator simulator)
+        {
+            var inputIDs = simulator.modelDict[modelID].GetModelInputIDs();
+            List<int> freeIndices = new List<int>();
+            for (int idx=0; idx<inputIDs.Length; idx++)
+            {
+                var inputID = inputIDs[idx];
+                if (!simulator.externalInputSignalIDs.Contains(inputID))
+                { 
+                    freeIndices.Add(idx);
+                }
+            }
+            return freeIndices.ToArray();
+        }
+
+        /// <summary>
+        /// Count the number of externally provided signals for a given model
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <param name="simulator"></param>
+        /// <returns></returns>
+        internal string[] GetModelExternalSignals(string modelID, PlantSimulator simulator)
+        {
+            List<string> externalSignalsForModel = new List<string>();
+            var inputIDs = simulator.modelDict[modelID].GetModelInputIDs();
+            foreach(var inputID in inputIDs)
+            {
+                if (simulator.externalInputSignalIDs.Contains(inputID))
+                    externalSignalsForModel.Add(inputID);
+            }
+            return externalSignalsForModel.ToArray();
+        }
+
         /// <summary>
         /// Determine if array1 contains all of the member of array2
         /// </summary>
@@ -346,18 +379,20 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelID"></param>
         /// <returns></returns>
-        public string GetUpstreamPIDId(string modelID, Dictionary<string, ISimulatableModel> modelDict)
+        public string[] GetUpstreamPIDIds(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
             var upstreamModelIDs = GetUpstreamModels(modelID);
+
+            List<string> upstreamPIDIds = new List<string>();
 
             foreach (string upstreamID in upstreamModelIDs)
             {
                 if (modelDict[upstreamID].GetProcessModelType() == ModelType.PID)
                 {
-                    return upstreamID;
+                    upstreamPIDIds.Add(upstreamID) ;
                 }
             }
-            return null;
+            return upstreamPIDIds.ToArray();
         }
 
 

@@ -134,7 +134,7 @@ namespace TimeSeriesAnalysis._Examples
             // view results
             Console.WriteLine(idResult.ToString());
             Plot.FromList(new List<double[]> {
-                simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
                 inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
                 simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
                 Array2D<double>.GetColumn(pidDataSet.U_sim,(int)INDEX.FIRST) },

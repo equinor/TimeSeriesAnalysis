@@ -140,13 +140,13 @@ namespace TimeSeriesAnalysis.Dynamic
                         + model.GetID() + "\" has no defined output.");
                     return false;
                 }
-                int numberOfPIDInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), SignalType.PID_U);
+                int numberOfPIDInputs = connections.GetUpstreamPIDIds(model.GetID(),modelDict).Count();
                 if (numberOfPIDInputs > 1)
                 {
                     continue; // this will be the case for select-blocks.
                 }
-                int numberOfExternalInputs = SignalNamer.GetNumberOfSignalsOfType(model.GetModelInputIDs(), 
-                    SignalType.External_U);
+                int numberOfExternalInputs = connections.GetModelExternalSignals(model.GetID(),simulator).Count();
+                //
                 string[] additiveInputs = model.GetAdditiveInputIDs();
                 bool isXgiven = true;// y = x + sum(additive signals)
                 if (additiveInputs != null)
@@ -168,11 +168,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                     continue;//should not happen
-                int[] uPIDIndices =
-                    SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.PID_U);
-                int[] uInternalIndices =
-                    SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.Output_Y_sim);
-                int[] uFreeIndices = Vec<int>.Concat(uPIDIndices, uInternalIndices);
+                /*  int[] uPIDIndices =
+                      SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.PID_U);
+                  int[] uInternalIndices =
+                      SignalNamer.GetIndexOfSignalType(model.GetModelInputIDs(), SignalType.Output_Y_sim);
+                  int[] uFreeIndices = Vec<int>.Concat(uPIDIndices, uInternalIndices);*/
+
+                int[] uFreeIndices = connections.GetFreeIndices(model.GetID(),simulator);
+
                 if (uFreeIndices.Length > 1)
                 {
                     Shared.GetParserObj().AddError("PlantSimulatorInitalizer:unexpected/unsupported number of free inputs found during init.");
@@ -180,7 +183,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else if (uFreeIndices.Length == 1)
                 {
-                    int uPidIndex = uFreeIndices[0];
+                    int uPidIndex = uFreeIndices[0];//how do we know this is a PID-index?
                     string[] inputIDs = model.GetBothKindsOfInputIDs();
                     double[] givenInputValues = new double[inputIDs.Length];
                     for (int i = 0; i < inputIDs.Length; i++)
@@ -229,7 +232,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         bool hasUpstreamPID = connections.HasUpstreamPID(model.GetID(),modelDict);
                         if (hasUpstreamPID)
                         {
-                            var pidID = connections.GetUpstreamPIDId(model.GetID(), modelDict);
+                            var pidIDs = connections.GetUpstreamPIDIds(model.GetID(), modelDict);
+                            var pidID = pidIDs.First();
                             if (uninitalizedPID_IDs.Contains(pidID))
                             {
                                 string[] pidInputIDs = modelDict[pidID].GetBothKindsOfInputIDs();

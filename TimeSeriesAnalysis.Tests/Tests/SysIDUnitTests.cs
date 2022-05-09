@@ -453,7 +453,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
                 model.GetFittedDataSet().Y_meas,
-                refData.GetValues(refModel.GetID(),SignalType.Output_Y_sim),
+                refData.GetValues(refModel.GetID(),SignalType.Output_Y),
                 u1 },
                  new List<string> { "y1=ysim", "y1=ymeas","y1=yref(linear)", "y3=u1" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
@@ -539,7 +539,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
                 model.GetFittedDataSet().Y_meas,
-                refData.GetValues(refModel.GetID(),SignalType.Output_Y_sim),
+                refData.GetValues(refModel.GetID(),SignalType.Output_Y),
                 u1, u2 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1", "y3=u2" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));

@@ -222,7 +222,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData,simData);
-            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
 
             Assert.IsTrue(Math.Abs(simY[0] -(1*50 + 0.5*50 +5) ) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() -(1*55 + 0.5*45 +5) ) < 0.01);
@@ -335,7 +335,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData, simData);
-            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
 
             Assert.IsTrue(Math.Abs(simY[0] - (1 * 50 + 0.5 * 50 + 5)) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
@@ -384,7 +384,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 new List<string> { "y1=y_sim1", "y3=u1", "y3=u2" },
                 timeBase_s, "UnitTest_PIDandSingle");*/
 
-            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
             SISOTests.CommonAsserts(inputData, simData);
             Assert.IsTrue(Math.Abs(simY[0] - (60)) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() - (60)) < 0.1);
@@ -419,7 +419,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             timeBase_s, "UnitTest_MISO2Serial");
             */
 
-            double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y);
             Assert.IsTrue(Math.Abs(simY[0] - ((1*50+0.5*50+5)*1.1+50*0.6+5)) < 0.01,"unexpected starting value");
             Assert.IsTrue(Math.Abs(simY.Last() - ((1*55+0.5*45+5)*1.1+40*0.6+5)) < 0.01, "unexpected ending value");
         }
@@ -492,13 +492,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 timeBase_s, "UnitTest_PIDandSerial2");*/
             
             SISOTests.CommonAsserts(inputData, simData);
-            double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y);
             Assert.IsTrue(Math.Abs(simY[0] - 150) < 0.01, "unexpected starting value");
             Assert.IsTrue(Math.Abs(simY.Last() - 150) < 0.1, "unexpected ending value");
 
             if (ver == 4)
             {
-                double[] simY3 = simData.GetValues(processModel3.GetID(), SignalType.Output_Y_sim);
+                double[] simY3 = simData.GetValues(processModel3.GetID(), SignalType.Output_Y);
                 //  Plot.FromList(new List<double[]> { simData.GetValues(processModel3.GetID(), SignalType.Output_Y_sim) },
                 //     new List<string> { "y1=y3" }   timeBase_s, "UnitTest_PIDandSerial2"););
 
@@ -556,7 +556,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData, simData);
 
-            double[] simY = simData.GetValues(processModel3.GetID(), SignalType.Output_Y_sim);
+            double[] simY = simData.GetValues(processModel3.GetID(), SignalType.Output_Y);
             double expStartVal  = ((1 * 50 + 0.5 * 50 + 5) * 1.1 + 50 * 0.6 + 5)*0.8 + 0.7*30 + 5;
             double expEndVal    = ((1 * 55 + 0.5 * 45 + 5) * 1.1 + 40 * 0.6 + 5)*0.8 + 0.7*40 + 5;
 
@@ -577,6 +577,54 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 timeBase_s, "UnitTest_MISO3Serial");*/
 
         }
+
+        [Test]
+        public void TwoProcessesToOne_RunsAndConverges()
+        {
+
+            var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { processModel1, processModel2, processModel3 });
+
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(60, N, 50, 55));
+            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(180, N, 50, 45));
+
+            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(90, N, 30, 45));
+            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(12, N, 60, 45));
+
+            plantSim.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
+            plantSim.ConnectModels(processModel2, processModel3, (int)INDEX.SECOND);
+  
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            Assert.IsTrue(isOk);
+            SISOTests.CommonAsserts(inputData, simData);
+
+            SerializeHelper.Serialize("TwoProcessesToOne",plantSim,inputData,simData);
+
+
+        //    Assert.IsTrue(Math.Abs(simY[0] - expStartVal) < 0.01, "unexpected starting value");
+        //   Assert.IsTrue(Math.Abs(simY.Last() - expEndVal) < 0.01, "unexpected ending value");
+            /*
+            
+            Plot.FromList(new List<double[]> {
+                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                 simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
+                 simData.GetValues(processModel3.GetID(),SignalType.Output_Y_sim),
+                 inputData.GetValues(processModel1.GetID(),SignalType.External_U,(int)INDEX.FIRST),
+                 inputData.GetValues(processModel1.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                 inputData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                 inputData.GetValues(processModel3.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                },
+                new List<string> { "y1=y_sim1", "y1=y_sim2","y1=y_sim3", "u1", "u2", "u4","u6" },
+                timeBase_s, "UnitTest_MISO3Serial");*/
+
+        }
+
+
+
+
 
 
 

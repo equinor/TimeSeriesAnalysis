@@ -368,7 +368,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         override public SignalType GetOutputSignalType()
         {
-            return SignalType.Output_Y_sim;
+            return SignalType.Output_Y;
         }
 
 

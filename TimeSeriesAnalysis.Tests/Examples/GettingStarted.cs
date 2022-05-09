@@ -232,7 +232,7 @@ namespace TimeSeriesAnalysis._Examples
             var isOk = sim.Simulate(inputData,out var simData);
 
             Plot.FromList(new List<double[]> {
-                simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+                simData.GetValues(processModel.GetID(),SignalType.Output_Y),
                 simData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
                 inputData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
                 simData.GetValues(pidModel.GetID(),SignalType.PID_U)
