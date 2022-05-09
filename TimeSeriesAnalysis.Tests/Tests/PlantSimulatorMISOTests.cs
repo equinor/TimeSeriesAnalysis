@@ -269,9 +269,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 new List<ISimulatableModel> { processModel1, processModel2, minSelect1, pidModel1 });
             var inputData = new TimeSeriesDataSet();
             inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/4, N,0,1));
-            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(N*3/4, N,0,1));
-            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(N*2/5, N,0,1));
-            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(N*4/5, N,0,1));
+            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND), 
+                TimeSeriesCreator.Step(N*3/4, N,0,1));
+            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), 
+                TimeSeriesCreator.Step(N*2/5, N,0,1));
+            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), 
+                TimeSeriesCreator.Step(N*4/5, N,0,1));
             inputData.CreateTimestamps(timeBase_s);
             
             plantSim.ConnectModels(processModel1, pidModel1);
