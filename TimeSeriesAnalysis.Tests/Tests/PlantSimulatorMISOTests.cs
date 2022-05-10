@@ -469,7 +469,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             if (ver == 4)
             {
                 inputData.Add(processSim.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Constant(0, N));
-                processSim.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
+                processSim.ConnectModels(processModel2, processModel3, (int)INDEX.FIRST);
             }
 
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
