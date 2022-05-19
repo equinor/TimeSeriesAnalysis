@@ -156,8 +156,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             maxSelect1 = new Select(SelectType.MAX, "MAXSELECT");
 
         }
-        
-        [Test,Explicit(reason:"fails_wip")]
+
+        [Test]
         public void DeserializedPlantSimulatorAndTimeSeriesDataObjects_AreAbleToSimulate()
         {
             // 1. create a plantsimulator in 
@@ -187,29 +187,48 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var inputData2 = new TimeSeriesDataSet(inputDataJsonTxt);
 
             // 3. deserialize to a new object
-            var plantSim2 = PlantSimulatorHelper.LoadFromJson(plantsimJsonTxt);
+            var plantSim2 = PlantSimulatorHelper.LoadFromJsonTxt(plantsimJsonTxt);
 
             // 4. simulate the plant object created from Json
             var isOk = plantSim2.Simulate(inputData2, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
 
-/*           
-           Plot.FromList(new List<double[]> {
-               simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
-               simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
-               simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
-               inputData2.GetValues(processModel1.GetID(),SignalType.External_U,externalUIndex),
-               inputData2.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
-           },
-               new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
-               timeBase_s, "UnitTest_PIDandSerial2");*/
-            
+            /*           
+                       Plot.FromList(new List<double[]> {
+                           simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                           simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
+                           simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                           inputData2.GetValues(processModel1.GetID(),SignalType.External_U,externalUIndex),
+                           inputData2.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
+                       },
+                           new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
+                           timeBase_s, "UnitTest_PIDandSerial2");*/
+
         }
 
+        // this test a potentially quite common error mode, where an external signal
+        // is mentioned in the model, but it is not included in the list of inputData
+        // The simulator should return a user-friendly error message in this case.
+        [TestCase]
+        public void DeserializeModelWithMissingInput_GivesGoodErrorMessage()
+        {
+            // deserialize file to an object
+            // this particular model has an external signal "Noise" that is mentioned
+            // in the model
+            var plantSim = PlantSimulatorHelper.LoadFromJsonFile(
+                @"..\..\..\TestData\_BasicPID_setpointStepWithRandomWalk.json");
 
+            var inputData = new TimeSeriesDataSet();
+  
+            inputData.Add("PID1-Setpoint_Yset",
+                TimeSeriesCreator.Step(N / 4, N, 50, 51));
+            // this is the signal that is "missing"
+           //  inputData.Add("Noise", TimeSeriesCreator.Noise(N,1));
+            inputData.CreateTimestamps(timeBase_s);
 
-
+            var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+        }
 
         [TestCase]
         public void MISO_Single_RunsAndConverges()
@@ -322,6 +341,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(Math.Abs(simY[0] - (6.7)) < 0.01);
             Assert.IsTrue(Math.Abs(simY.Last() - (6.7)) < 0.01);
         }
+
+
+
+
+
 
 
         public void Single_RunsAndConverges()

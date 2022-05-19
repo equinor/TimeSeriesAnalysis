@@ -59,8 +59,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private double TimeBase_s;
         private double Ti, Kp, Td;
-        private double y_FilterTconst_s;
-        private double y_FilterOrder;
+        //private double y_FilterTconst_s;
+        //private double y_FilterOrder;
+        private PidFiltering pidFiltering;
         private double u0;
         private PidScaling pidScaling;
         private double u_prev, e_prev_unscaled, e_prev_prev_unscaled;
@@ -102,8 +103,10 @@ namespace TimeSeriesAnalysis.Dynamic
             this.Ti = Ti;
             this.Td = Td;
 
-            this.y_FilterTconst_s = 0;
-            this.y_FilterOrder = 0;
+            //this.y_FilterTconst_s = 0;
+            //this.y_FilterOrder = 0;
+
+            this.pidFiltering = new PidFiltering();
 
             this.u_prev = double.NaN;
             this.e_prev_unscaled = double.NaN;
@@ -133,6 +136,12 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.ffObj = feedForwardObj;
         }
+
+        public void SetPidFiltering(PidFiltering pidFiltering)
+        {
+            this.pidFiltering = pidFiltering;
+        }
+
 
         /// <summary>
         /// Get the feedforward parameters of the controller 
@@ -289,12 +298,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Sets the filter time constant in seconds and the filter order (1. or 2. order supported) of low-pass filter to be applied to the process
         /// measurement y
         /// </summary>
-
+        /*
         public void SetYFilter(double filterTimeConstant_s, int filterOrder=1)
         {
             this.y_FilterOrder      = filterOrder;
             this.y_FilterTconst_s   = filterTimeConstant_s;
-        }
+        }*/
 
         /// <summary>
         /// Calculates an entire output vector u given vector of processes and setpoints (and optionally a tracking signal for split range)
@@ -583,6 +592,15 @@ namespace TimeSeriesAnalysis.Dynamic
         //
         // private functions below
         //
+
+
+        /// <summary>
+        /// Caculates the error term from the setpoint and process measurement, 
+        /// while also accounting for input filtering
+        /// </summary>
+        /// <param name="y_process_abs"></param>
+        /// <param name="y_setpoint_abs"></param>
+        /// <returns></returns>
         private double  CalcUnscaledE(double y_process_abs, double y_setpoint_abs)
         {
         //    double y_scalingfactor = pidScaling.GetYScaleFactor() ;
@@ -594,17 +612,25 @@ namespace TimeSeriesAnalysis.Dynamic
             y_setpoint_prc = y_setpoint_abs ;//
             y_process_prc  = y_process_abs  ;
 
-            if (y_FilterOrder == 1 && y_FilterTconst_s > 0)
-                y_processFilt_prc = yFilt1.Filter(y_process_prc, y_FilterTconst_s, 1,false);
-            else if (y_FilterOrder == 2 && y_FilterTconst_s > 0)
+            if (pidFiltering.IsEnabled)
             {
-                double y_processFilt1_prc = yFilt1.Filter(y_process_prc, y_FilterTconst_s,1, false);
-                y_processFilt_prc = yFilt2.Filter(y_processFilt1_prc, y_FilterTconst_s,1, false);
+                if (pidFiltering.FilterOrder == 1 && pidFiltering.TimeConstant_s > 0)
+                    y_processFilt_prc = yFilt1.Filter(y_process_prc, pidFiltering.TimeConstant_s, 1, false);
+                else if (pidFiltering.FilterOrder == 2 && pidFiltering.TimeConstant_s > 0)
+                {
+                    double y_processFilt1_prc = yFilt1.Filter(y_process_prc, pidFiltering.TimeConstant_s, 1, false);
+                    y_processFilt_prc = yFilt2.Filter(y_processFilt1_prc, pidFiltering.TimeConstant_s, 1, false);
+                }
+                else
+                {
+                    y_processFilt_prc = y_process_prc;
+                }
             }
             else
             {
                 y_processFilt_prc = y_process_prc;
             }
+
             e = y_setpoint_prc - y_processFilt_prc;
             return e;
         }

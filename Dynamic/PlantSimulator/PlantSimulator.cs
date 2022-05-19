@@ -128,7 +128,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="type"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string AddExternalSignal(ISimulatableModel model,string signalID, SignalType type, int index = 0)
+        public string AddAndConnectExternalSignal(ISimulatableModel model,string signalID, SignalType type, int index = 0)
         {
             ModelType modelType = model.GetProcessModelType();
             externalInputSignalIDs.Add(signalID);
@@ -140,12 +140,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (type == SignalType.Disturbance_D && modelType == ModelType.SubProcess)
             {
                 // by convention, the disturbance is always added last to inputs
-                /* List<string> newInputIDs = new List<string>(model.GetModelInputIDs());
-                 newInputIDs.Add(signalID);
-                 model.SetInputIDs(newInputIDs.ToArray()); ;*/
-
                 model.AddSignalToOutput(signalID);
-
                 return signalID;
             }
             else if (type == SignalType.External_U && modelType == ModelType.SubProcess)
@@ -193,7 +188,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public string AddExternalSignal(ISimulatableModel model, SignalType type, int index = 0)
         {
             string signalID = SignalNamer.GetSignalName(model.GetID(), type, index);
-            return AddExternalSignal(model,signalID,type,index);
+            return AddAndConnectExternalSignal(model,signalID,type,index);
         }
 
         /// <summary>

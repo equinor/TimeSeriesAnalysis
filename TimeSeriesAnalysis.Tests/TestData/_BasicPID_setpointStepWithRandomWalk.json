@@ -1,0 +1,134 @@
+{
+  "plantName": null,
+  "modelDict": {
+    "PID1": {
+      "$type": "TimeSeriesAnalysis.Dynamic.PidModel, TimeSeriesAnalysis",
+      "pidParameters": {
+        "Kp": 0.5,
+        "Ti_s": 20,
+        "Td_s": 0,
+        "NanValue": -9999,
+        "GainScheduling": {
+          "GSActive_b": false,
+          "GS_x_Min": 0,
+          "GS_x_1": 0,
+          "GS_x_2": 0,
+          "GS_x_Max": 0,
+          "GS_Kp_Min": 0,
+          "GS_Kp_1": 0,
+          "GS_Kp_2": 0,
+          "GS_Kp_Max": 0,
+          "GSActiveTi_b": false,
+          "GS_Ti_Min": 0,
+          "GS_Ti_1": 0,
+          "GS_Ti_2": 0,
+          "GS_Ti_Max": 0
+        },
+        "FeedForward": {
+          "isFFActive": false,
+          "FFHP_filter_order": 1,
+          "FFLP_filter_order": 1,
+          "FF_LP_Tc_s": 0,
+          "FF_HP_Tc_s": 0,
+          "FF_Gain": 0
+        },
+        "Scaling": {
+          "doesSasPidScaleKp": false,
+          "y_min": 0,
+          "y_max": 100,
+          "u_min": 0,
+          "u_max": 100,
+          "isDefault": true,
+          "isEstimated": false
+        },
+        "AntiSurgeParams": null,
+        "Fitting": null
+      },
+      "ModelInputIDs": [
+        "SubProcess1-Output_Y_sim",
+        "PID1-Setpoint_Yset"
+      ],
+      "additiveInputIDs": null,
+      "outputID": "PID1-PID_U",
+      "processModelType": 1,
+      "ID": "PID1"
+    },
+    "SubProcess1": {
+      "$type": "TimeSeriesAnalysis.Dynamic.UnitModel, TimeSeriesAnalysis",
+      "modelParameters": {
+        "Y_min": "NaN",
+        "Y_max": "NaN",
+        "TimeConstant_s": 10,
+        "TimeConstantUnc_s": null,
+        "TimeDelay_s": 5,
+        "LinearGains": [
+          1
+        ],
+        "LinearGainUnc": null,
+        "Curvatures": null,
+        "CurvatureUnc": null,
+        "U0": null,
+        "UNorm": null,
+        "Bias": 5,
+        "BiasUnc": null,
+        "Fitting": null
+      },
+      "ModelInputIDs": [
+        "PID1-PID_U"
+      ],
+      "additiveInputIDs": [
+        "DisturbanceModel_out"
+      ],
+      "outputID": "SubProcess1-Output_Y_sim",
+      "processModelType": 2,
+      "ID": "SubProcess1"
+    },
+    "DisturbanceModel": {
+      "$type": "TimeSeriesAnalysis.Dynamic.UnitModel, TimeSeriesAnalysis",
+      "modelParameters": {
+        "$type": "TimeSeriesAnalysis.Dynamic.UnitParameters, TimeSeriesAnalysis",
+        "Y_min": "NaN",
+        "Y_max": "NaN",
+        "TimeConstant_s": 30,
+        "TimeConstantUnc_s": null,
+        "TimeDelay_s": 0,
+        "LinearGains": [
+          "0.5"
+        ],
+        "LinearGainUnc": null,
+        "Curvatures": [
+          "0.3"
+        ],
+        "CurvatureUnc": null,
+        "U0": null,
+        "UNorm": null,
+        "Bias": 0,
+        "BiasUnc": null,
+        "Fitting": null
+      },
+      "ModelInputIDs": [
+        "Noise"
+      ],
+      "additiveInputIDs": null,
+      "outputID": "DisturbanceModel_out",
+      "processModelType": 2,
+      "ID": "DisturbanceModel"
+    }
+  },
+  "externalInputSignalIDs": [
+    "PID1-Setpoint_Yset",
+    "Noise"
+  ],
+  "connections": {
+    "connections": [
+      {
+        "Item1": "SubProcess1",
+        "Item2": "PID1"
+      },
+      {
+        "Item1": "PID1",
+        "Item2": "SubProcess1"
+      }
+    ]
+  }
+}

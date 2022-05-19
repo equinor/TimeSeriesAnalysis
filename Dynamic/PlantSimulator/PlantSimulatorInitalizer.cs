@@ -130,9 +130,13 @@ namespace TimeSeriesAnalysis.Dynamic
             var connections = simulator.GetConnections();
             for (int subSystem = orderedSimulatorIDs.Count - 1; subSystem > 0; subSystem--)
             {
+           
                 var model = modelDict[orderedSimulatorIDs.ElementAt(subSystem)];
                 if (model.GetProcessModelType() == ModelType.PID)
                     continue;
+
+                var modelId = model.GetID();
+
                 string outputID = model.GetOutputID();
                 if (outputID == null)
                 {
@@ -201,7 +205,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             }
                             else
                             {
-                                Shared.GetParserObj().AddError("error during system initalization.");
+                                Shared.GetParserObj().AddError("A signal upstream of "+ inputID+ " appears to be missing from input data?");
                                 return false;
                             }
                         }
@@ -282,13 +286,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 string[] inputIDs = model.GetBothKindsOfInputIDs();
                 bool areAllInputsGiven = true;
                 double[] u0 = new double[inputIDs.Length];
+                List<string> unsetInputs = new List<string>();
                 int k = 0;
                 foreach (string inputID in inputIDs)
                 {
                     if (inputID == null)
                     {
-                        Shared.GetParserObj().AddError("PlantSimulatorInitalizer: model "
-                            + model.GetID() + " has an unexpected null input");
+                        Shared.GetParserObj().AddError("model "
+                            + model.GetID() + " has an unexpected null input at index "+k);
                         return false;
                     }
                     if (simSignalValueDict.ContainsKey(inputID))
@@ -297,6 +302,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
+                        unsetInputs.Add(inputID);
                         areAllInputsGiven = false;
                     }
                     k++;
@@ -309,6 +315,12 @@ namespace TimeSeriesAnalysis.Dynamic
                         string outputID = model.GetOutputID();
                         simSignalValueDict.Add(outputID, outputValue.Value);
                     }
+                }
+                else
+                {
+/*                    Shared.GetParserObj().AddError(unsetInputs.First() + 
+                        " not given, unable to initalize "+ model.GetID());
+                    return false;*/
                 }
             }
             return true;

@@ -240,7 +240,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void BasicPID_SetpointStep_RunsAndConverges()
         {
             double newSetpoint = 51;
-            var plantSim = new Dynamic.PlantSimulator(
+            var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             plantSim.ConnectModels(processModel1, pidModel1);
             plantSim.ConnectModels(pidModel1, processModel1);
@@ -252,7 +252,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             SerializeHelper.Serialize("BasicPID_setpointStep", plantSim, inputData, simData);
 
-
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).Last() - newSetpoint);
             Assert.IsTrue(isOk);
@@ -261,8 +260,42 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             BasicPIDCommonTests(simData);
         }
 
+        [TestCase]
+        public void BasicPID_SetpointStep_WithNoiseAndFiltering_FilteringWorks()
+        {
+            pidModel1.pidParameters.Filtering = new PidFiltering(true,1,5);
+
+            double newSetpoint = 51;
+            var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1 });
+            plantSim.ConnectModels(processModel1, pidModel1);
+            plantSim.ConnectModels(pidModel1, processModel1);
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
+                TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
+            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.Disturbance_D),
+                TimeSeriesCreator.Noise(N,1,1000) );
+            inputData.CreateTimestamps(timeBase_s);
+            bool isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            SerializeHelper.Serialize("BasicPID_setpointStepWithFiltering", plantSim, inputData, simData);
+
+            double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).First() - Ysetpoint);
+            double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).Last() - newSetpoint);
+            Assert.IsTrue(isOk);
+          //  Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");
+         //   Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after disturbance");
+            //BasicPIDCommonTests(simData);
+
+         /*   Plot.FromList(new List<double[]> {
+                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                 simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                 inputData.GetValues(processModel1.GetID(),SignalType.Disturbance_D)},
+            new List<string> { "y1=processOut", "y3=pidOut", "y2=disturbance" },
+            timeBase_s, "UnitTest_PidWithNoise");*/
 
 
+        }
 
 
 
