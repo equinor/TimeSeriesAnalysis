@@ -15,6 +15,14 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    public class Comment
+    {
+        string author;
+        DateTime date;
+        string comment;
+    }
+
+
     /// <summary>
     /// Simulates larger "plant-models" that is built up connected sub-models, 
     /// that each implement <c>ISimulatableModel</c>
@@ -37,7 +45,20 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class PlantSimulator
     {
+        /// <summary>
+        /// User-friendly name that may include white spaces
+        /// </summary>
         public string plantName;
+
+        /// <summary>
+        /// A short user-friendly description of what the plant is and does
+        /// </summary>
+        public string plantDescription;
+
+        /// <summary>
+        /// A list of comments that user may have added to track changes made over time
+        /// </summary>
+        public List<Comment> comments;
 
         public Dictionary<string, ISimulatableModel> modelDict;
 
@@ -89,8 +110,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
         /// <param name="plantName">optional name of plant, used when serializing</param>
+        /// <param name="plantDescription">optional description of plant</param>
         public PlantSimulator(List<ISimulatableModel>
-            processModelList, string plantName=null)
+            processModelList, string plantName=null, string plantDescription=null)
         {
             externalInputSignalIDs = new List<string>();
 
@@ -100,6 +122,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             this.plantName = plantName;
+            this.plantDescription = plantDescription;
 
             modelDict = new Dictionary<string, ISimulatableModel>();
             connections = new ConnectionParser();
