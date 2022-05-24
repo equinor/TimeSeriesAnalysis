@@ -64,12 +64,12 @@ namespace TimeSeriesAnalysis.Utility
             /// <summary>
             /// Close file handles
             /// </summary>
-            public void Close()
+            public bool Close()
             {
                 sw.Flush();
                 memStream.Position = 0;
 
-                   string binPath = System.IO.Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath);
+                string binPath = System.IO.Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath);
                 binPath = binPath.Replace("file:\\", "");
 
                 StreamReader sr = new StreamReader(memStream, localEncoding);
@@ -82,7 +82,7 @@ namespace TimeSeriesAnalysis.Utility
                 try
                 {
                     string filePath = file;
-                    if (file.IndexOf("\\") < 0)
+                    if (file.IndexOf("\\") < 0 || file.IndexOf(@"\") < 0)
                     {
 
                         filePath = binPath + "\\" + file;
@@ -101,11 +101,11 @@ namespace TimeSeriesAnalysis.Utility
                     fileStream.Close();
                     sw = null;
 
-
+                    return true;
                 }
                 catch
                 {
-
+                return false;
                 }
                 //sw = null;
             }

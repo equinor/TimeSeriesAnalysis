@@ -137,7 +137,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
-            processSim.Serialize("SISO_Serial3");
+            //var serialIsOk = processSim.Serialize("SISO_Serial3",@"c:\appl");
+            //Assert.IsTrue(serialIsOk);
 
             Assert.IsTrue(isOk);
             CommonAsserts(inputData, simData);
