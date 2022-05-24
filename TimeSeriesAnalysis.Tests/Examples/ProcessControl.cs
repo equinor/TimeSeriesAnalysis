@@ -242,7 +242,7 @@ namespace TimeSeriesAnalysis._Examples
             inputData.Add(dSignalID, TimeSeriesCreator.Step(300, 600, 25, 0));
             inputData.CreateTimestamps(timeBase_s);
 
-            simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
+            simNoFeedF.ConnectSignalToInput(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
 
             var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
@@ -486,8 +486,8 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(pid1, minSelect,0);
             sim.ConnectModels(pid2, minSelect,1);
             string selectSignalID = sim.ConnectModels(minSelect, process);
-            sim.ConnectSignal(selectSignalID,pid1,(int)PidModelInputsIdx.Tracking);
-            sim.ConnectSignal(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
+            sim.ConnectSignalToInput(selectSignalID,pid1,(int)PidModelInputsIdx.Tracking);
+            sim.ConnectSignalToInput(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
 
             var inputData = new TimeSeriesDataSet();
             inputData.Add(sim.AddExternalSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));

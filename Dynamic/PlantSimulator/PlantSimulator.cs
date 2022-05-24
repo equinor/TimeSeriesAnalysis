@@ -78,7 +78,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             UnitDataSet dataset = new UnitDataSet(); 
             dataset.U = new double[inputData.GetLength().Value,1];
-            dataset.U.WriteColumn(0, inputData.GetValues(pidModel.outputID));
+            dataset.U.WriteColumn(0, inputData.GetValues(pidModel.GetOutputID()));
             dataset.Times = inputData.GetTimeStamps();
             var inputIDs = pidModel.GetModelInputIDs();
 
@@ -229,7 +229,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="model"></param>
         /// <param name="idx"></param>
         /// <returns></returns>
-        public bool ConnectSignal(string signalID, ISimulatableModel model, int idx)
+        public bool ConnectSignalToInput(string signalID, ISimulatableModel model, int idx)
         {
             model.SetInputIDs(new string[] { signalID }, idx);
             return true;
@@ -259,11 +259,13 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             ModelType upstreamType = upstreamModel.GetProcessModelType();
             ModelType downstreamType = downstreamModel.GetProcessModelType();
-            string outputId = upstreamModel.GetID();
+            //string outputId = upstreamModel.GetID();
 
-            outputId = SignalNamer.GetSignalName(upstreamModel.GetID(),upstreamModel.GetOutputSignalType());
+            //outputId = SignalNamer.GetSignalName(upstreamModel.GetID(),upstreamModel.GetOutputSignalType());
 
-            upstreamModel.SetOutputID(outputId);
+            //upstreamModel.SetOutputID(outputId);
+            string outputId = upstreamModel.GetOutputID();
+
             int nInputs = downstreamModel.GetLengthOfInputVector();
             if (nInputs == 1 && inputIndex ==0)
             {

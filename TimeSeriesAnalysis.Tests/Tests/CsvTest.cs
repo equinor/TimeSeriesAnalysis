@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Test
     [TestFixture]
     class CsvTest
     {
-        [TestCase, Explicit]
+       // [TestCase, Explicit]
         public void CSV1_containsExtraValue_IsIgnored()
         {
             CSV.LoadDataFromCSV(@"C:\Appl\source\TimeSeriesAnalysis\Tests\TestCSVs\test1.csv", ',',out double[,] doubleData,
