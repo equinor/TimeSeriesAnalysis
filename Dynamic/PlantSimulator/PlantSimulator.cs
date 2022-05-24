@@ -497,10 +497,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Creates a file JSON representation of this object
         /// </summary>
-        /// <param name="newPlantName"></param>
-        public void Serialize(string newPlantName = null)
+        /// <param name="newPlantName">the desired file name and plant name(can be null, in which case the filename should be given in the path argument)</param>
+        /// <param name="path">create file in the given path</param>
+        public void Serialize(string newPlantName = null, string path= null)
         {
             string fileName = "";
+            if (path != null)
+            {
+                fileName = path;
+                if (!fileName.EndsWith("\""))
+                        fileName += "\"";
+            }
             if (newPlantName!=null)
             {
                 fileName += newPlantName;
@@ -509,7 +516,8 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 fileName += plantName;
             }
-            fileName += ".json";
+            if (!fileName.EndsWith(".json"))
+                fileName += ".json";
 
             /// var options = new JsonSerializerOptions { WriteIndented = true };
             //  var serializedTxt =  JsonSerializer.Serialize(this,options);
