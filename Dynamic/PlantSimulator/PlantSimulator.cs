@@ -17,10 +17,18 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     public class Comment
     {
-        string author;
-        DateTime date;
-        string comment;
-    }
+        public string author;
+        public DateTime date;
+        public string comment;
+
+        public Comment(string author, DateTime date, string comment)
+        {
+            this.author = author;
+            this.date = date;
+            this.comment = comment;
+        }
+
+     }
 
 
     /// <summary>
