@@ -38,6 +38,17 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Set ID of the model
+        /// </summary>
+        /// <param name="ID"></param>
+        public void SetID(string ID)
+        {
+            this.ID = ID ;
+        }
+
+
+
+        /// <summary>
         /// Set the type of the process model
         /// </summary>
         /// <returns></returns>

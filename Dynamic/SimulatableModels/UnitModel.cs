@@ -155,6 +155,18 @@ namespace TimeSeriesAnalysis.Dynamic
             return modelParameters;
         }
 
+
+        /// <summary>
+        /// Update the paramter object of the model
+        /// </summary>
+        /// <param name="parameters"></param>
+        public void SetModelParameters(UnitParameters parameters)
+        {
+            modelParameters = parameters;
+        }
+
+
+
         /// <summary>
         /// Calcuate the steady-state input if the output and all-but-one input are known
         /// </summary>

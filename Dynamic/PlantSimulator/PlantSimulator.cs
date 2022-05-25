@@ -236,6 +236,28 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Replace an existing model with a new version 
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <param name="newModel"></param>
+        /// <returns></returns>
+        /*public bool ReplaceExistingModel(string modelID, ISimulatableModel newModel)
+        {
+            if (modelDict.ContainsKey(modelID))
+            {
+                newModel.SetInputIDs(modelDict[modelID].GetModelInputIDs());
+                newModel.SetOutputID(modelDict[modelID].GetOutputID());
+                newModel.SetID(modelDict[modelID].GetOutputID())
+                modelDict[modelID] = newModel;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }*/
+
+        /// <summary>
         /// Add a disturbance model to the output a given <c>model</c>
         /// </summary>
         /// <param name="disturbanceModel"></param>
