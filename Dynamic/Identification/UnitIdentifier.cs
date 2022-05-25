@@ -652,7 +652,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (timeConstant_s < 0)
                         timeConstant_s = 0;
 
-                    linearProcessGains = vec.Div(b, 1 - a);
+                    if (a != 0)
+                        linearProcessGains = vec.Div(b, 1 - a);
+                    else
+                        linearProcessGains = b;
 
                     if (doEstimateCurvature.Contains(true) && c != null)
                     {
@@ -712,6 +715,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.AddWarning(UnitdentWarnings.RegressionProblemFailedToYieldSolution);
                 return parameters;
             }
+            else if (regResults.Param.Contains(Double.NaN) || linearProcessGains.Contains(Double.NaN))
+            {
+                parameters.Fitting.WasAbleToIdentify = false;
+                parameters.AddWarning(UnitdentWarnings.RegressionProblemNaNSolution);
+                return parameters;
+            }
             else if (Math.Abs(regResults.Param[1]) > maxAbsValueRegression)
             {
                 parameters.Fitting.WasAbleToIdentify = false;
@@ -730,7 +739,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 
-              //  if (dataSet.D == null)
+                //  if (dataSet.D == null)
                 {
                     (double? recalcBias, double[] y_sim_recalc) =
                         SimulateAndReEstimateBias(dataSet, parameters);
@@ -742,32 +751,32 @@ namespace TimeSeriesAnalysis.Dynamic
                     else
                     {
                         parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
-                        parameters.Bias = SignificantDigits.Format(regResults.Param.Last(),nDigits);
+                        parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
                     }
                 }
-         /*       else
-                {
-                    // if system has disturbance, then bias seems to be better set at original value
-                    parameters.AddWarning(UnitdentWarnings.ReEstimateBiasDisabledDueToNonzeroDisturbance);
-                    parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
+                /*       else
+                       {
+                           // if system has disturbance, then bias seems to be better set at original value
+                           parameters.AddWarning(UnitdentWarnings.ReEstimateBiasDisabledDueToNonzeroDisturbance);
+                           parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
 
-                    var model = new UnitModel(parameters);
-                    var simulator = new UnitSimulator((ISimulatableModel)model);
-                    var internalData = new UnitDataSet(dataSet);
-                    dataSet.Y_sim = simulator.Simulate(ref internalData);
-                }*/
+                           var model = new UnitModel(parameters);
+                           var simulator = new UnitSimulator((ISimulatableModel)model);
+                           var internalData = new UnitDataSet(dataSet);
+                           dataSet.Y_sim = simulator.Simulate(ref internalData);
+                       }*/
 
                 parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 //
                 parameters.Fitting.RsqFittingDiff = regResults.Rsq;
                 parameters.Fitting.ObjFunValFittingDiff = regResults.ObjectiveFunctionValue;
-                parameters.Fitting.ObjFunValFittingAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim,0);
+                parameters.Fitting.ObjFunValFittingAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
                 // 
                 //   Plot.FromList(new List<double[]> { dataSet.Y_meas, dataSet.Y_sim }, new List<string> { "y1=xmod", "y1=xmeas" },
                 //          TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, dataSet.Y_meas.Length), "test");
 
-                parameters.Fitting.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim,null,0)*100;
+                parameters.Fitting.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
 
                 // add inn uncertainty
                 CalculateUncertainty(regResults, dataSet.GetTimeBase(), ref parameters);

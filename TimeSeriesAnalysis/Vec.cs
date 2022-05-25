@@ -1113,6 +1113,9 @@ namespace TimeSeriesAnalysis
         public double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, 
             bool divByN = true, List<int> indToIgnore=null)
         {
+            if (array1 == null || array2 == null)
+                return Double.NaN;
+
             if (array1.Count() < array2.Count())
                 return Double.NaN;
 

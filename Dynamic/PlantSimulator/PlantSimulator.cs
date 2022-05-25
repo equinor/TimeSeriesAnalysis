@@ -82,13 +82,9 @@ namespace TimeSeriesAnalysis.Dynamic
             dataset.Times = inputData.GetTimeStamps();
             var inputIDs = pidModel.GetModelInputIDs();
 
-
-//            PidModelInputsIdx
-
             for (int inputIDidx=0; inputIDidx<inputIDs.Length; inputIDidx++)
             {
                 var inputID = inputIDs[inputIDidx];
-                //  var type = SignalNamer.GetSignalType(inputID);
 
                 if (inputIDidx == (int)PidModelInputsIdx.Y_setpoint)
                 {

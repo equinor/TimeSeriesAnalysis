@@ -75,7 +75,12 @@
         /// <summary>
         /// Correlated inputs
         /// </summary>
-        CorrelatedInputsU = 12
+        CorrelatedInputsU = 12,
+
+        /// <summary>
+        /// Some of the parameters returned were NaN, this can happen in the input and output vectors are all constants, such as all-zero
+        /// </summary>
+        RegressionProblemNaNSolution = 14
 
     }
 }

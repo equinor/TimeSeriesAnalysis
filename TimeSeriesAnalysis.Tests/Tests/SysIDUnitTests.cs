@@ -276,6 +276,26 @@ namespace TimeSeriesAnalysis.Test.SysID
             // also: the model shoudl not downright crash!
         }
 
+        [Test]
+        public void ConstantInput_ReturnsErrorMessage()
+        {
+            double[] u1 = TimeSeriesCreator.Constant(0, 500);
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1});
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                TimeDelay_s = 0,
+                LinearGains = new double[] { 1},
+                U0 = new double[] { 1 },
+                Bias = 1
+            };
+            double noiseAmplitude = 0.00;
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+
+            Assert.IsTrue(model.modelParameters.Fitting.WasAbleToIdentify);
+        }
+
+
 
         [TestCase(Double.NaN)]
         [TestCase(-9999)]
