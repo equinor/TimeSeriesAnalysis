@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using System.Text.RegularExpressions;
 
 using Newtonsoft.Json;
 
@@ -27,14 +27,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
 
-
-
     public class PlantSimulatorHelper
     {
         private static JsonSerializerSettings SerializationSettings()
         {
             var settings = new JsonSerializerSettings();
-            settings.TypeNameHandling = TypeNameHandling.Objects;
+            settings.TypeNameHandling = TypeNameHandling.All;
+            settings.NullValueHandling = NullValueHandling.Include;
             //settings.TypeNameHandling = TypeNameHandling.Objects;
             //settings.SerializationBinder = plantSimulatorSerializationBinder;
             return settings;
@@ -46,8 +45,31 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="serializedPlantSimulatorJson"></param>
         static public PlantSimulator LoadFromJsonTxt(string serializedPlantSimulatorJson)
         {
+
             var settings = SerializationSettings();
-            return JsonConvert.DeserializeObject<PlantSimulator>(serializedPlantSimulatorJson, settings);
+            PlantSimulator obj =  (PlantSimulator)JsonConvert.DeserializeObject(serializedPlantSimulatorJson, typeof(PlantSimulator),settings);
+
+            // workaround for plantName and plantDescription begin null
+            if (obj.plantDescription == null)
+            {
+                string pattern = "\"plantDescription\": \"([^\"]+)\"";
+                var matches = Regex.Matches(serializedPlantSimulatorJson,pattern);
+                foreach (Match match in matches)
+                {
+                    obj.plantDescription = match.Groups[1].Value.Replace("plantDescription", "").Replace(":", "").Replace("\"", "");
+                }
+            }
+            // workaround for plantName and plantDescription begin null
+            if (obj.plantName == null)
+            {
+                string pattern = "\"plantName\": \"([^\"]+)\"";
+                var matches = Regex.Matches(serializedPlantSimulatorJson, pattern);
+                foreach (Match match in matches)
+                {
+                    obj.plantName = match.Groups[1].Value.Replace("plantName", "").Replace(":", "").Replace("\"", "");
+                }
+            }
+            return obj;
         }
 
         /// <summary>

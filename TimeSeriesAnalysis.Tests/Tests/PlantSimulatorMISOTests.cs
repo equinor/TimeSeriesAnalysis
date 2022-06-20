@@ -193,8 +193,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim2.Simulate(inputData2, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            Assert.IsTrue(plantSim2.plantName != null);
-            Assert.IsTrue(plantSim2.plantDescription != null);
+            Assert.IsTrue(plantSim2.plantName == "DeserializedTest");
+            Assert.IsTrue(plantSim2.plantDescription == "a test");
 
 
             /*           

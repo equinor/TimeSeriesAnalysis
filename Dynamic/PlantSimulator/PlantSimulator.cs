@@ -56,12 +56,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// User-friendly name that may include white spaces
         /// </summary>
-        public string plantName="";
+      //  [JsonProperty("plantName")]
+        public String plantName { get; set; }
 
         /// <summary>
         /// A short user-friendly description of what the plant is and does
         /// </summary>
-        public string plantDescription="";
+    //    [JsonProperty("plantDescription")]
+        public String plantDescription { get; set; }
 
         /// <summary>
         /// A list of comments that user may have added to track changes made over time
@@ -116,9 +118,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="plantName">optional name of plant, used when serializing</param>
         /// <param name="plantDescription">optional description of plant</param>
         public PlantSimulator(List<ISimulatableModel>
-            processModelList, string plantName=null, string plantDescription=null)
+            processModelList, string plantName="", string plantDescription="")
         {
             externalInputSignalIDs = new List<string>();
+
+            this.comments = new List<Comment>();
 
             if (processModelList == null)
             {
