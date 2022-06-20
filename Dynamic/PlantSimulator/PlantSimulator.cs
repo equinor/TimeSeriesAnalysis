@@ -56,12 +56,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// User-friendly name that may include white spaces
         /// </summary>
-        public string plantName;
+        public string plantName="";
 
         /// <summary>
         /// A short user-friendly description of what the plant is and does
         /// </summary>
-        public string plantDescription;
+        public string plantDescription="";
 
         /// <summary>
         /// A list of comments that user may have added to track changes made over time

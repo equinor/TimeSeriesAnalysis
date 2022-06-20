@@ -167,7 +167,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             int pidIndex = 1;
             int externalUIndex = 0;
-            var plantSim1 = new PlantSimulator(modelList);
+            var plantSim1 = new PlantSimulator(modelList,"DeserializedTest","a test");
 
             plantSim1.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
             plantSim1.ConnectModels(processModel2, pidModel1);
@@ -193,6 +193,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim2.Simulate(inputData2, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
+            Assert.IsTrue(plantSim2.plantName != null);
+            Assert.IsTrue(plantSim2.plantDescription != null);
+
 
             /*           
                        Plot.FromList(new List<double[]> {

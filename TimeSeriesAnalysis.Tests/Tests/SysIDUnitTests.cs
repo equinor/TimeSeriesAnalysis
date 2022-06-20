@@ -337,8 +337,8 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// </summary>
         /// <param name="N">number of samples in the dataset,</param>
         /// <param name="downsampleFactor">Only use every N-th sample for identification</param>
-      //  [TestCase(100,0),Explicit]//requires no downsampling
-       // [TestCase(1000,10),Explicit]// downsample by factor 10
+       // [TestCase(100,0),Explicit]//requires no downsampling
+        [TestCase(1000,10),Explicit]// downsample by factor 10
         public void DownsampleOversampledData(int N, int downsampleFactor)
         {
             double timeConstant_s = 20;
@@ -374,7 +374,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
-            DefaultAsserts(model, designParameters);
+            Assert.IsTrue(Math.Abs(timeConstant_s - model.modelParameters.TimeConstant_s) < 5);
+
+        //    DefaultAsserts(model, designParameters);
         }
 
 
