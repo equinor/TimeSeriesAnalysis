@@ -52,7 +52,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // workaround for plantName and plantDescription begin null
             if (obj.plantDescription == null)
             {
-                string pattern = "\"plantDescription\": \"([^\"]+)\"";
+                string pattern = "\"plantDescription\"\\s?:\\s?\"([^\"]+)\"";
                 var matches = Regex.Matches(serializedPlantSimulatorJson,pattern);
                 foreach (Match match in matches)
                 {
@@ -62,7 +62,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // workaround for plantName and plantDescription begin null
             if (obj.plantName == null)
             {
-                string pattern = "\"plantName\": \"([^\"]+)\"";
+                string pattern = "\"plantName\"\\s?:\\s?\"([^\"]+)\"";
                 var matches = Regex.Matches(serializedPlantSimulatorJson, pattern);
                 foreach (Match match in matches)
                 {
