@@ -242,8 +242,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             double[] disturbance,string name)
         {
-            // used for debugging:
-        //l    modelParams.LinearGains = new double[] { 1 };
 
             if (pidParams == null)
             {

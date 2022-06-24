@@ -11,7 +11,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <PackageProjectUrl>https://equinor.github.io/TimeSeriesAnalysis</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>data-mining; time-series; dynamic-simulations; pid-control; multivariate-statistics; advanced-analytics;mpc-control;digital-twins</PackageTags>
-    <FileVersion></FileVersion>
+    <FileVersion>1.1.29</FileVersion>
     <PackageLicenseFile></PackageLicenseFile>
     <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
@@ -22,6 +22,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <Authors>Equinor</Authors>
 	<IncludeSymbols>true</IncludeSymbols>
 	<DebugType>embedded</DebugType>
+	<AssemblyVersion>1.1.29</AssemblyVersion>
   </PropertyGroup>
 
 

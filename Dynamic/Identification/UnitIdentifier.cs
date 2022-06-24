@@ -913,7 +913,7 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.Bias = 0;
             double nanValue = internalData.BadDataID;
             var model = new UnitModel(parameters);
-            var simulator = new UnitSimulator((ISimulatableModel)model);
+            var simulator = new UnitSimulator(model);
             var y_sim = simulator.Simulate(ref internalData);
 
             var yMeas_exceptIgnoredValues = internalData.Y_meas;

@@ -18,12 +18,12 @@ namespace TimeSeriesAnalysis.Dynamic
     /// 
     public class UnitSimulator
     {
-        ISimulatableModel model;
+        UnitModel model;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="model"></param>
-        public UnitSimulator(ISimulatableModel model)
+        public UnitSimulator(UnitModel model)
         {
             this.model = model;
         }
@@ -75,6 +75,20 @@ namespace TimeSeriesAnalysis.Dynamic
             if (processDataSet.Y_setpoint.Length == 0)
             {
                 return false;
+            }
+            if (pid.GetModelParameters().Fitting != null)
+            {
+                if (pid.GetModelParameters().Fitting.WasAbleToIdentify == false)
+                {
+                    return false;
+                }
+            }
+            if (model.GetModelParameters().Fitting != null)
+            {
+                if (model.GetModelParameters().Fitting.WasAbleToIdentify == false)
+                {
+                    return false;
+                }
             }
 
             int N = processDataSet.GetNumDataPoints();
