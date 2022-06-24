@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.Tests
+namespace TimeSeriesAnalysis.Test
 {
     [TestFixture]
     internal class SignificantDigitsTests

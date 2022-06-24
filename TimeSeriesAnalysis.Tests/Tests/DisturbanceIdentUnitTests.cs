@@ -84,8 +84,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // this works as long as only static identifiation is used in the closed-looop identifier,
         // otherwise the model 
         [Test,Explicit]
-        public void Static_LongStep_EstimatesOk(double stepAmplitude=5)
+        public void Static_LongStep_EstimatesOk()
         {
+            double stepAmplitude = 5;
             N = 1000;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);

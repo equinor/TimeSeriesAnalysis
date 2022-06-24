@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 using TimeSeriesAnalysis.Dynamic;
+using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis._Examples;
 
 namespace TimeSeriesAnalysis.Tests.TimeSeriesData
@@ -14,6 +15,21 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
     [TestFixture]
     class CSV_IO
     {
+        [TestCase("29,44")]
+        [TestCase("29,440")]
+        [TestCase("29.44")]
+
+        public void RobustParseDouble_ParsesCommas(string input)
+        {
+            //RobustParseDouble is used by CSV read-methods to extract data
+            // Norwegian regional settings use commas instead of "." in decimals
+
+            var isOk = CSV.RobustParseDouble(input, out double result);
+
+            Assert.IsTrue(result == 29.44);
+        }
+
+
 
         [Test, Explicit]
         public void CSVWriteAndReadBack_SmallDatatasetToCSV()
