@@ -98,7 +98,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public int GetNumInputs()
         {
-            return LinearGains.Length;
+            if (LinearGains != null)
+                return LinearGains.Length;
+            else
+                return 0;
         }
 
 

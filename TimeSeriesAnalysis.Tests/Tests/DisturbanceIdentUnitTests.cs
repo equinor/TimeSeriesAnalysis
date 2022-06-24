@@ -92,6 +92,21 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
 
+        // this works as long as only static identifiation is used in the closed-looop identifier,
+        // otherwise the model 
+        [Test, Explicit]
+        public void FlatData_DoesNotCrash()
+        {
+            double stepAmplitude = 0;
+            N = 1000;
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), 
+                trueDisturbance,false);
+        }
+
+
+
+
         // [TestCase(-5)]
         [Test,Explicit]// gains are slightly too high, around 1.14
         public void NOTWORKING_Dynamic_Step_EstimatesOk(double stepAmplitude=5)
@@ -117,7 +132,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance);
         }
 
-        public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance)
+        public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance, 
+            bool doAssertResult=true)
         {
             // create synthetic dataset
             var pidModel1 = new PidModel(pidParameters1, "PID1");
@@ -140,7 +156,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Console.WriteLine();
 
             DisturbancesToString(estDisturbance, trueDisturbance);
-            CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance);
+            if (doAssertResult)
+            {
+                CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance);
+            }
         }
 
         void DisturbancesToString(double[] estDisturbance, double[] trueDisturbance)

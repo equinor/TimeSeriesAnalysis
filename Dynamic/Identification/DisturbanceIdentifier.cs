@@ -190,12 +190,14 @@ namespace TimeSeriesAnalysis.Dynamic
             bool candidateGainSet = false;
             if (unitModel != null)
             {
-                var processGains = unitModel.modelParameters.GetProcessGains();
-
-                if (!Double.IsNaN(processGains[inputIdx]))
+                if (unitModel.modelParameters.Fitting.WasAbleToIdentify == true)
                 {
-                    estProcessGain = processGains[inputIdx];
-                    candidateGainSet = true;
+                    var processGains = unitModel.modelParameters.GetProcessGains();
+                    if (!Double.IsNaN(processGains[inputIdx]))
+                    {
+                        estProcessGain = processGains[inputIdx];
+                        candidateGainSet = true;
+                    }
                 }
             }
             // initalizaing(rough estimate): this should only be used as an inital guess on the first
@@ -220,7 +222,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double[]  d_HF = e;
 
             double[] d_u;
-            if (unitModel == null)
+            if (unitModel == null|| unitModel.GetModelParameters().Fitting.WasAbleToIdentify == false)
             {
                 double[] deltaU_lp = lowPass.Filter(deltaU, FilterTc_s, 2);
                 double[] deltaYset = vec.Subtract(unitDataSet.Y_setpoint, yset0);
