@@ -124,6 +124,10 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
+                if (processDataSet.Warnings == null)
+                {
+                    processDataSet.Warnings = new List<UnitWarnings>();
+                }
                 processDataSet.Warnings.Add(UnitWarnings.FailedToInitializePIDcontroller);
                 Debug.WriteLine("Failed to initalize PID-contoller.");
                 u = umin + (umax-umin)/2;
