@@ -75,13 +75,19 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Re-construct a PlantSimulator object from the json-code created by this class' .Serialize()
         /// </summary>
-        /// <param name="serializedPlantSimulatorJson"></param>
+        /// <param name="serializedPlantSimulatorJson">the read object, or null if unable to read file</param>
         static public PlantSimulator LoadFromJsonFile(string fileName)
         {
-            var serializedPlantSimulatorJson  = File.ReadAllText(fileName);
-            var settings = SerializationSettings();
-
-            return JsonConvert.DeserializeObject<PlantSimulator>(serializedPlantSimulatorJson, settings);
+            try
+            {
+                var serializedPlantSimulatorJson = File.ReadAllText(fileName);
+                var settings = SerializationSettings();
+                return JsonConvert.DeserializeObject<PlantSimulator>(serializedPlantSimulatorJson, settings);
+            } 
+            catch 
+            {
+                return null;
+            }
         }
 
     }
