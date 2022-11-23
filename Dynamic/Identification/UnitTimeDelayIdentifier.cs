@@ -58,6 +58,9 @@ namespace TimeSeriesAnalysis.Dynamic
             if (timeDelayIdx < minTimeDelayIts)
                 return true;
 
+            // nb! note that time window decreases with one timestep for each increase in time delay of one timestep.
+            // thus there is a chance of the object function decreasing without the model fit improving.
+            // especially if the only information in the dataset is at the start of the dataset.
             var objFunVals = GetObjFunValList();
             bool isObjFunDecreasing = objFunVals.ElementAt(objFunVals.Length - 2) < objFunVals.ElementAt(objFunVals.Length-1);
 
@@ -168,6 +171,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // is wrong. 
                 if (sortedIndices.Count() > 1)
                 {
+                   
                     int R2distanceToRunnerUp = Math.Abs(sortedIndices[1] - sortedIndices[0]);
                     if (R2distanceToRunnerUp > 1)
                     {
@@ -189,7 +193,7 @@ namespace TimeSeriesAnalysis.Dynamic
             //
             {
                 var objObjFunList = GetObjFunValList();
-                Vec<double>.Sort(objObjFunList.ToArray(), VectorSortType.Descending, out int[] objFunSortedIndices);
+                Vec<double>.Sort(objObjFunList.ToArray(), VectorSortType.Ascending, out int[] objFunSortedIndices);
                 // int objFunBestTimeDelayIdx = objFunSortedIndices[0];
                 // the solution space should be "concave", so there should not be several local minimia
                 // as you compare R2list for different time delays-that has happended but indicates something
@@ -201,8 +205,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         warnings.Add(ProcessTimeDelayIdentWarnings.NonConvexObjectiveFunctionSolutionSpace);
                     }
-                    double ObjFunvalueDiffToRunnerUp = objObjFunList[objFunSortedIndices[0]]
-                        - objObjFunList[objFunSortedIndices[1]];
+                    double ObjFunvalueDiffToRunnerUp = Math.Abs(objObjFunList[objFunSortedIndices[0]]
+                        - objObjFunList[objFunSortedIndices[1]]);
                     if (ObjFunvalueDiffToRunnerUp <= 0.0001)
                     {
                         warnings.Add(ProcessTimeDelayIdentWarnings.NoUniqueObjectiveFunctionMinima);

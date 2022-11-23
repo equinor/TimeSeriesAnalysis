@@ -84,8 +84,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given, but no time-constants
         /// </summary>
-        /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
-        /// a new y_sim is also added</param>
+        /// <param name="dataSet">The dataset containing the <c>ymeas</c> and <c>U</c> that is to be fitted against, 
+        /// a new element <c>y_sim</c> is also added to this dataset</param>
         /// <param name="u0">Optionally sets the local working point for the inputs
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
@@ -293,8 +293,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 modelParameters = modelParams_StaticAndNoCurvature;
                 timeDelayWarnings.Add(ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel);
             }
-
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
+            // if time-delay had issues, then fallback to using the first dynamic model without timedelay
+            // more effort could be put on improving the logic here in the future, but this is a simple workaround for now
+            if (timeDelayWarnings.Contains(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace) )
+            {
+                if (modelList.Count >0)
+                    modelParameters = modelList[0];
+                else
+                    modelParameters = modelParams_StaticAndNoCurvature;
+            }
             if (constantInputInds.Count > 0)
             {
                 modelParameters.AddWarning(UnitdentWarnings.ConstantInputU);
@@ -305,7 +313,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // END While loop 
             /////////////////////////////////////////////////////////////////
-
             var model = new UnitModel(modelParameters, dataSet);
             if (modelParameters.Fitting.WasAbleToIdentify)
             {
@@ -314,7 +321,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 model.SetFittedDataSet(dataSet);
             }
             return model;
-
         }
         // for three inputs, return every combination of true false
         // except false-false-false and true-true-true, (but the other six)

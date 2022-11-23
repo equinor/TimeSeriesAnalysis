@@ -652,11 +652,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     sb.AppendLine("model fit : no error or warnings");
                 }
 
-                foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
-                    sb.AppendLine("time delay est. warning :" + warning.ToString());
-                if (modelParameters.TimeDelayEstimationWarnings.Count == 0)
+                if (modelParameters.TimeDelayEstimationWarnings != null)
                 {
-                    sb.AppendLine("time delay est : no error or warnings");
+                    foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
+                        sb.AppendLine("time delay est. warning :" + warning.ToString());
+                    if (modelParameters.TimeDelayEstimationWarnings.Count == 0)
+                    {
+                        sb.AppendLine("time delay est : no error or warnings");
+                    }
                 }
                 sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
             }

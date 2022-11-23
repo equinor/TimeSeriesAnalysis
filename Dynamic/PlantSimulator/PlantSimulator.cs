@@ -502,7 +502,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public string SerializeTxt()
         {
             var settings = new JsonSerializerSettings();
-            settings.TypeNameHandling = TypeNameHandling.Auto;
+            settings.TypeNameHandling = TypeNameHandling.Auto; 
             settings.Formatting = Formatting.Indented;
 
             // models outputs that are not connected to anyting are "null"

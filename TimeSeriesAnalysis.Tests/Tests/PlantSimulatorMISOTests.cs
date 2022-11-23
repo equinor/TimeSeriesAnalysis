@@ -157,58 +157,10 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         }
 
-        [Test]
-        public void DeserializedPlantSimulatorAndTimeSeriesDataObjects_AreAbleToSimulate()
-        {
-            // 1. create a plantsimulator in 
-            // based on  PIDandSerial2_RunsAndConverges ver 4
-            List<ISimulatableModel> modelList = new List<ISimulatableModel>();
-            modelList = new List<ISimulatableModel> { processModel1, pidModel1, processModel2, processModel3 };
-
-            int pidIndex = 1;
-            int externalUIndex = 0;
-            var plantSim1 = new PlantSimulator(modelList,"DeserializedTest","a test");
-
-            plantSim1.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
-            plantSim1.ConnectModels(processModel2, pidModel1);
-            plantSim1.ConnectModels(pidModel1, processModel1, pidIndex);
-            plantSim1.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
-
-            var inputData = new TimeSeriesDataSet();
-            inputData.Add(plantSim1.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(150, N));
-            inputData.Add(plantSim1.AddExternalSignal(processModel1, SignalType.External_U, externalUIndex), TimeSeriesCreator.Step(60, N, 50, 55));
-            inputData.Add(plantSim1.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(240, N, 50, 40));
-            inputData.Add(plantSim1.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Constant(0, N));
-            inputData.CreateTimestamps(timeBase_s);
-            // 2. serialize to text
-            var plantsimJsonTxt = plantSim1.SerializeTxt();
-            var inputDataJsonTxt = new CsvContent(inputData.ToCsvText());
-
-            var inputData2 = new TimeSeriesDataSet(inputDataJsonTxt);
-
-            // 3. deserialize to a new object
-            var plantSim2 = PlantSimulatorHelper.LoadFromJsonTxt(plantsimJsonTxt);
-
-            // 4. simulate the plant object created from Json
-            var isOk = plantSim2.Simulate(inputData2, out TimeSeriesDataSet simData);
-
-            Assert.IsTrue(isOk);
-            Assert.IsTrue(plantSim2.plantName == "DeserializedTest");
-            Assert.IsTrue(plantSim2.plantDescription == "a test");
 
 
-            /*           
-                       Plot.FromList(new List<double[]> {
-                           simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
-                           simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
-                           simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
-                           inputData2.GetValues(processModel1.GetID(),SignalType.External_U,externalUIndex),
-                           inputData2.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
-                       },
-                           new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
-                           timeBase_s, "UnitTest_PIDandSerial2");*/
 
-        }
+
 
         // this test a potentially quite common error mode, where an external signal
         // is mentioned in the model, but it is not included in the list of inputData

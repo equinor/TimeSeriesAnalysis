@@ -168,7 +168,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var avgError = (new Vec()).Subtract(model.GetFittedDataSet().Y_sim,
                 model.GetFittedDataSet().Y_meas);
 
-
+            
             if (designParameters.TimeConstant_s < 0.5)
             {
                 Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeConstant_s - designParameters.TimeConstant_s) < 0.1,
@@ -413,6 +413,37 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             DefaultAsserts(model, designParameters);
         }
+        [TestCase(0, 0, 0, Category = "Static")]
+        //
+        // This test is to examine the behavior of the identification when the step happens very early 
+        // in the dataset, this has been observed to lead to excessive time delay estimates 
+        // 
+        public void I1_Linear_EarlyStep_TimeDelayOk(double bias, double timeConstant_s, int timeDelay_s)
+        {
+            double noiseAmplitude = 0.01;
+
+            double[] u1 = TimeSeriesCreator.Step(5, 100, 0, 1);// "early" step
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
+
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 1 },
+                U0 = Vec<double>.Fill(1, 1),
+                Bias = bias
+            };
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            string caseId = TestContext.CurrentContext.Test.Name;
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas, u1 },
+                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
+                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
+
+            DefaultAsserts(model, designParameters);
+        }
+
+
 
         [TestCase(0.4, 0, 0, Category = "Nonlinear")]
         [TestCase(0.2, 0, 0, Category = "Nonlinear")]
