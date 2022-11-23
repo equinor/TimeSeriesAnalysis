@@ -711,6 +711,11 @@ namespace TimeSeriesAnalysis.Dynamic
         
             parameters.Fitting = new FittingInfo();
             parameters.Fitting.SolverID = solverID;
+            if (dataSet.Times.Count() > 0)
+            {
+                parameters.Fitting.StartTime = dataSet.Times.First();
+                parameters.Fitting.EndTime = dataSet.Times.Last();
+            }
             // Vec.Regress can return very large values if y is noisy and u is stationary. 
             // in these cases varCovarMatrix is null
 

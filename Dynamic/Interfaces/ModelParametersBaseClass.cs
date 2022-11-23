@@ -77,7 +77,17 @@ namespace TimeSeriesAnalysis.Dynamic
             /// </summary>
             public double NFittingTotalDataPoints { get; set; }
 
-        }
+
+            /// <summary>
+            /// Start time of fitting data set
+            /// </summary>
+            public DateTime StartTime { get; set; }
+
+            /// <summary>
+            /// End time of fitting data set
+            /// </summary>
+            public DateTime EndTime { get; set; }
+    }
 
 
 }
