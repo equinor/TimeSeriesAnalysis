@@ -192,7 +192,10 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[] GetProcessGains()
         {
             var list = new List<double>();
-            for (int inputIdx = 0; inputIdx < U0.Length; inputIdx++)
+
+            var nInputs = LinearGains.Length;
+
+            for (int inputIdx = 0; inputIdx < nInputs; inputIdx++)
             {
                 list.Add(GetTotalCombinedProcessGain(inputIdx));
             }

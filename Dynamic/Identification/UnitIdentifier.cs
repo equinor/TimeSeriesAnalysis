@@ -790,16 +790,101 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.Fitting.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
 
                 // add inn uncertainty
-                CalculateUncertainty(regResults, dataSet.GetTimeBase(), ref parameters);
+                if (useDynamicModel)
+                    CalculateDynamicUncertainty(regResults, dataSet.GetTimeBase(), ref parameters);
+                else
+                    CalculateStaticUncertainty(regResults, ref parameters);
 
+                // round uncetainty to certain number of digits
+                parameters.LinearGainUnc = SignificantDigits.Format(parameters.LinearGainUnc, nDigits);
+                if (parameters.BiasUnc.HasValue)
+                    parameters.BiasUnc = SignificantDigits.Format(parameters.BiasUnc.Value, nDigits);
+                if(parameters.TimeConstantUnc_s.HasValue)
+                    parameters.TimeConstantUnc_s = SignificantDigits.Format(parameters.TimeConstantUnc_s.Value, nDigits);
                 return parameters;
             }
         }
 
+        /// <summary>
+        /// Provided that regResults is the result of fitting a statix equation x[k] = B*U}
+        /// </summary>
+        /// <param name="regResults">regression results, where first paramter is the "a" forgetting term</param>
+        /// <param name="timeBase_s"></param>
+        /// <param name="parameters"></param>
+        private void CalculateStaticUncertainty(RegressionResults regResults, ref UnitParameters parameters)
+        {
+            if (regResults.VarCovarMatrix == null)
+                return;
+
+            double a = regResults.Param[0];
+            double varA = regResults.VarCovarMatrix[0][0];
+            double sqrtN = Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints);
+
+            /////////////////////////////////////////////////////
+            /// linear gain unceratinty
+
+            var LinearGainUnc = new List<double>();
+            for (int inputIdx = 0; inputIdx < parameters.GetNumInputs(); inputIdx++)
+            {
+                double b = regResults.Param[ inputIdx];
+                double varB = regResults.VarCovarMatrix[inputIdx ][inputIdx ];
+                // standard error is the population standard deviation divided by square root of the number of samples N
+                double standardError_processGain = varB / sqrtN;
+                // the 95% conf intern is 1.96 times the standard error for a normal distribution
+                LinearGainUnc.Add(standardError_processGain * 1.96);//95% uncertainty 
+            }
+            parameters.LinearGainUnc = LinearGainUnc.ToArray();
+
+            /////////////////////////////////////////////////
+            /// curvature unceratinty
+            /// 
+            var CurvatureUnc = new List<double>();
+            if (parameters.Curvatures != null)
+            {
+                for (int inputIdx = 0; inputIdx < parameters.Curvatures.Count(); inputIdx++)
+                {
+                    //NB! THIS CANNOT BE RIGHT, CURVATURE UNCERTANTY DOES NOT DEPEND ON VARIANE MATRIX AT ALL
+                    if (Double.IsNaN(parameters.Curvatures[inputIdx]))
+                    {
+                        CurvatureUnc.Add(double.NaN);
+                        continue;
+                    }
+                    // the "gain" of u is dy/du
+                    // d/du [c*(u-u0)^2)]=
+                    //      d/du [c*(u^2-2*u*u0 +2u0))]= 
+                    //      d/du [c*(u^2-2u*u0)] =
+                    //      c*[2*u-2u*u0]
+
+                    double curC = parameters.Curvatures[inputIdx];
+                    double curU0 = parameters.U0[inputIdx];
+                    double curUnorm = parameters.UNorm[inputIdx];
+
+                    double varCurCurvature = Math.Abs(curC / curUnorm * (2 * curU0 - 2 * Math.Pow(curU0, 2)));
+
+                    double standarerrorCurvUnc = varCurCurvature / sqrtN;
+                    CurvatureUnc.Add(standarerrorCurvUnc * 1.96);
+                }
+            }
+            parameters.CurvatureUnc = CurvatureUnc.ToArray();
+
+            parameters.TimeConstantUnc_s = null;//95 prc unceratinty
+            // bias uncertainty 
+            int biasInd = regResults.Param.Length - 1;
+            //parameters.BiasUnc = regResults.VarCovarMatrix[biasInd][biasInd];
+            parameters.BiasUnc = regResults.VarCovarMatrix[biasInd][biasInd] / sqrtN * 1.96;
+        }
+
+
         // references:
         // http://dept.stat.lsa.umich.edu/~kshedden/Courses/Stat406_2004/Notes/variance.pdf
         //https://stats.stackexchange.com/questions/41896/varx-is-known-how-to-calculate-var1-x
-        private void CalculateUncertainty(RegressionResults regResults,double timeBase_s, ref UnitParameters parameters)
+        /// <summary>
+        /// Provided that regResults is the result of fitting a dynamic equation x[k] = a*x[k-1]+B*U}
+        /// </summary>
+        /// <param name="regResults">regression results, where first paramter is the "a" forgetting term</param>
+        /// <param name="timeBase_s"></param>
+        /// <param name="parameters"></param>
+        private void CalculateDynamicUncertainty(RegressionResults regResults,double timeBase_s, ref UnitParameters parameters)
         {
             if (regResults.VarCovarMatrix == null)
                 return;

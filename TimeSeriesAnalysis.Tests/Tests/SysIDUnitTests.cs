@@ -158,11 +158,12 @@ namespace TimeSeriesAnalysis.Test.SysID
             //  Assert.IsTrue(model.GetModelParameters().TimeDelayEstimationWarnings.Count == 0, "time delay estimation should give no warnings");
 
             double[] estGains = model.GetModelParameters().GetProcessGains();
-            /*            for (int k = 0; k < estGains.Count(); k++)
-                        {
-                            Assert.IsTrue(Math.Abs(designParameters.GetProcessGain(k) - estGains[k]) < 0.1,
-                            "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.GetProcessGain(k));
-                        }*/
+            double[] actualGains = designParameters.GetProcessGains();
+            for (int k = 0; k < estGains.Count(); k++)
+            {
+                Assert.IsTrue(Math.Abs(actualGains[k] - estGains[k]) < 0.1,
+                "est.gains should be close to actual gain. Est:" + estGains[k] + "real:" + designParameters.GetProcessGains()[k] );
+            }
 
             // TODO:
             var avgError = (new Vec()).Subtract(model.GetFittedDataSet().Y_sim,
