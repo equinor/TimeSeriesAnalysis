@@ -76,7 +76,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public ConnectionParser connections;
 
-        public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
+        public UnitDataSet GetUnitDataSetForPID(LoadFromCsv inputData,PidModel pidModel)
         {
             UnitDataSet dataset = new UnitDataSet(); 
             dataset.U = new double[inputData.GetLength().Value,1];
@@ -371,7 +371,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
         /// <returns></returns>
-        public bool Simulate (TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
+        public bool Simulate (LoadFromCsv inputData, out LoadFromCsv simData)
         {
             var timeBase_s = inputData.GetTimeBase(); ;
 
@@ -384,7 +384,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(modelDict);
-            simData = new TimeSeriesDataSet();
+            simData = new LoadFromCsv();
 
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
@@ -465,7 +465,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, 
-            TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
+            LoadFromCsv dataSet1, LoadFromCsv dataSet2)
         {
             double[] retVals = new double[inputIDs.Length];
 

@@ -29,7 +29,7 @@ namespace TimeSeriesAnalysis._Examples
             CascadeControl_Ex();
         }
 
-        public TimeSeriesDataSet CascadeControl()
+        public LoadFromCsv CascadeControl()
         {
             int N = 600;
             #region CascadeControl
@@ -82,7 +82,7 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectModels(process2, pid2);
             sim.ConnectModels(pid2, pid1,(int)PidModelInputsIdx.Y_setpoint);
 
-            var inputData = new TimeSeriesDataSet();
+            var inputData = new LoadFromCsv();
 
             inputData.Add(sim.AddExternalSignal(pid2,SignalType.Setpoint_Yset),TimeSeriesCreator.Constant(50, N));
             inputData.Add(sim.AddExternalSignal(process1,SignalType.Disturbance_D),TimeSeriesCreator.Sinus(5,20,timeBase_s,N));
@@ -115,7 +115,7 @@ namespace TimeSeriesAnalysis._Examples
             FeedForward_Part1();
         }
 
-        public TimeSeriesDataSet FeedForward_Part1()
+        public LoadFromCsv FeedForward_Part1()
         {
             #region Feedforward_Part1
             var processParameters = new UnitParameters
@@ -153,7 +153,7 @@ namespace TimeSeriesAnalysis._Examples
             simNoFeedF.ConnectModels(processModel, pidModel);
             simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-            var inputData = new TimeSeriesDataSet();
+            var inputData = new LoadFromCsv();
 
             inputData.Add(simNoFeedF.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(60, 600));
@@ -186,7 +186,7 @@ namespace TimeSeriesAnalysis._Examples
             FeedForward_Part2();
         }
 
-        public TimeSeriesDataSet FeedForward_Part2()
+        public LoadFromCsv FeedForward_Part2()
         { 
         #region Feedforward_Part2
 
@@ -234,7 +234,7 @@ namespace TimeSeriesAnalysis._Examples
             simNoFeedF.ConnectModels(processModel, pidModel);
             simNoFeedF.ConnectModelToOutput(disturbanceModel, processModel);
 
-            var inputData = new TimeSeriesDataSet();
+            var inputData = new LoadFromCsv();
 
             inputData.Add(simNoFeedF.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(60, 600));
@@ -269,7 +269,7 @@ namespace TimeSeriesAnalysis._Examples
         {
             GainScheduling();
         }
-        public TimeSeriesDataSet GainScheduling()
+        public LoadFromCsv GainScheduling()
         { 
             //step responses on the open-loop system
         #region GainScheduling_Part1
@@ -290,7 +290,7 @@ namespace TimeSeriesAnalysis._Examples
             var openLoopSim1 = new PlantSimulator(
                 new List<ISimulatableModel> { processModel });
 
-            var inputDataSim1 = new TimeSeriesDataSet();
+            var inputDataSim1 = new LoadFromCsv();
             inputDataSim1.Add(openLoopSim1.AddExternalSignal(processModel, SignalType.External_U),
                 TimeSeriesCreator.Step(50, 200, 80, 90));
             inputDataSim1.CreateTimestamps(timeBase_s);
@@ -298,7 +298,7 @@ namespace TimeSeriesAnalysis._Examples
 
             var openLoopSim2 = new PlantSimulator(
                 new List<ISimulatableModel> { processModel });
-            var inputDataSim2 = new TimeSeriesDataSet();
+            var inputDataSim2 = new LoadFromCsv();
             inputDataSim2.Add(openLoopSim2.AddExternalSignal(processModel, SignalType.External_U),
                 TimeSeriesCreator.Step(50, 200, 20, 30));
             inputDataSim2.CreateTimestamps(timeBase_s);
@@ -327,7 +327,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSim1.ConnectModels(pidModel1,processModel);
             closedLoopSim1.ConnectModels(processModel, pidModel1);
 
-            var inputData1 = new TimeSeriesDataSet();
+            var inputData1 = new LoadFromCsv();
             inputData1.Add(closedLoopSim1.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(20,400));
             inputData1.Add(closedLoopSim1.AddExternalSignal(processModel,SignalType.Disturbance_D), TimeSeriesCreator.Step(100,400,0,10));
@@ -345,7 +345,7 @@ namespace TimeSeriesAnalysis._Examples
                 new List<ISimulatableModel> { pidModel2, processModel });
             closedLoopSim2.ConnectModels(pidModel2, processModel);
             closedLoopSim2.ConnectModels(processModel, pidModel2);
-            var inputData2 = new TimeSeriesDataSet();
+            var inputData2 = new LoadFromCsv();
             inputData2.Add(closedLoopSim2.AddExternalSignal(pidModel2, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(70, 400));
             inputData2.Add(closedLoopSim2.AddExternalSignal(processModel, SignalType.Disturbance_D),
@@ -391,7 +391,7 @@ namespace TimeSeriesAnalysis._Examples
                 new List<ISimulatableModel> { pidModelGS, processModel });
             closedLoopSimGS_1.ConnectModels(pidModelGS, processModel);
             closedLoopSimGS_1.ConnectModels(processModel, pidModelGS);
-            var inputDataGS1 = new TimeSeriesDataSet();
+            var inputDataGS1 = new LoadFromCsv();
             inputDataGS1.Add(closedLoopSimGS_1.AddExternalSignal(pidModelGS, SignalType.Setpoint_Yset),
                   TimeSeriesCreator.Constant(20, 400));
             inputDataGS1.Add(closedLoopSimGS_1.AddExternalSignal(processModel, SignalType.Disturbance_D), 
@@ -406,7 +406,7 @@ namespace TimeSeriesAnalysis._Examples
             closedLoopSimGS_2.ConnectModels(pidModelGS, processModel);
             closedLoopSimGS_2.ConnectModels(processModel, pidModelGS);
 
-            var inputDataGS2 = new TimeSeriesDataSet();
+            var inputDataGS2 = new LoadFromCsv();
             inputDataGS2.Add(closedLoopSimGS_2.AddExternalSignal(pidModelGS, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(70, 400));
             inputDataGS2.Add(closedLoopSimGS_2.AddExternalSignal(processModel, SignalType.Disturbance_D), 
@@ -445,7 +445,7 @@ namespace TimeSeriesAnalysis._Examples
             var ret = MinSelect();
         }
 
-        public TimeSeriesDataSet MinSelect(int N = 600)
+        public LoadFromCsv MinSelect(int N = 600)
         {
             #region MinSelect
 
@@ -489,7 +489,7 @@ namespace TimeSeriesAnalysis._Examples
             sim.ConnectSignalToInput(selectSignalID,pid1,(int)PidModelInputsIdx.Tracking);
             sim.ConnectSignalToInput(selectSignalID,pid2,(int)PidModelInputsIdx.Tracking);
 
-            var inputData = new TimeSeriesDataSet();
+            var inputData = new LoadFromCsv();
             inputData.Add(sim.AddExternalSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
             inputData.Add(sim.AddExternalSignal(pid2, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(70, N));
             inputData.Add(sim.AddExternalSignal(process, SignalType.Disturbance_D),

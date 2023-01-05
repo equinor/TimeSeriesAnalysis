@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis
     {
         private static ParserFeedback parserObj = new ParserFeedback();
 
-        private static bool isPlottingEnabled = true;
+        private static bool isPlottingEnabled = false;
         /// <summary>
         /// Returns the ParserFeedback object, which can be used to add loglines for info,warnings or errors
         /// </summary>

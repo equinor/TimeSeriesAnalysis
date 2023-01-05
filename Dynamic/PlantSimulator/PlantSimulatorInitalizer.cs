@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </para>
         /// </summary>
         /// <param name="simData">simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</param>
-        public bool ToSteadyState(TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
+        public bool ToSteadyState(LoadFromCsv inputData, ref LoadFromCsv simData)
         {
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
             // the inital value will be calculated .Value, but is NaN unit calculated.

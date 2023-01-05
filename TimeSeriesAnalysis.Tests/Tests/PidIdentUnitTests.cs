@@ -46,10 +46,10 @@ namespace TimeSeriesAnalysis.Test.PidID
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-            var inputData = new TimeSeriesDataSet();
+            var inputData = new LoadFromCsv();
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/2, N,50,55));
             inputData.CreateTimestamps(timeBase_s,t0);
-            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
+            var isOk = processSim.Simulate(inputData,out LoadFromCsv simData);
             Assert.IsTrue(isOk);
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
@@ -79,11 +79,11 @@ namespace TimeSeriesAnalysis.Test.PidID
              new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
-            var inputData = new TimeSeriesDataSet();
+            var inputData = new LoadFromCsv();
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50,N));
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Step(N/2,N,0,stepAmplitude));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            var isOk = processSim.Simulate(inputData, out LoadFromCsv simData);
             Assert.IsTrue(isOk);
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);

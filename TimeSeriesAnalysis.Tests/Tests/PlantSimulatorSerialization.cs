@@ -86,7 +86,7 @@ namespace TimeSeriesAnalysis.Tests.Serialization
             plantSim1.ConnectModels(pidModel1, processModel1, pidIndex);
             plantSim1.ConnectModels(processModel1, processModel3, (int)INDEX.FIRST);
 
-            var inputData = new TimeSeriesDataSet();
+            var inputData = new LoadFromCsv();
             inputData.Add(plantSim1.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(150, N));
             inputData.Add(plantSim1.AddExternalSignal(processModel1, SignalType.External_U, externalUIndex), TimeSeriesCreator.Step(60, N, 50, 55));
             inputData.Add(plantSim1.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(240, N, 50, 40));
@@ -96,13 +96,13 @@ namespace TimeSeriesAnalysis.Tests.Serialization
             var plantsimJsonTxt = plantSim1.SerializeTxt();
             var inputDataJsonTxt = new CsvContent(inputData.ToCsvText());
 
-            var inputData2 = new TimeSeriesDataSet(inputDataJsonTxt);
+            var inputData2 = new LoadFromCsv(inputDataJsonTxt);
 
             // 3. deserialize to a new object
             var plantSim2 = PlantSimulatorHelper.LoadFromJsonTxt(plantsimJsonTxt);
 
             // 4. simulate the plant object created from Json
-            var isOk = plantSim2.Simulate(inputData2, out TimeSeriesDataSet simData);
+            var isOk = plantSim2.Simulate(inputData2, out LoadFromCsv simData);
 
             Assert.IsTrue(isOk);
             Assert.IsTrue(plantSim2.plantName == "DeserializedTest");
@@ -126,8 +126,8 @@ namespace TimeSeriesAnalysis.Tests.Serialization
         [TestCase]
         public void DeserializeFittedModel_ObjIncludesFittingObj()
         {
-            var inputData = new TimeSeriesDataSet();
-            TimeSeriesDataSet simData;
+            var inputData = new LoadFromCsv();
+            LoadFromCsv simData;
             {
                 var modelList = new List<ISimulatableModel> { processModel1, pidModel1 };
                 int pidIndex = 1;

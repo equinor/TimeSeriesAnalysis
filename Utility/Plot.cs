@@ -48,8 +48,6 @@ namespace TimeSeriesAnalysis.Utility
             return true;
         }
 
-
-
         /// <summary>
         /// Plot data from a list of value-date tuples (each time-series can have unique time-vector with unique sampling)
         /// </summary>

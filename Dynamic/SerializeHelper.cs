@@ -10,7 +10,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         static public void  Serialize(string name,PlantSimulator plantSim,
-            TimeSeriesDataSet inputData, TimeSeriesDataSet simData)
+            LoadFromCsv inputData, LoadFromCsv simData)
         {
             string namePrefix = "_";
             if (writeTestDataToDisk)

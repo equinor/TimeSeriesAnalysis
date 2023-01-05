@@ -17,13 +17,11 @@ namespace TimeSeriesAnalysis.Utility
     public class CsvContent
     {
         public string CsvTxt { get; }
-
         public CsvContent(string csvTxt)
         {
             this.CsvTxt = csvTxt;
         }
     }
-
 
     ///<summary>
     /// IO Utility class for loading time-series data from a plain text comma-separated variable(CSV) file
@@ -195,11 +193,7 @@ namespace TimeSeriesAnalysis.Utility
                     }
             }
             return true;
-
         }
-
-
-
 
         /// <summary>
         ///  Loading string data into a double value.

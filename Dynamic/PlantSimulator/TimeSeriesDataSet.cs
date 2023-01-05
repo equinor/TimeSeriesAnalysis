@@ -24,7 +24,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// This is the return data class of <seealso cref="PlantSimulator"/>
     /// </remark>
     /// </summary>
-    public class TimeSeriesDataSet
+    public class LoadFromCsv
     {
         List<DateTime> timeStamps = new List<DateTime>();
         Dictionary<string, double[]> dataset;
@@ -33,19 +33,19 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Constructor: Reads data form  a csv-file (such as that created by ToCSV()) 
         /// </summary>
-        /// <param name="fileName">csv file name</param>
+        /// <param name="csvFileName">csv file name</param>
         /// <param name="separator">default separator</param>
         /// <param name="dateTimeFormat">format string of the time-series vector to be read</param>
         /// <returns></returns>
-        public TimeSeriesDataSet(string fileName, char separator=';',string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        public LoadFromCsv(string csvFileName, char separator=';',string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
-            CSV.LoadDataFromCsvAsTimeSeries(fileName, separator, out DateTime[] dateTimes, 
+            CSV.LoadDataFromCsvAsTimeSeries(csvFileName, separator, out DateTime[] dateTimes, 
                 out Dictionary<string, double[]> variableDict, dateTimeFormat);
 
             Fill(dateTimes, variableDict);
         }
 
-        public TimeSeriesDataSet(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        public LoadFromCsv(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
             CSV.LoadDataFromCsvContentAsTimeSeries(csvContent, separator, out DateTime[] dateTimes, 
                 out Dictionary<string, double[]> variableDict, dateTimeFormat);
@@ -84,7 +84,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         [JsonConstructor]
-        public TimeSeriesDataSet()
+        public LoadFromCsv()
         {
             dataset = new Dictionary<string, double[]>();
             //didSimulationReturnOk = false;
@@ -94,7 +94,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputDataSet"></param>
 
-        public TimeSeriesDataSet(TimeSeriesDataSet inputDataSet)
+        public LoadFromCsv(LoadFromCsv inputDataSet)
         {
             dataset = new Dictionary<string, double[]>();
             if (inputDataSet != null)
@@ -161,7 +161,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputDataSet"></param>
         /// <returns></returns>
-        public bool AddSet(TimeSeriesDataSet inputDataSet)
+        public bool AddSet(LoadFromCsv inputDataSet)
         {
             foreach (string signalName in inputDataSet.GetSignalNames())
             {
@@ -180,9 +180,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputDataSet"></param>
         /// <returns>the newly created dataset</returns>
-        public TimeSeriesDataSet Combine(TimeSeriesDataSet inputDataSet)
+        public LoadFromCsv Combine(LoadFromCsv inputDataSet)
         {
-            TimeSeriesDataSet dataSet = new TimeSeriesDataSet(this) ;
+            LoadFromCsv dataSet = new LoadFromCsv(this) ;
             foreach (string signalName in inputDataSet.GetSignalNames())
             {
                 double[] values = inputDataSet.GetValues(signalName);

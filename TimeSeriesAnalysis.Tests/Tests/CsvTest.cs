@@ -25,8 +25,10 @@ namespace TimeSeriesAnalysis.Test
 
         }
         [TestCase, Explicit]
-        public void CSV2()
+        public void Xml_load()
         {
+            SigmaXml.LoadFromFile( @"C:\Appl\OneDrive - Equinor\2021_advanced_analytics\2023_trbvann\Cache.json");
+
         }
 
     }
