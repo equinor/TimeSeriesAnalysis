@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace TimeSeriesAnalysis.Test
 {
     [TestFixture]
-    class CsvTest
+    class Xml
     {
        // [TestCase, Explicit]
         public void CSV1_containsExtraValue_IsIgnored()
@@ -27,13 +27,14 @@ namespace TimeSeriesAnalysis.Test
         [TestCase, Explicit]
         public void Xml_load()
         {
-            var dataset = SigmaXml.LoadFromFile( @"");
+            (var dataset,var nErrors) = SigmaXml.LoadFromFile(@"");
 
             Assert.IsTrue(dataset != null);
             Assert.IsTrue(dataset.GetLength() > 0);
             Assert.IsTrue(dataset.GetTimeBase() > 0);
-            Assert.IsTrue(dataset.GetTimeStamps().Length > 0);
-           
+            Assert.Greater(dataset.GetTimeStamps().Length,0);
+            Assert.AreEqual(0,nErrors);
+            Assert.Greater(dataset.GetSignalNames().Length,100);
         }
 
     }
