@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -11,6 +12,13 @@ namespace TimeSeriesAnalysis.Utility
 {
     public class SigmaXml
     {
+        /// <summary>
+        /// Load the sigma "cache" file format, often named "cache.js". This file is json file, but
+        /// is converted to a xml-file by replacing the header, and is read from javascript in json format and 
+        /// is also read from c# in the xml-converted format. The data has both a "cache" and an "eventdata" portion,
+        /// but this driver reads only the cache format where the time-series data is usually stored.
+        /// </summary>
+        /// <param name="xmlFileName"></param>
         public static void LoadFromFile(string xmlFileName)
         {
 
@@ -51,7 +59,7 @@ namespace TimeSeriesAnalysis.Utility
                     objProcessDataDictionaryCollection.Add(remoteApplicationName, new Dictionary<string, double[]>());
                 }*/
        
-
+                
                 foreach (XElement element in xConfigOrg.Root.Elements())
                 {
                     string key = element.Elements().ElementAt(0).Value;
@@ -61,12 +69,12 @@ namespace TimeSeriesAnalysis.Utility
                     {
                         try
                         {
-                            double[] results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDouble(row.Value)).ToArray();
+                    /*        double[] results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDouble(row.Value)).ToArray();
                             if (objProcessDataDictionaryCollection[remoteApplicationName].ContainsKey(key) == false)
                             {
                                 objProcessDataDictionaryCollection[remoteApplicationName].Add(key, results);
                             }
-
+                    */
                         }
                         catch (Exception e)
                         {

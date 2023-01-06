@@ -221,7 +221,7 @@ namespace TimeSeriesAnalysis._Examples
                 new List<ISimulatableModel> { pidModel, processModel  });
             sim.ConnectModels(processModel,pidModel);
             sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(sim.AddExternalSignal(processModel,SignalType.Disturbance_D),
                 TimeSeriesCreator.Step(N/4,N,0,1));
             inputData.Add(sim.AddExternalSignal(pidModel,SignalType.Setpoint_Yset),

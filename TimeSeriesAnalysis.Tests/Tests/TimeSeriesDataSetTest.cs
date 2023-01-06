@@ -42,7 +42,8 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
            // dataSet.SetT0(new DateTime(2021, 1, 1));
             var isOk = dataSet.ToCsv(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv");
             Assert.IsTrue(isOk);
-            var dataSet2 = new LoadFromCsv(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv");
+            var dataSet2 = new TimeSeriesDataSet();
+            dataSet2.LoadFromCsv(@"C:\Appl\source\TimeSeriesAnalysis\minSelect.csv");
             Shared.EnablePlots();
             Assert.AreEqual(N, dataSet2.GetLength());
             Assert.AreEqual(7, dataSet2.GetSignalNames().Count());
@@ -67,12 +68,10 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
                 Assert.IsTrue(isOk);
                 Shared.EnablePlots();
             }
-            var dataSet2 = new LoadFromCsv(@"C:\Appl\source\TimeSeriesAnalysis\minSelect_large.csv");
+            var dataSet2 = new TimeSeriesDataSet();
+            dataSet2.LoadFromCsv(@"C:\Appl\source\TimeSeriesAnalysis\minSelect_large.csv");
             Assert.AreEqual(N, dataSet2.GetLength());
             Assert.AreEqual(7,dataSet2.GetSignalNames().Count());
-
-
-
 
         }
 

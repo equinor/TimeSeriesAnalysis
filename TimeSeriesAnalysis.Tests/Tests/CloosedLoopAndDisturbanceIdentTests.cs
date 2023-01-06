@@ -144,12 +144,12 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
              new List<ISimulatableModel> { pidModel1, processModel });
             processSim.ConnectModels(processModel, pidModel1);
             processSim.ConnectModels(pidModel1, processModel);
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
            
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
             inputData.Add(processSim.AddExternalSignal(processModel, SignalType.Disturbance_D), trueDisturbance);
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = processSim.Simulate(inputData, out LoadFromCsv simData);
+            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var modelId = new ClosedLoopUnitIdentifier();

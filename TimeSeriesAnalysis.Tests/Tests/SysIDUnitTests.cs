@@ -540,10 +540,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             var refModel = new UnitModel(paramtersNoCurvature,"reference");
 
             var sim = new PlantSimulator(new List<ISimulatableModel> { refModel });
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(sim.AddExternalSignal(refModel, SignalType.External_U), u1);
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = sim.Simulate(inputData,out LoadFromCsv refData);
+            var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
@@ -625,11 +625,11 @@ namespace TimeSeriesAnalysis.Test.SysID
             var refModel = new UnitModel(paramtersNoCurvature, "reference");
 
             var sim = new PlantSimulator( new List<ISimulatableModel> { refModel });
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(sim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), u1);
             inputData.Add(sim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.SECOND),u2 );
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = sim.Simulate(inputData,out LoadFromCsv refData);
+            var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;

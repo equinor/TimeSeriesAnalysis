@@ -76,10 +76,10 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1 });
 
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = processSim.Simulate(inputData,out LoadFromCsv simData);
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             CommonAsserts(inputData, simData);
             double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
@@ -100,10 +100,10 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 new List<ISimulatableModel> { processModel1, processModel2 },"Serial2");
 
             processSim.ConnectModels(processModel1, processModel2);
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(processModel1,SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = processSim.Simulate(inputData,out LoadFromCsv simData);
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             processSim.Serialize();
 
@@ -132,10 +132,10 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processSim.ConnectModels(processModel1, processModel2);
             processSim.ConnectModels(processModel2, processModel3);
 
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = processSim.Simulate(inputData,out LoadFromCsv simData);
+            var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             //var serialIsOk = processSim.Serialize("SISO_Serial3",@"c:\appl");
             //Assert.IsTrue(serialIsOk);
@@ -165,7 +165,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
 
 
-        public static void CommonAsserts(LoadFromCsv inputData,LoadFromCsv simData)
+        public static void CommonAsserts(TimeSeriesDataSet inputData,TimeSeriesDataSet simData)
         {
             var signalNames = simData.GetSignalNames();
 
@@ -185,7 +185,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         }
 
 
-        private void  BasicPIDCommonTests(LoadFromCsv simData)
+        private void  BasicPIDCommonTests(TimeSeriesDataSet simData)
         {
             var U = simData.GetValues(pidModel1.GetID(), SignalType.PID_U);
             double UfirstTwoValuesDiff = Math.Abs(U.ElementAt(0) - U.ElementAt(1));
@@ -203,12 +203,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             plantSim.ConnectModels(processModel1, pidModel1);
             plantSim.ConnectModels(pidModel1, processModel1);
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             var distID = plantSim.AddExternalSignal(processModel1, SignalType.Disturbance_D); 
             inputData.Add(distID, TimeSeriesCreator.Step(N / 4, N, disurbanceStartValue, disurbanceStartValue+1));
             inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = plantSim.Simulate(inputData,out LoadFromCsv simData);
+            var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             double firstYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).First() - Ysetpoint);
             double lastYsimE = Math.Abs(simData.GetValues(processModel1.GetID(), SignalType.Output_Y).Last() - Ysetpoint);
@@ -232,7 +232,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var combinedData = inputData.Combine(simData);
             // step 2: check that if given an inputDataset that includes simData-variables, the 
             // plant simulator is still able to run
-            var isOk2 = plantSim.Simulate(combinedData, out LoadFromCsv simData2);
+            var isOk2 = plantSim.Simulate(combinedData, out TimeSeriesDataSet simData2);
             Assert.IsTrue(isOk2);
 
         }
@@ -245,11 +245,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             plantSim.ConnectModels(processModel1, pidModel1);
             plantSim.ConnectModels(pidModel1, processModel1);
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), 
                 TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
             inputData.CreateTimestamps(timeBase_s);
-            bool isOk = plantSim.Simulate(inputData,out LoadFromCsv simData);
+            bool isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             SerializeHelper.Serialize("BasicPID_setpointStep", plantSim, inputData, simData);
 
@@ -271,13 +271,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             plantSim.ConnectModels(processModel1, pidModel1);
             plantSim.ConnectModels(pidModel1, processModel1);
-            var inputData = new LoadFromCsv();
+            var inputData = new TimeSeriesDataSet();
             inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
             inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.Disturbance_D),
                 TimeSeriesCreator.Noise(N,1,1000) );
             inputData.CreateTimestamps(timeBase_s);
-            bool isOk = plantSim.Simulate(inputData, out LoadFromCsv simData);
+            bool isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             SerializeHelper.Serialize("BasicPID_setpointStepWithFiltering", plantSim, inputData, simData);
 
