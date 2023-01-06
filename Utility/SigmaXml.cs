@@ -64,7 +64,7 @@ namespace TimeSeriesAnalysis.Utility
                     string key = element.Elements().ElementAt(0).Value;
                     string value = element.Elements().ElementAt(1).Value;
 
-                    if ((key != "Time") && (key != "Dmmy")) // SIGMA uses UnixTime
+                    if ((key != "Time") && (key != "Dmmy") && (key != "UnixTime")) 
                     {
                         try
                         {
