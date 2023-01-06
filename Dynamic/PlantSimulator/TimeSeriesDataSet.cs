@@ -109,9 +109,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-
-
-
         /// <summary>
         /// Add an entire time-series to the dataset
         /// </summary>
@@ -145,24 +142,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        /// <summary>
-        /// Add an entire time-series to the dataset, without specifying the signalID explicitly
-        /// </summary>
-        /// <param name="processID"></param>
-        /// <param name="type"></param>
-        /// <param name="values"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-       /* public string AddTimeSeries(string processID, SignalType type, double[] values, int index = 0)
-        {
-            string signalName = SignalNamer.GetSignalName(processID, type, index);
-
-            bool isOk = Add(signalName, values);
-            if (isOk)
-                return signalName;
-            else
-                return null;
-        }*/
 
         /// <summary>
         /// Adds all signals in a given set to this set

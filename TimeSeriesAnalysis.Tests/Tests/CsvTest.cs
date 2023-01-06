@@ -27,8 +27,13 @@ namespace TimeSeriesAnalysis.Test
         [TestCase, Explicit]
         public void Xml_load()
         {
-            SigmaXml.LoadFromFile( @"C:\Appl\OneDrive - Equinor\2021_advanced_analytics\2023_trbvann\Cache.json");
+            var dataset = SigmaXml.LoadFromFile( @"");
 
+            Assert.IsTrue(dataset != null);
+            Assert.IsTrue(dataset.GetLength() > 0);
+            Assert.IsTrue(dataset.GetTimeBase() > 0);
+            Assert.IsTrue(dataset.GetTimeStamps().Length > 0);
+           
         }
 
     }

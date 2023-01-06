@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.Utility
 {
@@ -19,8 +20,9 @@ namespace TimeSeriesAnalysis.Utility
         /// but this driver reads only the cache format where the time-series data is usually stored.
         /// </summary>
         /// <param name="xmlFileName"></param>
-        public static void LoadFromFile(string xmlFileName)
+        public static TimeSeriesDataSet LoadFromFile(string xmlFileName)
         {
+            TimeSeriesDataSet dataset = new TimeSeriesDataSet();
 
             if (System.IO.File.Exists(xmlFileName) == true)
             {
@@ -53,13 +55,10 @@ namespace TimeSeriesAnalysis.Utility
                 XmlDocument xmlConfig = (XmlDocument)JsonConvert.DeserializeXmlNode(fingerPrintFileContentMod);
 
                 XDocument xConfigOrg = XDocument.Load(xmlConfig.CreateNavigator().ReadSubtree());
-                /*
-                if (objProcessDataDictionaryCollection.ContainsKey(remoteApplicationName) == false)
-                {
-                    objProcessDataDictionaryCollection.Add(remoteApplicationName, new Dictionary<string, double[]>());
-                }*/
-       
-                
+
+
+                double Ts = 1;
+
                 foreach (XElement element in xConfigOrg.Root.Elements())
                 {
                     string key = element.Elements().ElementAt(0).Value;
@@ -69,22 +68,28 @@ namespace TimeSeriesAnalysis.Utility
                     {
                         try
                         {
-                    /*        double[] results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDouble(row.Value)).ToArray();
-                            if (objProcessDataDictionaryCollection[remoteApplicationName].ContainsKey(key) == false)
+                            double[] results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDouble(row.Value)).ToArray();
+                            if (dataset.ContainsSignal(key) == false)
                             {
-                                objProcessDataDictionaryCollection[remoteApplicationName].Add(key, results);
+                                // some "special" variables are scalars containting meta-data, do not add these
+                                if (results.Length > 1)
+                                {
+                                    dataset.Add(key, results);
+                                }
                             }
-                    */
                         }
                         catch (Exception e)
                         {
-
                         }
                     }
+                    else if (key == "Time")
+                    {
+                        DateTime[] results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDateTime(row.Value)).ToArray();
+                        dataset.SetTimeStamps(results.ToList());
+                    }
                 }
-
-
             }
+            return dataset;
         }
     }
 
