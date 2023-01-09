@@ -202,7 +202,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 pidParam.Scaling = pidScaling;
             else
                 pidParam.Scaling = new PidScaling();//default scaling
-            if (vec.IsAllNaN(dataSet.Y_setpoint))
+            if (dataSet.Y_setpoint == null)
+            {
+                pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
+            }
+            else if (vec.IsAllNaN(dataSet.Y_setpoint))
             {
                 pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
             }
