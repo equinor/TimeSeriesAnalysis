@@ -343,10 +343,14 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// Returns true if all elements in array are "-9999" or Double.NaN
+        /// Returns true if all elements in array are "-9999" or Double.NaN, or is null
         ///</summary>
         public bool IsAllNaN(double[] array)
         {
+            if (array == null)
+            {
+                return true;
+            }
             int count = 0;
             while (IsNaN(array[count]) && count < array.Length - 1)
             {
