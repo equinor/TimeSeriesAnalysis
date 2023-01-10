@@ -20,9 +20,11 @@ namespace TimeSeriesAnalysis.Utility
         /// but this driver reads only the cache format where the time-series data is usually stored.
         /// </summary>
         /// <param name="xmlFileName"></param>
-        public static TimeSeriesDataSet LoadFromFile(string xmlFileName)
+        public static (TimeSeriesDataSet,double) LoadFromFile(string xmlFileName)
         {
             TimeSeriesDataSet dataset = new TimeSeriesDataSet();
+
+            int nErrors = 0;
 
             if (System.IO.File.Exists(xmlFileName) == true)
             {
@@ -57,29 +59,31 @@ namespace TimeSeriesAnalysis.Utility
                 XDocument xConfigOrg = XDocument.Load(xmlConfig.CreateNavigator().ReadSubtree());
 
 
-                double Ts = 1;
-
                 foreach (XElement element in xConfigOrg.Root.Elements())
                 {
                     string key = element.Elements().ElementAt(0).Value;
                     string value = element.Elements().ElementAt(1).Value;
 
-                    if ((key != "Time") && (key != "Dmmy")) // SIGMA uses UnixTime
+                    if ((key != "Time") && (key != "Dmmy") && (key!= "Negative9999") && (key!="UnixTime") && (key != "Ts") && (key != "HistoryDays"))
                     {
                         try
                         {
                             double[] results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDouble(row.Value)).ToArray();
                             if (dataset.ContainsSignal(key) == false)
                             {
-                                // some "special" variables are scalars containting meta-data, do not add these
                                 if (results.Length > 1)
                                 {
                                     dataset.Add(key, results);
+                                }
+                                else// constant values are stores as vectors of length== 1 in sigmas cache
+                                {
+                                    dataset.AddConstant(key, results[0]);
                                 }
                             }
                         }
                         catch (Exception e)
                         {
+                            nErrors++;
                         }
                     }
                     else if (key == "Time")
@@ -89,7 +93,7 @@ namespace TimeSeriesAnalysis.Utility
                     }
                 }
             }
-            return dataset;
+            return (dataset,nErrors);
         }
     }
 

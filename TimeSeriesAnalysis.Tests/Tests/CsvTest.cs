@@ -27,14 +27,16 @@ namespace TimeSeriesAnalysis.Test
         [TestCase, Explicit]
         public void Xml_load()
         {
-            var dataset = SigmaXml.LoadFromFile( @"");
-
+            (var dataset,var nErrors) = SigmaXml.LoadFromFile(@"");//todo:add in file here
+                        
             Assert.IsTrue(dataset != null);
             Assert.IsTrue(dataset.GetLength() > 0);
             Assert.IsTrue(dataset.GetTimeBase() > 0);
             Assert.IsTrue(dataset.GetTimeStamps().Length > 0);
-           
-        }
+            Assert.IsTrue(nErrors ==0);
 
+            var csv = dataset.ToCsvText();
+
+        }
     }
 }
