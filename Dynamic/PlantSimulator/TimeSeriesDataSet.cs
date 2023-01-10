@@ -28,12 +28,14 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         List<DateTime> timeStamps = new List<DateTime>();
         Dictionary<string, double[]> dataset;
+        Dictionary<string, double> dataset_constants;
         int? N;
 
         [JsonConstructor]
         public TimeSeriesDataSet()
         {
             dataset = new Dictionary<string, double[]>();
+            dataset_constants = new Dictionary<string, double>();
             //didSimulationReturnOk = false;
         }
         /// <summary>
@@ -108,6 +110,25 @@ namespace TimeSeriesAnalysis.Dynamic
                 timeStamps = dateTimes.ToList();
             }
         }
+        /// <summary>
+        /// Add a constant value to the time-series to the dataset
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public bool AddConstant(string signalName, double value)
+        {
+            if (signalName == null)
+            {
+                return false;
+            }
+            if (dataset_constants.ContainsKey(signalName))
+            {
+                return false;
+            }
+            dataset_constants.Add(signalName, value);
+            return true;
+        }
 
         /// <summary>
         /// Add an entire time-series to the dataset
@@ -135,13 +156,14 @@ namespace TimeSeriesAnalysis.Dynamic
                }
             else
             {
-                N = values.Length;
+                if (values.Length > 1)
+                {
+                    N = values.Length;
+                }
             }
             dataset.Add(signalName, values);
             return true;
         }
-
-
 
         /// <summary>
         /// Adds all signals in a given set to this set
@@ -262,15 +284,22 @@ namespace TimeSeriesAnalysis.Dynamic
                     valueIdx++;
                     continue;
                 }
-                if (!dataset.ContainsKey(signalName))
+                if (!dataset.ContainsKey(signalName) && !dataset_constants.ContainsKey(signalName))
                 {
                     return null;
                 }
-                else if (timeIdx > dataset[signalName].Count())
+                else if (dataset.ContainsKey(signalName))
                 {
-                    return null;
+                    if (timeIdx > dataset[signalName].Count())
+                    {
+                        return null;
+                    }
+                    retData[valueIdx] = dataset[signalName][timeIdx];
                 }
-                retData[valueIdx] = dataset[signalName][timeIdx];
+                else if (dataset_constants.ContainsKey(signalName))
+                {
+                    retData[valueIdx] = dataset_constants[signalName];
+                }
                 valueIdx++;
             }
             return retData;
@@ -285,12 +314,15 @@ namespace TimeSeriesAnalysis.Dynamic
             return N;
         }
         /// <summary>
-        /// Get the names of all the singals
+        /// Get the names of all the singals, wheter constant or varying
         /// </summary>
         /// <returns></returns>
         public string[] GetSignalNames()
         {
-            return dataset.Keys.ToArray();
+            var ret = dataset.Keys.ToList();
+            ret.AddRange(dataset_constants.Keys.ToList());
+
+            return ret.ToArray();
         }
 
         /// <summary>

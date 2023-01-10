@@ -34,8 +34,9 @@ namespace TimeSeriesAnalysis.Test
             Assert.IsTrue(dataset.GetTimeBase() > 0);
             Assert.Greater(dataset.GetTimeStamps().Length,0);
             Assert.AreEqual(0,nErrors);
-            Assert.Greater(dataset.GetSignalNames().Length,100);
-        }
+            Assert.Greater(dataset.GetSignalNames().Length,120);
+            var csv = dataset.ToCsvText();
 
+        }
     }
 }

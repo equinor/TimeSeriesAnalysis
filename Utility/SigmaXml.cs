@@ -22,6 +22,7 @@ namespace TimeSeriesAnalysis.Utility
         /// </summary>
         /// <param name="xmlFileName"></param>
         public static (TimeSeriesDataSet,int) LoadFromFile(string xmlFileName)
+
         {
             TimeSeriesDataSet dataset = new TimeSeriesDataSet();
             int nErrors = 0;
@@ -59,15 +60,10 @@ namespace TimeSeriesAnalysis.Utility
                 XDocument xConfigOrg = XDocument.Load(xmlConfig.CreateNavigator().ReadSubtree());
 
 
-                double Ts = 1;
-
-
                 foreach (XElement element in xConfigOrg.Root.Elements())
                 {
                     string key = element.Elements().ElementAt(0).Value;
-               //     string value = element.Elements().ElementAt(1).Value;
-
-                    if ((key != "Time") && (key != "Dmmy") && (key != "UnixTime")) 
+                    if ((key != "Time") && (key != "Dmmy") && (key!= "Negative9999") && (key!="UnixTime") && (key != "Ts") && (key != "HistoryDays"))
                     {
                         try
                         {
@@ -85,6 +81,10 @@ namespace TimeSeriesAnalysis.Utility
                                 {
                                     dataset.Add(key, results.ToArray());
                                 }
+                                else// constant values are stores as vectors of length== 1 in sigmas cache
+                                {
+                                    dataset.AddConstant(key, results[0]);
+                                }
                             }
                         }
                         catch (Exception e)
@@ -99,7 +99,7 @@ namespace TimeSeriesAnalysis.Utility
                     }
                 }
             }
-            return (dataset, nErrors);
+            return (dataset,nErrors);
         }
     }
 
