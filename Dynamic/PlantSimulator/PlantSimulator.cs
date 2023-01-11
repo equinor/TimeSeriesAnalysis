@@ -376,6 +376,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 simData = null;
                 return false;
             }
+            if (!modelDict[singleModelName].IsModelSimulatable())
+            {
+                simData = null;
+                return false;
+            }
 
             simData = new TimeSeriesDataSet();
             int? N = inputData.GetLength();
@@ -438,6 +443,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.GetParserObj().AddError("PlantSimulator could not run, no external signal provided.");
                 simData = null;
                 return false;
+            }
+            for (int i = 0; i < modelDict.Count; i++)
+            {
+                if (!modelDict.ElementAt(i).Value.IsModelSimulatable())
+                {
+                    simData = null;
+                    return false;
+                }
             }
 
             var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(modelDict);

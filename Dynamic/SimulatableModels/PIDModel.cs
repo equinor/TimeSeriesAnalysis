@@ -42,6 +42,10 @@ namespace TimeSeriesAnalysis.Dynamic
         private double? WarmStart_u;
 
 
+
+
+
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,6 +57,20 @@ namespace TimeSeriesAnalysis.Dynamic
             processModelType = ModelType.PID;
             this.ID = ID;
             this.pidParameters = pidParameters;
+        }
+
+
+        public bool IsModelSimulatable()
+        {
+            if (pidParameters == null)
+                return false;
+            if (Double.IsNaN(this.pidParameters.Kp) || pidParameters.Kp == pidParameters.NanValue)
+                return false;
+            if (Double.IsNaN(this.pidParameters.Ti_s) || pidParameters.Ti_s == pidParameters.NanValue)
+                return false;
+            if (Double.IsNaN(this.pidParameters.Td_s) || pidParameters.Td_s == pidParameters.NanValue)
+                return false;
+            return true;
         }
 
         /// <summary>

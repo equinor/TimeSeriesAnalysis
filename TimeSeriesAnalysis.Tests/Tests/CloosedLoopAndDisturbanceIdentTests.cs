@@ -120,19 +120,22 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         [TestCase(-5,20),Explicit]// process gains are 4.4,far too big, but disturbance amplitude is +/- 8  
-        public void NOTWORKING_Static_SinusDisturbance_EstimatesDistOk(double sinusAmplitude=5, 
-            double sinusPeriod=20)
-        {
+        public void NOTWORKING_Static_SinusDisturbance_EstimatesDistOk(double sinusAmplitude=5,       double sinusPeriod=20)
+        { 
+            Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Sinus(sinusAmplitude, sinusPeriod, timeBase_s, N);
             GenericDisturbanceTest( new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
+            Shared.DisablePlots();
         }
 
         [Test,Explicit] // disturbance is exactly double the actual value, process gains are 4.67, should be 1!
        // [TestCase(-5, 20)]
         public void NOTWORKING_Dynamic_SinusDisturbance_EstimatesDistOk(double sinusAmplitude=-5, double sinusPeriod=20)
         {
+            Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Sinus(sinusAmplitude, sinusPeriod, timeBase_s, N);
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance);
+            Shared.DisablePlots();
         }
 
         public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance, 
@@ -180,23 +183,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             sb.AppendLine("disturbance min:"+estMin+" max:"+estMax+"(actual min:"+trueMin+"max:"+trueMax+")");
             Console.WriteLine(sb.ToString());
         }
-
-        [Test,Explicit]
-        void TODO_Static_SetpointChange_EstimatesProcessOk()
-        {
-            // TODO:given that the PID-controller is known and the excitation is from setpoint changes
-            // , can the closedloopidentification be used to determine the process-model of the closed-loop
-
-            // the closed-loop identifier should also return a status flag indicating success
-
-            // be aware that ClosedLoopSim in ClosedLoopIdentifier does not use PlantSimulator -thus
-            // this may cause inconsistencies. 
-
-
-
-        }
-
-
 
 
 

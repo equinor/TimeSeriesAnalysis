@@ -334,8 +334,10 @@ namespace TimeSeriesAnalysis.Dynamic
         public string[] GetSignalNames()
         {
             var ret = dataset.Keys.ToList();
-            ret.AddRange(dataset_constants.Keys.ToList());
-
+            if (dataset_constants != null)
+            {
+                ret.AddRange(dataset_constants.Keys.ToList());
+            }
             return ret.ToArray();
         }
 

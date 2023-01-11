@@ -77,6 +77,18 @@ namespace TimeSeriesAnalysis.Dynamic
             InitSim(modelParameters);
         }
 
+        public bool IsModelSimulatable()
+        {
+            if (modelParameters == null)
+                return false;
+            if (modelParameters.LinearGains.Length == 0)
+                return false;
+            if (modelParameters.LinearGains.Length < ModelInputIDs.Length)
+                return false;
+            return true;
+        }
+
+
         /// <summary>
         /// Initalize the process model with a sampling time
         /// </summary>
@@ -668,11 +680,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Warm-starting(not implemented)
+        /// Warm-starting
         /// </summary>
-        /// <param name="inputs"></param>
-        /// <param name="output"></param>
-        public void WarmStart(double[] inputs, double output)
+        /// <param name="inputs">not used, leave as null</param>
+        /// <param name="output">not used, leave as null</param>
+        public void WarmStart(double[] inputs=null, double output=0)
         {
             // re-setting this variable, will cause "iterate" to start in steady-state.
             isFirstIteration = true;

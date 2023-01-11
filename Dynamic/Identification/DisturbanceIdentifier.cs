@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
@@ -25,7 +26,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Internal class to store a single sub-run of the DisturnanceIdentifierInternal
     /// 
     /// </summary>
-    internal class DisturbanceIdResult
+    public class DisturbanceIdResult
     {
 
         public int N = 0;
@@ -95,7 +96,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// An algorithm that attempts to re-create the additive output disturbance acting on 
     /// a signal Y while PID-control attempts to counter-act the disturbance by adjusting its manipulated output u. 
     /// </summary>
-    internal class DisturbanceIdentifier
+    public class DisturbanceIdentifier
     {
         const double numberOfTiConstantsToWaitAfterSetpointChange = 5;
         // TODO: issue
@@ -105,10 +106,6 @@ namespace TimeSeriesAnalysis.Dynamic
         // but unit tests 
         //  AND:
         // unit tests whene there is both a yset step and a disturbance step fail and sinus disturbances also fail. 
-
-
-
-
 
         /// <summary>
         /// Estimates the disturbance time-series over a given unit data set 
@@ -190,7 +187,17 @@ namespace TimeSeriesAnalysis.Dynamic
             bool candidateGainSet = false;
             if (unitModel != null)
             {
-                if (unitModel.modelParameters.Fitting.WasAbleToIdentify == true)
+                bool updateEstGain = false;
+                if (unitModel.modelParameters.Fitting == null)// a priori model
+                {
+                    updateEstGain = true;
+                }
+                else if (unitModel.modelParameters.Fitting.WasAbleToIdentify == true)
+                {
+                    updateEstGain = true;
+                }
+
+                if (updateEstGain == true)
                 {
                     var processGains = unitModel.modelParameters.GetProcessGains();
                     if (!Double.IsNaN(processGains[inputIdx]))
@@ -221,8 +228,14 @@ namespace TimeSeriesAnalysis.Dynamic
             // subtracted.
             double[]  d_HF = e;
 
+            bool isFittedButFittingFailed = false;
+            if (unitModel != null)
+                 if (unitModel.GetModelParameters().Fitting != null)
+                     if (unitModel.GetModelParameters().Fitting.WasAbleToIdentify == false)
+                         isFittedButFittingFailed = true;
+
             double[] d_u;
-            if (unitModel == null|| unitModel.GetModelParameters().Fitting.WasAbleToIdentify == false)
+            if (unitModel == null|| isFittedButFittingFailed)
             {
                 double[] deltaU_lp = lowPass.Filter(deltaU, FilterTc_s, 2);
                 double[] deltaYset = vec.Subtract(unitDataSet.Y_setpoint, yset0);
@@ -233,10 +246,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 d_u = vec.Multiply(d_LF_internal, -estProcessGain);
             }
             else
-            { // new code that uses unit simulator(was not part of original code!)
+            {
+                unitModel.WarmStart();
                 var sim = new UnitSimulator(unitModel);
                 unitDataSet.D = null;
                 double[] y_sim = sim.Simulate(ref unitDataSet);
+
                 d_u = vec.Multiply(vec.Subtract(y_sim,y_sim[0]),-1);
             }
 

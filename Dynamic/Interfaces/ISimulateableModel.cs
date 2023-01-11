@@ -123,6 +123,12 @@ namespace TimeSeriesAnalysis.Dynamic
         SignalType GetOutputSignalType();
 
 
+        /// <summary>
+        /// Returns true if the paramters are specified 
+        /// </summary>
+        /// <returns></returns>
+        bool IsModelSimulatable();
+
 
 
     }

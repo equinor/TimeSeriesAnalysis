@@ -89,14 +89,14 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             // now test that "simulateSingle" produces the same result!
             var isOk2 = processSim.SimulateSingle(inputData, processModel1.ID, out TimeSeriesDataSet simData2);
-
+            /*
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
                 simData2.GetValues(processModel1.GetID(),SignalType.Output_Y),
                 inputData.GetValues(processModel1.GetID(),SignalType.External_U)},
             new List<string> { "y1=y_sim1", "y1=y_sim1(v2)", "y3=u" },
             timeBase_s, "UnitTest_SingleSISO");
-
+            */
             double[] simY2 = simData2.GetValues(processModel1.GetID(), SignalType.Output_Y);
             Assert.IsTrue(isOk2);
             Assert.IsTrue(Math.Abs(simY2[0] - 55) < 0.01);
@@ -292,15 +292,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var isOK = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
 
-            Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
+      //      Shared.EnablePlots();
+          /*  Plot.FromList(new List<double[]> {
                     simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
                     simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
                     simData2.GetValues(pidModel1.GetID(),SignalType.PID_U),
                     inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset)},
                new List<string> { "y1=processOut", "y3=pidOut", "y3=pidOut2","y2=disturbance" },
-               timeBase_s, "UnitTest_SimulateJustPID");
-            Shared.DisablePlots();
+               timeBase_s, "UnitTest_SimulateJustPID");*/
+        //    Shared.DisablePlots();
 
             double firstYsimE = Math.Abs(simData2.GetValues(pidModel1.GetID(), SignalType.PID_U).First() - simData.GetValues(pidModel1.GetID(), SignalType.PID_U).First());
             double lastYsimE = Math.Abs(simData2.GetValues(pidModel1.GetID(), SignalType.PID_U).Last() - simData.GetValues(pidModel1.GetID(), SignalType.PID_U).Last());
