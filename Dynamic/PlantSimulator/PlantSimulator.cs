@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -76,6 +77,25 @@ namespace TimeSeriesAnalysis.Dynamic
         public List<string> externalInputSignalIDs;
 
         public ConnectionParser connections;
+
+        public UnitDataSet GetUnitDataSetForProcess(TimeSeriesDataSet inputData, UnitModel unitModel)
+        {
+            UnitDataSet dataset = new UnitDataSet();
+            dataset.U = new double[inputData.GetLength().Value, 1];
+        
+            dataset.Times = inputData.GetTimeStamps();
+            var inputIDs = unitModel.GetModelInputIDs();
+            var outputID = unitModel.GetOutputID();
+            dataset.Y_meas = inputData.GetValues(outputID);
+            for (int inputIDidx = 0; inputIDidx < inputIDs.Length; inputIDidx++)
+            {
+                var inputID = inputIDs[inputIDidx];
+                var curCol = inputData.GetValues(inputID);
+                dataset.U.WriteColumn(inputIDidx, curCol);
+            }
+            return dataset;
+        }
+
 
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
         {
@@ -399,22 +419,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] outputVals =
                     GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
                 simData.InitNewSignal(model.GetOutputID(), outputVals[0], N.Value);
-
-
-             //   if (outputVals != null)
-              //  {
-              //      if (!Double.IsNaN(outputVals[0]))
-               //     {
-                        model.WarmStart(inputVals, outputVals[0]);
-                //    }
-               // }
+                model.WarmStart(inputVals, outputVals[0]);
             }
             // main loop
             var timeBase_s = inputData.GetTimeBase(); ;
             for (timeIdx = 0; timeIdx < N; timeIdx++)
             {
                 double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
-            //    double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputData);
                 double outputVal = model.Iterate(inputVals, timeBase_s);
                 bool isOk = simData.AddDataPoint(model.GetOutputID(), timeIdx, outputVal);
                 if (!isOk)
@@ -422,6 +433,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
             }
+            {
+                var pidDataSet = GetUnitDataSetForProcess(inputData.Combine(simData), (UnitModel)model);
+                var result = DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel(pidDataSet, (UnitModel)model);
+            }
+
             simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
             return true;
         }

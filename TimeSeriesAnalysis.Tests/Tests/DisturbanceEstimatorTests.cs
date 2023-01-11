@@ -49,11 +49,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Shared.GetParserObj().EnableDebugOutput();
         }
 
-        public void CommonPlotAndAsserts(UnitDataSet pidDataSet, DisturbanceIdResult estDisturbance, double[] trueDisturbance)
+        public void CommonPlotAndAsserts(UnitDataSet pidDataSet, double[] d_est, double[] trueDisturbance)
         {
             Vec vec = new Vec();
             double distTrueAmplitude = vec.Max(vec.Abs(trueDisturbance));
-            var d_est = estDisturbance.d_est;
 
             Assert.IsTrue(d_est != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
@@ -93,8 +92,16 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance);
         }
 
+        [TestCase(5)]
+        public void PlantSimulatorSingle_StepDisturbance_EstimatesOk(double stepAmplitude)
+        {
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            DisturbanceTestUsingPlantSimulateSingle(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance);
+        }
+
+
         public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance, 
-            bool doAssertResult=true, double processGainAllowedOffsetPrc=10)
+            bool doAssertResult=true)
         {
             // create synthetic dataset
             var pidModel1 = new PidModel(pidParameters1, "PID1");
@@ -110,12 +117,44 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
-            var result = DisturbanceIdentifier.EstimateDisturbance(pidDataSet, processModel);
+            //var result = DisturbanceIdentifier.EstimateDisturbance(pidDataSet, processModel);
+             var result = DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel(pidDataSet, processModel);
             if (doAssertResult)
             {
-                CommonPlotAndAsserts(pidDataSet, result,trueDisturbance);
+                CommonPlotAndAsserts(pidDataSet, result.d_est, trueDisturbance);
             }
         }
+
+        public void DisturbanceTestUsingPlantSimulateSingle(UnitModel processModel, double[] trueDisturbance,
+            bool doAssertResult = true)
+        {
+            // create synthetic dataset
+            var pidModel1 = new PidModel(pidParameters1, "PID1");
+            var plantSim = new PlantSimulator(
+             new List<ISimulatableModel> { pidModel1, processModel });
+            plantSim.ConnectModels(processModel, pidModel1);
+            plantSim.ConnectModels(pidModel1, processModel);
+            //this is how the plant simulator knows about the disturbancesimualtor
+            var disturbanceSignalName = "_D_" + processModel.ID;
+            plantSim.AddAndConnectExternalSignal(processModel,disturbanceSignalName, SignalType.Unset);
+            // 
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.Add(plantSim.AddExternalSignal(processModel, SignalType.Disturbance_D), trueDisturbance);
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = plantSim.SimulateSingle(inputData,processModel.ID, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            //TODO:this is a work in progress to get working
+            Assert.IsTrue(simData.ContainsSignal(disturbanceSignalName)); 
+             var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+           // var result = DisturbanceIdentifier.EstimateDisturbance(pidDataSet, processModel);
+            if (doAssertResult)
+            {
+                CommonPlotAndAsserts(pidDataSet, simData.GetValues(disturbanceSignalName), trueDisturbance);
+            }
+        }
+
+
 
     }
 }

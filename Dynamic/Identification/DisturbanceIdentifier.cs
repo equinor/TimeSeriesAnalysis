@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TimeSeriesAnalysis;
+using TimeSeriesAnalysis.Utility;
+
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -106,6 +108,28 @@ namespace TimeSeriesAnalysis.Dynamic
         // but unit tests 
         //  AND:
         // unit tests whene there is both a yset step and a disturbance step fail and sinus disturbances also fail. 
+
+
+        /// <summary>
+        /// Only uses Y_meas and U in unitDataSet, i.e. does not consider feedback 
+        /// </summary>
+        /// <param name="unitDataSet"></param>
+        /// <param name="unitModel"></param>
+        /// <param name="inputIdx"></param>
+        /// <returns></returns>
+        public static DisturbanceIdResult EstDisturbanceBasedOnProcessModel(UnitDataSet unitDataSet,
+            UnitModel unitModel, int inputIdx = 0)
+        {
+            unitModel.WarmStart();
+            var sim = new UnitSimulator(unitModel);
+            unitDataSet.D = null;
+            double[] y_sim = sim.Simulate(ref unitDataSet);
+
+            DisturbanceIdResult result = new DisturbanceIdResult(unitDataSet);
+            result.d_est = (new Vec()).Subtract(unitDataSet.Y_meas, y_sim);
+
+            return result;
+        }
 
         /// <summary>
         /// Estimates the disturbance time-series over a given unit data set 
