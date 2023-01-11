@@ -131,6 +131,20 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Define a new signal, specifying only its inital value
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="initalValue">the value of time zero</param>
+        /// <param name="N">number of time stamps</param>
+        /// <param name="nonYetSimulatedValue">what value to fill in for future undefined times, default:nan</param>
+        public void InitNewSignal(string signalName, double initalValue, int N, double nonYetSimulatedValue = Double.NaN)
+        {
+            Add(signalName, Vec<double>.Concat(new double[] { initalValue },
+                Vec<double>.Fill(nonYetSimulatedValue, N - 1)));
+        }
+
+
+        /// <summary>
         /// Add an entire time-series to the dataset
         /// </summary>
         /// <param name="signalName"></param>
@@ -354,6 +368,39 @@ namespace TimeSeriesAnalysis.Dynamic
             string signalName = SignalNamer.GetSignalName(processID, signalType, index);
             return GetValues(signalName);
         }
+
+
+        /// <summary>
+        /// Get one or more signals from the dataset at a given time
+        /// </summary>
+        /// <param name="signalIds"></param>
+        /// <param name="timeIndex"></param>
+        /// <returns></returns>
+        public double[] GetValuesAtTime(string[] signalIds, int timeIndex)
+        {
+            double[] retVals = new double[signalIds.Length];
+
+            int index = 0;
+            foreach (var inputId in signalIds)
+            {
+                double? retVal = null;
+                retVal = GetValue(inputId, timeIndex);
+                if (!retVal.HasValue)
+                {
+                    retVals[index] = Double.NaN;
+                }
+                else
+                {
+                    retVals[index] = retVal.Value;
+                }
+                index++;
+            }
+            return retVals;
+        }
+
+
+
+
 
         /// <summary>
         /// Get the values of a specific signal

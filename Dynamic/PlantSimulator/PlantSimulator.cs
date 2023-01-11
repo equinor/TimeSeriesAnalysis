@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -108,8 +109,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return dataset;
         }
-
-
 
         /// <summary>
         /// Constructor
@@ -363,6 +362,64 @@ namespace TimeSeriesAnalysis.Dynamic
             return modelDict;
         }
 
+        /// <summary>
+        /// Simulate a single unit model, using inputData as inputs
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="singleModelName"></param>
+        /// <param name="simData"></param>
+        /// <returns></returns>
+        public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
+        {
+            if (!modelDict.ContainsKey(singleModelName))
+            {
+                simData = null;
+                return false;
+            }
+
+            simData = new TimeSeriesDataSet();
+            int? N = inputData.GetLength();
+            int timeIdx = 0;
+            var model = modelDict[singleModelName];
+            string[] inputIDs = model.GetBothKindsOfInputIDs();
+            string outputID = model.GetOutputID();
+
+            // initalize
+            {
+                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputData);
+                for (var curInput = 0; curInput < inputVals.Count(); curInput++)
+                {
+                    simData.InitNewSignal(inputIDs[curInput], inputVals[curInput],N.Value);
+                }
+                double[] outputVals =
+                    GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
+                simData.InitNewSignal(model.GetOutputID(), outputVals[0], N.Value);
+
+
+             //   if (outputVals != null)
+              //  {
+              //      if (!Double.IsNaN(outputVals[0]))
+               //     {
+                        model.WarmStart(inputVals, outputVals[0]);
+                //    }
+               // }
+            }
+            // main loop
+            var timeBase_s = inputData.GetTimeBase(); ;
+            for (timeIdx = 0; timeIdx < N; timeIdx++)
+            {
+                double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
+            //    double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputData);
+                double outputVal = model.Iterate(inputVals, timeBase_s);
+                bool isOk = simData.AddDataPoint(model.GetOutputID(), timeIdx, outputVal);
+                if (!isOk)
+                {
+                    return false;
+                }
+            }
+            simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
+            return true;
+        }
 
 
         /// <summary>
@@ -400,7 +457,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     ". Expected "+ orderedSimulatorIDs.Count());
                 return false;
             }
-
 
             int timeIdx = 0;
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)

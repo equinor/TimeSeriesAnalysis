@@ -103,8 +103,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     // external signals are already present in simData, do not add twice
                    // if (!simData.ContainsSignal(signalID) && !inputData.ContainsSignal(signalID))
                     {
-                        simData.Add(signalID, Vec<double>.Concat(new double[] { signalValuesAtT0[signalID] },
-                        Vec<double>.Fill(nonYetSimulatedValue, N.Value - 1)));
+                        simData.InitNewSignal(signalID, signalValuesAtT0[signalID], N.Value);
+                        //simData.Add(signalID, Vec<double>.Concat(new double[] { signalValuesAtT0[signalID] },
+                        //Vec<double>.Fill(nonYetSimulatedValue, N.Value - 1)));
                     }
                 }
             }

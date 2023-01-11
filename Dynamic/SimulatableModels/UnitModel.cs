@@ -674,12 +674,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="output"></param>
         public void WarmStart(double[] inputs, double output)
         {
-
+            // re-setting this variable, will cause "iterate" to start in steady-state.
+            isFirstIteration = true;
+            this.lowPass = null;
+            this.delayObj = null;
         }
-
-
-
-
 
     }
 }

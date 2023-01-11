@@ -77,7 +77,8 @@ namespace TimeSeriesAnalysis.Dynamic
             WarmStart_y_set = y_set;
             WarmStart_u = u;
 
-//            pid.WarmStart(y_process_abs, y_set, u);
+            pid = null;// create new object in next run of iterate
+         //    pid.WarmStart(y_process_abs, y_set, u);
         }
 
         /// <summary>

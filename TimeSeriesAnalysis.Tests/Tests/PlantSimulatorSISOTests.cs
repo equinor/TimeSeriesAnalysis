@@ -70,8 +70,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         // MISO= multiple-input/single-output
         // SISO= single-input/single-output
 
+        // this test also tests that the model is re-set properly for a second run
         [TestCase]
-        public void Single_RunsAndConverges()
+        public void SimulateSingle_InitsRunsAndConverges()
         {
             var processSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1 });
@@ -85,12 +86,22 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
             Assert.IsTrue(Math.Abs(simY[0]- 55)<0.01);
             Assert.IsTrue(Math.Abs(simY.Last()- 60)<0.01);
-            /*
+
+            // now test that "simulateSingle" produces the same result!
+            var isOk2 = processSim.SimulateSingle(inputData, processModel1.ID, out TimeSeriesDataSet simData2);
+
             Plot.FromList(new List<double[]> {
-                simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
-                simData.GetValues(processModel1.GetID(),SignalType.External_U)},
-            new List<string> { "y1=y_sim1", "y3=u" },
-            timeBase_s, "UnitTest_SingleSISO");*/
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                simData2.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                inputData.GetValues(processModel1.GetID(),SignalType.External_U)},
+            new List<string> { "y1=y_sim1", "y1=y_sim1(v2)", "y3=u" },
+            timeBase_s, "UnitTest_SingleSISO");
+
+            double[] simY2 = simData2.GetValues(processModel1.GetID(), SignalType.Output_Y);
+            Assert.IsTrue(isOk2);
+            Assert.IsTrue(Math.Abs(simY2[0] - 55) < 0.01);
+            Assert.IsTrue(Math.Abs(simY2.Last() - 60) < 0.01);
+
         }
 
         [TestCase]
@@ -260,6 +271,44 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after disturbance");
             BasicPIDCommonTests(simData);
         }
+        [TestCase]
+        public void BasicPID_SimulateJustPID_sameresult()
+        {
+            double newSetpoint = 51;
+            var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1 });
+            plantSim.ConnectModels(processModel1, pidModel1);
+            plantSim.ConnectModels(pidModel1, processModel1);
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
+                TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
+            inputData.CreateTimestamps(timeBase_s);
+            bool isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            var newSet = new TimeSeriesDataSet();
+            newSet.AddSet(inputData);
+            newSet.AddSet(simData);
+            newSet.SetTimeStamps(inputData.GetTimeStamps().ToList());
+
+            var isOK = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
+
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                    simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                    simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                    simData2.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                    inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset)},
+               new List<string> { "y1=processOut", "y3=pidOut", "y3=pidOut2","y2=disturbance" },
+               timeBase_s, "UnitTest_SimulateJustPID");
+            Shared.DisablePlots();
+
+            double firstYsimE = Math.Abs(simData2.GetValues(pidModel1.GetID(), SignalType.PID_U).First() - simData.GetValues(pidModel1.GetID(), SignalType.PID_U).First());
+            double lastYsimE = Math.Abs(simData2.GetValues(pidModel1.GetID(), SignalType.PID_U).Last() - simData.GetValues(pidModel1.GetID(), SignalType.PID_U).Last());
+            Assert.IsTrue(isOk);
+            Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");
+            Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after disturbance");
+            BasicPIDCommonTests(simData);
+        }
 
         [TestCase]
         public void BasicPID_SetpointStep_WithNoiseAndFiltering_FilteringWorks()
@@ -294,19 +343,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                  inputData.GetValues(processModel1.GetID(),SignalType.Disturbance_D)},
             new List<string> { "y1=processOut", "y3=pidOut", "y2=disturbance" },
             timeBase_s, "UnitTest_PidWithNoise");*/
-
-
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 }
