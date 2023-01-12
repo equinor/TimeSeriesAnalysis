@@ -77,8 +77,9 @@ namespace TimeSeriesAnalysis.Dynamic
             InitSim(modelParameters);
         }
 
-        public bool IsModelSimulatable()
+        public bool IsModelSimulatable(out string explainStr)
         {
+            explainStr = "";
             if (modelParameters == null)
                 return false;
             if (modelParameters.LinearGains.Length == 0)

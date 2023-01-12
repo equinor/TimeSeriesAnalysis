@@ -126,8 +126,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Returns true if the paramters are specified 
         /// </summary>
-        /// <returns></returns>
-        bool IsModelSimulatable();
+        /// <returns> string explaining why return is false, if applicable </returns>
+        bool IsModelSimulatable(out string explanationStr);
 
 
 

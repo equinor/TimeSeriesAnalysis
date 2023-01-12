@@ -60,16 +60,49 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        public bool IsModelSimulatable()
+        public bool IsModelSimulatable(out string explainStr)
         {
+            explainStr = "";
             if (pidParameters == null)
+            {
+                explainStr = "pidParameters is null";
                 return false;
+            }
             if (Double.IsNaN(this.pidParameters.Kp) || pidParameters.Kp == pidParameters.NanValue)
+            {
+                explainStr = "illegal or missing Kp";
                 return false;
+            }
             if (Double.IsNaN(this.pidParameters.Ti_s) || pidParameters.Ti_s == pidParameters.NanValue)
+            {
+                explainStr = "illegal or missing Ti_s";
                 return false;
+            }
             if (Double.IsNaN(this.pidParameters.Td_s) || pidParameters.Td_s == pidParameters.NanValue)
+            {
+                explainStr = "illegal or missing Td_s";
                 return false;
+            }
+            if (this.ModelInputIDs == null)
+            {
+                explainStr = "modelinputs is null";
+                return false;
+            }
+            if (this.ModelInputIDs.Length < 2)
+            {
+                explainStr = "less than two modelinputs";
+                return false;
+            }
+            if (this.ModelInputIDs[(int)PidModelInputsIdx.Y_meas] == null)
+            {
+                explainStr = "modelinputs signal name for Ymeas is null";
+                return false;
+            }
+            if (this.ModelInputIDs[(int)PidModelInputsIdx.Y_setpoint] == null)
+            {
+                explainStr = "modelinputs signal name for Ymeas is null";
+                return false;
+            }
             return true;
         }
 

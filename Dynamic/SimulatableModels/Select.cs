@@ -53,8 +53,9 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
         }
 
-        public bool IsModelSimulatable()
+        public bool IsModelSimulatable(out string explain)
         {
+            explain= "";
             return true;
         }
 

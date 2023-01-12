@@ -118,7 +118,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance,true, 
                 processGainAllowedOffsetPrc);
         }
-
+        /*
         [TestCase(-5,20),Explicit]// process gains are 4.4,far too big, but disturbance amplitude is +/- 8  
         public void NOTWORKING_Static_SinusDisturbance_EstimatesDistOk(double sinusAmplitude=5,       double sinusPeriod=20)
         { 
@@ -137,7 +137,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance);
             Shared.DisablePlots();
         }
-
+        */
         public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance, 
             bool doAssertResult=true, double processGainAllowedOffsetPrc=10)
         {

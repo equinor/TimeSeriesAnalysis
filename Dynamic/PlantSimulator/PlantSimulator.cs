@@ -177,7 +177,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="signalID"></param>
         /// <param name="type"></param>
         /// <param name="index"></param>
-        /// <returns></returns>
+        /// <returns>returns signalID or null if something went wrong</returns>
         public string AddAndConnectExternalSignal(ISimulatableModel model,string signalID, SignalType type, int index = 0)
         {
             ModelType modelType = model.GetProcessModelType();
@@ -399,8 +399,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 simData = null;
                 return false;
             }
-            if (!modelDict[singleModelName].IsModelSimulatable())
+            if (!modelDict[singleModelName].IsModelSimulatable(out string explStr))
             {
+                Shared.GetParserObj().AddError(explStr);
                 simData = null;
                 return false;
             }
@@ -440,14 +441,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // disturbance estimation
             {
                 // y_meas = y_internal+d as defined here
-                //var y_meas = inputData.GetValues(model.GetID(), SignalType.Output_Y);
                 var y_meas = inputData.GetValues(outputID);
                 
                 if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
                 {
-                    //var y_sim = simData.GetValues(model.GetID(), SignalType.Output_Y);
                     var y_sim = simData.GetValues(outputID); 
-
                     if ((new Vec()).IsAllNaN(y_sim))
                         return false;
 
@@ -457,41 +455,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return true;
         }
-
-        /// <summary>
-        /// Simulates a single unit model, 
-        /// The the measured output of the process model is also specified, and thus the additive distubance is also returned.
-        /// This model inverts the equation y_meas = y(u)+d, to find d = y_meas-y(u) 
-        /// </summary>
-        /// <param name="inputData">input to model, usually logged data from plant</param>
-        /// <param name="model"> unit model that is to be simulated and for which the disturbance is to be found</param>
-        /// <param name="measuredY">the measured output of the process(y_meas = y + d)</param>
-        /// <param name="simData">simulated data, including the disturbance</param>
-        /// <returns></returns>
-    /*    public bool SimulateUnitAndFindDisturbance(TimeSeriesDataSet inputData, UnitModel model, 
-            double[] measuredY, out TimeSeriesDataSet simData)
-        {
-            simData = new TimeSeriesDataSet();
-            if (measuredY == null)
-            {
-               return false;
-            }
-            else if ((new Vec()).IsAllNaN(measuredY))
-            {
-                return false;
-            }
-            var isOk = SimulateSingle(inputData, model.GetID(), out simData);
-            if (!isOk)
-                return false;
-            var y_sim = simData.GetValues(model.GetID(), SignalType.Output_Y);
-            if ( (new Vec()).IsAllNaN(y_sim)) 
-                return false;
-
-            var est_disturbance = (new Vec()).Subtract(measuredY, y_sim);
-            simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
-            return isOk;
-        }*/
-
         /// <summary>
         /// Perform a dynamic simulation of the model provided, given the specified connections and external signals 
         /// </summary>
@@ -511,8 +474,11 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             for (int i = 0; i < modelDict.Count; i++)
             {
-                if (!modelDict.ElementAt(i).Value.IsModelSimulatable())
+                if (!modelDict.ElementAt(i).Value.IsModelSimulatable(out string explStr))
                 {
+                    Shared.GetParserObj().AddError("PlantSimulator could not run, model "+
+                        modelDict.ElementAt(i).Key + " lacks all required inputs to be simulatable:"+ 
+                        explStr);
                     simData = null;
                     return false;
                 }
@@ -558,7 +524,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 double[] outputVals =
                     GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
-                // simData.GetData(new string[]{outputID}, timeIdx);
                 if (outputVals != null)
                 {
                     model.WarmStart(inputVals, outputVals[0]);
