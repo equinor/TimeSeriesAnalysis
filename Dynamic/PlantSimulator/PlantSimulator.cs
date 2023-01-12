@@ -440,10 +440,14 @@ namespace TimeSeriesAnalysis.Dynamic
             // disturbance estimation
             {
                 // y_meas = y_internal+d as defined here
-                var y_meas = inputData.GetValues(model.GetID(), SignalType.Output_Y);
+                //var y_meas = inputData.GetValues(model.GetID(), SignalType.Output_Y);
+                var y_meas = inputData.GetValues(outputID);
+                
                 if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
                 {
-                    var y_sim = simData.GetValues(model.GetID(), SignalType.Output_Y);
+                    //var y_sim = simData.GetValues(model.GetID(), SignalType.Output_Y);
+                    var y_sim = simData.GetValues(outputID); 
+
                     if ((new Vec()).IsAllNaN(y_sim))
                         return false;
 
