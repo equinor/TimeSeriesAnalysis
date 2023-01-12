@@ -152,6 +152,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool Add(string signalName, double[] values)
         {
+            if (values == null)
+            {
+                return false;
+            }
             if (signalName == null)
             {
                 return false;
@@ -213,8 +217,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 bool isOk = dataSet.Add(signalName, values);
             }
-            dataSet.SetTimeStamps(inputDataSet.GetTimeStamps().ToList());
-
+            if (inputDataSet.GetTimeStamps() != null)
+            {
+                dataSet.SetTimeStamps(inputDataSet.GetTimeStamps().ToList());
+            }
             return dataSet;
         }
 
@@ -401,9 +407,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-
-
-
         /// <summary>
         /// Get the values of a specific signal
         /// </summary>
@@ -411,6 +414,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double[] GetValues(string signalName)
         {
+            if (signalName == null)
+                return null;
             if (dataset.ContainsKey(signalName))
                 return dataset[signalName];
             else

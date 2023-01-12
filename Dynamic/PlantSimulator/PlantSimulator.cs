@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Statistics;
 
 //using System.Text.Json;
 //using System.Text.Json.Serialization;
@@ -136,8 +137,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
         /// <param name="plantName">optional name of plant, used when serializing</param>
         /// <param name="plantDescription">optional description of plant</param>
-        public PlantSimulator(List<ISimulatableModel>
-            processModelList, string plantName="", string plantDescription="")
+        public PlantSimulator(List<ISimulatableModel> processModelList, string plantName="", string plantDescription="")
         {
             externalInputSignalIDs = new List<string>();
 
@@ -228,7 +228,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Informs the PlantSimulator that a specific sub-model has a specifc signal at its input, 
-        /// (use for unit testing only, using a naming conventino to name signal)
+        /// (use for unit testing only, using a naming convention to name signal)
         /// </summary>
         /// <param name="model"></param>
         /// <param name="type"></param>
@@ -383,7 +383,10 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Simulate a single unit model, using inputData as inputs
+        /// Simulate a single model(any ISimulatable model), using inputData as inputs, 
+        ///
+        ///  If the model is a unitModel and the inputData inludes both the measured y and measured u, the
+        ///  simData will include an estimate of the additive disturbance.
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="singleModelName"></param>
@@ -406,7 +409,7 @@ namespace TimeSeriesAnalysis.Dynamic
             int? N = inputData.GetLength();
             int timeIdx = 0;
             var model = modelDict[singleModelName];
-            string[] inputIDs = model.GetBothKindsOfInputIDs();
+            string[] inputIDs = model.GetModelInputIDs();//model.GetBothKindsOfInput();
             string outputID = model.GetOutputID();
 
             // initalize
@@ -433,15 +436,57 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
             }
-            {
-                var pidDataSet = GetUnitDataSetForProcess(inputData.Combine(simData), (UnitModel)model);
-                var result = DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel(pidDataSet, (UnitModel)model);
-            }
-
             simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
+            // disturbance estimation
+            {
+                // y_meas = y_internal+d as defined here
+                var y_meas = inputData.GetValues(model.GetID(), SignalType.Output_Y);
+                if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
+                {
+                    var y_sim = simData.GetValues(model.GetID(), SignalType.Output_Y);
+                    if ((new Vec()).IsAllNaN(y_sim))
+                        return false;
+
+                    var est_disturbance = (new Vec()).Subtract(y_meas, y_sim);
+                    simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
+                }
+            }
             return true;
         }
 
+        /// <summary>
+        /// Simulates a single unit model, 
+        /// The the measured output of the process model is also specified, and thus the additive distubance is also returned.
+        /// This model inverts the equation y_meas = y(u)+d, to find d = y_meas-y(u) 
+        /// </summary>
+        /// <param name="inputData">input to model, usually logged data from plant</param>
+        /// <param name="model"> unit model that is to be simulated and for which the disturbance is to be found</param>
+        /// <param name="measuredY">the measured output of the process(y_meas = y + d)</param>
+        /// <param name="simData">simulated data, including the disturbance</param>
+        /// <returns></returns>
+    /*    public bool SimulateUnitAndFindDisturbance(TimeSeriesDataSet inputData, UnitModel model, 
+            double[] measuredY, out TimeSeriesDataSet simData)
+        {
+            simData = new TimeSeriesDataSet();
+            if (measuredY == null)
+            {
+               return false;
+            }
+            else if ((new Vec()).IsAllNaN(measuredY))
+            {
+                return false;
+            }
+            var isOk = SimulateSingle(inputData, model.GetID(), out simData);
+            if (!isOk)
+                return false;
+            var y_sim = simData.GetValues(model.GetID(), SignalType.Output_Y);
+            if ( (new Vec()).IsAllNaN(y_sim)) 
+                return false;
+
+            var est_disturbance = (new Vec()).Subtract(measuredY, y_sim);
+            simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
+            return isOk;
+        }*/
 
         /// <summary>
         /// Perform a dynamic simulation of the model provided, given the specified connections and external signals 

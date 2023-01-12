@@ -9,7 +9,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Handles naming of individual signals in a process simulation
     /// </summary>
-    class SignalNamer
+    public class SignalNamer
     {
         private const char separator = '-';// should not be "_"
 
@@ -27,6 +27,18 @@ namespace TimeSeriesAnalysis.Dynamic
             else
                 return modelID + separator + signalType.ToString() + separator + idx.ToString();
         }
+
+
+        /// <summary>
+        /// Returns the standardized naming of how to denote the estimated disturbance signal of a pid-loop
+        /// </summary>
+        /// <param name="unitModel"></param>
+        /// <returns></returns>
+        public static string EstDisturbance(ISimulatableModel unitModel)
+        {
+            return "_D_" + unitModel.GetID();
+        }
+
 
 
     }
