@@ -245,7 +245,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                     referenceInputDataSet.GetValues(pidModel1.ID, SignalType.Setpoint_Yset));
                 /////////////////
                 ///
-                ///adding u and y to inputdata, should enable the plant simualtor to back-calculate the disturbance.
+                ///adding u and y to inputdata, should enable the plant simulator to back-calculate the disturbance.
                 /// 
                 // u 
                 inputData.Add(SignalNamer.GetSignalName(pidModel1.GetID(), SignalType.PID_U),

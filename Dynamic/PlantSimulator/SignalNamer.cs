@@ -36,9 +36,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public static string EstDisturbance(ISimulatableModel unitModel)
         {
-            return "_D_" + unitModel.GetID();
+            return EstDisturbance(unitModel.GetID());
         }
-
+        /// <summary>
+        /// Returns the standardized naming of how to denote the estimated disturbance signal of a pid-loop
+        /// </summary>
+        /// <param name="unitModelId"></param>
+        /// <returns></returns>
+        public static string EstDisturbance(string unitModelId)
+        {
+            return "_D_" + unitModelId;
+        }
 
 
     }
