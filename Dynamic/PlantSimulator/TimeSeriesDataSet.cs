@@ -143,6 +143,25 @@ namespace TimeSeriesAnalysis.Dynamic
                 Vec<double>.Fill(nonYetSimulatedValue, N - 1)));
         }
 
+        /// <summary>
+        /// Removes a signal from the dataset
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <returns></returns>
+        public bool Remove(string signalName)
+        {
+            if (dataset.ContainsKey(signalName))
+            {
+                dataset.Remove(signalName);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
         /// <summary>
         /// Add an entire time-series to the dataset
