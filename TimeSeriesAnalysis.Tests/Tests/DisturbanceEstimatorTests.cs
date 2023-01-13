@@ -96,20 +96,18 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(4)]
         public void PlantSimulatorSingle_StepDisturbance_EstimatesOk(double stepAmplitude)
         {
-           // Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             DisturbanceTestUsingPlantSimulateSingle(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance);
-           // Shared.DisablePlots();
         }
 
         // an extension of the above test to use the more general PlantSimulator.Simulate, rather than the PlantSimulator.SimulateSingle
         [TestCase(4)]
         public void PlantSimulator_StepDisturbance_EstimatesOk(double stepAmplitude)
         {
-            // Shared.EnablePlots();
+            Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             DisturbanceTestUsingPlantSimulator(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance);
-            // Shared.DisablePlots();
+            Shared.DisablePlots();
         }
 
 
@@ -146,21 +144,21 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             // 1 .create synthetic dataset - where a "true" known disturbance is specified
             {
                 var pidModel1 = new PidModel(pidParameters1, "PID1");
+                var processModel2 = new UnitModel(dynamicModelParameters, "Proc1");
                 var plantSim = new PlantSimulator(
-                    new List<ISimulatableModel> { pidModel1, processModel });
-                plantSim.ConnectModels(processModel, pidModel1);
-                plantSim.ConnectModels(pidModel1, processModel);
-
-                var ysetSignal = "yset";
-                plantSim.AddAndConnectExternalSignal(pidModel1, ysetSignal, SignalType.Setpoint_Yset);
-                var ymeasSignal = "ymeas";
-                plantSim.AddAndConnectExternalSignal(pidModel1, ymeasSignal, SignalType.Output_Y);
-                var distSignal = "dist";
-                plantSim.AddAndConnectExternalSignal(processModel, distSignal, SignalType.Disturbance_D);
+                    new List<ISimulatableModel> { pidModel1, processModel2 });
+                plantSim.ConnectModels(processModel2, pidModel1);
+                plantSim.ConnectModels(pidModel1, processModel2);
+                var refYsetSignal = "yset";
+                plantSim.AddAndConnectExternalSignal(pidModel1, refYsetSignal, SignalType.Setpoint_Yset);
+                var refYmeasSignal = "ymeas";
+                plantSim.AddAndConnectExternalSignal(pidModel1, refYmeasSignal, SignalType.Output_Y);
+                var refDistSignal = "dist";
+                plantSim.AddAndConnectExternalSignal(processModel2, refDistSignal, SignalType.Disturbance_D);
 
                 referenceInputDataSet = new TimeSeriesDataSet();
-                referenceInputDataSet.Add(ysetSignal, TimeSeriesCreator.Constant(50, N));
-                referenceInputDataSet.Add(distSignal, trueDisturbance);
+                referenceInputDataSet.Add(refYsetSignal, TimeSeriesCreator.Constant(50, N));
+                referenceInputDataSet.Add(refDistSignal, trueDisturbance);
                 referenceInputDataSet.CreateTimestamps(timeBase_s);
   
                 var simOk = plantSim.Simulate(referenceInputDataSet, out referenceSimDataSet);
@@ -169,30 +167,36 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             // 2.create plant model without disturbance, and try to to find the disturbance signal
             {
                 var pidModel1 = new PidModel(pidParameters1, "PID1");
+              
+                // important to add a disturbance signal with naming convention to the output of the process, to signal that the disturbance is to be estimated!
+                   var processModel3 = new UnitModel(dynamicModelParameters, "Proc1");
+                var distSignal = SignalNamer.EstDisturbance(processModel3);
+                processModel3.AddSignalToOutput(distSignal);
                 var plantSim = new PlantSimulator(
-                    new List<ISimulatableModel> { pidModel1, processModel });
-                plantSim.ConnectModels(processModel, pidModel1);
-                plantSim.ConnectModels(pidModel1, processModel);
+                    new List<ISimulatableModel> { pidModel1, processModel3 });
+                plantSim.ConnectModels(processModel3, pidModel1);
+                plantSim.ConnectModels(pidModel1, processModel3);
 
-                var ysetSignal = "yset";
+                // signals can really be named anything, but important for this to work that the names are the same
+                // in the model objects and in the inputData object
+                var ysetSignal = SignalNamer.GetSignalName(pidModel1.GetID(), SignalType.Setpoint_Yset); 
                 plantSim.AddAndConnectExternalSignal(pidModel1, ysetSignal, SignalType.Setpoint_Yset);
-                var ymeasSignal = "ymeas";
-                plantSim.AddAndConnectExternalSignal(processModel, ymeasSignal, SignalType.Output_Y);
-                var uMeasSignal = "umeas";
+                var ymeasSignal = processModel3.GetOutputID() ;
+                plantSim.AddAndConnectExternalSignal(processModel3, ymeasSignal, SignalType.Output_Y);
+                var uMeasSignal = SignalNamer.GetSignalName(pidModel1.GetID(), SignalType.PID_U); ;
                 plantSim.AddAndConnectExternalSignal(pidModel1, uMeasSignal, SignalType.PID_U);
                 // nb! do not specify the disturbance in this case, instead add the "output_Y" from the abo
-                var inputData = new TimeSeriesDataSet();
-                inputData.Add(SignalNamer.GetSignalName(pidModel1.GetID(), SignalType.Setpoint_Yset),
-                    referenceInputDataSet.GetValues(ysetSignal));
+
                 /////////////////
                 ///
                 ///adding u and y to inputdata, should enable the plant simualtor to back-calculate the disturbance.
                 /// 
-                // u_meas
-                inputData.Add(uMeasSignal, referenceSimDataSet.GetValues(pidModel1.ID, SignalType.PID_U));// use the input u from the other dataset, simulating a "field data" set
-                //y_meas - should trigger determining the disturbance
-                inputData.Add(ymeasSignal, referenceSimDataSet.GetValues(processModel.ID, SignalType.Output_Y));
+                var inputData = new TimeSeriesDataSet();
+                inputData.Add(ysetSignal, referenceInputDataSet.GetValues("yset"));
+                inputData.Add(uMeasSignal, referenceSimDataSet.GetValues("PID1", SignalType.PID_U));
+                inputData.Add(ymeasSignal, referenceSimDataSet.GetValues("Proc1", SignalType.Output_Y));
                 /////////////////
+                Assert.IsTrue(inputData.GetSignalNames().Count() == 3 );//sanity check for configuration errors 
                 inputData.CreateTimestamps(timeBase_s);
 
                 //////////////////////////////////
@@ -205,11 +209,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
 
                 Assert.IsTrue(isOK);
-                Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(SignalNamer.EstDisturbance(processModel)));
+                Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(distSignal));
                 if (doAssertResult)
                 {
                     var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simDataSetWithDisturbance), pidModel1);
-                    CommonPlotAndAsserts(pidDataSet, simDataSetWithDisturbance.GetValues(SignalNamer.EstDisturbance(processModel)),
+                    CommonPlotAndAsserts(pidDataSet, simDataSetWithDisturbance.GetValues(distSignal),
                         trueDisturbance);
                 }
             }

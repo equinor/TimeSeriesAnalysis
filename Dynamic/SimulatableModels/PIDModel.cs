@@ -41,11 +41,6 @@ namespace TimeSeriesAnalysis.Dynamic
         private double? WarmStart_y_set;
         private double? WarmStart_u;
 
-
-
-
-
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -100,7 +95,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (this.ModelInputIDs[(int)PidModelInputsIdx.Y_setpoint] == null)
             {
-                explainStr = "modelinputs signal name for Ymeas is null";
+                explainStr = "modelinputs signal name for Y_setpoint is null";
                 return false;
             }
             return true;

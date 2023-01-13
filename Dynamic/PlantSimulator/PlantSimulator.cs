@@ -490,16 +490,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
-            // estimate disturbances
-            {
-                var isOk = EstimateDisturbances(inputData, ref simData);
-                if (!isOk)
-                {
-                    Shared.GetParserObj().AddError("PlantSimulator failed to estimate disturbances");
-                    return false;
-                }
-            }
-            var didInit = init.ToSteadyState(inputData, ref simData) ;
+
+            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputData, ref simData) ;
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
@@ -512,6 +504,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
             }
 
+            // warm start every model
             int timeIdx = 0;
             for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
             {
@@ -574,53 +567,15 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        /// <summary>
-        /// For a plant, go through and find each plant/pid-controller and attempt to estimate the disturbance.
-        /// For the disturbance to be estimateable,the inputs "u_meas" and the outputs "y_meas" for each "process" in
-        /// each pid-process loop needs to be given in inputData.
-        /// The estimated disturbance signal is addes to simData
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="simData"></param>
-        /// <returns>true if everything went ok, otherwise false</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private bool EstimateDisturbances(TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
-        {
-            // find all PID-controllers
-            List<string> pidIDs = new List<string>();
-            foreach(var model in modelDict)
-            {
-                if (model.Value.GetProcessModelType() == ModelType.PID)
-                {
-                    pidIDs.Add(model.Key);
-                }
-            }
-            //List<string> processIDs = new List<string>();
-            foreach (var pidID in pidIDs)
-            {
-                var upstreamModels = connections.GetUpstreamModels(pidID);
-                var processId = upstreamModels.First();
-                var isOK = SimulateSingle(inputData, processId,
-                    out TimeSeriesDataSet singleSimDataSetWithDisturbance);
-                // TODO: does not appar to determine the disturbance signal for some reason
-                if (isOK)
-                {
-                    var estDisturbanceId = SignalNamer.EstDisturbance(processId);
-                    if (singleSimDataSetWithDisturbance.ContainsSignal(estDisturbanceId))
-                    {
-                        var estDisturbance = singleSimDataSetWithDisturbance.GetValues(estDisturbanceId);
-                        if (estDisturbance == null)
-                            continue;
-                        if ((new Vec()).IsAllNaN(estDisturbance))
-                            continue;
-                        // add signal if everything is ok.
-                        simData.Add(estDisturbanceId, estDisturbance);
-                    }
-                }
-            }
-            return true;
-        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputIDs"></param>
+        /// <param name="timeIndex"></param>
+        /// <param name="dataSet1"></param>
+        /// <param name="dataSet2"></param>
+        /// <returns></returns>
         private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, 
             TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
         {

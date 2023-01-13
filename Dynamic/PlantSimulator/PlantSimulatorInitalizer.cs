@@ -43,22 +43,28 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </para>
         /// </summary>
         /// <param name="simData">simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</param>
-        public bool ToSteadyState(TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
+        public bool ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
         {
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
             // the inital value will be calculated .Value, but is NaN unit calculated.
             var signalValuesAtT0 = new Dictionary<string, double>();
+
+            EstimateDisturbances(ref inputData,ref simData,ref signalValuesAtT0);
+
+            // estimated disturbances are in "simData", so include them in the "combined" dataset
+            var combinedData = inputData.Combine(simData);
+
             // add external signals to simSignalValueDict
-            foreach (var signalId in inputData.GetSignalNames())
+            foreach (var signalId in combinedData.GetSignalNames())
             {
-                signalValuesAtT0.Add(signalId, inputData.GetValues(signalId).First());
+                signalValuesAtT0.Add(signalId, combinedData.GetValues(signalId).First());
             }
             // forward-calculate the output for those systems where the inputs are given. 
             var isOk = ForwardCalcNonPID(ref signalValuesAtT0);
             if (!isOk)
                 return false;
             // find all PID-controllers, and setting the "y" equal to "yset"
-            var uninitalizedPID_IDs = SetPidControlledVariablesToSetpoints(ref signalValuesAtT0);
+             var uninitalizedPID_IDs = SetPidControlledVariablesToSetpoints(ref signalValuesAtT0);
             if (uninitalizedPID_IDs == null)
             {
                 return false;
@@ -73,7 +79,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // try to treat this now
             if (uninitalizedPID_IDs.Count > 0)
             {
-                isOk = SelectLoopsCalc(inputData.GetTimeBase(),ref signalValuesAtT0, ref uninitalizedPID_IDs);
+                isOk = SelectLoopsCalc(combinedData.GetTimeBase(),ref signalValuesAtT0, ref uninitalizedPID_IDs);
                 if (!isOk)
                     return false;
             }
@@ -90,9 +96,12 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // last step is to actually write all the values, and create otherwise empty vector to be filled.
             {
-                double nonYetSimulatedValue = Double.NaN;
-                var externalInputSignals = simulator.GetExternalSignalIDs();
-                int? N = inputData.GetLength();
+                // this was the code here prior to including estimating disturbances, but this is not general
+                // because to estimte the disturbance, the u_meas and y_meas of every process model must be included
+                // in the inputData, thus making it an "external signal"
+                //  var externalInputSignals = simulator.GetExternalSignalIDs();
+                var externalInputSignals =  inputData.GetSignalNames();// the u_meas and y_meas is removed here by the disturbance estimation.
+                int? N = combinedData.GetLength();
                 foreach (string signalID in signalValuesAtT0.Keys)
                 {
                     // simData should not contain the "external signals"
@@ -100,14 +109,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         continue;
                     }
-
-                    // external signals are already present in simData, do not add twice
-                   // if (!simData.ContainsSignal(signalID) && !inputData.ContainsSignal(signalID))
-                    {
-                        simData.InitNewSignal(signalID, signalValuesAtT0[signalID], N.Value);
-                        //simData.Add(signalID, Vec<double>.Concat(new double[] { signalValuesAtT0[signalID] },
-                        //Vec<double>.Fill(nonYetSimulatedValue, N.Value - 1)));
-                    }
+                    simData.InitNewSignal(signalID, signalValuesAtT0[signalID], N.Value);
                 }
             }
             if (simData.GetSignalNames().Length == 0)
@@ -118,6 +120,76 @@ namespace TimeSeriesAnalysis.Dynamic
             else
                 return true;
         }
+
+
+        /// <summary>
+        /// For a plant, go through and find each plant/pid-controller and attempt to estimate the disturbance.
+        /// For the disturbance to be estimateable,the inputs "u_meas" and the outputs "y_meas" for each "process" in
+        /// each pid-process loop needs to be given in inputData.
+        /// The estimated disturbance signal is addes to simData
+        /// </summary>
+        /// <param name="inputData">note that for closed loop systems u and y signals are removed(these are used to estimate disturbance, removing them triggers code in PlantSimulator to re-estimate them)</param>
+        /// <param name="simData"></param>
+        /// <returns>true if everything went ok, otherwise false</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private bool EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,ref Dictionary<string, double> signalValuesAtT0)
+        {
+            // find all PID-controllers
+            List<string> pidIDs = new List<string>();
+            foreach (var model in simulator.modelDict)
+            {
+                if (model.Value.GetProcessModelType() == ModelType.PID)
+                {
+                    pidIDs.Add(model.Key);
+                }
+            }
+            foreach (var pidID in pidIDs)
+            {
+                var upstreamModels = simulator.connections.GetUpstreamModels(pidID);
+                var processId = upstreamModels.First();
+                var isOK = simulator.SimulateSingle(inputData, processId,
+                    out TimeSeriesDataSet singleSimDataSetWithDisturbance);
+                if (isOK)
+                {
+                    var estDisturbanceId = SignalNamer.EstDisturbance(processId);
+                    if (singleSimDataSetWithDisturbance.ContainsSignal(estDisturbanceId))
+                    {
+                        var estDisturbance = singleSimDataSetWithDisturbance.GetValues(estDisturbanceId);
+                        if (estDisturbance == null)
+                            continue;
+                        if ((new Vec()).IsAllNaN(estDisturbance))
+                            continue;
+                        // add signal if everything is ok.
+                        simData.Add(estDisturbanceId, estDisturbance);
+                        // todo: remove pid input pid-u and output y from inputdata(we want to re-estimate it, we have used it to estimate the disturbance)
+                        // an alterntive to this would hav been to to alter the code in the plant simulator to add signals in simData output that are duplicates of signal names in inputData
+                        // or better: make an internal "stripped" version of "inputData"
+                        {
+                            string y_meas_signal = simulator.modelDict[processId].GetOutputID();
+                            signalValuesAtT0.Add(y_meas_signal,inputData.GetValue(y_meas_signal,0).Value);
+                            inputData.Remove(y_meas_signal);
+
+                            string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
+                            signalValuesAtT0.Add(u_pid_signal, inputData.GetValue(u_pid_signal, 0).Value);
+                            inputData.Remove(u_pid_signal);
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Initalizes sub-processes inside PID-feedback loops "from right-to-left"(backwards,finds  for a given y what is u)
         /// This method only supports a single PID-input per model.
