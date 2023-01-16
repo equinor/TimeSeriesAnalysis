@@ -423,6 +423,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
             // disturbance estimation
+            if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess)
             {
                 // y_meas = y_internal+d as defined here
                 var y_meas = inputData.GetValues(outputID);
