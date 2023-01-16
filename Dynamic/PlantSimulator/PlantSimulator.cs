@@ -60,13 +60,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// User-friendly name that may include white spaces
         /// </summary>
-      //  [JsonProperty("plantName")]
         public String plantName { get; set; }
 
         /// <summary>
         /// A short user-friendly description of what the plant is and does
         /// </summary>
-    //    [JsonProperty("plantDescription")]
         public String plantDescription { get; set; }
 
         /// <summary>
@@ -75,9 +73,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public List<Comment> comments;
 
         public Dictionary<string, ISimulatableModel> modelDict;
-
         public List<string> externalInputSignalIDs;
-
         public ConnectionParser connections;
 
         public UnitDataSet GetUnitDataSetForProcess(TimeSeriesDataSet inputData, UnitModel unitModel)
@@ -340,7 +336,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-          //  connections.AddConnection(upstreamModel.GetID(), downstreamModel.GetID());
             return outputId;
         }
 

@@ -151,6 +151,8 @@ namespace TimeSeriesAnalysis
         static public T[,] CreateFromList(List<T[]> columnList)
         {
             int nColumns = columnList.Count;
+            if (columnList.ElementAt(0) == null)
+                return null;
             int nRows    = columnList.ElementAt(0).Length;
             for (int k = 1; k < columnList.Count; k++)
             {
@@ -170,12 +172,6 @@ namespace TimeSeriesAnalysis
 
             return retArray;
         }
-
-
-
-
-
-
 
         /// <summary>
         /// Create 2d-array with only a single column
