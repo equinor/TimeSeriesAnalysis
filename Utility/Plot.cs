@@ -31,7 +31,8 @@ namespace TimeSeriesAnalysis.Utility
     public class Plot
     {
         const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data";
-        const string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//@"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+        //const string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+        const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
 
         private static bool ShouldPlottingBeDone()

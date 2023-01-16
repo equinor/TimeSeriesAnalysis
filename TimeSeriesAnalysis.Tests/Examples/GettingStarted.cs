@@ -75,7 +75,7 @@ namespace TimeSeriesAnalysis._Examples
 
             double[][] U = new double[][] { u1, u2, u3 };
 
-            var results = (new Vec()).Regress(y, U);
+            var results = (new Vec()).RegressUnRegularized(y, U);
 
             TestContext.WriteLine(Vec.ToString(results.Param, 3));
             TestContext.WriteLine(SignificantDigits.Format(results.Rsq, 3));

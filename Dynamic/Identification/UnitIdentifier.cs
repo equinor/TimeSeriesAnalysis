@@ -595,7 +595,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                     }
                     double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
-                    regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(),phiIndicesToRegularize);
+                    regResults = vec.RegressRegularized(Y_ols, phi_ols, yIndicesToIgnore.ToArray(),phiIndicesToRegularize);
                 }
                 // ----------------- v2 -----------
                 // APPROXIMATE x[k-1] = y[k-1]-d[k-1]
@@ -621,7 +621,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         vec.Subtract(ycur, dcur);
                     }
-                    regResults = vec.Regress(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);
+                    regResults = vec.RegressRegularized(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);
                 }
 
                 if (regResults.Param != null)
@@ -700,7 +700,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     Y_ols = vec.Subtract(ycur, dcur);
                 }
-                regResults = vec.Regress(Y_ols, inputs, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);
+                regResults = vec.RegressRegularized(Y_ols, inputs, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);
                 timeConstant_s = 0;
                 if (regResults.Param != null)
                 {

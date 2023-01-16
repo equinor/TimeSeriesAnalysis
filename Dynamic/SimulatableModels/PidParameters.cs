@@ -77,6 +77,12 @@ namespace TimeSeriesAnalysis.Dynamic
             warnings.Add(warning);
         }
 
+        public PidIdentWarning[] GetWarnings()
+        { 
+            return warnings.ToArray();
+        }
+
+
         public override string ToString()
         {
             int sDigits = 3;

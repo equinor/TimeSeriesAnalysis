@@ -33,8 +33,12 @@ namespace TimeSeriesAnalysis.Test.PidID
             processModel1 = new UnitModel(modelParameters1, "SubProcess1");
         }
         
-        [Test]
-        public void YsetpointStepChange_KpAndTiEstimatedOk()
+        [TestCase(5)]
+        [TestCase(-5)]
+        [TestCase(1)]
+        [TestCase(-1)]
+
+        public void YsetpointStepChange_KpAndTiEstimatedOk(double ySetAmplitude)
         {
             var pidParameters1 = new PidParameters()
             {
@@ -47,13 +51,24 @@ namespace TimeSeriesAnalysis.Test.PidID
             processSim.ConnectModels(processModel1, pidModel1);
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/2, N,50,55));
+            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/7, N,50,50+ySetAmplitude));
             inputData.CreateTimestamps(timeBase_s,t0);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
+
+            Assert.AreEqual(idResult.GetWarnings().Count(),0);
+
+          //  Shared.EnablePlots();
+            string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
+                Replace(")", "_").Replace(",", "_") + "y";
+            Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
+                pidDataSet.U.GetColumn(0),pidDataSet.U_sim.GetColumn(0)}, 
+                new List<string> { "y1=y meas", "y1=y set", "y3=u","y3=u_sim" },
+                pidDataSet.GetTimeBase(), caseId);
+        //    Shared.DisablePlots();
 
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp)< pidParameters1.Kp/10);
             if (pidParameters1.Ti_s > 0)
@@ -67,6 +82,11 @@ namespace TimeSeriesAnalysis.Test.PidID
         }
 
         [TestCase(5)]
+        [TestCase(-5)]
+        [TestCase(1)]
+        [TestCase(-1)]
+
+
         public void DisturbanceStepChange_KpAndTiEstimatedOk(double stepAmplitude)
         {
             var pidParameters1 = new PidParameters()
@@ -101,8 +121,6 @@ namespace TimeSeriesAnalysis.Test.PidID
         }
 
         // TODO: test that feedforward is handled correctly
-
-
 
     }
 }

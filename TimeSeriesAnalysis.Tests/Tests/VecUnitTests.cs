@@ -125,7 +125,7 @@ namespace TimeSeriesAnalysis.Test
             double[] X1 = { 1, 0, 1, 0,2 }; // gain:1
             double[] X2 = { 0, 0, 1, 2, 0 };// gain:2
             double[][] X = { X1, X2 };
-            var results = (new Vec()).Regress(Y, X);
+            var results = (new Vec()).RegressUnRegularized(Y, X);
             Assert.IsNotNull(results);
             Assert.IsTrue(results.AbleToIdentify);
             Assert.Less(Math.Abs(1 - results.Param[0]), 0.005,"gain paramter should be correct");
@@ -154,7 +154,7 @@ namespace TimeSeriesAnalysis.Test
             {
                 4
             };
-            var results= (new Vec()).Regress(Y, X, indicesToignore.ToArray());
+            var results= (new Vec()).RegressUnRegularized(Y, X, indicesToignore.ToArray());
             Assert.IsTrue(results.AbleToIdentify);
             Assert.Less(Math.Abs(1 - results.Param[0]), 0.05);
             Assert.Less(Math.Abs(2 - results.Param[1]), 0.05);
@@ -175,7 +175,7 @@ namespace TimeSeriesAnalysis.Test
             double[] X1 = common; // gain:1
             double[] X2 = Vec<double>.Fill(0, common.Length);// gain:0
             double[][] X = { X1, X2 };
-            var results = (new Vec()).Regress(Y, X);
+            var results = (new Vec()).RegressUnRegularized(Y, X);
             Assert.IsTrue(results.AbleToIdentify);
             Assert.Less(Math.Abs(1 - results.Param[0]), 0.01);
             Assert.Less(Math.Abs(0 - results.Param[1]), 0.1);
@@ -197,7 +197,7 @@ namespace TimeSeriesAnalysis.Test
             double[] X1 = common; // gain:1
             double[] X2 = Vec<double>.Fill(0, common.Length);// gain:0
             double[][] X = { X1, X2 };
-            var results = (new Vec()).Regress(Y, X,null, new List<int> {1});
+            var results = (new Vec()).RegressRegularized(Y, X,null, new List<int> {1});
             Assert.IsTrue(results.AbleToIdentify);
             Assert.Less(Math.Abs(1 - results.Param[0]), 0.01);
             Assert.Less(Math.Abs(0 - results.Param[1]), 0.1);

@@ -104,10 +104,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(4)]
         public void PlantSimulator_StepDisturbance_EstimatesOk(double stepAmplitude)
         {
-            Shared.EnablePlots();
+       //     Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             DisturbanceTestUsingPlantSimulator(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance);
-            Shared.DisablePlots();
+         //   Shared.DisablePlots();
         }
 
 

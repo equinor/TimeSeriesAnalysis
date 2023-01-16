@@ -359,7 +359,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     //   Plot.Three(Y_ols, X1_ols, X2_ols, (int)TimeBase_s, "Y", "X1", "X2");
                 }*/
 
-                var regressResults = vec.Regress(Y_ols, inputs, indicesToIgnore.ToArray());
+                var regressResults = vec.RegressUnRegularized(Y_ols, inputs, indicesToIgnore.ToArray());
                 //  out double[] notUsed, out double[] Y_mod, out double Rsq_cur;
                 var b = regressResults.Param;
 

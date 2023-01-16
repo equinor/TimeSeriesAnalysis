@@ -661,6 +661,38 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
+        /// Regression that does not attempt to regualarize inputs toward zero
+        /// </summary>
+        /// <param name="Y"></param>
+        /// <param name="X"></param>
+        /// <param name="yIndToIgnore"></param>
+        /// <returns></returns>
+        public RegressionResults RegressUnRegularized(double[] Y, double[][] X, int[] yIndToIgnore = null)
+        {
+            return Regress(Y, X, yIndToIgnore, null, false);
+        }
+
+        /// <summary>
+        /// Robust linear regression, regularizd
+        /// To avoid paramters taking on exteremly high values in the case of little excitation in the inputs, 
+        /// two mitigating actions are implemented by the solver, to be "robust"
+        /// - a "robust" Signular Value Decomposition(SVD)-based solver is used
+        /// - a regularization term is added to the objective function that will bring paramters to zero if (Y,X) does not contain
+        ///  any information to force the parameter away from zero
+        /// </summary>
+        /// <param name="Y">vector of outptu variable values to be modelled</param>
+        /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
+        /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
+        /// <param name="XindicesToRegularize">(optional) only the indices in this list are to be regularized to zero</param>
+        /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
+        /// some statistics on the fit and uncertainty thereof.</returns>
+        public RegressionResults RegressRegularized(double[] Y, double[][] X, int[] yIndToIgnore = null, List<int> XindicesToRegularize = null)
+        {
+            return Regress(Y, X, yIndToIgnore, XindicesToRegularize, true);
+        }
+
+
+        /// <summary>
         /// Robust linear regression
         /// To avoid paramters taking on exteremly high values in the case of little excitation in the inputs, 
         /// two mitigating actions are implemented by the solver, to be "robust"
@@ -674,9 +706,9 @@ namespace TimeSeriesAnalysis
         /// <param name="XindicesToRegularize">(optional) only the indices in this list are to be regularized to zero</param>
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
-        public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null)
+        private RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null, bool doNormalizationToZero = true)
         {
-            const bool doNormalizationToZero = true;
+           // const bool doNormalizationToZero = true;
 
             RegressionResults results = new RegressionResults();
             var vec = new Vec();
@@ -793,6 +825,7 @@ namespace TimeSeriesAnalysis
                     var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, regX.Count()));
                     double? Y_mean = vec.Mean(Y);
                     double regressionWeight = (double)Y.Length / 1000;
+                    //double regressionWeight = (double)1;
                     var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, regX.Count())) ;
 
                     // note: weights have no effect prior to accord 3.7.0 
