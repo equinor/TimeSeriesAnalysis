@@ -19,9 +19,6 @@ namespace TimeSeriesAnalysis.Dynamic
     public class ConnectionParser
     {
 
-    //    [JsonInclude]
-   //     public Dictionary<string, ISimulatableModel> modelDict;
-
         [JsonInclude]
         public List<(string, string)> connections;
 
@@ -30,29 +27,62 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public ConnectionParser()
         {
-            connections = new List<(string, string)>();
-       //     modelDict = new Dictionary<string, ISimulatableModel>();
+            if (connections == null)
+            {
+                connections = new List<(string, string)>();
+            }
         }
 
 
         /// <summary>
-        /// Adds a list of all the model IDs that make up a process simulation
-        /// </summary>
-        /// <param name="allModels"></param>
-        /*public void AddAllModelObjects( Dictionary<string, ISimulatableModel> allModels)
-        {
-            this.modelDict = allModels;
-        }*/
-
-
-        /// <summary>
         /// Adds a connection betweent the models with the given IDs
+        /// (consider deprecating)
         /// </summary>
         /// <param name="upstreamID"></param>
         /// <param name="downstreamID"></param>
         public void AddConnection(string upstreamID, string downstreamID)
         {
-            connections.Add((upstreamID,downstreamID));
+           //connections.Add((upstreamID,downstreamID));
+        }
+        
+        
+        /// <summary>
+        /// Parse a dictionary of models,and initalize the connections based on the names of inputsIDs/outputIDs
+        /// </summary>
+        /// <param name="modelDict"></param>
+        private void Init(Dictionary<string, ISimulatableModel> modelDict)
+        {
+            var modelNames = modelDict.Keys;
+
+            foreach (var modelID in modelNames)
+            {
+                var model = modelDict[modelID];
+                var outputID = model.GetOutputID();
+                foreach (var modelID2 in modelNames)
+                {
+                    if (modelID2 == modelID)
+                        continue;
+
+                    var model2 = modelDict[modelID2];
+                    var inputIDs = model2.GetBothKindsOfInputIDs();
+
+                    // special case: do not add tracking signals in pid-controllers as "connections"
+                    if (model2.GetProcessModelType() == ModelType.PID)
+                    {
+                       if (inputIDs.Length >= (int)PidModelInputsIdx.Tracking+1)
+                           inputIDs[(int)PidModelInputsIdx.Tracking] = null;
+                    }
+
+                    if (inputIDs.Contains<string>(outputID))
+                    {
+                        var upstreamID = modelID;
+                        var downstreamID = modelID2;
+                        if (!connections.Contains((upstreamID, downstreamID)))
+                            connections.Add((upstreamID, downstreamID));
+                    }
+                }
+            }
+            return;
         }
 
 
@@ -61,9 +91,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Determine the order in which the models must be solved
         /// </summary>
         /// <returns>returns the string of sorted model IDs, the order in which modelDict models are to be run</returns>
-        public List<string> DetermineCalculationOrderOfModels(
+        public List<string> InitAndDetermineCalculationOrderOfModels(
             Dictionary<string, ISimulatableModel> modelDict)
         {
+            Init(modelDict);
+
             List<string> unprocessedModels = modelDict.Keys.ToList();
             List<string> orderedModels = new List<string>();
             List<string> pidModels = new List<string>();
@@ -77,7 +109,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     orderedModels.Add(forwardModelID);
                     unprocessedModels.Remove(forwardModelID);
                 }
-
                 // 2 add any models downstream of the above that depend only on said upstream models
                 int whileIterations = 0;
                 int whileIterationsMax = 100;
@@ -239,7 +270,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-
             // final sanity check
             if (unprocessedModels.Count() > 0)
             {
@@ -247,6 +277,84 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return orderedModels;
         }
+
+
+        /// <summary>
+        /// Get all the models which are connected to a given model one level directly downstream of it
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public List<string> GetDownstreamModelIDs(string modelID)
+        {
+            var downstreamModels = new List<string>();
+            foreach ((string, string) connection in connections)
+            {
+                if (connection.Item1 == modelID)
+                {
+                    downstreamModels.Add(connection.Item2);
+                }
+            }
+            return downstreamModels.ToList();
+        }
+
+        /// <summary>
+        /// Get all the models which are connected to a given model one level directly upstream of it
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public List<string> GetUpstreamModels(string modelID)
+        {
+            var upstreamModels = new List<string>();
+            foreach ((string, string) connection in connections)
+            {
+                if (connection.Item2 == modelID)
+                {
+                    upstreamModels.Add(connection.Item1);
+                }
+            }
+            return upstreamModels.ToList();
+        }
+
+        /// <summary>
+        /// Query if the model has an upstream PID-model.
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public bool HasUpstreamPID(string modelID, Dictionary<string, ISimulatableModel> modelDict)
+        {
+            var upstreamModelIDs = GetUpstreamModels(modelID);
+
+            foreach (string upstreamID in upstreamModelIDs)
+            {
+                if (modelDict[upstreamID].GetProcessModelType() == ModelType.PID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Get the ID of the PID-controller that is upstream a given modelID
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public string[] GetUpstreamPIDIds(string modelID, Dictionary<string, ISimulatableModel> modelDict)
+        {
+            var upstreamModelIDs = GetUpstreamModels(modelID);
+
+            List<string> upstreamPIDIds = new List<string>();
+
+            foreach (string upstreamID in upstreamModelIDs)
+            {
+                if (modelDict[upstreamID].GetProcessModelType() == ModelType.PID)
+                {
+                    upstreamPIDIds.Add(upstreamID);
+                }
+            }
+            return upstreamPIDIds.ToArray();
+        }
+
 
         internal int[] GetFreeIndices(string modelID, PlantSimulator simulator)
         {
@@ -312,97 +420,13 @@ namespace TimeSeriesAnalysis.Dynamic
             return DoesArrayContainAll(givenModelIDs, upstreamModelIds);
         }
 
-        /// <summary>
-        /// Get all the models which are connected to a given model one level directly downstream of it
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public List<string> GetDownstreamModelIDs(string modelID)
-        {
-            var downstreamModels = new List<string>();
-            foreach ((string, string) connection in connections)
-            {
-                if (connection.Item1 == modelID)
-                {
-                    downstreamModels.Add(connection.Item2);
-                }
-            }
-            return downstreamModels.ToList();
-        }
-
-        /// <summary>
-        /// Get all the models which are connected to a given model one level directly upstream of it
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public List<string> GetUpstreamModels(string modelID)
-        {
-            var upstreamModels = new List<string>();
-            foreach ((string, string) connection in connections)
-            {
-                if (connection.Item2 == modelID)
-                {
-                    upstreamModels.Add(connection.Item1);
-                }
-            }
-            return upstreamModels.ToList();
-        }
-
-        /*
-        private string[] GetAllModelIDs()
-        {
-            return this.modelDict.Keys.ToArray();
-        }*/
-
-
-        /// <summary>
-        /// Query if the model has an upstream PID-model.
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public bool HasUpstreamPID(string modelID, Dictionary<string, ISimulatableModel> modelDict)
-        {
-            var upstreamModelIDs = GetUpstreamModels(modelID);
-
-            foreach (string upstreamID in upstreamModelIDs)
-            {
-                if (modelDict[upstreamID].GetProcessModelType() == ModelType.PID)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Get the ID of the PID-controller that is upstream a given modelID
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <returns></returns>
-        public string[] GetUpstreamPIDIds(string modelID, Dictionary<string, ISimulatableModel> modelDict)
-        {
-            var upstreamModelIDs = GetUpstreamModels(modelID);
-
-            List<string> upstreamPIDIds = new List<string>();
-
-            foreach (string upstreamID in upstreamModelIDs)
-            {
-                if (modelDict[upstreamID].GetProcessModelType() == ModelType.PID)
-                {
-                    upstreamPIDIds.Add(upstreamID) ;
-                }
-            }
-            return upstreamPIDIds.ToArray();
-        }
-
-
 
         /// <summary>
         /// Gets all the models that do not have any models upstream of them.
         /// (models are then either signal generators or get their input from external signals)
         /// </summary>
         /// <returns></returns>
-        public List<string> GetModelsWithNoUpstreamConnections(
+        private List<string> GetModelsWithNoUpstreamConnections(
              Dictionary<string, ISimulatableModel> modelDict)
         {
             var modelsIDsToReturn = new List<string>(modelDict.Keys.ToArray());//GetAllModelIDs());

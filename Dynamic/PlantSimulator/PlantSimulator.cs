@@ -141,24 +141,17 @@ namespace TimeSeriesAnalysis.Dynamic
         public PlantSimulator(List<ISimulatableModel> processModelList, string plantName="", string plantDescription="")
         {
             externalInputSignalIDs = new List<string>();
-
             this.comments = new List<Comment>();
-
             if (processModelList == null)
             {
                 return;
             }
-
             this.plantName = plantName;
             this.plantDescription = plantDescription;
-
             modelDict = new Dictionary<string, ISimulatableModel>();
-            connections = new ConnectionParser();
-
             foreach (ISimulatableModel model in processModelList)
             {
                 string modelID = model.GetID();
-
                 if (modelDict.ContainsKey(modelID))
                 {
                     Shared.GetParserObj().AddError("PlantSimulator failed to initalize, modelID" + modelID + "is not unique");
@@ -168,7 +161,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     modelDict.Add(modelID, model);
                 }
             }
-          //  connections.AddAllModelObjects(modelDict);
+            connections = new ConnectionParser();
         }
 
         /// <summary>
@@ -286,7 +279,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool ConnectModelToOutput(ISimulatableModel disturbanceModel, ISimulatableModel model )
         {
             model.AddSignalToOutput(disturbanceModel.GetOutputID());
-            connections.AddConnection(disturbanceModel.GetID(), model.GetID());
+       //     connections.AddConnection(disturbanceModel.GetID(), model.GetID());
             return true;
         }
 
@@ -301,11 +294,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             ModelType upstreamType = upstreamModel.GetProcessModelType();
             ModelType downstreamType = downstreamModel.GetProcessModelType();
-            //string outputId = upstreamModel.GetID();
-
-            //outputId = SignalNamer.GetSignalName(upstreamModel.GetID(),upstreamModel.GetOutputSignalType());
-
-            //upstreamModel.SetOutputID(outputId);
             string outputId = upstreamModel.GetOutputID();
 
             int nInputs = downstreamModel.GetLengthOfInputVector();
@@ -352,7 +340,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-            connections.AddConnection(upstreamModel.GetID(), downstreamModel.GetID());
+          //  connections.AddConnection(upstreamModel.GetID(), downstreamModel.GetID());
             return outputId;
         }
 
@@ -485,7 +473,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(modelDict);
+            var orderedSimulatorIDs = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
             simData = new TimeSeriesDataSet();
 
             // initalize the new time-series to be created in simData.

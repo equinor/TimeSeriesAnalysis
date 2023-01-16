@@ -29,7 +29,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.simulator = simulator;
             var connections = simulator.GetConnections();
-            orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(simulator.GetModels());
+            orderedSimulatorIDs = connections.InitAndDetermineCalculationOrderOfModels(simulator.GetModels());
         }
         /// <summary>
         /// Initalize the empty datasets to their steady-state values 
@@ -343,7 +343,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var modelDict = simulator.GetModels();
             var connections = simulator.GetConnections();
-            var orderedSimulatorIDs = connections.DetermineCalculationOrderOfModels(modelDict);
+            var orderedSimulatorIDs = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
             // forward-calculate the output for those systems where the inputs are given. 
             for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             {

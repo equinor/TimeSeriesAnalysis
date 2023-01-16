@@ -465,7 +465,6 @@ namespace TimeSeriesAnalysis._Examples
                 Ti_s = 250 // slow control (use buffer capacity, use less valve action)
             };
             // 
-           // var pidParameters2 = pidParameters1;//
             var pidParameters2 = new PidParameters()
             {
                 Kp = 2,//high-gain

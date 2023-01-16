@@ -50,6 +50,9 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 AddSet(inputDataSet);
             }
+            dataset_constants = inputDataSet.dataset_constants;
+            N = inputDataSet.N;
+            timeStamps = inputDataSet.timeStamps;
         }
 
         /// <summary>
