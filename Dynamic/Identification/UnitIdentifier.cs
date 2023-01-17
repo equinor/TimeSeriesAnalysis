@@ -740,8 +740,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else // able to identify
             {
-
-
                 parameters.Fitting.WasAbleToIdentify = true;
                 parameters.TimeDelay_s = timeDelay_samples * dataSet.GetTimeBase();
                 parameters.TimeConstant_s = SignificantDigits.Format(timeConstant_s, nDigits);
@@ -750,44 +748,30 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 
-                //  if (dataSet.D == null)
+                (double? recalcBias, double[] y_sim_recalc) =
+                    SimulateAndReEstimateBias(dataSet, parameters);
+                dataSet.Y_sim = y_sim_recalc;
+                if (recalcBias.HasValue)
                 {
-                    (double? recalcBias, double[] y_sim_recalc) =
-                        SimulateAndReEstimateBias(dataSet, parameters);
-                    dataSet.Y_sim = y_sim_recalc;
-                    if (recalcBias.HasValue)
-                    {
-                        parameters.Bias = SignificantDigits.Format(recalcBias.Value, nDigits);
-                    }
-                    else
-                    {
-                        parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
-                        parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
-                    }
+                    parameters.Bias = SignificantDigits.Format(recalcBias.Value, nDigits);
                 }
-                /*       else
-                       {
-                           // if system has disturbance, then bias seems to be better set at original value
-                           parameters.AddWarning(UnitdentWarnings.ReEstimateBiasDisabledDueToNonzeroDisturbance);
-                           parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
-
-                           var model = new UnitModel(parameters);
-                           var simulator = new UnitSimulator((ISimulatableModel)model);
-                           var internalData = new UnitDataSet(dataSet);
-                           dataSet.Y_sim = simulator.Simulate(ref internalData);
-                       }*/
+                else
+                {
+                    parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
+                    parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
+                }
 
                 parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
-                //
                 parameters.Fitting.RsqFittingDiff = regResults.Rsq;
                 parameters.Fitting.ObjFunValFittingDiff = regResults.ObjectiveFunctionValue;
                 parameters.Fitting.ObjFunValFittingAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
-                // 
-                //   Plot.FromList(new List<double[]> { dataSet.Y_meas, dataSet.Y_sim }, new List<string> { "y1=xmod", "y1=xmeas" },
-                //          TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, dataSet.Y_meas.Length), "test");
+                parameters.Fitting.RsqFittingAbs =vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
 
-                parameters.Fitting.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
+                parameters.Fitting.RsqFittingAbs = SignificantDigits.Format(parameters.Fitting.RsqFittingAbs, nDigits);
+                parameters.Fitting.RsqFittingDiff = SignificantDigits.Format(parameters.Fitting.RsqFittingDiff, nDigits);
+                parameters.Fitting.ObjFunValFittingDiff = SignificantDigits.Format(parameters.Fitting.ObjFunValFittingDiff, nDigits);
+                parameters.Fitting.ObjFunValFittingAbs = SignificantDigits.Format(parameters.Fitting.ObjFunValFittingAbs, nDigits);
 
                 // add inn uncertainty
                 if (useDynamicModel)
@@ -795,7 +779,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                     CalculateStaticUncertainty(regResults, ref parameters);
 
-                // round uncetainty to certain number of digits
+                // round uncertainty to certain number of digits
                 parameters.LinearGainUnc = SignificantDigits.Format(parameters.LinearGainUnc, nDigits);
                 if (parameters.BiasUnc.HasValue)
                     parameters.BiasUnc = SignificantDigits.Format(parameters.BiasUnc.Value, nDigits);
