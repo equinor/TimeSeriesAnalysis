@@ -119,8 +119,14 @@ namespace TimeSeriesAnalysis.Test.PidID
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
         }
+        [TestCase(1)]
+        public void EstimationWithKpScaling_KpAndTiEstimatedOk(double stepAmplitude)
+        {
+        }
 
-        // TODO: test that feedforward is handled correctly
 
-    }
+
+            // TODO: test that feedforward is handled correctly
+
+        }
 }

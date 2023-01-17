@@ -17,14 +17,13 @@ namespace TimeSeriesAnalysis.Dynamic
     public class PidIdentifier
     {
         private const double CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC = 0.005;
+        const double rSquaredCutoffForInTrackingWarning = 0.02;//must be between 0 and 1
+
         private const int MAX_ESTIMATIONS_PER_DATASET = 1;
         private const double MIN_DATASUBSET_URANGE_PRC = 0;
         private double badValueIndicatingValue;
 
         private double maxExpectedTc_s;
-        private bool enableKPchangeDetection = true;
-        private bool enableTichangeDetection = true;
-        //private bool doDebugging = true;
         private PidScaling pidScaling;
         private PidControllerType type;
         private Vec vec;
@@ -40,24 +39,6 @@ namespace TimeSeriesAnalysis.Dynamic
             this.vec = new Vec();
         }
 
-
-        public void SetTiChangeDetect(bool doChangeDetect)
-        {
-            enableTichangeDetection = doChangeDetect;
-        }
-        public void SetKPChangeDetect(bool doChangeDetect)
-        {
-            enableKPchangeDetection = doChangeDetect;
-        }
-        public bool GetTiChangeDetect()
-        {
-            return enableTichangeDetection;
-        }
-
-        public bool GetKPChangeDetect()
-        {
-            return enableKPchangeDetection;
-        }
 
         private void DetermineUminUmax(UnitDataSet dataSet, out double uMin, out double uMax)
         {
@@ -143,11 +124,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             PidParameters results_withDelay = IdentifyInternal(dataSet, true);
             dataSet.U_sim = Array2D<double>.Create(GetSimulatedU(results_withDelay,dataSet,true));
-
             return results_withDelay;
         }
-
-        const double rSquaredCutoffForInTrackingWarning = 0.02;//must be between 0 and 1
 
 
         private double[] GetUMinusFF(UnitDataSet dataSet)
@@ -218,7 +196,7 @@ namespace TimeSeriesAnalysis.Dynamic
             int numEstimations = 1;
             int bufferLength = dataSet.GetNumDataPoints() - 1;
 
-            if (maxExpectedTc_s > 0 && (enableKPchangeDetection || enableTichangeDetection))
+            if (maxExpectedTc_s > 0)
             {
                 int bufferLengthShortest = (int)Math.Ceiling(maxExpectedTc_s * 4 / timeBase_s);// shortest possible to have at least one settling time in it.
                 int bufferLengthLongest = dataSet.GetNumDataPoints() / MAX_ESTIMATIONS_PER_DATASET;
