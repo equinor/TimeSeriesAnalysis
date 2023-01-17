@@ -356,7 +356,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double eMin = vec.Min(ecur);
                 double uMax = vec.Max(ucur);
                 double uMin = vec.Min(ucur);
-
+                /*
                 double expectedRoughtEstimateForKp = Math.Abs((uMax - uMin) / (eMax - eMin));
                 if (Math.Abs(Kpest[curEstidx]) < expectedRoughtEstimateForKp * CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC)
                 {
@@ -365,7 +365,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     Kpest[curEstidx] = badValueIndicatingValue;
                     Tiest[curEstidx] = badValueIndicatingValue;
                     continue;
-                }
+                }*/
 
                 if (b[1] == 0)
                 {
