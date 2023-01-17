@@ -175,6 +175,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.timeBase_s = dataSet.GetTimeBase();
             PidParameters pidParam = new PidParameters();
+            pidParam.Fitting = new FittingInfo();
             if (pidScaling!=null)
                 pidParam.Scaling = pidScaling;
             else
@@ -394,7 +395,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
             pidParam.Kp = Kpest[0];
             pidParam.Ti_s = Tiest[0];
-            pidParam.Fitting = new FittingInfo();
             pidParam.Fitting.SolverID = "PidIdentifier v1.0";
 
             if (dataSet.Times.Count() > 0)
