@@ -136,21 +136,100 @@ namespace TimeSeriesAnalysis.Dynamic
             // looks like this in some cases causes controller to go with wrong sign(which is okay, becasue assumption is wrong)
             // if estimating on data that has a lower sample rate than the "true" data(ie. pid controller ran @1sec intervals, but data is sampled @10 sec intervals),
             // which is frequently the case expect that this should yield slightly better estimator performance
-           (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false);
+            (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false);
+
+            bool doDelay = true;
+            PidParameters bestPidParameters= results_withoutDelay;
+            double[,] bestU = U_withoutDelay;
             if (results_withDelay.Fitting.ObjFunValAbs < results_withoutDelay.Fitting.ObjFunValAbs)
             {
-                dataSet.U_sim = U_withDelay;
-                return results_withDelay;
+                doDelay = true;
+                bestPidParameters = results_withDelay;
+                bestU = U_withDelay;
+
             }
             else
             {
-                dataSet.U_sim = U_withoutDelay;
-                return results_withoutDelay;
+                doDelay = false;
+                bestPidParameters = results_withoutDelay;
+                bestU = U_withoutDelay;
             }
-            // TODO: if U_sim has a steady-state offset, then re-identify with PidFilter added to IdentifyInternal
+            double maxFilterTime_s = 6 * timeBase_s;
+            for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
+            { 
+                var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
+                (PidParameters results_withFilter, double[,] U_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams);
+
+                if (results_withFilter.Fitting.ObjFunValAbs < bestPidParameters.Fitting.ObjFunValAbs/*|| isFirstRun*/)
+                {
+                    bestU = U_withFilter;
+                    bestPidParameters = results_withFilter;
+                }
+            }
+            dataSet.U_sim = bestU;
+            return bestPidParameters;
+            
+        }
+
+        /// <summary>
+        /// a steady state-offset between U_sim and U is an indication of noise in Y_meas getting into controller and 
+        /// "biasing" estimates
+        /// </summary>
+        /// <returns></returns>
+
+        private bool HasSignificantSteadyStateOffset(double[,] U_sim, double[,] U_meas)
+        {
+            const int cutoff_percent = 10;
+            const double avgOffsetRelativeToRange_cutoff_prc = 0.1;
+            int nLower = 0;
+            int nHigher = 0;
+            double valLower = 0;
+            double valHigher = 0;
 
 
+            double[] u_sim = U_sim.GetColumn(0);
+            double[] u_meas = U_meas.GetColumn(0);
+            int N = u_sim.GetLength(0); 
 
+            for (int i = 0; i < u_sim.Length; i++)
+            {
+                if (u_sim[i] < u_meas[i])
+                {
+                    nLower++;
+                    valLower = Math.Abs(u_sim[i] - u_meas[i]);
+                }
+                else if (u_sim[i] > u_meas[i])
+                {
+                    nHigher++;
+                    valHigher = Math.Abs(u_sim[i] - u_meas[i]);
+                }
+            }
+            valLower = valLower / nLower;
+            valHigher = valHigher / nHigher;
+            double u_Range = (new Vec()).Max(u_meas)- (new Vec()).Min(u_meas);
+            // protect from divide-by-zero
+            if (u_Range == 0)
+                return false;
+            // see if average max deviation is signficant in amplitude
+            double avgOffsetRelativeToRange_prc = (double)Math.Max(valLower, valHigher) / u_Range * 100;
+            if (avgOffsetRelativeToRange_prc < avgOffsetRelativeToRange_cutoff_prc)
+            {
+                return false;
+            }
+
+            //protect from divide-by-zero
+            if (Math.Min(valLower, valHigher) == 0)
+            {
+                return true;
+            }
+            // see if there is big deviation between amplitude of overshoot and undershoot.
+            float percentDiffBetweenLowerAndHigherValues = 
+                (float)((Math.Max(valLower,valHigher)/Math.Min(valLower, valHigher)) -1) * 100;
+            if (percentDiffBetweenLowerAndHigherValues> cutoff_percent)
+            {
+                return true;
+            }
+            return false;
         }
 
         private double[] GetUMinusFF(UnitDataSet dataSet)
@@ -175,11 +254,27 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 double[] y_filt = new double[dataSet.Y_meas.Length];
+                /*
                 y_filt[0] = dataSet.Y_meas[0];
                 for (int i = 1; i < dataSet.Y_meas.Length; i++)
                 {
                     y_filt[i] = pidFilter.Filter(dataSet.Y_meas[i]);
                 }
+                */
+
+                int kernelLength = (int)Math.Floor(pidFilter.GetParams().TimeConstant_s / timeBase_s);
+                y_filt = (new Vec()).NonCausalSmooth(dataSet.Y_meas, kernelLength);
+
+                /*
+                if (kernelLength > 0)
+                {
+                    Shared.EnablePlots();
+                    Plot.FromList(new List<double[]>{ dataSet.Y_meas,
+                    y_filt },
+                        new List<string> { "y1=y_meas", "y1=yfilt" },
+                        timeBase_s, "test_3");
+                    Shared.DisablePlots();
+                }*/
                 return vec.Subtract(y_filt, dataSet.Y_setpoint);
             }
 
@@ -200,12 +295,13 @@ namespace TimeSeriesAnalysis.Dynamic
             PidFilterParams pidFilterParams = null)
         {
             this.timeBase_s = dataSet.GetTimeBase();
+            PidParameters pidParam = new PidParameters();
             if (pidFilterParams != null)
             {
                 pidFilter = new PidFilter(pidFilterParams, timeBase_s);
+                pidParam.Filtering = pidFilterParams;
             }
-
-            PidParameters pidParam = new PidParameters();
+           
             pidParam.Fitting = new FittingInfo();
             if (pidScaling!=null)
                 pidParam.Scaling = pidScaling;
@@ -223,7 +319,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double[] e_unscaled = GetErrorTerm(dataSet, pidFilter);
-
+            /*
             if (pidParam.Scaling.IsDefault())
             {
                 double umin, umax;
@@ -245,7 +341,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     pidScaling.SetEstimatedUminUmax(umin, umax);
                 }
             }
-
+            */
             int numEstimations = 1;
             int bufferLength = dataSet.GetNumDataPoints() - 1;
 

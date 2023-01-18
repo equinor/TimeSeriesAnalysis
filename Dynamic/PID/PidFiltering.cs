@@ -51,10 +51,15 @@ namespace TimeSeriesAnalysis.Dynamic
             this.yFilt2 = new LowPass(timebase_s);
         }
 
+        public PidFilterParams GetParams()
+        {
+            return fParams;
+        }
+
         internal double Filter(double y_process_prc)
         {
             double y_processFilt_prc = y_process_prc;
-            if (fParams.IsEnabled)
+            if (fParams.IsEnabled && fParams.TimeConstant_s>0)
             {
                 if (fParams.FilterOrder == 1 && fParams.TimeConstant_s > 0)
                     y_processFilt_prc = yFilt1.Filter(y_process_prc, fParams.TimeConstant_s, 1, false);

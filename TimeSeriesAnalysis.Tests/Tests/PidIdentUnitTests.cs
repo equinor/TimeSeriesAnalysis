@@ -1,9 +1,7 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using NUnit.Framework;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
@@ -36,7 +34,7 @@ namespace TimeSeriesAnalysis.Test.PidID
 
 
         // Tendency of Kp and Ti to be biased lower when there is noise in Y
-
+        [TestCase(1, 0.0)]
         [TestCase(1, 0.1)]
         [TestCase(2, 0.1)]
         [TestCase(5, 0.1)]
@@ -113,10 +111,10 @@ namespace TimeSeriesAnalysis.Test.PidID
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
-            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp / 10);
+            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp / 10,"Kp too far off:"+ idResult.Kp);
             if (pidParameters1.Ti_s > 0)
             {
-                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s / 10);
+                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s / 10, "Ti_S too far off:" + idResult.Ti_s);
             }
             else
             {
@@ -158,10 +156,10 @@ namespace TimeSeriesAnalysis.Test.PidID
             // ----do not use inputData or simData below this line----
             var pidDataSet = processSim.GetUnitDataSetForPID(downsampleData, pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
-            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp / 10,"Kp too far off!");
+            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp / 10,"Kp too far off!:"+ idResult.Kp);
             if (pidParameters1.Ti_s > 0)
             {
-                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s / 10, "Ti_s too far off!");
+                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s / 10, "Ti_s too far off!"+ idResult.Ti_s);
             }
             else
             {

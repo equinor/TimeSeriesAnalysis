@@ -590,6 +590,9 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
+
+
+
         ///<summary>
         ///  Calculates the power of an array
         ///</summary>
@@ -1053,6 +1056,47 @@ namespace TimeSeriesAnalysis
             double Rsq = 1 - SSres / SStot;
             return Rsq;
         }
+
+
+        ///<summary>
+        /// smooths the array without phase-shifting by using both past and future values
+        /// (i.e. so called non-causal smoothing)
+        ///</summary>
+        public double[] NonCausalSmooth(double[] array1,int kernel=1)
+        {
+            if (array1 == null)
+                return null;
+
+            if (kernel <= 0)
+                return array1;
+
+            double[] retVal = new double[array1.Length];
+
+            for (int i = 0; i < kernel; i++)
+            {
+                retVal[i] = array1[i];
+            }
+            for (int i = kernel; i < array1.Length-kernel; i++)
+            {
+                int N = 0;
+                double curMean = 0;
+                for (int k = i - kernel; k <= i + kernel; k++)
+                {
+                    if (!IsNaN(array1[k]))
+                    {
+                        N += 1;
+                        curMean = curMean * (N - 1) / N + array1[k] * 1 / N;
+                    }
+                }
+                retVal[i] = curMean;
+            }
+            for (int i = array1.Length - kernel; i < array1.Length; i++)
+            {
+                retVal[i] = array1[i];
+            }
+            return retVal;
+        }
+
 
 
 

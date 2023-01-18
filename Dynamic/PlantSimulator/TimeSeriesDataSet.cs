@@ -591,6 +591,10 @@ namespace TimeSeriesAnalysis.Dynamic
             if (!dataset.ContainsKey(signalName))
                 return false;
 
+            if (seed == null)
+            {
+                seed = 0;
+            }
             dataset[signalName] = (new Vec()).Add(dataset[signalName],Vec.Rand(N.Value,-noiseAmplitude,noiseAmplitude,seed));
             return true;
         }
