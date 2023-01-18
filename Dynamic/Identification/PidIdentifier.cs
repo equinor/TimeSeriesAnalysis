@@ -118,15 +118,35 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
+        /// <param name="isPIDoutputDelayOneSample">specify if the pid-controller is acting on the e[k-1] if true, or e[k] if false</param>
         /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
+            const bool doOnlyWithDelay = false;//should be false unless debugging something
 
-            PidParameters results_withDelay = IdentifyInternal(dataSet, true);
-            dataSet.U_sim = Array2D<double>.Create(GetSimulatedU(results_withDelay,dataSet,true));
-            return results_withDelay;
+            (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true);
+            if (doOnlyWithDelay)
+            {
+                dataSet.U_sim = U_withDelay;
+                return results_withDelay;
+            }
+
+            // re-identify without assuming that there is a one-sample delay between e and u
+            // looks like this in some cases causes controller to go with wrong sign(which is okay, becasue assumption is wrong)
+            // if estimating on data that has a lower sample rate than the "true" data(ie. pid controller ran @1sec intervals, but data is sampled @10 sec intervals),
+            // which is frequently the case expect that this should yield slightly better estimator performance
+           (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false);
+            if (results_withDelay.Fitting.ObjFunValAbs < results_withoutDelay.Fitting.ObjFunValAbs)
+            {
+                dataSet.U_sim = U_withDelay;
+                return results_withDelay;
+            }
+            else
+            {
+                dataSet.U_sim = U_withoutDelay;
+                return results_withoutDelay;
+            }
         }
-
 
         private double[] GetUMinusFF(UnitDataSet dataSet)
         {
@@ -149,7 +169,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        private PidParameters IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
+        private (PidParameters,double[,]) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
         {
             this.timeBase_s = dataSet.GetTimeBase();
             PidParameters pidParam = new PidParameters();
@@ -383,24 +403,29 @@ namespace TimeSeriesAnalysis.Dynamic
             if (regressResults == null)
             {
                 pidParam.Fitting.WasAbleToIdentify = false;
-                return pidParam;
+                return (pidParam,null);
             }
+
+            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
+
             pidParam.Fitting.WasAbleToIdentify = true;
             pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigits);
             pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigits);
 
             pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
-            pidParam.Fitting.RsqFittingDiff = regressResults.Rsq;
-            pidParam.Fitting.ObjFunValFittingDiff = regressResults.ObjectiveFunctionValue;
-            pidParam.Fitting.RsqFittingAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
+            pidParam.Fitting.RsqDiff = regressResults.Rsq;
+            pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
+              
+            pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), U_sim.GetColumn(0), 0);
+            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), null, 0) * 100;
 
-            pidParam.Fitting.RsqFittingAbs = SignificantDigits.Format(pidParam.Fitting.RsqFittingAbs, nDigits);
-            pidParam.Fitting.RsqFittingDiff = SignificantDigits.Format(pidParam.Fitting.RsqFittingDiff, nDigits);
-            pidParam.Fitting.ObjFunValFittingDiff = SignificantDigits.Format(pidParam.Fitting.ObjFunValFittingDiff, nDigits);
-
+            pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
+            pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
+            pidParam.Fitting.ObjFunValDiff = SignificantDigits.Format(pidParam.Fitting.ObjFunValDiff, nDigits);
+            pidParam.Fitting.ObjFunValAbs = SignificantDigits.Format(pidParam.Fitting.ObjFunValAbs, nDigits);
             // fitting abs?
-            return pidParam;
+            return (pidParam,U_sim);
         }
 
         // todo: this code should be replaced after porting code into TimeSeriesAnalysis. Re-use common simulation rather than re-doing it.

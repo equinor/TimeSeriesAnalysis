@@ -230,7 +230,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // this is done to save on processing in case of many inputs (3 inputs= 8 identification runs)
                     //if (modelParams_noCurvature.FittingObjFunVal -modelParams_allCurvature.FittingObjFunVal > fitMinImprovement)
                     if (modelParams_allCurvature.Fitting.WasAbleToIdentify && 
-                        modelParams_allCurvature.Fitting.RsqFittingDiff - modelParams_noCurvature.Fitting.RsqFittingDiff > rSquaredDiff_MinImprovement)
+                        modelParams_allCurvature.Fitting.RsqDiff - modelParams_noCurvature.Fitting.RsqDiff > rSquaredDiff_MinImprovement)
                     {
                         List<bool[]> allNonZeroCombinations = GetAllNonzeroBitArrays(u0.Count());
                         foreach (bool[] curCurveEnabledConfig in allNonZeroCombinations)
@@ -357,13 +357,13 @@ namespace TimeSeriesAnalysis.Dynamic
             foreach (UnitParameters curModel in allModels)
             {
                 // Rsquared: higher is better
-                double RsqFittingDiff_improvement = curModel.Fitting.RsqFittingDiff - bestModel.Fitting.RsqFittingDiff ;
-                double RsqFittingAbs_improvement = curModel.Fitting.RsqFittingAbs - bestModel.Fitting.RsqFittingAbs;
+                double RsqFittingDiff_improvement = curModel.Fitting.RsqDiff - bestModel.Fitting.RsqDiff ;
+                double RsqFittingAbs_improvement = curModel.Fitting.RsqAbs - bestModel.Fitting.RsqAbs;
 
 
                 // objective function: lower is better
-                double objFunDiff_improvement = bestModel.Fitting.ObjFunValFittingDiff  - curModel.Fitting.ObjFunValFittingDiff ;// positive if curmodel improves on the current best
-                double objFunAbs_improvement = bestModel.Fitting.ObjFunValFittingAbs - curModel.Fitting.ObjFunValFittingAbs ;// positive if curmodel improves on the current best
+                double objFunDiff_improvement = bestModel.Fitting.ObjFunValDiff  - curModel.Fitting.ObjFunValDiff ;// positive if curmodel improves on the current best
+                double objFunAbs_improvement = bestModel.Fitting.ObjFunValAbs - curModel.Fitting.ObjFunValAbs ;// positive if curmodel improves on the current best
 
 
                 if (objFunDiff_improvement>= obFunDiff_MinImprovement && 
@@ -763,15 +763,15 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
-                parameters.Fitting.RsqFittingDiff = regResults.Rsq;
-                parameters.Fitting.ObjFunValFittingDiff = regResults.ObjectiveFunctionValue;
-                parameters.Fitting.ObjFunValFittingAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
-                parameters.Fitting.RsqFittingAbs =vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
+                parameters.Fitting.RsqDiff = regResults.Rsq;
+                parameters.Fitting.ObjFunValDiff = regResults.ObjectiveFunctionValue;
+                parameters.Fitting.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
+                parameters.Fitting.RsqAbs =vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
 
-                parameters.Fitting.RsqFittingAbs = SignificantDigits.Format(parameters.Fitting.RsqFittingAbs, nDigits);
-                parameters.Fitting.RsqFittingDiff = SignificantDigits.Format(parameters.Fitting.RsqFittingDiff, nDigits);
-                parameters.Fitting.ObjFunValFittingDiff = SignificantDigits.Format(parameters.Fitting.ObjFunValFittingDiff, nDigits);
-                parameters.Fitting.ObjFunValFittingAbs = SignificantDigits.Format(parameters.Fitting.ObjFunValFittingAbs, nDigits);
+                parameters.Fitting.RsqAbs = SignificantDigits.Format(parameters.Fitting.RsqAbs, nDigits);
+                parameters.Fitting.RsqDiff = SignificantDigits.Format(parameters.Fitting.RsqDiff, nDigits);
+                parameters.Fitting.ObjFunValDiff = SignificantDigits.Format(parameters.Fitting.ObjFunValDiff, nDigits);
+                parameters.Fitting.ObjFunValAbs = SignificantDigits.Format(parameters.Fitting.ObjFunValAbs, nDigits);
 
                 // add inn uncertainty
                 if (useDynamicModel)

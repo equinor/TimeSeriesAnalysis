@@ -32,6 +32,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <Compile Remove="packages\**" />
     <Compile Remove="Tests\**" />
     <Compile Remove="TimeSeriesAnalysis.Tests\**" />
+    <Compile Remove="www\plotly\data\**" />
     <EmbeddedResource Remove="api\**" />
     <EmbeddedResource Remove="articles\**" />
     <EmbeddedResource Remove="docs\**" />
@@ -39,6 +40,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <EmbeddedResource Remove="packages\**" />
     <EmbeddedResource Remove="Tests\**" />
     <EmbeddedResource Remove="TimeSeriesAnalysis.Tests\**" />
+    <EmbeddedResource Remove="www\plotly\data\**" />
     <None Remove="api\**" />
     <None Remove="articles\**" />
     <None Remove="docs\**" />
@@ -46,6 +48,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <None Remove="packages\**" />
     <None Remove="Tests\**" />
     <None Remove="TimeSeriesAnalysis.Tests\**" />
+    <None Remove="www\plotly\data\**" />
   </ItemGroup>
 
   <ItemGroup>

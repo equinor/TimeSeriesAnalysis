@@ -40,7 +40,7 @@ namespace TimeSeriesAnalysis.Dynamic
             /// This is the R-squared of the "differences" sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
             /// </para>>
             /// </summary>
-            public double RsqFittingDiff { get; set; }
+            public double RsqDiff { get; set; }
 
             /// <summary>
             /// The value of the R2 or root mean square
@@ -48,7 +48,7 @@ namespace TimeSeriesAnalysis.Dynamic
             /// This is the R-squared of the "absolute" sum(ymeas[k] - ymod[k] )
             /// </para>>
             /// </summary>
-            public double RsqFittingAbs { get; set; }
+            public double RsqAbs { get; set; }
 
             /// <summary>
             /// The value of the objective function during fitting, lower is better(used to choose among models)
@@ -56,7 +56,7 @@ namespace TimeSeriesAnalysis.Dynamic
             /// This is the R-squared of the "differences"  sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
             /// </para>>
             /// </summary>
-            public double ObjFunValFittingDiff { get; set; }
+            public double ObjFunValDiff { get; set; }
 
             /// <summary>
             /// The value of the objective function during fitting, lower is better(used to choose among models)
@@ -65,7 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
             /// </para>>
             /// </summary>
 
-            public double ObjFunValFittingAbs { get; set; }
+            public double ObjFunValAbs { get; set; }
 
             /// <summary>
             /// Number of bad data points ignored during fitting

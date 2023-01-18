@@ -558,5 +558,41 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return true;
         }
+
+        /// <summary>
+        /// Returns a copy of the dataset that is downsampled by the given factor
+        /// </summary>
+        /// <param name="downsampleFactor">value greater than 1 indicating that every nth value of the orignal data will be transferred</param>
+        /// <returns></returns>
+        public TimeSeriesDataSet CreateDownsampledCopy(int downsampleFactor)
+        {
+            TimeSeriesDataSet ret = new TimeSeriesDataSet();
+
+            ret.timeStamps =  Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor).ToList();
+            ret.N = ret.timeStamps.Count();
+            ret.dataset_constants = dataset_constants;
+            foreach (var item in dataset)
+            {
+                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Adds noise to a given signal in the datset. 
+        /// (This is mainly intended for testing identification algorithms against simulated data.)
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="noiseAmplitude"></param>
+        /// <param name="seed"></param>
+        /// <returns></returns>
+        public bool AddNoiseToSignal(string signalName, double noiseAmplitude, int? seed = null)
+        {
+            if (!dataset.ContainsKey(signalName))
+                return false;
+
+            dataset[signalName] = (new Vec()).Add(dataset[signalName],Vec.Rand(N.Value,-noiseAmplitude,noiseAmplitude,seed));
+            return true;
+        }
     }
 }

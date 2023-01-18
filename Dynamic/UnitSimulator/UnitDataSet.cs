@@ -108,11 +108,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ProcessName = originalDataSet.ProcessName + "downsampledFactor" + downsampleFactor;
 
             this.Y_meas = Vec<double>.Downsample(originalDataSet.Y_meas, downsampleFactor);
-            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor); ;
-            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor); ;
+            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor); 
+            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor); 
             this.U = Array2D<double>.Downsample(originalDataSet.U, downsampleFactor);
-            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor); ;
-            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor); ;
+            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor); 
+            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor); 
         }
 
         public int GetNumDataPoints ()

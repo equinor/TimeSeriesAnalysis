@@ -104,7 +104,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     if (modelRuns[i].Fitting.WasAbleToIdentify)
                     {
-                        objR2List.Add(modelRuns[i].Fitting.RsqFittingDiff);
+                        objR2List.Add(modelRuns[i].Fitting.RsqDiff);
                     }
                     else
                     {
@@ -133,7 +133,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     if (modelRuns[i].Fitting.WasAbleToIdentify)
                     {
-                        objFunValList.Add(modelRuns[i].Fitting.ObjFunValFittingDiff);
+                        objFunValList.Add(modelRuns[i].Fitting.ObjFunValDiff);
                     }
                     else
                     {
