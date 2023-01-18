@@ -23,7 +23,7 @@ namespace TimeSeriesAnalysis.Dynamic
             Scaling = new PidScaling();
             GainScheduling = new PidGainScheduling();
             FeedForward = new PidFeedForward();
-            Filtering = new PidFiltering();
+            Filtering = new PidFilterParams();
         }
 
 
@@ -65,7 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// PID-filtering object. This is optional
         /// </summary>
-        public PidFiltering Filtering { get; set; }
+        public PidFilterParams Filtering { get; set; }
 
         /// <summary>
         /// PID anti-surge parameters object. This is optional, set to null if not anti-surge PID

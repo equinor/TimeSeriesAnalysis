@@ -61,7 +61,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double Ti, Kp, Td;
         //private double y_FilterTconst_s;
         //private double y_FilterOrder;
-        private PidFiltering pidFiltering;
+        private PidFilterParams pidFilterParams;
         private double u0;
         private PidScaling pidScaling;
         private double u_prev, e_prev_unscaled, e_prev_prev_unscaled;
@@ -77,7 +77,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private double y_set_prc_prev;
         private PidGainScheduling gsObj = null;
-        private LowPass yFilt1,yFilt2;
+        private PidFilter pidFilter;// LowPass yFilt1,yFilt2;
 
         private PidFeedForward ffObj;
         private LowPass ffLP; // feed-forward low pass filter object
@@ -106,7 +106,7 @@ namespace TimeSeriesAnalysis.Dynamic
             //this.y_FilterTconst_s = 0;
             //this.y_FilterOrder = 0;
 
-            this.pidFiltering = new PidFiltering();
+            this.pidFilterParams = new PidFilterParams();
 
             this.u_prev = double.NaN;
             this.e_prev_unscaled = double.NaN;
@@ -120,8 +120,10 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ffObj = new PidFeedForward();
 
             this.TimeBase_s = TimeBase_s;
-            this.yFilt1 = new LowPass(TimeBase_s);
-            this.yFilt2 = new LowPass(TimeBase_s);
+            //            this.yFilt1 = new LowPass(TimeBase_s);
+            //           this.yFilt2 = new LowPass(TimeBase_s);
+
+            this.pidFilter = new PidFilter(pidFilterParams,TimeBase_s);
 
             this.ffLP = new LowPass(TimeBase_s);
             this.ffHP = new LowPass(TimeBase_s);
@@ -137,9 +139,10 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ffObj = feedForwardObj;
         }
 
-        public void SetPidFiltering(PidFiltering pidFiltering)
+        public void SetPidFiltering(PidFilterParams pidFiltering)
         {
-            this.pidFiltering = pidFiltering;
+            this.pidFilterParams = pidFiltering;
+            this.pidFilter = new PidFilter(pidFilterParams, (int)TimeBase_s);
         }
 
 
@@ -166,7 +169,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return this.gsObj;
         }
-
 
         /// <summary>
         /// Returns a status code, to determine if controller is in manual, auto or in tracking(relevant for split range controllers.)
@@ -603,15 +605,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         private double  CalcUnscaledE(double y_process_abs, double y_setpoint_abs)
         {
-        //    double y_scalingfactor = pidScaling.GetYScaleFactor() ;
             double y_setpoint_prc=0, y_process_prc, y_processFilt_prc, e;
-
-            //      y_setpoint_prc = (y_setpoint_abs - pidScaling.GetYmin()) * y_scalingfactor;
-            //      y_process_prc  = (y_process_abs - pidScaling.GetYmin()) * y_scalingfactor;
             // let E be unscaled, then scale Kp as neccessary instead!
             y_setpoint_prc = y_setpoint_abs ;//
             y_process_prc  = y_process_abs  ;
 
+
+            y_processFilt_prc = pidFilter.Filter(y_process_prc);
+            /*
             if (pidFiltering.IsEnabled)
             {
                 if (pidFiltering.FilterOrder == 1 && pidFiltering.TimeConstant_s > 0)
@@ -629,7 +630,7 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 y_processFilt_prc = y_process_prc;
-            }
+            }*/
 
             e = y_setpoint_prc - y_processFilt_prc;
             return e;

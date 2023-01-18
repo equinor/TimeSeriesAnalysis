@@ -26,6 +26,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double maxExpectedTc_s;
         private PidScaling pidScaling;
         private PidControllerType type;
+        private PidFilter pidFilter;
         private Vec vec;
         private double timeBase_s;
 
@@ -42,7 +43,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private void DetermineUminUmax(UnitDataSet dataSet, out double uMin, out double uMax)
         {
-            double[] e = GetErrorTerm(dataSet);
+            double[] e = GetErrorTerm(dataSet, pidFilter);
 
             // output constraints will cause multiple equal values u of next to each other.
             uMin = 0; // default value
@@ -146,6 +147,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 dataSet.U_sim = U_withoutDelay;
                 return results_withoutDelay;
             }
+            // TODO: if U_sim has a steady-state offset, then re-identify with PidFilter added to IdentifyInternal
+
+
+
         }
 
         private double[] GetUMinusFF(UnitDataSet dataSet)
@@ -163,15 +168,43 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-        private double[] GetErrorTerm(UnitDataSet dataSet)
+        private double[] GetErrorTerm(UnitDataSet dataSet, PidFilter pidFilter)
         {
-            return vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);
+            if (pidFilter == null)
+                return vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);
+            else
+            {
+                double[] y_filt = new double[dataSet.Y_meas.Length];
+                y_filt[0] = dataSet.Y_meas[0];
+                for (int i = 1; i < dataSet.Y_meas.Length; i++)
+                {
+                    y_filt[i] = pidFilter.Filter(dataSet.Y_meas[i]);
+                }
+                return vec.Subtract(y_filt, dataSet.Y_setpoint);
+            }
+
         }
 
 
-        private (PidParameters,double[,]) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample)
+        /// <summary>
+        /// Internal Pid-identification for a given dataset, sampling and with a given filter on y.
+        /// Note that if there is noise on y, then this identification algorithm is observed to under-estimate Kp and Ti.
+        /// This is the motivation for including the ability to include a filter on y
+        /// This method also takes pidScaling into account!
+        /// </summary>
+        /// <param name="dataSet">dataset to filter over</param>
+        /// <param name="isPIDoutputDelayOneSample"></param>
+        /// <param name="pidFilter">optional filter to apply to y</param>
+        /// <returns></returns>
+        private (PidParameters, double[,]) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
+            PidFilterParams pidFilterParams = null)
         {
             this.timeBase_s = dataSet.GetTimeBase();
+            if (pidFilterParams != null)
+            {
+                pidFilter = new PidFilter(pidFilterParams, timeBase_s);
+            }
+
             PidParameters pidParam = new PidParameters();
             pidParam.Fitting = new FittingInfo();
             if (pidScaling!=null)
@@ -189,7 +222,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
             }
 
-            double[] e_unscaled = GetErrorTerm(dataSet);
+            double[] e_unscaled = GetErrorTerm(dataSet, pidFilter);
 
             if (pidParam.Scaling.IsDefault())
             {
@@ -251,7 +284,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iteration back.
 
                 int idxStart = nIndexesBetweenWindows * curEstidx + nIterationsToLookBack;
-                int idxEnd = nIndexesBetweenWindows * (curEstidx + 1) - 1;//+ nIterationsToLookBack
+                int idxEnd = nIndexesBetweenWindows * (curEstidx + 1) - 1;
                 ind_result[curEstidx] = idxEnd;
 
                 double[] ucur, uprev, ecur, eprev;
@@ -281,6 +314,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 ecur = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
                 eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
+
+                // TODO: filter ecur and eprev
+                if (pidFilter != null)
+                { 
+                
+                
+                }
+
 
                 // replace -9999 in dataset
                 List<int> indBadU = SysIdBadDataFinder.GetAllBadIndicesPlussNext(ucur);
@@ -323,8 +364,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     continue;
                 }
-
                 Y_ols = vec.Subtract(ucur, uprev);
+
                 X1_ols = vec.Subtract(ecur, eprev);
                 X2_ols = vec.Multiply(ecur, timeBase_s);
 

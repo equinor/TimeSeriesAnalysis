@@ -175,7 +175,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     pid.WarmStart(WarmStart_y_process_abs.Value, 
                         WarmStart_y_set.Value, WarmStart_u.Value);
                 }
-
             }
 
             double y_process_abs = inputs[(int)PidModelInputsIdx.Y_meas];

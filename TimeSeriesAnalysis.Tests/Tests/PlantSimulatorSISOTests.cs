@@ -313,7 +313,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase]
         public void BasicPID_SetpointStep_WithNoiseAndFiltering_FilteringWorks()
         {
-            pidModel1.pidParameters.Filtering = new PidFiltering(true,1,5);
+            pidModel1.pidParameters.Filtering = new PidFilterParams(true,1,5);
 
             double newSetpoint = 51;
             var plantSim = new PlantSimulator(
