@@ -154,13 +154,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 bestPidParameters = results_withoutDelay;
                 bestU = U_withoutDelay;
             }
+
             double maxFilterTime_s = 6 * timeBase_s;
             for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
             { 
                 var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                 (PidParameters results_withFilter, double[,] U_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams);
 
-                if (results_withFilter.Fitting.ObjFunValAbs < bestPidParameters.Fitting.ObjFunValAbs/*|| isFirstRun*/)
+                if (results_withFilter.Fitting.ObjFunValAbs < bestPidParameters.Fitting.ObjFunValAbs)
                 {
                     bestU = U_withFilter;
                     bestPidParameters = results_withFilter;
