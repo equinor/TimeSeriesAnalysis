@@ -26,7 +26,6 @@ namespace TimeSeriesAnalysis.Dynamic
             Filtering = new PidFilterParams();
         }
 
-
         /// <summary>
         /// Proportional gain of controller
         /// </summary>
@@ -61,7 +60,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public PidScaling Scaling { get; set; }
 
-
         /// <summary>
         /// PID-filtering object. This is optional
         /// </summary>
@@ -82,11 +80,9 @@ namespace TimeSeriesAnalysis.Dynamic
             return warnings.ToArray();
         }
 
-
         public override string ToString()
         {
             int sDigits = 3;
-      //      int sDigitsUnc = 2;
 
             const int cutOffForUsingDays_s = 86400;
             const int cutOffForUsingHours_s = 3600;

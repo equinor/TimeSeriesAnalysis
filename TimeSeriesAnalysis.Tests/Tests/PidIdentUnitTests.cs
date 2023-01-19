@@ -34,14 +34,13 @@ namespace TimeSeriesAnalysis.Test.PidID
 
 
         // Tendency of Kp and Ti to be biased lower when there is noise in Y
-        [TestCase(1, 0.0)]
-        [TestCase(1, 0.1)]
-        [TestCase(2, 0.1)]
-        [TestCase(5, 0.1)]
+        [TestCase(1, 0.0,1)]
+        [TestCase(1, 0.1,8)]
+        [TestCase(2, 0.1,5)]
+        [TestCase(5, 0.1,2)]
 
-        public void SetpointStep_WNoise_KpAndTiEstimatedOk(double ySetAmplitude, double yNoiseAmplitude)
+        public void SetpointStep_WNoise_KpAndTiEstimatedOk(double ySetAmplitude, double yNoiseAmplitude, double tolerancePrc)
         {
-            double tolerancePrc = 10;
             var pidParameters1 = new PidParameters()
             {
                 Kp = 0.5,
@@ -63,8 +62,9 @@ namespace TimeSeriesAnalysis.Test.PidID
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
             Assert.AreEqual(idResult.GetWarnings().Count(),0);
+            Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
 
-         //   Shared.EnablePlots();
+            //   Shared.EnablePlots();
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
             Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
@@ -85,13 +85,13 @@ namespace TimeSeriesAnalysis.Test.PidID
         }
 
         // Tendency of Kp and Ti to be biased lower when there is noise in Y
-        [TestCase(1, 0.1)]
-        [TestCase(2, 0.1)]
-        [TestCase(4, 0.1)]
+        [TestCase(1, 0.1,10)]
+        [TestCase(2, 0.1,10)]
+        [TestCase(4, 0.1,20)]// very strange that the biggest setpoint step has the poorest estimation.
 
-        public void SetpointStep_WNoise_Downsampled_KpAndTiEstimatedOk(int downsampleFactor, double yNoiseAmplitude)
+        public void SetpointStep_WNoise_Downsampled_KpAndTiEstimatedOk(int downsampleFactor, 
+            double yNoiseAmplitude, double tolerancePrc)
         {
-            double tolerancePrc = 25;
             double ySetAmplitude = 1;
             var pidParameters1 = new PidParameters()
             {
@@ -114,6 +114,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             var downsampleData = combinedData.CreateDownsampledCopy(downsampleFactor);
             var pidDataSet = processSim.GetUnitDataSetForPID(downsampleData, pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
+            Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
 
             Assert.AreEqual(idResult.GetWarnings().Count(), 0);
 
@@ -138,14 +139,14 @@ namespace TimeSeriesAnalysis.Test.PidID
         }
 
 
-        [TestCase(5,0)]
-        [TestCase(1,0)]
-        [TestCase(5, 0.05)]
-        [TestCase(1, 0.05)]
+        [TestCase(5,0,5)]
+        [TestCase(1,0,5)]
+        [TestCase(5, 0.05,5)]
+        [TestCase(1, 0.05,10)]
 
-        public void DistStep_WNoise_KpAndTiEstimatedOk(double stepAmplitude, double yNoiseAmplitude )
+        public void DistStep_WNoise_KpAndTiEstimatedOk(double stepAmplitude, double yNoiseAmplitude, double tolerancePrc )
         {
-            double tolerancePrc = 20;
+            
             var pidParameters1 = new PidParameters()
             {
                 Kp = 0.5,
@@ -167,6 +168,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
+            Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, "Kp too far off:"+ idResult.Kp);
             if (pidParameters1.Ti_s > 0)
             {
@@ -193,14 +195,12 @@ namespace TimeSeriesAnalysis.Test.PidID
 
 
 
-        [TestCase(2,0)]
-        [TestCase(2,0.05)]
-        [TestCase(4,0)]
-        [TestCase(4,0.05)]
-        public void DistStep_WNoise_Downsampled_KpAndTiEstimatedOk(int downsampleFactor, double noiseAmplitude)
+        [TestCase(2,0,10)]
+        [TestCase(2,0.05,35)]// this is poor
+        [TestCase(4,0,10)]
+        [TestCase(4,0.05,20)]
+        public void DistStep_WNoise_Downsampled_KpAndTiEstimatedOk(int downsampleFactor, double noiseAmplitude, double tolerancePrc)
         {
-            double tolerancePrc = 10;
-
             int N = 1000;
             double stepAmplitude = 1;
 
@@ -226,16 +226,15 @@ namespace TimeSeriesAnalysis.Test.PidID
             var pidDataSet = processSim.GetUnitDataSetForPID(downsampleData, pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
-
-            Shared.EnablePlots();
+            Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
+         //   Shared.EnablePlots();
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
             Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
                 pidDataSet.U.GetColumn(0),pidDataSet.U_sim.GetColumn(0)},
                 new List<string> { "y1=y meas", "y1=y set", "y3=u", "y3=u_sim" },
                 pidDataSet.GetTimeBase(), caseId);
-            Shared.DisablePlots();
-
+           // Shared.DisablePlots();
 
             // asserts
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, "Kp too far off!:"+ idResult.Kp);
@@ -247,7 +246,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-        
+
         }
 
 

@@ -110,7 +110,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
          //   Shared.DisablePlots();
         }
 
-
         public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance, 
             bool doAssertResult=true)
         {

@@ -125,6 +125,8 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             const bool doOnlyWithDelay = false;//should be false unless debugging something
 
+
+            // 1. try identification with delay of one sample but without filtering
             (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true);
             if (doOnlyWithDelay)
             {
@@ -132,12 +134,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 return results_withDelay;
             }
 
-            // re-identify without assuming that there is a one-sample delay between e and u
-            // looks like this in some cases causes controller to go with wrong sign(which is okay, becasue assumption is wrong)
-            // if estimating on data that has a lower sample rate than the "true" data(ie. pid controller ran @1sec intervals, but data is sampled @10 sec intervals),
-            // which is frequently the case expect that this should yield slightly better estimator performance
+            // 2. try identification wihtout delay of one sample (yields better results often if dataset is downsampled)
+            //    relative to the clock that the pid algorithm ran on originally
             (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false);
 
+            // save which is the "best" estimate for comparison 
             bool doDelay = true;
             PidParameters bestPidParameters= results_withoutDelay;
             double[,] bestU = U_withoutDelay;
@@ -155,6 +156,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 bestU = U_withoutDelay;
             }
 
+            // 3. try filtering y_meas and see if this improves fit 
+            // if there is noise on y_meas that is not filtered, this may cause too small Kp/Ti
             double maxFilterTime_s = 6 * timeBase_s;
             for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
             { 
@@ -167,9 +170,29 @@ namespace TimeSeriesAnalysis.Dynamic
                     bestPidParameters = results_withFilter;
                 }
             }
+
+            // 4. try filtering the input u_meas
+            // this is experimental, but if downsampled, Kp/Ti seems often too low, and hypothesis is that this is because
+            // small variations in u_meas/y_meas are no longer tightly correlated, so identification should perhaps focus on fitting
+            // to only "larger" changes. 
+
+            bool filterUmeas = true;
+            for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
+            {
+                var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
+                (PidParameters results_withFilter, double[,] U_withFilter) = 
+                    IdentifyInternal(dataSet, doDelay, pidFilterParams,filterUmeas);
+
+                if (results_withFilter.Fitting.ObjFunValAbs < bestPidParameters.Fitting.ObjFunValAbs)
+                {
+                    bestU = U_withFilter;
+                    bestPidParameters = results_withFilter;
+                }
+            }
+
+            // 5. finally return the "best" result
             dataSet.U_sim = bestU;
             return bestPidParameters;
-            
         }
 
         /// <summary>
@@ -293,7 +316,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidFilter">optional filter to apply to y</param>
         /// <returns></returns>
         private (PidParameters, double[,]) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
-            PidFilterParams pidFilterParams = null)
+            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false)
         {
             this.timeBase_s = dataSet.GetTimeBase();
             PidParameters pidParam = new PidParameters();
@@ -358,6 +381,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             double[] uMinusFF = GetUMinusFF(dataSet);
+            if (doFilterUmeas && pidFilter != null)
+            {
+                int kernelLength = (int)Math.Floor(pidFilter.GetParams().TimeConstant_s / timeBase_s);
+                uMinusFF = (new Vec()).NonCausalSmooth(uMinusFF, kernelLength);
+            }
 
             double uRange = vec.Max(uMinusFF) - vec.Min(uMinusFF);
             double[] X1_ols = new double[bufferLength];
@@ -411,14 +439,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 ecur = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
                 eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
-
-                // TODO: filter ecur and eprev
-                if (pidFilter != null)
-                { 
-                
-                
-                }
-
 
                 // replace -9999 in dataset
                 List<int> indBadU = SysIdBadDataFinder.GetAllBadIndicesPlussNext(ucur);
@@ -492,16 +512,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 double eMin = vec.Min(ecur);
                 double uMax = vec.Max(ucur);
                 double uMin = vec.Min(ucur);
-                /*
+                
                 double expectedRoughtEstimateForKp = Math.Abs((uMax - uMin) / (eMax - eMin));
                 if (Math.Abs(Kpest[curEstidx]) < expectedRoughtEstimateForKp * CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC)
                 {
                     pidParam.AddWarning(PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto);
                     pidParam.Fitting.WasAbleToIdentify = false;
-                    Kpest[curEstidx] = badValueIndicatingValue;
-                    Tiest[curEstidx] = badValueIndicatingValue;
+             //       Kpest[curEstidx] = badValueIndicatingValue;
+              //      Tiest[curEstidx] = badValueIndicatingValue;
                     continue;
-                }*/
+                }
 
                 if (b[1] == 0)
                 {
@@ -528,6 +548,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // if there is too little variation in U, then Kp tends to close to zero.
 
             const int nDigits = 7;
+            const int nDigitsParams = 4;
 
             pidParam.Kp = Kpest[0];
             pidParam.Ti_s = Tiest[0];
@@ -547,8 +568,9 @@ namespace TimeSeriesAnalysis.Dynamic
             double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
 
             pidParam.Fitting.WasAbleToIdentify = true;
-            pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigits);
-            pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigits);
+            pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigitsParams);
+            pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigitsParams);
+            pidParam.Td_s = SignificantDigits.Format(pidParam.Td_s, nDigitsParams);
 
             pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
