@@ -335,11 +335,13 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 pidParam.Fitting.WasAbleToIdentify = false;
                 pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
+                return (pidParam, null);
             }
             else if (vec.IsAllNaN(dataSet.Y_setpoint))
             {
                 pidParam.Fitting.WasAbleToIdentify = false;
                 pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_YsetIsBad);
+                return (pidParam, null);
             }
 
             double[] e_unscaled = GetErrorTerm(dataSet, pidFilter);

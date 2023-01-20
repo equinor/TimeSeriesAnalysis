@@ -235,7 +235,7 @@ namespace TimeSeriesAnalysis
 
             List<int> indices = new List<int>();
             if (vec == null)
-                return indices
+                return indices;
 
             if (type == VectorFindValueType.BiggerThan)
             {
