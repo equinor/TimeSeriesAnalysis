@@ -9,8 +9,10 @@ using System.IO;
 using Newtonsoft.Json;
 
 using TimeSeriesAnalysis.Utility;
+using TimeSeriesAnalysis.Dynamic;
+using Newtonsoft.Json.Linq;
 
-namespace TimeSeriesAnalysis.Dynamic
+namespace TimeSeriesAnalysis
 {
 
 
@@ -20,9 +22,6 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Time is either treated by giving a timeBase in seconds and a starting time, or by  
     /// specifying a vector of timestamps.
     /// </para>
-    /// <remark>
-    /// This is the return data class of <seealso cref="PlantSimulator"/>
-    /// </remark>
     /// </summary>
     public class TimeSeriesDataSet
     {
@@ -55,114 +54,7 @@ namespace TimeSeriesAnalysis.Dynamic
             timeStamps = inputDataSet.timeStamps;
         }
 
-        /// <summary>
-        /// Constructor: Reads data form  a csv-file (such as that created by ToCSV()) 
-        /// </summary>
-        /// <param name="csvFileName">csv file name</param>
-        /// <param name="separator">default separator</param>
-        /// <param name="dateTimeFormat">format string of the time-series vector to be read</param>
-        /// <returns></returns>
-        public bool LoadFromCsv(string csvFileName, char separator=';',string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
-        {
-            bool isOk = CSV.LoadDataFromCsvAsTimeSeries(csvFileName, separator, out DateTime[] dateTimes, 
-                out Dictionary<string, double[]> variableDict, dateTimeFormat);
-            if (isOk)
-            {
-                Fill(dateTimes, variableDict);
-            }
-            return isOk;
-        }
 
-        public bool LoadFromCsv(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
-        {
-            bool isOK = CSV.LoadDataFromCsvContentAsTimeSeries(csvContent, separator, out DateTime[] dateTimes, 
-                out Dictionary<string, double[]> variableDict, dateTimeFormat);
-            if (isOK)
-            {
-                Fill(dateTimes, variableDict);
-            }
-            return isOK; 
-        }
-
-
-        public double GetTimeBase()
-        {
-            if (timeStamps.Count > 2)
-            {
-                return timeStamps[2].Subtract(timeStamps[1]).TotalSeconds;
-            }
-            else
-                return 0;
-        }
-
-
-        private void Fill(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
-        {
-            if (variableDict.ContainsKey("Time"))
-            {
-                variableDict.Remove("Time");
-            }
-            if (variableDict.ContainsKey("time"))
-            {
-                variableDict.Remove("time");
-            }
-            dataset = variableDict;
-            N = (int?)dataset[dataset.Keys.First()].Length;
-            if (dateTimes.Length > 1)
-            {
-                timeStamps = dateTimes.ToList();
-            }
-        }
-        /// <summary>
-        /// Add a constant value to the time-series to the dataset
-        /// </summary>
-        /// <param name="signalName"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        public bool AddConstant(string signalName, double value)
-        {
-            if (signalName == null)
-            {
-                return false;
-            }
-            if (dataset_constants.ContainsKey(signalName))
-            {
-                return false;
-            }
-            dataset_constants.Add(signalName, value);
-            return true;
-        }
-
-        /// <summary>
-        /// Define a new signal, specifying only its inital value
-        /// </summary>
-        /// <param name="signalName"></param>
-        /// <param name="initalValue">the value of time zero</param>
-        /// <param name="N">number of time stamps</param>
-        /// <param name="nonYetSimulatedValue">what value to fill in for future undefined times, default:nan</param>
-        public void InitNewSignal(string signalName, double initalValue, int N, double nonYetSimulatedValue = Double.NaN)
-        {
-            Add(signalName, Vec<double>.Concat(new double[] { initalValue },
-                Vec<double>.Fill(nonYetSimulatedValue, N - 1)));
-        }
-
-        /// <summary>
-        /// Removes a signal from the dataset
-        /// </summary>
-        /// <param name="signalName"></param>
-        /// <returns></returns>
-        public bool Remove(string signalName)
-        {
-            if (dataset.ContainsKey(signalName))
-            {
-                dataset.Remove(signalName);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
 
 
@@ -187,13 +79,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
             }
             if (N.HasValue)
-               {
-                   if (N != values.Length)
-                   {
-                       dataset.Add(signalName, values);
-                       return false;//incorrect size of signal
-                   }
-               }
+            {
+                if (N != values.Length)
+                {
+                    dataset.Add(signalName, values);
+                    return false;//incorrect size of signal
+                }
+            }
             else
             {
                 if (values.Length > 1)
@@ -204,6 +96,108 @@ namespace TimeSeriesAnalysis.Dynamic
             dataset.Add(signalName, values);
             return true;
         }
+
+        /// <summary>
+        /// Add a constant value to the time-series to the dataset
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public bool AddConstant(string signalName, double value)
+        {
+            if (signalName == null)
+            {
+                return false;
+            }
+            if (dataset_constants.ContainsKey(signalName))
+            {
+                return false;
+            }
+            dataset_constants.Add(signalName, value);
+            return true;
+        }
+
+        private void Fill(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
+        {
+            if (variableDict.ContainsKey("Time"))
+            {
+                variableDict.Remove("Time");
+            }
+            if (variableDict.ContainsKey("time"))
+            {
+                variableDict.Remove("time");
+            }
+            dataset = variableDict;
+            N = dataset[dataset.Keys.First()].Length;
+            if (dateTimes.Length > 1)
+            {
+                timeStamps = dateTimes.ToList();
+            }
+        }
+
+
+        public double GetTimeBase()
+        {
+            if (timeStamps.Count > 2)
+            {
+                return timeStamps[2].Subtract(timeStamps[1]).TotalSeconds;
+            }
+            else
+                return 0;
+        }
+
+        /// <summary>
+        /// Define a new signal, specifying only its inital value
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="initalValue">the value of time zero</param>
+        /// <param name="N">number of time stamps</param>
+        /// <param name="nonYetSimulatedValue">what value to fill in for future undefined times, default:nan</param>
+        public void InitNewSignal(string signalName, double initalValue, int N, double nonYetSimulatedValue = double.NaN)
+        {
+            Add(signalName, Vec<double>.Concat(new double[] { initalValue },
+                Vec<double>.Fill(nonYetSimulatedValue, N - 1)));
+        }
+
+        /// <summary>
+        /// Loads the CsvContent(which can be read from a file) into a TimeSeriesDataSet object
+        /// </summary>
+        /// <param name="csvContent"></param>
+        /// <param name="separator"></param>
+        /// <param name="dateTimeFormat"></param>
+        /// <returns></returns>
+        public bool LoadFromCsv(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            bool isOK = CSV.LoadDataFromCsvContentAsTimeSeries(csvContent, separator, out DateTime[] dateTimes,
+                out Dictionary<string, double[]> variableDict, dateTimeFormat);
+            if (isOK)
+            {
+                Fill(dateTimes, variableDict);
+            }
+            return isOK;
+        }
+
+
+
+        /// <summary>
+        /// Removes a signal from the dataset
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <returns></returns>
+        public bool Remove(string signalName)
+        {
+            if (dataset.ContainsKey(signalName))
+            {
+                dataset.Remove(signalName);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
         /// <summary>
         /// Adds all signals in a given set to this set
@@ -231,7 +225,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>the newly created dataset</returns>
         public TimeSeriesDataSet Combine(TimeSeriesDataSet inputDataSet)
         {
-            TimeSeriesDataSet dataSet = new TimeSeriesDataSet(this) ;
+            TimeSeriesDataSet dataSet = new TimeSeriesDataSet(this);
             foreach (string signalName in inputDataSet.GetSignalNames())
             {
                 double[] values = inputDataSet.GetValues(signalName);
@@ -259,7 +253,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (ContainsSignal(signalID))
             {
-                if (dataset[signalID].Length >idx)
+                if (dataset[signalID].Length > idx)
                 {
                     dataset[signalID][idx] = value;
                     return true;
@@ -269,6 +263,28 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
                 return false;
+        }
+
+
+        /// <summary>
+        /// Adds noise to a given signal in the datset. 
+        /// (This is mainly intended for testing identification algorithms against simulated data.)
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="noiseAmplitude"></param>
+        /// <param name="seed"></param>
+        /// <returns></returns>
+        public bool AddNoiseToSignal(string signalName, double noiseAmplitude, int? seed = null)
+        {
+            if (!dataset.ContainsKey(signalName))
+                return false;
+
+            if (seed == null)
+            {
+                seed = 0;
+            }
+            dataset[signalName] = new Vec().Add(dataset[signalName], Vec.Rand(N.Value, -noiseAmplitude, noiseAmplitude, seed));
+            return true;
         }
 
         /// <summary>
@@ -285,6 +301,59 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
+        /// Returns a copy of the dataset that is downsampled by the given factor
+        /// </summary>
+        /// <param name="downsampleFactor">value greater than 1 indicating that every nth value of the orignal data will be transferred</param>
+        /// <returns></returns>
+        public TimeSeriesDataSet CreateDownsampledCopy(int downsampleFactor)
+        {
+            TimeSeriesDataSet ret = new TimeSeriesDataSet();
+
+            ret.timeStamps = Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor).ToList();
+            ret.N = ret.timeStamps.Count();
+            ret.dataset_constants = dataset_constants;
+            foreach (var item in dataset)
+            {
+                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
+        /// </summary>
+        /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
+        /// <param name="t0">start time, can be null, which can be usedful for testing</param>
+        public void CreateTimestamps(double timeBase_s, DateTime? t0 = null)
+        {
+            if (t0 == null)
+            {
+                t0 = new DateTime(2010, 1, 1);//intended for testing
+            }
+
+            var times = new List<DateTime>();
+            DateTime time = t0.Value;
+            for (int i = 0; i < N; i++)
+            {
+                times.Add(time);
+                time = time.AddSeconds(timeBase_s);
+            }
+            timeStamps = times;
+        }
+
+        /// <summary>
+        /// Get all signals in the dataset as a matrix
+        /// </summary>
+        /// <returns>the signals as a 2d-matrix, and the an array of strings with corresponding signal names</returns>
+        public (double[,], string[]) GetAsMatrix()
+        {
+            List<double[]> listOfVectors = (List<double[]>)dataset.Values.ToList();
+            double[][] jagged = Array2D<double>.CreateJaggedFromList(listOfVectors);
+            double[,] ret2D = Array2D<double>.Created2DFromJagged(jagged); 
+            return (ret2D.Transpose(), dataset.Keys.ToArray());
+        }
+
+        /// <summary>
         /// Get Data for multiple signals at a specific time index
         /// </summary>
         /// <param name="signalName"></param>
@@ -294,7 +363,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (signalName == null)
             {
-                return Double.NaN;
+                return double.NaN;
             }
             if (!dataset.ContainsKey(signalName))
             {
@@ -322,7 +391,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 if (signalName == null)
                 {
-                    retData[valueIdx] = Double.NaN;
+                    retData[valueIdx] = double.NaN;
                     valueIdx++;
                     continue;
                 }
@@ -417,7 +486,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 retVal = GetValue(inputId, timeIndex);
                 if (!retVal.HasValue)
                 {
-                    retVals[index] = Double.NaN;
+                    retVals[index] = double.NaN;
                 }
                 else
                 {
@@ -447,26 +516,25 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-        /// <summary>
-        /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
-        /// </summary>
-        /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
-        /// <param name="t0">start time, can be null, which can be usedful for testing</param>
-        public void CreateTimestamps(double timeBase_s, DateTime? t0= null)
-        {
-            if (t0 == null)
-            {
-                t0 = new DateTime(2010, 1, 1);//intended for testing
-            }
 
-            var times = new List<DateTime>();
-            DateTime time = t0.Value;
-            for (int i = 0; i < N; i++)
+
+
+        /// <summary>
+        ///  Reads data form  a csv-file (such as that created by ToCSV()) 
+        /// </summary>
+        /// <param name="csvFileName">csv file name</param>
+        /// <param name="separator">default separator</param>
+        /// <param name="dateTimeFormat">format string of the time-series vector to be read</param>
+        /// <returns></returns>
+        public bool LoadFromCsv(string csvFileName, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            bool isOk = CSV.LoadDataFromCsvAsTimeSeries(csvFileName, separator, out DateTime[] dateTimes,
+                out Dictionary<string, double[]> variableDict, dateTimeFormat);
+            if (isOk)
             {
-                times.Add(time);
-                time = time.AddSeconds(timeBase_s);
+                Fill(dateTimes, variableDict);
             }
-            this.timeStamps = times;
+            return isOk;
         }
 
         /// <summary>
@@ -505,7 +573,7 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.Append(string.Join(csvSeparator, signalNames));
             sb.Append("\r\n");
 
-           
+
             for (int curTimeIdx = 0; curTimeIdx < GetLength(); curTimeIdx++)
             {
                 DateTime curDate = timeStamps.ElementAt(curTimeIdx); ;
@@ -559,44 +627,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
 
-        /// <summary>
-        /// Returns a copy of the dataset that is downsampled by the given factor
-        /// </summary>
-        /// <param name="downsampleFactor">value greater than 1 indicating that every nth value of the orignal data will be transferred</param>
-        /// <returns></returns>
-        public TimeSeriesDataSet CreateDownsampledCopy(int downsampleFactor)
-        {
-            TimeSeriesDataSet ret = new TimeSeriesDataSet();
 
-            ret.timeStamps =  Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor).ToList();
-            ret.N = ret.timeStamps.Count();
-            ret.dataset_constants = dataset_constants;
-            foreach (var item in dataset)
-            {
-                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor);
-            }
-            return ret;
-        }
-
-        /// <summary>
-        /// Adds noise to a given signal in the datset. 
-        /// (This is mainly intended for testing identification algorithms against simulated data.)
-        /// </summary>
-        /// <param name="signalName"></param>
-        /// <param name="noiseAmplitude"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
-        public bool AddNoiseToSignal(string signalName, double noiseAmplitude, int? seed = null)
-        {
-            if (!dataset.ContainsKey(signalName))
-                return false;
-
-            if (seed == null)
-            {
-                seed = 0;
-            }
-            dataset[signalName] = (new Vec()).Add(dataset[signalName],Vec.Rand(N.Value,-noiseAmplitude,noiseAmplitude,seed));
-            return true;
-        }
     }
 }

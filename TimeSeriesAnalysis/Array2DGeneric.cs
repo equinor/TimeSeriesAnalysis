@@ -131,18 +131,6 @@ namespace TimeSeriesAnalysis
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// Initializes a 2D array from a list of arrays representing each column in the array
         /// </summary>

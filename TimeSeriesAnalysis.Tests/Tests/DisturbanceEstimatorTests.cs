@@ -6,6 +6,7 @@ using System.Text;
 
 using NUnit.Framework;
 using TimeSeriesAnalysis.Dynamic;
+using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Test.DisturbanceID

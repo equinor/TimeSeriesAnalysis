@@ -124,13 +124,23 @@ namespace TimeSeriesAnalysis
             double retVal = 0;
             double avg1 = Mean(array1).Value;
             double avg2 = Mean(array2).Value;
+            double absMax1 = Max(Abs(array1));
+            double absMax2 = Max(Abs(array2));
+
             int N = 0;
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]) || IsNaN(array2[i]))
                     continue;
                 N++;
-                retVal += (array1[i] - avg1) * (array2[i] - avg2);
+                if (doNormalize)
+                {
+                    retVal += (array1[i] - avg1)/absMax1 * (array2[i] - avg2) / absMax2;
+                }
+                else
+                {
+                    retVal += (array1[i] - avg1) * (array2[i] - avg2);
+                }
             }
             if (doNormalize)
             {

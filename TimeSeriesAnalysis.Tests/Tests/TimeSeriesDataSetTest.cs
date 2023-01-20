@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
-using TimeSeriesAnalysis.Dynamic;
+using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis._Examples;
 

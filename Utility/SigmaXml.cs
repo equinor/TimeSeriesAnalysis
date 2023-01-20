@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using TimeSeriesAnalysis.Dynamic;
+using TimeSeriesAnalysis;
 
 namespace TimeSeriesAnalysis.Utility
 {

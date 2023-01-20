@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using NUnit.Framework;
+using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
