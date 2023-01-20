@@ -232,7 +232,10 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public List<int> FindValues(double[] vec, double value, VectorFindValueType type)
         {
+
             List<int> indices = new List<int>();
+            if (vec == null)
+                return indices
 
             if (type == VectorFindValueType.BiggerThan)
             {
