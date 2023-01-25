@@ -73,6 +73,26 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
+        /// Get the indice of value <c>val</c> values that are present in <c>vec</c>
+        /// </summary>
+        /// <param name="vec1">The results are related to the positions in this vector</param>
+        /// <param name="vec2"><c>vec1</c> is compared to this vector</param>
+        /// <returns></returns>
+        public static List<int> GetIndicesOfValue(T val, List<T> vec)
+        {
+            List<int> ind1 = new List<int>();
+            for (int k = 0; k < vec.Count; k++)
+            {
+                if (vec.ElementAt(k).Equals(val))
+                {
+                    ind1.Add(k);
+                }
+            }
+            return ind1;
+        }
+
+
+        /// <summary>
         /// Get the indices of <c>vec1</c> values that are present in <c>vec2</c>
         /// </summary>
         /// <param name="vec1">The results are related to the positions in this vector</param>

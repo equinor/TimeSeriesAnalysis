@@ -2,6 +2,7 @@
 using Accord.Statistics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TimeSeriesAnalysis
@@ -58,15 +59,24 @@ namespace TimeSeriesAnalysis
         /// <returns>a</returns>
         public static List<CorrelationObject> CalculateAndOrder(string signalName, TimeSeriesDataSet dataSet)
         {
-            var mainSignal = dataSet.GetValues(signalName);
+            List<CorrelationObject> ret = new List<CorrelationObject>();
 
             (double[,] matrix, string[] signalNames) = dataSet.GetAsMatrix();
+            // not found in datset.
+            if (!signalNames.Contains<string>(signalName))
+                return ret;
+
+            var indice = Vec<string>.GetIndicesOfValue(signalName,signalNames.ToList()).First();
+
+            var mainSignal = dataSet.GetValues(signalName);
+            // signal was not found in the dataset.
+            if (mainSignal == null)
+                return ret;
+
             double[,] corrMatrix = Measures.Correlation(matrix);
-            double[] corr = corrMatrix.GetColumn(0);
+            double[] corr = corrMatrix.GetColumn(indice);
 
             double[] sortedValues = Vec<double>.Sort((new Vec()).Abs(corr), VectorSortType.Descending,out int[] sortIdx);
-
-            List<CorrelationObject> ret = new List<CorrelationObject>();
 
             for (int i=0; i < sortedValues.Length; i++)
             {
