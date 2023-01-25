@@ -49,6 +49,9 @@ namespace TimeSeriesAnalysis.Dynamic
             var settings = SerializationSettings();
             PlantSimulator obj =  (PlantSimulator)JsonConvert.DeserializeObject(serializedPlantSimulatorJson, typeof(PlantSimulator),settings);
 
+            if (obj == null)
+                return obj;
+
             // workaround for plantName and plantDescription begin null
             if (obj.plantDescription == null)
             {
