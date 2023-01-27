@@ -41,6 +41,11 @@ namespace TimeSeriesAnalysis.Dynamic
         public double Td_s { get; set; } = 0;
 
         /// <summary>
+        /// Output value when e=0, used only for P-only controllers, u = Kp*e + u0
+        /// </summary>
+        public double u0 { get; set; } = 50;
+
+        /// <summary>
         /// If the PID-controller is to be protected from a specific value that is used to identify bad or missing data, specify here
         /// </summary>
         public double NanValue { get; set; } = -9999;

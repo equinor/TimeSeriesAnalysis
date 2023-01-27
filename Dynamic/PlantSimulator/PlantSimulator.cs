@@ -73,6 +73,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public List<Comment> comments;
 
+        /// <summary>
+        /// A value indicating how well the model fits, higher is better.
+        /// </summary>
+        public double fitScore;
+
         public Dictionary<string, ISimulatableModel> modelDict;
         public List<string> externalInputSignalIDs;
         public ConnectionParser connections;

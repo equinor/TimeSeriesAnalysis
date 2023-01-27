@@ -169,6 +169,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 pid.SetAntiSurgeParams(pidParameters.AntiSurgeParams);
                 pid.SetFeedForward(pidParameters.FeedForward);
                 pid.SetPidFiltering(pidParameters.Filtering);
+                pid.SetU0ForPcontrol(pidParameters.u0);
 
                 if (WarmStart_y_process_abs.HasValue)
                 {

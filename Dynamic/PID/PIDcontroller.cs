@@ -59,8 +59,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private double TimeBase_s;
         private double Ti, Kp, Td;
-        //private double y_FilterTconst_s;
-        //private double y_FilterOrder;
         private PidFilterParams pidFilterParams;
         private double u0;
         private PidScaling pidScaling;
@@ -102,9 +100,6 @@ namespace TimeSeriesAnalysis.Dynamic
             this.Kp = Kp;
             this.Ti = Ti;
             this.Td = Td;
-
-            //this.y_FilterTconst_s = 0;
-            //this.y_FilterOrder = 0;
 
             this.pidFilterParams = new PidFilterParams();
 
@@ -294,18 +289,6 @@ namespace TimeSeriesAnalysis.Dynamic
             this.uTrackingOffset = uTrackingOffset;
             this.uTrackingCutoff = uTrackingCutoff;
         }
-
-
-        /// <summary>
-        /// Sets the filter time constant in seconds and the filter order (1. or 2. order supported) of low-pass filter to be applied to the process
-        /// measurement y
-        /// </summary>
-        /*
-        public void SetYFilter(double filterTimeConstant_s, int filterOrder=1)
-        {
-            this.y_FilterOrder      = filterOrder;
-            this.y_FilterTconst_s   = filterTimeConstant_s;
-        }*/
 
         /// <summary>
         /// Calculates an entire output vector u given vector of processes and setpoints (and optionally a tracking signal for split range)
@@ -551,7 +534,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double e    = CalcUnscaledE(y_process_abs, y_set_abs);
             e_prev_unscaled      = e;
             e_prev_prev_unscaled = e;
-            u0      = u_abs;
+           // u0      = u_abs;
             uIfInAuto = u_abs;
             controllerStatus = PidStatus.AUTO; 
          }
