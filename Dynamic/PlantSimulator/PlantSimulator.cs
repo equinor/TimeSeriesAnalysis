@@ -14,7 +14,6 @@ using Accord.Statistics;
 using Newtonsoft.Json;
 
 using TimeSeriesAnalysis;
-using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 
 
@@ -25,16 +24,16 @@ namespace TimeSeriesAnalysis.Dynamic
         public string author;
         public DateTime date;
         public string comment;
+        public double plantScore;
 
-        public Comment(string author, DateTime date, string comment)
+        public Comment(string author, DateTime date, string comment, double plantScore =0)
         {
             this.author = author;
             this.date = date;
             this.comment = comment;
+            this.plantScore= plantScore;
         }
-
      }
-
 
     /// <summary>
     /// Simulates larger "plant-models" that is built up connected sub-models, 

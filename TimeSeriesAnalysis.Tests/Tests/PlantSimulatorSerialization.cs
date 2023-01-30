@@ -100,7 +100,7 @@ namespace TimeSeriesAnalysis.Tests.Serialization
             inputData2.LoadFromCsv(inputDataJsonTxt);
 
             // 3. deserialize to a new object
-            var plantSim2 = PlantSimulatorHelper.LoadFromJsonTxt(plantsimJsonTxt);
+            var plantSim2 = PlantSimulatorSerializer.LoadFromJsonTxt(plantsimJsonTxt);
 
             // 4. simulate the plant object created from Json
             var isOk = plantSim2.Simulate(inputData2, out TimeSeriesDataSet simData);
@@ -173,7 +173,7 @@ namespace TimeSeriesAnalysis.Tests.Serialization
             var plantSim_ident = new PlantSimulator(modelList_ident, "DeserializedTest_ident", "a test");
 
             var plantsimJsonTxt = plantSim_ident.SerializeTxt();
-            var plantSim_ident_deserialized = PlantSimulatorHelper.LoadFromJsonTxt(plantsimJsonTxt);
+            var plantSim_ident_deserialized = PlantSimulatorSerializer.LoadFromJsonTxt(plantsimJsonTxt);
 
             var model= (UnitModel)plantSim_ident.modelDict.First().Value;
             var model_deseralized = (UnitModel)plantSim_ident_deserialized.modelDict.First().Value;

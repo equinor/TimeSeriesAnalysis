@@ -27,7 +27,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
 
-    public class PlantSimulatorHelper
+    public class PlantSimulatorSerializer
     {
         private static JsonSerializerSettings SerializationSettings()
         {

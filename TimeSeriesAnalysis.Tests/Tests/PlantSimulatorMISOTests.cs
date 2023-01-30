@@ -171,7 +171,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             // deserialize file to an object
             // this particular model has an external signal "Noise" that is mentioned
             // in the model
-            var plantSim = PlantSimulatorHelper.LoadFromJsonFile(
+            var plantSim = PlantSimulatorSerializer.LoadFromJsonFile(
                 @"..\..\..\TestData\_BasicPID_setpointStepWithRandomWalk.json");
 
             var inputData = new TimeSeriesDataSet();
