@@ -60,7 +60,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            if (doPlot)
+         //   if (doPlot)
             {
                 Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
                 pidDataSet.U.GetColumn(0),
@@ -84,6 +84,27 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
+
+
+        [TestCase(1,1.5,10)]
+        //[TestCase(1,-1.5,30)]
+        public void Static_RandomWalk_EstimatesOk(double noiseAmplitude, double systemGain, double precisionPrc)
+        {
+            UnitParameters staticModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { systemGain },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+
+            Shared.EnablePlots();
+            var trueDisturbance = TimeSeriesCreator.RandomWalk( N, noiseAmplitude);
+            GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,true, precisionPrc);
+            Shared.DisablePlots();
+        }
+
+
 
         // this works as long as only static identifiation is used in the closed-looop identifier,
         // otherwise the model 

@@ -69,6 +69,22 @@ namespace TimeSeriesAnalysis.Utility
             return Vec.Rand(N, -noiseAmplitude, noiseAmplitude, null);
         }
 
+        static public double[] RandomWalk(int N, double stepAmplitude, double startval=0, int? seed = null)
+        {
+            var steps = Vec.Rand(N, -stepAmplitude, stepAmplitude, null);
+
+            double[] ret = new double[N];
+            ret[0] = startval;
+            for (int i= 1;i<N;i++)
+            {
+                ret[i] = ret[i - 1] + steps[i];
+            }
+            return ret;
+        }
+
+
+
+
 
 
 
