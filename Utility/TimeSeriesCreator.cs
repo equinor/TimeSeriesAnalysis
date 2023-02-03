@@ -71,7 +71,7 @@ namespace TimeSeriesAnalysis.Utility
 
         static public double[] RandomWalk(int N, double stepAmplitude, double startval=0, int? seed = null)
         {
-            var steps = Vec.Rand(N, -stepAmplitude, stepAmplitude, null);
+            var steps = Vec.Rand(N, -stepAmplitude, stepAmplitude, seed);
 
             double[] ret = new double[N];
             ret[0] = startval;

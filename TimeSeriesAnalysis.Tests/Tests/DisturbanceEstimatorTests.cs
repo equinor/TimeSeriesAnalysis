@@ -127,6 +127,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             inputData.CreateTimestamps(timeBase_s);
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
+            Assert.IsTrue(simData.ContainsSignal(processModel.GetID()),"simulated dataset should include internal process model output (pre-disturbance)");
             var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var result = DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel(pidDataSet, processModel);
             if (doAssertResult)
@@ -200,10 +201,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 inputData.CreateTimestamps(timeBase_s);
 
                 //////////////////////////////////
-                // TODO: fails below
-                // the simulate function needs to mimick the PlantSimulator.SimulateSingle function and 
-                // itself estimate the disturbance signal based on the external signals "umeas" and "ymeas"
-
                 var isOK = plantSim.Simulate(inputData, out TimeSeriesDataSet simDataSetWithDisturbance);
                 //////////////////////////////////
 
@@ -235,7 +232,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 referenceInputDataSet.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
                 referenceInputDataSet.Add(plantSim.AddExternalSignal(processModel, SignalType.Disturbance_D), trueDisturbance);
                 referenceInputDataSet.CreateTimestamps(timeBase_s);
-                plantSim.Simulate(referenceInputDataSet, out referenceSimDataSet);
+                var isOK = plantSim.Simulate(referenceInputDataSet, out referenceSimDataSet);
+                Assert.IsTrue(isOK);
             }
             // 2.create plant model without disturbance, and try to to find the disturbance signal
             {
@@ -263,6 +261,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                     out TimeSeriesDataSet simDataSetWithDisturbance);
                 Assert.IsTrue(isOK);
                 Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(SignalNamer.EstDisturbance(processModel)));
+                Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(processModel.GetID()),
+                    "simData should contain internal output of process as well");
                 if (doAssertResult)
                 {
                     var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simDataSetWithDisturbance), pidModel1);

@@ -148,7 +148,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 var upstreamModels = simulator.connections.GetUpstreamModels(pidID);
                 var processId = upstreamModels.First();
-                var isOK = simulator.SimulateSingle(inputData, processId,
+                var isOK = simulator.SimulateSingleInternal(inputData, processId,
                     out TimeSeriesDataSet singleSimDataSetWithDisturbance);
                 if (isOK)
                 {
@@ -558,7 +558,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // run inputs through select block
             var selectModel = modelDict[downstreamModelIDs.First()];
-            var selectOutput = selectModel.Iterate(selectInputs.ToArray(), timeBase_s);
+            var selectOutput = selectModel.Iterate(selectInputs.ToArray(), timeBase_s)[0];
             var indOfActivePID = (new Vec()).FindValues(selectInputs.ToArray(),
                 selectOutput, VectorFindValueType.Equal);
             var y0 = pidSetpoints.ElementAt(indOfActivePID.First());
@@ -589,7 +589,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
                 pidModel.WarmStart(pidInputsU, y0);
-                double u0 = pidModel.Iterate(pidInputsU.ToArray(),timeBase_s);
+                double u0 = pidModel.Iterate(pidInputsU.ToArray(),timeBase_s)[0];
                 simSignalValueDict[pidModel.GetOutputID()] = u0 + 0.5;
             }
             uninitalizedPID_IDs = new List<string>();//Todo:generalize

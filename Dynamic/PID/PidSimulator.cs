@@ -1,4 +1,5 @@
-﻿using Accord.Statistics.Testing;
+﻿using Accord.Math;
+using Accord.Statistics.Testing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -43,7 +44,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     output[rowIdx] += model.Iterate(input.ToArray(),
                         timeBase_s,
-                        processDataSet.BadDataID);
+                        processDataSet.BadDataID)[0];
                 }
             }
             else

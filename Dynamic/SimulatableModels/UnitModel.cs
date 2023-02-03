@@ -171,8 +171,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return inputIDs.Length;
             }
         }
-        
-
+ 
         /// <summary>
         /// Get the objet of model paramters contained in the model
         /// </summary>
@@ -182,7 +181,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return modelParameters;
         }
 
-
         /// <summary>
         /// Update the paramter object of the model
         /// </summary>
@@ -191,8 +189,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             modelParameters = parameters;
         }
-
-
 
         /// <summary>
         /// Calcuate the steady-state input if the output and all-but-one input are known
@@ -357,7 +353,7 @@ namespace TimeSeriesAnalysis.Dynamic
             return curvatureTerm;
         }
 
-        private double CalculateStaticState(double[] inputs, double badValueIndicator=-9999)
+        private double CalculateStaticStateWithoutAdditive(double[] inputs, double badValueIndicator=-9999)
         {
             double x_static = modelParameters.Bias;
 
@@ -383,13 +379,13 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the steady state output y for a given input
+        /// Get the steady state output y for a given input(including additive terms)
         /// </summary>
         /// <param name="u0"></param>
         /// <returns></returns>
         public double? GetSteadyStateOutput(double[] u0)
         {
-            double? ret = CalculateStaticState(u0);
+            double? ret = CalculateStaticStateWithoutAdditive(u0);
             if (ret.HasValue)
             {
                 // additve output values
@@ -411,6 +407,8 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+
+
         /// <summary>
         /// Iterates the process model state one time step, based on the inputs given
         /// </summary>
@@ -420,7 +418,7 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
         ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
         /// </returns>
-        public double Iterate(double[] inputs, double timeBase_s,double badValueIndicator=-9999)
+        public double[] Iterate(double[] inputs, double timeBase_s,double badValueIndicator=-9999)
         {
             if (modelParameters.Fitting!= null)
             {
@@ -428,7 +426,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     Shared.GetParserObj().AddError(GetID() +
                         ":Iterate() returned NaN because trying to simulate a model that was not able to be identified.");
-                    return Double.NaN;
+                    return new double[] { Double.NaN };
                 }
             }
             if (this.lowPass == null)
@@ -444,7 +442,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // instead it calculates the steady-state and then filters the steady-state with LowPass to get the appropriate time constant
             //  - so it uses the parmaters [linearGain, curvatureGain, Timeconstant,td]
 
-            double x_static = CalculateStaticState(inputs,badValueIndicator);
+            double x_static = CalculateStaticStateWithoutAdditive(inputs,badValueIndicator);
 
             // nb! if first iteration, start model at steady-state
             double x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
@@ -459,8 +457,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 y = delayObj.Delay(x_dynamic);
             }
             // if a disturbance D has been given along with inputs U, then add it to output
+            double? y_internal = null;
             if (inputs.Length > GetModelInputIDs().Length)
             {
+                y_internal = y;
                 y += inputs.Last();
             }
             if (!Double.IsNaN(modelParameters.Y_max))
@@ -477,7 +477,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     y = modelParameters.Y_min;
                 }
             }
-            return y; 
+            if (y_internal.HasValue)
+                return new double[] { y, y_internal.Value};
+            else
+                return new double[] { y };
          }
 
         /// <summary>

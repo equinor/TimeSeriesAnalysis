@@ -188,7 +188,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// returns the output ID
         /// </summary>
         /// <returns> may return <c>null</c> if output is not set</returns>
-        public string GetOutputID()
+        public virtual string GetOutputID()
         {
              if (this.outputID == null)
                 return SignalNamer.GetSignalName(GetID(), GetOutputSignalType());

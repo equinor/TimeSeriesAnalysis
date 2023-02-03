@@ -147,11 +147,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </param>
         /// <param name="badDataID">value of inputs that is to be treated as <c>NaN</c></param>
         /// <returns>the output <c>u</c> of the pid-controller. If not enough inputs, it returns <c>NaN</c></returns>
-        public double Iterate(double[] inputs, double timeBase_s,double badDataID = -9999)
+        public double[] Iterate(double[] inputs, double timeBase_s,double badDataID = -9999)
         {
             if (inputs.Length < 2)
             {
-                return Double.NaN;
+                return new double[] { Double.NaN };
             }
             if (pid == null)//init PidController object on first run
             {
@@ -200,7 +200,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 feedForwardVariable = inputs[(int)PidModelInputsIdx.FeedForward];
             }
 
-            return pid.Iterate(y_process_abs, y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable);
+            return new double[] { pid.Iterate(y_process_abs, y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable) };
         }
 
         /// <summary>

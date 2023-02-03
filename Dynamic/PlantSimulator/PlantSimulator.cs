@@ -72,11 +72,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public List<Comment> comments;
 
-        /// <summary>
-        /// A value indicating how well the model fits, higher is better.
-        /// </summary>
-        public double fitScore;
-
         public Dictionary<string, ISimulatableModel> modelDict;
         public List<string> externalInputSignalIDs;
         public ConnectionParser connections;
@@ -250,28 +245,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Replace an existing model with a new version 
-        /// </summary>
-        /// <param name="modelID"></param>
-        /// <param name="newModel"></param>
-        /// <returns></returns>
-        /*public bool ReplaceExistingModel(string modelID, ISimulatableModel newModel)
-        {
-            if (modelDict.ContainsKey(modelID))
-            {
-                newModel.SetInputIDs(modelDict[modelID].GetModelInputIDs());
-                newModel.SetOutputID(modelDict[modelID].GetOutputID());
-                newModel.SetID(modelDict[modelID].GetOutputID())
-                modelDict[modelID] = newModel;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }*/
-
-        /// <summary>
         /// Add a disturbance model to the output a given <c>model</c>
         /// </summary>
         /// <param name="disturbanceModel"></param>
@@ -280,7 +253,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool ConnectModelToOutput(ISimulatableModel disturbanceModel, ISimulatableModel model )
         {
             model.AddSignalToOutput(disturbanceModel.GetOutputID());
-       //     connections.AddConnection(disturbanceModel.GetID(), model.GetID());
             return true;
         }
 
@@ -372,6 +344,30 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Simulate single model to get the internal "x" unmeasured output that excludes any additive outputs(like disturbances)
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="singleModelName"></param>
+        /// <param name="simData"></param>
+        /// <returns></returns>
+        public bool SimulateSingleInternal(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
+        {
+            return SimulateSingle(inputData,singleModelName,true, out simData);
+        }
+
+        /// <summary>
+        /// Simualte single model to get the output including any additive inputs
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="singleModelName"></param>
+        /// <param name="simData"></param>
+        /// <returns></returns>
+        public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
+        {
+            return SimulateSingle(inputData, singleModelName, false, out simData);
+        }
+
+        /// <summary>
         /// Simulate a single model(any ISimulatable model), using inputData as inputs, 
         ///
         ///  If the model is a unitModel and the inputData inludes both the measured y and measured u, the
@@ -379,9 +375,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="singleModelName"></param>
+        /// <param name="doCalcYwithoutAdditiveTerms"></param>
         /// <param name="simData"></param>
         /// <returns></returns>
-        public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
+        public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, 
+            bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)
         {
             if (!modelDict.ContainsKey(singleModelName))
             {
@@ -399,28 +397,62 @@ namespace TimeSeriesAnalysis.Dynamic
             int? N = inputData.GetLength();
             int timeIdx = 0;
             var model = modelDict[singleModelName];
-            string[] inputIDs = model.GetModelInputIDs();//model.GetBothKindsOfInput();
+            string[] additiveInputIDs = model.GetAdditiveInputIDs();
             string outputID = model.GetOutputID();
+
+            string[] inputIDs = model.GetModelInputIDs();
+            if (doCalcYwithoutAdditiveTerms == false)
+            {
+                inputIDs = model.GetBothKindsOfInputIDs();
+            }
+            bool doEstimateDisturbance = false;
+            if (additiveInputIDs != null)
+            {
+                if (!inputData.ContainsSignal(additiveInputIDs[0]))
+                {
+                    doEstimateDisturbance = true;
+                    inputIDs = model.GetModelInputIDs();
+                }
+            }
+
+            var vec = new Vec();
+            var nameOfSimulatedSignal = model.GetOutputID();
+            if (doEstimateDisturbance)
+            {
+                nameOfSimulatedSignal = model.GetID();
+            }
 
             // initalize
             {
                 double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputData);
-                for (var curInput = 0; curInput < inputVals.Count(); curInput++)
-                {
-                    simData.InitNewSignal(inputIDs[curInput], inputVals[curInput],N.Value);
-                }
                 double[] outputVals =
                     GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
-                simData.InitNewSignal(model.GetOutputID(), outputVals[0], N.Value);
+                simData.InitNewSignal(nameOfSimulatedSignal, outputVals[0], N.Value);
                 model.WarmStart(inputVals, outputVals[0]);
             }
             // main loop
+
             var timeBase_s = inputData.GetTimeBase(); ;
+
             for (timeIdx = 0; timeIdx < N; timeIdx++)
             {
                 double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
-                double outputVal = model.Iterate(inputVals, timeBase_s);
-                bool isOk = simData.AddDataPoint(model.GetOutputID(), timeIdx, outputVal);
+                double[] outputVal = model.Iterate(inputVals, timeBase_s);
+
+                // if a second output is given, this is by definition the internal output upstream the additive signals.
+                if (outputVal.Count() == 2)
+                {
+                    if (timeIdx == 0)
+                    {
+                        simData.InitNewSignal(model.GetID(), outputVal[1], N.Value);
+                    }
+                    var isOk_internal = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[1]);
+                    if (!isOk_internal)
+                    {
+                        return false;
+                    }
+                }
+                var  isOk = simData.AddDataPoint(nameOfSimulatedSignal, timeIdx, outputVal[0]);
                 if (!isOk)
                 {
                     return false;
@@ -428,19 +460,20 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
             // disturbance estimation
-            if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess)
+            if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess && doEstimateDisturbance)
             {
                 // y_meas = y_internal+d as defined here
                 var y_meas = inputData.GetValues(outputID);
-                
                 if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
                 {
-                    var y_sim = simData.GetValues(outputID); 
+                    var y_sim = simData.GetValues(nameOfSimulatedSignal);
                     if ((new Vec()).IsAllNaN(y_sim))
+                    {
                         return false;
-
+                    }
                     var est_disturbance = (new Vec()).Subtract(y_meas, y_sim);
                     simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
+                    simData.Add(model.GetOutputID(), y_meas);
                 }
             }
             return true;
@@ -541,13 +574,23 @@ namespace TimeSeriesAnalysis.Dynamic
                             "\" error retreiving input values.");
                         return false;
                     }
-                    double outputVal = model.Iterate(inputVals, timeBase_s);
-                    bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal);
+                    double[] outputVal = model.Iterate(inputVals, timeBase_s);
+                    bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal[0]);
                     if (!isOk)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \"" 
                             + model.GetOutputID() + "\", indicating an error in initalization. ");
                         return false;
+                    }
+                    if (outputVal.Length > 1)
+                    {
+                        if (timeIdx ==0)
+                        {
+                            simData.InitNewSignal(model.GetID(), outputVal[1],N.Value);
+                        }
+                        bool isOk2 = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[1]);
+                        if (!isOk2)
+                            return false;
                     }
                 }
             }

@@ -67,15 +67,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="timeBase_s"></param>
         /// <param name="badDataID"></param>
         /// <returns></returns>
-        public double Iterate(double[] inputsU, double timeBase_s,double badDataID = -9999)
+        public double[] Iterate(double[] inputsU, double timeBase_s,double badDataID = -9999)
         {
             if (type == SelectType.MAX)
             {
-                return (new Vec(badDataID)).Max(inputsU);
+                return new double[] { (new Vec(badDataID)).Max(inputsU) };
             }
             else
             {
-                return (new Vec(badDataID)).Min(inputsU);
+                return new double[] { (new Vec(badDataID)).Min(inputsU) };
             }
         }
 
@@ -109,7 +109,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>the steady-state value, if it is not possible to calculate, a <c>null</c> is returned</returns>
         public  double? GetSteadyStateOutput(double[] u0)
         {
-            return Iterate(u0,1);
+            return Iterate(u0,1).First();
         }
 
         /// <summary>

@@ -146,8 +146,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (pidActsOnPastStep)
                 {
                     double[] pidInputs = new double[] { y_prev, processDataSet.Y_setpoint[Math.Max(0,rowIdx-1)] };
-                    u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID);
-                    double x = model.Iterate(new double[] { u }, timeBase_s, processDataSet.BadDataID);
+                    u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID)[0];
+                    double x = model.Iterate(new double[] { u }, timeBase_s, processDataSet.BadDataID)[0];
                     y = x;
                     if (processDataSet.D != null)
                     {
@@ -156,14 +156,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 { // pid acts on current step
-                    double x = model.Iterate(new double[] { u }, timeBase_s, processDataSet.BadDataID);
+                    double x = model.Iterate(new double[] { u }, timeBase_s, processDataSet.BadDataID)[0];
                     y = x;
                     if (processDataSet.D != null)
                     {
                         y += processDataSet.D[rowIdx];
                     }
                     double[] pidInputs = new double[] { y, processDataSet.Y_setpoint[rowIdx] };
-                    u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID);
+                    u = pid.Iterate(pidInputs, timeBase_s, processDataSet.BadDataID)[0];
                 }
                 
                 if (Double.IsNaN(u))
@@ -215,14 +215,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     output[rowIdx] += model.Iterate(processDataSet.U.GetRow(rowIdx),
                         timeBase_s,
-                        processDataSet.BadDataID);
+                        processDataSet.BadDataID)[0];
                 }
             }
             else
             {
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
-                    output[rowIdx] += model.Iterate(null, timeBase_s,processDataSet.BadDataID);
+                    output[rowIdx] += model.Iterate(null, timeBase_s,processDataSet.BadDataID)[0];
                 }
             }
             var vec = new Vec(processDataSet.BadDataID);
