@@ -592,7 +592,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
         // todo: this code should be replaced after porting code into TimeSeriesAnalysis. Re-use common simulation rather than re-doing it.
 
-        //public Double[] GetSimulatedU(double Kp, double Ti, Double[] ymeas, Double[] yset, Double[] u, bool outputDelayedOneSample = false)
         public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample)
         {
             int firstGoodDataPointToStartSimIdx = 0;
@@ -631,7 +630,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double lastGoodU = 0, nextU;
-            for (int i = firstGoodDataPointToStartSimIdx; i < simulatedU.Length - samplesToDelayOutput; i++)
+            for (int i = firstGoodDataPointToStartSimIdx; i < Math.Min(simulatedU.Length - samplesToDelayOutput, dataset.Y_meas.Length); i++)
             {
                 if (dataset.Y_meas[i] == -9999 || Double.IsNaN(dataset.Y_meas[i]) || Double.IsInfinity(dataset.Y_meas[i]))
                 {
