@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.IO;
 
 using System.Configuration;
 
@@ -32,7 +33,7 @@ namespace TimeSeriesAnalysis.Utility
     {
         const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data";
         const string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
-        //const string chromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+        const string chromePath2 = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
 
         private static bool ShouldPlottingBeDone()
@@ -105,13 +106,18 @@ namespace TimeSeriesAnalysis.Utility
             if (caseName.Length > 0)
                 plotURL += ";casename:" + caseName;
 
-            var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
+       /*     var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
             var chromePathInternal = chromePath;
+            if (File.Exists(chromePath))
+                chromePathInternal = chromePath;
+            else if (File.Exists(chromePath2))
+                chromePathInternal = chromePath;
+
             if (chromePathAppConfig != null)
             {
                 chromePathInternal = chromePathAppConfig[0];
-            }
-
+            }*/
+            var chromePathInternal = GetChromePath();
 
             if (doStartChrome)
             {
@@ -207,7 +213,12 @@ namespace TimeSeriesAnalysis.Utility
         internal static string GetChromePath()
         {
             var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
-            var chromePathInternal = chromePath;
+            string chromePathInternal = "";
+            if (File.Exists(chromePath))
+                chromePathInternal = chromePath;
+            else if (File.Exists(chromePath2))
+                chromePathInternal = chromePath2;
+
             if (chromePathAppConfig != null)
             {
                 chromePathInternal = chromePathAppConfig[0];

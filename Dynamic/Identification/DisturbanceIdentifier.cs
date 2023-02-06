@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Security.Policy;
 using System.Text;
@@ -166,16 +168,39 @@ namespace TimeSeriesAnalysis.Dynamic
             // will influence the process model identification afterwards.
 
             double[] deltaU  = null;
-            // the way that the pid-controller is implemented pid Kp and process K should be same sign.
-            // pid Kp is known when running this algo
+
+            //
+            // knowing the sign of the process gain is quite important!
+            // if a system has negative gain and is given a positive process disturbance, then y and u will both increase in a way that is 
+            // correlated 
             double processGainSign = 1;
-         /*   if (referenceUnitModel != null)
+
+           // bool isSetpointConstant = true;
+
+          //  if (isSetpointConstant)
             {
-                if (referenceUnitModel.modelParameters.GetTotalCombinedProcessGain(inputIdx) < 0)
+                // look at the correlation between u and y.
+                // assuming that the sign of the Kp in PID controller is set correctly so that the process is not unstable: 
+                // If an increase in _y(by means of a disturbance)_ causes PID-controller to _increase_ u then the processGainSign is negative
+                // If an increase in y causes PID to _decrease_ u, then processGainSign is positive!
+                var indGreaterThanZeroE = vec.FindValues(e,0,VectorFindValueType.BiggerOrEqual);
+                var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual);
+                var u = unitDataSet.U.GetColumn(0);
+                var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indGreaterThanZeroE));
+                var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indLessThanZeroE));
+
+                if (uAvgWhenEgreatherThanZero != null && uAvgWhenElessThanZero != 0)
                 {
-                    processGainSign = -1;
+                    if (uAvgWhenElessThanZero >= uAvgWhenEgreatherThanZero)
+                    {
+                        processGainSign = 1;
+                    }
+                    else
+                    {
+                        processGainSign = -1;
+                    }
                 }
-            }*/
+            }
 
             // v1: just use first value as "u0", just perturbing this value 
             // a little will cause unit test to fail ie.algorithm is sensitive to its choice.

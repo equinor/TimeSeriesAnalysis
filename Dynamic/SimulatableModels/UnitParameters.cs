@@ -108,7 +108,25 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 0;
         }
 
-
+        public UnitParameters CreateCopy()
+        {
+            UnitParameters newP = new UnitParameters();
+            newP.Y_min = Y_min;
+            newP.Y_max = Y_max;
+            newP.TimeConstant_s = TimeConstant_s;
+            newP.TimeDelay_s = TimeDelay_s;
+            newP.LinearGains = LinearGains;
+            newP.LinearGainUnc = LinearGainUnc;
+            newP.Curvatures = Curvatures;
+            newP.CurvatureUnc = CurvatureUnc;
+            newP.U0 = U0;
+            newP.UNorm = UNorm;
+            newP.Bias = Bias;
+            newP.BiasUnc = BiasUnc;
+            newP.errorsAndWarningMessages = errorsAndWarningMessages;
+            newP.TimeDelayEstimationWarnings = TimeDelayEstimationWarnings;
+            return newP;
+        }
 
         /// <summary>
         /// Return the "total combined" process gain for a given index at u=u0, a combination of lineargain and curvature gain
@@ -121,6 +139,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double GetTotalCombinedProcessGain(int inputIdx)
         {
+            if (LinearGains == null)
+            {
+                return double.NaN;
+            }
             if (inputIdx > LinearGains.Length-1)
             {
                 return double.NaN;

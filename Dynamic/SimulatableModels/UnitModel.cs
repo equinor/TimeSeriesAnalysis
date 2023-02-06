@@ -8,6 +8,7 @@ using System.Text;
 using Newtonsoft.Json;
 
 using TimeSeriesAnalysis.Utility;
+using System.Reflection;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -76,7 +77,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             InitSim(modelParameters);
         }
-
         public bool IsModelSimulatable(out string explainStr)
         {
             explainStr = "";

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Text;
 
 using TimeSeriesAnalysis;
@@ -37,8 +39,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public (UnitModel,double[]) Identify(UnitDataSet dataSet, PidParameters pidParams=null, int inputIdx = 0 )
         {
-
-
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
             // estimate of the disturbance improves along with it.
@@ -93,7 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // ----------------
             // run 3: use the result of the last run to try to improve the disturbance estimate and take 
-            // out some of the dynamics from the disturbance vector and see if this improves estiamtion.
+            // out some of the dynamics from the disturbance vector and see if this improves estimation.
 
             DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
                 (dataSet3, unitModel_run2, inputIdx);
@@ -157,23 +157,68 @@ namespace TimeSeriesAnalysis.Dynamic
                 // - the reason that we cannot do run4 immediately, is that that formulation 
                 // does not appear to give a solution if the guess disturbance vector is bad.
 
-                bool doRunNumberFour = false;
-                if (doRunNumberFour)
+                if (true)
                 {
                     // run4: do a run where it is no longer assumed that x[k-1] = y[k], 
                     // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
+
                     DisturbanceIdResult distIdResult4 = DisturbanceIdentifier.EstimateDisturbance
                         (dataSet, unitModel_run3);
-                    dataSet.D = distIdResult4.d_est;
-                    var unitModel_run4 = id.Identify(ref dataSet);
-                    idDisturbancesList.Add(distIdResult4);
-                    idUnitModelsList.Add(unitModel_run4);
-                  }
-                /*else
-                {
-                    // give the result out 
-                    identUnitModel = unitModel_run3;//nb! update as more steps are added.
-                }*/
+                    List<double[]> estDisturbances = new List<double[]>();
+                    List<double> distDevs = new List<double>();
+
+                    estDisturbances.Add(distIdResult4.d_est);
+                    var timeBase = dataSet.GetTimeBase();
+                    double candiateTc_s = 0;
+                    bool curDevIsDecreasing = true;
+                    double firstDev = vec.Sum(vec.Abs(vec.Diff(distIdResult4.d_est))).Value;
+                    distDevs.Add(firstDev);
+                    while  ( candiateTc_s < 30 * timeBase && curDevIsDecreasing )
+                    {
+                        candiateTc_s += timeBase;
+                        var newParams = unitModel_run3.GetModelParameters().CreateCopy();
+                        newParams.TimeConstant_s = candiateTc_s;
+                        ////////////////////////
+                        //newParams.TimeDelay_s = 5;//TODO: not general! remove, just for testing!!!!!1
+                        ///////////////////////
+                        var newModel = new UnitModel(newParams);
+                        DisturbanceIdResult distIdResult_Test = DisturbanceIdentifier.EstimateDisturbance
+                            (dataSet, newModel);
+                        estDisturbances.Add(distIdResult_Test.d_est);
+                        double curDev = vec.Sum(vec.Abs(vec.Diff(distIdResult_Test.d_est))).Value;
+                        if (curDev < distDevs.Last<double>())
+                            curDevIsDecreasing = true;
+                        else
+                            curDevIsDecreasing = false;
+                        distDevs.Add(curDev);
+                    }
+                    if (candiateTc_s > 0)
+                    {
+                        candiateTc_s -= timeBase;
+                    }
+                    var step4params = unitModel_run3.GetModelParameters().CreateCopy();
+                    step4params.TimeConstant_s = candiateTc_s;
+                    //  newParams.TimeDelay_s = 5;//TODO: not general! remove, just for testing!!!!!1
+                    var step4Model = new UnitModel(step4params);
+                    idUnitModelsList.Add(step4Model);
+                    DisturbanceIdResult distIdResult_step4 = DisturbanceIdentifier.EstimateDisturbance
+                           (dataSet, step4Model);
+                    idDisturbancesList.Add(distIdResult_step4);
+                    /*
+                    Shared.EnablePlots();
+                    Plot.FromList(
+                        new List<double[]> {
+                            estDisturbances[0],
+                            estDisturbances[14],
+                            estDisturbances[15],
+                            estDisturbances[16],
+                            estDisturbances[20],
+                            estDisturbances[25],
+                        },                        
+                         new List<string> { "y1=e[0]", "y1=e[14]", "y1=e[15]","y1=e[16]", "y1=e[20]", "y1=e[25]" },
+                         dataSet.GetTimeBase(), "doDebuggingPlot_closeLoopStep4_v2");
+                    Shared.DisablePlots();*/
+                }
             }
 
             if (doDebuggingPlot)
@@ -184,7 +229,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 Console.WriteLine(idUnitModelsList[1].ToString());
                 Console.WriteLine("run3");
                 Console.WriteLine(idUnitModelsList[2].ToString());
-
+                Console.WriteLine("run4");
+                Console.WriteLine(idUnitModelsList[3].ToString());
                 Plot.FromList(
                     new List<double[]> { 
                         idDisturbancesList[0].d_est,
