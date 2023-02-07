@@ -39,6 +39,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public (UnitModel,double[]) Identify(UnitDataSet dataSet, PidParameters pidParams=null, int inputIdx = 0 )
         {
+
+            if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
+            {
+                return (null,null);
+            }
+
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
             // estimate of the disturbance improves along with it.

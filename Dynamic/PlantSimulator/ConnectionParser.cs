@@ -40,10 +40,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="upstreamID"></param>
         /// <param name="downstreamID"></param>
-        public void AddConnection(string upstreamID, string downstreamID)
+        /*public void AddConnection(string upstreamID, string downstreamID)
         {
            //connections.Add((upstreamID,downstreamID));
-        }
+        }*/
         
         
         /// <summary>

@@ -174,7 +174,7 @@ namespace TimeSeriesAnalysis.Dynamic
             externalInputSignalIDs.Add(signalID);
             if (signalID == null)
             {
-                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");
+                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add 'null' signal name.");
                 return null;
             }
             if (type == SignalType.Disturbance_D && modelType == ModelType.SubProcess)
@@ -209,7 +209,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal.");
+                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal '"+ signalID+"'" );
                 return null;
             }
 
@@ -342,6 +342,9 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return modelDict;
         }
+
+
+
 
         /// <summary>
         /// Simulate single model to get the internal "x" unmeasured output that excludes any additive outputs(like disturbances)

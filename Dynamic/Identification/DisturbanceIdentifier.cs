@@ -65,9 +65,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             d_est = Vec<double>.Fill(0, N);
             f1EstProcessGain = 0;
-      //      dest_f2_proptoGain = Vec<double>.Fill(0, N);
-      //      dest_f2_constTerm = Vec<double>.Fill(0, N);
-
             isAllZero = true;
             d_HF = Vec<double>.Fill(0, N);
             d_u = Vec<double>.Fill(0, N);
@@ -85,15 +82,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
             return returnCopy;
         }
-        /*
-        public double GetMagnitude()
-        {
-            Vec vec = new Vec();
-            if (useFormulation1)
-                return vec.Max(d_est) - vec.Min(d_est);
-            else // not sure about this one
-                return vec.Max(dest_f2_proptoGain)- vec.Min(dest_f2_proptoGain);
-        }*/
     }
 
     /// <summary>
@@ -135,9 +123,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Estimates the disturbance time-series over a given unit data set 
-        /// given an estimate of the unit model (reference unit model)
+        /// given an estimate of the unit model (reference unit model) for a closed loop system.
         /// </summary>
-        /// <param name="unitDataSet">the dataset descrbing the unit, over which the disturbance is to be found</param>
+        /// <param name="unitDataSet">the dataset descrbing the unit, over which the disturbance is to be found, datset must specify Y_setpoint,Y_meas and U</param>
         /// <param name="unitModel">the estimate of the unit</param>
         /// <returns></returns>
         public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet,  
@@ -146,12 +134,14 @@ namespace TimeSeriesAnalysis.Dynamic
             bool tryToModelDisturbanceIfSetpointChangesInDataset = false;
             var vec = new Vec();
 
+
             DisturbanceIdResult result = new DisturbanceIdResult(unitDataSet);
-
+            if (unitDataSet.Y_setpoint == null || unitDataSet.Y_meas == null || unitDataSet.U == null)
+            {
+                return result;
+            }
             double[] e;// part of disturbance as oberved by deviations (ymeas-yset)
-
             double estProcessGain = 0;
-
             bool doesSetpointChange = !(vec.Max(unitDataSet.Y_setpoint) == vec.Min(unitDataSet.Y_setpoint));
             if (!tryToModelDisturbanceIfSetpointChangesInDataset && doesSetpointChange)
             {
@@ -159,46 +149,36 @@ namespace TimeSeriesAnalysis.Dynamic
                 return result;
             }
             e = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);// this under-estimates disturbance because the controller has rejected some of it.
-
             // d_u : (low-pass) back-estimation of disturbances by the effect that they have on u as the pid-controller integrates to 
             // counteract them
             // d_y : (high-pass) disturbances appear for a short while on the output y before they can be counter-acted by the pid-controller 
-
             // nb!candiateGainD is an estimate for the process gain, and the value chosen in this class 
             // will influence the process model identification afterwards.
-
             double[] deltaU  = null;
-
             //
             // knowing the sign of the process gain is quite important!
             // if a system has negative gain and is given a positive process disturbance, then y and u will both increase in a way that is 
             // correlated 
             double processGainSign = 1;
+            // look at the correlation between u and y.
+            // assuming that the sign of the Kp in PID controller is set correctly so that the process is not unstable: 
+            // If an increase in _y(by means of a disturbance)_ causes PID-controller to _increase_ u then the processGainSign is negative
+            // If an increase in y causes PID to _decrease_ u, then processGainSign is positive!
+            var indGreaterThanZeroE = vec.FindValues(e,0,VectorFindValueType.BiggerOrEqual);
+            var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual);
+            var u = unitDataSet.U.GetColumn(0);
+            var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indGreaterThanZeroE));
+            var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indLessThanZeroE));
 
-           // bool isSetpointConstant = true;
-
-          //  if (isSetpointConstant)
+            if (uAvgWhenEgreatherThanZero != null && uAvgWhenElessThanZero != 0)
             {
-                // look at the correlation between u and y.
-                // assuming that the sign of the Kp in PID controller is set correctly so that the process is not unstable: 
-                // If an increase in _y(by means of a disturbance)_ causes PID-controller to _increase_ u then the processGainSign is negative
-                // If an increase in y causes PID to _decrease_ u, then processGainSign is positive!
-                var indGreaterThanZeroE = vec.FindValues(e,0,VectorFindValueType.BiggerOrEqual);
-                var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual);
-                var u = unitDataSet.U.GetColumn(0);
-                var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indGreaterThanZeroE));
-                var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indLessThanZeroE));
-
-                if (uAvgWhenEgreatherThanZero != null && uAvgWhenElessThanZero != 0)
+                if (uAvgWhenElessThanZero >= uAvgWhenEgreatherThanZero)
                 {
-                    if (uAvgWhenElessThanZero >= uAvgWhenEgreatherThanZero)
-                    {
-                        processGainSign = 1;
-                    }
-                    else
-                    {
-                        processGainSign = -1;
-                    }
+                    processGainSign = 1;
+                }
+                else
+                {
+                    processGainSign = -1;
                 }
             }
 
@@ -226,13 +206,9 @@ namespace TimeSeriesAnalysis.Dynamic
             } 
          */   
 
-            /*double[] dest_f2_proptoGain = du_contributionFromU;
-            double[] dest_f2_constTerm = vec.Add(deltaYset, e);
-            */
             // y0,u0 is at the first data point
             // disadvantage, is that you are not sure that the time series starts at steady state
             // but works better than candiate 2 when disturbance is a step
-
             bool candidateGainSet = false;
             if (unitModel != null)
             {
@@ -245,10 +221,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     updateEstGain = true;
                 }
-
                 if (updateEstGain == true)
                 {
                     var processGains = unitModel.modelParameters.GetProcessGains();
+                    if (processGains == null)
+                    {
+                        return result;
+                    }
                     if (!Double.IsNaN(processGains[inputIdx]))
                     {
                         estProcessGain = processGains[inputIdx];
@@ -282,7 +261,6 @@ namespace TimeSeriesAnalysis.Dynamic
                  if (unitModel.GetModelParameters().Fitting != null)
                      if (unitModel.GetModelParameters().Fitting.WasAbleToIdentify == false)
                          isFittedButFittingFailed = true;
-
             double[] d_u;
             if (unitModel == null|| isFittedButFittingFailed)
             {
@@ -303,9 +281,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 d_u = vec.Multiply(vec.Subtract(y_sim,y_sim[0]),-1);
             }
-
             double[] d_est = vec.Add(d_HF, d_u);       // d = d_LF+d_HF 
-            
             // currently the below code breaks disturbance estimtes in those cases
             // where setpoint is constant - wonder if it is possible to unify these two appraoches???
             // very bad form to have lots of "if" statements in this estiamtor.
@@ -354,16 +330,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // copy result to result class
             result.f1EstProcessGain     = estProcessGain;
             result.d_est              = d_est;
-          //  result.dest_f2_proptoGain   = dest_f2_proptoGain;
-           // result.dest_f2_constTerm    = dest_f2_constTerm;
             result.d_u = d_u;
             result.d_HF = d_HF;
-
             // NB! minus!
           //  double[] dest_test = vec.Add(vec.Multiply(result.dest_f2_proptoGain,-result.f1EstProcessGain),result.dest_f2_constTerm);
-
             return result;
-
         }
         /*
         static double[] FreezeDisturbanceAfterSetpointChange(double[] d_in,PIDDataSet tuningDataSet, PIDidResults pidid )

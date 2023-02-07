@@ -138,11 +138,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void Dynamic_Step_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
             bool doNegativeGain =false)
         {
-             Shared.EnablePlots();
+             //Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance,
                 doNegativeGain,true,   processGainAllowedOffsetPrc);
-            Shared.DisablePlots();
+            //Shared.DisablePlots();
         }
      /*   
         [TestCase(-5,20),Explicit]// process gains are 4.4,far too big, but disturbance amplitude is +/- 8  
@@ -171,7 +171,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             bool doAssertResult=true, double processGainAllowedOffsetPrc=10)
         {
             var usedProcParameters = processModel.GetModelParameters().CreateCopy();
-            var usedProcessModel = new UnitModel(usedProcParameters);
+            var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
             if (doNegativeGain)
             {
                 usedProcParameters.LinearGains[0] = -usedProcParameters.LinearGains[0];

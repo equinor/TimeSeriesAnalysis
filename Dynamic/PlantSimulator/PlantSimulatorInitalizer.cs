@@ -97,16 +97,26 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // last step is to actually write all the values, and create otherwise empty vector to be filled.
             {
-                // this was the code here prior to including estimating disturbances, but this is not general
-                // because to estimte the disturbance, the u_meas and y_meas of every process model must be included
-                // in the inputData, thus making it an "external signal"
-                //  var externalInputSignals = simulator.GetExternalSignalIDs();
-                var externalInputSignals =  inputData.GetSignalNames();// the u_meas and y_meas is removed here by the disturbance estimation.
+                // all model outputs need to be simualted
+                List<string> simulatedSignals = new List<string>();
+                foreach (var modelName in simulator.modelDict.Keys)
+                {
+                    simulatedSignals.Add(simulator.modelDict[modelName].GetOutputID());
+                }
+                // in addtion, any signal addted to signalValuesAtT0, but not in inputData is to be simulated.
+                // this includes disturbances
+                foreach (string signalID in signalValuesAtT0.Keys)
+                {
+                    if (!inputData.ContainsSignal(signalID))
+                    {
+                        simulatedSignals.Add(signalID);
+                    }
+                }
                 int? N = combinedData.GetLength();
                 foreach (string signalID in signalValuesAtT0.Keys)
                 {
-                    // simData should not contain the "external signals"
-                    if (externalInputSignals.Contains(signalID))
+                    // simData will contain copies of the 
+                    if (!simulatedSignals.Contains(signalID))
                     {
                         continue;
                     }

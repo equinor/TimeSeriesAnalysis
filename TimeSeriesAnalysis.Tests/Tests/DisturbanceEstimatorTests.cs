@@ -85,7 +85,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
 
-
         [TestCase(-5)]
         [TestCase(5)]
         public void Dynamic_StepDisturbance_EstimatesOk(double stepAmplitude)
@@ -108,6 +107,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
        //     Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             DisturbanceTestUsingPlantSimulator(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance);
+          //  Assert.AreEqual(0, Shared.GetParserObj().GetListOfAllLogLinesOfLevel(ParserfeedbackMessageLevel.error).Count);
          //   Shared.DisablePlots();
         }
 
@@ -152,8 +152,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 plantSim.ConnectModels(pidModel1, processModel2);
                 var refYsetSignal = "yset";
                 plantSim.AddAndConnectExternalSignal(pidModel1, refYsetSignal, SignalType.Setpoint_Yset);
-                var refYmeasSignal = "ymeas";
-                plantSim.AddAndConnectExternalSignal(pidModel1, refYmeasSignal, SignalType.Output_Y);
+            //    var refYmeasSignal = "ymeas";
+             //   plantSim.AddAndConnectExternalSignal(pidModel1, refYmeasSignal, SignalType.Output_Y);
                 var refDistSignal = "dist";
                 plantSim.AddAndConnectExternalSignal(processModel2, refDistSignal, SignalType.Disturbance_D);
 

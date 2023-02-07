@@ -210,10 +210,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Get all process gains (including both linear and any nonlinear terms)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>may return null if no process gains given</returns>
         public double[] GetProcessGains()
         {
             var list = new List<double>();
+
+            if (LinearGains == null)
+            {
+                return null;
+            }
 
             var nInputs = LinearGains.Length;
 
