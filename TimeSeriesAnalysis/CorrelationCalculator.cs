@@ -61,9 +61,12 @@ namespace TimeSeriesAnalysis
         /// <returns>a</returns>
         public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet)
         {
+            const double minimumCorrCoeffToDoTimeshiftCalc = 0.4;
             double? EstiamteTimeShift(double[] signalIn, double[] signalOut)
             {
                 const double minimumRsqAbs = 10;
+
+
                 var dataSetUnit = new UnitDataSet();
                 dataSetUnit.Y_meas = signalOut;
                 dataSetUnit.U = Array2D<double>.CreateFromList(new List<double[]> { signalIn });
@@ -72,8 +75,8 @@ namespace TimeSeriesAnalysis
                 var identModel = ident.Identify(ref dataSetUnit);
                 if (identModel.modelParameters.Fitting.WasAbleToIdentify && identModel.modelParameters.Fitting.RsqAbs > minimumRsqAbs)
                 {
-                    return identModel.modelParameters.TimeConstant_s +
-                        identModel.modelParameters.TimeDelay_s;
+                    return Math.Round(identModel.modelParameters.TimeConstant_s +
+                        identModel.modelParameters.TimeDelay_s);
                 }
                 else
                     return null;
@@ -104,7 +107,8 @@ namespace TimeSeriesAnalysis
                 double curCorrCoef = corr[sortIdx[i]];
 
                 double timeConstant_s = Double.NaN;
-                if (curSignalName != mainSignalName && dataSet.GetTimeBase() != 0)
+                if (curSignalName != mainSignalName && dataSet.GetTimeBase() != 0
+                    && curCorrCoef > minimumCorrCoeffToDoTimeshiftCalc)
                 {
                     double[] curSignalValues = dataSet.GetValues(curSignalName);
                     if (curSignalValues != null)

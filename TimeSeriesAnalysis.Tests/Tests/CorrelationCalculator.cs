@@ -72,6 +72,11 @@ namespace TimeSeriesAnalysis.Test
             dataset.Add("earlySignal", earlySignal);
             dataset.CreateTimestamps(timeBase_s);
             var results = CorrelationCalculator.CalculateAndOrder("mainSignal", dataset);
+
+            Assert.AreEqual(delaySamples,results[1].timeConstant_s );
+            Assert.AreEqual(-delaySamples,results[2].timeConstant_s );
+
+
         }
 
 
