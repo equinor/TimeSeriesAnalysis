@@ -144,7 +144,7 @@ namespace TimeSeriesAnalysis.Dynamic
             bool doNonzeroU0 = true;// should be: true
             double FilterTc_s = 0;// experimental: by default set to zero.
             bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
-            double maxExpectedTc_s = dataSet.GetTimeSpan().TotalSeconds / 4;
+           
             if (u0 == null)
             {
                 u0 = Vec<double>.Fill(dataSet.U.GetNColumns(), 0);
@@ -179,7 +179,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 
                 uNorm = SignificantDigits.Format(uNorm, nDigits);
             }
-
+            TimeSpan span = dataSet.GetTimeSpan();
+            /*if (span == null)
+            {
+                return model;
+            }*/
+            double maxExpectedTc_s = span.TotalSeconds / 4;
             UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
                 new UnitTimeDelayIdentifier(dataSet.GetTimeBase(), maxExpectedTc_s);
 

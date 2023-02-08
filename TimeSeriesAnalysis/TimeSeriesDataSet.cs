@@ -502,7 +502,7 @@ namespace TimeSeriesAnalysis
         /// Get the values of a specific signal
         /// </summary>
         /// <param name="signalName"></param>
-        /// <returns></returns>
+        /// <returns>null if signal not found</returns>
         public double[] GetValues(string signalName)
         {
             if (signalName == null)

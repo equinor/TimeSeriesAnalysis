@@ -163,39 +163,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Constructor for data set with inputs <c>U</c>, i.e. where a relationship 
-        /// that at least partially explains <c>y_meas</c> is konwn
-        /// </summary>
-        /// <param name="timeBase_s">the time base in seconds</param>
-        /// <param name="U">The number of rows of the 2D-array U determines the duration dataset</param>
-        /// <param name="y_meas">the measured output of the system, can be null </param>
-        /// <param name="name">optional internal name of dataset</param>
-       /* public UnitDataSet(double timeBase_s, double[,] U, double[] y_meas= null, string name=null)
-        {
-            this.Y_meas = y_meas;
-            NumDataPoints = U.GetNRows();
-            this.U = U;
-            this.TimeBase_s = timeBase_s;
-            this.ProcessName = name;
-        }*/
-
-        /// <summary>
-        /// Constructor for when data set only has a single inut u
-        /// </summary>
-        /// <param name="timeBase_s"></param>
-        /// <param name="u"></param>
-        /// <param name="y_meas"></param>
-        /// <param name="name"></param>
-       /* public UnitDataSet(double timeBase_s, double[] u, double[] y_meas = null, string name = null)
-        {
-            this.Y_meas = y_meas;
-            NumDataPoints = u.Count();
-            this.U = Array2D<double>.CreateFromList(new List<double[]> { u });
-            this.TimeBase_s = timeBase_s;
-            this.ProcessName = name;
-        }*/
-
-        /// <summary>
         /// Create a dataset for single-input system from two signals that have separate but overlapping
         /// time-series(each given as value-date tuples)
         /// </summary>
@@ -209,15 +176,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var indU = Vec<DateTime>.GetIndicesOfValues(u.Item2.ToList(), jointTime);
             var indY = Vec<DateTime>.GetIndicesOfValues(y_meas.Item2.ToList(), jointTime);
             this.Times = jointTime.ToArray();
-           // this.NumDataPoints = jointTime.Count();
-            /*if (timeBase_s.HasValue)
-            {
-                TimeBase_s = timeBase_s.Value;
-            }
-            else
-            {
-                TimeBase_s = (jointTime.Last() - jointTime.First()).TotalSeconds / (jointTime.Count-1);
-            }*/
 
             this.Y_meas = Vec<double>.GetValuesAtIndices(y_meas.Item1,indY);
             var newU = Vec<double>.GetValuesAtIndices(u.Item1, indU);
@@ -228,9 +186,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Get the time spanned by the dataset
         /// </summary>
-        /// <returns>The time spanned by the dataset</returns>
+        /// <returns>The time spanned by the dataset, or null if times are not set</returns>
         public TimeSpan GetTimeSpan()
         {
+            if (this.Times == null)
+            {
+                return new TimeSpan();
+            }
+            if (this.Times.Length == 0)
+            {
+                return new TimeSpan();
+            }
             return Times.Last() - Times.First();
         }
         /// <summary>

@@ -56,6 +56,25 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(0, results["oppsiteSignal"]);
         }
 
+        [TestCase()]
+        public void EstimateTimeConstants_GivesCorrectTimeConstants()
+        {
+            int N = 100;
+            double timeBase_s = 1;
+            int delaySamples = 10;
+            var dataset = new TimeSeriesDataSet();
+            var amplitude = 10;
+            var mainSignal  = TimeSeriesCreator.Step(N/2, N, 0, amplitude);
+            var lateSignal  = TimeSeriesCreator.Step(N/2+delaySamples, N, 0, amplitude*2);
+            var earlySignal = TimeSeriesCreator.Step(N/2-delaySamples, N, 0, amplitude/2);
+            dataset.Add("mainSignal", mainSignal);
+            dataset.Add("lateSignal", lateSignal);
+            dataset.Add("earlySignal", earlySignal);
+            dataset.CreateTimestamps(timeBase_s);
+            var results = CorrelationCalculator.CalculateAndOrder("mainSignal", dataset);
+        }
+
+
         [TestCase(true )]
         [TestCase(false)]
         public void CorrelateAndOrder(bool orderedInput)

@@ -213,12 +213,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             StringBuilder sb = new StringBuilder();
             Vec vec = new Vec();
 
-            //var estAvg = vec.Mean(estDisturbance).Value.ToString("F1");
             var estMin = vec.Min(estDisturbance).ToString("F1") ;
             var estMax = vec.Max(estDisturbance).ToString("F1");
             var trueMin = vec.Min(trueDisturbance).ToString("F1");
             var trueMax = vec.Max(trueDisturbance).ToString("F1");
-            //var trueAvg = vec.Mean(estDisturbance).Value.ToString("F1");
 
             sb.AppendLine("disturbance min:"+estMin+" max:"+estMax+"(actual min:"+trueMin+"max:"+trueMax+")");
             Console.WriteLine(sb.ToString());
