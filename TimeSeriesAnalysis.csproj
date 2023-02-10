@@ -16,7 +16,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     <RepositoryUrl>https://github.com/equinor/timeseriesanalysis</RepositoryUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <Version>1.2.10</Version>
+    <Version>1.2.11</Version>
     <Company>Equinor</Company>
     <Authors>Equinor</Authors>
 	<IncludeSymbols>true</IncludeSymbols>

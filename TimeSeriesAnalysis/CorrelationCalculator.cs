@@ -13,15 +13,16 @@ namespace TimeSeriesAnalysis
         public string signalName;
         public double correlationFactor;
         public double? timeConstant_s;
+        public double? timeDelay_s;
 
-        public CorrelationObject(string name,double value, double? timeConstant_s = null)
+        public CorrelationObject(string name,double value, double? timeConstant_s = null, double? timeDelay_s=null)
         {
             signalName = name;
             correlationFactor = value;
             this.timeConstant_s = timeConstant_s;
+            this.timeDelay_s = timeDelay_s;
         }
     }
-
 
     public class CorrelationCalculator
     {
@@ -62,11 +63,9 @@ namespace TimeSeriesAnalysis
         public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet)
         {
             const double minimumCorrCoeffToDoTimeshiftCalc = 0.4;
-            double? EstiamteTimeShift(double[] signalIn, double[] signalOut)
+            (double?,double?) EstiamteTimeShift(double[] signalIn, double[] signalOut)
             {
                 const double minimumRsqAbs = 10;
-
-
                 var dataSetUnit = new UnitDataSet();
                 dataSetUnit.Y_meas = signalOut;
                 dataSetUnit.U = Array2D<double>.CreateFromList(new List<double[]> { signalIn });
@@ -75,11 +74,11 @@ namespace TimeSeriesAnalysis
                 var identModel = ident.Identify(ref dataSetUnit);
                 if (identModel.modelParameters.Fitting.WasAbleToIdentify && identModel.modelParameters.Fitting.RsqAbs > minimumRsqAbs)
                 {
-                    return Math.Round(identModel.modelParameters.TimeConstant_s +
-                        identModel.modelParameters.TimeDelay_s);
+                    return (Math.Round(identModel.modelParameters.TimeConstant_s),
+                        Math.Round(identModel.modelParameters.TimeDelay_s));
                 }
                 else
-                    return null;
+                    return (null,null);
             }
 
             List<CorrelationObject> ret = new List<CorrelationObject>();
@@ -98,7 +97,6 @@ namespace TimeSeriesAnalysis
 
             double[,] corrMatrix = Measures.Correlation(matrix);
             double[] corr = corrMatrix.GetColumn(indice);
-
             double[] sortedValues = Vec<double>.Sort((new Vec()).Abs(corr), VectorSortType.Descending,out int[] sortIdx);
 
             for (int i=0; i < sortedValues.Length; i++)
@@ -106,25 +104,25 @@ namespace TimeSeriesAnalysis
                 string curSignalName = signalNames[sortIdx[i]];
                 double curCorrCoef = corr[sortIdx[i]];
 
-                double timeConstant_s = Double.NaN;
+                double? timeConstant_s = null;
+                double? timeDelay_s = null;
+
                 if (curSignalName != mainSignalName && dataSet.GetTimeBase() != 0
                     && curCorrCoef > minimumCorrCoeffToDoTimeshiftCalc)
                 {
                     double[] curSignalValues = dataSet.GetValues(curSignalName);
                     if (curSignalValues != null)
                     {
-                        double? timeShift = EstiamteTimeShift(curSignalValues,mainSignalValues);
-                        if (timeShift.HasValue)
-                            timeConstant_s = timeShift.Value;
-                        else
-                        { // check if it is possible to identify model if we reverse the 
-                            var timeShiftReversed = EstiamteTimeShift(mainSignalValues,curSignalValues );
-                            if (timeShiftReversed.HasValue)
-                                timeConstant_s = -1* timeShiftReversed.Value;
+                        (timeConstant_s,timeDelay_s) = EstiamteTimeShift(curSignalValues,mainSignalValues);
+                       //  else
+                        { // check if it is possible to identify model if we reverse which signal is in and which is out.
+                      //      var timeShiftReversed = EstiamteTimeShift(mainSignalValues,curSignalValues );
+                        //    if (timeShiftReversed.HasValue)
+                          //      timeConstant_s = -1* timeShiftReversed.Value;
                         }
                     }
                 }
-                ret.Add(new CorrelationObject(curSignalName, curCorrCoef,timeConstant_s)); 
+                ret.Add(new CorrelationObject(curSignalName, curCorrCoef,timeConstant_s, timeDelay_s)); 
             }
             return ret;
         }
