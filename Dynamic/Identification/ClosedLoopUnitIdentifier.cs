@@ -39,16 +39,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public (UnitModel,double[]) Identify(UnitDataSet dataSet, PidParameters pidParams=null, int inputIdx = 0 )
         {
-
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
             {
                 return (null,null);
             }
-
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
             // estimate of the disturbance improves along with it.
-
             List<DisturbanceIdResult> idDisturbancesList = new List<DisturbanceIdResult>();
             List<UnitModel> idUnitModelsList = new List<UnitModel>();
             List<double> processGainList = new List<double>();
@@ -184,9 +181,6 @@ namespace TimeSeriesAnalysis.Dynamic
                         candiateTc_s += timeBase;
                         var newParams = unitModel_run3.GetModelParameters().CreateCopy();
                         newParams.TimeConstant_s = candiateTc_s;
-                        ////////////////////////
-                        //newParams.TimeDelay_s = 5;//TODO: not general! remove, just for testing!!!!!1
-                        ///////////////////////
                         var newModel = new UnitModel(newParams);
                         DisturbanceIdResult distIdResult_Test = DisturbanceIdentifier.EstimateDisturbance
                             (dataSet, newModel);
@@ -204,7 +198,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     var step4params = unitModel_run3.GetModelParameters().CreateCopy();
                     step4params.TimeConstant_s = candiateTc_s;
-                    //  newParams.TimeDelay_s = 5;//TODO: not general! remove, just for testing!!!!!1
                     var step4Model = new UnitModel(step4params);
                     idUnitModelsList.Add(step4Model);
                     DisturbanceIdResult distIdResult_step4 = DisturbanceIdentifier.EstimateDisturbance
@@ -286,6 +279,18 @@ namespace TimeSeriesAnalysis.Dynamic
             // pid controller/process in closed loop, to see if the closed loop has overshoot/undershoot? 
             double[] disturbance = idDisturbancesList.ToArray()[idDisturbancesList.Count-1].d_est;
             UnitModel  identUnitModel = idUnitModelsList.ToArray()[idUnitModelsList.Count - 1];
+
+            if (identUnitModel.modelParameters.Fitting == null)
+            {
+                identUnitModel.modelParameters.Fitting = new FittingInfo();
+                identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
+                identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
+                identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.Last();
+                identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop v1.0";
+                identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
+            }
+
+
             return (identUnitModel,disturbance);
         }
 
@@ -294,7 +299,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             double[] disturbance,string name)
         {
-
             if (pidParams == null)
             {
                 return false;

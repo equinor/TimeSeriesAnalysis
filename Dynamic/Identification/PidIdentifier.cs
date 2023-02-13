@@ -142,7 +142,8 @@ namespace TimeSeriesAnalysis.Dynamic
             bool doDelay = true;
             PidParameters bestPidParameters= results_withoutDelay;
             double[,] bestU = U_withoutDelay;
-            if (results_withDelay.Fitting.ObjFunValAbs < results_withoutDelay.Fitting.ObjFunValAbs)
+            //  if (results_withDelay.Fitting.ObjFunValAbs < results_withoutDelay.Fitting.ObjFunValAbs)
+            if (results_withDelay.Fitting.RsqDiff > results_withoutDelay.Fitting.RsqDiff)
             {
                 doDelay = true;
                 bestPidParameters = results_withDelay;

@@ -73,8 +73,9 @@ namespace TimeSeriesAnalysis.Test
             dataset.CreateTimestamps(timeBase_s);
             var results = CorrelationCalculator.CalculateAndOrder("mainSignal", dataset);
 
-            Assert.AreEqual(delaySamples,results[1].timeConstant_s );
-            Assert.AreEqual(-delaySamples,results[2].timeConstant_s );
+            Assert.AreEqual(delaySamples,results[1].timeDelay_s);
+            Assert.AreEqual(0, results[1].timeConstant_s);
+            Assert.AreEqual(null,results[2].timeDelay_s,"dont bother calculating negative time-delays or time constants" );
 
 
         }
