@@ -115,6 +115,16 @@ namespace TimeSeriesAnalysis.Dynamic
 
         }
 
+        private bool IsFirstModelBetterThanSecondModel(PidParameters firstModel, PidParameters secondModel)
+        {
+            if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
+                return true;
+            else
+                return false;
+
+        }
+
+
         /// <summary>
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
@@ -143,7 +153,7 @@ namespace TimeSeriesAnalysis.Dynamic
             PidParameters bestPidParameters= results_withoutDelay;
             double[,] bestU = U_withoutDelay;
             //  if (results_withDelay.Fitting.ObjFunValAbs < results_withoutDelay.Fitting.ObjFunValAbs)
-            if (results_withDelay.Fitting.RsqDiff > results_withoutDelay.Fitting.RsqDiff)
+            if (IsFirstModelBetterThanSecondModel(results_withDelay, results_withoutDelay))
             {
                 doDelay = true;
                 bestPidParameters = results_withDelay;
@@ -165,7 +175,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                 (PidParameters results_withFilter, double[,] U_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams);
 
-                if (results_withFilter.Fitting.ObjFunValAbs < bestPidParameters.Fitting.ObjFunValAbs)
+                if (IsFirstModelBetterThanSecondModel(results_withFilter,bestPidParameters))
                 {
                     bestU = U_withFilter;
                     bestPidParameters = results_withFilter;
@@ -176,7 +186,6 @@ namespace TimeSeriesAnalysis.Dynamic
             // this is experimental, but if downsampled, Kp/Ti seems often too low, and hypothesis is that this is because
             // small variations in u_meas/y_meas are no longer tightly correlated, so identification should perhaps focus on fitting
             // to only "larger" changes. 
-
             bool filterUmeas = true;
             for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
             {
@@ -184,13 +193,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 (PidParameters results_withFilter, double[,] U_withFilter) = 
                     IdentifyInternal(dataSet, doDelay, pidFilterParams,filterUmeas);
 
-                if (results_withFilter.Fitting.ObjFunValAbs < bestPidParameters.Fitting.ObjFunValAbs)
+                if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
                 {
                     bestU = U_withFilter;
                     bestPidParameters = results_withFilter;
                 }
             }
-
             // 5. finally return the "best" result
             dataSet.U_sim = bestU;
             return bestPidParameters;
