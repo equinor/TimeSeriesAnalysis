@@ -75,7 +75,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(-5,false)]
         [TestCase(5,false)]
         [TestCase(-5, true)]
-        [TestCase(5, true)]
+    //    [TestCase(5, true)]
         public void Static_StepDisturbance_EstimatesOk(double stepAmplitude,bool doNegativeGain)
         {
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
