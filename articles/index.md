@@ -16,11 +16,12 @@
 **An open-source library of methods to identify,simulate and control industrial process plants, 
 built on .NET Standard 2.0.**
 
-The three most significant aspects of the library are:
-1. a **custom dynamic identification algorithm** (built on top of linear regression) that implements many [tricks-of-the-trade](sysid_tricks_of_the_trade.md) for finding time-series models 
-that may include any combination of time-delay, time-constants, linear- and nonlinear gains to create *grey-box unit models*,
-2. a **state-of-the-art advanced industrial PID-controller** implemented as a *unit-model*, and 
-3. a **dynamic plant simulator** that is able to simulate connected *combinations of unit models*("plant models"), each unit-model may be an identified PID-controller or an identified model.
+The most significant contributions of the library are:
+1. am (open-loop) **unit model and -identification algorithm** that can describe both stationary and dynamic, linear and weakly nonlinear processes, and an algorithm to automatically choose the best model for a given input.
+2. a **closed-loop identification algorithm** that can estimate processes and disturbances from closed loop time-series.
+3. a **PID-controller identification algorithm** that can estimate gain and integral time by observing the output of a controller.,
+4. a **state-of-the-art advanced industrial PID-controller model** implemented as a *unit-model*, and 
+5. a **dynamic plant simulator** that is able to simulate connected *combinations of unit models*("plant models"), each unit-model may be an identified PID-controller or an identified model.
 
 The main value proposition of the library is that
 1. it collects many years combined industrial and academic experience into one a package of tools that are *all integrated/compatible with each other* ,
