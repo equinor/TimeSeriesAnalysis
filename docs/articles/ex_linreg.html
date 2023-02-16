@@ -8,7 +8,7 @@
     <title>Example 2 : Linear regression example | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Example 2 : Linear regression example | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -107,7 +107,7 @@ Plot.FromList(new List&lt;double[]&gt; { y, u1, u2, u3 },
 
 double[][] U = new double[][] { u1, u2, u3 };
 
-var results = (new Vec()).Regress(y, U);
+var results = (new Vec()).RegressUnRegularized(y, U);
 
 TestContext.WriteLine(Vec.ToString(results.Param, 3));
 TestContext.WriteLine(SignificantDigits.Format(results.Rsq, 3));

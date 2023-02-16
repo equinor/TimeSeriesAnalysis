@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PlantSimulator
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -143,13 +143,13 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String)">PlantSimulator(List&lt;ISimulatableModel&gt;, String)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator__ctor_System_Collections_Generic_List_TimeSeriesAnalysis_Dynamic_ISimulatableModel__System_String_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.#ctor(System.Collections.Generic.List{TimeSeriesAnalysis.Dynamic.ISimulatableModel},System.String,System.String)">PlantSimulator(List&lt;ISimulatableModel&gt;, String, String)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PlantSimulator(List&lt;ISimulatableModel&gt; processModelList, string plantName = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public PlantSimulator(List&lt;ISimulatableModel&gt; processModelList, string plantName = &quot;&quot;, string plantDescription = &quot;&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,10 +173,41 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
         <td><p>optional name of plant, used when serializing</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">plantDescription</span></td>
+        <td><p>optional description of plant</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="fields">Fields
   </h3>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_comments" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.comments">comments</h4>
+  <div class="markdown level1 summary"><p>A list of comments that user may have added to track changes made over time</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Comment&gt; comments</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="TimeSeriesAnalysis.Dynamic.Comment.html">Comment</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_connections" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.connections">connections</h4>
@@ -249,16 +280,46 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_plantName" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName">plantName</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_plantDescription_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.plantDescription*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_plantDescription" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.plantDescription">plantDescription</h4>
+  <div class="markdown level1 summary"><p>A short user-friendly description of what the plant is and does</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string plantName</code></pre>
+    <pre><code class="lang-csharp hljs">public string plantDescription { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_plantName_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_plantName" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.plantName">plantName</h4>
+  <div class="markdown level1 summary"><p>User-friendly name that may include white spaces</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string plantName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -277,9 +338,69 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_AddAndConnectExternalSignal_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.AddAndConnectExternalSignal*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_AddAndConnectExternalSignal_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_String_TimeSeriesAnalysis_Dynamic_SignalType_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.AddAndConnectExternalSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.String,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)">AddAndConnectExternalSignal(ISimulatableModel, String, SignalType, Int32)</h4>
+  <div class="markdown level1 summary"><p>Add an external signal. Preferred implementation, as signal can have any ID without naming convention.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string AddAndConnectExternalSignal(ISimulatableModel model, string signalID, SignalType type, int index = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a></td>
+        <td><span class="parametername">model</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">signalID</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SignalType.html">SignalType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>returns signalID or null if something went wrong</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_AddExternalSignal_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.AddExternalSignal*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_AddExternalSignal_TimeSeriesAnalysis_Dynamic_ISimulatableModel_TimeSeriesAnalysis_Dynamic_SignalType_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.AddExternalSignal(TimeSeriesAnalysis.Dynamic.ISimulatableModel,TimeSeriesAnalysis.Dynamic.SignalType,System.Int32)">AddExternalSignal(ISimulatableModel, SignalType, Int32)</h4>
-  <div class="markdown level1 summary"><p>Informs the PlantSimulator that a specific sub-model has a specifc signal at its input,</p>
+  <div class="markdown level1 summary"><p>Informs the PlantSimulator that a specific sub-model has a specifc signal at its input,
+(use for unit testing only, using a naming convention to name signal)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -436,14 +557,14 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectSignal_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectSignal_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignal(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)">ConnectSignal(String, ISimulatableModel, Int32)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectSignalToInput_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignalToInput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_ConnectSignalToInput_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignalToInput(System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel,System.Int32)">ConnectSignalToInput(String, ISimulatableModel, Int32)</h4>
   <div class="markdown level1 summary"><p>Connect an existing signal with a given signalID to a new model</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ConnectSignal(string signalID, ISimulatableModel model, int idx)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ConnectSignalToInput(string signalID, ISimulatableModel model, int idx)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -568,7 +689,7 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_GetUnitDataSetForPID_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.GetUnitDataSetForPID*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_GetUnitDataSetForPID_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_PidModel_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.GetUnitDataSetForPID(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.PidModel)">GetUnitDataSetForPID(TimeSeriesDataSet, PidModel)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_GetUnitDataSetForPID_TimeSeriesAnalysis_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_PidModel_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.GetUnitDataSetForPID(TimeSeriesAnalysis.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.PidModel)">GetUnitDataSetForPID(TimeSeriesDataSet, PidModel)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -586,7 +707,7 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
         <td><span class="parametername">inputData</span></td>
         <td></td>
       </tr>
@@ -614,14 +735,61 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_GetUnitDataSetForProcess_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.GetUnitDataSetForProcess*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_GetUnitDataSetForProcess_TimeSeriesAnalysis_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.GetUnitDataSetForProcess(TimeSeriesAnalysis.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.UnitModel)">GetUnitDataSetForProcess(TimeSeriesDataSet, UnitModel)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnitDataSet GetUnitDataSetForProcess(TimeSeriesDataSet inputData, UnitModel unitModel)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">inputData</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
+        <td><span class="parametername">unitModel</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize(System.String)">Serialize(String)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_Serialize_System_String_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.Serialize(System.String,System.String)">Serialize(String, String)</h4>
   <div class="markdown level1 summary"><p>Creates a file JSON representation of this object</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Serialize(string newPlantName = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Serialize(string newPlantName = null, string path = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -636,6 +804,28 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">newPlantName</span></td>
+        <td><p>the desired file name and plant name(can be null, in which case the filename should be given in the path argument)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>create file in the given path</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -669,7 +859,7 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   
   
   <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)">Simulate(TimeSeriesDataSet, out TimeSeriesDataSet)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_Simulate_TimeSeriesAnalysis_TimeSeriesDataSet_TimeSeriesAnalysis_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.Simulate(TimeSeriesAnalysis.TimeSeriesDataSet,TimeSeriesAnalysis.TimeSeriesDataSet@)">Simulate(TimeSeriesDataSet, out TimeSeriesDataSet)</h4>
   <div class="markdown level1 summary"><p>Perform a dynamic simulation of the model provided, given the specified connections and external signals</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -688,16 +878,182 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
         <td><span class="parametername">inputData</span></td>
         <td><p>the external signals for the simulation(also, determines the simulation time span and timebase)</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
         <td><span class="parametername">simData</span></td>
         <td><p>the simulated data set to be outputted(excluding the external signals)</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_SimulateSingle_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.SimulateSingle*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_SimulateSingle_TimeSeriesAnalysis_TimeSeriesDataSet_System_String_System_Boolean_TimeSeriesAnalysis_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.SimulateSingle(TimeSeriesAnalysis.TimeSeriesDataSet,System.String,System.Boolean,TimeSeriesAnalysis.TimeSeriesDataSet@)">SimulateSingle(TimeSeriesDataSet, String, Boolean, out TimeSeriesDataSet)</h4>
+  <div class="markdown level1 summary"><p>Simulate a single model(any ISimulatable model), using inputData as inputs,</p>
+<p>If the model is a unitModel and the inputData inludes both the measured y and measured u, the
+simData will include an estimate of the additive disturbance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">inputData</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">singleModelName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doCalcYwithoutAdditiveTerms</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">simData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_SimulateSingle_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.SimulateSingle*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_SimulateSingle_TimeSeriesAnalysis_TimeSeriesDataSet_System_String_TimeSeriesAnalysis_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.SimulateSingle(TimeSeriesAnalysis.TimeSeriesDataSet,System.String,TimeSeriesAnalysis.TimeSeriesDataSet@)">SimulateSingle(TimeSeriesDataSet, String, out TimeSeriesDataSet)</h4>
+  <div class="markdown level1 summary"><p>Simualte single model to get the output including any additive inputs</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">inputData</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">singleModelName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">simData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_SimulateSingleInternal_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.SimulateSingleInternal*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_SimulateSingleInternal_TimeSeriesAnalysis_TimeSeriesDataSet_System_String_TimeSeriesAnalysis_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.SimulateSingleInternal(TimeSeriesAnalysis.TimeSeriesDataSet,System.String,TimeSeriesAnalysis.TimeSeriesDataSet@)">SimulateSingleInternal(TimeSeriesDataSet, String, out TimeSeriesDataSet)</h4>
+  <div class="markdown level1 summary"><p>Simulate single model to get the internal &quot;x&quot; unmeasured output that excludes any additive outputs(like disturbances)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SimulateSingleInternal(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">inputData</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">singleModelName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">simData</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

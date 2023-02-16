@@ -8,7 +8,7 @@
     <title>List of known limitations | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="List of known limitations | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,30 +83,35 @@
 The aim is generally to address these in further work, if possible.</p>
 <h2 id="plant-simulator">Plant Simulator</h2>
 <ul>
-<li><code>PlantSimulator</code> initalizes systems only to steady-state, it is not possible to
-start in a transient state</li>
+<li><code>PlantSimulator</code> initalizes systems only to steady-state, and all PID-loops
+are currently initalized to the value of the setpointg. This has implication when simulating system that have input
+additive disturbances on the output, it is generally</li>
 <li>The code is not tested for a wide variety of complex configurations, so it is likely
 that the simulator may fail to initialize in some complex scenarios, as of yet undiscovered.</li>
 <li>simulations will currently likely fail if more than one select controller is present</li>
+<li>PlantSimulator currenlty always consider <code>e[i-1]</code> when simulating PID-controllers
+(unlike UnitSimulator), this should be configurable, but requires a change to the
+<code>DetermineCalculationOrderOfModels()</code></li>
 </ul>
 <h3 id="unit-simulator">Unit Simulator</h3>
 <ul>
-<li><code>UnitSimulator</code> does not support advanced control involoving more than
+<li><code>UnitSimulator</code> does not support advanced control involving more than
 one PID-controller like cascade, select control/tracking or split range (this can be simulated
-using <code>PlantSimulator</code>, though)</li>
+using <code>PlantSimulator</code>, though.)</li>
+<li><code>PIDmodel</code> always at time <code>i</code> consider <code>e[i]</code> in the UnitSimulator only(PlantSimualtor is different)</li>
 </ul>
 <h3 id="unit-identifier">Unit Identifier</h3>
 <ul>
 <li><code>UnitIdentifier</code> has no functionality to simultanously discover multiple time-constants
-acting through different inputs u on the outputl</li>
+acting through different inputs <code>u</code> on the output.</li>
 </ul>
 <h3 id="pid-controller">PID-Controller</h3>
 <ul>
 <li>the tracking functionality of the included PID-controller needs work(reformulation?),
-the example of tracking is unfinished as a result</li>
-<li>split range has not been verified in a test</li>
-<li>the uncertainty of estimated PID-paramters is currently not calculated or stored, but it is
-possible to do so</li>
+the example of tracking is unfinished as a result,</li>
+<li>split range has not been verified in a test,</li>
+<li>the uncertainty of estimated PID-parameters is currently not calculated or stored, but it is
+possible to do so,</li>
 <li>the &quot;warm-start&quot; capability does not appear to be able to reset a controller object that
 has already been run.</li>
 </ul>

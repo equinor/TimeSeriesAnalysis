@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Vec
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -709,7 +709,7 @@ Works by running a regression with time as the &quot;X&quot; variable
   
   <a id="TimeSeriesAnalysis_Vec_IsAllNaN_" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___" data-uid="TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])">IsAllNaN(Double[])</h4>
-  <div class="markdown level1 summary"><p>Returns true if all elements in array are &quot;-9999&quot; or Double.NaN</p>
+  <div class="markdown level1 summary"><p>Returns true if all elements in array are &quot;-9999&quot; or Double.NaN, or is null</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1311,6 +1311,55 @@ Works by running a regression with time as the &quot;X&quot; variable
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Vec_NonCausalSmooth_" data-uid="TimeSeriesAnalysis.Vec.NonCausalSmooth*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_NonCausalSmooth_System_Double___System_Int32_" data-uid="TimeSeriesAnalysis.Vec.NonCausalSmooth(System.Double[],System.Int32)">NonCausalSmooth(Double[], Int32)</h4>
+  <div class="markdown level1 summary"><p>smooths the array without phase-shifting by using both past and future values
+(i.e. so called non-causal smoothing)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] NonCausalSmooth(double[] array1, int kernel = 1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">array1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">kernel</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Vec_Pow_" data-uid="TimeSeriesAnalysis.Vec.Pow*"></a>
   <h4 id="TimeSeriesAnalysis_Vec_Pow_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Vec.Pow(System.Double[],System.Double)">Pow(Double[], Double)</h4>
   <div class="markdown level1 summary"><p>Calculates the power of an array</p>
@@ -1466,8 +1515,66 @@ Works by running a regression with time as the &quot;X&quot; variable
   
   
   <a id="TimeSeriesAnalysis_Vec_Regress_" data-uid="TimeSeriesAnalysis.Vec.Regress*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_____System_Int32___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[][],System.Int32[],System.Collections.Generic.List{System.Int32})">Regress(Double[], Double[][], Int32[], List&lt;Int32&gt;)</h4>
-  <div class="markdown level1 summary"><p>Robust linear regression
+  <h4 id="TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_0__0___System_Int32___" data-uid="TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[0:,0:],System.Int32[])">Regress(Double[], Double[,], Int32[])</h4>
+  <div class="markdown level1 summary"><p>Robust linear regression</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RegressionResults Regress(double[] Y, double[, ] X, int[] yIndToIgnore = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">Y</span></td>
+        <td><p>vector of responve variable values (to be modelled)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span>[,]</td>
+        <td><span class="parametername">X</span></td>
+        <td><p>2D matrix of of mainpulated values/independent values/regressors used to explain Y</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td><span class="parametername">yIndToIgnore</span></td>
+        <td><p>(optional) a list of the indices of values in Y to ignore in regression. By default it is <code>null</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></td>
+        <td><p>an object of the <code>RegressionResult</code> class with the paramters, as well as
+some statistics on the fit and uncertainty thereof.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_RegressRegularized_" data-uid="TimeSeriesAnalysis.Vec.RegressRegularized*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_RegressRegularized_System_Double___System_Double_____System_Int32___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.RegressRegularized(System.Double[],System.Double[][],System.Int32[],System.Collections.Generic.List{System.Int32})">RegressRegularized(Double[], Double[][], Int32[], List&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Robust linear regression, regularizd
 To avoid paramters taking on exteremly high values in the case of little excitation in the inputs,
 two mitigating actions are implemented by the solver, to be &quot;robust&quot;</p>
 <ul>
@@ -1479,7 +1586,7 @@ any information to force the parameter away from zero</li>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore = null, List&lt;int&gt; XindicesToRegularize = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public RegressionResults RegressRegularized(double[] Y, double[][] X, int[] yIndToIgnore = null, List&lt;int&gt; XindicesToRegularize = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1536,14 +1643,14 @@ some statistics on the fit and uncertainty thereof.</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Vec_Regress_" data-uid="TimeSeriesAnalysis.Vec.Regress*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Regress_System_Double___System_Double_0__0___System_Int32___" data-uid="TimeSeriesAnalysis.Vec.Regress(System.Double[],System.Double[0:,0:],System.Int32[])">Regress(Double[], Double[,], Int32[])</h4>
-  <div class="markdown level1 summary"><p>Robust linear regression</p>
+  <a id="TimeSeriesAnalysis_Vec_RegressUnRegularized_" data-uid="TimeSeriesAnalysis.Vec.RegressUnRegularized*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_RegressUnRegularized_System_Double___System_Double_____System_Int32___" data-uid="TimeSeriesAnalysis.Vec.RegressUnRegularized(System.Double[],System.Double[][],System.Int32[])">RegressUnRegularized(Double[], Double[][], Int32[])</h4>
+  <div class="markdown level1 summary"><p>Regression that does not attempt to regualarize inputs toward zero</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RegressionResults Regress(double[] Y, double[, ] X, int[] yIndToIgnore = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public RegressionResults RegressUnRegularized(double[] Y, double[][] X, int[] yIndToIgnore = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1558,20 +1665,17 @@ some statistics on the fit and uncertainty thereof.</p>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">Y</span></td>
-        <td><p>vector of responve variable values (to be modelled)</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[,]</td>
+        <td><span class="xref">System.Double</span>[][]</td>
         <td><span class="parametername">X</span></td>
-        <td><p>2D matrix of of mainpulated values/independent values/regressors used to explain Y</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span>[]</td>
         <td><span class="parametername">yIndToIgnore</span></td>
-        <td><p>(optional) a list of the indices of values in Y to ignore in regression. By default it is <code>null</code></p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1586,9 +1690,7 @@ some statistics on the fit and uncertainty thereof.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></td>
-        <td><p>an object of the <code>RegressionResult</code> class with the paramters, as well as
-some statistics on the fit and uncertainty thereof.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>

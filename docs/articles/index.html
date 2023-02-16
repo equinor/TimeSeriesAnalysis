@@ -8,7 +8,7 @@
     <title>TimeSeriesAnalysis | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="TimeSeriesAnalysis | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -87,11 +87,12 @@
 <h2 id="at-a-glance">At a glance</h2>
 <p><strong>An open-source library of methods to identify,simulate and control industrial process plants,
 built on .NET Standard 2.0.</strong></p>
-<p>The three most significant aspects of the library are:</p>
+<p>The most significant contributions of the library are:</p>
 <ol>
-<li>a <strong>custom dynamic identification algorithm</strong> (built on top of linear regression) that implements many <a href="sysid_tricks_of_the_trade.html">tricks-of-the-trade</a> for finding time-series models
-that may include any combination of time-delay, time-constants, linear- and nonlinear gains to create <em>grey-box unit models</em>,</li>
-<li>a <strong>state-of-the-art advanced industrial PID-controller</strong> implemented as a <em>unit-model</em>, and</li>
+<li>am (open-loop) <strong>unit model and -identification algorithm</strong> that can describe both stationary and dynamic, linear and weakly nonlinear processes, and an algorithm to automatically choose the best model for a given input.</li>
+<li>a <strong>closed-loop identification algorithm</strong> that can estimate processes and disturbances from closed loop time-series.</li>
+<li>a <strong>PID-controller identification algorithm</strong> that can estimate gain and integral time by observing the output of a controller.,</li>
+<li>a <strong>state-of-the-art advanced industrial PID-controller model</strong> implemented as a <em>unit-model</em>, and</li>
 <li>a <strong>dynamic plant simulator</strong> that is able to simulate connected <em>combinations of unit models</em>(&quot;plant models&quot;), each unit-model may be an identified PID-controller or an identified model.</li>
 </ol>
 <p>The main value proposition of the library is that</p>
@@ -110,18 +111,21 @@ to describe the dynamics of typical industrial plants. The methods themselves ar
 general and it is feasible to apply these methods to other types of datasets.</p>
 </div>
 <p>The intention is to be able to easily code <strong>&quot;plant simulators&quot;</strong> by connecting<br>
-<strong>&quot;grey box&quot;</strong> unit models. The intention is to make the process
-of identifying unit models, connecting models and simulating as easy as possible, and to automate
-wherever possible.</p>
+<strong>&quot;grey box&quot;</strong> unit models. The intention is to make the process of identifying unit models,
+connecting models and simulating as easy as possible, and to automate wherever possible.</p>
+<p>Because the code is written as a .NET Standard class library, it is equally possible
+to run the library in the cloud on a Linux instance, to call the library for development
+on your desktop through Python or Matlab, or to integrate the library into &quot;edge&quot; computing
+in industrial control.</p>
 <h2 id="motivation---grey-box-rather-than-black-box">Motivation - &quot;grey-box&quot; rather than &quot;black box&quot;</h2>
 <div class="NOTE">
 <h5>Note</h5>
-<p><strong>A grey-box model set</strong> is built to have paramters fitted
-to time-series data(like black-box models), but at the same time each parameter has an
-intuitive phyiscal interpretation(like a white-box model).</p>
+<p><strong>A grey-box model</strong> is built to have parameters fitted
+to time-series data (like black-box models), but at the same time each parameter has an
+intuitive phyiscal interpretation (like a white-box model).</p>
 </div>
 <p>Grey-box models are a &quot;best of both worlds&quot; compromise
-between &quot;white box&quot; models(where paramters are set using prior knowlege)
+between &quot;white box&quot; models (where paramters are set using prior knowlege)
 and &quot;black-box&quot; models (where parameters are determiend by fitting and have no direct physical interpretation.)</p>
 <p>The aim is to make models that can represent large and complex plants, yet where the meaning of
 each parameter in each unit models is still intuitive,
@@ -132,8 +136,11 @@ Grey-box models have two very interesting properties:</p>
 <li>users can <em>add insight</em> by <em>changing</em> parameters where needed.</li>
 </ul>
 <p>Grey-box modeling will have an advantage in cases where it is
-fitted to real-world data that has some information but perhaps has certain gaps.
-Since parameters have a phyiscal interpretation, it is possible to fill in gaps in the model
+fitted to real-world data that has some information but perhaps has some
+information missing because some inputs do not vary enough independelty.
+This situation is the norm when attempting to use real-world time-series data sets rather
+than using data of designed experiments.</p>
+<p>Since parameters have a phyiscal interpretation, it is possible to fill in gaps in the model
 using a priori knowledge.</p>
 <h3 id="advanced-analytics">Advanced analytics</h3>
 <p>The above concepts are related to the term &quot;advanced analytics&quot;.</p>

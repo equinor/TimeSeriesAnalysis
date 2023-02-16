@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PidController
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -724,6 +724,33 @@ Re-calling this setter to update gain-scheduling</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetPidFiltering_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetPidFiltering*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetPidFiltering_TimeSeriesAnalysis_Dynamic_PidFilterParams_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetPidFiltering(TimeSeriesAnalysis.Dynamic.PidFilterParams)">SetPidFiltering(PidFilterParams)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPidFiltering(PidFilterParams pidFiltering)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidFilterParams.html">PidFilterParams</a></td>
+        <td><span class="parametername">pidFiltering</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PidController_SetScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetScaling*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetScaling_TimeSeriesAnalysis_Dynamic_PidScaling_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetScaling(TimeSeriesAnalysis.Dynamic.PidScaling)">SetScaling(PidScaling)</h4>
   <div class="markdown level1 summary"><p>Gives a PIDscaling object that specifies how input and output is to be scaled.</p>
@@ -867,40 +894,6 @@ to determine if its output was selected by looking at the tracking signal.</p>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">u0</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_PidController_SetYFilter_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetYFilter*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PidController_SetYFilter_System_Double_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.PidController.SetYFilter(System.Double,System.Int32)">SetYFilter(Double, Int32)</h4>
-  <div class="markdown level1 summary"><p>Sets the filter time constant in seconds and the filter order (1. or 2. order supported) of low-pass filter to be applied to the process
-measurement y</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetYFilter(double filterTimeConstant_s, int filterOrder = 1)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">filterTimeConstant_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">filterOrder</span></td>
         <td></td>
       </tr>
     </tbody>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PidModel
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -114,7 +114,7 @@ data-classes, linked below:
     <div class="level1"><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html">ModelBaseClass</a></div>
     <div class="level2"><span class="xref">PidModel</span></div>
   </div>
-  <div classs="implements">
+  <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a></div>
   </div>
@@ -137,6 +137,9 @@ data-classes, linked below:
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID">ModelBaseClass.GetID()</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetID_System_String_">ModelBaseClass.SetID(String)</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ModelType_">ModelBaseClass.SetProcessModelType(ModelType)</a>
@@ -438,6 +441,48 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PidModel_IsModelSimulatable_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.IsModelSimulatable*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidModel_IsModelSimulatable_System_String__" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.IsModelSimulatable(System.String@)">IsModelSimulatable(out String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsModelSimulatable(out string explainStr)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">explainStr</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PidModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.Iterate*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PidModel_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.PidModel.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
   <div class="markdown level1 summary"><p>Iterate the PID controller one step</p>
@@ -445,7 +490,7 @@ input 3 is track signal and input 4 is gain scheduling variable</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double timeBase_s, double badDataID = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Iterate(double[] inputs, double timeBase_s, double badDataID = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -488,7 +533,7 @@ First value is<code>y_process_abs</code>,  second value is <code>y_set_abs</code
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
         <td><p>the output <code>u</code> of the pid-controller. If not enough inputs, it returns <code>NaN</code></p>
 </td>
       </tr>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PlantSimulatorInitalizer
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -163,8 +163,8 @@ using mathematical programming/matrix solvers.
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyState_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyState_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyState(TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet@)">ToSteadyState(TimeSeriesDataSet, ref TimeSeriesDataSet)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyStateAndEstimateDisturbances_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyStateAndEstimateDisturbances_TimeSeriesAnalysis_TimeSeriesDataSet__TimeSeriesAnalysis_TimeSeriesDataSet__" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(TimeSeriesAnalysis.TimeSeriesDataSet@,TimeSeriesAnalysis.TimeSeriesDataSet@)">ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet, ref TimeSeriesDataSet)</h4>
   <div class="markdown level1 summary"><p>Initalize the empty datasets to their steady-state values</p>
 <p>
 </p>
@@ -172,7 +172,7 @@ using mathematical programming/matrix solvers.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ToSteadyState(TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -185,12 +185,12 @@ using mathematical programming/matrix solvers.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
         <td><span class="parametername">inputData</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
         <td><span class="parametername">simData</span></td>
         <td><p>simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</p>
 </td>

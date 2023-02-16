@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="14.0"> 
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -61,7 +61,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <PackageReference Include="Accord" Version="3.8.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0" />
     <PackageReference Include="Accord.Statistics" Version="3.8.0" />
-    <PackageReference Include="docfx.console" Version="2.59.0" Condition="'$(Configuration)'=='Release'">
+    <PackageReference Include="docfx.console" Version="2.59.4" Condition="'$(Configuration)'=='Release'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

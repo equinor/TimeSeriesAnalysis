@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FittingInfo
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -124,6 +124,32 @@
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_EndTime_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.EndTime*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_EndTime" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.EndTime">EndTime</h4>
+  <div class="markdown level1 summary"><p>End time of fitting data set</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime EndTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_NFittingBadDataPoints_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.NFittingBadDataPoints*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_NFittingBadDataPoints" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.NFittingBadDataPoints">NFittingBadDataPoints</h4>
   <div class="markdown level1 summary"><p>Number of bad data points ignored during fitting</p>
@@ -176,8 +202,8 @@
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingAbs_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingAbs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingAbs" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingAbs">ObjFunValFittingAbs</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValAbs_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValAbs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValAbs" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValAbs">ObjFunValAbs</h4>
   <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
 <p>
 This is the R-squared of the &quot;absolute&quot; sum(ymeas[k]-ymod[k-1])
@@ -186,7 +212,7 @@ This is the R-squared of the &quot;absolute&quot; sum(ymeas[k]-ymod[k-1])
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double ObjFunValFittingAbs { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double ObjFunValAbs { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -205,8 +231,8 @@ This is the R-squared of the &quot;absolute&quot; sum(ymeas[k]-ymod[k-1])
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingDiff_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingDiff*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValFittingDiff" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValFittingDiff">ObjFunValFittingDiff</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValDiff_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_ObjFunValDiff" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.ObjFunValDiff">ObjFunValDiff</h4>
   <div class="markdown level1 summary"><p>The value of the objective function during fitting, lower is better(used to choose among models)</p>
 <p>
 This is the R-squared of the &quot;differences&quot;  sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
@@ -215,7 +241,7 @@ This is the R-squared of the &quot;differences&quot;  sum(ymeas[k]-ymeas[k-1] -(
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double ObjFunValFittingDiff { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double ObjFunValDiff { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -234,8 +260,8 @@ This is the R-squared of the &quot;differences&quot;  sum(ymeas[k]-ymeas[k-1] -(
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingAbs_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingAbs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingAbs" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingAbs">RsqFittingAbs</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqAbs_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqAbs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqAbs" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqAbs">RsqAbs</h4>
   <div class="markdown level1 summary"><p>The value of the R2 or root mean square</p>
 <p>
 This is the R-squared of the &quot;absolute&quot; sum(ymeas[k] - ymod[k] )
@@ -244,7 +270,7 @@ This is the R-squared of the &quot;absolute&quot; sum(ymeas[k] - ymod[k] )
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double RsqFittingAbs { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double RsqAbs { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -263,8 +289,8 @@ This is the R-squared of the &quot;absolute&quot; sum(ymeas[k] - ymod[k] )
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingDiff_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingDiff*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqFittingDiff" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqFittingDiff">RsqFittingDiff</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqDiff_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_RsqDiff" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.RsqDiff">RsqDiff</h4>
   <div class="markdown level1 summary"><p>The value of the R2 or root mean square of fitting,higher is better (used to choose among models)</p>
 <p>
 This is the R-squared of the &quot;differences&quot; sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
@@ -273,7 +299,7 @@ This is the R-squared of the &quot;differences&quot; sum(ymeas[k]-ymeas[k-1] -(y
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double RsqFittingDiff { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double RsqDiff { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -312,6 +338,32 @@ This is the R-squared of the &quot;differences&quot; sum(ymeas[k]-ymeas[k-1] -(y
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_StartTime_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.StartTime*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_StartTime" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.StartTime">StartTime</h4>
+  <div class="markdown level1 summary"><p>Start time of fitting data set</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime StartTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
         <td></td>
       </tr>
     </tbody>

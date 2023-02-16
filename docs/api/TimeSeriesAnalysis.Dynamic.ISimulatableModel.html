@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface ISimulatableModel
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -341,7 +341,7 @@ This method is used when starting a method at steady-state (assumes that disturb
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">double? GetSteadyStateInput(double y0, int inputIdx = 0, double[] givenInputValues = null)</code></pre>
+    <pre><code class="lang-csharp hljs">double? GetSteadyStateInput(double x0, int inputIdx = 0, double[] givenInputValues = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -355,8 +355,8 @@ This method is used when starting a method at steady-state (assumes that disturb
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">y0</span></td>
-        <td><p>value of y for which to find matching u0</p>
+        <td><span class="parametername">x0</span></td>
+        <td><p>value of x for which to find matching u0</p>
 </td>
       </tr>
       <tr>
@@ -435,6 +435,50 @@ This method is used when starting a method at steady-state (assumes that disturb
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_IsModelSimulatable_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.IsModelSimulatable*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_IsModelSimulatable_System_String__" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.IsModelSimulatable(System.String@)">IsModelSimulatable(out String)</h4>
+  <div class="markdown level1 summary"><p>Returns true if the paramters are specified</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsModelSimulatable(out string explanationStr)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">explanationStr</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>string explaining why return is false, if applicable</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.Iterate*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ISimulatableModel_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.ISimulatableModel.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
   <div class="markdown level1 summary"><p>Iterate the process model one timestep forward</p>
@@ -442,7 +486,7 @@ This method is used when starting a method at steady-state (assumes that disturb
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">double Iterate(double[] inputsU, double timeBase_s, double badDataID = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">double[] Iterate(double[] inputsU, double timeBase_s, double badDataID = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -483,9 +527,9 @@ This method is used when starting a method at steady-state (assumes that disturb
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><p>the value of the state x of the process model at the new time step(be aware that if a disturbance is defined,
-they need ot be added to states to get <code>y_sim</code>)</p>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><p>First value: the value of the state x of the process model at the new time step(be aware that if a disturbance is defined,
+they need ot be added to states to get <code>y_sim</code>), if the model has additive outputs, the second state is the &quot;internal output&quot; upstream of those.</p>
 </td>
       </tr>
     </tbody>

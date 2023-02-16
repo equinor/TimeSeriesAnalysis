@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class UnitModel
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -118,7 +118,7 @@ See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">
     <div class="level1"><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html">ModelBaseClass</a></div>
     <div class="level2"><span class="xref">UnitModel</span></div>
   </div>
-  <div classs="implements">
+  <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a></div>
   </div>
@@ -141,6 +141,9 @@ See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID">ModelBaseClass.GetID()</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetID_System_String_">ModelBaseClass.SetID(String)</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_SetProcessModelType_TimeSeriesAnalysis_Dynamic_ModelType_">ModelBaseClass.SetProcessModelType(ModelType)</a>
@@ -411,7 +414,7 @@ added to the output in addition to the other signals.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double? GetSteadyStateInput(double y0, int inputIdx = 0, double[] givenInputs = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public double? GetSteadyStateInput(double x0, int inputIdx = 0, double[] givenInputs = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -425,8 +428,9 @@ added to the output in addition to the other signals.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">y0</span></td>
-        <td></td>
+        <td><span class="parametername">x0</span></td>
+        <td><p>If no additive inputs y=x, otherwise subtract additive inputs from y to get x</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
@@ -459,7 +463,7 @@ added to the output in addition to the other signals.</p>
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitModel_GetSteadyStateOutput_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.GetSteadyStateOutput*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_GetSteadyStateOutput_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.GetSteadyStateOutput(System.Double[])">GetSteadyStateOutput(Double[])</h4>
-  <div class="markdown level1 summary"><p>Get the steady state output y for a given input</p>
+  <div class="markdown level1 summary"><p>Get the steady state output y for a given input(including additive terms)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -500,6 +504,48 @@ added to the output in addition to the other signals.</p>
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_UnitModel_IsModelSimulatable_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.IsModelSimulatable*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_IsModelSimulatable_System_String__" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.IsModelSimulatable(System.String@)">IsModelSimulatable(out String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsModelSimulatable(out string explainStr)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">explainStr</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_UnitModel_IsModelStatic_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.IsModelStatic*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_IsModelStatic" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.IsModelStatic">IsModelStatic()</h4>
   <div class="markdown level1 summary"><p>Is the model static or dynamic?</p>
@@ -534,7 +580,7 @@ added to the output in addition to the other signals.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double Iterate(double[] inputs, double timeBase_s, double badValueIndicator = -9999)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Iterate(double[] inputs, double timeBase_s, double badValueIndicator = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -575,7 +621,7 @@ added to the output in addition to the other signals.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
         <td><p>the updated process model state(x) - the output without any output noise or disturbance.
 NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
 If some data points in U inputsU are NaN or equal to <code>badValueIndicator</code>, the last good value is returned</p>
@@ -606,6 +652,34 @@ If some data points in U inputsU are NaN or equal to <code>badValueIndicator</co
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
         <td><span class="parametername">dataset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitModel_SetModelParameters_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.SetModelParameters*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_SetModelParameters_TimeSeriesAnalysis_Dynamic_UnitParameters_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.SetModelParameters(TimeSeriesAnalysis.Dynamic.UnitParameters)">SetModelParameters(UnitParameters)</h4>
+  <div class="markdown level1 summary"><p>Update the paramter object of the model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetModelParameters(UnitParameters parameters)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">UnitParameters</a></td>
+        <td><span class="parametername">parameters</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -643,12 +717,12 @@ This is especially useful for unit-testing and development.</p>
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitModel_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.WarmStart*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel_WarmStart_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.WarmStart(System.Double[],System.Double)">WarmStart(Double[], Double)</h4>
-  <div class="markdown level1 summary"><p>Warm-starting(not implemented)</p>
+  <div class="markdown level1 summary"><p>Warm-starting</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void WarmStart(double[] inputs, double output)</code></pre>
+    <pre><code class="lang-csharp hljs">public void WarmStart(double[] inputs = null, double output = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -663,12 +737,14 @@ This is especially useful for unit-testing and development.</p>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">inputs</span></td>
-        <td></td>
+        <td><p>not used, leave as null</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
         <td><span class="parametername">output</span></td>
-        <td></td>
+        <td><p>not used, leave as null</p>
+</td>
       </tr>
     </tbody>
   </table>

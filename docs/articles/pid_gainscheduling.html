@@ -8,7 +8,7 @@
     <title>Gain-scheduling a nonlinear process | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Gain-scheduling a nonlinear process | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -123,8 +123,8 @@ var modelParameters = new UnitParameters
     var isOk1 = openLoopSim2.Simulate(inputDataSim2,out var openLoopData2);
 
     Plot.FromList(new List&lt;double[]&gt;
-        {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
-         openLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        {openLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y),
+         openLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y),
          openLoopData1.GetValues(processModel.GetID(),SignalType.External_U),
          openLoopData2.GetValues(processModel.GetID(),SignalType.External_U)
          },
@@ -173,10 +173,10 @@ inputData2.CreateTimestamps(timeBase_s);
 var isOk2 = closedLoopSim2.Simulate(inputData2,out var closedLoopData2);
 
 Plot.FromList(new List&lt;double[]&gt;
-    {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+    {closedLoopData1.GetValues(processModel.GetID(),SignalType.Output_Y),
      inputData1.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
      closedLoopData1.GetValues(pidModel1.GetID(),SignalType.PID_U),
-     closedLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+     closedLoopData2.GetValues(processModel.GetID(),SignalType.Output_Y),
      inputData2.GetValues(pidModel2.GetID(),SignalType.Setpoint_Yset),
      closedLoopData2.GetValues(pidModel2.GetID(),SignalType.PID_U),
      },
@@ -247,10 +247,10 @@ var isOk3 = closedLoopSimGS_1.Simulate(inputDataGS1,out var closedLoopDataGS_1);
  var isOk4 = closedLoopSimGS_2.Simulate(inputDataGS2, out var closedLoopDataGS_2);
 
  Plot.FromList(new List&lt;double[]&gt;
-     {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+     {closedLoopDataGS_1.GetValues(processModel.GetID(),SignalType.Output_Y),
       inputDataGS1.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
       closedLoopDataGS_1.GetValues(pidModelGS.GetID(),SignalType.PID_U),
-      closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+      closedLoopDataGS_2.GetValues(processModel.GetID(),SignalType.Output_Y),
       inputDataGS2.GetValues(pidModelGS.GetID(),SignalType.Setpoint_Yset),
       closedLoopDataGS_2.GetValues(pidModelGS.GetID(),SignalType.PID_U)
       },

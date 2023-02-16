@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PidParameters
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -192,6 +192,32 @@
   </table>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_Filtering_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Filtering*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_Filtering" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.Filtering">Filtering</h4>
+  <div class="markdown level1 summary"><p>PID-filtering object. This is optional</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PidFilterParams Filtering { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidFilterParams.html">PidFilterParams</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PidParameters_GainScheduling_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.GainScheduling*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_GainScheduling" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.GainScheduling">GainScheduling</h4>
   <div class="markdown level1 summary"><p>Gain-scheduling object. This is optional, set to null gain-scheduling is not in use.</p>
@@ -346,6 +372,32 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_u0_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.u0*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_u0" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.u0">u0</h4>
+  <div class="markdown level1 summary"><p>Output value when e=0, used only for P-only controllers, u = Kp*e + u0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double u0 { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -371,6 +423,31 @@
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidIdentWarning.html">PidIdentWarning</a></td>
         <td><span class="parametername">warning</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_PidParameters_GetWarnings_" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.GetWarnings*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PidParameters_GetWarnings" data-uid="TimeSeriesAnalysis.Dynamic.PidParameters.GetWarnings">GetWarnings()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PidIdentWarning[] GetWarnings()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidIdentWarning.html">PidIdentWarning</a>[]</td>
         <td></td>
       </tr>
     </tbody>

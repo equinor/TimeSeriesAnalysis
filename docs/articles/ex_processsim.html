@@ -8,7 +8,7 @@
     <title>Example 6 :Larger-scale dynamic process simulation | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Example 6 :Larger-scale dynamic process simulation | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -162,7 +162,7 @@ after the simulation.</p>
     var isOk = sim.Simulate(inputData,out var simData);
 
     Plot.FromList(new List&lt;double[]&gt; {
-        simData.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        simData.GetValues(processModel.GetID(),SignalType.Output_Y),
         simData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
         inputData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
         simData.GetValues(pidModel.GetID(),SignalType.PID_U)

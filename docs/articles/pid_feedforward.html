@@ -8,7 +8,7 @@
     <title>Feedforward control | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Feedforward control | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -131,9 +131,9 @@ var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
 Plot.FromList(new List&lt;double[]&gt;
     {
-    dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+    dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y),
     inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
-    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+    dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y),
     dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
     inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
     },
@@ -201,15 +201,15 @@ string dSignalID = simNoFeedF.AddExternalSignal(disturbanceModel, SignalType.Ext
 inputData.Add(dSignalID, TimeSeriesCreator.Step(300, 600, 25, 0));
 inputData.CreateTimestamps(timeBase_s);
 
-simNoFeedF.ConnectSignal(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
+simNoFeedF.ConnectSignalToInput(dSignalID, pidModel, (int)PidModelInputsIdx.FeedForward);
 
 var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
 Plot.FromList(new List&lt;double[]&gt;
     { 
-        dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y_sim),
+        dataNoFeedF.GetValues(processModel.GetID(),SignalType.Output_Y),
         inputData.GetValues(pidModel.GetID(),SignalType.Setpoint_Yset),
-        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y_sim),
+        dataNoFeedF.GetValues(disturbanceModel.GetID(),SignalType.Output_Y),
         dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
         inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
     },

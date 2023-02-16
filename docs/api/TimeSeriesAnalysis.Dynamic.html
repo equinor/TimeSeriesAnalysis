@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace TimeSeriesAnalysis.Dynamic
    | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -97,12 +97,21 @@ that is inputted into the process</p>
 <p>In order to accomplish this estimation, the process model and the disturbance signal
 are estimted together.</p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.Comment.html">Comment</a></h4>
+      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ConnectionParser.html">ConnectionParser</a></h4>
       <section><p>Class that tracks which model is connected to which in a set of models.</p>
 <p>
 This is important when traversing the models when simulating with the 
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.html">PlantSimulator</a>, as these models need to be
 run in a specific order</p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.html">DisturbanceIdentifier</a></h4>
+      <section><p>An algorithm that attempts to re-create the additive output disturbance acting on
+a signal Y while PID-control attempts to counter-act the disturbance by adjusting its manipulated output u.</p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html">DisturbanceIdResult</a></h4>
+      <section><p>Internal class to store a single sub-run of the DisturnanceIdentifierInternal</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingInfo.html">FittingInfo</a></h4>
       <section></section>
@@ -136,6 +145,15 @@ To simulate PID-control, use the wrapper class PIDModel, as it wraps this class 
       <section><p>Parameters describing PID-controller parameters for feed-forward
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PidController.html">PidController</a></p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidFilter.html">PidFilter</a></h4>
+      <section><p>Class that handles the filtering of inputs y to a pid-controller
+Put into separate class as this is both a component of the PidController and of PidIdentifier,
+and important that implementation is equal.</p>
+</section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidFilterParams.html">PidFilterParams</a></h4>
+      <section><p>Containing the information related to how a pid-controller
+should low-pass filter its input signal</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidGainScheduling.html">PidGainScheduling</a></h4>
       <section><p>Parameters describing PID-controller parameters for gain-scheduling
@@ -181,6 +199,9 @@ data-classes, linked below:
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PidController.html">PidController</a></p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidSimulator.html">PidSimulator</a></h4>
+      <section><p>Simulate a PIDmodel PID for a given set of inputs timeseries</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidTuning.html">PidTuning</a></h4>
       <section><p>Parameters describing PID-controller tuning (Kp,Ti,Td)</p>
 <p><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
@@ -206,8 +227,6 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html">PlantSimulatorInitalizer</a>
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a>
 </section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulatorHelper.html">PlantSimulatorHelper</a></h4>
-      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html">PlantSimulatorInitalizer</a></h4>
       <section><p>Intializes a plant simulator in the first data point</p>
 <p>
@@ -218,6 +237,8 @@ By design choice, this class traverses the models by logic to initialize the pla
 using mathematical programming/matrix solvers.
 </p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulatorSerializer.html">PlantSimulatorSerializer</a></h4>
+      <section></section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a></h4>
       <section><p>Simulatable select block</p>
 <p>
@@ -226,6 +247,11 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
 </p>
 </section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SerializeHelper.html">SerializeHelper</a></h4>
+      <section></section>
+      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SignalNamer.html">SignalNamer</a></h4>
+      <section><p>Handles naming of individual signals in a process simulation</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeDelay.html">TimeDelay</a></h4>
       <section><p>Delays a signal by a specific number of time steps, keeping an internal buffer of delayed values
 between iterations.</p>
@@ -233,16 +259,6 @@ between iterations.</p>
 This is a reasuble class for providing time-delay functionality to simulatable models.
 </p>
 <seealo cref="T:TimeSeriesAnalysis.Dynamic.UnitModel"></seealo>
-</section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.TimeSeriesDataSet.html">TimeSeriesDataSet</a></h4>
-      <section><p>A class that holds time-series data for any number of tags</p>
-<p>
-Time is either treated by giving a timeBase in seconds and a starting time, or by  
-specifying a vector of timestamps.
-</p>
-<remark>
-This is the return data class of <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.html">PlantSimulator</a>
-</remark>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></h4>
       <section><p>The data for a porition of a process, containg only one output and one or multiple inputs that influence it</p>

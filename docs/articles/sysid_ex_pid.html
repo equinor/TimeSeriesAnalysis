@@ -8,7 +8,7 @@
     <title> | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content=" | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -122,7 +122,7 @@ code of this example:</p>
     // view results
     Console.WriteLine(idResult.ToString());
     Plot.FromList(new List&lt;double[]&gt; {
-        simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+        simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
         inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
         simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
         Array2D&lt;double&gt;.GetColumn(pidDataSet.U_sim,(int)INDEX.FIRST) },

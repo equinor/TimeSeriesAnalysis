@@ -8,7 +8,7 @@
     <title>Cascade control | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Cascade control | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -147,8 +147,8 @@ the simulation in <code>D2</code>, and the aim is for the cascade controllers to
 
    Plot.FromList(new List&lt;double[]&gt;
        {
-       simResult.GetValues(process1.GetID(),SignalType.Output_Y_sim),
-       simResult.GetValues(process2.GetID(),SignalType.Output_Y_sim),
+       simResult.GetValues(process1.GetID(),SignalType.Output_Y),
+       simResult.GetValues(process2.GetID(),SignalType.Output_Y),
        inputData.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
        simResult.GetValues(pid1.GetID(),SignalType.PID_U),
        simResult.GetValues(pid2.GetID(),SignalType.PID_U)

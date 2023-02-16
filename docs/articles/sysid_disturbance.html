@@ -8,7 +8,7 @@
     <title>Closed-loop disturbance signal estimation | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Closed-loop disturbance signal estimation | TimeSeriesAnalysis reference documentation ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -103,7 +103,7 @@ indirectly based on the measured <code>u</code> and <code>e</code></em></p>
 <h2 id="why-is-distrubance-signal-estimation-important">Why is distrubance signal estimation important?</h2>
 <p>Disturbances are the &quot;action&quot; or &quot;excitation&quot; that causes feedback-controlled systems to
 move, if these signals could be estimated, then a disturbance could be &quot;played back&quot; in
-a simulation and different changes to the control system could be assesed and compared.</p>
+a simulation and different changes to the control system could be assessed and compared.</p>
 <p>Describing the disturbance signal is also important for identifying the other components
 of a feedback-controlled system correctly, as disturbances are &quot;non-white&quot; noise that tends
 to skew estimates (destroying the regression accuracy) if not accounted for.</p>
@@ -115,29 +115,46 @@ variable.</p>
 but in the long-term the effects of the disturbance are seen on the feedback-manipulated variable
 <code>u</code>. The PID-controller will act with some time-constant on <code>u</code>,and this change in <code>u</code>
 will again act back on the output <code>y</code> with a delay or dynamic behavior that is
-given by the process(decribed by the process model.) To know what amplitude a disturbance has,
+given by the process(described by the process model.) To know what amplitude a disturbance has,
 requires knowledge of how much effect (or &quot;gain&quot;) the change in manipulated variable u will
 have caused on the output <code>y</code>.</p>
 <p><em>Thus the two tasks of estimating the disturbance and estimating the process model are linked</em>,
 and thus they likely need to be solved <em>jointly</em>.</p>
 <h2 id="approach">Approach</h2>
 <p>The chosen approach to solve the linked problem of solving for
-process model and disturbancee signal is <em>sequential</em>(as opposed to simulatenous),
+process model and disturbance signal is <em>sequential</em>(as opposed to simultaneous),
 meaning that the algorithm first estimates a disturbance signal, then
 what process model best describes the data for the given disturbance signal, then the estimate
 of the disturbance is updated using the model, back-and-forth until both estimates hopefully converge.</p>
 <p>Let the control deviation <code>e</code> be defined as</p>
 <pre><code>e = (y_meas-y_set)
 </code></pre>
-<p>Further, the disturbance is divded into a high-frequency part <code>d_HF</code>
+<p>Further, the disturbance is divided into a high-frequency part <code>d_HF</code>
 and a low-frequency part <code>d_LF</code>,
 and it is assumed that</p>
 <pre><code>d = d_HF+d_LF = d_HF(e)+ d_LF(u)
 </code></pre>
 <p><code>d_LF</code> will in general also be a function of the process model, especially the process gain.</p>
+<h3 id="guessing-the-sign-of-the-process-gain">Guessing the sign of the process gain</h3>
+<p>Methods for open-loop estimation when applied naively to closed loop
+time-series often estimte process gain with the incorrect sign.</p>
+<p>The reason for this is that cause-and-effect relatinships are different
+in closed- and open loop.</p>
+<p>As an example, if inputs <code>u</code> and output <code>y</code> <em>increase</em> in unison,
+you would in the open-loop case assume that the process gain is <em>positive</em>.
+In the closed-loop case, the same relation between input and output change
+is often indicative of a <em>negative process gain</em>.
+In the closed loop, a disturbance enteres the output <code>y</code>, is counter-acted
+by the controller output <code>u</code>, so an increasing <code>u</code> in response to
+an increasing <code>y</code> would be because the sign is negative. The inverse
+is also true, what appear to be negative process gains at first sight may in
+closed-loop be positive process gains.</p>
+<p>It is thus important to use an identification algorithm that is intended
+for closed loop signals, and to also include information about the setpoint <code>yset</code>
+to the algorithm, so that the algorith can infer about the control error <code>e</code>.</p>
 <h3 id="first-model-free-estimate">First, model-free estimate</h3>
-<p>In order to initalize the sequential estimation, a model-free estimate of the disturbance
-is require initally.</p>
+<p>In order to initialize the sequential estimation, a model-free estimate of the disturbance
+is require initially.</p>
 <p>For the first iteration, all process dynamics and nonlinearities are neglected,
 a linear static model essentially boils down to estimating the process gain.</p>
 <p><img src="images/sysid_disturbance_init.png" alt="init"></p>
@@ -150,19 +167,31 @@ is found by the approximation</p>
 <pre><code>y = x + d
 </code></pre>
 <p>When solving the process model for a given disturbance, the identification is
-done on the un-meausred <code>x</code> found from</p>
+done on the un-measured <code>x</code> found from</p>
 <pre><code>x = y-d
 </code></pre>
-<h3 id="section"></h3>
+<h3 id="determing-the-dynamic-parameters-of-the-process">Determing the dynamic parameters of the process</h3>
+<p><em>This is currently a work in progress.</em></p>
+<p>If the process is actually dynamic yet is modeled as static, then the above methodology will
+result into un-modeled transients bleeding into the estimated disturbance, where they will appear as
+&quot;overshoots&quot; 2.order dynamics in the estimated disturbance.</p>
+<p>If every change in <code>e</code> is followed by similar transient in <code>d</code> then this is a sure sign that there is un-modeled dynamics,
+if these &quot;transients&quot; can be described by adding dynamic terms to models and this causes a &quot;flatter&quot; estimated disturbance,
+then this is usually preferable.</p>
+<p>These un-modeled transients may also cause process gains and disturbance estimates to be skewed slightly too large.</p>
+<p>In the final step, the ClosedLoopEstimator tries to modify the static models identifier previously by adding larger and larger
+time constants to the identified model, and observing if this reduces the *absolute, sample-over-sample variance in the disturbance&quot;.</p>
 <h3 id="algorithm">Algorithm</h3>
 <pre><code>(In the case of no setpoint changes in the data set)
 - Guess the process gain, as shown above
-- Disturbance(&quot;run1&quot;):Estiamte the disturbance for the linear static process gain
+- Disturbance(&quot;run1&quot;):Estimate the disturbance for the linear static process gain
 - Model(&quot;run1&quot;):Subtract the above disturbance signal from y, and run UnitIdentifier.IdentifyLinearAndStatic to estimate
 - Disturbance(&quot;run2&quot;):Estimate the disturbance using the above process model 
 - Model(&quot;run2&quot;): Subtract the above disturbance signal from y, and run UnitIdentifier.Linear
 - Disturbance(&quot;run3&quot;):Estimate the disturbance using the above process model 
 - Model(&quot;run3&quot;): Subtract the above disturbance signal from y, and run UnitIdentifier.Linear
+- Disturbance(&quot;run4&quot;):Estimate the disturbance when different time-constants are added to the model of run3, choose
+the model which gives the disturbance with the least absolute sample-over-sample variance
 </code></pre>
 </article>
           </div>
