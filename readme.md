@@ -1,7 +1,5 @@
 
 ![Build Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg?branch=master)
-![Test Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/tests.yml/badge.svg?branch=master)
-
 
 # TimeSeriesAnalysis
 An open-source library for development and testing of time-series-based algorithms, including
