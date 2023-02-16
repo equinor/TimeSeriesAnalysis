@@ -84,17 +84,27 @@ d = d_HF+d_LF = d_HF(e)+ d_LF(u)
 
 ### Guessing the sign of the process gain
 
-Time-series from closed loop systems excited by un-measured external disturbances may sometimes exhibit 
-unexpected process gain from ``u`` to ``y``.
+Methods for open-loop estimation when applied naively to closed loop
+time-series often estimte process gain with the incorrect sign. 
 
-For instance, you may see ``y`` and ``u`` both rise in unison and assume that process gain is positive, 
-yet you may be wrong because ``y`` may be rising due to an un-measured positive disturbance signal on y, and the 
-PID-controller may be increasing ``u`` in order to bring ``y`` back down to the setpoint.
+The reason for this is that cause-and-effect relatinships are different 
+in closed- and open loop. 
 
-For this reason, closed loop estimation starts by guessing the sign of the process gain, and this is done by 
-looking at the average values of ``u`` when ``e`` is below and above zero. It is assumed that if ``u`` is generally 
-set higher by PID-control when ``e`` is positive than when it is negative, that process gain is negative, and in the 
-opposite case process gain is assumed positive.
+As an example, if inputs ``u`` and output ``y`` *increase* in unison,
+you would in the open-loop case assume that the process gain is *positive*.
+In the closed-loop case, the same relation between input and output change
+is often indicative of a *negative process gain*. 
+In the closed loop, a disturbance enteres the output ``y``, is counter-acted
+by the controller output ``u``, so an increasing ``u`` in response to 
+an increasing ``y`` would be because the sign is negative. The inverse
+is also true, what appear to be negative process gains at first sight may in
+closed-loop be positive process gains.
+
+It is thus important to use an identification algorithm that is intended
+for closed loop signals, and to also include information about the setpoint ``yset``
+to the algorithm, so that the algorith can infer about the control error ``e``.
+
+
 
 ### First, model-free estimate
 
