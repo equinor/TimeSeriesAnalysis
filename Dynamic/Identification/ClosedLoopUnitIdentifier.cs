@@ -68,7 +68,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // dynamic "overshoots" will enter into the estimated disturbance, try to fix this by doing 
             // "refinement" runs afterwards.
             DisturbanceIdResult distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet1, null,inputIdx);
+                (dataSet1, null,inputIdx,pidParams);
             var id = new UnitIdentifier();
 
             dataSet1.D = distIdResult1.d_est;
@@ -82,7 +82,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // model to get the correct dynamics.
 
             DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
-                dataSet2, unitModel_run1, inputIdx);
+                dataSet2, unitModel_run1, inputIdx, pidParams);
 
             dataSet2.D = distIdResult2.d_est;
             // IdentifyLinear appears to give quite a poor model for Static_Longstep 
@@ -99,7 +99,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // out some of the dynamics from the disturbance vector and see if this improves estimation.
 
             DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet3, unitModel_run2, inputIdx);
+                (dataSet3, unitModel_run2, inputIdx, pidParams);
 
             dataSet3.D = distIdResult3.d_est;
             var unitModel_run3 = id.IdentifyLinearAndStatic(ref dataSet3, true, u0);
@@ -166,7 +166,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
 
                     DisturbanceIdResult distIdResult4 = DisturbanceIdentifier.EstimateDisturbance
-                        (dataSet, unitModel_run3);
+                        (dataSet, unitModel_run3,inputIdx, pidParams);
                     List<double[]> estDisturbances = new List<double[]>();
                     List<double> distDevs = new List<double>();
 

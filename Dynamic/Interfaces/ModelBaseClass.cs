@@ -92,6 +92,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         ModelInputIDs = new string[GetLengthOfInputVector()];
                     }
+                    else if (idx.Value > ModelInputIDs.Length-1)
+                    {
+                        var ModelInputIDsOld = ModelInputIDs;
+                        ModelInputIDs = new string[GetLengthOfInputVector()];
+                        for (int i = 0; i < ModelInputIDsOld.Length; i++)
+                        {
+                            ModelInputIDs[i] = ModelInputIDsOld[i];
+                        }
+                    }
                     ModelInputIDs[idx.Value] = U_stringIDs[0];
                 }
                 else // append the inputIDs string()
