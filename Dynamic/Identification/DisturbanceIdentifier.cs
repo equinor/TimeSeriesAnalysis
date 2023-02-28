@@ -52,7 +52,6 @@ namespace TimeSeriesAnalysis.Dynamic
             SetToZero();
         }
 
-
         public void SetToZero()
         {
             d_est = Vec<double>.Fill(0, N);
@@ -83,14 +82,6 @@ namespace TimeSeriesAnalysis.Dynamic
     public class DisturbanceIdentifier
     {
         const double numberOfTiConstantsToWaitAfterSetpointChange = 5;
-        // TODO: issue
-        // would ideally like tryToModelDisturbanceIfSetpointChangesInDataset = true to be set 
-        //  BUT: 
-        // unit tests where there is a step in yset fail if  tryToModelDisturbanceIfSetpointChangesInDataset=true
-        // but unit tests 
-        //  AND:
-        // unit tests whene there is both a yset step and a disturbance step fail and sinus disturbances also fail. 
-
 
         /// <summary>
         /// Only uses Y_meas and U in unitDataSet, i.e. does not consider feedback 
@@ -113,6 +104,75 @@ namespace TimeSeriesAnalysis.Dynamic
             return result;
         }
 
+
+
+
+        /// <summary>
+        /// General estimate distrubance method, that internally removes effects of changes in setpoint from unitDataset if relevant
+        /// </summary>
+        /// <param name="unitDataSet"></param>
+        /// <param name="unitModel"></param>
+        /// <param name="inputIdx"></param>
+        /// <param name="pidParams"></param>
+        /// <returns></returns>
+        public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet,
+             UnitModel unitModel, int inputIdx = 0, PidParameters pidParams = null)
+        {
+            if (Vec<double>.IsConstant(unitDataSet.Y_setpoint))
+            {
+                return EstimateDisturbance_NoSetpointChanges(unitDataSet,
+                   unitModel, inputIdx, pidParams);
+            }
+
+            // attempt to remove the effects of the setpoint changes form the unit set.
+                        
+            var unitDataSet_setpointEffectsRemoved = new UnitDataSet(unitDataSet);
+            if (unitModel != null && pidParams != null)
+            {
+                var pidModel1 = new PidModel(pidParams, "PID");
+                var processSim = new PlantSimulator(
+                    new List<ISimulatableModel> { pidModel1, unitModel });
+                processSim.ConnectModels(unitModel, pidModel1);
+                processSim.ConnectModels(pidModel1, unitModel);
+                var inputData = new TimeSeriesDataSet();
+                inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
+                inputData.CreateTimestamps(unitDataSet.GetTimeBase());
+                var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+                if (isOk)
+                {
+                    var vec = new Vec();
+                    var procOutputY = simData.GetValues(unitModel.GetID(), SignalType.Output_Y);
+                    var pidOutputU = simData.GetValues(pidModel1.GetID(), SignalType.PID_U);
+                    var pidDeltaU = vec.Subtract(pidOutputU, pidOutputU.First());
+                    var deltaProcOutputY = vec.Subtract(procOutputY, procOutputY.First());
+                    var newU = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), pidDeltaU);
+ 
+                    unitDataSet_setpointEffectsRemoved.Y_meas = vec.Subtract(unitDataSet.Y_meas, deltaProcOutputY);
+                    unitDataSet_setpointEffectsRemoved.Y_setpoint = Vec<double>.Fill(unitDataSet.Y_setpoint.First(), unitDataSet.Y_setpoint.Length );
+                    unitDataSet_setpointEffectsRemoved.U = Matrix.ReplaceColumn(unitDataSet_setpointEffectsRemoved.U, inputIdx, newU);
+                                        
+                    Shared.EnablePlots();
+                    Plot.FromList(
+                    new List<double[]> {
+                          unitDataSet_setpointEffectsRemoved.Y_meas,
+                          unitDataSet.Y_meas,
+                          unitDataSet_setpointEffectsRemoved.Y_setpoint,
+                          unitDataSet.Y_setpoint,
+                          unitDataSet_setpointEffectsRemoved.U.GetColumn(inputIdx),
+                          unitDataSet.U.GetColumn(inputIdx)
+
+                    },
+                    new List<string> { "y1=y_meas(new)","y1=y_meas(old)", "y1=y_set(new)", "y1=y_set(old)", "y3=u(new)", "y3=u(old)" },
+                    inputData.GetTimeBase(), "distIdent_setpointTest");
+                    Shared.DisablePlots();
+
+                }
+            }
+            return EstimateDisturbance_NoSetpointChanges(unitDataSet_setpointEffectsRemoved,
+            unitModel, inputIdx, pidParams);
+        }
+
         /// <summary>
         /// Estimates the disturbance time-series over a given unit data set 
         /// given an estimate of the unit model (reference unit model) for a closed loop system.
@@ -120,7 +180,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitDataSet">the dataset descrbing the unit, over which the disturbance is to be found, datset must specify Y_setpoint,Y_meas and U</param>
         /// <param name="unitModel">the estimate of the unit</param>
         /// <returns></returns>
-        public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet,  
+        private static DisturbanceIdResult EstimateDisturbance_NoSetpointChanges(UnitDataSet unitDataSet,  
             UnitModel unitModel, int inputIdx =0, PidParameters pidParams = null)
         {
             const bool tryToModelDisturbanceIfSetpointChangesInDataset = true;
@@ -141,10 +201,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 return result;
             }
             e_minusSetpointTransients = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);// this under-estimates disturbance because the controller has rejected some of it.
-            // subtract setpoint transients from e_minusSetpointTransients
-            if (doesSetpointChange && unitModel!= null && pidParams != null)
+            double[] u0 = Vec<double>.Fill(unitDataSet.U[inputIdx, 0], unitDataSet.GetNumDataPoints());//NB! algorithm is sensitive to choice of u0!!!
+            double[]  deltaU_minusSetpointTransients = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), u0);//TODO : U including feed-forward?
+
+            // subtract pid-transients relates to setpoint changes from e_minusSetpointTransients
+            // experimental!!!
+         /*   if (doesSetpointChange && unitModel!= null && pidParams != null)
             {
-                double[] e_setpointTransients = null;
+
                 var pidModel1 = new PidModel(pidParams,"PID");
                 var processSim = new PlantSimulator(
                     new List<ISimulatableModel> { pidModel1, unitModel });
@@ -154,12 +218,25 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
                 inputData.CreateTimestamps(unitDataSet.GetTimeBase());
                 var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+                
+
                 if (isOk)
                 {
-                    e_setpointTransients = vec.Subtract(simData.GetValues(unitModel.GetID(),SignalType.Output_Y), unitDataSet.Y_setpoint);
+
+                    var procOutputY = simData.GetValues(unitModel.GetID(), SignalType.Output_Y);
+                    var pidOutputU = simData.GetValues(pidModel1.GetID(), SignalType.PID_U);
+                    var pidDeltaU = vec.Subtract(pidOutputU, pidOutputU.First());
+
+                    // e = (ymeas-yset) = e_setpoint + e_disturbance
+                    // e_disturbance = e - e_setpoint
+                    double[]  e_setpointTransients = vec.Subtract(procOutputY,unitDataSet.Y_setpoint) ;
                     e_minusSetpointTransients = vec.Subtract(e_minusSetpointTransients, e_setpointTransients);
+                    deltaU_minusSetpointTransients = vec.Subtract(deltaU_minusSetpointTransients, pidDeltaU);
+                    var newU = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), pidDeltaU);
+                    unitDataSet.U = Matrix.ReplaceColumn(unitDataSet.U, inputIdx,newU); 
+
                 }
-            }
+            }*/
             
             
             // d_u : (low-pass) back-estimation of disturbances by the effect that they have on u as the pid-controller integrates to 
@@ -167,7 +244,6 @@ namespace TimeSeriesAnalysis.Dynamic
             // d_y : (high-pass) disturbances appear for a short while on the output y before they can be counter-acted by the pid-controller 
             // nb!candiateGainD is an estimate for the process gain, and the value chosen in this class 
             // will influence the process model identification afterwards.
-            double[] deltaU  = null;
             //
             // knowing the sign of the process gain is quite important!
             // if a system has negative gain and is given a positive process disturbance, then y and u will both increase in a way that is 
@@ -197,9 +273,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // just use first value as "u0", just perturbing this value 
             // a little will cause unit test to fail ie.algorithm is sensitive to its choice.
-            double[] u0 = Vec<double>.Fill(unitDataSet.U[inputIdx,0], unitDataSet.GetNumDataPoints());//NB! algorithm is sensitive to choice of u0!!!
+
             double yset0 = unitDataSet.Y_setpoint[0];
-            deltaU          = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), u0);//TODO : U including feed-forward?
 
             // y0,u0 is at the first data point
             // disadvantage, is that you are not sure that the time series starts at steady state
@@ -238,7 +313,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 double[] eFiltered = lowPass.Filter(e_minusSetpointTransients, FilterTc_s, 2);
                 double maxDE = vec.Max(vec.Abs(eFiltered));       // this has to be sensitive to noise?
-                double[] uFiltered = lowPass.Filter(deltaU, FilterTc_s, 2);
+                double[] uFiltered = lowPass.Filter(deltaU_minusSetpointTransients, FilterTc_s, 2);
                 double maxU = vec.Max(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot
                 double minU = vec.Min(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot  
                 estProcessGain = processGainSign * maxDE / (maxU - minU);
@@ -261,7 +336,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] d_LF;
             if (unitModel == null|| isFittedButFittingFailed)
             {
-                double[] deltaU_lp = lowPass.Filter(deltaU, FilterTc_s, 2);
+                double[] deltaU_lp = lowPass.Filter(deltaU_minusSetpointTransients, FilterTc_s, 2);
                 double[] deltaYset = vec.Subtract(unitDataSet.Y_setpoint, yset0);
                 double[] du_contributionFromU = deltaU_lp;
 

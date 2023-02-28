@@ -87,15 +87,41 @@ namespace TimeSeriesAnalysis.Dynamic
         public UnitDataSet(UnitDataSet otherDataSet)
         {
             this.ProcessName = otherDataSet.ProcessName + "copy";
-            //this.NumDataPoints = otherDataSet.GetNumDataPoints();
-            this.Y_meas = otherDataSet.Y_meas;
-            this.Y_setpoint = otherDataSet.Y_setpoint;
-            this.Y_sim = otherDataSet.Y_sim;
-            this.U = otherDataSet.U;
-            this.U_sim = otherDataSet.U_sim;
-            this.Times = otherDataSet.Times;
-            this.Warnings = otherDataSet.Warnings; 
-            this.D = otherDataSet.D;
+
+            if (otherDataSet.Y_meas == null)
+                this.Y_meas = null;
+            else
+                this.Y_meas = otherDataSet.Y_meas.Clone() as double[];
+            if (otherDataSet.Y_setpoint == null)
+                this.Y_setpoint = null;
+            else
+                this.Y_setpoint = otherDataSet.Y_setpoint.Clone() as double[];
+
+            if (otherDataSet.Y_sim == null)
+            {
+                this.Y_sim = null;
+            }
+            else
+            {
+                this.Y_sim = otherDataSet.Y_sim.Clone() as double[];
+            }
+            if (otherDataSet.U == null)
+                this.U = null;
+            else
+                this.U = otherDataSet.U.Clone() as double[,];
+            if (otherDataSet.U_sim == null)
+                this.U_sim = null;
+            else
+                this.U_sim = otherDataSet.U_sim.Clone() as double[,];
+            if (otherDataSet.Times == null)
+                this.Times = null;
+            else
+                this.Times = otherDataSet.Times.Clone() as DateTime[];
+          //   otherDataSet.Warnings.CopyTo(this.Warnings) ; 
+            if (otherDataSet.D == null)
+                this.D = null;
+            else
+                this.D = otherDataSet.D.Clone() as double[];
         }
 
         /// <summary>

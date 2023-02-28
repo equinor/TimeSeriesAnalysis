@@ -207,6 +207,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 model.SetInputIDs(new string[] { signalID }, (int)PidModelInputsIdx.Y_setpoint);
                 return signalID;
             }
+            else if (type == SignalType.Output_Y && modelType == ModelType.PID)
+            {
+                model.SetInputIDs(new string[] { signalID }, (int)PidModelInputsIdx.Y_meas);
+                return signalID;
+            }
             else
             {
                 Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal '"+ signalID+"'" );

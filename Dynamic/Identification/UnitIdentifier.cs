@@ -537,6 +537,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     double[] Y_ols = deltaY;
                     if (dcur != null && dprev!= null)
                     {
+                        solverID += "(d subtracted)";
                         phi1_ols = vec.Subtract(yprev, dprev);
                         Y_ols = vec.Subtract(deltaY, vec.Subtract(dcur,dprev));
                     }
@@ -624,6 +625,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     double[] Y_ols = ycur;
                     if (dcur != null)
                     {
+                        solverID += "(d subtracted)";
                         vec.Subtract(ycur, dcur);
                     }
                     regResults = vec.RegressRegularized(Y_ols, phi_ols, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);
@@ -703,6 +705,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] Y_ols = ycur;
                 if (dcur != null)
                 {
+                    solverID += "(d subtracted)";
                     Y_ols = vec.Subtract(ycur, dcur);
                 }
                 regResults = vec.RegressRegularized(Y_ols, inputs, yIndicesToIgnore.ToArray(), inputIndicesToRegularize);

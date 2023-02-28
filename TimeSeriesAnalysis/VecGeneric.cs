@@ -150,6 +150,23 @@ namespace TimeSeriesAnalysis
             return result;
         }
 
+        ///<summary>
+        /// returns the intersection of a number of arrays
+        ///</summary>
+        public static bool IsConstant(T[] vec)
+        {
+           var firstVal = vec[0];
+
+            foreach (var val in vec)
+            {
+                if (!val.Equals(firstVal))
+                    return false;
+            }
+            return true;
+        }
+
+
+
 
         ///<summary>
         /// replaces all the vaules in array with indices in indList with the last good value
