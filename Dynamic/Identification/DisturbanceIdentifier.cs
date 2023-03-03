@@ -313,8 +313,26 @@ namespace TimeSeriesAnalysis.Dynamic
                      if (unitModel.GetModelParameters().Fitting.WasAbleToIdentify == false)
                          isFittedButFittingFailed = true;
             double[] d_LF;
+
+            // todo: consider creating a a "unitModel" object with the estimated gain in the case that 
+            // unit model does not exist, and then using this model wiht 
+            // RemoveSetpointEffectFromDataSet to improve model.
+
             if (unitModel == null|| isFittedButFittingFailed)
             {
+                // new: consider moving this code out into a separate method
+                var unitParamters = new UnitParameters();
+                unitParamters.LinearGains = estProcessGain;
+
+
+
+                unitModel = new UnitModel(unitParamters) ;
+
+
+
+
+
+                // old:
                 double[] deltaU_lp = lowPass.Filter(deltaU, FilterTc_s, 2);
                 double[] deltaYset = vec.Subtract(unitDataSet.Y_setpoint, yset0);
                 double[] du_contributionFromU = deltaU_lp;
@@ -332,7 +350,30 @@ namespace TimeSeriesAnalysis.Dynamic
                 var sim = new UnitSimulator(unitModel);
                 unitDataSet.D = null;
                 double[] y_sim = sim.Simulate(ref unitDataSet);
-                d_LF = vec.Multiply(vec.Subtract(y_sim,y_sim[0]),-1);
+
+               d_LF = vec.Multiply(vec.Subtract(y_sim,y_sim[0]),-1);
+
+                // todo: consider if it possible to do a "global search" for
+                // the process gain that minimized the correlation between 
+                // [unitDataSet.Y_sim; unitDataSet.U.GetColumn(inputIdx),] and [unitDataSet_raw.Y_setpoint],
+                // 
+/*
+                Shared.EnablePlots();
+                Plot.FromList(
+                new List<double[]> {
+                          unitDataSet.Y_meas,
+                          unitDataSet.Y_setpoint,
+                          unitDataSet.Y_sim,
+                          d_LF,
+                          unitDataSet.U.GetColumn(inputIdx),
+                          
+                },
+                new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim","y2=d_LF", "y3=u" },
+                unitDataSet.GetTimeBase(), "distIdent_dLF_est");
+                Shared.DisablePlots();
+*/
+
+
             }
 
             // d = d_HF+d_LF 
