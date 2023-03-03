@@ -112,6 +112,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         */
         [TestCase(5,1.0)]
+        [TestCase(1,1.0)]
+        [TestCase(1,5.0)]
         public void Static_DistANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude)
         {
             double precisionPrc = 20;
@@ -123,12 +125,12 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            Shared.EnablePlots();
+           // Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
             var yset = TimeSeriesCreator.Step(50, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
                 false, true, yset, precisionPrc);
-            Shared.DisablePlots();
+         //   Shared.DisablePlots();
         }
 
 

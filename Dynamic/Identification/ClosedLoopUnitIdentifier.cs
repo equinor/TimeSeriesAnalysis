@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -40,13 +41,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputIdx">the index of the input</param>
         /// 
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
-        public (UnitModel,double[]) Identify(UnitDataSet dataSet, PidParameters pidParams=null, int inputIdx = 0 )
+        public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int inputIdx = 0)
         {
             bool doTimeDelayEstOnRun1 = false;
 
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
             {
-                return (null,null);
+                return (null, null);
             }
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
@@ -59,12 +60,13 @@ namespace TimeSeriesAnalysis.Dynamic
             double y0 = dataSet.Y_meas[0];
 
             bool isOK;
-            Vec vec = new Vec();
 
             var dataSet1 = new UnitDataSet(dataSet);
             var dataSet2 = new UnitDataSet(dataSet);
             var dataSet3 = new UnitDataSet(dataSet);
             var dataSet4 = new UnitDataSet(dataSet);
+            var vec = new Vec();
+            var id = new UnitIdentifier();
 
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a process gains, 
@@ -73,46 +75,44 @@ namespace TimeSeriesAnalysis.Dynamic
             // withtout a reference model which has the correct time constant and time delays, 
             // dynamic "overshoots" will enter into the estimated disturbance, try to fix this by doing 
             // "refinement" runs afterwards.
-            DisturbanceIdResult distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet1, null,inputIdx,pidParams);
-            var id = new UnitIdentifier();
+            { 
+                DisturbanceIdResult distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
+                    (dataSet1, null, inputIdx, pidParams);
 
-            dataSet1.D = distIdResult1.d_est;
-            var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1,doTimeDelayEstOnRun1,u0);
+                dataSet1.D = distIdResult1.d_est;
+                var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, doTimeDelayEstOnRun1, u0);
 
-            idDisturbancesList.Add(distIdResult1);
-            idUnitModelsList.Add(unitModel_run1);
+                idDisturbancesList.Add(distIdResult1);
+                idUnitModelsList.Add(unitModel_run1);
 
-            isOK = ClosedLoopSim(dataSet1,unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est,"run1");
+                isOK = ClosedLoopSim(dataSet1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
+            }
             // ----------------
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
+            {
+                DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
+                    dataSet2, idUnitModelsList.Last(), inputIdx, pidParams);
 
-            DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
-                dataSet2, unitModel_run1, inputIdx, pidParams);
-
-            dataSet2.D = distIdResult2.d_est;
-            // IdentifyLinear appears to give quite a poor model for Static_Longstep 
-            var unitModel_run2 = id.IdentifyLinearAndStatic(ref dataSet2,false, u0);
-            idDisturbancesList.Add(distIdResult2);
-            idUnitModelsList.Add(unitModel_run2);
-            isOK = ClosedLoopSim(dataSet2, unitModel_run2.GetModelParameters(), pidParams, distIdResult2.d_est, "run2");
-
-            // NB! in some cases such as if there is a step in the setpoint and the disturbance is small and 
-            //      be approximated as zero, then the estimation will not keep improving beyond this point.
-
+                dataSet2.D = distIdResult2.d_est;
+                // IdentifyLinear appears to give quite a poor model for Static_Longstep 
+                var unitModel_run2 = id.IdentifyLinearAndStatic(ref dataSet2, false, u0);
+                idDisturbancesList.Add(distIdResult2);
+                idUnitModelsList.Add(unitModel_run2);
+                isOK = ClosedLoopSim(dataSet2, unitModel_run2.GetModelParameters(), pidParams, distIdResult2.d_est, "run2");
+            }
             // ----------------
             // run 3: use the result of the last run to try to improve the disturbance estimate and take 
             // out some of the dynamics from the disturbance vector and see if this improves estimation.
+            {
+                DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
+                    (dataSet3, idUnitModelsList.Last(), inputIdx, pidParams);
 
-            DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet3, unitModel_run2, inputIdx, pidParams);
-
-            dataSet3.D = distIdResult3.d_est;
-            var unitModel_run3 = id.IdentifyLinearAndStatic(ref dataSet3, true, u0);
-            idDisturbancesList.Add(distIdResult3);
-            idUnitModelsList.Add(unitModel_run3);
-            isOK = ClosedLoopSim(dataSet3, unitModel_run3.GetModelParameters(), pidParams, distIdResult3.d_est, "run3");
-
+                dataSet3.D = distIdResult3.d_est;
+                var unitModel_run3 = id.IdentifyLinearAndStatic(ref dataSet3, true, u0);
+                idDisturbancesList.Add(distIdResult3);
+                idUnitModelsList.Add(unitModel_run3);
+                isOK = ClosedLoopSim(dataSet3, unitModel_run3.GetModelParameters(), pidParams, distIdResult3.d_est, "run3");
+            }
             // - issue is that after run 4 modelled output does not match measurement.
             // - the reason that we want this run is that after run3 the time constant and 
             // time delays are way off if the process is excited mainly by disturbances.
@@ -121,46 +121,48 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // run4: do a run where it is no longer assumed that x[k-1] = y[k], 
             // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
-
-            DisturbanceIdResult distIdResult4 = DisturbanceIdentifier.EstimateDisturbance
-                (dataSet, unitModel_run3,inputIdx, pidParams);
-            List<double[]> estDisturbances = new List<double[]>();
-            List<double> distDevs = new List<double>();
-
-            estDisturbances.Add(distIdResult4.d_est);
-            var timeBase = dataSet4.GetTimeBase();
-            double candiateTc_s = 0;
-            bool curDevIsDecreasing = true;
-            double firstDev = vec.Sum(vec.Abs(vec.Diff(distIdResult4.d_est))).Value;
-            distDevs.Add(firstDev);
-            while  ( candiateTc_s < 30 * timeBase && curDevIsDecreasing )
             {
-                candiateTc_s += timeBase;
-                var newParams = unitModel_run3.GetModelParameters().CreateCopy();
-                newParams.TimeConstant_s = candiateTc_s;
-                var newModel = new UnitModel(newParams);
-                DisturbanceIdResult distIdResult_Test = DisturbanceIdentifier.EstimateDisturbance
-                    (dataSet4, newModel);
-                estDisturbances.Add(distIdResult_Test.d_est);
-                double curDev = vec.Sum(vec.Abs(vec.Diff(distIdResult_Test.d_est))).Value;
-                if (curDev < distDevs.Last<double>())
-                    curDevIsDecreasing = true;
-                else
-                    curDevIsDecreasing = false;
-                distDevs.Add(curDev);
-            }
-            if (candiateTc_s > 0)
-            {
-                candiateTc_s -= timeBase;
-            }
-            var step4params = unitModel_run3.GetModelParameters().CreateCopy();
-            step4params.TimeConstant_s = candiateTc_s;
-            var step4Model = new UnitModel(step4params);
-            idUnitModelsList.Add(step4Model);
-            DisturbanceIdResult distIdResult_step4 = DisturbanceIdentifier.EstimateDisturbance
-                    (dataSet4, step4Model);
-            idDisturbancesList.Add(distIdResult_step4);
+                var model = idUnitModelsList.Last();
 
+                DisturbanceIdResult distIdResult4 = DisturbanceIdentifier.EstimateDisturbance
+                    (dataSet, model, inputIdx, pidParams);
+                List<double[]> estDisturbances = new List<double[]>();
+                List<double> distDevs = new List<double>();
+
+                estDisturbances.Add(distIdResult4.d_est);
+                var timeBase = dataSet4.GetTimeBase();
+                double candiateTc_s = 0;
+                bool curDevIsDecreasing = true;
+                double firstDev = vec.Sum(vec.Abs(vec.Diff(distIdResult4.d_est))).Value;
+                distDevs.Add(firstDev);
+                while (candiateTc_s < 30 * timeBase && curDevIsDecreasing)
+                {
+                    candiateTc_s += timeBase;
+                    var newParams = model.GetModelParameters().CreateCopy();
+                    newParams.TimeConstant_s = candiateTc_s;
+                    var newModel = new UnitModel(newParams);
+                    DisturbanceIdResult distIdResult_Test = DisturbanceIdentifier.EstimateDisturbance
+                        (dataSet4, newModel);
+                    estDisturbances.Add(distIdResult_Test.d_est);
+                    double curDev = vec.Sum(vec.Abs(vec.Diff(distIdResult_Test.d_est))).Value;
+                    if (curDev < distDevs.Last<double>())
+                        curDevIsDecreasing = true;
+                    else
+                        curDevIsDecreasing = false;
+                    distDevs.Add(curDev);
+                }
+                if (candiateTc_s > 0)
+                {
+                    candiateTc_s -= timeBase;
+                }
+                var step4params = model.GetModelParameters().CreateCopy();
+                step4params.TimeConstant_s = candiateTc_s;
+                var step4Model = new UnitModel(step4params);
+                idUnitModelsList.Add(step4Model);
+                DisturbanceIdResult distIdResult_step4 = DisturbanceIdentifier.EstimateDisturbance
+                        (dataSet4, step4Model);
+                idDisturbancesList.Add(distIdResult_step4);
+            }
 
             if (doDebuggingPlot)
             {
