@@ -26,7 +26,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ClosedLoopUnitIdentifier
     {
-        const bool doDebuggingPlot = false;
+        const bool doDebuggingPlot = true;
         /// <summary>
         /// Identify the unit model of a closed-loop system and the distrubance (additive output signal)
         /// </summary>
@@ -125,7 +125,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var model = idUnitModelsList.Last();
 
                 DisturbanceIdResult distIdResult4 = DisturbanceIdentifier.EstimateDisturbance
-                    (dataSet, model, inputIdx, pidParams);
+                    (dataSet4, model, inputIdx, pidParams);
                 List<double[]> estDisturbances = new List<double[]>();
                 List<double> distDevs = new List<double>();
 
@@ -142,7 +142,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     newParams.TimeConstant_s = candiateTc_s;
                     var newModel = new UnitModel(newParams);
                     DisturbanceIdResult distIdResult_Test = DisturbanceIdentifier.EstimateDisturbance
-                        (dataSet4, newModel);
+                        (dataSet4, newModel,inputIdx,pidParams);
                     estDisturbances.Add(distIdResult_Test.d_est);
                     double curDev = vec.Sum(vec.Abs(vec.Diff(distIdResult_Test.d_est))).Value;
                     if (curDev < distDevs.Last<double>())
@@ -160,7 +160,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var step4Model = new UnitModel(step4params);
                 idUnitModelsList.Add(step4Model);
                 DisturbanceIdResult distIdResult_step4 = DisturbanceIdentifier.EstimateDisturbance
-                        (dataSet4, step4Model);
+                        (dataSet4, step4Model, inputIdx, pidParams);
                 idDisturbancesList.Add(distIdResult_step4);
             }
 

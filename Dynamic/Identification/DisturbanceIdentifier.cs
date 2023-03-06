@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public DisturbanceSetToZeroReason zeroReason;
 
         public double[] d_est;
-        public double f1EstProcessGain;
+        public double estProcessGain;
         public double[] d_HF, d_LF;
         
         public DisturbanceIdResult(UnitDataSet dataSet)
@@ -57,7 +57,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public void SetToZero()
         {
             d_est = Vec<double>.Fill(0, N);
-            f1EstProcessGain = 0;
+            estProcessGain = 0;
             isAllZero = true;
             d_HF = Vec<double>.Fill(0, N);
             d_LF = Vec<double>.Fill(0, N);
@@ -71,7 +71,7 @@ namespace TimeSeriesAnalysis.Dynamic
             returnCopy.d_HF = d_HF;
             returnCopy.d_LF = d_LF;
             returnCopy.d_est = d_est;
-            returnCopy.f1EstProcessGain = f1EstProcessGain;
+            returnCopy.estProcessGain = estProcessGain;
 
             return returnCopy;
         }
@@ -285,6 +285,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 double maxU = vec.Max(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot
                 double minU = vec.Min(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot  
                 estProcessGain = processGainSign * maxDE / (maxU - minU);
+
+                // temporary:(setting correct process gain should give the corred disturbance out!)
+                 //estProcessGain = 1.2;
             }
 
             bool isFittedButFittingFailed = false;
@@ -336,9 +339,9 @@ namespace TimeSeriesAnalysis.Dynamic
            */
 
             // copy result to result class
-            result.f1EstProcessGain = estProcessGain;
+            result.estProcessGain = estProcessGain;
             result.d_est            = d_est;
-            result.d_LF              = d_LF;
+            result.d_LF             = d_LF;
             result.d_HF             = d_HF;
             // NB! minus!
           //  double[] dest_test = vec.Add(vec.Multiply(result.dest_f2_proptoGain,-result.f1EstProcessGain),result.dest_f2_constTerm);

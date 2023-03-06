@@ -58,12 +58,12 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-
+            Shared.EnablePlots();
             Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
                 pidDataSet.U.GetColumn(0),  estDisturbance, trueDisturbance },
                 new List<string> { "y1=y meas", "y1=y set", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
-                pidDataSet.GetTimeBase(), caseId);
-
+                pidDataSet.GetTimeBase(), caseId+"commonplotandasserts");
+            Shared.DisablePlots();
             Assert.IsTrue(vec.Mean(vec.Abs(vec.Subtract(trueDisturbance, estDisturbance))) < distTrueAmplitude / 10,"true disturbance and actual disturbance too far apart");
 
             double estGain = identifiedModel.modelParameters.GetTotalCombinedProcessGain(0);
@@ -125,19 +125,62 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeDelay_s = 0,
                 Bias = 5
             };
-           // Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
             var yset = TimeSeriesCreator.Step(50, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
                 false, true, yset, precisionPrc);
-         //   Shared.DisablePlots();
+        }
+        [TestCase(5, 1.0)]
+        [TestCase(1, 1.0)]
+        [TestCase(1, 5.0)]
+        public void Static_SinusDistANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude)
+        {
+            double precisionPrc = 20;
+
+            UnitParameters staticModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 1.2 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+            var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude,N/4,timeBase_s,N );
+            //   var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
+            var yset = TimeSeriesCreator.Step(50, N, 50, 50 + ysetStepAmplitude);//do step before disturbance
+            GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
+                false, true, yset, precisionPrc);
+        }
+
+   
+        [TestCase(5, 1.0)]
+        [TestCase(1, 1.0)]
+        [TestCase(1, 5.0)]
+        public void Static_StepDistANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude)
+        {
+            Vec vec = new Vec();
+
+            double precisionPrc = 20;
+
+            UnitParameters staticModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 1.2 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
+            //    var yset = TimeSeriesCreator.Step(50, N, 50, 50 + ysetStepAmplitude);//do step before disturbance
+            var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 4, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
+
+            GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
+                false, true, yset, precisionPrc);
         }
 
 
 
         // this works as long as only static identifiation is used in the closed-looop identifier,
         // otherwise the model 
-        [TestCase(5)]
+    [TestCase(5)]
         [TestCase(-5)]         
         public void Static_LongStepDisturbance_EstimatesOk(double stepAmplitude)
         {
@@ -200,10 +243,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Shared.DisablePlots();
         }
         */
-        public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance, bool doNegativeGain,
+        public void GenericDisturbanceTest  (UnitModel trueProcessModel, double[] trueDisturbance, bool doNegativeGain,
             bool doAssertResult=true, double[] yset=null, double processGainAllowedOffsetPrc=10)
         {
-            var usedProcParameters = processModel.GetModelParameters().CreateCopy();
+            var usedProcParameters = trueProcessModel.GetModelParameters().CreateCopy();
             var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
             if (doNegativeGain)
             {
@@ -241,7 +284,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             DisturbancesToString(estDisturbance, trueDisturbance);
             if (doAssertResult)
             {
-                CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, processModel,identifiedModel, processGainAllowedOffsetPrc);
+                CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel,trueProcessModel, processGainAllowedOffsetPrc);
             }
         }
 
