@@ -187,10 +187,10 @@ namespace TimeSeriesAnalysis.Dynamic
                         idDisturbancesList[2].d_HF,
                         idDisturbancesList[3].d_HF,
 
-                        idDisturbancesList[0].d_u,
-                        idDisturbancesList[1].d_u,
-                        idDisturbancesList[2].d_u,
-                        idDisturbancesList[3].d_u,
+                        idDisturbancesList[0].d_LF,
+                        idDisturbancesList[1].d_LF,
+                        idDisturbancesList[2].d_LF,
+                        idDisturbancesList[3].d_LF,
 
                     },
                     new List<string> {"y1=d_run1", "y1=d_run2", "y1=d_run3","y1=d_run4",

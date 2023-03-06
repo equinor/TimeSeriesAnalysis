@@ -19,7 +19,8 @@ namespace TimeSeriesAnalysis.Dynamic
     public enum DisturbanceSetToZeroReason
     { 
         NotRunYet=0,
-        SetpointWasDetected=1
+        SetpointWasDetected=1,
+        UnitSimulatorUnableToRun =2,
     }
 
 
@@ -39,7 +40,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double[] d_est;
         public double f1EstProcessGain;
-        public double[] d_HF, d_u;
+        public double[] d_HF, d_LF;
         
         public DisturbanceIdResult(UnitDataSet dataSet)
         {
@@ -59,7 +60,7 @@ namespace TimeSeriesAnalysis.Dynamic
             f1EstProcessGain = 0;
             isAllZero = true;
             d_HF = Vec<double>.Fill(0, N);
-            d_u = Vec<double>.Fill(0, N);
+            d_LF = Vec<double>.Fill(0, N);
 
         }
 
@@ -68,7 +69,7 @@ namespace TimeSeriesAnalysis.Dynamic
             DisturbanceIdResult returnCopy = new DisturbanceIdResult(N);
 
             returnCopy.d_HF = d_HF;
-            returnCopy.d_u = d_u;
+            returnCopy.d_LF = d_LF;
             returnCopy.d_est = d_est;
             returnCopy.f1EstProcessGain = f1EstProcessGain;
 
@@ -105,18 +106,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return result;
         }
 
-
-
-
-        /* public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet,
-              UnitModel unitModel, int inputIdx = 0, PidParameters pidParams = null)
-         {
-             // attempt to remove the effects of the setpoint changes form the unit set.
-             UnitDataSet unitDataSet_setpointEffectsRemoved = RemoveSetpointEffectFromDataSet(unitDataSet,unitModel,inputIdx, pidParams);
-
-             return EstimateDisturbance_NoSetpointChanges(unitDataSet_setpointEffectsRemoved,
-             unitModel, inputIdx, pidParams);
-         }*/
 
         /// <summary>
         /// Removes the effect of setpoint changes from the dataset using the model of pid and unit provided 
@@ -298,115 +287,58 @@ namespace TimeSeriesAnalysis.Dynamic
                 estProcessGain = processGainSign * maxDE / (maxU - minU);
             }
 
-            //
-            // default version of disturbance estimate that looks at deviation from yset
-            // and uses no reference model
-            // 
-            // too simple, only works for static processes when setpoint does not change
-            // for dynamic processes "e" will include process transients that should be 
-            // subtracted.
-            double[]  d_HF = e;
-
             bool isFittedButFittingFailed = false;
             if (unitModel != null)
                  if (unitModel.GetModelParameters().Fitting != null)
                      if (unitModel.GetModelParameters().Fitting.WasAbleToIdentify == false)
                          isFittedButFittingFailed = true;
-            double[] d_LF;
 
-            // todo: consider creating a a "unitModel" object with the estimated gain in the case that 
-            // unit model does not exist, and then using this model wiht 
-            // RemoveSetpointEffectFromDataSet to improve model.
-
+            // if no unit model from regression, create on useing a "guesstimated" process gain
             if (unitModel == null|| isFittedButFittingFailed)
             {
-                // new: consider moving this code out into a separate method
-                   var unitParamters = new UnitParameters();
-
-               // estProcessGain = 1.2;
-               /*
+                var unitParamters = new UnitParameters();
                 unitParamters.LinearGains = new double[] { estProcessGain };
-                unitParamters.U0 = u0;
+                unitParamters.U0 = new double[] { u0[0] };
                 unitParamters.UNorm = new double[] { 1 };
                 unitParamters.Bias = unitDataSet.Y_meas[0];
                 unitModel = new UnitModel(unitParamters) ;
-                unitModel.WarmStart();
-                var sim = new UnitSimulator(unitModel);
-                unitDataSet.D = null;
-                double[] y_sim = sim.Simulate(ref unitDataSet_raw);
-                double[] d_LF2 = vec.Multiply(vec.Subtract(y_sim, y_sim[0]), -1);
-               */
-                // old:(too high by exactly 1)
-                double[] deltaU_lp = lowPass.Filter(deltaU, FilterTc_s, 2);
-                double[] deltaYset = vec.Subtract(unitDataSet.Y_setpoint, yset0);
-                double[] du_contributionFromU = deltaU_lp;
-
-                // version with yset contribution()
-                double[] du_contributionFromYset = vec.Multiply(deltaYset, 1 / -estProcessGain);// will be zero if yset is constant.
-                double[] d_LF_internal = vec.Add(du_contributionFromU, du_contributionFromYset);
-                // version without yset contribution
-                //double[] d_LF_internal = du_contributionFromU;
-                d_LF = vec.Multiply(d_LF_internal, -estProcessGain);
-                /*
-                Shared.EnablePlots();
-                Plot.FromList(
-                new List<double[]> {
-                                          unitDataSet.Y_meas,
-                                          unitDataSet.Y_setpoint,
-                                          y_sim,
-                                          d_LF,
-                                          d_LF2,
-                                          unitDataSet.U.GetColumn(inputIdx),
-
-                },
-                new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim", "y2=d_LF", "y2=d_LF_2", "y3=u" },
-                unitDataSet.GetTimeBase(), "distIdent_dLF_est");
-                Shared.DisablePlots();*/
-
-            //   d_LF = d_LF2;// use new version!
-
-
-
             }
-            else
+
+            var unitDataSet_setpointRemoved = RemoveSetpointEffectFromDataSet(unitDataSet, unitModel, inputIdx, pidParams);
+            unitModel.WarmStart();
+            var sim = new UnitSimulator(unitModel);
+            unitDataSet_setpointRemoved.D = null;
+            double[] y_sim = sim.Simulate(ref unitDataSet_setpointRemoved);
+            if (y_sim == null)
             {
-                unitModel.WarmStart();
-                var sim = new UnitSimulator(unitModel);
-                unitDataSet.D = null;
-                double[] y_sim = sim.Simulate(ref unitDataSet);
-
-               d_LF = vec.Multiply(vec.Subtract(y_sim,y_sim[0]),-1);
-
-                // todo: consider if it possible to do a "global search" for
-                // the process gain that minimized the correlation between 
-                // [unitDataSet.Y_sim; unitDataSet.U.GetColumn(inputIdx),] and [unitDataSet_raw.Y_setpoint],
-                // 
-/*
-                Shared.EnablePlots();
-                Plot.FromList(
-                new List<double[]> {
-                          unitDataSet.Y_meas,
-                          unitDataSet.Y_setpoint,
-                          unitDataSet.Y_sim,
-                          d_LF,
-                          unitDataSet.U.GetColumn(inputIdx),
-                          
-                },
-                new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim","y2=d_LF", "y3=u" },
-                unitDataSet.GetTimeBase(), "distIdent_dLF_est");
-                Shared.DisablePlots();
-*/
-
-
+                result.zeroReason = DisturbanceSetToZeroReason.UnitSimulatorUnableToRun;
+                return result;
             }
-
+            double[] d_LF = vec.Multiply(vec.Subtract(y_sim, y_sim[0]), -1);
+            double[] d_HF = vec.Subtract(unitDataSet_setpointRemoved.Y_meas, unitDataSet_setpointRemoved.Y_setpoint);
             // d = d_HF+d_LF 
-            double[] d_est = vec.Add(d_HF, d_LF);       
+            double[] d_est = vec.Add(d_HF, d_LF);
+
+           /*    Shared.EnablePlots();
+               Plot.FromList(
+               new List<double[]> {
+                   unitDataSet_setpointRemoved.Y_meas,
+                   unitDataSet_setpointRemoved.Y_setpoint,
+                   y_sim,
+                   d_LF,
+                   d_HF,
+                   d_est,
+                   unitDataSet_setpointRemoved.U.GetColumn(inputIdx),
+               },
+               new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim", "y2=d_LF", "y2=d_HF", "y2=d_est", "y3=u" },
+               unitDataSet.GetTimeBase(), "distIdent_dLF_est");
+               Shared.DisablePlots();
+           */
 
             // copy result to result class
             result.f1EstProcessGain = estProcessGain;
             result.d_est            = d_est;
-            result.d_u              = d_LF;
+            result.d_LF              = d_LF;
             result.d_HF             = d_HF;
             // NB! minus!
           //  double[] dest_test = vec.Add(vec.Multiply(result.dest_f2_proptoGain,-result.f1EstProcessGain),result.dest_f2_constTerm);
