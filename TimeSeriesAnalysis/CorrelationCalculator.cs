@@ -53,6 +53,16 @@ namespace TimeSeriesAnalysis
             return returnCorrs;
         }
 
+
+        public static double Calculate(double[] signal1, double[] signal2)
+        {
+            var matrix = Array2D<double>.CreateFromList(new List<double[]> { signal1,signal2});
+            double[,] corrMatrix = Measures.Correlation(matrix);
+            return corrMatrix.GetColumn(0)[1];
+        }
+
+
+
         /// <summary>
         /// Calculates correlation factors [-1,1] for a signal against all other signals in the dataset
         /// returning the results in a list from highest to lowest score _absolute_ correlation factor

@@ -86,6 +86,34 @@ namespace TimeSeriesAnalysis.Dynamic
                 idUnitModelsList.Add(unitModel_run1);
 
                 isOK = ClosedLoopSim(dataSet1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
+
+                // experimental: see if varying gain to get the lowest correlation between setpoint and disturbance 
+                // only needed if setpoint varies.
+                if (true)
+                {
+                    double initalGainEstimate = unitModel_run1.modelParameters.GetProcessGains().First();
+                    double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est,dataSet.Y_setpoint);
+                    var gainAndCorrDict = new Dictionary<double,double>();
+                    var gainList = new List<double>();
+                    for (var linGain = 0.1; linGain < 2; linGain += 0.1)
+                    {
+                        gainList.Add(linGain);
+                        var dataSet_alt = new UnitDataSet(dataSet);
+                        var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
+                        alternativeModel.modelParameters.LinearGains = new double[] { linGain };
+                        alternativeModel.modelParameters.Bias = 
+
+
+                        DisturbanceIdResult distIdResultAlternative = DisturbanceIdentifier.EstimateDisturbance
+                            (dataSet_alt, alternativeModel, inputIdx, pidParams);
+                        double otherCorrelation = CorrelationCalculator.Calculate(distIdResultAlternative.d_est, 
+                            dataSet_alt.Y_setpoint);
+                        gainAndCorrDict.Add(Math.Abs(otherCorrelation), linGain);
+                    }
+                    var best = gainAndCorrDict.Keys.Min(); 
+  
+                }
+
             }
             // ----------------
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
