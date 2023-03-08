@@ -37,6 +37,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public int N = 0;
         public bool isAllZero = true;
         public DisturbanceSetToZeroReason zeroReason;
+        public UnitDataSet adjustedUnitDataSet;
+
 
         public double[] d_est;
         public double estProcessGain;
@@ -61,6 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
             isAllZero = true;
             d_HF = Vec<double>.Fill(0, N);
             d_LF = Vec<double>.Fill(0, N);
+            adjustedUnitDataSet = null;
 
         }
 
@@ -72,6 +75,7 @@ namespace TimeSeriesAnalysis.Dynamic
             returnCopy.d_LF = d_LF;
             returnCopy.d_est = d_est;
             returnCopy.estProcessGain = estProcessGain;
+            returnCopy.adjustedUnitDataSet = adjustedUnitDataSet;
 
             return returnCopy;
         }
@@ -343,8 +347,9 @@ namespace TimeSeriesAnalysis.Dynamic
             result.d_est            = d_est;
             result.d_LF             = d_LF;
             result.d_HF             = d_HF;
+            result.adjustedUnitDataSet = unitDataSet;
             // NB! minus!
-          //  double[] dest_test = vec.Add(vec.Multiply(result.dest_f2_proptoGain,-result.f1EstProcessGain),result.dest_f2_constTerm);
+            //  double[] dest_test = vec.Add(vec.Multiply(result.dest_f2_proptoGain,-result.f1EstProcessGain),result.dest_f2_constTerm);
             return result;
         }
 

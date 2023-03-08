@@ -719,10 +719,13 @@ namespace TimeSeriesAnalysis.Dynamic
         
             parameters.Fitting = new FittingInfo();
             parameters.Fitting.SolverID = solverID;
-            if (dataSet.Times.Count() > 0)
+            if (dataSet.Times != null)
             {
-                parameters.Fitting.StartTime = dataSet.Times.First();
-                parameters.Fitting.EndTime = dataSet.Times.Last();
+                if (dataSet.Times.Count() > 0)
+                {
+                    parameters.Fitting.StartTime = dataSet.Times.First();
+                    parameters.Fitting.EndTime = dataSet.Times.Last();
+                }
             }
             // Vec.Regress can return very large values if y is noisy and u is stationary. 
             // in these cases varCovarMatrix is null
@@ -811,6 +814,9 @@ namespace TimeSeriesAnalysis.Dynamic
             double a = regResults.Param[0];
             double varA = regResults.VarCovarMatrix[0][0];
             double sqrtN = Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints);
+
+
+
 
             /////////////////////////////////////////////////////
             /// linear gain unceratinty
