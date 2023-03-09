@@ -80,7 +80,17 @@
         /// <summary>
         /// Some of the parameters returned were NaN, this can happen in the input and output vectors are all constants, such as all-zero
         /// </summary>
-        RegressionProblemNaNSolution = 14
+        /// 
+        RegressionProblemNaNSolution = 14,
+
+        /// <summary>
+        /// If this is a closed loop system where setpoints of PID-controller change, and the "global search" at step1 of the ClosedLoopIdentifier failed to find a local minima when
+        /// trying different gains. This warning likely means that the linear gain can be totally off the mark and may be too low. 
+        /// </summary>
+        /// 
+        ClosedLoopEst_GlobalSearchFailedToFindLocalMinima = 15
+
+
 
     }
 }

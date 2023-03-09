@@ -1,4 +1,5 @@
 ﻿using Accord.Math;
+using Accord.Math.Decompositions;
 using Accord.Statistics;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,57 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    internal class GainGlobalSearchResults
+    {
+        public List<double> linGainList;
+        public List<double> covarianceBtwDistAndYsetList;
+        public List<double> dEstVarianceList;
+        public List<UnitModel> unitModelList;
+
+        public GainGlobalSearchResults()
+        {
+            unitModelList= new List<UnitModel>();
+            dEstVarianceList = new List<double>();
+            covarianceBtwDistAndYsetList = new List<double>();
+            linGainList = new List<double>();
+        }
+
+        public void Add(double gain, UnitModel unitModel, double covarianceBtwDistAndYset, double dest_variance)
+        {
+            linGainList.Add(gain);
+            unitModelList.Add(unitModel);
+            covarianceBtwDistAndYsetList.Add(covarianceBtwDistAndYset);
+            dEstVarianceList.Add(dest_variance);
+        }
+
+        public UnitModel GetBestModel(double initalGainEstimate)
+        {
+            // if there is a local minimum in the list of dEstVarianceList then use that
+            Vec vec = new Vec();
+            vec.Min(dEstVarianceList.ToArray(),out int ind);
+            vec.Min(covarianceBtwDistAndYsetList.ToArray(), out int ind2);
+            if (ind > 0)
+            {
+                return unitModelList.ElementAt(ind);
+            }
+            // if both ind1 and ind2 are zero, it indicates an error.
+            if (ind == ind2)
+            {
+                if (ind == 0 && ind2 == 0)
+                {
+                    unitModelList.ElementAt(ind).modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
+                }
+                return unitModelList.ElementAt(ind);
+                //both models gave same result!!
+            }
+            
+            //otherwise, we fall back to looking at the covariance between d_est and yset
+            return unitModelList.ElementAt(ind2);
+
+        }
+    }
+
+
     /// <summary>
     /// Identification that attempts to identify a unit model jointly with 
     /// estimating the additive signal acting on the output(disturbance signal) yet is
@@ -45,8 +97,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int inputIdx = 0)
         {
+            bool wasGainGlobalSearchDone = false;
             bool doTimeDelayEstOnRun1 = false;
-
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
             {
                 return (null, null);
@@ -60,9 +112,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             double[] u0 = dataSet.U.GetRow(0);
             double y0 = dataSet.Y_meas[0];
-
             bool isOK;
-
             var dataSet1 = new UnitDataSet(dataSet);
             var dataSet2 = new UnitDataSet(dataSet);
             var dataSet3 = new UnitDataSet(dataSet);
@@ -83,119 +133,105 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 dataSet1.D = distIdResult1.d_est;
                 var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, doTimeDelayEstOnRun1, u0);
-
                 idDisturbancesList.Add(distIdResult1);
                 idUnitModelsList.Add(unitModel_run1);
-
                 isOK = ClosedLoopSim(dataSet1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
 
                 // experimental: see if varying gain to get the lowest correlation between setpoint and disturbance 
                 // only needed if setpoint varies. "step1 global search"
-                if (false)
+                bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint) == vec.Min(dataSet.Y_setpoint));
+                if (doesSetpointChange)
                 {
+                    wasGainGlobalSearchDone = true;
                     double initalGainEstimate = unitModel_run1.modelParameters.GetProcessGains().First();
-                    double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est,dataSet.Y_setpoint);
-                    var gainAndCorrDict = new Dictionary<double,double>();
-                    var gainList = new List<double>();
+                    double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est, dataSet.Y_setpoint);
+                    var gainAndCorrDict = new Dictionary<double, GainGlobalSearchResults>();
+                    //
+                    // looking to find the process gain that "decouples" d_est from Y_setpoint as much as possible.
+                    //
+                    // or antoher way to look at ti is that the output U with setpoint effects removed should be as decoupled 
+                    // form Y_setpoint.
+                    var min_gain = initalGainEstimate / 4;
+                    var max_gain = initalGainEstimate * 2;
+                    var range = max_gain - min_gain;
+                    var searchResults = new GainGlobalSearchResults();
 
-
-                    var ySetpointList = new List<double[]>();// debugging only
-                    var dList = new List<double[]>();// debugging only
-                    for (var linGain = 0.5; linGain < 1.5; linGain += 0.1)
+                    for (var linGain = min_gain; linGain < max_gain; linGain += range / 40)
                     {
-                        gainList.Add(linGain);
                         var dataSet_alt = new UnitDataSet(dataSet);
                         var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
                         alternativeModel.modelParameters.LinearGains = new double[] { linGain };
-                      //  alternativeModel.modelParameters.Bias = 50;// does not appear to matter.
 
-                        DisturbanceIdResult distIdResultAlt= DisturbanceIdentifier.EstimateDisturbance
+                        DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
                             (dataSet_alt, alternativeModel, inputIdx, pidParams);
                         var d_est = distIdResultAlt.d_est;
                         isOK = ClosedLoopSim
                             (dataSet_alt, alternativeModel.GetModelParameters(), pidParams, d_est, "run_alt");
 
-                      //  var corVar = distIdResultAlt.adjustedUnitDataSet.Y_sim;//U.GetColumn(inputIdx)
-                        var corVar = dataSet.Y_setpoint;
-                        //   corVar = vec.Div(corVar ,vec.Max(vec.Abs(corVar)));
-                        //d_est = vec.Div(d_est, vec.Max(vec.Abs(d_est)));
-                        //   double otherCorrelation = Measures.Covariance(d_est, corVar,false);
+                        // for the cases when d is a step and yset is a sinus, v7 seems to work best
+                        // for the caeses when d is sinus and yset is a step, either of v1 or v2 seem to work better,
+                        // but more so when the step in yset is fairly big compared to the disturbance.
 
-                        //var testDataSet = new UnitDataSet();
-                        //testDataSet.U = Array2D<double>.CreateFromList(new List<double[]> { d_est, dataSet.Y_setpoint });
-                        //testDataSet.Y_meas = dataSet1.U.GetColumn(inputIdx);
-                        //UnitIdentifier ident = new UnitIdentifier();
-                        //var identModel = ident.IdentifyLinearAndStatic(ref testDataSet, false);
-                        // double corrFactor = Math.Abs(identModel.modelParameters.LinearGains.First());
+                        //v1: use correlation(gives best gain: 0.7(crosses from positive to negative around there)
+                        // double covarianceBtwDistAndYsetList = Math.Abs(CorrelationCalculator.Calculate(dataSet.Y_setpoint, d_est));
+                        // v2: try to use covarince(gives highest gain best(no local minimum))
+                        double covarianceBtwDistAndYsetList = Math.Abs(Measures.Covariance(dataSet.Y_setpoint, d_est, false));
+                        // v3: try to use regression gains(gives best gain: 0.7)
+                        /*  var testDataSet = new UnitDataSet();
+                          testDataSet.U = Array2D<double>.CreateFromList(new List<double[]> { dataSet.Y_setpoint, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx) });
+                          testDataSet.Y_meas = d_est;
+                          UnitIdentifier ident = new UnitIdentifier();
+                          double[] u0_loc = { vec.Mean(dataSet.Y_setpoint).Value, vec.Mean(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)).Value };
+                          double[] uNorm = { vec.Range(dataSet.Y_setpoint), vec.Range(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)) };
+                          var identModel = ident.IdentifyLinearAndStatic(ref testDataSet, false,u0_loc, uNorm);
+                          double unitModelKPI = Math.Abs(identModel.modelParameters.LinearGains[0]);
+                          gainAndCorrDict.Add(linGain, unitModelKPI);
+                          // debugging only        
+                          Shared.EnablePlots();
+                          Plot.FromList(
+                          new List<double[]> {
+                              testDataSet.U.GetColumn(0),
+                              testDataSet.U.GetColumn(1),
+                              testDataSet.Y_meas,
+                              testDataSet.Y_sim,
+                          },
+                          new List<string> {"y1=y_setpoint(u1)","y2=u_setpointremoved(u2)","y3=d(y)", "y3=y_sim",
+                          },
+                          dataSet.GetTimeBase(), "ClosedLoopId_step1Regression_gain"+ linGain); ;
+                          Shared.DisablePlots();
+                          
+                        */
 
+                        //v4: regression and the covariance matrix:
+                        /*                        double[,] phi_ols2D = Array2D<double>.CreateFromList(new List<double[]> { d_est, dataSet.Y_setpoint });
+                                                double[] Y_ols = corVar;
+                                                double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
+                                                var regResults = vec.RegressRegularized(Y_ols, phi_ols);
+                                                double corrFactor = regResults.VarCovarMatrix[0][1];
+                        */
 
+                        // v5: orthogonality(should be maximum then)
+                        //Double[,] matrix = Array2D<double>.CreateFromList(new List<double[]> { dataSet.Y_setpoint, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx) });
+                        /*   Double[,] matrix = Array2D<double>.CreateFromList(new List<double[]> { dataSet.Y_setpoint, d_est });
+                           var svd = new SingularValueDecomposition(matrix);
+                           var test = svd.Diagonal;
+                           gainAndCorrDict.Add(linGain, test[0]);*/
 
-                        double[,] phi_ols2D = Array2D<double>.CreateFromList(new List<double[]> { d_est, dataSet.Y_setpoint });
-                        double[] Y_ols = dataSet1.U.GetColumn(inputIdx);
-                        double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
-                        var regResults = vec.RegressRegularized(Y_ols, phi_ols);
-                        double corrFactor = regResults.VarCovarMatrix[0][1];
+                        // v6: just choose the gain that gives the least "variance" in d_est?
+                        // v6 works well when the disturbance is a step, but does not wark at all when the disturbance is a sinus!!!
+                        // var unitModelKPI = vec.Mean(vec.Abs(vec.Diff(d_est))).Value;
+                        //  var unitModelKPI = vec.Mean(vec.Abs(vec.Diff(vec.Div(d_est, vec.Max(vec.Abs(d_est)) )))).Value;
 
-                        // todo: should we be using cross-covariance?
-                        //double otherCorrelation = CorrelationCalculator.Calculate(d_est, corVar);
-                        gainAndCorrDict.Add(linGain, corrFactor);
-                        ySetpointList.Add(corVar);// debugging only
-                        dList.Add(d_est);
+                        // v7: just choose the gain that gives the least "variance" in d_est?
+                        var dest_variance = vec.Mean(vec.Abs(vec.Diff(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)))).Value;// /vec.Max(vec.Abs(d_est));
+
+                         searchResults.Add(linGain,alternativeModel, covarianceBtwDistAndYsetList, dest_variance);
                     }
-                    vec.Min(gainAndCorrDict.Values.ToArray(),out int bestIndex);
-                    var bestGain = gainAndCorrDict.Keys.ToArray()[bestIndex];
-                    /*
-                    var test =  Measures.Covariance(dList[7], ySetpointList[7]);
-                    var test2 = CorrelationCalculator.Calculate(dList[7], ySetpointList[7]);
-                    var test3 = vec.Cov(dList[7], ySetpointList[7]);
+                    UnitModel bestUnitModel = searchResults.GetBestModel(initalGainEstimate) ;
 
-                    UnitIdentifier ident = new UnitIdentifier();
-
-                    var testDataSet = new UnitDataSet();
-                    testDataSet.U = Array2D<double>.CreateFromList(new List<double[]> { ySetpointList[7] });
-                    testDataSet.Y_meas = dList[7];
-
-                    var identModel = ident.IdentifyLinearAndStatic(ref testDataSet, false);
-
-                    */
-
-
-
-
-                    // debugging only        
-                    Shared.EnablePlots();
-                    Plot.FromList(
-                    new List<double[]> {
-                        ySetpointList[0],
-                        ySetpointList[1],
-                        ySetpointList[2],
-                        ySetpointList[3],
-                        ySetpointList[4],
-                        ySetpointList[5],
-                        ySetpointList[6],
-                        ySetpointList[7],
-                        ySetpointList[8],
-                        ySetpointList[9],
-
-                        dList[0],
-                        dList[1],
-                        dList[2],
-                        dList[3],
-                        dList[4],
-                        dList[5],
-                        dList[6],
-                        dList[7],
-                        dList[8],
-                        dList[9]
-                    },
-                    new List<string> {"y1=u_0","y1=u_1", "y1=u_2", "y1=u_3", "y1=u_4", "y1=u_5", "y1=u_6", "y1=u_7", "y1=u_8", "y1=u_9",
-                        "y3=d_0","y3=d_1", "y3=d_2", "y3=d_3", "y3=d_4", "y3=d_5", "y3=d_6", "y3=d_7", "y3=d_8", "y3=d_9"
-                    },
-                    dataSet.GetTimeBase(), "ClosedLoopId_step1GlobalSearch");
-                    Shared.DisablePlots();
-                    
+                    // add the "best" model to be used in the next model run
+                    idUnitModelsList.Add(bestUnitModel);
                 }
-
             }
             // ----------------
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
@@ -274,7 +310,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 idDisturbancesList.Add(distIdResult_step4);
             }
 
-            if (doDebuggingPlot)
+            // debugging plots, should normally be off
+            if (false)
             {
                 Shared.EnablePlots();
                 Console.WriteLine("run1");
@@ -348,7 +385,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
                 identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
                 identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.Last();
-                identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop v1.0";
+                if (wasGainGlobalSearchDone)
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search";
+                else
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop v1.0";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
             }
 
