@@ -62,7 +62,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public UnitModel GetBestModel(double initalGainEstimate)
         {
-
+            const double dEstVarianceTolerance = 0.00001;// 
 
             // if there is a local minimum in the list of dEstVarianceList then use that
             Vec vec = new Vec();
@@ -72,23 +72,27 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // if one or more of the three methods has non-zero "ind" then that is more likely correct than 
             // the zero ind, as this indicates non-convex search space.
-            if (ind1 > 0 /*&& ind2 == 0&& ind3 == 0*/)
+            if (ind1 > 0)
             {
                 if (ind2 == 0 && ind3 == 0)
                     return unitModelList.ElementAt(ind1);
                 else
                 {
-                    bool isdEstVarianceListFlat = false;//todo: define logic for this
-                    // todo: use ind1 if the "dEstVarianceList" has a clear convex shape, i.e. is not "flat"
-                    if (!isdEstVarianceListFlat)
+                    // usse dEstVariance local minima only if the objective space is not "flat"
+                    var deltaToLower = dEstVarianceList.ElementAt(ind1-1) - dEstVarianceList.ElementAt(ind1);
+                    var deltaToHigher = dEstVarianceList.ElementAt(ind1+1 ) - dEstVarianceList.ElementAt(ind1);
+                    if (Math.Max(deltaToLower, deltaToHigher) > dEstVarianceTolerance)
                     {
                         return unitModelList.ElementAt(ind1);
                     }
                 }
             }
 
-
             if (ind1 == 0 && ind2 == 0 && ind3>0)
+            {
+                return unitModelList.ElementAt(ind3);
+            }
+            if (ind1 == 0 && ind2 > 0 && ind3 == 0)
             {
                 return unitModelList.ElementAt(ind3);
             }
@@ -192,6 +196,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint) == vec.Min(dataSet.Y_setpoint));
                 if (doesSetpointChange)
                 {
+                    // magic numbers of the global search
+                    const int numberOfGlobalSearchIterations = 40;
+                    const double initalGuessFactor_lowerbound = 0.5;
+                    const double initalGuessFactor_higherbound = 2;
+
                     wasGainGlobalSearchDone = true;
                     double initalGainEstimate = unitModel_run1.modelParameters.GetProcessGains().First();
                     double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est, dataSet.Y_setpoint);
@@ -201,12 +210,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     //
                     // or antoher way to look at ti is that the output U with setpoint effects removed should be as decoupled 
                     // form Y_setpoint.
-                    var min_gain = initalGainEstimate / 4;
-                    var max_gain = initalGainEstimate * 2;
+                    var min_gain = initalGainEstimate * initalGuessFactor_lowerbound;
+                    var max_gain = initalGainEstimate * initalGuessFactor_higherbound;
                     var range = max_gain - min_gain;
                     var searchResults = new ClosedLoopGainGlobalSearchResults();
 
-                    for (var linGain = min_gain; linGain < max_gain; linGain += range / 40)
+                    for (var linGain = min_gain; linGain < max_gain; linGain += range / numberOfGlobalSearchIterations)
                     {
                         var dataSet_alt = new UnitDataSet(dataSet);
                         var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
@@ -226,65 +235,9 @@ namespace TimeSeriesAnalysis.Dynamic
                         // double covarianceBtwDistAndYsetList = Math.Abs(CorrelationCalculator.Calculate(dataSet.Y_setpoint, d_est));
                         // v2: try to use covarince(gives highest gain best(no local minimum))
                         double covarianceBtwDistAndYsetList = Math.Abs(Measures.Covariance(dataSet.Y_setpoint, d_est, false));
-                        // v3: try to use regression gains(gives best gain: 0.7)
-                        /*  var testDataSet = new UnitDataSet();
-                          testDataSet.U = Array2D<double>.CreateFromList(new List<double[]> { dataSet.Y_setpoint, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx) });
-                          testDataSet.Y_meas = d_est;
-                          UnitIdentifier ident = new UnitIdentifier();
-                          double[] u0_loc = { vec.Mean(dataSet.Y_setpoint).Value, vec.Mean(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)).Value };
-                          double[] uNorm = { vec.Range(dataSet.Y_setpoint), vec.Range(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)) };
-                          var identModel = ident.IdentifyLinearAndStatic(ref testDataSet, false,u0_loc, uNorm);
-                          double unitModelKPI = Math.Abs(identModel.modelParameters.LinearGains[0]);
-                          gainAndCorrDict.Add(linGain, unitModelKPI);
-                          // debugging only        
-                          Shared.EnablePlots();
-                          Plot.FromList(
-                          new List<double[]> {
-                              testDataSet.U.GetColumn(0),
-                              testDataSet.U.GetColumn(1),
-                              testDataSet.Y_meas,
-                              testDataSet.Y_sim,
-                          },
-                          new List<string> {"y1=y_setpoint(u1)","y2=u_setpointremoved(u2)","y3=d(y)", "y3=y_sim",
-                          },
-                          dataSet.GetTimeBase(), "ClosedLoopId_step1Regression_gain"+ linGain); ;
-                          Shared.DisablePlots();
-                          
-                        */
-
-                        //v4: regression and the covariance matrix:
-                        /*                        double[,] phi_ols2D = Array2D<double>.CreateFromList(new List<double[]> { d_est, dataSet.Y_setpoint });
-                                                double[] Y_ols = corVar;
-                                                double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
-                                                var regResults = vec.RegressRegularized(Y_ols, phi_ols);
-                                                double corrFactor = regResults.VarCovarMatrix[0][1];
-                        */
-
-
-
-
-                        // v5: orthogonality(should be maximum then)
-                        //Double[,] matrix = Array2D<double>.CreateFromList(new List<double[]> { dataSet.Y_setpoint, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx) });
-                        /*   Double[,] matrix = Array2D<double>.CreateFromList(new List<double[]> { dataSet.Y_setpoint, d_est });
-                           var svd = new SingularValueDecomposition(matrix);
-                           var test = svd.Diagonal;
-                           gainAndCorrDict.Add(linGain, test[0]);*/
-
-                        // v6: just choose the gain that gives the least "variance" in d_est?
-                        // v6 works well when the disturbance is a step, but does not wark at all when the disturbance is a sinus!!!
-                        // var unitModelKPI = vec.Mean(vec.Abs(vec.Diff(d_est))).Value;
-                        //  var unitModelKPI = vec.Mean(vec.Abs(vec.Diff(vec.Div(d_est, vec.Max(vec.Abs(d_est)) )))).Value;
-
+                
                         // v7: just choose the gain that gives the least "variance" in d_est?
                         var dest_variance = vec.Mean(vec.Abs(vec.Diff(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)))).Value;// /vec.Max(vec.Abs(d_est));
-
-                        // v8: look to find the linear gain between y_set and d_dest (this gain should normally be zero)
-                        // problem with this is that gain is highly uncertain
-                        /*double[,] phi_ols2D = Array2D<double>.CreateFromList(new List<double[]> { dataSet.Y_setpoint });
-                        double[] Y_ols = d_est;
-                        double[][] phi_ols = phi_ols2D.Transpose().Convert2DtoJagged();
-                        var regResults = vec.RegressRegularized(Y_ols, phi_ols);
-                        double linregGainYsetToDest = regResults.Gains[0];*/
 
                         // v9: an alternative take on v8, try to "bin" dataset into a "low setpoint" and a "high setpoint" part
                         // and find the gradient between them
@@ -298,7 +251,6 @@ namespace TimeSeriesAnalysis.Dynamic
                         var d_est_low = vec.Mean(Vec<double>.GetValuesAtIndices(d_est, lowIndices)).Value;
                         var d_est_high = vec.Mean(Vec<double>.GetValuesAtIndices(d_est, highIndices)).Value;
                         double linregGainYsetToDest = (d_est_high- d_est_low)/(y_set_high- y_set_low);
-
 
                         // finally,save all results!
                         searchResults.Add(linGain,alternativeModel, covarianceBtwDistAndYsetList, dest_variance,linregGainYsetToDest);
