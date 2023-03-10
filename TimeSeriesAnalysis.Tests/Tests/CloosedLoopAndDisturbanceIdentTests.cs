@@ -58,7 +58,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            if (false)
+            bool doDebugPlot = false;
+            if (doDebugPlot)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
@@ -127,7 +128,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(160, N, 0, distStepAmplitude);
             var yset = TimeSeriesCreator.Step(50, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
                 false, true, yset, precisionPrc);
@@ -148,7 +149,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             };
             var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude,N/8,timeBase_s,N );
             //   var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
-            var yset = TimeSeriesCreator.Step(50, N, 50, 50 + ysetStepAmplitude);//do step before disturbance
+            var yset = TimeSeriesCreator.Step(N/2, N, 50, 50 + ysetStepAmplitude);//do step before disturbance
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
                 false, true, yset, precisionPrc);
         }
@@ -217,34 +218,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 doNegativeGain,true,null,  processGainAllowedOffsetPrc);
             //Shared.DisablePlots();
         }
-     
 
-
-
-
-
-   /*     [TestCase(-5,20),Explicit]// process gains are 4.4,far too big, but disturbance amplitude is +/- 8  
-        [TestCase(-5, 100)]// process gains are 4.4,far too big, but disturbance amplitude is +/- 8  
-        public void NOTWORKING_Static_SinusDisturbance_EstimatesDistOk(double sinusAmplitude=5, 
-            double sinusPeriod=20, bool doNegativeGain=false)
-        { 
-           // Shared.EnablePlots();
-            var trueDisturbance = TimeSeriesCreator.Sinus(sinusAmplitude, sinusPeriod, timeBase_s, N);
-            GenericDisturbanceTest( new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
-                doNegativeGain);
-           // Shared.DisablePlots();
-        }*/
-        /*
-        [Test,Explicit] // disturbance is exactly double the actual value, process gains are 4.67, should be 1!
-       // [TestCase(-5, 20)]
-        public void NOTWORKING_Dynamic_SinusDisturbance_EstimatesDistOk(double sinusAmplitude=-5, double sinusPeriod=20)
-        {
-            Shared.EnablePlots();
-            var trueDisturbance = TimeSeriesCreator.Sinus(sinusAmplitude, sinusPeriod, timeBase_s, N);
-            GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance);
-            Shared.DisablePlots();
-        }
-        */
         public void GenericDisturbanceTest  (UnitModel trueProcessModel, double[] trueDisturbance, bool doNegativeGain,
             bool doAssertResult=true, double[] yset=null, double processGainAllowedOffsetPrc=10)
         {
