@@ -38,7 +38,13 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Find values that are NOT Double.NaN
         /// </summary>
-        NotNaN = 7
+        NotNaN = 7,
+        /// <summary>
+        /// Find values that are NOT equal to a given value
+        /// </summary>
+        NotEqual = 8
+
+
     }
 
     /// <summary>

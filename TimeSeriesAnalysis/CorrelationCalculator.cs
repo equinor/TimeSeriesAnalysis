@@ -32,14 +32,15 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="signalName"></param>
         /// <param name="dataSet"></param>
+        /// <param name="indicesToIgnore"> these indices are ignored in the calculation (pre-filtered bad or out of range values)</param>
         /// <returns></returns>
-        public static Dictionary<string,double> Calculate(string signalName, TimeSeriesDataSet dataSet)
+        public static Dictionary<string,double> Calculate(string signalName, TimeSeriesDataSet dataSet, List<int> indicesToIgnore= null)
         {
             Dictionary<string, double> returnCorrs= new Dictionary<string, double>();
             var vec = new Vec();
             var mainSignal = dataSet.GetValues(signalName);
 
-            (double[,] matrix, string[] signalNames) = dataSet.GetAsMatrix();
+            (double[,] matrix, string[] signalNames) = dataSet.GetAsMatrix(indicesToIgnore);
             double[,] corrMatrix = Measures.Correlation(matrix);
             double[] corr = corrMatrix.GetColumn(0);
            
@@ -54,8 +55,18 @@ namespace TimeSeriesAnalysis
         }
 
 
-        public static double Calculate(double[] signal1, double[] signal2)
+        /// <summary>
+        /// Calculate the correlation factor between signal1 and signal 2.
+        /// </summary>
+        /// <param name="signal1"></param>
+        /// <param name="signal2"></param>
+        /// <param name="indicesToIgnore">Optionally ignore indices in this list from signal1 and signal2 </param>
+        /// <returns></returns>
+        public static double Calculate(double[] signal1, double[] signal2, List<int> indicesToIgnore=null)
         {
+            var signal1_filt = Vec<double>.GetValuesExcludingIndices(signal1, indicesToIgnore);
+            var signal2_filt = Vec<double>.GetValuesExcludingIndices(signal2, indicesToIgnore);
+
             var matrix = Array2D<double>.CreateFromList(new List<double[]> { signal1,signal2});
             double[,] corrMatrix = Measures.Correlation(matrix);
             return corrMatrix.GetColumn(0)[1];

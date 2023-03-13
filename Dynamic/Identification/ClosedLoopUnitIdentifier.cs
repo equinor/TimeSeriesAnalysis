@@ -62,6 +62,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public UnitModel GetBestModel(double initalGainEstimate)
         {
+            if (unitModelList == null)
+                return null;
+            if (unitModelList.Count == 0)
+                return null;
+
             const double dEstVarianceTolerance = 0.00001;// 
 
             // if there is a local minimum in the list of dEstVarianceList then use that
@@ -143,10 +148,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Currently always assumes that PID-index is first index of unit model(can be improved)
         /// </para>
         /// </remarks>
-        /// <param name="dataSet">the unit data set, containing both the input to the unit and the output</param>
-        /// <param name="plantSim">an optional PidModel that is used to co-simulate the model and disturbance, improving identification</param>
+        /// <param name = "dataSet">the unit data set, containing both the input to the unit and the output</param>
+        /// <param name = "plantSim">an optional PidModel that is used to co-simulate the model and disturbance, improving identification</param>
         /// <param name = "pidParams"> if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</param>
-        /// <param name="inputIdx">the index of the input</param>
+        /// <param name = "inputIdx">the index of the input</param>
         /// 
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int inputIdx = 0)
@@ -157,6 +162,35 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return (null, null);
             }
+            var vec = new Vec();
+
+            //
+            // In some cases the first data point given is has a non-physical 
+            // drop/increase that is caused by an outside error.
+            // drops/increases in the setpoint will cause a "global search" for the process gain in 
+            // closed loop and thus will significantly affect the result
+            // 
+            {
+                dataSet.IndicesToIgnore = new List<int>();
+                bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint) == vec.Min(dataSet.Y_setpoint));
+                if (doesSetpointChange)
+                {
+                    var ind = vec.FindValues(vec.Diff(dataSet.Y_setpoint),0,VectorFindValueType.NotEqual);
+                    // if the only setpoint step is in the first iteration,ignore it.
+                    if (ind.Count() > 0 && ind.First() <= 1)
+                    {
+                        dataSet.IndicesToIgnore.Add(ind.First()-1);//because "diff",subtract 1
+                      //  dataSet.IndicesToIgnore.Add(ind.First());
+                    }
+                }
+                dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.Y_setpoint, 0, VectorFindValueType.NaN));
+                dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.Y_meas, 0, VectorFindValueType.NaN));
+                for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
+                {
+                    dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.U.GetColumn(colIdx), 0, VectorFindValueType.NaN));
+                }
+            }
+
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
             // estimate of the disturbance improves along with it.
@@ -171,7 +205,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var dataSet2 = new UnitDataSet(dataSet);
             var dataSet3 = new UnitDataSet(dataSet);
             var dataSet4 = new UnitDataSet(dataSet);
-            var vec = new Vec();
+
             var id = new UnitIdentifier();
 
             // ----------------
@@ -193,7 +227,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 // experimental: see if varying gain to get the lowest correlation between setpoint and disturbance 
                 // only needed if setpoint varies. "step1 global search"
-                bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint) == vec.Min(dataSet.Y_setpoint));
+                bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint,dataSet.IndicesToIgnore) == vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
                 if (doesSetpointChange)
                 {
                     // magic numbers of the global search
@@ -203,7 +237,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     wasGainGlobalSearchDone = true;
                     double initalGainEstimate = unitModel_run1.modelParameters.GetProcessGains().First();
-                    double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est, dataSet.Y_setpoint);
+                    double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore);
                     var gainAndCorrDict = new Dictionary<double, ClosedLoopGainGlobalSearchResults>();
                     //
                     // looking to find the process gain that "decouples" d_est from Y_setpoint as much as possible.

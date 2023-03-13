@@ -175,7 +175,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        /// returns an array of the difference between every neighbhoring item in array
+        /// returns an array of the difference between every neighboring item in array
         ///</summary>
         public  double[] Diff(double[] array)
         {
@@ -303,6 +303,14 @@ namespace TimeSeriesAnalysis
                         indices.Add(i);
                 }
             }
+            else if (type == VectorFindValueType.NotEqual)
+            {
+                for (int i = 0; i < vec.Length; i++)
+                {
+                    if (vec[i] != value)
+                        indices.Add(i);
+                }
+            }
             return indices;
         }
 
@@ -391,6 +399,11 @@ namespace TimeSeriesAnalysis
                 return false;
         }
 
+
+
+
+
+
         ///<summary>
         ///  Returns maximum value of two array as new array 
         ///</summary>
@@ -407,26 +420,6 @@ namespace TimeSeriesAnalysis
             }
             return retVal;
         }
-
-
-
-        ///<summary>
-        ///  Returns minimum value of two array as new array 
-        ///</summary>
-        static public double[] Min(double[] array1, double[] array2)
-        {
-            double[] retVal = new double[array1.Length];
-
-            for (int i = 0; i < retVal.Length; i++)
-            {
-                if (array1[i] > array2[i])
-                    retVal[i] = array2[i];
-                else
-                    retVal[i] = array1[i];
-            }
-            return retVal;
-        }
-
 
         ///<summary>
         ///  Returns maximum value of array and index of maximum value 
@@ -447,6 +440,128 @@ namespace TimeSeriesAnalysis
                 }
             }
             return maxVal;
+        }
+
+        ///<summary>
+        ///  Returns maximum value of array, ignoring the given indices 
+        ///</summary>
+        public double Max(double[] array, List<int> indicesToIgnore)
+        {
+            double maxVal = double.MinValue;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (indicesToIgnore.Contains(i))
+                    continue;
+                double thisNum = array[i];
+                if (IsNaN(thisNum))
+                    continue;
+                if (thisNum > maxVal)
+                {
+                    maxVal = thisNum;
+                }
+            }
+            return maxVal;
+        }
+    
+        ///<summary>
+        ///  Returns element-wise maximum of array element and value
+        ///</summary>
+        public double[] Max(double[] array, double value)
+        {
+            double[] retArray = new double[array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                double thisNum = array[i];
+                if (IsNaN(thisNum))
+                    continue;
+                if (thisNum > value)
+                {
+                    retArray[i] = thisNum;
+                }
+                else
+                {
+                    retArray[i] = value;
+                }
+            }
+            return retArray;
+        }
+
+        ///<summary>
+        ///  Returns maximum value of array 
+        ///</summary>
+        public double Max(double[] array)
+        {
+            return Max(array, out _);
+        }
+
+        /// <summary>
+        /// Minimum value of array
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        public double Min(double[] array)
+        {
+            return Min(array, out _);
+        }
+        ///<summary>
+        ///  Returns minimum value of array, ignoring certain indices
+        ///</summary>
+        public double Min(double[] array, List<int> indicesToIgnore)
+        {
+
+            double minVal = double.MaxValue;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (indicesToIgnore.Contains(i))
+                    continue;
+                double thisNum = array[i];
+                if (IsNaN(thisNum))
+                    continue;
+                if (thisNum < minVal)
+                {
+                    minVal = thisNum;
+                }
+            }
+            return minVal;
+        }
+
+        ///<summary>
+        ///  Returns minimum value of array and index of maximum value 
+        ///</summary>
+        public double Min(double[] array, out int ind)
+        {
+            ind = 0;
+            double minVal = double.MaxValue;
+            for (int i = 0; i < array.Length; i++)
+            {
+                double thisNum = array[i];
+                if (IsNaN(thisNum))
+                    continue;
+                if (thisNum < minVal)
+                {
+                    minVal = thisNum;
+                    ind = i;
+                }
+            }
+            return minVal;
+        }
+
+
+        ///<summary>
+        ///  Returns minimum value of two array as new array 
+        ///</summary>
+        static public double[] Min(double[] array1, double[] array2)
+        {
+            double[] retVal = new double[array1.Length];
+
+            for (int i = 0; i < retVal.Length; i++)
+            {
+                if (array1[i] > array2[i])
+                    retVal[i] = array2[i];
+                else
+                    retVal[i] = array1[i];
+            }
+            return retVal;
         }
 
         ///<summary>
@@ -471,71 +586,6 @@ namespace TimeSeriesAnalysis
             }
             return retArray;
         }
-
-        ///<summary>
-        ///  Returns element-wise maximum of array element and value
-        ///</summary>
-        public double[] Max(double[] array, double value)
-        {
-            double[] retArray = new double[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                double thisNum = array[i];
-                if (IsNaN(thisNum))
-                    continue;
-                if (thisNum > value)
-                {
-                    retArray[i] = thisNum;
-                }
-                else
-                {
-                    retArray[i] = value;
-                }
-            }
-            return retArray;
-        }
-
-
-
-        ///<summary>
-        ///  Returns minimum value of array and index of maximum value 
-        ///</summary>
-        public double Min(double[] array, out int ind)
-        {
-            ind = 0;
-            double minVal = double.MaxValue;
-            for (int i = 0; i < array.Length; i++)
-            {
-                double thisNum = array[i];
-                if (IsNaN(thisNum))
-                    continue;
-                if (thisNum < minVal)
-                {
-                    minVal = thisNum;
-                    ind = i;
-                }
-            }
-            return minVal;
-        }
-
-        /// <summary>
-        /// Minimum value of array
-        /// </summary>
-        /// <param name="array"></param>
-        /// <returns></returns>
-        public double Min(double[] array)
-        {
-            return Min(array, out _);
-        }
-
-        ///<summary>
-        ///  Returns maximum value of array 
-        ///</summary>
-        public double Max(double[] array)
-        {
-            return Max(array, out _);
-        }
-
 
 
         ///<summary>
@@ -1272,10 +1322,6 @@ namespace TimeSeriesAnalysis
             return SumOfAbsErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
 
-
-
-
-
         /// <summary>
         ///  serializes a single vector/array to a file for persistent storage to a human-readable text format
         /// Vector data can then be retreived by companion method <c>Deserialize</c>
@@ -1295,9 +1341,6 @@ namespace TimeSeriesAnalysis
             }
             return true;
         }
-
-
-
 
         /// <summary>
         /// Create a compact string of vector with a certain number of significant digits and a chosen divider

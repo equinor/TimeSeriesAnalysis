@@ -112,7 +112,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// returns an array of the values that are in array at the indeices given by indices list
+        /// returns an array of the values that are in array at the indices given by indices list
         ///</summary>
 
         public static T[] GetValuesAtIndices(T[] array, List<int> indices)
@@ -126,6 +126,26 @@ namespace TimeSeriesAnalysis
             return ret;
         }
 
+        ///<summary>
+        /// returns an array of the values that are in array excluding those with indices given by indices list
+        ///</summary>
+
+        public static T[] GetValuesExcludingIndices(T[] array, List<int> indices)
+        {
+            if (indices == null)
+            {
+                return array;
+            }
+            var retList = new List<T>(); ;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (indices.Contains(i))
+                    continue;
+                retList.Add(array[i]);
+            }
+            return retList.ToArray();
+        }
 
         ///<summary>
         /// returns the intersection of array1 and array2, a list of elements that are in both vectors

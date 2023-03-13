@@ -57,15 +57,23 @@ namespace TimeSeriesAnalysis
         /// Convert a list of 1D arrays to a jagged array
         /// </summary>
         /// <param name="listOfArrays"></param>
+        /// <param name="indicesToIgnore">optionally, indices in each variable to ignore</param>
         /// <returns>null if unsuccessful</returns>
-        static public T[][] CreateJaggedFromList(List<T[]> listOfArrays)
+        static public T[][] CreateJaggedFromList(List<T[]> listOfArrays, List<int> indicesToIgnore= null )
         {
             try
             {
                 T[][] ret = new T[listOfArrays.Count][];
                 for (int i = 0; i < listOfArrays.Count; i++)
                 {
-                    ret[i] = listOfArrays.ElementAt(i);
+                    if (indicesToIgnore == null)
+                    {
+                        ret[i] = listOfArrays.ElementAt(i);
+                    }
+                    else
+                    {
+                        ret[i] = Vec<T>.GetValuesExcludingIndices(listOfArrays.ElementAt(i),indicesToIgnore);
+                    }
                 }
                 return ret;
             }

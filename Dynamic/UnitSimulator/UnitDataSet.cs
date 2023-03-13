@@ -122,6 +122,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 this.D = null;
             else
                 this.D = otherDataSet.D.Clone() as double[];
+
+            if (otherDataSet.IndicesToIgnore == null)
+                this.IndicesToIgnore = null;
+            else
+                this.IndicesToIgnore = new List<int>(otherDataSet.IndicesToIgnore);
+
         }
 
         /// <summary>

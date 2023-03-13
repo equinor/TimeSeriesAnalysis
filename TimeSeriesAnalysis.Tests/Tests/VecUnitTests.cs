@@ -254,14 +254,28 @@ namespace TimeSeriesAnalysis.Test
 
             Assert.AreEqual(resutlExp, result);
         }
-     /*   [Test]
-        public void GetGradient()
+
+        [Test]
+        public void GetValuesExcludingIndices()
         {
-            var vec1 = new List<double> { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
-            var dates = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), 3600, 10);
-            var results = Vec.GetGradient(vec1.ToArray(),dates,3600);
-            Assert.IsTrue(Math.Abs(results.Gains.First() -10 )<0.01);
-        }*/
+
+            var vec1 = new double[] {0, 10, 20, 30, 40, 50, 60, 70 };
+            var indToIgnore = new List<int> { 0, 3, 7 };
+            var resutlExp = new List<int> { 10,20,40,50,60 };
+            var result = Vec<double>.GetValuesExcludingIndices(vec1, indToIgnore);
+
+            Assert.AreEqual(resutlExp, result);
+        }
+
+
+        /*   [Test]
+           public void GetGradient()
+           {
+               var vec1 = new List<double> { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+               var dates = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), 3600, 10);
+               var results = Vec.GetGradient(vec1.ToArray(),dates,3600);
+               Assert.IsTrue(Math.Abs(results.Gains.First() -10 )<0.01);
+           }*/
 
         [Test]
         public void Intersect()
@@ -449,8 +463,27 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(new double[] { 0, 1, 2, 2 }, vecres);
         }
 
+        [Test]
+        public void VecMin_IgnoresIndices()
+        {
+            var ind = new List<int> { 0, 3 }; 
+            double[] vec1 = { 1, 2, 3, 4 };
+            var  vec = new Vec();
+            double vecres = vec.Min(vec1, ind);
 
+            Assert.AreEqual(2, vecres);
+        }
 
+        [Test]
+        public void VecMax_IgnoresIndices()
+        {
+            var ind = new List<int> { 0, 3 };
+            double[] vec1 = { 1, 2, 3, 4 };
+            var vec = new Vec();
+            double vecres = vec.Max(vec1, ind);
+
+            Assert.AreEqual(3, vecres);
+        }
 
 
 

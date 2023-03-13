@@ -345,10 +345,10 @@ namespace TimeSeriesAnalysis
         /// Get all signals in the dataset as a matrix
         /// </summary>
         /// <returns>the signals as a 2d-matrix, and the an array of strings with corresponding signal names</returns>
-        public (double[,], string[]) GetAsMatrix()
+        public (double[,], string[]) GetAsMatrix(List<int> indicesToIgnore=null)
         {
             List<double[]> listOfVectors = (List<double[]>)dataset.Values.ToList();
-            double[][] jagged = Array2D<double>.CreateJaggedFromList(listOfVectors);
+            double[][] jagged = Array2D<double>.CreateJaggedFromList(listOfVectors, indicesToIgnore);
             double[,] ret2D = Array2D<double>.Created2DFromJagged(jagged); 
             return (ret2D.Transpose(), dataset.Keys.ToArray());
         }

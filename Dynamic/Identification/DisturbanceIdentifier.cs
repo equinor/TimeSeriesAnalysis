@@ -152,6 +152,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     unitDataSet_setpointEffectsRemoved.Y_meas = vec.Subtract(unitDataSet.Y_meas, deltaProcOutputY);
                     unitDataSet_setpointEffectsRemoved.Y_setpoint = Vec<double>.Fill(unitDataSet.Y_setpoint.First(), unitDataSet.Y_setpoint.Length);
                     unitDataSet_setpointEffectsRemoved.U = Matrix.ReplaceColumn(unitDataSet_setpointEffectsRemoved.U, inputIdx, newU);
+                    unitDataSet_setpointEffectsRemoved.IndicesToIgnore = unitDataSet.IndicesToIgnore;
 
   /*                  Shared.EnablePlots();
                     Plot.FromList(
@@ -194,7 +195,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 return result;
             }
 
-            bool doesSetpointChange = !(vec.Max(unitDataSet_raw.Y_setpoint) == vec.Min(unitDataSet_raw.Y_setpoint));
+            bool doesSetpointChange = !(vec.Max(unitDataSet_raw.Y_setpoint, unitDataSet_raw.IndicesToIgnore) 
+                == vec.Min(unitDataSet_raw.Y_setpoint, unitDataSet_raw.IndicesToIgnore));
             if (!tryToModelDisturbanceIfSetpointChangesInDataset && doesSetpointChange)
             {
                 result.SetToZero();//the default anyway,added for clarity.

@@ -92,7 +92,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         //
         // does not work in general for any seed
-       // [TestCase(1, 1.5, 25, 1)]
+        [TestCase(1, 1.5, 25, 1)]
        // [TestCase(1, 1.5, 25, 2)]
       //  [TestCase(1, 1.5, 25, 3)]// TODO: redo for more seeds. use seed to avoid test buidl failing on server by chance
         public void Static_RandomWalk_EstimatesOk(double noiseAmplitude, double systemGain,
@@ -197,6 +197,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
           //  Shared.DisablePlots();
         }
 
+
+
+
         // this works as long as only static identifiation is used in the closed-looop identifier,
         [Test]
         public void FlatData_DoesNotCrash()
@@ -207,6 +210,20 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), 
                 trueDisturbance,false,false);
         }
+
+        [Test]
+        public void StepAtStartOfDataset_IsExcludedFromAnalysis()
+        {
+            double stepAmplitude = 1;
+            bool doAddBadData = true;
+            N = 1000;
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"),
+                trueDisturbance, false, true,null,10, doAddBadData);
+        }
+
+
+
 
         [TestCase(-5,5)]
         [TestCase(5, 5)]
@@ -222,7 +239,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         public void GenericDisturbanceTest  (UnitModel trueProcessModel, double[] trueDisturbance, bool doNegativeGain,
-            bool doAssertResult=true, double[] yset=null, double processGainAllowedOffsetPrc=10)
+            bool doAssertResult=true, double[] yset=null, double processGainAllowedOffsetPrc=10, bool doAddBadData = false)
         {
             var usedProcParameters = trueProcessModel.GetModelParameters().CreateCopy();
             var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
@@ -253,6 +270,15 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+            if (doAddBadData)
+            {
+                pidDataSet.Y_setpoint[0] = pidDataSet.Y_setpoint[0] * 0.5;
+                pidDataSet.Y_setpoint[50] = Double.NaN;
+                pidDataSet.Y_meas[400] = Double.NaN;
+                pidDataSet.U[500,0] = Double.NaN;
+
+            }
+
             var modelId = new ClosedLoopUnitIdentifier();
             (var identifiedModel, var estDisturbance) = modelId.Identify(pidDataSet, pidModel1.GetModelParameters());
 
