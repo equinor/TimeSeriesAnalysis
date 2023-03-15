@@ -174,7 +174,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (dataSet.IndicesToIgnore == null)
                 {
                     dataSet.IndicesToIgnore = new List<int>();
-                    // TODO: need to identify bad data points.
                 }
                 bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint, dataSet.IndicesToIgnore) == 
                     vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
@@ -182,7 +181,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var ind = vec.FindValues(vec.Diff(dataSet.Y_setpoint),0,VectorFindValueType.NotEqual, dataSet.IndicesToIgnore);
                     // if the only setpoint step is in the first iteration,ignore it.
-                    if (ind.Count() == 1 && ind.First() <= 1)
+                    if (ind.Count() < dataSet.GetNumDataPoints()/4 && ind.First() <= 1)
                     {
                         dataSet.IndicesToIgnore.Add(ind.First()-1);//because "diff",subtract 1
                       //  dataSet.IndicesToIgnore.Add(ind.First());
@@ -233,7 +232,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // experimental: see if varying gain to get the lowest correlation between setpoint and disturbance 
                 // only needed if setpoint varies. "step1 global search"
                 bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint,dataSet.IndicesToIgnore) == vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
-                if (doesSetpointChange)
+                if (doesSetpointChange && unitModel_run1.modelParameters.GetProcessGains()!= null)
                 {
                     // magic numbers of the global search
                     const int numberOfGlobalSearchIterations = 40;

@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepAtStartOfDataset_IsExcludedFromAnalysis()
         {
             double stepAmplitude = 1;
-            bool doAddBadData = false;//todo:set true
+            bool doAddBadData = true;//todo:set true
             N = 1000;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"),

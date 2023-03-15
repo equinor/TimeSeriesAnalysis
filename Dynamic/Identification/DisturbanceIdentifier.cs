@@ -143,15 +143,29 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (isOk)
                 {
+                    int idxFirstGoodValue = 0;
+                    if (unitDataSet.IndicesToIgnore != null)
+                    {
+                        if (unitDataSet.GetNumDataPoints() > 0)
+                        {
+                            while (unitDataSet.IndicesToIgnore.Contains(idxFirstGoodValue) && 
+                                idxFirstGoodValue < unitDataSet.GetNumDataPoints()-1)
+                            {
+                                idxFirstGoodValue++;
+                            }
+                        }
+                    }
+
                     var vec = new Vec();
                     var procOutputY = simData.GetValues(unitModel.GetID(), SignalType.Output_Y);
                     var pidOutputU = simData.GetValues(pidModel1.GetID(), SignalType.PID_U);
-                    var pidDeltaU = vec.Subtract(pidOutputU, pidOutputU.First());
-                    var deltaProcOutputY = vec.Subtract(procOutputY, procOutputY.First());
+                    var pidDeltaU = vec.Subtract(pidOutputU, pidOutputU[idxFirstGoodValue]);
+                    var deltaProcOutputY = vec.Subtract(procOutputY, procOutputY[idxFirstGoodValue]);
                     var newU = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), pidDeltaU);
 
+
                     unitDataSet_setpointEffectsRemoved.Y_meas = vec.Subtract(unitDataSet.Y_meas, deltaProcOutputY);
-                    unitDataSet_setpointEffectsRemoved.Y_setpoint = Vec<double>.Fill(unitDataSet.Y_setpoint.First(), unitDataSet.Y_setpoint.Length);
+                    unitDataSet_setpointEffectsRemoved.Y_setpoint = Vec<double>.Fill(unitDataSet.Y_setpoint[idxFirstGoodValue], unitDataSet.Y_setpoint.Length);
                     unitDataSet_setpointEffectsRemoved.U = Matrix.ReplaceColumn(unitDataSet_setpointEffectsRemoved.U, inputIdx, newU);
                     unitDataSet_setpointEffectsRemoved.IndicesToIgnore = unitDataSet.IndicesToIgnore;
 
@@ -308,7 +322,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 if (unitDataSet.GetNumDataPoints() > 0)
                 {
-                    while (unitDataSet.IndicesToIgnore.Contains(indexOfFirstGoodValue) && indexOfFirstGoodValue < unitDataSet.GetNumDataPoints())
+                    while (unitDataSet.IndicesToIgnore.Contains(indexOfFirstGoodValue) && indexOfFirstGoodValue < unitDataSet.GetNumDataPoints()-1)
                     {
                         indexOfFirstGoodValue++;
                     }
