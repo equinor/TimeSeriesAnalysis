@@ -124,7 +124,7 @@ namespace TimeSeriesAnalysis
                         if (i == 0)
                         {
                             int i_forward = 1;
-                            while (i_forward < signal.Count() && indicesToIgnore.Contains(i_forward))
+                            while (i_forward < signal.Count()-1 && indicesToIgnore.Contains(i_forward))
                             {
                                 i_forward++;
                             }

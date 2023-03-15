@@ -369,7 +369,7 @@ namespace TimeSeriesAnalysis
             {
                 return null;
             }
-            else if (timeIdx > dataset[signalName].Count())
+            else if (timeIdx > dataset[signalName].Count()-1)
             {
                 return null;
             }
