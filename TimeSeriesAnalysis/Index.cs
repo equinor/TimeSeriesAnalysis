@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accord.Math;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -144,24 +145,26 @@ namespace TimeSeriesAnalysis
         }
 
 
+
         ///<summary>
-        ///  Returns maximum value of array between indices startInd and endInd
+        ///  Removes ceratin indices from the array
         ///</summary>
-        public static double Max(double[] array, int startInd, int endInd)
+        public static int[] Remove(int[] array, List<int> indicesToRemove)
         {
-            double maxVal = double.MinValue;
-            for (int i = startInd; i < endInd; i++)
+            if (indicesToRemove == null)
+                return array;
+            if (indicesToRemove.Count == 0)
+                return array;
+
+            List<int> new_array = new List<int>();
+            for (int i = 0; i < array.Length; i++)
             {
-                double thisNum = array[i];
-                if (IsNaN(thisNum))
-                    continue;
-                if (thisNum > maxVal)
-                {
-                    maxVal = thisNum;
-                }
+                if (!indicesToRemove.Contains(array[i]))
+                    new_array.Add(array[i]);
             }
-            return maxVal;
+            return new_array.ToArray() ;
         }
+
 
         ///<summary>
         /// subtracts val2 from array2 elements

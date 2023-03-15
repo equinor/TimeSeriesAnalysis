@@ -138,6 +138,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var inputData = new TimeSeriesDataSet();
                 inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
                 inputData.CreateTimestamps(unitDataSet.GetTimeBase());
+                inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
                 var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
                 if (isOk)
@@ -227,8 +228,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // If an increase in _y(by means of a disturbance)_ causes PID-controller to _increase_ u then the processGainSign is negative
             // If an increase in y causes PID to _decrease_ u, then processGainSign is positive!
             {
-                var indGreaterThanZeroE = vec.FindValues(e, 0, VectorFindValueType.BiggerOrEqual);
-                var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual);
+                var indGreaterThanZeroE = vec.FindValues(e, 0, VectorFindValueType.BiggerOrEqual, unitDataSet.IndicesToIgnore);
+                var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual, unitDataSet.IndicesToIgnore);
+
                 var u = unitDataSet.U.GetColumn(0);
                 var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indGreaterThanZeroE));
                 var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indLessThanZeroE));
@@ -285,31 +287,41 @@ namespace TimeSeriesAnalysis.Dynamic
             // run when no process model exists!
             if (!isProcessGainSet)
             {
-                double[] eFiltered = lowPass.Filter(e, FilterTc_s, 2);
-                double maxDE = vec.Max(vec.Abs(eFiltered));       // this has to be sensitive to noise?
-                double[] uFiltered = lowPass.Filter(deltaU, FilterTc_s, 2);
-                double maxU = vec.Max(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot
-                double minU = vec.Min(vec.Abs(uFiltered));        // sensitive to output noise/controller overshoot  
+                double[] eFiltered = lowPass.Filter(e, FilterTc_s, 2, unitDataSet.IndicesToIgnore);
+                double maxDE = vec.Max(vec.Abs(eFiltered),unitDataSet.IndicesToIgnore);       // this has to be sensitive to noise?
+                double[] uFiltered = lowPass.Filter(deltaU, FilterTc_s, 2, unitDataSet.IndicesToIgnore);
+                double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot
+                double minU = vec.Min(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
                 estProcessGain = processGainSign * maxDE / (maxU - minU);
-
-                // temporary:(setting correct process gain should give the corred disturbance out!)
-                 //estProcessGain = 1.2;
-            }
-
+           }
             bool isFittedButFittingFailed = false;
             if (unitModel != null)
                  if (unitModel.GetModelParameters().Fitting != null)
                      if (unitModel.GetModelParameters().Fitting.WasAbleToIdentify == false)
                          isFittedButFittingFailed = true;
 
+            // the "naive" method uses values at index 0 for some localization, so is sensitive to when 
+            // first value in dataset is "bad". 
+            // Instead of using index 0 use the first index that is not "bad".
+            int indexOfFirstGoodValue = 0;
+            if (unitDataSet.IndicesToIgnore != null)
+            {
+                if (unitDataSet.GetNumDataPoints() > 0)
+                {
+                    while (unitDataSet.IndicesToIgnore.Contains(indexOfFirstGoodValue) && indexOfFirstGoodValue < unitDataSet.GetNumDataPoints())
+                    {
+                        indexOfFirstGoodValue++;
+                    }
+                }
+            }
             // if no unit model from regression, create on useing a "guesstimated" process gain
             if (unitModel == null|| isFittedButFittingFailed)
             {
                 var unitParamters = new UnitParameters();
                 unitParamters.LinearGains = new double[] { estProcessGain };
-                unitParamters.U0 = new double[] { u0[0] };
+                unitParamters.U0 = new double[] { u0[indexOfFirstGoodValue] };
                 unitParamters.UNorm = new double[] { 1 };
-                unitParamters.Bias = unitDataSet.Y_meas[0];
+                unitParamters.Bias = unitDataSet.Y_meas[indexOfFirstGoodValue];
                 unitModel = new UnitModel(unitParamters) ;
             }
 
@@ -323,7 +335,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 result.zeroReason = DisturbanceSetToZeroReason.UnitSimulatorUnableToRun;
                 return result;
             }
-            double[] d_LF = vec.Multiply(vec.Subtract(y_sim, y_sim[0]), -1);
+
+            double[] d_LF = vec.Multiply(vec.Subtract(y_sim, y_sim[indexOfFirstGoodValue]), -1);
             double[] d_HF = vec.Subtract(unitDataSet_setpointRemoved.Y_meas, unitDataSet_setpointRemoved.Y_setpoint);
             // d = d_HF+d_LF 
             double[] d_est = vec.Add(d_HF, d_LF);

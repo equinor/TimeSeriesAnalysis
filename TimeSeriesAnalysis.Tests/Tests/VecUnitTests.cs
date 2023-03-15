@@ -217,6 +217,17 @@ namespace TimeSeriesAnalysis.Test
         }
 
         [Test]
+        public void FindValues_IgnoreIndices()
+        {
+            double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            var indToIgnore = new List<int> { 7, 10 };
+            List<int> vecResult = (new Vec()).FindValues(vec, 6, VectorFindValueType.BiggerThan, indToIgnore);
+            List<int> vecExpt = new List<int>() {8, 9 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+
+        [Test]
         public void FindValues_SmallerThan()
         {
             double[] vec = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };

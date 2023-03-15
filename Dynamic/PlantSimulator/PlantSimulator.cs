@@ -563,9 +563,20 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
+            var idxToIgnore = inputData.GetIndicesToIgnore();
+            int lastGoodTimeIndex = 0;
+            // if start of dataset is bad, then parse forward until first good time index..
+            while (idxToIgnore.Contains(lastGoodTimeIndex) && lastGoodTimeIndex < inputData.GetLength())
+            {
+                lastGoodTimeIndex++;
+            }
+
             // simulate for all time steps(after first step!)
             for (timeIdx = 0; timeIdx < N; timeIdx++)
             {
+                if (!idxToIgnore.Contains(timeIdx))
+                    lastGoodTimeIndex = timeIdx;
+
                 for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                 {
                     var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
@@ -575,7 +586,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         inputDataLookBackIdx = 1;//if set to zero, model fails(requires changing model order).
                     }
-                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx - inputDataLookBackIdx, simData,inputData);
+                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, lastGoodTimeIndex - inputDataLookBackIdx, simData,inputData);
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +

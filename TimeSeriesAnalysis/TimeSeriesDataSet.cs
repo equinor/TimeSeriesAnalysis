@@ -28,6 +28,7 @@ namespace TimeSeriesAnalysis
         List<DateTime> timeStamps = new List<DateTime>();
         Dictionary<string, double[]> dataset;
         Dictionary<string, double> dataset_constants;
+        List<int> indicesToIgnore;
         int? N;
 
         [JsonConstructor]
@@ -35,6 +36,7 @@ namespace TimeSeriesAnalysis
         {
             dataset = new Dictionary<string, double[]>();
             dataset_constants = new Dictionary<string, double>();
+            indicesToIgnore = null;
             //didSimulationReturnOk = false;
         }
         /// <summary>
@@ -239,8 +241,6 @@ namespace TimeSeriesAnalysis
             }
             return dataSet;
         }
-
-
 
         /// <summary>
         /// Add a single data point
@@ -538,6 +538,15 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
+        /// The given indices will be skipped in any subsequent simulation of the dataset
+        /// </summary>
+        /// <param name="indicesToIgnore"></param>
+        public void SetIndicesToIgnore(List<int> indicesToIgnore)
+        {
+            this.indicesToIgnore = indicesToIgnore;
+        }
+
+        /// <summary>
         /// Explicitly sets the timestamps of the time-series (possibly overriding any timeBase_s that was given during init)
         /// If times is null, then the method creates timestamps based on timeBase_s and t0.
         /// </summary>
@@ -627,6 +636,12 @@ namespace TimeSeriesAnalysis
             return true;
         }
 
-
+        internal List<int> GetIndicesToIgnore()
+        {
+            if (indicesToIgnore == null)
+                return new List<int>();
+            // 
+            return indicesToIgnore;
+        }
     }
 }

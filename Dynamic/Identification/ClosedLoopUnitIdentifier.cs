@@ -171,13 +171,18 @@ namespace TimeSeriesAnalysis.Dynamic
             // closed loop and thus will significantly affect the result
             // 
             {
-                dataSet.IndicesToIgnore = new List<int>();
-                bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint) == vec.Min(dataSet.Y_setpoint));
+                if (dataSet.IndicesToIgnore == null)
+                {
+                    dataSet.IndicesToIgnore = new List<int>();
+                    // TODO: need to identify bad data points.
+                }
+                bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint, dataSet.IndicesToIgnore) == 
+                    vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
                 if (doesSetpointChange)
                 {
-                    var ind = vec.FindValues(vec.Diff(dataSet.Y_setpoint),0,VectorFindValueType.NotEqual);
+                    var ind = vec.FindValues(vec.Diff(dataSet.Y_setpoint),0,VectorFindValueType.NotEqual, dataSet.IndicesToIgnore);
                     // if the only setpoint step is in the first iteration,ignore it.
-                    if (ind.Count() > 0 && ind.First() <= 1)
+                    if (ind.Count() == 1 && ind.First() <= 1)
                     {
                         dataSet.IndicesToIgnore.Add(ind.First()-1);//because "diff",subtract 1
                       //  dataSet.IndicesToIgnore.Add(ind.First());

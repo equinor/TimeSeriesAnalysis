@@ -101,13 +101,42 @@ namespace TimeSeriesAnalysis
         /// <param name="signal">the vector of the entire time-series to be filtered</param>
         /// <param name="FilterTc_s">filter time constant</param>
         /// <param name="order">filter order, either 1 or 2</param>
-         /// <returns>a vector of the filtered time-series</returns>
-        public double[] Filter(double[] signal, double FilterTc_s, int order=1)
+        /// <param name="indicesToIgnore">for these indices the of the signal, the filter should just "freeze" the value(can be null)</param>
+        /// <returns>a vector of the filtered time-series</returns>
+        public double[] Filter(double[] signal, double FilterTc_s, int order=1, List<int> indicesToIgnore= null)
         {
             double[] outSig = new double[signal.Length];
-            for (int i = 0; i < signal.Count(); i++)
+
+            if (indicesToIgnore == null)
             {
-                outSig[i] = this.Filter(signal[i], FilterTc_s, order,false);
+                for (int i = 0; i < signal.Count(); i++)
+                {
+                    outSig[i] = this.Filter(signal[i], FilterTc_s, order, false);
+                }
+            }
+            else
+            {
+                int lastGoodIndex = 0;
+                for (int i = 0; i < signal.Count(); i++)
+                {
+                    if (indicesToIgnore.Contains(i))
+                    {
+                        if (i == 0)
+                        {
+                            int i_forward = 1;
+                            while (i_forward < signal.Count() && indicesToIgnore.Contains(i_forward))
+                            {
+                                i_forward++;
+                            }
+                            lastGoodIndex = i_forward;
+                        }
+                    }
+                    else
+                    {
+                        lastGoodIndex = i;
+                    }
+                    outSig[i] = this.Filter(signal[lastGoodIndex], FilterTc_s, order, false);
+                }
             }
             return outSig;
         }

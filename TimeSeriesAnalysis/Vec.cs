@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 
 using TimeSeriesAnalysis.Utility;
+using System.Runtime.CompilerServices;
 
 namespace TimeSeriesAnalysis
 {
@@ -236,23 +237,35 @@ namespace TimeSeriesAnalysis
 
 
 
-        ///<summary>
-        /// return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
+        /// <summary>
+        ///  return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
         /// Also capable of finding NaN values
-        ///</summary>
-        public List<int> FindValues(double[] vec, double value, VectorFindValueType type)
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="value"></param>
+        /// <param name="type"></param>
+        /// <param name="indicesToIgnore"> if given, these indices are ignored when doing the operation</param>
+        /// <returns></returns>
+        public List<int> FindValues(double[] vec, double value, VectorFindValueType type, List<int>indicesToIgnore = null)
         {
-
             List<int> indices = new List<int>();
             if (vec == null)
                 return indices;
+
+            void Add(int index)
+            {
+                if (indicesToIgnore == null)
+                    indices.Add(index);
+                else if (!indicesToIgnore.Contains(index))
+                    indices.Add(index);
+            }
 
             if (type == VectorFindValueType.BiggerThan)
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] > value && !IsNaN(vec[i]))
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             else if (type == VectorFindValueType.SmallerThan)
@@ -260,7 +273,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] < value && !IsNaN(vec[i]))
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             else if (type == VectorFindValueType.BiggerOrEqual)
@@ -268,7 +281,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] >= value && !IsNaN(vec[i]))
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             else if (type == VectorFindValueType.SmallerOrEqual)
@@ -276,7 +289,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] <= value && !IsNaN(vec[i]))
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             else if (type == VectorFindValueType.Equal)
@@ -284,7 +297,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] == value)
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             else if (type == VectorFindValueType.NaN)
@@ -292,7 +305,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (IsNaN(vec[i])|| vec[i] == value)
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             else if (type == VectorFindValueType.NotNaN)
@@ -300,7 +313,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (!IsNaN(vec[i]))
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             else if (type == VectorFindValueType.NotEqual)
@@ -308,7 +321,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] != value)
-                        indices.Add(i);
+                        Add(i);//indices.Add(i);
                 }
             }
             return indices;
@@ -450,8 +463,9 @@ namespace TimeSeriesAnalysis
             double maxVal = double.MinValue;
             for (int i = 0; i < array.Length; i++)
             {
-                if (indicesToIgnore.Contains(i))
-                    continue;
+                if (indicesToIgnore != null)
+                    if (indicesToIgnore.Contains(i))
+                        continue;
                 double thisNum = array[i];
                 if (IsNaN(thisNum))
                     continue;
@@ -512,8 +526,9 @@ namespace TimeSeriesAnalysis
             double minVal = double.MaxValue;
             for (int i = 0; i < array.Length; i++)
             {
-                if (indicesToIgnore.Contains(i))
-                    continue;
+                if (indicesToIgnore != null)
+                   if (indicesToIgnore.Contains(i))
+                        continue;
                 double thisNum = array[i];
                 if (IsNaN(thisNum))
                     continue;

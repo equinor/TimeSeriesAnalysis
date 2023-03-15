@@ -12,7 +12,6 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-
     /// <summary>
     /// Identifier of the "Default" process model - a dynamic process model with time-constant, time-delay, 
     /// linear process gain and optional (nonlinear)curvature process gains.
@@ -55,11 +54,8 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         const double obFunDiff_MinImprovement = 0.0001;
         const double rSquaredDiff_MinImprovement = 0.001;
-
         const int nDigits = 5;// number of significant digits in result parameters
-
         const bool doUnityUNorm = true;// if set true, then Unorm is always one
-
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -137,10 +133,8 @@ namespace TimeSeriesAnalysis.Dynamic
             bool doUseDynamicModel=true, bool doEstimateCurvature = true, bool doEstimateTimeDelay = true)
         {
             var vec = new Vec(dataSet.BadDataID);
-
             var constantInputInds = new List<int>();
             var correlatedInputInds = new List<int>();
-
             bool doNonzeroU0 = true;// should be: true
             double FilterTc_s = 0;// experimental: by default set to zero.
             bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
@@ -180,10 +174,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 uNorm = SignificantDigits.Format(uNorm, nDigits);
             }
             TimeSpan span = dataSet.GetTimeSpan();
-            /*if (span == null)
-            {
-                return model;
-            }*/
             double maxExpectedTc_s = span.TotalSeconds / 4;
             UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
                 new UnitTimeDelayIdentifier(dataSet.GetTimeBase(), maxExpectedTc_s);
@@ -196,7 +186,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 allCurvesDisabled[i] = false;
                 allCurvesEnabled[i] = true;
             }
-
             /////////////////////////////////////////////////////////////////
             // Try turning off the dynamic parts and just see the static model
             // 
@@ -212,17 +201,14 @@ namespace TimeSeriesAnalysis.Dynamic
             bool continueIncreasingTimeDelayEst = true;
             timeDelayIdx = 0;
             UnitParameters modelParams=null;
-
             while (continueIncreasingTimeDelayEst)
             {
                 modelParams = null;
-             
                 UnitParameters modelParams_noCurvature =
                     EstimateProcessForAGivenTimeDelay
                     (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesDisabled,
                     FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
                 modelList.Add(modelParams_noCurvature);
-
                 if (doEstimateCurvature && modelParams_noCurvature.Fitting.WasAbleToIdentify)
                 {
                    UnitParameters modelParams_allCurvature =
@@ -258,7 +244,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     modelParams = modelParams_noCurvature;
                 }
-
                 if (!continueIncreasingTimeDelayEst)
                     continue;
                 // logic to deal with while loop
@@ -347,29 +332,19 @@ namespace TimeSeriesAnalysis.Dynamic
             return list;
         }
 
-
-
-
         private UnitParameters ChooseBestModel(UnitParameters fallbackModel,List<UnitParameters> allModels)
         {
-
-
             UnitParameters bestModel = fallbackModel;
-
             // models will be arranged from least to most numbre of curvature terms
             // in case of doubt, do not add in extra curvature that does not significantly improve the objective function
-
             foreach (UnitParameters curModel in allModels)
             {
                 // Rsquared: higher is better
                 double RsqFittingDiff_improvement = curModel.Fitting.RsqDiff - bestModel.Fitting.RsqDiff ;
                 double RsqFittingAbs_improvement = curModel.Fitting.RsqAbs - bestModel.Fitting.RsqAbs;
-
-
                 // objective function: lower is better
                 double objFunDiff_improvement = bestModel.Fitting.ObjFunValDiff  - curModel.Fitting.ObjFunValDiff ;// positive if curmodel improves on the current best
                 double objFunAbs_improvement = bestModel.Fitting.ObjFunValAbs - curModel.Fitting.ObjFunValAbs ;// positive if curmodel improves on the current best
-
 
                 if (objFunDiff_improvement>= obFunDiff_MinImprovement && 
                    RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
@@ -391,18 +366,14 @@ namespace TimeSeriesAnalysis.Dynamic
             )
         {
             Vec vec = new Vec(dataSet.BadDataID);
-
             var inputIndicesToRegularize = new List<int> { 1 };
-
             double[] ycur, yprev = null, dcur, dprev = null;
             List<double[]> ucurList = new List<double[]>();
-
             string solverID = "";
             if (assumeThatYkminusOneApproxXkminusOne)
                 solverID += "v1.";
             else
                 solverID += "v2.";
-
             int idxEnd = dataSet.Y_meas.Length - 1;
             int idxStart = timeDelay_samples + 1;
             if (useDynamicModel)
@@ -516,9 +487,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // to guess at the process disturbances :
 
                 // either you need to subtract d for Y or you need to add it to Ymod
-
                 double[] x_mod_cur_raw = new double[0];
-
                 // -----------------v1 -------------
                 // APPROXIMATE x[k-1] = y[k-1] then (NOTE THAT THIS MAY NOT BE A GOOD ASSUMPTION!) 
                 // x[k] = a*y[k-1]+ b*u[k]
@@ -771,14 +740,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
                     parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
                 }
-
                 parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 parameters.Fitting.RsqDiff = regResults.Rsq;
                 parameters.Fitting.ObjFunValDiff = regResults.ObjectiveFunctionValue;
                 parameters.Fitting.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
                 parameters.Fitting.RsqAbs =vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
-
                 parameters.Fitting.RsqAbs = SignificantDigits.Format(parameters.Fitting.RsqAbs, nDigits);
                 parameters.Fitting.RsqDiff = SignificantDigits.Format(parameters.Fitting.RsqDiff, nDigits);
                 parameters.Fitting.ObjFunValDiff = SignificantDigits.Format(parameters.Fitting.ObjFunValDiff, nDigits);
@@ -810,17 +777,11 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if (regResults.VarCovarMatrix == null)
                 return;
-
             double a = regResults.Param[0];
             double varA = regResults.VarCovarMatrix[0][0];
             double sqrtN = Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints);
-
-
-
-
             /////////////////////////////////////////////////////
             /// linear gain unceratinty
-
             var LinearGainUnc = new List<double>();
             for (int inputIdx = 0; inputIdx < parameters.GetNumInputs(); inputIdx++)
             {
@@ -832,7 +793,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 LinearGainUnc.Add(standardError_processGain * 1.96);//95% uncertainty 
             }
             parameters.LinearGainUnc = LinearGainUnc.ToArray();
-
             /////////////////////////////////////////////////
             /// curvature unceratinty
             /// 
@@ -856,15 +816,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     double curC = parameters.Curvatures[inputIdx];
                     double curU0 = parameters.U0[inputIdx];
                     double curUnorm = parameters.UNorm[inputIdx];
-
                     double varCurCurvature = Math.Abs(curC / curUnorm * (2 * curU0 - 2 * Math.Pow(curU0, 2)));
-
                     double standarerrorCurvUnc = varCurCurvature / sqrtN;
                     CurvatureUnc.Add(standarerrorCurvUnc * 1.96);
                 }
             }
             parameters.CurvatureUnc = CurvatureUnc.ToArray();
-
             parameters.TimeConstantUnc_s = null;//95 prc unceratinty
             // bias uncertainty 
             int biasInd = regResults.Param.Length - 1;
@@ -905,15 +862,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 // process gain dy/du: b /(1- a) 
                 // idea to take first order taylor( where mu_x = mean value of x):
                 //var(g(x)) approx (dg(mu_x)/dx)^2 * varx
-
-                // var(x1+x2) = var(x1) + var(x2) +2*cov(x1,x2)
-
+               // var(x1+x2) = var(x1) + var(x2) +2*cov(x1,x2)
                 //var(g(x1,x2)) (approx=) (dg/dx1)^2 *var(x1) + (dg/dx2)^2 *var(x2) +dg/dx1dx2 *cov(a,b1) 
-
                 // for
                 // g(a,b) = b/(1-a)
                 // var(g(a,b)) (approx=) (dg/da)^2 *var(a) + (dg/db)^2 *var(b) +dg/dadb *cov(a,b) 
-                
                  double dg_da = b  * -a* Math.Pow(1 - a, -2);//chain rule
                  double dg_db = 1 / (1 - a);
                  double covTerm = a* Math.Pow(1 - a, -2);
@@ -928,7 +881,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 // if you use first order taylor expanison, 
                 // Var[g(X)]≈g′(μ)^2Var(X)
                 // var(1/x) = 1/(mu^4)*var(x), where mu is the E
-
                 //  double var1divBya = Math.Pow(1-a, -4) * varA;
                 // double varbdivby1minusA = varB * var1divBya + varB * Math.Pow(1 / (1 - a), 2) + Math.Pow(var1divBya, 2) * b;
 
@@ -963,9 +915,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     double curC = parameters.Curvatures[inputIdx];
                     double curU0 = parameters.U0[inputIdx];
                     double curUnorm = parameters.UNorm[inputIdx];
-
                     double varCurCurvature = Math.Abs(curC/ (1 - a) / curUnorm * (2 * curU0 - 2 * Math.Pow(curU0, 2)));
-           
                     double standarerrorCurvUnc = varCurCurvature / sqrtN;
                     CurvatureUnc.Add(standarerrorCurvUnc*1.96);
                 }
@@ -982,7 +932,6 @@ namespace TimeSeriesAnalysis.Dynamic
             // remmember that Var(cX) = c^2*Var(X)!
             // thus since Tc = TimeBase_s * (1/a - 1)^-1
             //var(Tc = TimeBase_s * (1/a - 1)) = TimeBase_s^2 * var(1/a - 1)
-
 
             // uncertainty = var(Tc*(1/a-1)^-1)*sqrt(N)*1.96
             double varTc = (Math.Pow(timeBase_s, 2) * Math.Pow(1 / a - 1, -2) * Math.Pow(a, -2) * varA);
@@ -1003,13 +952,11 @@ namespace TimeSeriesAnalysis.Dynamic
         private (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
         {
             UnitDataSet internalData = new UnitDataSet(dataSet);
-
             parameters.Bias = 0;
             double nanValue = internalData.BadDataID;
             var model = new UnitModel(parameters);
             var simulator = new UnitSimulator(model);
             var y_sim = simulator.Simulate(ref internalData);
-
             var yMeas_exceptIgnoredValues = internalData.Y_meas;
             var ySim_exceptIgnoredValues = y_sim;
             if (dataSet.IndicesToIgnore != null)
@@ -1018,14 +965,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     int indToIgnore = dataSet.IndicesToIgnore.ElementAt(ind);
                     yMeas_exceptIgnoredValues[indToIgnore] = Double.NaN;//nan values are ignored by Vec.Means
-                    ySim_exceptIgnoredValues[indToIgnore] = Double.NaN;//nan values are ignored by Vec.Means
+                    if (ySim_exceptIgnoredValues != null)
+                    {
+                        ySim_exceptIgnoredValues[indToIgnore] = Double.NaN;//nan values are ignored by Vec.Means
+                    }
                 }
             }
-
             double[] diff = (new Vec(nanValue)).Subtract(yMeas_exceptIgnoredValues, ySim_exceptIgnoredValues);
             double? bias = (new Vec(nanValue)).Mean(diff);
             double[] y_sim_ret = null;
-            if (bias.HasValue)
+            if (bias.HasValue && y_sim != null)
             {
                 y_sim_ret = (new Vec(nanValue)).Add(y_sim, bias.Value);
             }

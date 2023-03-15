@@ -211,11 +211,38 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (processDataSet.U != null)
             {
-                for (int rowIdx = 0; rowIdx < N; rowIdx++)
+                if (processDataSet.IndicesToIgnore == null)
                 {
-                    output[rowIdx] += model.Iterate(processDataSet.U.GetRow(rowIdx),
-                        timeBase_s,
-                        processDataSet.BadDataID)[0];
+                    for (int rowIdx = 0; rowIdx < N; rowIdx++)
+                    {
+                        output[rowIdx] += model.Iterate(processDataSet.U.GetRow(rowIdx),
+                            timeBase_s, processDataSet.BadDataID)[0];
+                    }
+                }
+                else
+                {
+                    int lastGoodRowIdx = -1;
+                    for (int rowIdx = 0; rowIdx < N; rowIdx++)
+                    {
+                        if (processDataSet.IndicesToIgnore.Contains(rowIdx))
+                        {
+                            if (lastGoodRowIdx >= 0)
+                            {
+                                output[rowIdx] += model.Iterate(processDataSet.U.GetRow(lastGoodRowIdx),
+                                    timeBase_s, processDataSet.BadDataID)[0];
+                            }
+                            else
+                            {
+                                output[rowIdx] = processDataSet.BadDataID;//NB! not  "pluss"
+                            }
+                        }
+                        else
+                        {
+                            lastGoodRowIdx = rowIdx;
+                            output[rowIdx] += model.Iterate(processDataSet.U.GetRow(rowIdx),
+                                timeBase_s, processDataSet.BadDataID)[0];
+                        }
+                    }
                 }
             }
             else
@@ -248,9 +275,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     processDataSet.Y_sim = vec.Add(processDataSet.Y_sim, output);
                 }
             }
-            if (vec.ContainsBadData(output))
-                return null;
-            else 
+           // if (vec.ContainsBadData(output))
+           //     return null;
+           // else 
                 return output;
         }
     }
