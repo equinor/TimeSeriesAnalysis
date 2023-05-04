@@ -9,6 +9,15 @@ An open-source library for development and testing of time-series-based algorith
 
 The library can be used from C# or any other .NET language, Matlab or Python. The target framework is <i>.NET Standard 2.0.</i>
 
+## Use case
+
+Building industrial data-driven digital twins simulations that are
+- scalable 
+- modular 
+- explainable (ie.e based on "trusted black boxes" or "grey box" models).
+
+These digital twins could be used as foundation for advanced analytics applications. 
+
 ## Documentation:
 
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis documentation</a>** :red_circle:
