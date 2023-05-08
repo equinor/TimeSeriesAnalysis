@@ -98,7 +98,7 @@ namespace TimeSeriesAnalysis.Utility
 
                         try
                         {//15.12.2022 08:00:00
-                            results = element.Elements().ElementAt(1).Elements().Select(row => DateTime.ParseExact(row.Value, "dd-MM-yyyy HH:mm:dd",CultureInfo.InvariantCulture)).ToArray();
+                            results = element.Elements().ElementAt(1).Elements().Select(row => DateTime.ParseExact(row.Value, "dd.MM.yyyy HH:mm:ss",CultureInfo.InvariantCulture)).ToArray();
                         }
                         catch
                         {

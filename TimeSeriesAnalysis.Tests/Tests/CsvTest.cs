@@ -27,6 +27,7 @@ namespace TimeSeriesAnalysis.Test
         [TestCase, Explicit]
         public void Xml_load()
         {
+            // add xml file name above, but do not check in.
             (var dataset,var nErrors) = SigmaXml.LoadFromFile(@"");
 
             Assert.IsTrue(dataset != null);
