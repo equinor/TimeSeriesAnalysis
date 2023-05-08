@@ -21,6 +21,7 @@ Identification of dynamic models, dynamic simulation, filtering and PID-control.
     <Authors>Equinor</Authors>
 	<IncludeSymbols>true</IncludeSymbols>
 	<DebugType>embedded</DebugType>
+	<FileVersion>1.2.16</FileVersion>
   </PropertyGroup>
 
 

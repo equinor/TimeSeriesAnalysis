@@ -94,7 +94,16 @@ namespace TimeSeriesAnalysis.Utility
                     }
                     else if (key == "Time")
                     {
-                        DateTime[] results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDateTime(row.Value)).ToArray();
+                        DateTime[] results;
+
+                        try
+                        {//15.12.2022 08:00:00
+                            results = element.Elements().ElementAt(1).Elements().Select(row => DateTime.ParseExact(row.Value, "dd-MM-yyyy HH:mm:dd",CultureInfo.InvariantCulture)).ToArray();
+                        }
+                        catch
+                        {
+                            results = element.Elements().ElementAt(1).Elements().Select(row => Convert.ToDateTime(row.Value, CultureInfo.InvariantCulture)).ToArray();
+                        }
                         dataset.SetTimeStamps(results.ToList());
                     }
                 }
