@@ -257,7 +257,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         var dataSet_alt = new UnitDataSet(dataSet);
                         var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
-                        alternativeModel.modelParameters.LinearGains = new double[] { linGain };
+                        alternativeModel.modelParameters.LinearGains = new double[] { linGain };//TODO: vary the correct input
 
                         DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
                             (dataSet_alt, alternativeModel, inputIdx, pidParams);
