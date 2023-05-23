@@ -236,7 +236,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     // magic numbers of the global search
                     const int numberOfGlobalSearchIterations = 40;
-                    const double initalGuessFactor_lowerbound = 0.5;
+                    const double initalGuessFactor_lowerbound = 0.5;//set a bit lower than 0.5
                     const double initalGuessFactor_higherbound = 2;
 
                     wasGainGlobalSearchDone = true;
@@ -275,6 +275,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         double covarianceBtwDistAndYsetList = Math.Abs(Measures.Covariance(dataSet.Y_setpoint, d_est, false));
                 
                         // v7: just choose the gain that gives the least "variance" in d_est?
+                        // TODO: not sure if this works as expected?
                         var dest_variance = vec.Mean(vec.Abs(vec.Diff(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)))).Value;// /vec.Max(vec.Abs(d_est));
 
                         // v9: an alternative take on v8, try to "bin" dataset into a "low setpoint" and a "high setpoint" part
@@ -450,7 +451,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 identUnitModel.modelParameters.Fitting = new FittingInfo();
                 identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
                 identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
-                identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.Last();
+                identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
                 if (wasGainGlobalSearchDone)
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search";
                 else
