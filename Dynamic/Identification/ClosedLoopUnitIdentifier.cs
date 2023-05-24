@@ -150,8 +150,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </remarks>
         /// <param name = "dataSet">the unit data set, containing both the input to the unit and the output</param>
         /// <param name = "plantSim">an optional PidModel that is used to co-simulate the model and disturbance, improving identification</param>
-        /// <param name = "pidParams"> if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</param>
-        /// <param name = "inputIdx">the index of the input</param>
+        /// <param name = "pidParams">if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</param>
+        /// <param name = "inputIdx">the index of the PID-input to the unit model</param>
         /// 
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int inputIdx = 0)

@@ -304,8 +304,8 @@ namespace TimeSeriesAnalysis
             {
                 for (int i = 0; i < vec.Length; i++)
                 {
-                    if (IsNaN(vec[i])|| vec[i] == value)
-                        Add(i);//indices.Add(i);
+                    if (IsNaN(vec[i]))
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.NotNaN)
@@ -313,7 +313,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (!IsNaN(vec[i]))
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.NotEqual)
@@ -411,11 +411,6 @@ namespace TimeSeriesAnalysis
             else
                 return false;
         }
-
-
-
-
-
 
         ///<summary>
         ///  Returns maximum value of two array as new array 
