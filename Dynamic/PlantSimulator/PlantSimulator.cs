@@ -95,11 +95,28 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Returns a "unitDataSet" for the given pidModel in the plant. 
+        /// This function only works when the unit model connected to the pidModel only has a single input. 
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="pidModel"></param>
+        /// <returns></returns>
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
         {
+            //    modelDict
+            var unitModID = connections.GetUnitModelControlledByPID(pidModel.GetID(),modelDict);
+        //    var externalSignalsIDs = connections.GetModelExternalSignals(unitModID, this);
+            var modelInputIDs = modelDict[unitModID].GetModelInputIDs();
+
             UnitDataSet dataset = new UnitDataSet(); 
-            dataset.U = new double[inputData.GetLength().Value,1];
-            dataset.U.WriteColumn(0, inputData.GetValues(pidModel.GetOutputID()));
+            dataset.U = new double[inputData.GetLength().Value, modelInputIDs.Length];
+            //TODO:this is not completely general, as process can have multiple pid inputs
+            for(int modelInputIdx =0; modelInputIdx < modelInputIDs.Length; modelInputIdx++)
+            {
+                var inputID = modelInputIDs[modelInputIdx];
+                dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
+            }
             dataset.Times = inputData.GetTimeStamps();
             var inputIDs = pidModel.GetModelInputIDs();
 

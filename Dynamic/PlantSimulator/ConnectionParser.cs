@@ -118,12 +118,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     forwardModelIDs.Remove(forwardModelId);
 
                     // get the models downstream of forwardModelId, and see of any of them can be calculated
-                    List<string> downstreamModelIDs = GetDownstreamModelIDs(forwardModelId);
+                    List<string> downstreamModelIDs = GetAllDownstreamModelIDs(forwardModelId);
                     foreach (string downstreamModelID in downstreamModelIDs)
                     {
                         if (unprocessedModels.Count == 0)
                             continue;
-                        List<string> upstreamModelIDs = GetUpstreamModels(downstreamModelID);
+                        List<string> upstreamModelIDs = GetAllUpstreamModels(downstreamModelID);
                         if (DoesArrayContainAll(orderedModels, upstreamModelIDs))
                         {
                             orderedModels.Add(downstreamModelID);
@@ -157,7 +157,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         // b) are connected to a model that is already in "pidModels"
                         if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
                         {
-                            var upstreamModelIDs = GetUpstreamModels(modelDict[modelID].GetID());
+                            var upstreamModelIDs = GetAllUpstreamModels(modelDict[modelID].GetID());
                             bool modelHasUpstreamPIDNOTAlreadyProcessed = false;
                             foreach (var upstreamModelID in upstreamModelIDs)
                             {
@@ -223,7 +223,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     int whileLoopSafetyCounterMax = 20;
                     // try to follow the entire pid loop, adding models as you go
                     HashSet<string> modelsIDLeftToParse = new HashSet<string>();
-                    foreach (string ID in GetDownstreamModelIDs(pidModelID))
+                    foreach (string ID in GetAllDownstreamModelIDs(pidModelID))
                     {
                         modelsIDLeftToParse.Add(ID);
                     }
@@ -240,7 +240,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         currentModelID = modelsIDLeftToParse.ElementAt(0);
                         modelsIDLeftToParse.Remove(currentModelID);
                         // get all downstream items from current
-                        foreach (string ID in GetDownstreamModelIDs(currentModelID))
+                        foreach (string ID in GetAllDownstreamModelIDs(currentModelID))
                         {
                             if (ID == pidModelID)
                             {
@@ -284,7 +284,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelID"></param>
         /// <returns></returns>
-        public List<string> GetDownstreamModelIDs(string modelID)
+        public List<string> GetAllDownstreamModelIDs(string modelID)
         {
             var downstreamModels = new List<string>();
             foreach ((string, string) connection in connections)
@@ -302,7 +302,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelID"></param>
         /// <returns></returns>
-        public List<string> GetUpstreamModels(string modelID)
+        public List<string> GetAllUpstreamModels(string modelID)
         {
             var upstreamModels = new List<string>();
             foreach ((string, string) connection in connections)
@@ -322,7 +322,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool HasUpstreamPID(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
-            var upstreamModelIDs = GetUpstreamModels(modelID);
+            var upstreamModelIDs = GetAllUpstreamModels(modelID);
 
             foreach (string upstreamID in upstreamModelIDs)
             {
@@ -341,7 +341,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public string[] GetUpstreamPIDIds(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
-            var upstreamModelIDs = GetUpstreamModels(modelID);
+            var upstreamModelIDs = GetAllUpstreamModels(modelID);
 
             List<string> upstreamPIDIds = new List<string>();
 
@@ -354,6 +354,28 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return upstreamPIDIds.ToArray();
         }
+
+        public string GetUnitModelControlledByPID(string pidModelID, Dictionary<string, ISimulatableModel> modelDict)
+        {
+            var upstreamModelIDs = GetAllUpstreamModels(pidModelID);
+
+            var pidInputID = modelDict[pidModelID].GetModelInputIDs()[(int)PidModelInputsIdx.Y_meas];
+            string unitModelID=null;
+            foreach (var upstreamID in upstreamModelIDs)
+            {
+                if (modelDict[upstreamID].GetProcessModelType() != ModelType.SubProcess)
+                    continue;
+                if (modelDict[upstreamID].GetOutputID() == null)
+                    continue;
+
+                if (modelDict[upstreamID].GetOutputID() == pidInputID)
+                {
+                    unitModelID = upstreamID;
+                }
+            }
+            return unitModelID;
+        }
+
 
 
         internal int[] GetFreeIndices(string modelID, PlantSimulator simulator)
@@ -372,7 +394,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Count the number of externally provided signals for a given model
+        /// Get the externally provided signals for a given model
         /// </summary>
         /// <param name="modelID"></param>
         /// <param name="simulator"></param>
@@ -416,7 +438,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>return true if model can be calculated if the givenModelIds are given, otherwise false</returns>
         private bool DoesModelDependOnlyOnGivenModels(string modelId, List<string> givenModelIDs)
         {
-            List<string> upstreamModelIds = GetUpstreamModels(modelId);
+            List<string> upstreamModelIds = GetAllUpstreamModels(modelId);
             return DoesArrayContainAll(givenModelIDs, upstreamModelIds);
         }
 

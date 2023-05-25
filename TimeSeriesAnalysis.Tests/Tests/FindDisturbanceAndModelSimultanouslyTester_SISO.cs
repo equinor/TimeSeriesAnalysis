@@ -11,7 +11,7 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Test.DisturbanceID
 {
     [TestFixture]
-    class FindDisturbanceAndModelSimultanouslyTester
+    class FindDisturbanceAndModelSimultanouslyTester_SISO
     {
         const bool doPlot = true;
 

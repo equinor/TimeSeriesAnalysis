@@ -156,7 +156,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             foreach (var pidID in pidIDs)
             {
-                var upstreamModels = simulator.connections.GetUpstreamModels(pidID);
+                var upstreamModels = simulator.connections.GetAllUpstreamModels(pidID);
                 var processId = upstreamModels.First();
                 var isOK = simulator.SimulateSingleInternal(inputData, processId,
                     out TimeSeriesDataSet singleSimDataSetWithDisturbance);
@@ -429,7 +429,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var model = modelDict[modelID];
                 if (model.GetProcessModelType() != ModelType.PID)
                     continue;
-                var downstream = connections.GetDownstreamModelIDs(modelID);
+                var downstream = connections.GetAllDownstreamModelIDs(modelID);
                 if (downstream.Count > 0)
                 {
                     // this method does not handle Select PID-controllers
@@ -489,7 +489,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var downstreamModelIDs = new HashSet<string>();
             foreach (string ID in uninitalizedPID_IDs)
             {
-                var modelIDs = connections.GetDownstreamModelIDs(ID);
+                var modelIDs = connections.GetAllDownstreamModelIDs(ID);
                 foreach (var modelID in modelIDs)
                 {
                     downstreamModelIDs.Add(modelID);
@@ -509,7 +509,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
             }
             // if you get this far, then all controllers are connected to the same select block. 
-            var processModelIDs = connections.GetDownstreamModelIDs(downstreamModelIDs.First());
+            var processModelIDs = connections.GetAllDownstreamModelIDs(downstreamModelIDs.First());
             if (processModelIDs.Count > 1)
             {
                 Shared.GetParserObj().AddError("PlantSimulatorInitalizer: Multiple process models inside select loop not supported");

@@ -151,10 +151,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name = "dataSet">the unit data set, containing both the input to the unit and the output</param>
         /// <param name = "plantSim">an optional PidModel that is used to co-simulate the model and disturbance, improving identification</param>
         /// <param name = "pidParams">if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</param>
-        /// <param name = "inputIdx">the index of the PID-input to the unit model</param>
+        /// <param name = "pidInputIdx">the index of the PID-input to the unit model</param>
         /// 
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
-        public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int inputIdx = 0)
+        public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
         {
             bool wasGainGlobalSearchDone = false;
             bool doTimeDelayEstOnRun1 = false;
@@ -221,7 +221,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // "refinement" runs afterwards.
             { 
                 DisturbanceIdResult distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
-                    (dataSet1, null, inputIdx, pidParams);
+                    (dataSet1, null, pidInputIdx, pidParams);
 
                 dataSet1.D = distIdResult1.d_est;
                 var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, doTimeDelayEstOnRun1, u0);
@@ -260,7 +260,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         alternativeModel.modelParameters.LinearGains = new double[] { linGain };//TODO: vary the correct input
 
                         DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
-                            (dataSet_alt, alternativeModel, inputIdx, pidParams);
+                            (dataSet_alt, alternativeModel, pidInputIdx, pidParams);
                         var d_est = distIdResultAlt.d_est;
                         isOK = ClosedLoopSim
                             (dataSet_alt, alternativeModel.GetModelParameters(), pidParams, d_est, "run_alt");
@@ -276,7 +276,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 
                         // v7: just choose the gain that gives the least "variance" in d_est?
                         // TODO: not sure if this works as expected?
-                        var dest_variance = vec.Mean(vec.Abs(vec.Diff(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(inputIdx)))).Value;// /vec.Max(vec.Abs(d_est));
+                        var dest_variance = vec.Mean(vec.Abs(vec.Diff(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(pidInputIdx)))).Value;// /vec.Max(vec.Abs(d_est));
 
                         // v9: an alternative take on v8, try to "bin" dataset into a "low setpoint" and a "high setpoint" part
                         // and find the gradient between them
@@ -304,7 +304,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
             {
                 DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
-                    dataSet2, idUnitModelsList.Last(), inputIdx, pidParams);
+                    dataSet2, idUnitModelsList.Last(), pidInputIdx, pidParams);
 
                 dataSet2.D = distIdResult2.d_est;
                 // IdentifyLinear appears to give quite a poor model for Static_Longstep 
@@ -318,7 +318,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // out some of the dynamics from the disturbance vector and see if this improves estimation.
             {
                 DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
-                    (dataSet3, idUnitModelsList.Last(), inputIdx, pidParams);
+                    (dataSet3, idUnitModelsList.Last(), pidInputIdx, pidParams);
 
                 dataSet3.D = distIdResult3.d_est;
                 var unitModel_run3 = id.IdentifyLinearAndStatic(ref dataSet3, true, u0);
@@ -338,7 +338,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var model = idUnitModelsList.Last();
 
                 DisturbanceIdResult distIdResult4 = DisturbanceIdentifier.EstimateDisturbance
-                    (dataSet4, model, inputIdx, pidParams);
+                    (dataSet4, model, pidInputIdx, pidParams);
                 List<double[]> estDisturbances = new List<double[]>();
                 List<double> distDevs = new List<double>();
 
@@ -355,7 +355,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     newParams.TimeConstant_s = candiateTc_s;
                     var newModel = new UnitModel(newParams);
                     DisturbanceIdResult distIdResult_Test = DisturbanceIdentifier.EstimateDisturbance
-                        (dataSet4, newModel,inputIdx,pidParams);
+                        (dataSet4, newModel,pidInputIdx,pidParams);
                     estDisturbances.Add(distIdResult_Test.d_est);
                     double curDev = vec.Sum(vec.Abs(vec.Diff(distIdResult_Test.d_est))).Value;
                     if (curDev < distDevs.Last<double>())
@@ -373,7 +373,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var step4Model = new UnitModel(step4params);
                 idUnitModelsList.Add(step4Model);
                 DisturbanceIdResult distIdResult_step4 = DisturbanceIdentifier.EstimateDisturbance
-                        (dataSet4, step4Model, inputIdx, pidParams);
+                        (dataSet4, step4Model, pidInputIdx, pidParams);
                 idDisturbancesList.Add(distIdResult_step4);
             }
 
