@@ -355,9 +355,19 @@ namespace TimeSeriesAnalysis.Dynamic
             return upstreamPIDIds.ToArray();
         }
 
+        /// <summary>
+        /// Get unit model controlled by PDI
+        /// </summary>
+        /// <param name="pidModelID"></param>
+        /// <param name="modelDict"></param>
+        /// <returns>returns null if no model is found</returns>
         public string GetUnitModelControlledByPID(string pidModelID, Dictionary<string, ISimulatableModel> modelDict)
         {
             var upstreamModelIDs = GetAllUpstreamModels(pidModelID);
+
+            if (upstreamModelIDs.Count == 0)
+                return null;
+
 
             var pidInputID = modelDict[pidModelID].GetModelInputIDs()[(int)PidModelInputsIdx.Y_meas];
             string unitModelID=null;

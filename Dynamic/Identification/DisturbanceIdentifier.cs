@@ -199,7 +199,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitModel">the estimate of the unit</param>
         /// <returns></returns>
         public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet_raw,  
-            UnitModel unitModel, int inputIdx =0, PidParameters pidParams = null)
+            UnitModel unitModel, int pidInputIdx =0, PidParameters pidParams = null)
         {
             const bool tryToModelDisturbanceIfSetpointChangesInDataset = true;
             var vec = new Vec();
@@ -221,11 +221,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // if a both a pidmodel and a unitmodel is provided, the effects of any setpoint changes on the dataset
             // are attempted "scrubbed" from unitdataset before attempting to estimate the disturbane
             // NOTE: that if unitMOdel == null like it is on the first iteration, this will do nothing!!!!
-            var unitDataSet = RemoveSetpointEffectFromDataSet(unitDataSet_raw,unitModel, inputIdx, pidParams);
+            var unitDataSet = RemoveSetpointEffectFromDataSet(unitDataSet_raw,unitModel, pidInputIdx, pidParams);
 
             double[] e = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);
-            double[] u0 = Vec<double>.Fill(unitDataSet.U[inputIdx, 0], unitDataSet.GetNumDataPoints());//NB! algorithm is sensitive to choice of u0!!!
-            double[]  deltaU = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), u0);//TODO : U including feed-forward?
+            double[] u0 = Vec<double>.Fill(unitDataSet.U[pidInputIdx, 0], unitDataSet.GetNumDataPoints());//NB! algorithm is sensitive to choice of u0!!!
+            double[]  deltaU = vec.Subtract(unitDataSet.U.GetColumn(pidInputIdx), u0);//TODO : U including feed-forward?
             
             // d_u : (low-pass) back-estimation of disturbances by the effect that they have on u as the pid-controller integrates to 
             // counteract them
@@ -245,7 +245,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var indGreaterThanZeroE = vec.FindValues(e, 0, VectorFindValueType.BiggerOrEqual, unitDataSet.IndicesToIgnore);
                 var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual, unitDataSet.IndicesToIgnore);
 
-                var u = unitDataSet.U.GetColumn(0);
+                var u = unitDataSet.U.GetColumn(pidInputIdx);
                 var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indGreaterThanZeroE));
                 var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u, indLessThanZeroE));
 
@@ -288,9 +288,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         return result;
                     }
-                    if (!Double.IsNaN(processGains[inputIdx]))
+                    if (!Double.IsNaN(processGains[pidInputIdx]))
                     {
-                        estProcessGain = processGains[inputIdx];
+                        estProcessGain = processGains[pidInputIdx];
                         isProcessGainSet = true;
                     }
                 }
@@ -339,7 +339,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 unitModel = new UnitModel(unitParamters) ;
             }
 
-            var unitDataSet_setpointRemoved = RemoveSetpointEffectFromDataSet(unitDataSet, unitModel, inputIdx, pidParams);
+            var unitDataSet_setpointRemoved = RemoveSetpointEffectFromDataSet(unitDataSet, unitModel, pidInputIdx, pidParams);
             unitModel.WarmStart();
             var sim = new UnitSimulator(unitModel);
             unitDataSet_setpointRemoved.D = null;

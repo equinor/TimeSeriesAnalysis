@@ -104,19 +104,28 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
         {
-            //    modelDict
             var unitModID = connections.GetUnitModelControlledByPID(pidModel.GetID(),modelDict);
-        //    var externalSignalsIDs = connections.GetModelExternalSignals(unitModID, this);
-            var modelInputIDs = modelDict[unitModID].GetModelInputIDs();
+            string[] modelInputIDs = null;
+            if (unitModID!= null)
+                modelDict[unitModID].GetModelInputIDs();
 
             UnitDataSet dataset = new UnitDataSet(); 
-            dataset.U = new double[inputData.GetLength().Value, modelInputIDs.Length];
-            //TODO:this is not completely general, as process can have multiple pid inputs
-            for(int modelInputIdx =0; modelInputIdx < modelInputIDs.Length; modelInputIdx++)
+
+            if (modelInputIDs != null)
             {
-                var inputID = modelInputIDs[modelInputIdx];
-                dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
+                dataset.U = new double[inputData.GetLength().Value, modelInputIDs.Length];
+                for (int modelInputIdx = 0; modelInputIdx < modelInputIDs.Length; modelInputIdx++)
+                {
+                    var inputID = modelInputIDs[modelInputIdx];
+                    dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
+                }
             }
+            else
+            {
+                dataset.U = new double[inputData.GetLength().Value, 1];
+                dataset.U.WriteColumn(0, inputData.GetValues(pidModel.GetOutputID()));
+            }
+
             dataset.Times = inputData.GetTimeStamps();
             var inputIDs = pidModel.GetModelInputIDs();
 
