@@ -211,7 +211,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitModel">the estimate of the unit</param>
         /// <returns></returns>
         public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet_raw,  
-            UnitModel unitModel, int pidInputIdx =0, PidParameters pidParams = null)
+            UnitModel unitModel, int pidInputIdx =0, PidParameters pidParams = null,
+            bool doDebugPlot = false)
         {
             const bool tryToModelDisturbanceIfSetpointChangesInDataset = true;
             var vec = new Vec();
@@ -281,7 +282,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // disadvantage, is that you are not sure that the time series starts at steady state
             // but works better than candiate 2 when disturbance is a step
             bool isProcessGainSet = false;
-            double estProcessGain = 0;
+            double estPidInputProcessGain = 0;
             if (unitModel != null)
             {
                 bool updateEstGain = false;
@@ -302,7 +303,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     if (!Double.IsNaN(processGains[pidInputIdx]))
                     {
-                        estProcessGain = processGains[pidInputIdx];
+                        estPidInputProcessGain = processGains[pidInputIdx];
                         isProcessGainSet = true;
                     }
                 }
@@ -318,7 +319,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] uFiltered = lowPass.Filter(deltaU, FilterTc_s, 2, unitDataSet.IndicesToIgnore);
                 double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot
                 double minU = vec.Min(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
-                estProcessGain = processGainSign * maxDE / (maxU - minU);
+                estPidInputProcessGain = processGainSign * maxDE / (maxU - minU);
            }
             bool isFittedButFittingFailed = false;
             if (unitModel != null)
@@ -343,16 +344,30 @@ namespace TimeSeriesAnalysis.Dynamic
             // if no unit model from regression, create on useing a "guesstimated" process gain
             if (unitModel == null|| isFittedButFittingFailed)
             {
-                var unitParamters = new UnitParameters();
-                unitParamters.LinearGains = new double[] { estProcessGain };
-                unitParamters.U0 = new double[] { u0[indexOfFirstGoodValue] };
-                unitParamters.UNorm = new double[] { 1 };
-                unitParamters.Bias = unitDataSet.Y_meas[indexOfFirstGoodValue];
-                unitModel = new UnitModel(unitParamters) ;
+                int nGains = unitDataSet_raw.U.GetNColumns();
+                if (nGains == 1)
+                {
+                    var unitParamters = new UnitParameters();
+                    unitParamters.LinearGains = new double[nGains];
+                    unitParamters.LinearGains[pidInputIdx] = estPidInputProcessGain;
+                    // TODO: first guess of linear gains and u0 for non-pid inputs if more than one input ??
+                    unitParamters.U0 = new double[nGains];
+                    unitParamters.U0[pidInputIdx] = u0[indexOfFirstGoodValue];
+                    unitParamters.UNorm = Vec<double>.Fill(1, nGains);
+                    unitParamters.Bias = unitDataSet.Y_meas[indexOfFirstGoodValue];
+                    unitModel = new UnitModel(unitParamters);
+                }
+                else
+                {
+                    var ident = new UnitIdentifier();
+                    unitModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet, pidInputIdx, estPidInputProcessGain, 
+                        u0[indexOfFirstGoodValue],1);
+                }
             }
 
             var unitDataSet_setpointRemoved = RemoveSetpointEffectFromDataSet(unitDataSet, unitModel, pidInputIdx, pidParams);
             unitModel.WarmStart();
+            // TODO: likely here where ClosedLoopIdentifier fails on step2 if there are multiple inputs to unitmodel, as DisturbanceEstimator returns non-zero D even if model is "perfect"
             var sim = new UnitSimulator(unitModel);
             unitDataSet_setpointRemoved.D = null;
             double[] y_sim = sim.Simulate(ref unitDataSet_setpointRemoved);
@@ -367,24 +382,27 @@ namespace TimeSeriesAnalysis.Dynamic
             // d = d_HF+d_LF 
             double[] d_est = vec.Add(d_HF, d_LF);
 
-           /*    Shared.EnablePlots();
-               Plot.FromList(
-               new List<double[]> {
+            if (doDebugPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(
+                new List<double[]> {
                    unitDataSet_setpointRemoved.Y_meas,
                    unitDataSet_setpointRemoved.Y_setpoint,
                    y_sim,
                    d_LF,
                    d_HF,
                    d_est,
-                   unitDataSet_setpointRemoved.U.GetColumn(inputIdx),
-               },
-               new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim", "y2=d_LF", "y2=d_HF", "y2=d_est", "y3=u" },
-               unitDataSet.GetTimeBase(), "distIdent_dLF_est");
-               Shared.DisablePlots();
-           */
+                   unitDataSet_setpointRemoved.U.GetColumn(pidInputIdx),
+                },
+                new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim", "y2=d_LF", "y2=d_HF", "y2=d_est", "y3=u" },
+                unitDataSet.GetTimeBase(), "distIdent_dLF_est");
+                Shared.DisablePlots();
+            }
+            //
 
             // copy result to result class
-            result.estProcessGain = estProcessGain;
+            result.estProcessGain = estPidInputProcessGain;
             result.d_est            = d_est;
             result.d_LF             = d_LF;
             result.d_HF             = d_HF;

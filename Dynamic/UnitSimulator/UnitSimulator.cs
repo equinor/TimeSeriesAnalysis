@@ -275,10 +275,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     processDataSet.Y_sim = vec.Add(processDataSet.Y_sim, output);
                 }
             }
-           // if (vec.ContainsBadData(output))
-           //     return null;
-           // else 
-                return output;
+            return output;
         }
     }
 }

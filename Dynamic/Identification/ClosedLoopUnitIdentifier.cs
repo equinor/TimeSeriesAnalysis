@@ -238,7 +238,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     const double initalGuessFactor_higherbound = 2;
 
                     wasGainGlobalSearchDone = true;
-                    double initalGainEstimate = unitModel_run1.modelParameters.GetProcessGains()[pidInputIdx];
+                    double pidProcessInputInitalGainEstimate = unitModel_run1.modelParameters.GetProcessGains()[pidInputIdx];
                     double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore);
                     var gainAndCorrDict = new Dictionary<double, ClosedLoopGainGlobalSearchResults>();
                     //
@@ -246,8 +246,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     //
                     // or antoher way to look at ti is that the output U with setpoint effects removed should be as decoupled 
                     // form Y_setpoint.
-                    var min_gain = initalGainEstimate * initalGuessFactor_lowerbound;
-                    var max_gain = initalGainEstimate * initalGuessFactor_higherbound;
+                    var min_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound;
+                    var max_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
                     var range = max_gain - min_gain;
                     var searchResults = new ClosedLoopGainGlobalSearchResults();
 
@@ -264,11 +264,13 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         else
                         {
+                            // TODO:this code does not appear to work properly!!!
                             var pidProcess_u0 = unitModel_run1.modelParameters.U0[pidInputIdx];
                             var pidProcess_unorm = unitModel_run1.modelParameters.UNorm[pidInputIdx];
                             var ident = new UnitIdentifier();
                             alternativeModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet_alt, pidInputIdx, pidLinProcessGain, 
                                 pidProcess_u0,pidProcess_unorm);
+                            alternativeModel.SetID("altModelGlobalSearch");
                         }
 
                         DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
@@ -306,7 +308,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         // finally,save all results!
                         searchResults.Add(pidLinProcessGain,alternativeModel, covarianceBtwDistAndYsetList, dest_variance,linregGainYsetToDest);
                     }
-                    UnitModel bestUnitModel = searchResults.GetBestModel(initalGainEstimate) ;
+                    UnitModel bestUnitModel = searchResults.GetBestModel(pidProcessInputInitalGainEstimate) ;
 
                     // add the "best" model to be used in the next model run
                     idUnitModelsList.Add(bestUnitModel);
@@ -315,8 +317,13 @@ namespace TimeSeriesAnalysis.Dynamic
             // ----------------
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
             {
+                // TODO:this fails when there are two or more inputs to unit model, and there is a setpoint
+                // change in the pid-controller, as the effect of the setpoint step is still present on the pid output U
+
+
+                bool DO_DEBUG_RUN_2 = true;
                 DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
-                    dataSet2, idUnitModelsList.Last(), pidInputIdx, pidParams);
+                    dataSet2, idUnitModelsList.Last(), pidInputIdx, pidParams,DO_DEBUG_RUN_2);
 
                 dataSet2.D = distIdResult2.d_est;
                 // IdentifyLinear appears to give quite a poor model for Static_Longstep 
