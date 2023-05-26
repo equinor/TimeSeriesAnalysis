@@ -19,15 +19,15 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         UnitParameters staticModelParameters = new UnitParameters
         {
             TimeConstant_s = 0,
-            LinearGains = new double[] { 1.5, 0.25 },
+            LinearGains = new double[] { 0.5, 0.25 },
             TimeDelay_s = 0,
-            Bias = 5
+            Bias = 10
         };
 
         UnitParameters dynamicModelParameters = new UnitParameters
         {
             TimeConstant_s = 15,
-            LinearGains = new double[] { 1.5, 2.25 },
+            LinearGains = new double[] { 0.5, 0.25 },
             TimeDelay_s = 5,
             Bias = 5
         };
@@ -35,7 +35,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         PidParameters pidParameters1 = new PidParameters()
         {
-            Kp = 0.2,
+            Kp = 0.5,
             Ti_s = 20
         };
 
@@ -59,13 +59,13 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
             if (doDebugPlot)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
-                pidDataSet.U.GetColumn(0),  estDisturbance, trueDisturbance },
-                    new List<string> { "y1=y meas", "y1=y set", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
+                    pidDataSet.U.GetColumn(0),pidDataSet.U.GetColumn(1),  estDisturbance, trueDisturbance },
+                    new List<string> { "y1=y meas", "y1=y set", "y2=u_1(right)", "y2=u_2(right)", "y3=est disturbance", "y3=true disturbance" },
                     pidDataSet.GetTimeBase(), caseId + "commonplotandasserts");
                 Shared.DisablePlots();
             }
@@ -91,8 +91,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StaticMISO_no_disturbance_detectsProcessOk()
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
-            var externalU = TimeSeriesCreator.Step(N/4, N, 0, 1);
-            var yset = TimeSeriesCreator.Step(N*2/4, N, 10, 12);
+            var externalU = TimeSeriesCreator.Step(N/8, N, 5, 10);
+            var yset = TimeSeriesCreator.Step(N*3/8, N, 20, 18);
             GenericMISODisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, externalU, false,true,yset);
         }
 
@@ -123,14 +123,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             {
                 usedProcessModel.ModelInputIDs = new string[] { extSignalId, pidSignalId  };
             }
-
-            /*if (doNegativeGain)
-            {
-                usedProcParameters.LinearGains[0] = -usedProcParameters.LinearGains[0];
-                usedProcParameters.Bias = 100;// 
-                usedProcessModel.SetModelParameters(usedProcParameters);
-                pidParameters1.Kp = -pidParameters1.Kp ;
-            }*/
 
             // create synthetic dataset
             var pidModel1 = new PidModel(pidParameters1, "PID1");

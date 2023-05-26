@@ -9,6 +9,7 @@ using System.Diagnostics;
 
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
+using System.Net.Http.Headers;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -979,6 +980,73 @@ namespace TimeSeriesAnalysis.Dynamic
                 y_sim_ret = (new Vec(nanValue)).Add(y_sim, bias.Value);
             }
             return (bias,y_sim_ret);
+        }
+
+        /// <summary>
+        /// Freezed one input to a given pre-determined value, but re-identifies other static paramters.
+        /// This is useful if doing a "global search" where varying a single gain.
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="inputIdxToFix">the index of the value to freeze</param>
+        /// <param name="inputProcessGainValueToFix">the linear gain to freeze the at</param>
+        /// <returns></returns>
+        internal UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, 
+            double inputProcessGainValueToFix, double u0, double uNorm)
+        {
+            var internalDataset = new UnitDataSet(dataSet);
+            var vec = new Vec();
+            internalDataset.D = vec.Multiply(vec.Multiply(vec.Subtract(dataSet.U.GetColumn(inputIdxToFix), u0),uNorm),
+                inputProcessGainValueToFix);
+   
+            // remove the input that is frozen from the dataset given to the "identify" algorithm
+            double[,] newU = new double[internalDataset.U.GetNRows(),internalDataset.U.GetNColumns()-1];
+            int writeColIdx = 0;
+            for (int colIdx = 0; colIdx < internalDataset.U.GetNColumns(); colIdx++)
+            {
+                if (colIdx == inputIdxToFix)
+                    continue;
+                newU.WriteColumn(writeColIdx, dataSet.U.GetColumn(colIdx));
+                writeColIdx++;
+            }
+            internalDataset.U = newU;
+            
+            var idUnitModel   = IdentifyLinearAndStatic(ref internalDataset);
+            //trick now is to add back the paramters that are fixed to the returned model:
+            var idLinGains   = idUnitModel.modelParameters.LinearGains;
+            var idU          = idUnitModel.modelParameters.U0;
+            var idUnorm      = idUnitModel.modelParameters.UNorm;
+
+            var newLinGainsList = new List<double>();
+            var newU0List       = new List<double>();
+            var newUNormList    = new List<double>();
+
+            var curIdInput = 0;
+            for (int curInputIdx = 0; curInputIdx < idUnitModel.modelParameters.LinearGains.Length + 1; curInputIdx++)
+            {
+                if (curInputIdx == inputIdxToFix)
+                {
+                    newLinGainsList.Add(inputProcessGainValueToFix);
+                    newU0List.Add(u0);
+                    newUNormList.Add(uNorm);
+                }
+                else
+                {
+                    newLinGainsList.Add(idLinGains.ElementAt(curIdInput));
+                    newU0List.Add(idU.ElementAt(curIdInput));
+                    newUNormList.Add(idUnorm.ElementAt(curIdInput));
+                    curIdInput++;
+                }
+            }
+
+            var newParams = new UnitParameters();
+            newParams.Curvatures = Vec<double>.Fill(double.NaN, newLinGainsList.Count);
+            newParams.LinearGains = newLinGainsList.ToArray();
+            newParams.U0 = newU0List.ToArray();
+            newParams.UNorm = newUNormList.ToArray();
+            newParams.Bias = idUnitModel.modelParameters.Bias;
+            var retUnitModel = new UnitModel(newParams);
+
+            return retUnitModel;
         }
     }
 }

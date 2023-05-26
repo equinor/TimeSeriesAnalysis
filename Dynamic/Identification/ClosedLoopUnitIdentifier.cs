@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// list of linear gains tried in global search
         /// </summary>
-        public List<double> linGainList; 
+        public List<double> pidLinearProcessGainList; 
 
         /// <summary>
         /// list of covariance between d_Est and y_Set, calculated for each linear gains
@@ -46,14 +46,14 @@ namespace TimeSeriesAnalysis.Dynamic
             unitModelList= new List<UnitModel>();
             dEstVarianceList = new List<double>();
             covarianceBtwDistAndYsetList = new List<double>();
-            linGainList = new List<double>();
+            pidLinearProcessGainList = new List<double>();
             linregGainYsetToDestList = new List<double>();
         }
 
         public void Add(double gain, UnitModel unitModel, double covarianceBtwDistAndYset, double dest_variance,
             double linregGainYsetToDest)
         {
-            linGainList.Add(gain);
+            pidLinearProcessGainList.Add(gain);
             unitModelList.Add(unitModel);
             covarianceBtwDistAndYsetList.Add(covarianceBtwDistAndYset);
             dEstVarianceList.Add(dest_variance);
@@ -163,7 +163,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return (null, null);
             }
             var vec = new Vec();
-
             //
             // In some cases the first data point given is has a non-physical 
             // drop/increase that is caused by an outside error.
@@ -194,7 +193,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.U.GetColumn(colIdx), 0, VectorFindValueType.NaN));
                 }
             }
-
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
             // estimate of the disturbance improves along with it.
@@ -229,7 +227,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 idUnitModelsList.Add(unitModel_run1);
                 isOK = ClosedLoopSim(dataSet1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
 
-                // experimental: see if varying gain to get the lowest correlation between setpoint and disturbance 
+                // see if varying gain to get the lowest correlation between setpoint and disturbance 
                 // only needed if setpoint varies. "step1 global search"
                 bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint,dataSet.IndicesToIgnore) == vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
                 if (doesSetpointChange && unitModel_run1.modelParameters.GetProcessGains()!= null)
@@ -240,7 +238,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     const double initalGuessFactor_higherbound = 2;
 
                     wasGainGlobalSearchDone = true;
-                    double initalGainEstimate = unitModel_run1.modelParameters.GetProcessGains().First();
+                    double initalGainEstimate = unitModel_run1.modelParameters.GetProcessGains()[pidInputIdx];
                     double initalCorrelation = CorrelationCalculator.Calculate(distIdResult1.d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore);
                     var gainAndCorrDict = new Dictionary<double, ClosedLoopGainGlobalSearchResults>();
                     //
@@ -253,11 +251,25 @@ namespace TimeSeriesAnalysis.Dynamic
                     var range = max_gain - min_gain;
                     var searchResults = new ClosedLoopGainGlobalSearchResults();
 
-                    for (var linGain = min_gain; linGain < max_gain; linGain += range / numberOfGlobalSearchIterations)
+                    int nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
+
+                    for (var pidLinProcessGain = min_gain; pidLinProcessGain < max_gain; pidLinProcessGain += range / numberOfGlobalSearchIterations)
                     {
                         var dataSet_alt = new UnitDataSet(dataSet);
+                      //  dataSet_alt.D = null;
                         var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
-                        alternativeModel.modelParameters.LinearGains = new double[] { linGain };//TODO: vary the correct input
+                        if (nGains == 1)
+                        {
+                            alternativeModel.modelParameters.LinearGains[0] = pidLinProcessGain;
+                        }
+                        else
+                        {
+                            var pidProcess_u0 = unitModel_run1.modelParameters.U0[pidInputIdx];
+                            var pidProcess_unorm = unitModel_run1.modelParameters.UNorm[pidInputIdx];
+                            var ident = new UnitIdentifier();
+                            alternativeModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet_alt, pidInputIdx, pidLinProcessGain, 
+                                pidProcess_u0,pidProcess_unorm);
+                        }
 
                         DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
                             (dataSet_alt, alternativeModel, pidInputIdx, pidParams);
@@ -292,7 +304,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         double linregGainYsetToDest = (d_est_high- d_est_low)/(y_set_high- y_set_low);
 
                         // finally,save all results!
-                        searchResults.Add(linGain,alternativeModel, covarianceBtwDistAndYsetList, dest_variance,linregGainYsetToDest);
+                        searchResults.Add(pidLinProcessGain,alternativeModel, covarianceBtwDistAndYsetList, dest_variance,linregGainYsetToDest);
                     }
                     UnitModel bestUnitModel = searchResults.GetBestModel(initalGainEstimate) ;
 

@@ -116,11 +116,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitDataSet"></param>
         /// <param name="unitModel"></param>
-        /// <param name="inputIdx"></param>
+        /// <param name="pidInputIdx"></param>
         /// <param name="pidParams"></param>
         /// <returns> a scrubbed copy of unitDataSet</returns>
         private static UnitDataSet RemoveSetpointEffectFromDataSet(UnitDataSet unitDataSet,
-             UnitModel unitModel, int inputIdx = 0, PidParameters pidParams = null)
+             UnitModel unitModel, int pidInputIdx = 0, PidParameters pidParams = null)
         {
             if (Vec<double>.IsConstant(unitDataSet.Y_setpoint))
             {
@@ -134,8 +134,20 @@ namespace TimeSeriesAnalysis.Dynamic
                 var processSim = new PlantSimulator(
                     new List<ISimulatableModel> { pidModel1, unitModel });
                 processSim.ConnectModels(unitModel, pidModel1);
-                processSim.ConnectModels(pidModel1, unitModel);
+                processSim.ConnectModels(pidModel1, unitModel,pidInputIdx);
+
                 var inputData = new TimeSeriesDataSet();
+                if (unitDataSet.U.GetNColumns()>1)
+                {
+                    for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
+                    {
+                        if (curColIdx == pidInputIdx)
+                            continue;
+                        inputData.Add(processSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx), 
+                            unitDataSet.U.GetColumn(curColIdx));
+                    }
+                }
+                     
                 inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
                 inputData.CreateTimestamps(unitDataSet.GetTimeBase());
                 inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
@@ -161,12 +173,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     var pidOutputU = simData.GetValues(pidModel1.GetID(), SignalType.PID_U);
                     var pidDeltaU = vec.Subtract(pidOutputU, pidOutputU[idxFirstGoodValue]);
                     var deltaProcOutputY = vec.Subtract(procOutputY, procOutputY[idxFirstGoodValue]);
-                    var newU = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), pidDeltaU);
+                    var newU = vec.Subtract(unitDataSet.U.GetColumn(pidInputIdx), pidDeltaU);
 
 
                     unitDataSet_setpointEffectsRemoved.Y_meas = vec.Subtract(unitDataSet.Y_meas, deltaProcOutputY);
                     unitDataSet_setpointEffectsRemoved.Y_setpoint = Vec<double>.Fill(unitDataSet.Y_setpoint[idxFirstGoodValue], unitDataSet.Y_setpoint.Length);
-                    unitDataSet_setpointEffectsRemoved.U = Matrix.ReplaceColumn(unitDataSet_setpointEffectsRemoved.U, inputIdx, newU);
+                    unitDataSet_setpointEffectsRemoved.U = Matrix.ReplaceColumn(unitDataSet_setpointEffectsRemoved.U, pidInputIdx, newU);
                     unitDataSet_setpointEffectsRemoved.IndicesToIgnore = unitDataSet.IndicesToIgnore;
 
   /*                  Shared.EnablePlots();

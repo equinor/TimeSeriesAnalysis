@@ -106,9 +106,10 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var unitModID = connections.GetUnitModelControlledByPID(pidModel.GetID(),modelDict);
             string[] modelInputIDs = null;
-            if (unitModID!= null)
-                modelDict[unitModID].GetModelInputIDs();
-
+            if (unitModID != null)
+            {
+                modelInputIDs = modelDict[unitModID].GetModelInputIDs();
+            }
             UnitDataSet dataset = new UnitDataSet(); 
 
             if (modelInputIDs != null)
