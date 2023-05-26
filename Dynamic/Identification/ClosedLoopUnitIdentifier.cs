@@ -260,7 +260,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
                         if (nGains == 1)
                         {
-                            alternativeModel.modelParameters.LinearGains[0] = pidLinProcessGain;
+                            alternativeModel.modelParameters.LinearGains = new double[] { pidLinProcessGain };
                         }
                         else
                         {
