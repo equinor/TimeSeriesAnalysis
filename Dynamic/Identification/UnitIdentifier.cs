@@ -1041,6 +1041,21 @@ namespace TimeSeriesAnalysis.Dynamic
             var newParams = new UnitParameters();
             newParams.Curvatures = Vec<double>.Fill(double.NaN, newLinGainsList.Count);
             newParams.LinearGains = newLinGainsList.ToArray();
+            newParams.LinearGainUnc = Vec<double>.Fill(double.NaN, newLinGainsList.Count); //
+            int counter = 0;
+            for (int idx = 0; idx < newLinGainsList.Count; idx++)
+            {
+                if (idx == inputIdxToFix)
+                {
+                    newParams.LinearGainUnc[idx] = double.NaN;
+                }
+                else
+                {
+                    newParams.LinearGainUnc[idx] = idUnitModel.modelParameters.LinearGainUnc[counter];
+                    counter++;
+                }
+
+            }
             newParams.U0 = newU0List.ToArray();
             newParams.UNorm = newUNormList.ToArray();
             newParams.Bias = idUnitModel.modelParameters.Bias;

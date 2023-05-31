@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-
+using Accord.Math;
 using NUnit.Framework;
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Dynamic;
@@ -19,16 +19,16 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         UnitParameters staticModelParameters = new UnitParameters
         {
             TimeConstant_s = 0,
-            LinearGains = new double[] { 0.5, 0.25 },
+            LinearGains = new double[] { 0.5, 0.25,0.15 },
             TimeDelay_s = 0,
             Bias = 10
         };
 
         UnitParameters dynamicModelParameters = new UnitParameters
         {
-            TimeConstant_s = 15,
-            LinearGains = new double[] { 0.5, 0.25 },
-            TimeDelay_s = 5,
+            TimeConstant_s = 8,
+            LinearGains = new double[] { 0.5, 0.25,-0.55 },
+            TimeDelay_s = 0,
             Bias = 5
         };
 
@@ -39,8 +39,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Ti_s = 20
         };
 
-        int timeBase_s = 1;
-        int N = 300;
+        int timeBase_s = 2;
+        int N = 500;
         DateTime t0 = new DateTime(2010, 1, 1);
 
 
@@ -59,7 +59,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = true;
+            bool doDebugPlot = false;
             if (doDebugPlot)
             {
                 Shared.EnablePlots();
@@ -87,41 +87,54 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Assert.IsTrue(gainOffsetPrc < maxAllowedGainOffsetPrc, "est.gain:" + estGain + "|true gain:" + trueGain);
             }
         }
-        [TestCase]
-        public void StaticMISO_no_disturbance_detectsProcessOk()
+        [TestCase(0)]
+        [TestCase(1)]
+        public void StaticMISO_no_disturbance_detectsProcessOk(int pidInputIdx)
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
-            var externalU = TimeSeriesCreator.Step(N/8, N, 5, 10);
+            var externalU1 = TimeSeriesCreator.Step(N/8, N, 5, 10);
+            var externalU2 = TimeSeriesCreator.Step(N*5/8, N, 2, 1);
             var yset = TimeSeriesCreator.Step(N*3/8, N, 20, 18);
-            GenericMISODisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, externalU, false,true,yset);
+            if (pidInputIdx == 1)
+            {
+                staticModelParameters.LinearGains =  new double[] { 0.25, 0.5,0.15 };
+            }
+            GenericMISODisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, externalU1,externalU2, false,true,yset, pidInputIdx);
         }
 
-        [TestCase]
-        public void DynamicMISO_no_disturbance_detectsProcessOk()
+        [TestCase(0)]
+     //   [TestCase(1)]
+        public void DynamicMISO_no_disturbance_detectsProcessOk(int pidInputIdx)
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
-            var externalU = TimeSeriesCreator.Step(0, N,0,1);
-            GenericMISODisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance, externalU,false);
+            var externalU1 = TimeSeriesCreator.Step(N / 8, N, 5, 10);
+            var externalU2 = TimeSeriesCreator.Step(N *5 / 8, N, 2, 1);
+            var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
+            GenericMISODisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance, externalU1,externalU2,false,true,
+                yset, pidInputIdx,20);
         }
 
-        public void GenericMISODisturbanceTest  (UnitModel trueProcessModel, double[] trueDisturbance, double[] externalU, bool doNegativeGain,
-            bool doAssertResult=true, double[] yset=null, double processGainAllowedOffsetPrc=10, bool doAddBadData = false, int pidInputIdx=0)
+        public void GenericMISODisturbanceTest  (UnitModel trueProcessModel, double[] trueDisturbance, double[] externalU1, double[] externalU2, 
+            bool doNegativeGain,
+            bool doAssertResult=true, double[] yset=null, int pidInputIdx = 0,double processGainAllowedOffsetPrc=10, bool doAddBadData = false)
         {
             var usedProcParameters = trueProcessModel.GetModelParameters().CreateCopy();
             var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
-            var extInputIdx = 1;
+            var extInputIdx1 = 1;
             if (pidInputIdx == 1)
-                extInputIdx = 0;
-            var extSignalId = SignalNamer.GetSignalName(usedProcessModel.GetID(), SignalType.External_U, extInputIdx);
+                extInputIdx1 = 0;
+            var extInputIdx2 = 2;
+            var extSignalId1 = SignalNamer.GetSignalName(usedProcessModel.GetID(), SignalType.External_U, extInputIdx1);
+            var extSignalId2 = SignalNamer.GetSignalName(usedProcessModel.GetID(), SignalType.External_U, extInputIdx2);
             var pidSignalId = SignalNamer.GetSignalName(usedProcessModel.GetID(), SignalType.PID_U, pidInputIdx);
 
             if (pidInputIdx == 0)
             {
-                usedProcessModel.ModelInputIDs = new string[] { pidSignalId, extSignalId };
+                usedProcessModel.ModelInputIDs = new string[] { pidSignalId, extSignalId1, extSignalId2 };
             }
             else
             {
-                usedProcessModel.ModelInputIDs = new string[] { extSignalId, pidSignalId  };
+                usedProcessModel.ModelInputIDs = new string[] { extSignalId1, pidSignalId, extSignalId2 };
             }
 
             // create synthetic dataset
@@ -139,8 +152,12 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), yset);
 
   
-            var extInputID = processSim.AddExternalSignal(usedProcessModel, SignalType.External_U, extInputIdx);
-            inputData.Add(extInputID, externalU);
+            var extInputID1 = processSim.AddExternalSignal(usedProcessModel, SignalType.External_U, extInputIdx1);
+            inputData.Add(extInputID1, externalU1);
+
+            var extInputID2 = processSim.AddExternalSignal(usedProcessModel, SignalType.External_U, extInputIdx2);
+            inputData.Add(extInputID2, externalU2);
+
             inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.Disturbance_D), trueDisturbance);
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
@@ -163,7 +180,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             DisturbancesToString(estDisturbance, trueDisturbance);
             if (doAssertResult)
             {
-                CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel,trueProcessModel, processGainAllowedOffsetPrc);
+                CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel,
+                    trueProcessModel, processGainAllowedOffsetPrc);
             }
         }
 

@@ -157,6 +157,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
         {
             bool wasGainGlobalSearchDone = false;
+            bool onlyDidTwoSteps = false;
             bool doTimeDelayEstOnRun1 = false;
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
             {
@@ -210,6 +211,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var id = new UnitIdentifier();
 
+            int nGains=1;
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a process gains, 
             // to give afirst estimate of the disturbance
@@ -223,6 +225,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 dataSet1.D = distIdResult1.d_est;
                 var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, doTimeDelayEstOnRun1, u0);
+                nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
                 idDisturbancesList.Add(distIdResult1);
                 idUnitModelsList.Add(unitModel_run1);
                 isOK = ClosedLoopSim(dataSet1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
@@ -251,8 +254,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     var range = max_gain - min_gain;
                     var searchResults = new ClosedLoopGainGlobalSearchResults();
 
-                    int nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
-
+                    var gainUnc = range / numberOfGlobalSearchIterations;
                     for (var pidLinProcessGain = min_gain; pidLinProcessGain < max_gain; pidLinProcessGain += range / numberOfGlobalSearchIterations)
                     {
                         var dataSet_alt = new UnitDataSet(dataSet);
@@ -261,16 +263,16 @@ namespace TimeSeriesAnalysis.Dynamic
                         if (nGains == 1)
                         {
                             alternativeModel.modelParameters.LinearGains = new double[] { pidLinProcessGain };
+                            alternativeModel.modelParameters.LinearGainUnc = new double[] { gainUnc };
                         }
                         else
                         {
-                            // TODO:this code does not appear to work properly!!!
                             var pidProcess_u0 = unitModel_run1.modelParameters.U0[pidInputIdx];
                             var pidProcess_unorm = unitModel_run1.modelParameters.UNorm[pidInputIdx];
                             var ident = new UnitIdentifier();
                             alternativeModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet_alt, pidInputIdx, pidLinProcessGain, 
                                 pidProcess_u0,pidProcess_unorm);
-                            alternativeModel.SetID("altModelGlobalSearch");
+                           alternativeModel.SetID("altModelGlobalSearch");
                         }
 
                         DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
@@ -314,14 +316,21 @@ namespace TimeSeriesAnalysis.Dynamic
                     idUnitModelsList.Add(bestUnitModel);
                 }
             }
+            bool doRun2 = true, doRun3 = true, doRun4 = true;
+            // if the unit model has more than one input, then the runs2 and 3 and 4 do not appear to improve the estimate.
+            if (nGains > 1)
+            {
+                doRun2 = false;
+                doRun3 = false;
+                doRun4 = true;
+                onlyDidTwoSteps = true;
+            }
+
             // ----------------
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
+            if(doRun2)
             {
-                // TODO:this fails when there are two or more inputs to unit model, and there is a setpoint
-                // change in the pid-controller, as the effect of the setpoint step is still present on the pid output U
-
-
-                bool DO_DEBUG_RUN_2 = true;
+                bool DO_DEBUG_RUN_2 = false;
                 DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
                     dataSet2, idUnitModelsList.Last(), pidInputIdx, pidParams,DO_DEBUG_RUN_2);
 
@@ -335,6 +344,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // ----------------
             // run 3: use the result of the last run to try to improve the disturbance estimate and take 
             // out some of the dynamics from the disturbance vector and see if this improves estimation.
+            if (doRun3)
             {
                 DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
                     (dataSet3, idUnitModelsList.Last(), pidInputIdx, pidParams);
@@ -353,6 +363,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // run4: do a run where it is no longer assumed that x[k-1] = y[k], 
             // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
+            if (doRun4)
             {
                 var model = idUnitModelsList.Last();
 
@@ -472,7 +483,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
                 identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
                 if (wasGainGlobalSearchDone)
-                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search";
+                {
+                    if (onlyDidTwoSteps)
+                    {
+                        identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
+                    }
+                    else
+                    {
+                        identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/4 step";
+                    }
+                }
                 else
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop v1.0";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();

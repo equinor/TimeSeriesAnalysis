@@ -630,19 +630,35 @@ namespace TimeSeriesAnalysis.Dynamic
                 sb.AppendLine(" -> Linear Gain : "); //+ Vec.ToString(modelParameters.LinearGains, sDigits));
                 for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
                 {
-                    sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits).ToString(writeCulture) + " ± "
-                            + SignificantDigits.Format(modelParameters.LinearGainUnc[idx], sDigitsUnc).ToString(writeCulture)
-                        );
+                    if (modelParameters.LinearGainUnc != null)
+                    {
+                        sb.AppendLine(
+                            "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits).ToString(writeCulture) + " ± "
+                                + SignificantDigits.Format(modelParameters.LinearGainUnc[idx], sDigitsUnc).ToString(writeCulture)
+                            );
+                    }
+                    else
+                    {
+                        sb.AppendLine(
+                            "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits).ToString(writeCulture)   );
+                    }
                 }
 
                 sb.AppendLine(" -> Curvature Gain : ");//  + Vec.ToString(modelParameters.Curvatures, sDigits));
                 for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
                 {
-                    sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.Curvatures[idx], sDigits).ToString(writeCulture) + " ± "
-                            + SignificantDigits.Format(modelParameters.CurvatureUnc[idx], sDigitsUnc).ToString(writeCulture)
-                        );
+                    if (modelParameters.CurvatureUnc != null)
+                    {
+                        sb.AppendLine(
+                            "\t" + SignificantDigits.Format(modelParameters.Curvatures[idx], sDigits).ToString(writeCulture) + " ± "
+                                + SignificantDigits.Format(modelParameters.CurvatureUnc[idx], sDigitsUnc).ToString(writeCulture)
+                            );
+                    }
+                    else
+                    {
+                        sb.AppendLine(
+                            "\t" + SignificantDigits.Format(modelParameters.Curvatures[idx], sDigits).ToString(writeCulture));
+                    }
                 }
             }
 
