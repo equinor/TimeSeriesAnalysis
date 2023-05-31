@@ -272,6 +272,8 @@ namespace TimeSeriesAnalysis.Dynamic
                             var ident = new UnitIdentifier();
                             alternativeModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet_alt, pidInputIdx, pidLinProcessGain, 
                                 pidProcess_u0,pidProcess_unorm);
+                            if (!alternativeModel.IsModelSimulatable(out _))
+                                continue;
                            alternativeModel.SetID("altModelGlobalSearch");
                         }
 
@@ -280,6 +282,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         var d_est = distIdResultAlt.d_est;
                         isOK = ClosedLoopSim
                             (dataSet_alt, alternativeModel.GetModelParameters(), pidParams, d_est, "run_alt");
+                        if (!isOK)
+                            continue;
 
                         // for the cases when d is a step and yset is a sinus, v7 seems to work best
                         // for the caeses when d is sinus and yset is a step, either of v1 or v2 seem to work better,
@@ -313,7 +317,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     UnitModel bestUnitModel = searchResults.GetBestModel(pidProcessInputInitalGainEstimate) ;
 
                     // add the "best" model to be used in the next model run
-                    idUnitModelsList.Add(bestUnitModel);
+                    if (bestUnitModel != null)
+                    {
+                        idUnitModelsList.Add(bestUnitModel);
+                    }
                 }
             }
             bool doRun2 = true, doRun3 = true, doRun4 = true;
@@ -328,7 +335,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // ----------------
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
-            if(doRun2)
+            if(doRun2 && idUnitModelsList.Last() != null)
             {
                 bool DO_DEBUG_RUN_2 = false;
                 DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
@@ -344,7 +351,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // ----------------
             // run 3: use the result of the last run to try to improve the disturbance estimate and take 
             // out some of the dynamics from the disturbance vector and see if this improves estimation.
-            if (doRun3)
+            if (doRun3 && idUnitModelsList.Last() != null)
             {
                 DisturbanceIdResult distIdResult3 = DisturbanceIdentifier.EstimateDisturbance
                     (dataSet3, idUnitModelsList.Last(), pidInputIdx, pidParams);
@@ -363,7 +370,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // run4: do a run where it is no longer assumed that x[k-1] = y[k], 
             // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
-            if (doRun4)
+            if (doRun4 && idUnitModelsList.Last() != null)
             {
                 var model = idUnitModelsList.Last();
 
