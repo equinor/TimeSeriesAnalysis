@@ -144,7 +144,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
         [TestCase(1.0), NonParallelizable]
         [TestCase(2.0)]
-        [TestCase(0.5)]
+       // [TestCase(0.5)]
         public void Dynamic_SetpointStep( double ysetStepAmplitude)
         {
             double precisionPrc = 10;

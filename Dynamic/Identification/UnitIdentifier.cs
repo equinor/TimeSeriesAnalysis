@@ -745,12 +745,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 parameters.Fitting.RsqDiff = regResults.Rsq;
                 parameters.Fitting.ObjFunValDiff = regResults.ObjectiveFunctionValue;
-                parameters.Fitting.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
-                parameters.Fitting.RsqAbs =vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
-                parameters.Fitting.RsqAbs = SignificantDigits.Format(parameters.Fitting.RsqAbs, nDigits);
+              //  parameters.Fitting.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
+              //  parameters.Fitting.RsqAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
+              //  parameters.Fitting.RsqAbs = SignificantDigits.Format(parameters.Fitting.RsqAbs, nDigits);
                 parameters.Fitting.RsqDiff = SignificantDigits.Format(parameters.Fitting.RsqDiff, nDigits);
-                parameters.Fitting.ObjFunValDiff = SignificantDigits.Format(parameters.Fitting.ObjFunValDiff, nDigits);
-                parameters.Fitting.ObjFunValAbs = SignificantDigits.Format(parameters.Fitting.ObjFunValAbs, nDigits);
+              //  parameters.Fitting.ObjFunValDiff = SignificantDigits.Format(parameters.Fitting.ObjFunValDiff, nDigits);
+             //    parameters.Fitting.ObjFunValAbs = SignificantDigits.Format(parameters.Fitting.ObjFunValAbs, nDigits);
+
+                var fitting = parameters.Fitting;
+                CalcCommonFitMetrics(ref fitting, dataSet);
+                parameters.Fitting = fitting;
 
                 // add inn uncertainty
                 if (useDynamicModel)
@@ -767,6 +771,33 @@ namespace TimeSeriesAnalysis.Dynamic
                 return parameters;
             }
         }
+
+        /// <summary>
+        /// populates a fittingInfo object based on a given dataset that includes Y_meas and Y_sim
+        /// </summary>
+        /// <param name="fitting"></param>
+        /// <param name="dataSet"></param>
+        static public void CalcCommonFitMetrics(ref FittingInfo fitting,  UnitDataSet dataSet)
+        {
+            Vec vec = new Vec();
+
+            /*var diffObj = vec.Sum(vec.Abs(vec.Diff(vec.Subtract(dataSet.Y_meas, dataSet.Y_sim))));
+            if ( diffObj.HasValue)
+            {
+                fitting.ObjFunValDiff = diffObj.Value;
+            }
+            else
+            {
+                fitting.ObjFunValDiff = Double.NaN;
+            }*/
+            fitting.ObjFunValDiff = SignificantDigits.Format(fitting.ObjFunValDiff, nDigits);
+
+            fitting.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
+            fitting.ObjFunValAbs = SignificantDigits.Format(fitting.ObjFunValAbs, nDigits);
+            fitting.RsqAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, dataSet.IndicesToIgnore, 0) * 100;
+            fitting.RsqAbs = SignificantDigits.Format(fitting.RsqAbs, nDigits);
+        }
+
 
         /// <summary>
         /// Provided that regResults is the result of fitting a statix equation x[k] = B*U}
@@ -989,7 +1020,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         /// <param name="inputIdxToFix">the index of the value to freeze</param>
         /// <param name="inputProcessGainValueToFix">the linear gain to freeze the at</param>
-        /// <returns></returns>
+        /// <returns>identified model, to check if identification suceeded, check 
+        /// .modelParameters.Fitting.WasAbleToIdentify</returns>
         internal UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, 
             double inputProcessGainValueToFix, double u0, double uNorm)
         {
@@ -1011,6 +1043,8 @@ namespace TimeSeriesAnalysis.Dynamic
             internalDataset.U = newU;
             
             var idUnitModel   = IdentifyLinearAndStatic(ref internalDataset);
+            if (!idUnitModel.modelParameters.Fitting.WasAbleToIdentify)
+                return idUnitModel;
             //trick now is to add back the paramters that are fixed to the returned model:
             var idLinGains   = idUnitModel.modelParameters.LinearGains;
             var idU          = idUnitModel.modelParameters.U0;
@@ -1059,6 +1093,7 @@ namespace TimeSeriesAnalysis.Dynamic
             newParams.U0 = newU0List.ToArray();
             newParams.UNorm = newUNormList.ToArray();
             newParams.Bias = idUnitModel.modelParameters.Bias;
+            newParams.Fitting = idUnitModel.modelParameters.Fitting;
             var retUnitModel = new UnitModel(newParams);
 
             return retUnitModel;

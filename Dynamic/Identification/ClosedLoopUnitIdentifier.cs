@@ -83,12 +83,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     return unitModelList.ElementAt(ind1);
                 else
                 {
-                    // usse dEstVariance local minima only if the objective space is not "flat"
-                    var deltaToLower = dEstVarianceList.ElementAt(ind1-1) - dEstVarianceList.ElementAt(ind1);
-                    var deltaToHigher = dEstVarianceList.ElementAt(ind1+1 ) - dEstVarianceList.ElementAt(ind1);
-                    if (Math.Max(deltaToLower, deltaToHigher) > dEstVarianceTolerance)
+                    if (ind1 < dEstVarianceList.Count()-1)
                     {
-                        return unitModelList.ElementAt(ind1);
+                        // use dEstVariance local minima only if the objective space is not "flat"
+                        var deltaToLower = dEstVarianceList.ElementAt(ind1 - 1) - dEstVarianceList.ElementAt(ind1);
+                        var deltaToHigher = dEstVarianceList.ElementAt(ind1 + 1) - dEstVarianceList.ElementAt(ind1);
+                        if (Math.Max(deltaToLower, deltaToHigher) > dEstVarianceTolerance)
+                        {
+                            return unitModelList.ElementAt(ind1);
+                        }
                     }
                 }
             }
@@ -139,7 +142,13 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ClosedLoopUnitIdentifier
     {
-        const bool doDebuggingPlot = true;
+        /////////////////////////
+        // NB!! These two are somewhat "magic numbers", that need to be changed only after
+        // testing over a wide array of cases
+        const int firstPassNumIterations = 40;
+        const int secondPassNumIterations = 15;
+        ////////////////////////
+        const bool doDebuggingPlot = false;
         /// <summary>
         /// Identify the unit model of a closed-loop system and the distrubance (additive output signal)
         /// </summary>
@@ -236,8 +245,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doesSetpointChange && unitModel_run1.modelParameters.GetProcessGains()!= null)
                 {
                     // magic numbers of the global search
-                    const int numberOfGlobalSearchIterations = 40;
-                    const double initalGuessFactor_lowerbound = 0.5;//set a bit lower than 0.5
+   
+                    const double initalGuessFactor_lowerbound = 0.1;//set a bit lower than 0.5
                     const double initalGuessFactor_higherbound = 2;
 
                     wasGainGlobalSearchDone = true;
@@ -251,71 +260,23 @@ namespace TimeSeriesAnalysis.Dynamic
                     // form Y_setpoint.
                     var min_gain = Math.Min(pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound, pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
                     var max_gain = Math.Max(pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound, pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
-                    var range = max_gain - min_gain;
-                    var searchResults = new ClosedLoopGainGlobalSearchResults();
 
-                    var gainUnc = range / numberOfGlobalSearchIterations;
-                    for (var pidLinProcessGain = min_gain; pidLinProcessGain < max_gain; pidLinProcessGain += range / numberOfGlobalSearchIterations)
+
+                    ///
+                    // first run:
+                    var retPass1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx, 
+                         unitModel_run1, pidProcessInputInitalGainEstimate, 
+                        min_gain, max_gain, firstPassNumIterations);
+                    var bestUnitModel = retPass1.Item1;
+
+                    // second pass:
+                    if (retPass1.Item1.modelParameters.Fitting.WasAbleToIdentify && secondPassNumIterations>0)
                     {
-                        var dataSet_alt = new UnitDataSet(dataSet);
-                      //  dataSet_alt.D = null;
-                        var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
-                        if (nGains == 1)
-                        {
-                            alternativeModel.modelParameters.LinearGains = new double[] { pidLinProcessGain };
-                            alternativeModel.modelParameters.LinearGainUnc = new double[] { gainUnc };
-                        }
-                        else
-                        {
-                            var pidProcess_u0 = unitModel_run1.modelParameters.U0[pidInputIdx];
-                            var pidProcess_unorm = unitModel_run1.modelParameters.UNorm[pidInputIdx];
-                            var ident = new UnitIdentifier();
-                            alternativeModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet_alt, pidInputIdx, pidLinProcessGain, 
-                                pidProcess_u0,pidProcess_unorm);
-                            if (!alternativeModel.IsModelSimulatable(out _))
-                                continue;
-                           alternativeModel.SetID("altModelGlobalSearch");
-                        }
-
-                        DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
-                            (dataSet_alt, alternativeModel, pidInputIdx, pidParams);
-                        var d_est = distIdResultAlt.d_est;
-                        isOK = ClosedLoopSim
-                            (dataSet_alt, alternativeModel.GetModelParameters(), pidParams, d_est, "run_alt");
-                        if (!isOK)
-                            continue;
-
-                        // for the cases when d is a step and yset is a sinus, v7 seems to work best
-                        // for the caeses when d is sinus and yset is a step, either of v1 or v2 seem to work better,
-                        // but more so when the step in yset is fairly big compared to the disturbance.
-
-                        //v1: use correlation(gives best gain: 0.7(crosses from positive to negative around there)
-                        // double covarianceBtwDistAndYsetList = Math.Abs(CorrelationCalculator.Calculate(dataSet.Y_setpoint, d_est));
-                        // v2: try to use covarince(gives highest gain best(no local minimum))
-                        double covarianceBtwDistAndYsetList = Math.Abs(Measures.Covariance(dataSet.Y_setpoint, d_est, false));
-                
-                        // v7: just choose the gain that gives the least "variance" in d_est?
-                        // TODO: not sure if this works as expected?
-                        var dest_variance = vec.Mean(vec.Abs(vec.Diff(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(pidInputIdx)))).Value;// /vec.Max(vec.Abs(d_est));
-
-                        // v9: an alternative take on v8, try to "bin" dataset into a "low setpoint" and a "high setpoint" part
-                        // and find the gradient between them
-
-                        double y_set_mean = vec.Mean(dataSet.Y_setpoint).Value;
-                        var lowIndices = vec.FindValues(dataSet.Y_setpoint, y_set_mean, VectorFindValueType.SmallerThan);
-                        var highIndices = vec.FindValues(dataSet.Y_setpoint, y_set_mean, VectorFindValueType.BiggerThan);
-
-                        var y_set_low = vec.Mean(Vec<double>.GetValuesAtIndices(dataSet.Y_setpoint, lowIndices)).Value;
-                        var y_set_high = vec.Mean(Vec<double>.GetValuesAtIndices(dataSet.Y_setpoint, highIndices)).Value;
-                        var d_est_low = vec.Mean(Vec<double>.GetValuesAtIndices(d_est, lowIndices)).Value;
-                        var d_est_high = vec.Mean(Vec<double>.GetValuesAtIndices(d_est, highIndices)).Value;
-                        double linregGainYsetToDest = (d_est_high- d_est_low)/(y_set_high- y_set_low);
-
-                        // finally,save all results!
-                        searchResults.Add(pidLinProcessGain,alternativeModel, covarianceBtwDistAndYsetList, dest_variance,linregGainYsetToDest);
+                        var gainPass1 = retPass1.Item1.modelParameters.LinearGains[pidInputIdx];
+                        var retPass2 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
+                           retPass1.Item1, gainPass1, gainPass1 - retPass1.Item2, gainPass1 + retPass1.Item2, secondPassNumIterations);
+                        bestUnitModel = retPass2.Item1;
                     }
-                    UnitModel bestUnitModel = searchResults.GetBestModel(pidProcessInputInitalGainEstimate) ;
-
                     // add the "best" model to be used in the next model run
                     if (bestUnitModel != null)
                     {
@@ -509,8 +470,90 @@ namespace TimeSeriesAnalysis.Dynamic
             return (identUnitModel,disturbance);
         }
 
-       // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
-       // 
+        private Tuple<UnitModel,double> GlobalSearchLinearPidGain(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx, 
+            UnitModel unitModel_run1, 
+            double pidProcessInputInitalGainEstimate, double min_gain, double max_gain, int numberOfGlobalSearchIterations = 40)
+        {
+            bool isOK;
+            var range = max_gain - min_gain;
+            var searchResults = new ClosedLoopGainGlobalSearchResults();
+            var gainUnc = range / numberOfGlobalSearchIterations;
+            int nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
+            Vec vec = new Vec();
+            for (var pidLinProcessGain = min_gain; pidLinProcessGain < max_gain; pidLinProcessGain += range / numberOfGlobalSearchIterations)
+            {
+                var dataSet_alt = new UnitDataSet(dataSet);
+                //  dataSet_alt.D = null;
+                var alternativeModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "alternative");
+                if (nGains == 1)
+                {
+                    alternativeModel.modelParameters.LinearGains = new double[] { pidLinProcessGain };
+                    alternativeModel.modelParameters.LinearGainUnc = new double[] { gainUnc };
+                    alternativeModel.modelParameters.Fitting = new FittingInfo();
+                    alternativeModel.modelParameters.Fitting.WasAbleToIdentify = true;
+                }
+                else
+                {
+                    var pidProcess_u0 = unitModel_run1.modelParameters.U0[pidInputIdx];
+                    var pidProcess_unorm = unitModel_run1.modelParameters.UNorm[pidInputIdx];
+                    var ident = new UnitIdentifier();
+                    alternativeModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet_alt, pidInputIdx,
+                        pidLinProcessGain, pidProcess_u0, pidProcess_unorm);
+                    if (!alternativeModel.IsModelSimulatable(out _))
+                        continue;
+                    if (!alternativeModel.modelParameters.Fitting.WasAbleToIdentify)
+                        continue;
+                    alternativeModel.SetID("altModelGlobalSearch");
+                }
+                DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
+                    (dataSet_alt, alternativeModel, pidInputIdx, pidParams);
+                var d_est = distIdResultAlt.d_est;
+                isOK = ClosedLoopSim
+                    (dataSet_alt, alternativeModel.GetModelParameters(), pidParams, d_est, "run_alt");
+                if (!isOK)
+                    continue;
+
+                // for the cases when d is a step and yset is a sinus, v7 seems to work best
+                // for the caeses when d is sinus and yset is a step, either of v1 or v2 seem to work better,
+                // but more so when the step in yset is fairly big compared to the disturbance.
+
+                //v1: use correlation(gives best gain: 0.7(crosses from positive to negative around there)
+                // double covarianceBtwDistAndYsetList = Math.Abs(CorrelationCalculator.Calculate(dataSet.Y_setpoint, d_est));
+                // v2: try to use covarince(gives highest gain best(no local minimum))
+                double covarianceBtwDistAndYsetList = Math.Abs(Measures.Covariance(dataSet.Y_setpoint, d_est, false));
+                // v3: just choose the gain that gives the least "variance" in d_est?
+                var dest_variance = vec.Mean(vec.Abs(vec.Diff(distIdResultAlt.adjustedUnitDataSet.U.GetColumn(pidInputIdx)))).Value;
+
+                double y_set_mean = vec.Mean(dataSet.Y_setpoint).Value;
+                var lowIndices = vec.FindValues(dataSet.Y_setpoint, y_set_mean, VectorFindValueType.SmallerThan);
+                var highIndices = vec.FindValues(dataSet.Y_setpoint, y_set_mean, VectorFindValueType.BiggerThan);
+
+                var y_set_low = vec.Mean(Vec<double>.GetValuesAtIndices(dataSet.Y_setpoint, lowIndices)).Value;
+                var y_set_high = vec.Mean(Vec<double>.GetValuesAtIndices(dataSet.Y_setpoint, highIndices)).Value;
+                var d_est_low = vec.Mean(Vec<double>.GetValuesAtIndices(d_est, lowIndices)).Value;
+                var d_est_high = vec.Mean(Vec<double>.GetValuesAtIndices(d_est, highIndices)).Value;
+                double linregGainYsetToDest = (d_est_high - d_est_low) / (y_set_high - y_set_low);
+
+                // finally,save all results!
+                searchResults.Add(pidLinProcessGain, alternativeModel, covarianceBtwDistAndYsetList, dest_variance, linregGainYsetToDest);
+            }
+            UnitModel bestUnitModel = searchResults.GetBestModel(pidProcessInputInitalGainEstimate);
+            if (bestUnitModel.modelParameters != null)
+            {
+                if (bestUnitModel.modelParameters.LinearGains.Length > 0)
+                {
+                    if (bestUnitModel.modelParameters.LinearGainUnc == null)
+                    {
+                        bestUnitModel.modelParameters.LinearGainUnc = new double[bestUnitModel.modelParameters.LinearGains.Length];
+                    }
+                    bestUnitModel.modelParameters.LinearGainUnc[pidInputIdx] = gainUnc;
+                }
+            }
+            return new Tuple<UnitModel,double>(bestUnitModel, gainUnc);
+        }
+
+        // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
+        // 
         public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             double[] disturbance,string name)
         {
