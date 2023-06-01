@@ -249,8 +249,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     //
                     // or antoher way to look at ti is that the output U with setpoint effects removed should be as decoupled 
                     // form Y_setpoint.
-                    var min_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound;
-                    var max_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
+                    var min_gain = Math.Min(pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound, pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
+                    var max_gain = Math.Max(pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound, pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
                     var range = max_gain - min_gain;
                     var searchResults = new ClosedLoopGainGlobalSearchResults();
 
