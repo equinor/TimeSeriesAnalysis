@@ -260,9 +260,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // form Y_setpoint.
                     var min_gain = Math.Min(pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound, pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
                     var max_gain = Math.Max(pidProcessInputInitalGainEstimate * initalGuessFactor_lowerbound, pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
-
-
-                    ///
+                                        ///
                     // first run:
                     var retPass1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx, 
                          unitModel_run1, pidProcessInputInitalGainEstimate, 
@@ -465,8 +463,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop v1.0";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
             }
-
-
             return (identUnitModel,disturbance);
         }
 
@@ -505,6 +501,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         continue;
                     alternativeModel.SetID("altModelGlobalSearch");
                 }
+                // TODO: kan se ut som om d_LF i alle tilfeller er null når det er mer enn en input?
                 DisturbanceIdResult distIdResultAlt = DisturbanceIdentifier.EstimateDisturbance
                     (dataSet_alt, alternativeModel, pidInputIdx, pidParams);
                 var d_est = distIdResultAlt.d_est;
@@ -537,6 +534,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // finally,save all results!
                 searchResults.Add(pidLinProcessGain, alternativeModel, covarianceBtwDistAndYsetList, dest_variance, linregGainYsetToDest);
             }
+            
             UnitModel bestUnitModel = searchResults.GetBestModel(pidProcessInputInitalGainEstimate);
             if (bestUnitModel.modelParameters != null)
             {

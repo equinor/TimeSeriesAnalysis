@@ -115,12 +115,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeConstant_s = 0,
                 LinearGains = new double[] { 0.5, 0.25 },
                 TimeDelay_s = 0,
-                Bias = 10
+                Bias = -10
             };
 
-            var trueDisturbance = TimeSeriesCreator.Step(N/4, N,0,5);
+            var trueDisturbance = TimeSeriesCreator.Step(N/2, N,0,1);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 5, 10);
-         //   var externalU2 = TimeSeriesCreator.Step(N * 5 / 8, N, 2, 1);
             var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
 
             GenericMISODisturbanceTest(new UnitModel(twoInputModel, "StaticProcess"), trueDisturbance, externalU1, null,
