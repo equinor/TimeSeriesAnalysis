@@ -26,6 +26,20 @@ namespace TimeSeriesAnalysis
 
     public class CorrelationCalculator
     {
+        public static double CorrelateTwoVectors(double[] v1, double[] v2, List<int> indicesToIgnore)
+        {
+
+            var array2d = Array2D<double>.CreateJaggedFromList(new List<double[]> { v1, v2 }, indicesToIgnore);
+            double[,] matrix = Array2D<double>.Created2DFromJagged(array2d).Transpose();
+
+            double[,] corrMatrix = Measures.Correlation(matrix);
+            double[] corr = corrMatrix.GetColumn(0);
+
+            return corr[1];
+        }
+
+
+
         /// <summary>
         /// Calculates correlation factors [-1,1] for a signal against all other signals in the dataset
         /// (this corresponds to one row or one column of the covariance matrix)
