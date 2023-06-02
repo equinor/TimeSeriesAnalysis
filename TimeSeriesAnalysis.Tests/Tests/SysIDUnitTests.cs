@@ -322,6 +322,46 @@ namespace TimeSeriesAnalysis.Test.SysID
             DefaultAsserts(model, designParameters);
         }
 
+        [TestCase(1,0)]
+        [TestCase(1, 1)]
+        [TestCase(1, 2)]
+        public void IdentifyStatic_FreezeOneInput(double bias, int frozenIdx)
+        {
+            double[] u1 = TimeSeriesCreator.Step(20, 100, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(70, 100, 1, 0);
+            double[] u3 = TimeSeriesCreator.Step(40, 100, 1, -1);
+
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1,u2,u3 });
+            U = Matrix.ReplaceColumn(U, frozenIdx, TimeSeriesCreator.Constant(0, 100));
+
+            int Ninputs = U.GetLength(1);
+
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,// NB! if a time-constant 10 is added here, the resultin performance is quite poor!
+                TimeDelay_s = 0,
+                LinearGains = new double[] { 1.5,1.7,0.3 },
+                U0 = Vec<double>.Fill(1, Ninputs),
+                Bias = bias
+            };
+
+            double noiseAmplitude = 1.0;
+            double frozen_u0 = designParameters.U0[frozenIdx];
+            double frozen_unorm = 1;
+     
+            var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
+            var ident = new UnitIdentifier();
+            var model = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet, frozenIdx,
+                designParameters.LinearGains[frozenIdx], frozen_u0, frozen_unorm);
+
+            string caseId = TestContext.CurrentContext.Test.Name;
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas, u1 },
+                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
+                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
+
+            DefaultAsserts(model, designParameters);
+        }
 
 
         /// <summary>

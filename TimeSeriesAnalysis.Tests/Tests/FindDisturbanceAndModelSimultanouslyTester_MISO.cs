@@ -107,6 +107,15 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 doNegative, true,yset, pidInputIdx);
         }
 
+
+
+        //TODO: problem with this one is that
+        //- destVariance and
+        //- covBetweenYsetAndDest
+        // have a minium at model index 40, while model index 47 is "true"
+        // in the pass1 of global search in closedloopidentifier step1. 
+        // 
+        
         [TestCase(0, false)]
         public void StaticMISO_WITH_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
         {

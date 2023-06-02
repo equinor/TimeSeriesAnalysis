@@ -503,6 +503,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet_setpointEffectsRemoved.IndicesToIgnore);        // sensitive to output noise/controller overshoot
                 double minU = vec.Min(vec.Abs(uFiltered), unitDataSet_setpointEffectsRemoved.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
                 estPidInputProcessGain = pidInput_processGainSign * maxDE / (maxU - minU);
+         //       estPidInputProcessGain = 0.5;// TODO: REMOVE!! only for debuggng 
+
            }
             bool isFittedButFittingFailed = false;
             if (unitModel != null)
@@ -545,6 +547,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     var ident = new UnitIdentifier();
                     unitModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet_setpointEffectsRemoved, pidInputIdx, estPidInputProcessGain, 
                         pidInput_u0[indexOfFirstGoodValue],1);
+                    //TODO: remove, this is for debugging
+                //    unitModel.modelParameters.LinearGains[0] = 0.5;
+                //    unitModel.modelParameters.LinearGains[1] = 0.25;
                 }
             }
 
@@ -566,7 +571,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // d = d_HF+d_LF 
             double[] d_est = vec.Add(d_HF, d_LF);
 
-            doDebugPlot = true;
+            doDebugPlot = false;
 
             if (doDebugPlot)
             {

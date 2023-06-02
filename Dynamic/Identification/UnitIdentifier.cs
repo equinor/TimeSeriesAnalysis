@@ -1022,7 +1022,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputProcessGainValueToFix">the linear gain to freeze the at</param>
         /// <returns>identified model, to check if identification suceeded, check 
         /// .modelParameters.Fitting.WasAbleToIdentify</returns>
-        internal UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, 
+        public UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, 
             double inputProcessGainValueToFix, double u0, double uNorm)
         {
             var internalDataset = new UnitDataSet(dataSet);
@@ -1094,8 +1094,9 @@ namespace TimeSeriesAnalysis.Dynamic
             newParams.UNorm = newUNormList.ToArray();
             newParams.Bias = idUnitModel.modelParameters.Bias;
             newParams.Fitting = idUnitModel.modelParameters.Fitting;
+            newParams.Fitting.SolverID = "Linear,static while fixing index:" + inputIdxToFix;
             var retUnitModel = new UnitModel(newParams);
-
+            retUnitModel.SetFittedDataSet(idUnitModel.GetFittedDataSet());
             return retUnitModel;
         }
     }
