@@ -65,50 +65,68 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public Tuple<UnitModel,bool> GetBestModel(double initalGainEstimate)
         {
-            
-            if (unitModelList == null)
-                return new Tuple<UnitModel, bool>(null,false);
-            if (unitModelList.Count == 0)
-                return new Tuple<UnitModel, bool>(null,false);
-
-            const double dEstVarianceTolerance = 0.00001;// 
-           
             Vec vec = new Vec();
-            // in some cases dEstVarianceList can be quite "flat" around the minimum,
-            // in which case it mighbe be wise to look at ind2 for guidance in that "flat" region
-            vec.Min(dEstVarianceList.ToArray(),out int ind1);
-            vec.Min(covarianceBtwDestAndYsetList.ToArray(), out int ind2);
-
-                        // in some cases it is observed that even though ind2==ind3, ind1 is actually correct. 
-            // ind1 is generally sufficient for static systems, but may be too low in case of dynamics
-            // thus, if there is a local minimum in the list of dEstVarianceList then use that
-
-            // if one or more of the three methods has non-zero "ind" then that is more likely correct than 
-            // the zero ind, as this indicates non-convex search space.
-            if (ind1 > 0)
+            bool doNew = false;
+            if (doNew)
             {
-                if (ind2 == 0 )
-                    return new Tuple<UnitModel, bool>(unitModelList.ElementAt(ind1),true);
-                else
+                double v2_factor = 0.1;// should be smaller than one
+                // try to combine the two numbers into a single new scaled objective
+                var v1 = dEstVarianceList.ToArray();
+                var v1_scaled = vec.Div(vec.Subtract(v1,vec.Min(v1)),vec.Max(v1)-vec.Min(v1));
+                var v2 = covarianceBtwDestAndYsetList.ToArray();
+                var v2_scaled = vec.Div(vec.Subtract(v2, vec.Min(v2)), vec.Max(v2) - vec.Min(v2));
+
+                var v_new = vec.Add(v1_scaled,vec.Multiply(v2_scaled,v2_factor));
+                vec.Min(v_new, out int min_ind);
+
+                return new Tuple<UnitModel, bool>(unitModelList.ElementAt(min_ind), true);
+            }
+            else
+            {
+                if (unitModelList == null)
+                    return new Tuple<UnitModel, bool>(null, false);
+                if (unitModelList.Count == 0)
+                    return new Tuple<UnitModel, bool>(null, false);
+
+                const double dEstVarianceTolerance = 0.00001;// 
+
+          
+                // in some cases dEstVarianceList can be quite "flat" around the minimum,
+                // in which case it mighbe be wise to look at ind2 for guidance in that "flat" region
+                vec.Min(dEstVarianceList.ToArray(), out int ind1);
+                vec.Min(covarianceBtwDestAndYsetList.ToArray(), out int ind2);
+
+                // in some cases it is observed that even though ind2==ind3, ind1 is actually correct. 
+                // ind1 is generally sufficient for static systems, but may be too low in case of dynamics
+                // thus, if there is a local minimum in the list of dEstVarianceList then use that
+
+                // if one or more of the three methods has non-zero "ind" then that is more likely correct than 
+                // the zero ind, as this indicates non-convex search space.
+                if (ind1 > 0)
                 {
-                    if (ind1 < dEstVarianceList.Count()-1)
+                    if (ind2 == 0)
+                        return new Tuple<UnitModel, bool>(unitModelList.ElementAt(ind1), true);
+                    else
                     {
-                        // use dEstVariance local minima only if the objective space is not "flat"
-                        var deltaToLower = dEstVarianceList.ElementAt(ind1 - 1) - dEstVarianceList.ElementAt(ind1);
-                        var deltaToHigher = dEstVarianceList.ElementAt(ind1 + 1) - dEstVarianceList.ElementAt(ind1);
-                        if (Math.Max(deltaToLower, deltaToHigher) > dEstVarianceTolerance)
+                        if (ind1 < dEstVarianceList.Count() - 1)
                         {
-                            return new Tuple<UnitModel, bool>(unitModelList.ElementAt(ind1),true);
+                            // use dEstVariance local minima only if the objective space is not "flat"
+                            var deltaToLower = dEstVarianceList.ElementAt(ind1 - 1) - dEstVarianceList.ElementAt(ind1);
+                            var deltaToHigher = dEstVarianceList.ElementAt(ind1 + 1) - dEstVarianceList.ElementAt(ind1);
+                            if (Math.Max(deltaToLower, deltaToHigher) > dEstVarianceTolerance)
+                            {
+                                return new Tuple<UnitModel, bool>(unitModelList.ElementAt(ind1), true);
+                            }
                         }
                     }
                 }
+                //otherwise, we fall back to looking at the covariance between d_est and yset
+                var defaultModel = unitModelList.ElementAt(ind2);
+                defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
+
+                return new Tuple<UnitModel, bool>(defaultModel, false);
+
             }
-
-            //otherwise, we fall back to looking at the covariance between d_est and yset
-            var defaultModel = unitModelList.ElementAt(ind2);
-            defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
-
-            return new Tuple<UnitModel, bool>(defaultModel,false);
 
         }
     }
