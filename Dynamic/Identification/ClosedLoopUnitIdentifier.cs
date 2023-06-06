@@ -63,27 +63,32 @@ namespace TimeSeriesAnalysis.Dynamic
             linregGainYsetToDestList.Add(linregGainYsetToDest);
         }
 
-        public UnitModel GetBestModel(double initalGainEstimate)
+        public Tuple<UnitModel,bool> GetBestModel(double initalGainEstimate)
         {
+            
             if (unitModelList == null)
-                return null;
+                return new Tuple<UnitModel, bool>(null,false);
             if (unitModelList.Count == 0)
-                return null;
+                return new Tuple<UnitModel, bool>(null,false);
 
             const double dEstVarianceTolerance = 0.00001;// 
-
-            // if there is a local minimum in the list of dEstVarianceList then use that
+           
             Vec vec = new Vec();
+            // in some cases dEstVarianceList can be quite "flat" around the minimum,
+            // in which case it mighbe be wise to look at ind2 for guidance in that "flat" region
             vec.Min(dEstVarianceList.ToArray(),out int ind1);
             vec.Min(covarianceBtwDestAndYsetList.ToArray(), out int ind2);
-            vec.Min(vec.Abs(linregGainYsetToDestList.ToArray()), out int ind3);
+
+                        // in some cases it is observed that even though ind2==ind3, ind1 is actually correct. 
+            // ind1 is generally sufficient for static systems, but may be too low in case of dynamics
+            // thus, if there is a local minimum in the list of dEstVarianceList then use that
 
             // if one or more of the three methods has non-zero "ind" then that is more likely correct than 
             // the zero ind, as this indicates non-convex search space.
             if (ind1 > 0)
             {
-                if (ind2 == 0 && ind3 == 0)
-                    return unitModelList.ElementAt(ind1);
+                if (ind2 == 0 )
+                    return new Tuple<UnitModel, bool>(unitModelList.ElementAt(ind1),true);
                 else
                 {
                     if (ind1 < dEstVarianceList.Count()-1)
@@ -93,38 +98,17 @@ namespace TimeSeriesAnalysis.Dynamic
                         var deltaToHigher = dEstVarianceList.ElementAt(ind1 + 1) - dEstVarianceList.ElementAt(ind1);
                         if (Math.Max(deltaToLower, deltaToHigher) > dEstVarianceTolerance)
                         {
-                            return unitModelList.ElementAt(ind1);
+                            return new Tuple<UnitModel, bool>(unitModelList.ElementAt(ind1),true);
                         }
                     }
                 }
             }
 
-            if (ind1 == 0 && ind2 == 0 && ind3>0)
-            {
-                return unitModelList.ElementAt(ind3);
-            }
-            if (ind1 == 0 && ind2 > 0 && ind3 == 0)
-            {
-                return unitModelList.ElementAt(ind3);
-            }
-            // in some cases ind2 and ind3, in which case, go with that.
-            if (ind2 > 0 && ind2 == ind3)
-            {
-                return unitModelList.ElementAt(ind2);
-            }
-            if (ind1 > 0 && ind1 == ind3)
-            {
-                return unitModelList.ElementAt(ind1);
-            }
-            if (ind1 > 0 && ind1 == ind2)
-            {
-                return unitModelList.ElementAt(ind1);
-            }
             //otherwise, we fall back to looking at the covariance between d_est and yset
             var defaultModel = unitModelList.ElementAt(ind2);
             defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
 
-            return defaultModel;
+            return new Tuple<UnitModel, bool>(defaultModel,false);
 
         }
     }
@@ -270,13 +254,16 @@ namespace TimeSeriesAnalysis.Dynamic
                         min_gain, max_gain, firstPassNumIterations);
                     var bestUnitModel = retPass1.Item1;
 
-                    // second pass(finer grid around best result of first pass)
-                    if (retPass1.Item1.modelParameters.Fitting.WasAbleToIdentify && secondPassNumIterations>0)
+                    if (bestUnitModel != null)
                     {
-                        var gainPass1 = retPass1.Item1.modelParameters.LinearGains[pidInputIdx];
-                        var retPass2 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
-                           retPass1.Item1, gainPass1, gainPass1 - retPass1.Item2, gainPass1 + retPass1.Item2, secondPassNumIterations);
-                        bestUnitModel = retPass2.Item1;
+                        // second pass(finer grid around best result of first pass)
+                        if (retPass1.Item1.modelParameters.Fitting.WasAbleToIdentify && secondPassNumIterations > 0)
+                        {
+                            var gainPass1 = retPass1.Item1.modelParameters.LinearGains[pidInputIdx];
+                            var retPass2 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
+                               retPass1.Item1, gainPass1, gainPass1 - retPass1.Item2, gainPass1 + retPass1.Item2, secondPassNumIterations);
+                            bestUnitModel = retPass2.Item1;
+                        }
                     }
                     // add the "best" model to be used in the next model run
                     if (bestUnitModel != null)
@@ -285,26 +272,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-            bool doRun2 = true, doRun3 = true, doRun4 = true;
-            // if the unit model has more than one input, then the runs2 and 3 and 4 do not appear to improve the estimate.
-            /*if (nGains > 1)
-            {
-                doRun2 = false;
-                doRun3 = false;
-                doRun4 = true;
-                onlyDidTwoSteps = true;
-            }*/
-          //  if (nGains > 1)
-            //TODO:remove, asess the utility of each run
-            {
-                doRun2 = false;
-                doRun3 = true;
-                doRun4 = true;
-            }
-
+            // runs 2 and 3 do not appear to actually improve the result for any of the unit tests.
+            bool doRun2 = false, doRun3 = false, doRun4 = true;
 
             // ----------------
-            // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
+       /*     // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
             if (doRun2 && idUnitModelsList.Last() != null)
             {
                 bool DO_DEBUG_RUN_2 = false;
@@ -330,7 +302,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 idDisturbancesList.Add(distIdResult3);
                 idUnitModelsList.Add(unitModel_run3);
                 isOK = ClosedLoopSim(dataSet3, unitModel_run3.GetModelParameters(), pidParams, distIdResult3.d_est, "run3");
-            }
+            }*/
             // - issue is that after run 4 modelled output does not match measurement.
             // - the reason that we want this run is that after run3 the time constant and 
             // time delays are way off if the process is excited mainly by disturbances.
@@ -525,7 +497,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (!isOK)
                     continue;
 
-                // for the cases when d is a step and yset is a sinus, v7 seems to work best
                 // for the caeses when d is sinus and yset is a step, either of v1 or v2 seem to work better,
                 // but more so when the step in yset is fairly big compared to the disturbance.
 
@@ -534,7 +505,6 @@ namespace TimeSeriesAnalysis.Dynamic
                
                 // this one appears to worka bout the same?
                  double covarianceBtwDestAndYsetList = Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore));
-
 
                 // v3: just choose the gain that gives the least "variance" in d_est?
                 // wonder if this parameter works best when the disturbance is zero, if this is implicitly assuming
@@ -564,7 +534,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // v4: alternative using correlation
                 // if MISO: the disturbance should be as indpendent of the external inputs as possible
                 double linregGainYsetToDest = 0;
-                if (dataSet.U.GetNColumns() > 1)// TODO not quite general, only considers one external input
+            /*    if (dataSet.U.GetNColumns() > 1)// TODO not quite general, only considers one external input
                 {
                     int nonPidIdx = 0;
                     if (pidInputIdx == 0)
@@ -575,9 +545,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     linregGainYsetToDest =
                     // Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore));
                      Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.U.GetColumn(nonPidIdx), dataSet.IndicesToIgnore));
-
                     // Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(nonPidIdx), dataSet.IndicesToIgnore));
-                }
+                }*/
                 // finally,save all results!
                 searchResults.Add(pidLinProcessGain, alternativeModel, covarianceBtwDestAndYsetList, dest_variance, linregGainYsetToDest);
             }
@@ -585,16 +554,19 @@ namespace TimeSeriesAnalysis.Dynamic
             // that are off by about 10-20% even for ideal case, indicating perhaps an issue with 
             // how the calculations above are performed (for instance, how influence of chanegs in external inputs U are 
             // filtered/removed from dataset during analysis)
-            UnitModel bestUnitModel = searchResults.GetBestModel(pidProcessInputInitalGainEstimate);
-            if (bestUnitModel.modelParameters != null)
+            (UnitModel bestUnitModel,bool didFindMimimum) = searchResults.GetBestModel(pidProcessInputInitalGainEstimate);
+            if (bestUnitModel != null)
             {
-                if (bestUnitModel.modelParameters.LinearGains.Length > 0)
+                if (bestUnitModel.modelParameters != null)
                 {
-                    if (bestUnitModel.modelParameters.LinearGainUnc == null)
+                    if (bestUnitModel.modelParameters.LinearGains.Length > 0)
                     {
-                        bestUnitModel.modelParameters.LinearGainUnc = new double[bestUnitModel.modelParameters.LinearGains.Length];
+                        if (bestUnitModel.modelParameters.LinearGainUnc == null)
+                        {
+                            bestUnitModel.modelParameters.LinearGainUnc = new double[bestUnitModel.modelParameters.LinearGains.Length];
+                        }
+                        bestUnitModel.modelParameters.LinearGainUnc[pidInputIdx] = gainUnc;
                     }
-                    bestUnitModel.modelParameters.LinearGainUnc[pidInputIdx] = gainUnc;
                 }
             }
   

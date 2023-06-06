@@ -170,7 +170,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc);
         }
 
-        [TestCase(5, 1.0),NonParallelizable]
+        [TestCase(5, 1.0)]
         [TestCase(1, 1.0)]
         [TestCase(1, 5.0)]
         public void Static_SinusDistANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude)
