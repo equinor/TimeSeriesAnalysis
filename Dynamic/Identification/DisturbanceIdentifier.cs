@@ -428,34 +428,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // nb!candiateGainD is an estimate for the process gain, and the value chosen in this class 
             // will influence the process model identification afterwards.
             //
-            // knowing the sign of the process gain is quite important!
-            // if a system has negative gain and is given a positive process disturbance, then y and u will both increase in a way that is 
-            // correlated 
-            double pidInput_processGainSign = 1;
-            // look at the correlation between u and y.
-            // assuming that the sign of the Kp in PID controller is set correctly so that the process is not unstable: 
-            // If an increase in _y(by means of a disturbance)_ causes PID-controller to _increase_ u then the processGainSign is negative
-            // If an increase in y causes PID to _decrease_ u, then processGainSign is positive!
-            {
-                var indGreaterThanZeroE = vec.FindValues(e, 0, VectorFindValueType.BiggerOrEqual, unitDataSet_setpointEffectsRemoved.IndicesToIgnore);
-                var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual, unitDataSet_setpointEffectsRemoved.IndicesToIgnore);
 
-                var u_pid = unitDataSet_setpointEffectsRemoved.U.GetColumn(pidInputIdx);
-                var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u_pid, indGreaterThanZeroE));
-                var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u_pid, indLessThanZeroE));
-
-                if (uAvgWhenEgreatherThanZero != null && uAvgWhenElessThanZero != 0)
-                {
-                    if (uAvgWhenElessThanZero >= uAvgWhenEgreatherThanZero)
-                    {
-                        pidInput_processGainSign = 1;
-                    }
-                    else
-                    {
-                        pidInput_processGainSign = -1;
-                    }
-                }
-            }
             // just use first value as "u0", just perturbing this value 
             // a little will cause unit test to fail ie.algorithm is sensitive to its choice.
             double yset0 = unitDataSet_setpointEffectsRemoved.Y_setpoint[0];
@@ -496,6 +469,35 @@ namespace TimeSeriesAnalysis.Dynamic
             // run when no process model exists!
             if (!isProcessGainSet)
             {
+                // knowing the sign of the process gain is quite important!
+                // if a system has negative gain and is given a positive process disturbance, then y and u will both increase in a way that is 
+                // correlated 
+                double pidInput_processGainSign = 1;
+                // look at the correlation between u and y.
+                // assuming that the sign of the Kp in PID controller is set correctly so that the process is not unstable: 
+                // If an increase in _y(by means of a disturbance)_ causes PID-controller to _increase_ u then the processGainSign is negative
+                // If an increase in y causes PID to _decrease_ u, then processGainSign is positive!
+                {
+                    var indGreaterThanZeroE = vec.FindValues(e, 0, VectorFindValueType.BiggerOrEqual, unitDataSet_setpointEffectsRemoved.IndicesToIgnore);
+                    var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual, unitDataSet_setpointEffectsRemoved.IndicesToIgnore);
+
+                    var u_pid = unitDataSet_setpointEffectsRemoved.U.GetColumn(pidInputIdx);
+                    var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u_pid, indGreaterThanZeroE));
+                    var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u_pid, indLessThanZeroE));
+
+                    if (uAvgWhenEgreatherThanZero != null && uAvgWhenElessThanZero != 0)
+                    {
+                        if (uAvgWhenElessThanZero >= uAvgWhenEgreatherThanZero)
+                        {
+                            pidInput_processGainSign = 1;
+                        }
+                        else
+                        {
+                            pidInput_processGainSign = -1;
+                        }
+                    }
+                }
+
                 double[] pidInput_deltaU = vec.Subtract(unitDataSet_setpointEffectsRemoved.U.GetColumn(pidInputIdx), pidInput_u0);//TODO : U including feed-forward?
                 double[] eFiltered = lowPass.Filter(e, FilterTc_s, 2, unitDataSet_setpointEffectsRemoved.IndicesToIgnore);
                 double maxDE = vec.Max(vec.Abs(eFiltered),unitDataSet_setpointEffectsRemoved.IndicesToIgnore);       // this has to be sensitive to noise?

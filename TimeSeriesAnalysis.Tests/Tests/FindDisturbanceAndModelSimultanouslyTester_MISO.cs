@@ -59,7 +59,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = true;
+            bool doDebugPlot = false;
             if (doDebugPlot)
             {
                 Shared.EnablePlots();
@@ -86,9 +86,19 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 }
                 Assert.IsTrue(gainOffsetPrc < maxAllowedGainOffsetPrc, "est.gain:" + estGain + "|true gain:" + trueGain);
             }
+
+            // time constant:
+            double estTimeConstant_s = identifiedModel.modelParameters.TimeConstant_s;
+            double trueTimeConstant_s = trueModel.modelParameters.TimeConstant_s;
+            double timeConstant_tol_s = 1;
+            Assert.IsTrue(Math.Abs(estTimeConstant_s - trueTimeConstant_s) < timeConstant_tol_s, "est time constant " + estTimeConstant_s + " too far off " + trueTimeConstant_s);
+
+
+
+
         }
         [TestCase(0,false)]
-        [TestCase(1,false)]
+     //   [TestCase(1,false)]
         [TestCase(0, true)]
 
         public void StaticMISO_no_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)

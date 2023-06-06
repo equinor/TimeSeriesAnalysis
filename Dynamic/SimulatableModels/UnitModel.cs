@@ -73,8 +73,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
-        public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet)
+        /// <param name="ID">a unique string that identifies this model in larger process models</param>
+        public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet,string ID = "not_named")
         {
+            processModelType = ModelType.SubProcess;
+            this.ID = ID;
             InitSim(modelParameters);
         }
         public bool IsModelSimulatable(out string explainStr)

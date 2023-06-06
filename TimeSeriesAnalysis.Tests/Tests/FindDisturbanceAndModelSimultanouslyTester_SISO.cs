@@ -69,6 +69,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Shared.DisablePlots();
             }
 
+            // estimated gain
             double estGain = identifiedModel.modelParameters.GetTotalCombinedProcessGain(0);
             double trueGain = trueModel.modelParameters.GetTotalCombinedProcessGain(0);
             double gainOffsetPrc = Math.Abs(estGain - trueGain) / Math.Abs(trueGain) * 100;
@@ -82,6 +83,14 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Assert.IsTrue(disturbanceOffset < distTrueAmplitude * maxAllowedMeanDisturbanceOffsetPrc / 100, "true disturbance and actual disturbance too far apart");
             }
             Assert.IsTrue(gainOffsetPrc < maxAllowedGainOffsetPrc,"est.gain:"+ estGain+ "|true gain:"+trueGain);
+
+            // time constant
+            const double TC_TOL_PRC = 30;
+            double estTimeConstant_s = identifiedModel.modelParameters.TimeConstant_s;
+            double trueTimeConstant_s = trueModel.modelParameters.TimeConstant_s;
+            double timeConstant_tol_s = trueTimeConstant_s*TC_TOL_PRC/100;
+            Assert.IsTrue(Math.Abs(estTimeConstant_s - trueTimeConstant_s) <= timeConstant_tol_s, "est time constant "+ estTimeConstant_s  + " too far off " + trueTimeConstant_s);
+
         }
 
         [TestCase(-5,false), NonParallelizable]

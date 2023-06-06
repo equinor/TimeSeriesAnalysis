@@ -287,24 +287,31 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             bool doRun2 = true, doRun3 = true, doRun4 = true;
             // if the unit model has more than one input, then the runs2 and 3 and 4 do not appear to improve the estimate.
-            if (nGains > 1)
+            /*if (nGains > 1)
             {
                 doRun2 = false;
                 doRun3 = false;
                 doRun4 = true;
                 onlyDidTwoSteps = true;
+            }*/
+          //  if (nGains > 1)
+            //TODO:remove, asess the utility of each run
+            {
+                doRun2 = false;
+                doRun3 = true;
+                doRun4 = true;
             }
+
 
             // ----------------
             // run 2: now we have a decent first empircal estimate of the distubance and the process gain, now try to use identification
-            if(doRun2 && idUnitModelsList.Last() != null)
+            if (doRun2 && idUnitModelsList.Last() != null)
             {
                 bool DO_DEBUG_RUN_2 = false;
                 DisturbanceIdResult distIdResult2 = DisturbanceIdentifier.EstimateDisturbance(
                     dataSet2, idUnitModelsList.Last(), pidInputIdx, pidParams,DO_DEBUG_RUN_2);
 
                 dataSet2.D = distIdResult2.d_est;
-                // IdentifyLinear appears to give quite a poor model for Static_Longstep 
                 var unitModel_run2 = id.IdentifyLinearAndStatic(ref dataSet2, false, u0);
                 idDisturbancesList.Add(distIdResult2);
                 idUnitModelsList.Add(unitModel_run2);
