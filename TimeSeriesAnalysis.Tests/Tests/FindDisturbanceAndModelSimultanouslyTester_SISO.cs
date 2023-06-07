@@ -170,8 +170,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc);
         }
 
-        [TestCase(5, 1.0)]
-        [TestCase(1, 1.0)]
+        [TestCase(5, 1.0), NonParallelizable]
+        [TestCase(1, 1.0) ]
         [TestCase(1, 5.0)]
         public void Static_SinusDistANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude)
         {
@@ -233,8 +233,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
 
-
-
         // this works as long as only static identifiation is used in the closed-looop identifier,
         [Test]
         public void FlatData_DoesNotCrash()
@@ -250,7 +248,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepAtStartOfDataset_IsExcludedFromAnalysis()
         {
             double stepAmplitude = 1;
-            bool doAddBadData = true;//todo:set true
+            bool doAddBadData = true;
             N = 1000;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"),

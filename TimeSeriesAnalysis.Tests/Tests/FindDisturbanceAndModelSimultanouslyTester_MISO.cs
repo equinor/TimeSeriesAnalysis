@@ -59,7 +59,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
             if (doDebugPlot)
             {
                 Shared.EnablePlots();
@@ -93,15 +93,12 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             double timeConstant_tol_s = 1;
             Assert.IsTrue(Math.Abs(estTimeConstant_s - trueTimeConstant_s) < timeConstant_tol_s, "est time constant " + estTimeConstant_s + " too far off " + trueTimeConstant_s);
 
-
-
-
         }
         [TestCase(0,false)]
      //   [TestCase(1,false)]
         [TestCase(0, true)]
 
-        public void StaticMISO_no_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
+        public void StaticMISO_SetpointChanges_no_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
             var externalU1 = TimeSeriesCreator.Step(N/8, N, 5, 10);
@@ -127,7 +124,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // 
         
         [TestCase(0, false)]
-        public void StaticMISO_WITH_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
+        public void StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
         {
             UnitParameters twoInputModel = new UnitParameters
             {
@@ -145,6 +142,24 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 doNegative, true, yset, pidInputIdx);
         }
 
+        [TestCase(0, false)]
+        public void StaticMISO_NO_setpointChange_detectsProcessOk(int pidInputIdx, bool doNegative)
+        {
+            UnitParameters twoInputModel = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 0.5, 0.25 },
+                TimeDelay_s = 0,
+                Bias = -10
+            };
+
+            var trueDisturbance = TimeSeriesCreator.Step(N / 2, N, 0, 1);
+            var externalU1 = TimeSeriesCreator.Step(N / 8, N, 35, 40);
+            var yset = TimeSeriesCreator.Constant(20,N);
+
+            GenericMISODisturbanceTest(new UnitModel(twoInputModel, "StaticProcess"), trueDisturbance, externalU1, null,
+                doNegative, true, yset, pidInputIdx);
+        }
 
 
         [TestCase(0)]

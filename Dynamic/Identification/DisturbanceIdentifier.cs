@@ -1,4 +1,5 @@
-﻿using Accord.Statistics.Links;
+﻿using Accord.Math;
+using Accord.Statistics.Links;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -505,8 +506,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet_setpointEffectsRemoved.IndicesToIgnore);        // sensitive to output noise/controller overshoot
                 double minU = vec.Min(vec.Abs(uFiltered), unitDataSet_setpointEffectsRemoved.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
                 estPidInputProcessGain = pidInput_processGainSign * maxDE / (maxU - minU);
-         //       estPidInputProcessGain = 0.5;// TODO: REMOVE!! only for debuggng 
-
            }
             bool isFittedButFittingFailed = false;
             if (unitModel != null)
@@ -573,23 +572,33 @@ namespace TimeSeriesAnalysis.Dynamic
             // d = d_HF+d_LF 
             double[] d_est = vec.Add(d_HF, d_LF);
 
-            doDebugPlot = false;
+            doDebugPlot = true;
 
             if (doDebugPlot)
             {
-                Shared.EnablePlots();
-                Plot.FromList(
-                new List<double[]> {
-                   unitDataSet_setpointAndExternalUChangeEffectsRemoved.Y_meas,
+                var variableList = new List<double[]> {
+                    unitDataSet_setpointEffectsRemoved.Y_meas,
+                   unitDataSet_setpointAndExternalUChangeEffectsRemoved.Y_meas/*,
                    unitDataSet_setpointAndExternalUChangeEffectsRemoved.Y_setpoint,
                    y_sim,
                    d_LF,
                    d_HF,
                    d_est,
-                   unitDataSet_setpointAndExternalUChangeEffectsRemoved.U.GetColumn(pidInputIdx),
-                },
-                new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim", "y3=d_LF", "y3=d_HF", "y3=d_est", "y2=u" },
-                unitDataSet_setpointEffectsRemoved.GetTimeBase(), "distIdent_dLF_est");
+                   unitDataSet_setpointAndExternalUChangeEffectsRemoved.U.GetColumn(pidInputIdx),*/
+                };
+                var variableNameList = new List<string> { "y1=y_meas", "y1=y_meas(extUrem)"/*, "y1=y_set", "y1=y_sim", "y3=d_LF", "y3=d_HF", "y3=d_est", "y2=u_pid"*/ };
+
+                if (unitDataSet_setpointAndExternalUChangeEffectsRemoved.U.GetNColumns() == 2)
+                {
+                    var nonPidIdx = 0;
+                    if (pidInputIdx == 0)
+                        nonPidIdx = 1;
+                    variableList.Add(unitDataSet_setpointAndExternalUChangeEffectsRemoved.U.GetColumn(nonPidIdx));
+                    variableNameList.Add("y2=u_nonpid");
+                }
+                Shared.EnablePlots();
+                Plot.FromList(
+                    variableList, variableNameList, unitDataSet_setpointEffectsRemoved.GetTimeBase(), "distIdent_dLF_est");
                 Shared.DisablePlots();
             }
             //

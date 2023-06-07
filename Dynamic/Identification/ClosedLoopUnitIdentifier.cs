@@ -16,6 +16,14 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     internal class ClosedLoopGainGlobalSearchResults
     {
+        // "magic numbers"
+        // this factor is how much to weigh covBtwDestAndYset into a joint objective function with dEstVariance
+        // covBtwDestAndYset sometimes can be a "tiebreaker" in cases where dEstVariance has a "flat" region and no clear 
+        // minimum, but should not be too large either to overpower clear minima in dEstVariance
+        const double v2_factor =0.1;// should be much smaller than one
+
+        const double v3_factor = 0.1;
+
         /// <summary>
         /// list of linear gains tried in global search
         /// </summary>
@@ -24,7 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// list of covariance between d_Est and y_Set, calculated for each linear gains
         /// </summary>
-        public List<double> covarianceBtwDestAndYsetList;
+        public List<double> covBtwDestAndYsetList;
         /// <summary>
         /// self-variance of d_est, calculated for each linear gains
         /// </summary>
@@ -33,7 +41,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// self-variance of d_est, calculated for each linear gains
         /// </summary>
-        public List<double> linregGainYsetToDestList;
+        public List<double> covBtwDestAndUexternal;
 
 
         /// <summary>
@@ -48,41 +56,109 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             unitModelList= new List<UnitModel>();
             dEstVarianceList = new List<double>();
-            covarianceBtwDestAndYsetList = new List<double>();
+            covBtwDestAndYsetList = new List<double>();
             pidLinearProcessGainList = new List<double>();
-            linregGainYsetToDestList = new List<double>();
+            covBtwDestAndUexternal = new List<double>();
         }
 
-        public void Add(double gain, UnitModel unitModel, double covarianceBtwDestAndYset, double dest_variance,
-            double linregGainYsetToDest)
+        public void Add(double gain, UnitModel unitModel, double covBtwDestAndYset, double dest_variance,
+            double covBtwDestAndUexternal)
         {
             pidLinearProcessGainList.Add(gain);
             unitModelList.Add(unitModel);
-            covarianceBtwDestAndYsetList.Add(covarianceBtwDestAndYset);
+            covBtwDestAndYsetList.Add(covBtwDestAndYset);
             dEstVarianceList.Add(dest_variance);
-            linregGainYsetToDestList.Add(linregGainYsetToDest);
+            this.covBtwDestAndUexternal.Add(covBtwDestAndUexternal);
         }
 
         public Tuple<UnitModel,bool> GetBestModel(double initalGainEstimate)
         {
+            if (unitModelList.Count()== 0)
+                return new Tuple<UnitModel,bool>(null,false);
+
+            // calculate strenght of a minimum - strength is value between 0 and 100, higher is stronger
+            Tuple<double,int> MinimumStrength(double[] values)
+            {
+                Vec vec2 = new Vec();
+                vec2.Min(values, out int minIndex);
+
+                if (minIndex == 0)
+                    return new Tuple<double,int>(0,minIndex);
+                if (minIndex == values.Length - 1)
+                    return new Tuple<double, int>(0, minIndex);
+
+                double val = values.ElementAt(minIndex);
+                double valAbove = values.ElementAt(minIndex + 1);
+                double valBelow = values.ElementAt(minIndex - 1);
+
+                // note that in some cases, the "true" value is between two points on the grid,
+                // so it is not unexpected to have a vaue on one side be quite close to the value at "minIndex"
+                double valBeside = Math.Max(valAbove, valBelow);
+                //return new Tuple<double,int>(100 * (1 - val / valBeside),minIndex);
+                return new Tuple<double, int>(valBeside-val, minIndex);
+            }
+
+            double[] Scale(double[] v_in)
+            {
+                Vec vec2 = new Vec();
+                if (vec2.Min(v_in) > 0)
+                {
+                    return vec2.Div(vec2.Subtract(v_in, vec2.Min(v_in)), vec2.Max(v_in) - vec2.Min(v_in));
+                }
+                else
+                {
+                    return vec2.Div(v_in, vec2.Max(v_in));
+                }
+            }
+
+
             Vec vec = new Vec();
-            bool doNew = false;
+            bool doNew = true;
             if (doNew)
             {
-                double v2_factor = 0.1;// should be smaller than one
-                // try to combine the two numbers into a single new scaled objective
+                const double v1_Strength_Threshold = 0.2;
                 var v1 = dEstVarianceList.ToArray();
-                var v1_scaled = vec.Div(vec.Subtract(v1,vec.Min(v1)),vec.Max(v1)-vec.Min(v1));
-                var v2 = covarianceBtwDestAndYsetList.ToArray();
-                var v2_scaled = vec.Div(vec.Subtract(v2, vec.Min(v2)), vec.Max(v2) - vec.Min(v2));
+                var v2 = covBtwDestAndYsetList.ToArray();
+                var v3 = covBtwDestAndUexternal.ToArray();
+                (double v1_Strength, int min_ind) = MinimumStrength(v1);
+                (double v2_Strength, int min_ind_v2) = MinimumStrength(v2);
+                (double v3_Strength,int min_ind_v3) = MinimumStrength(v3);
+                // add a scaled v2 to the objective only when v1 is very flat around the minimum
+                // as a "tiebreaker"
 
-                var v_new = vec.Add(v1_scaled,vec.Multiply(v2_scaled,v2_factor));
-                vec.Min(v_new, out int min_ind);
+                if (v1_Strength == 0 && v2_Strength == 0 && v3_Strength == 0)
+                {
+                   // defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
+                    return new Tuple<UnitModel, bool>(null, false);
+                }
+                double[] objFun = v1;
 
+                if (v1_Strength < v1_Strength_Threshold)
+                {
+                    var v1_scaled = Scale(v1);
+                   
+                    // if setpoint changes then v2 will be non-all-zero
+                    if (!Vec.IsAllValue(v2, 0))
+                    {
+                        var v2_scaled = Scale(v2);
+                        // var v3 = linregGainYsetToDestList.ToArray();
+                        // var v3_scaled = vec.Div(vec.Subtract(v3, vec.Min(v3)), vec.Max(v3) - vec.Min(v3));
+                        objFun = vec.Add(objFun, vec.Multiply(v2_scaled, v2_factor));
+                    }
+
+                    // if the system has external inputs, and they change in value
+                    if (!Vec.IsAllValue(v3, 0))
+                    {
+                        var v3_scaled = Scale(v3);
+                        objFun = vec.Add(objFun, vec.Multiply(v3_scaled, v3_factor));
+                    }
+                }
+                vec.Min(objFun, out min_ind);
                 return new Tuple<UnitModel, bool>(unitModelList.ElementAt(min_ind), true);
             }
             else
             {
+                // old version, should be commented out.
                 if (unitModelList == null)
                     return new Tuple<UnitModel, bool>(null, false);
                 if (unitModelList.Count == 0)
@@ -94,7 +170,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // in some cases dEstVarianceList can be quite "flat" around the minimum,
                 // in which case it mighbe be wise to look at ind2 for guidance in that "flat" region
                 vec.Min(dEstVarianceList.ToArray(), out int ind1);
-                vec.Min(covarianceBtwDestAndYsetList.ToArray(), out int ind2);
+                vec.Min(covBtwDestAndYsetList.ToArray(), out int ind2);
 
                 // in some cases it is observed that even though ind2==ind3, ind1 is actually correct. 
                 // ind1 is generally sufficient for static systems, but may be too low in case of dynamics
@@ -123,9 +199,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 //otherwise, we fall back to looking at the covariance between d_est and yset
                 var defaultModel = unitModelList.ElementAt(ind2);
                 defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
-
                 return new Tuple<UnitModel, bool>(defaultModel, false);
-
             }
 
         }
@@ -248,7 +322,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // see if varying gain to get the lowest correlation between setpoint and disturbance 
                 // only needed if setpoint varies. "step1 global search"
                 bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint,dataSet.IndicesToIgnore) == vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
-                if (doesSetpointChange && unitModel_run1.modelParameters.GetProcessGains()!= null)
+                if (/*doesSetpointChange && */unitModel_run1.modelParameters.GetProcessGains()!= null)
                 {
                     wasGainGlobalSearchDone = true;
                     double pidProcessInputInitalGainEstimate = unitModel_run1.modelParameters.GetProcessGains()[pidInputIdx];
@@ -522,7 +596,7 @@ namespace TimeSeriesAnalysis.Dynamic
               //  double covarianceBtwDestAndYsetList = Math.Abs(Measures.Covariance(dataSet.Y_setpoint, d_est, false));
                
                 // this one appears to worka bout the same?
-                 double covarianceBtwDestAndYsetList = Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore));
+                 double covarianceBtwDestAndYset = Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore));
 
                 // v3: just choose the gain that gives the least "variance" in d_est?
                 // wonder if this parameter works best when the disturbance is zero, if this is implicitly assuming
@@ -551,22 +625,24 @@ namespace TimeSeriesAnalysis.Dynamic
                      }*/
                 // v4: alternative using correlation
                 // if MISO: the disturbance should be as indpendent of the external inputs as possible
-                double linregGainYsetToDest = 0;
-            /*    if (dataSet.U.GetNColumns() > 1)// TODO not quite general, only considers one external input
+                double covarianceBtwDestAndUexternal = 0;
+                if (dataSet.U.GetNColumns() > 1)// TODO not quite general, only considers one external input
                 {
-                    int nonPidIdx = 0;
-                    if (pidInputIdx == 0)
+                    for (int inputIdx = 0; inputIdx < dataSet.U.GetNColumns(); inputIdx++)
                     {
-                        nonPidIdx = 1;
-                    }
+                        if (inputIdx == pidInputIdx )
+                        {
+                            continue;
+                        }
+                        covarianceBtwDestAndUexternal +=
+                            //Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore));
+                        Math.Abs(Measures.Covariance(d_est, dataSet.U.GetColumn(inputIdx), false));
 
-                    linregGainYsetToDest =
-                    // Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore));
-                     Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.U.GetColumn(nonPidIdx), dataSet.IndicesToIgnore));
-                    // Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(nonPidIdx), dataSet.IndicesToIgnore));
-                }*/
+                        // Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(nonPidIdx), dataSet.IndicesToIgnore));
+                    }
+                }
                 // finally,save all results!
-                searchResults.Add(pidLinProcessGain, alternativeModel, covarianceBtwDestAndYsetList, dest_variance, linregGainYsetToDest);
+                searchResults.Add(pidLinProcessGain, alternativeModel, covarianceBtwDestAndYset, dest_variance, covarianceBtwDestAndUexternal);
             }
             // TODO/Challenge: when a MISO process has a non-zero disturbance, "GetBestModel" is returns gains
             // that are off by about 10-20% even for ideal case, indicating perhaps an issue with 
