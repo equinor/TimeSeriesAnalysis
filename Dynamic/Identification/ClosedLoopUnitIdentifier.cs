@@ -20,9 +20,10 @@ namespace TimeSeriesAnalysis.Dynamic
         // this factor is how much to weigh covBtwDestAndYset into a joint objective function with dEstVariance
         // covBtwDestAndYset sometimes can be a "tiebreaker" in cases where dEstVariance has a "flat" region and no clear 
         // minimum, but should not be too large either to overpower clear minima in dEstVariance
-        const double v2_factor =0.1;// should be much smaller than one
+        const double v2_factor = 0.01;// should be much smaller than one
+        const double v3_factor = 0.0;
 
-        const double v3_factor = 0.1;
+        const double v1_Strength_Threshold = 0.2;// if below this value, then v2 and v3 are added to the objective function.
 
         /// <summary>
         /// list of linear gains tried in global search
@@ -94,8 +95,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 // note that in some cases, the "true" value is between two points on the grid,
                 // so it is not unexpected to have a vaue on one side be quite close to the value at "minIndex"
                 double valBeside = Math.Max(valAbove, valBelow);
-                //return new Tuple<double,int>(100 * (1 - val / valBeside),minIndex);
-                return new Tuple<double, int>(valBeside-val, minIndex);
+                return new Tuple<double,int>(100 * (1 - val / valBeside),minIndex);
+              //  return new Tuple<double, int>(valBeside-val, minIndex);
             }
 
             double[] Scale(double[] v_in)
@@ -111,12 +112,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-
             Vec vec = new Vec();
             bool doNew = true;
             if (doNew)
             {
-                const double v1_Strength_Threshold = 0.2;
+
                 var v1 = dEstVarianceList.ToArray();
                 var v2 = covBtwDestAndYsetList.ToArray();
                 var v3 = covBtwDestAndUexternal.ToArray();
