@@ -981,7 +981,7 @@ namespace TimeSeriesAnalysis.Dynamic
         // bias is not always accurate for dynamic model identification 
         // as it is as "difference equation" that matches the changes in the 
         //
-        private (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
+        static public (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
         {
             UnitDataSet internalData = new UnitDataSet(dataSet);
             parameters.Bias = 0;
@@ -1023,13 +1023,23 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>identified model, to check if identification suceeded, check 
         /// .modelParameters.Fitting.WasAbleToIdentify</returns>
         public UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, 
-            double inputProcessGainValueToFix, double u0, double uNorm)
+            double inputProcessGainValueToFix, double u0_fixedInput, double uNorm_fixedInput)
         {
             var internalDataset = new UnitDataSet(dataSet);
             var vec = new Vec();
-            internalDataset.D = vec.Multiply(vec.Multiply(vec.Subtract(dataSet.U.GetColumn(inputIdxToFix), u0),uNorm),
+            var D_fixedInput = vec.Multiply(vec.Multiply(vec.Subtract(dataSet.U.GetColumn(inputIdxToFix), u0_fixedInput),uNorm_fixedInput),
                 inputProcessGainValueToFix);
-   
+            if (dataSet.D != null)
+            {
+                internalDataset.D = vec.Add(internalDataset.D, D_fixedInput);
+            }
+            else
+            {
+                internalDataset.D = D_fixedInput;
+            }
+
+
+
             // remove the input that is frozen from the dataset given to the "identify" algorithm
             double[,] newU = new double[internalDataset.U.GetNRows(),internalDataset.U.GetNColumns()-1];
             int writeColIdx = 0;
@@ -1060,8 +1070,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (curInputIdx == inputIdxToFix)
                 {
                     newLinGainsList.Add(inputProcessGainValueToFix);
-                    newU0List.Add(u0);
-                    newUNormList.Add(uNorm);
+                    newU0List.Add(u0_fixedInput);
+                    newUNormList.Add(uNorm_fixedInput);
                 }
                 else
                 {
