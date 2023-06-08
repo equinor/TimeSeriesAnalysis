@@ -154,9 +154,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             vec.Min(objFun, out min_ind);
                 return new Tuple<UnitModel, bool>(new UnitModel(unitParametersList.ElementAt(min_ind)), true);
- 
-
-        }
+         }
     }
 
 
@@ -495,12 +493,14 @@ namespace TimeSeriesAnalysis.Dynamic
             UnitModel unitModel_run1, 
             double pidProcessInputInitalGainEstimate, double min_gain, double max_gain, int numberOfGlobalSearchIterations = 40)
         {
-           // bool isOK;
+             // bool isOK;
             var range = max_gain - min_gain;
             var searchResults = new ClosedLoopGainGlobalSearchResults();
             var gainUnc = range / numberOfGlobalSearchIterations;
             int nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
             Vec vec = new Vec();
+            bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint, dataSet.IndicesToIgnore) == vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
+
             double[] d_prev = null;
             for (var pidLinProcessGain = min_gain; pidLinProcessGain <= max_gain; pidLinProcessGain += range / numberOfGlobalSearchIterations)
             {
@@ -543,7 +543,24 @@ namespace TimeSeriesAnalysis.Dynamic
                         // this problem is perhaps have been better to solve on "diff" form?
                         // otherwise it tends to find paramters to minimize the total squared error to account for 
                         // non-zero disturbances
-                        var model_dist = ident_d.IdentifyLinearAndStaticDiff(ref dataSet_d, true);
+
+                        // it seems that if there is setpoint changes the regular regression works 
+                        // better, but if the data is mainly excited by an unknown disturbance, 
+                        // then the "diff" version of the regression works better. 
+                        UnitModel model_dist;
+                        if (doesSetpointChange)
+                        {
+                            model_dist = ident_d.IdentifyLinear(ref dataSet_d, false);
+                        }
+                        else
+                        {
+                            model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, false);
+                        }
+                        //var model_dist_diff = ident_d.IdentifyLinearDiff(ref dataSet_d, false);
+                       // var model_dist_nodiff = ident_d.IdentifyLinear(ref dataSet_d, false);
+
+                     //   var model_dist = model_dist_nodiff;
+                        //var model_dist = ident_d.IdentifyLinearAndStaticDiff(ref dataSet_d, false); 
                         // it seems that the gains for external inputs u in model_dist are accurate if 
                         // and when pidLinProcessGain matches the "true" estimate.
                         d_est_adjusted = vec.Subtract(d_est, dataSet_d.Y_sim);
@@ -558,7 +575,6 @@ namespace TimeSeriesAnalysis.Dynamic
                             }
                             else
                             {
-                        
                                 alternativeMISOModel.modelParameters.LinearGains[inputIdx] =
                                     model_dist.modelParameters.LinearGains[curModelDistInputIdx];
                                 curModelDistInputIdx++;

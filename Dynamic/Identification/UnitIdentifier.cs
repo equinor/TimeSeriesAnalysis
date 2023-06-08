@@ -107,6 +107,24 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return Identify_Internal(ref dataSet, u0, uNorm, true,false, doEstimateTimeDelay);
         }
+
+        /// <summary>
+        /// Identifies the "Default" process model based on differences y[k]-y[k-1] that best fits the dataSet given, but disables curvatures
+        /// </summary>
+        /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
+        /// a new y_sim is also added</param>
+        /// <param name="doEstimateTimeDelay">if set to false, estimation of time delays are disabled</param>
+        /// <param name="u0">Optionally sets the local working point for the inputs
+        /// around which the model is to be designed(can be set to <c>null</c>)</param>
+        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
+        /// <returns> the identified model parameters and some information about the fit</returns>
+        public UnitModel IdentifyLinearDiff(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)
+        {
+            ConvertDatasetToDiffForm(ref dataSet);
+            return Identify_Internal(ref dataSet, u0, uNorm, true, false, doEstimateTimeDelay);
+        }
+
+
         /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given, but disables curvatures and time-constants
         /// </summary>
