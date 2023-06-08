@@ -982,21 +982,7 @@ namespace TimeSeriesAnalysis
                     results.Param95prcConfidence = vec.Multiply(SE, 1.96);
 
                     int thetaLength = regression.Weights.Length;
-
-                    //                    results.VarCovarMatrix = Accord.Math.Matrix.Inverse(informationMatrix);
                     results.VarCovarMatrix = Accord.Math.Matrix.PseudoInverse(informationMatrix);
-
-                    // old and wrong appraoch to calculating the covariance matrix
-                    /*  
-                     * results.VarCovarMatrix = new double[thetaLength][];
-                    for (int i = 0; i < thetaLength; i++)
-                    {
-                        results.VarCovarMatrix[i] = new double[thetaLength];
-                        for (int j = 0; j < thetaLength; j++)
-                        {
-                            results.VarCovarMatrix[i][j] = mse * Math.Sqrt(Math.Abs(informationMatrix[i][j]));
-                        }
-                         }*/
                 }
                 catch
                 {

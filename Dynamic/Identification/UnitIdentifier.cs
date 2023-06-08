@@ -10,6 +10,7 @@ using System.Diagnostics;
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using System.Net.Http.Headers;
+using System.Data;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -122,6 +123,39 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Identifies the process model that best fits the dataSet given by minimizing differences y[k]-y[k-1], but disables curvatures and time-constants.
+        /// </summary>
+        /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
+        /// a new y_sim is also added</param>
+        /// <param name="doEstimateTimeDelay">if set to false, modeling does not identify time-delays</param>
+        /// <param name="u0">Optionally sets the local working point for the inputs
+        /// around which the model is to be designed(can be set to <c>null</c>)</param>
+        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
+        /// <returns> the identified model parameters and some information about the fit</returns>
+        public UnitModel IdentifyLinearAndStaticDiff(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)
+        {
+            ConvertDatasetToDiffForm(ref dataSet);
+            return Identify_Internal(ref dataSet, u0, uNorm, false, false, doEstimateTimeDelay);
+        }
+
+        private void ConvertDatasetToDiffForm(ref UnitDataSet dataSet)
+        {
+            Vec vec = new Vec();
+            double[] Y_meas_old = new double[dataSet.Y_meas.Length];
+            dataSet.Y_meas.CopyTo(Y_meas_old, 0);
+            dataSet.Y_meas = vec.Diff(Y_meas_old);
+
+            double[,] U_old = new double[dataSet.U.GetNRows(), dataSet.U.GetNColumns()];
+            for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
+            {
+                Matrix.ReplaceColumn(dataSet.U, colIdx, vec.Diff(dataSet.U.GetColumn(colIdx)));
+            }
+        }
+
+
+
+
+        /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
@@ -160,7 +194,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
                         }
                         //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
-                        if (vec.Max(u) == vec.Min(u))// input is constnat
+                        if (vec.Max(u) == vec.Min(u))// input is constant
                         {
                             constantInputInds.Add(k);
                             uNorm[k] = Double.PositiveInfinity;

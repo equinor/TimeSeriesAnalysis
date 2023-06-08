@@ -541,10 +541,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            // TODO: debugging, if given the correct linear gains, observe that the effect of setpont and external U changes
-            // disappear from the unitDataSet_adjusted
-//            unitModel.modelParameters.LinearGains = new double[] { 0.5, 0.25 };
-
             // using the pidParams and unitModel, and if relevant any given y_set and external U, try to subtract the effects of 
             // non-disturbance related changes in the dataset producing "unitDataSet_adjusted"
             var unitDataSet_adjusted = RemoveSetpointAndOtherInputChangeEffectsFromDataSet(unitDataSet_raw, unitModel, pidInputIdx, pidParams);

@@ -104,24 +104,17 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var externalU1 = TimeSeriesCreator.Step(N/8, N, 5, 10);
             var externalU2 = TimeSeriesCreator.Step(N*5/8, N, 2, 1);
             var yset = TimeSeriesCreator.Step(N*3/8, N, 20, 18);
+            var trueParamters = staticModelParameters.CreateCopy();
             if (pidInputIdx == 1)
             {
+
                 double[] oldGains = new double[3];
-                staticModelParameters.LinearGains.CopyTo(oldGains);
-                staticModelParameters.LinearGains =  new double[] { oldGains[1], oldGains[0], oldGains[2] };
+                trueParamters.LinearGains.CopyTo(oldGains);
+                trueParamters.LinearGains =  new double[] { oldGains[1], oldGains[0], oldGains[2] };
             }
-            GenericMISODisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, externalU1,externalU2,
+            GenericMISODisturbanceTest(new UnitModel(trueParamters, "StaticProcess"), trueDisturbance, externalU1,externalU2,
                 doNegative, true,yset, pidInputIdx);
         }
-
-
-
-        //TODO: problem with this one is that
-        //- destVariance and
-        //- covBetweenYsetAndDest
-        // have a minium at model index 40, while model index 47 is "true"
-        // in the pass1 of global search in closedloopidentifier step1. 
-        // 
         
         [TestCase(0, false)]
         public void StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
@@ -209,6 +202,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 usedProcParameters.Bias = 50;// 
                 usedProcessModel.SetModelParameters(usedProcParameters);
                 pidParameters1.Kp = -pidParameters1.Kp;
+                trueProcessModel.SetModelParameters(usedProcParameters);
             }
             // create synthetic dataset
             var pidModel1 = new PidModel(pidParameters1, "PID1");

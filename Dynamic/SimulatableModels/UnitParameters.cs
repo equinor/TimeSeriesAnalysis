@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Accord.Math;
+using System.Collections.Generic;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -96,6 +97,8 @@ namespace TimeSeriesAnalysis.Dynamic
             Fitting = null;
             errorsAndWarningMessages = new List<UnitdentWarnings>();
         }
+
+
         /// <summary>
         /// Get the number of inputs U to the model.
         /// </summary>
@@ -110,15 +113,26 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public UnitParameters CreateCopy()
         {
+            // arrays are reference types, so by default only the reference is copied, use
+            // .clone here to make an actual new object with a new reference
             UnitParameters newP = new UnitParameters();
             newP.Y_min = Y_min;
             newP.Y_max = Y_max;
             newP.TimeConstant_s = TimeConstant_s;
             newP.TimeDelay_s = TimeDelay_s;
-            newP.LinearGains = LinearGains;
-            newP.LinearGainUnc = LinearGainUnc;
-            newP.Curvatures = Curvatures;
-            newP.CurvatureUnc = CurvatureUnc;
+            newP.LinearGains = (double[])LinearGains.Clone();
+            if (LinearGainUnc == null)
+                newP.LinearGainUnc = null;
+            else
+                newP.LinearGainUnc = (double[])LinearGainUnc.Clone();
+            if (Curvatures == null)
+                newP.Curvatures = null;
+            else
+                newP.Curvatures = (double[])Curvatures.Clone();
+            if (CurvatureUnc == null)
+                newP.CurvatureUnc = null;
+            else
+                newP.CurvatureUnc = (double[])CurvatureUnc.Clone();
             newP.U0 = U0;
             newP.UNorm = UNorm;
             newP.Bias = Bias;

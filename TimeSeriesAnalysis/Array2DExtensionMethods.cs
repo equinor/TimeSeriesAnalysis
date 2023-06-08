@@ -125,6 +125,8 @@ namespace TimeSeriesAnalysis
 
         static public int GetNColumns(this double[,] matrix)
         {
+            if (matrix == null)
+                return 0;
             return matrix.GetLength(1);
         }
 
@@ -135,6 +137,8 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         static public int GetNColumns(this double[][] matrix)
         {
+            if (matrix == null)
+                return 0;
             return matrix.ElementAt(0).GetLength(0);
         }
 
@@ -144,6 +148,8 @@ namespace TimeSeriesAnalysis
 
         static public int GetNRows(this double[,] matrix)
         {
+            if (matrix == null)
+                return 0;
             return matrix.GetLength(0);
         }
 
@@ -154,6 +160,8 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         static public int GetNRows(this double[][] matrix)
         {
+            if (matrix == null)
+                return 0;
             return matrix.GetLength(0);
         }
 
@@ -165,10 +173,6 @@ namespace TimeSeriesAnalysis
         {
             return Array2D<double>.Transpose(matrix);
         }
-
-
-
-
 
     }
 }
