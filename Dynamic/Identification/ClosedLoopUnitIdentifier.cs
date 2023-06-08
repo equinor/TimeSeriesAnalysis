@@ -659,9 +659,10 @@ namespace TimeSeriesAnalysis.Dynamic
                         bestUnitModel.modelParameters.LinearGainUnc[pidInputIdx] = gainUnc;
                     }
                 }
+                bestUnitModel.modelParameters.Fitting = new FittingInfo();
+                bestUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
             }
-            bestUnitModel.modelParameters.Fitting = new FittingInfo();
-            bestUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
+
             return new Tuple<UnitModel,double>(bestUnitModel, gainUnc);
         }
 

@@ -117,6 +117,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
         
         [TestCase(0, false)]
+     //   [TestCase(1, false)]
         public void StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
         {
             UnitParameters twoInputModel = new UnitParameters
@@ -129,6 +130,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
             var trueDisturbance = TimeSeriesCreator.Step(N/2, N,0,1);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 5, 10);
+            var externalU2 = TimeSeriesCreator.Step(N * 5 / 8, N, 2, 1);
             var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
 
             GenericMISODisturbanceTest(new UnitModel(twoInputModel, "StaticProcess"), trueDisturbance, externalU1, null,
@@ -136,27 +138,22 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         [TestCase(0, false)]
+        [TestCase(0, true)]
+//        [TestCase(1, false)]
         public void StaticMISO_NO_setpointChange_detectsProcessOk(int pidInputIdx, bool doNegative)
         {
-            UnitParameters twoInputModel = new UnitParameters
-            {
-                TimeConstant_s = 0,
-                LinearGains = new double[] { 0.5, 0.25 },
-                TimeDelay_s = 0,
-                Bias = -10
-            };
 
             var trueDisturbance = TimeSeriesCreator.Step(N / 2, N, 0, 1);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 35, 40);
+            var externalU2 = TimeSeriesCreator.Step(N * 5 / 8, N, 2, 1);
             var yset = TimeSeriesCreator.Constant(20,N);
 
-            GenericMISODisturbanceTest(new UnitModel(twoInputModel, "StaticProcess"), trueDisturbance, externalU1, null,
+            GenericMISODisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, externalU1, externalU2,
                 doNegative, true, yset, pidInputIdx);
         }
 
-
         [TestCase(0)]
-     //   [TestCase(1)]
+      //  [TestCase(1)]
         public void DynamicMISO_no_disturbance_detectsProcessOk(int pidInputIdx)
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
