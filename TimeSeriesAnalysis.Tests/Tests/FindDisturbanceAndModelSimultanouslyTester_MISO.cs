@@ -115,8 +115,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 doNegative, true,yset, pidInputIdx);
         }
         
-        [TestCase(0, false,false)] // fails when adding thrid input??
-       [TestCase(1, false,false)]
+        [TestCase(0, false,false)] 
+        [TestCase(1, false,false)]
+        [TestCase(0, false, true)] 
+        [TestCase(1, false, true)]
         public void StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(int pidInputIdx, 
             bool doNegative, bool addThirdInput)
         {
@@ -162,21 +164,25 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(1, false)]
         public void StaticMISO_NO_setpointChange_detectsProcessOk(int pidInputIdx, bool doNegative)
         {
+            UnitParameters trueParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 0.5, 0.25, 0.15 },
+                TimeDelay_s = 0,
+                Bias = 10
+            };
 
             var trueDisturbance = TimeSeriesCreator.Step(N / 2, N, 0, 1);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 35, 40);
             var externalU2 = TimeSeriesCreator.Step(N * 5 / 8, N, 2, 1);
             var yset = TimeSeriesCreator.Constant(20,N);
 
-            var trueParameters = staticModelParameters.CreateCopy();
             if (pidInputIdx == 1)
             {
                 double[] oldGains = new double[3];
                 trueParameters.LinearGains.CopyTo(oldGains);
                 trueParameters.LinearGains = new double[] { oldGains[1], oldGains[0], oldGains[2] };
             }
-
-
             GenericMISODisturbanceTest(new UnitModel(trueParameters, "StaticProcess"), trueDisturbance, externalU1, externalU2,
                 doNegative, true, yset, pidInputIdx);
         }
@@ -185,11 +191,19 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(1)]
         public void DynamicMISO_no_disturbance_detectsProcessOk(int pidInputIdx)
         {
+            UnitParameters trueParameters = new UnitParameters
+            {
+                TimeConstant_s = 8,
+                LinearGains = new double[] { 0.5, 0.25, -0.55 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 5, 10);
             var externalU2 = TimeSeriesCreator.Step(N *5 / 8, N, 2, 1);
             var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
-            GenericMISODisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance, externalU1,externalU2,false,true,
+            GenericMISODisturbanceTest(new UnitModel(trueParameters, "DynamicProcess"), trueDisturbance, externalU1,externalU2,false,true,
                 yset, pidInputIdx,20);
         }
 

@@ -358,6 +358,9 @@ namespace TimeSeriesAnalysis.Dynamic
                         curDevIsDecreasing = false;
                     distDevs.Add(curDev);
                 }
+
+                // TODO: it would be possible to divide the time-constant into a time-delay and a time constant 
+
                 if (candiateTc_s > 0)
                 {
                     candiateTc_s -= timeBase;
@@ -435,17 +438,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
                 if (wasGainGlobalSearchDone)
                 {
-                    if (onlyDidTwoSteps)
-                    {
-                        identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
-                    }
-                    else
-                    {
-                        identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/4 step";
-                    }
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
                 }
                 else
-                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop v1.0";
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
             }
             return (identUnitModel,disturbance);
