@@ -207,6 +207,28 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 yset, pidInputIdx,20);
         }
 
+
+        [TestCase(0)]
+
+        public void DynamicMISO_no_disturbance_NO_setpointchange_CHangeinUexternaldetectsProcessOk(int pidInputIdx)
+        {
+            // similar to PidSingle demo case in front end
+            UnitParameters trueParameters = new UnitParameters
+            {
+                TimeConstant_s = 10,
+                LinearGains = new double[] { 1, 0.5},
+                TimeDelay_s = 5,
+                Bias = 5
+            };
+
+            var trueDisturbance = TimeSeriesCreator.Constant(0, N);
+            var externalU1 = TimeSeriesCreator.Step(N / 8, N, 50, 45);
+            var yset = TimeSeriesCreator.Constant(60, N);
+            GenericMISODisturbanceTest(new UnitModel(trueParameters, "DynamicProcess"), trueDisturbance, 
+                externalU1, null, false, true, yset, pidInputIdx, 20);
+        }
+
+
         public void GenericMISODisturbanceTest  (UnitModel trueProcessModel, double[] trueDisturbance,
             double[] externalU1, double[] externalU2, bool doNegativeGain,
             bool doAssertResult=true, double[] yset=null, int pidInputIdx = 0,

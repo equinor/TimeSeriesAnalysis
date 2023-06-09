@@ -22,7 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
         // covBtwDestAndYset sometimes can be a "tiebreaker" in cases where dEstVariance has a "flat" region and no clear 
         // minimum, but should not be too large either to overpower clear minima in dEstVariance
         const double v2_factor = 0.01;// should be much smaller than one
-        const double v3_factor = 0.0;
+        const double v3_factor = 0.10;
 
         const double v1_Strength_Threshold = 0.2;// if below this value, then v2 and v3 are added to the objective function.
 
@@ -75,6 +75,23 @@ namespace TimeSeriesAnalysis.Dynamic
             this.covBtwDestAndUexternal.Add(covBtwDestAndUexternal);
         }
 
+        /// <summary>
+        /// Determine the best model after finished the global search for the process gain of the pid-input, by evaluating all the 
+        /// saved KPIs in a structured way. This method includes some heuristics.
+        /// 
+        /// Remember that "excitation" in a closed-loop system can happen in noe of three ways:
+        ///  1) a change in the disturbance signal 
+        ///  2) a change in the setpoint of the PID-controller or
+        ///  3) a change in external input u 
+        ///  4) any combination of the above three.
+        /// 
+        /// It is assumed that the disturbance does not depend on the external u nor on the setpoint y, 
+        /// and this motivates searching for the minima in v2 and v3, respectively. 
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="initalGainEstimate"></param>
+        /// <returns></returns>
         public Tuple<UnitModel,bool> GetBestModel(double initalGainEstimate)
         {
             if (unitParametersList.Count()== 0)
@@ -198,7 +215,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
         {
             bool wasGainGlobalSearchDone = false;
-            bool onlyDidTwoSteps = false;
             bool doTimeDelayEstOnRun1 = false;
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
             {
@@ -289,7 +305,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     // when debugging, it might be advantageous to set min_gain equal to the known true value
                     //TODO:Remvoe!!!
-                   // min_gain = 0.5;
+                    //min_gain = 1;
 
                     // first pass(wider grid with larger grid size)
                     var retPass1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx, 
@@ -506,14 +522,20 @@ namespace TimeSeriesAnalysis.Dynamic
                         // better, but if the data is mainly excited by an unknown disturbance, 
                         // then the "diff" version of the regression works better. 
                         UnitModel model_dist;
-                        if (doesSetpointChange)
-                        {
-                            model_dist = ident_d.IdentifyLinear(ref dataSet_d, false);
-                        }
-                        else
-                        {
-                            model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, false);
-                        }
+                        // really unsure about if it is better to use one or the other here!
+                         if (doesSetpointChange)
+                         {
+                             model_dist = ident_d.IdentifyLinear(ref dataSet_d, false);
+                         }
+                         else
+                         {
+                            // need to enable time delay estimatino here, otherwise 
+                            // "diff" estimate is very sensitive to incorrect dynamics.
+                             model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, true);
+                         }
+
+                        // model_dist = ident_d.IdentifyLinear(ref dataSet_d, false);
+
                         // debug plot:
                         if (false)
                         {
@@ -591,6 +613,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 double covarianceBtwDestAndYset = Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.Y_setpoint, dataSet.IndicesToIgnore));
 
                 // v3: just choose the gain that gives the least "variance" in d_est
+                // this is not completely general, if there is no change in the setpoint and zero disturbance, 
+                // then a process gain of zero appears to give the smallest value here. 
+                // u_pid_adjusted is the variance
+
+
                 var dest_variance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value;
 
                 // v4:  if MISO: the disturbance should be as indpendent of the external inputs as possible
@@ -604,8 +631,8 @@ namespace TimeSeriesAnalysis.Dynamic
                             continue;
                         }
                         covarianceBtwDestAndUexternal +=
-                            Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore));
-                        //Math.Abs(Measures.Covariance(d_est, dataSet.U.GetColumn(inputIdx), false));
+                         //   Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore));
+                        Math.Abs(Measures.Covariance(d_est, dataSet.U.GetColumn(inputIdx), false));
                         // Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(nonPidIdx), dataSet.IndicesToIgnore));
                     }
                 }
