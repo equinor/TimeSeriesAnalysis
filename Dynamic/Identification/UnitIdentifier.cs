@@ -11,6 +11,7 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using System.Net.Http.Headers;
 using System.Data;
+using System.Reflection;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -120,8 +121,18 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns> the identified model parameters and some information about the fit</returns>
         public UnitModel IdentifyLinearDiff(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)
         {
-            ConvertDatasetToDiffForm(ref dataSet);
-            return Identify_Internal(ref dataSet, u0, uNorm, true, false, doEstimateTimeDelay);
+            var diffDataSet = new UnitDataSet(dataSet);
+            ConvertDatasetToDiffForm(ref diffDataSet);
+            var model =  Identify_Internal(ref diffDataSet, u0, uNorm, true, false, doEstimateTimeDelay);
+
+            if (model.modelParameters.Fitting.WasAbleToIdentify)
+            {
+                var simulator = new UnitSimulator(model);
+                simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
+                model.SetFittedDataSet(dataSet);
+            }
+            return model;
+
         }
 
 
@@ -365,6 +376,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return model;
         }
+
+
         // for three inputs, return every combination of true false
         // except false-false-false and true-true-true, (but the other six)
         private List<bool[]> GetAllNonzeroBitArrays(int size)
