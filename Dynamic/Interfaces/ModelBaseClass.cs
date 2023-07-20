@@ -27,6 +27,15 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public ModelType processModelType = ModelType.UnTyped;
 
+        /// <summary>
+        /// Optional visual position of model when displayed as graph: x-axis position(origo is top left)
+        /// </summary>
+        public double? x;
+
+        /// <summary>
+        /// Optional visual position of model when displayed as graph: y-axis position(origo is top left)
+        /// </summary>
+        public double? y;
 
         /// <summary>
         /// Get the ID of the model
