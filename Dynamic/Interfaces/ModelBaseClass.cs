@@ -25,6 +25,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public List<string> additiveInputIDs;
         public string outputID=null;
 
+
+
         public ModelType processModelType = ModelType.UnTyped;
 
         /// <summary>
@@ -36,6 +38,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Optional visual position of model when displayed as graph: y-axis position(origo is top left)
         /// </summary>
         public double? y;
+
+
+        /// <summary>
+        /// Optional color string when model is displayed as a graph
+        /// </summary>
+        public string color;
 
         /// <summary>
         /// Get the ID of the model
