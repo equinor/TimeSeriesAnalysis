@@ -4,9 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	<DefineConstants>$(DefineConstants);WithDocs</DefineConstants>
-    <Description>Analysis of time-series that may include transients or dynamics, focusing on industrial automation.
-Identification of dynamic models, dynamic simulation, filtering and PID-control.
-</Description>
+    <Description>Time-series modeling and simulation, based on system identification. Supports transients/dynamic and static models, filters and PID-control. </Description>
     <Copyright>Equinor 2022</Copyright>
     <PackageProjectUrl>https://equinor.github.io/TimeSeriesAnalysis</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
