@@ -30,6 +30,11 @@ namespace TimeSeriesAnalysis.Dynamic
         public ModelType processModelType = ModelType.UnTyped;
 
         /// <summary>
+        /// Optional comment 
+        /// </summary>
+        public string comment;
+
+        /// <summary>
         /// Optional visual position of model when displayed as graph: x-axis position(origo is top left)
         /// </summary>
         public double? x;
