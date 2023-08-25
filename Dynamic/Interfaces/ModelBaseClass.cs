@@ -22,9 +22,22 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public string[] ModelInputIDs;
 
+
+        /// <summary>
+        /// Unique signal IDs that are added to the output of the model(typically a disturbance) 
+        /// </summary>
         public List<string> additiveInputIDs;
+
+        /// <summary>
+        /// Unique signal ID that defines the name of output signal of the model
+        /// </summary>
         public string outputID=null;
 
+        /// <summary>
+        /// Optional unique optional signal ID to be used for fitting/identification, if this is different from outputID.
+        /// This tag is mainly for modeling estimated disturbance signals.
+        /// </summary>
+        public string outputIdentID = null;
 
 
         public ModelType processModelType = ModelType.UnTyped;
