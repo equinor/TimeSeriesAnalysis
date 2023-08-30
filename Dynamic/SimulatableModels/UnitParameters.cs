@@ -22,7 +22,18 @@ namespace TimeSeriesAnalysis.Dynamic
         /// the maximum allowed output value(if set to NaN, no maximum is applied)
         /// </summary>
         public double Y_max = double.NaN;
-        
+
+
+        /// <summary>
+        /// The minimum input value(if set to NaN, no minimum is applied)
+        /// </summary>
+        public double U_min = double.NaN;
+
+        /// <summary>
+        /// the maximum allowed input value(if set to NaN, no maximum is applied)
+        /// </summary>
+        public double U_max = double.NaN;
+
         /// <summary>
         /// A time constant in seconds, the time a 1. order linear system requires to do 63% of a step response.
         /// Set to zero to turn off time constant in model.
