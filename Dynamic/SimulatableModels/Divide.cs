@@ -25,6 +25,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="ID"></param>
         public Divide(DivideParameters divideParameters, string ID)
         {
+            this.processModelType = ModelType.Divide;
             this.divideParameters = divideParameters;
             this.ID = ID;
         }
