@@ -556,8 +556,41 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 timeBase_s, "UnitTest_MISO3Serial");*/
 
         }
-
         [Test]
+        public void Divide_RunsAndConverges()
+        {
+            DivideParameters divParams = new DivideParameters();
+
+
+            Divide divideModel = new Divide(divParams, "divider");
+
+
+
+            var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { processModel1, processModel2, divideModel });
+
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(60, N, 50, 55));
+            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(180, N, 50, 45));
+
+            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(90, N, 30, 45));
+            inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(12, N, 60, 45));
+
+            plantSim.ConnectModels(processModel1, divideModel, (int)INDEX.FIRST);
+            plantSim.ConnectModels(processModel2, divideModel, (int)INDEX.SECOND);
+
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            Assert.IsTrue(isOk);
+            SISOTests.CommonAsserts(inputData, simData);
+
+            SerializeHelper.Serialize("Divide", plantSim, inputData, simData);
+
+        }
+
+
+            [Test]
         public void TwoProcessesToOne_RunsAndConverges()
         {
 

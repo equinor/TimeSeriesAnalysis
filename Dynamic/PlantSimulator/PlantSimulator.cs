@@ -554,12 +554,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
                 return false;
             }
+            // if you have multiple models for the same output, this test will not work!
+            /*
             if (simData.GetSignalNames().Length < orderedSimulatorIDs.Count())
             {
                 Shared.GetParserObj().AddError("PlantSimulator initalized only "+ simData.GetSignalNames().Length+
                     ". Expected "+ orderedSimulatorIDs.Count());
                 return false;
-            }
+            }*/
 
             // warm start every model
             int timeIdx = 0;
