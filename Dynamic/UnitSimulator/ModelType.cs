@@ -37,7 +37,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Select-block
         /// </summary>
-        Select = 4
+        Select = 4,
+
+        /// <summary>
+        /// Divide block
+        /// </summary>
+        Divide = 5
+
 
     }
 }
