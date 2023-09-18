@@ -69,11 +69,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     )
                 {
                     ret = divideParameters.NanValueOut;
-                 
                 }
                 else
                 {
-                    ret = Math.Max(Math.Min(inputsU[0] / inputsU[1], divideParameters.Y_max), divideParameters.Y_min);
+                    ret = inputsU[0] / inputsU[1];
+                    ret = Math.Min(ret, divideParameters.Y_max);
+                    ret = Math.Max(ret, divideParameters.Y_min);
                 }
                 return new double[] { ret };
             }
