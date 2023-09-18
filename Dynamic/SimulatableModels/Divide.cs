@@ -49,13 +49,23 @@ namespace TimeSeriesAnalysis.Dynamic
             if (inputsU.Length == 2)
             {
                 double ret = 0;
-                if (inputsU[1] != 0 && inputsU[1]!= divideParameters.NanValueIn)
+                if (inputsU[1] == 0 || // divide by zero
+                    inputsU[1]== divideParameters.NanValueIn||
+                    inputsU[0] == divideParameters.NanValueIn||
+                    inputsU[1] == badDataID ||
+                    inputsU[0] == badDataID ||
+                    Double.IsNaN(inputsU[0]) ||
+                    Double.IsNaN(inputsU[1]) ||
+                    Double.IsInfinity(inputsU[0]) ||
+                    Double.IsInfinity(inputsU[1]) 
+                    )
                 {
-                    ret = Math.Max(Math.Min(inputsU[0] / inputsU[1], divideParameters.Y_max), divideParameters.Y_min);
+                    ret = divideParameters.NanValueOut;
+                 
                 }
                 else
                 {
-                    ret = divideParameters.NanValueOut;
+                    ret = Math.Max(Math.Min(inputsU[0] / inputsU[1], divideParameters.Y_max), divideParameters.Y_min);
                 }
                 return new double[] { ret };
             }
