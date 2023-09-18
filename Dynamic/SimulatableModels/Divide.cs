@@ -17,7 +17,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class Divide : ModelBaseClass, ISimulatableModel 
     {
-        private DivideParameters divideParameters;
+        public DivideParameters divideParameters;
 
         /// <summary>
         /// Constructor
@@ -27,7 +27,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.processModelType = ModelType.Divide;
             this.divideParameters = divideParameters;
-
             this.ID = ID;
         }
 
