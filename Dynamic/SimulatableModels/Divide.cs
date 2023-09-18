@@ -27,12 +27,18 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.processModelType = ModelType.Divide;
             this.divideParameters = divideParameters;
+
             this.ID = ID;
         }
 
         public bool IsModelSimulatable(out string explain)
         {
-            explain= "";
+            if (divideParameters == null)
+            {
+                explain = "divideParameters is null";
+                return false;
+            }
+            explain = "";
             return true;
         }
 
@@ -46,6 +52,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double[] Iterate(double[] inputsU, double timeBase_s,double badDataID = -9999)
         {
+            if (divideParameters == null)
+                return new double[] { divideParameters.NanValueOut };
+
             if (inputsU.Length == 2)
             {
                 double ret = 0;
