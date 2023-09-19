@@ -371,7 +371,7 @@ namespace TimeSeriesAnalysis.Dynamic
                          }
                          else
                          {
-                            // need to enable time delay estimatino here, otherwise 
+                            // need to enable time delay estimation here, otherwise 
                             // "diff" estimate is very sensitive to incorrect dynamics.
                              model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, true);
                          }

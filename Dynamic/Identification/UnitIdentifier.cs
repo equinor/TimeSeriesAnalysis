@@ -74,8 +74,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="u0">Optionally sets the local working point for the inputs
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
+        /// <param name="uMinFit">optional minimum values to include in tuning data</param>
+        /// <param name="uMaxFit">optional minimum values to include in tuning dat</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)
+        public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null, 
+            double[] uMinFit=null, double[] uMaxFit = null)
         {
             return Identify_Internal(ref dataSet,u0,uNorm);
         }
@@ -347,6 +350,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 modelParameters = modelParams_StaticAndNoCurvature;
                 timeDelayWarnings.Add(ProcessTimeDelayIdentWarnings.FallbackToLinearStaticModel);
             }
+            // check if the static model is better than the dynamic model. 
+            else if (modelParameters.Fitting.WasAbleToIdentify && modelParams_StaticAndNoCurvature.Fitting.WasAbleToIdentify)
+            {
+                if (modelParams_StaticAndNoCurvature.Fitting.RsqAbs > modelParameters.Fitting.RsqAbs)
+                     modelParameters = modelParams_StaticAndNoCurvature;
+
+            }
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
             // if time-delay had issues, then fallback to using the first dynamic model without timedelay
             // more effort could be put on improving the logic here in the future, but this is a simple workaround for now
@@ -365,15 +375,22 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 modelParameters.AddWarning(UnitdentWarnings.CorrelatedInputsU);
             }
+
+            modelParameters.U_min_fit = dataSet.GetUminFit();
+            modelParameters.U_max_fit = dataSet.GetUmaxFit();
+
             // END While loop 
             /////////////////////////////////////////////////////////////////
             var model = new UnitModel(modelParameters, dataSet);
+
+            // simulate
             if (modelParameters.Fitting.WasAbleToIdentify)
             {
                 var simulator = new UnitSimulator(model);
                 simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
                 model.SetFittedDataSet(dataSet);
-            }
+             }
+
             return model;
         }
 
@@ -462,6 +479,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
+                // NB! for static model, y and u are not shifted by one sample!
+                idxStart = timeDelay_samples;
                 solverID += "Static";
                 for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
@@ -766,6 +785,10 @@ namespace TimeSeriesAnalysis.Dynamic
             // in these cases varCovarMatrix is null
 
             const double maxAbsValueRegression = 10000;
+
+            parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
+            parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
+
             if (regResults.Param == null || !regResults.AbleToIdentify)
             {
                 parameters.Fitting.WasAbleToIdentify = false;
@@ -806,16 +829,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
                     parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
                 }
-                parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
-                parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
                 parameters.Fitting.RsqDiff = regResults.Rsq;
                 parameters.Fitting.ObjFunValDiff = regResults.ObjectiveFunctionValue;
-              //  parameters.Fitting.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
-              //  parameters.Fitting.RsqAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, null, 0) * 100;
-              //  parameters.Fitting.RsqAbs = SignificantDigits.Format(parameters.Fitting.RsqAbs, nDigits);
                 parameters.Fitting.RsqDiff = SignificantDigits.Format(parameters.Fitting.RsqDiff, nDigits);
-              //  parameters.Fitting.ObjFunValDiff = SignificantDigits.Format(parameters.Fitting.ObjFunValDiff, nDigits);
-             //    parameters.Fitting.ObjFunValAbs = SignificantDigits.Format(parameters.Fitting.ObjFunValAbs, nDigits);
 
                 var fitting = parameters.Fitting;
                 CalcCommonFitMetrics(ref fitting, dataSet);

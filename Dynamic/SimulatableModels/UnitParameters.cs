@@ -25,14 +25,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// The minimum input value(if set to NaN, no minimum is applied)
+        /// The minimum input value(if set to NaN,then fitting considers all data)
         /// </summary>
-        public double U_min = double.NaN;
+        public double[] U_min_fit = null;
 
         /// <summary>
-        /// the maximum allowed input value(if set to NaN, no maximum is applied)
+        /// the maximum allowed input value(if set to NaN, then fitting considers all data)
         /// </summary>
-        public double U_max = double.NaN;
+        public double[] U_max_fit = null;
 
         /// <summary>
         /// A time constant in seconds, the time a 1. order linear system requires to do 63% of a step response.

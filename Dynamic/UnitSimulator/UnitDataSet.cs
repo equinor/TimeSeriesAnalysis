@@ -65,6 +65,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double BadDataID { get; set; } = -9999;
 
+        private double[] U_min_fit = null;
+        private double[] U_max_fit = null;
         /// <summary>
         /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, 
         /// rand walks or other disturbancs.
@@ -73,10 +75,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public UnitDataSet(string name = null)
         {
             this.Warnings = new List<UnitWarnings>();
-            // this.NumDataPoints = numDataPoints;
             this.Y_meas = null;
             this.U = null;
-            //  this.TimeBase_s = timeBase_s;
             this.ProcessName = name;
         }
 
@@ -117,7 +117,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 this.Times = null;
             else
                 this.Times = otherDataSet.Times.Clone() as DateTime[];
-          //   otherDataSet.Warnings.CopyTo(this.Warnings) ; 
             if (otherDataSet.D == null)
                 this.D = null;
             else
@@ -159,6 +158,74 @@ namespace TimeSeriesAnalysis.Dynamic
                 return Y_setpoint.Length;
             else
                 return 0;
+        }
+
+        public double[] GetUminFit()
+        {
+            return U_min_fit;
+        }
+        public double[] GetUmaxFit()
+        {
+            return U_max_fit;
+        }
+
+        /// <summary>
+        /// Tags indices to be removed if either of the inputs are outside the range defined by 
+        /// [uMinFit,uMaxFit].
+        /// 
+        /// uMinFit,uMaxFit may include NaN or BadDataID for values if no max/min applies to the specific input
+        /// </summary>
+        /// <param name="uMinFit">vector of minimum values for each element in U</param>
+        /// <param name="uMaxFit">vector of maximum values for each element in U</param>
+        public void SetInputUFitMaxAndMin(double[] uMinFit, double[] uMaxFit)
+        {
+            if ((uMinFit == null && uMaxFit == null) || this.U == null)
+                return;
+
+            U_min_fit = uMinFit;
+            U_max_fit = uMaxFit;
+
+            var newIndToExclude = new List<int>();
+            var vec = new Vec();
+            // find values below minimum for each input
+            if (uMinFit != null)
+            {
+                for (int idx = 0; idx < Math.Min(uMinFit.Length,U.GetNColumns()); idx++)
+                {
+                    if (Double.IsNaN(uMinFit[idx]) || uMinFit[idx] == BadDataID || Double.IsNegativeInfinity(uMinFit[idx]))
+                        continue;
+                    var indices = 
+                        vec.FindValues(U.GetColumn(idx), uMinFit[idx], VectorFindValueType.SmallerThan, IndicesToIgnore);
+                    newIndToExclude.AddRange(indices);
+                }
+            }
+            if (uMaxFit != null)
+            {
+                for (int idx = 0; idx < Math.Min(uMaxFit.Length, U.GetNColumns()); idx++)
+                {
+                    if (Double.IsNaN(uMaxFit[idx]) || uMaxFit[idx] == BadDataID || Double.IsNegativeInfinity(uMaxFit[idx]))
+                        continue;
+                    var indices =
+                        vec.FindValues(U.GetColumn(idx), uMaxFit[idx], VectorFindValueType.BiggerThan, IndicesToIgnore);
+                    newIndToExclude.AddRange(indices);
+                }
+            }
+            if (newIndToExclude.Count > 0)
+            {
+                var result  = Vec<int>.Sort(newIndToExclude.ToArray(), VectorSortType.Ascending);
+                newIndToExclude = result.ToList();
+                var newIndToExcludeDistinct = newIndToExclude.Distinct();
+                newIndToExclude = newIndToExcludeDistinct.ToList();
+            }
+
+            if (IndicesToIgnore != null)
+            {
+                if (newIndToExclude.Count > 0)
+                {
+                    IndicesToIgnore.AddRange(newIndToExclude);
+                }
+            }
+            IndicesToIgnore = newIndToExclude;
         }
 
         /// <summary>

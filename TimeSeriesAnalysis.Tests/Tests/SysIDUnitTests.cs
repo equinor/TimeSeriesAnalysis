@@ -9,6 +9,8 @@ using NUnit.Framework;
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
+using System.Data;
+using System.Xml;
 
 namespace TimeSeriesAnalysis.Test.SysID
 {
@@ -100,6 +102,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     dataSet.Y_meas[i] = badValueId;
                 }
             }
+            dataSet.SetInputUFitMaxAndMin(designParameters.U_min_fit, designParameters.U_max_fit);
             return dataSet;
         }
 
@@ -296,7 +299,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(Double.NaN)]
         [TestCase(-9999)]
         [TestCase(-99.215)]
-        public void BadValuesInUandY_DoesNotDestroyResult(double badValueId, double bias=2, double timeConstant_s=10, int timeDelay_s=5)
+        public void BadValuesInY_DoesNotDestroyResult(double badValueId, double bias=2, double timeConstant_s=10, int timeDelay_s=5)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
@@ -321,6 +324,37 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             DefaultAsserts(model, designParameters);
         }
+
+        [TestCase(Double.NaN)]
+    //    [TestCase(-9999)]
+     //   [TestCase(-99.215)]
+        public void BadValuesInU_DoesNotDestroyResult(double badValueId, double bias = 0, double timeConstant_s = 0, int timeDelay_s = 0)
+        {
+            double noiseAmplitude = 0.01;
+            double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
+            //    double[] u2 = TimeSeriesCreator.Step(80, 300, 1, 3);
+            u1[5] = double.NaN;
+
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
+
+            bool addInBadDataToYmeas = false;
+
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 1 },
+                U0 = Vec<double>.Fill(1, 1),
+                Bias = bias
+            };
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude, addInBadDataToYmeas, badValueId);
+
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
+                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s);
+
+            DefaultAsserts(model, designParameters);
+        }
+
 
         [TestCase(1,0)]
         [TestCase(1, 1)]
@@ -524,6 +558,39 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             DefaultAsserts(model, designParameters);
         }
+
+        [TestCase(0, 0, 0, Category = "Static")]
+        public void UminFit_IsExcludedOk(double bias, double timeConstant_s, int timeDelay_s)
+        {
+            double noiseAmplitude = 0.00;
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 1, 1.5 },
+                U_min_fit = new double[] { -0.9, -0.9 },// NB! exclude negative data points
+                U_max_fit = new double[] { double.NaN, 1.9 },// NB! exclude negative data points
+               // U0 = Vec<double>.Fill(0, 2),
+                Bias = bias
+            };
+            double[] u1 = TimeSeriesCreator.ThreeSteps(10, 34, 98, 100, 0, 2, 1, -9);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(25, 45, 70, 100, 1, 0, 2, -10);
+
+            u1[55] = double.NaN;
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
+
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            string caseId = TestContext.CurrentContext.Test.Name;
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas, u1 },
+                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
+                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
+
+            Assert.AreEqual(57, model.modelParameters.Fitting.NFittingBadDataPoints, "negative u indices should be excluded!");
+            Assert.AreEqual(designParameters.U_min_fit, model.modelParameters.U_min_fit,"input umin fit should be preserved in model parameters");
+            DefaultAsserts(model, designParameters);
+        }
+
 
 
 

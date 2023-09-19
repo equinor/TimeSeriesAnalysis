@@ -149,7 +149,29 @@ namespace TimeSeriesAnalysis.Utility
         }
 
 
-
+        /// <summary>
+        /// Create a time-series with four step changes
+        /// </summary>
+        /// <param name="step1StartIdx"></param>
+        /// <param name="step2StartIdx"></param>
+        /// <param name="step3StartIdx"></param>
+        /// <param name="step4StartIdx"></param>
+        /// <param name="N"></param>
+        /// <param name="val1"></param>
+        /// <param name="val2"></param>
+        /// <param name="val3"></param>
+        /// <param name="val4"></param>
+        /// <param name="val5"></param>
+        /// <returns></returns>
+       /* static public double[] FourSteps(int step1StartIdx, int step2StartIdx, int step3StartIdx, int step4StartIdx,
+            int N, double val1, double val2, double val3, double val4,, double val5)
+        {
+            if (step1StartIdx > N || step2StartIdx > N)
+                return null;
+            int N1 = step1StartIdx + 1;
+            return Vec<double>.Concat(TwoSteps(step1StartIdx, step2StartIdx, step3StartIdx - 1, val1, val2, val3),
+                Vec<double>.Fill(val4, N - step3StartIdx + 1));
+        }*/
 
 
     }
