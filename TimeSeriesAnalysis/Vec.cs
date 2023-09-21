@@ -11,6 +11,7 @@ using System.IO;
 
 using TimeSeriesAnalysis.Utility;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
 
 namespace TimeSeriesAnalysis
 {
@@ -175,15 +176,31 @@ namespace TimeSeriesAnalysis
         }
 
 
-        ///<summary>
-        /// returns an array of the difference between every neighboring item in array
-        ///</summary>
-        public  double[] Diff(double[] array)
+
+
+        /// <summary>
+        /// Return an array of the differences between the neighboring items in array
+        /// but ignores indices in the array that are in "indicesToIgnore"
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="indicesToIgnore"></param>
+        /// <returns></returns>
+        public double[] Diff(double[] vec,List<int> indicesToIgnore=null)
         {
-            double[] ucur = Vec<double>.SubArray(array, 1);
-            double[] uprev = Vec<double>.SubArray(array, 0, array.Length - 2);
-            double[] uDiff = Subtract(ucur, uprev);
-            return Vec<double>.Concat(new double[] { 0 }, uDiff);
+            double[] vec_cur, vec_prev;
+            if (indicesToIgnore == null)
+            {
+                vec_cur = Vec<double>.SubArray(vec, 1);
+                vec_prev = Vec<double>.SubArray(vec, 0, vec.Length - 2);
+            }
+            else
+            {
+                var vec_reduced = GetValues(vec,indicesToIgnore);
+                vec_cur = Vec<double>.SubArray(vec_reduced, 1);
+                vec_prev = Vec<double>.SubArray(vec_reduced, 0, vec_reduced.Length - 2);
+            }
+            double[] vec_Diff = Subtract(vec_cur, vec_prev);
+            return Vec<double>.Concat(new double[] { 0 }, vec_Diff);
         }
 
         /// <summary>
@@ -235,7 +252,22 @@ namespace TimeSeriesAnalysis
             return outArray;
         }
 
-
+        /// <summary>
+        /// Returns all the values of vec, except for those corresponding with indices in indicesToIngore
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="indicesToIgnore"></param>
+        /// <returns></returns>
+        public double[] GetValues(double[] vec, List<int> indicesToIgnore)
+        {
+            var goodIndices = Index.InverseIndices(vec.Length, indicesToIgnore);
+            List<double> values = new List<double>();
+            for (int i = 0; i <goodIndices.Count(); i++)
+            {
+                values.Add(vec[goodIndices.ElementAt(i)]);
+            }
+            return values.ToArray();
+        }
 
         /// <summary>
         ///  return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)

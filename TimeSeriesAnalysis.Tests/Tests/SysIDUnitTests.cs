@@ -298,7 +298,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         [TestCase(Double.NaN)]
         [TestCase(-9999)]
-        [TestCase(-99.215)]
+        [TestCase(-99.124)]
         public void BadValuesInY_DoesNotDestroyResult(double badValueId, double bias=2, double timeConstant_s=10, int timeDelay_s=5)
         {
             double noiseAmplitude = 0.01;

@@ -61,10 +61,10 @@ namespace TimeSeriesAnalysis.Dynamic
             // nb! note that time window decreases with one timestep for each increase in time delay of one timestep.
             // thus there is a chance of the object function decreasing without the model fit improving.
             // especially if the only information in the dataset is at the start of the dataset.
-            var objFunVals = GetObjFunValList();
+            var objFunVals = GetObjFunDiffValList();
             bool isObjFunDecreasing = objFunVals.ElementAt(objFunVals.Length - 2) < objFunVals.ElementAt(objFunVals.Length-1);
 
-            var r2Vals = GetR2List();
+            var r2Vals = GetR2DiffList();
             bool isR2Decreasing = r2Vals.ElementAt(r2Vals.Length - 2) < r2Vals.ElementAt(r2Vals.Length - 1); ;
 
             bool continueIncreasingTimeDelayEst;// = true;
@@ -91,7 +91,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get R2 of all runs so far in an array, 
         /// </summary>
         /// <returns>array or R-squared values, with Nan if any runs have failed</returns>
-        private double[] GetR2List()
+        private double[] GetR2DiffList()
         {
             List<double> objR2List = new List<double>();
             for (int i = 0; i < modelRuns.Count; i++)
@@ -120,7 +120,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get objective functions valueof all runs so far in an array
         /// </summary>
         /// <returns>array of objective function values, nan for failed runs</returns>
-        private double[] GetObjFunValList()
+        private double[] GetObjFunDiffValList()
         {
             List<double> objFunValList = new List<double>();
             for (int i = 0; i < modelRuns.Count; i++)
@@ -163,7 +163,7 @@ namespace TimeSeriesAnalysis.Dynamic
             //
             int R2BestTimeDelayIdx;
             { 
-                var objR2List = GetR2List();
+                var objR2List = GetR2DiffList();
                 Vec<double>.Sort(objR2List.ToArray(), VectorSortType.Descending, out int[] sortedIndices);
                 R2BestTimeDelayIdx = sortedIndices[0];
                 // the solution space should be "concave", so there should not be several local minimia
@@ -192,7 +192,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // objective function value analysis
             //
             {
-                var objObjFunList = GetObjFunValList();
+                var objObjFunList = GetObjFunDiffValList();
                 Vec<double>.Sort(objObjFunList.ToArray(), VectorSortType.Ascending, out int[] objFunSortedIndices);
                 // int objFunBestTimeDelayIdx = objFunSortedIndices[0];
                 // the solution space should be "concave", so there should not be several local minimia

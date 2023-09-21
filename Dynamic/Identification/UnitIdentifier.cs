@@ -12,6 +12,7 @@ using TimeSeriesAnalysis.Utility;
 using System.Net.Http.Headers;
 using System.Data;
 using System.Reflection;
+using System.ComponentModel.Design;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -172,7 +173,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private void ConvertDatasetToDiffForm(ref UnitDataSet dataSet)
         {
-            Vec vec = new Vec();
+            Vec vec = new Vec(dataSet.BadDataID);
             double[] Y_meas_old = new double[dataSet.Y_meas.Length];
             dataSet.Y_meas.CopyTo(Y_meas_old, 0);
             dataSet.Y_meas = vec.Diff(Y_meas_old);
@@ -353,20 +354,47 @@ namespace TimeSeriesAnalysis.Dynamic
             // check if the static model is better than the dynamic model. 
             else if (modelParameters.Fitting.WasAbleToIdentify && modelParams_StaticAndNoCurvature.Fitting.WasAbleToIdentify)
             {
-                if (modelParams_StaticAndNoCurvature.Fitting.RsqAbs > modelParameters.Fitting.RsqAbs)
-                     modelParameters = modelParams_StaticAndNoCurvature;
+
+                // on real-world data it is sometimes obsrevd that RsqAbs and ObjFunAbs is NaN.
+                // to be robust, check for nan and use any of the four different metrics in order of trust
+
+                if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.RsqAbs) &&
+                    !Double.IsNaN(modelParameters.Fitting.RsqAbs))
+                {
+                    if (modelParams_StaticAndNoCurvature.Fitting.RsqAbs > modelParameters.Fitting.RsqAbs)
+                        modelParameters = modelParams_StaticAndNoCurvature;
+                }
+                else if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.RsqDiff) &&
+                    !Double.IsNaN(modelParameters.Fitting.RsqDiff))
+                {
+                    if (modelParams_StaticAndNoCurvature.Fitting.RsqDiff > modelParameters.Fitting.RsqDiff)
+                        modelParameters = modelParams_StaticAndNoCurvature;
+                }
+                else if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.ObjFunValDiff) &&
+                    !Double.IsNaN(modelParameters.Fitting.ObjFunValDiff))
+                {
+                    if (modelParams_StaticAndNoCurvature.Fitting.ObjFunValDiff < modelParameters.Fitting.ObjFunValDiff)
+                        modelParameters = modelParams_StaticAndNoCurvature;
+                }
+                else if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.ObjFunValAbs) &&
+                    !Double.IsNaN(modelParameters.Fitting.ObjFunValAbs))
+                {
+                    if (modelParams_StaticAndNoCurvature.Fitting.ObjFunValAbs < modelParameters.Fitting.ObjFunValAbs)
+                        modelParameters = modelParams_StaticAndNoCurvature;
+                }
+
 
             }
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
             // if time-delay had issues, then fallback to using the first dynamic model without timedelay
             // more effort could be put on improving the logic here in the future, but this is a simple workaround for now
-            if (timeDelayWarnings.Contains(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace) )
+            /*if (timeDelayWarnings.Contains(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace) )
             {
                 if (modelList.Count >0)
                     modelParameters = modelList[0];
                 else
                     modelParameters = modelParams_StaticAndNoCurvature;
-            }
+            }*/
             if (constantInputInds.Count > 0)
             {
                 modelParameters.AddWarning(UnitdentWarnings.ConstantInputU);
@@ -429,14 +457,37 @@ namespace TimeSeriesAnalysis.Dynamic
                 double objFunDiff_improvement = bestModel.Fitting.ObjFunValDiff  - curModel.Fitting.ObjFunValDiff ;// positive if curmodel improves on the current best
                 double objFunAbs_improvement = bestModel.Fitting.ObjFunValAbs - curModel.Fitting.ObjFunValAbs ;// positive if curmodel improves on the current best
 
-                if (objFunDiff_improvement>= obFunDiff_MinImprovement && 
-                   RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
-                   objFunAbs_improvement>=0 &&
-                   RsqFittingAbs_improvement>=0 &&
-                   curModel.Fitting.WasAbleToIdentify
-                   )
+                if (Double.IsNaN(RsqFittingAbs_improvement) || Double.IsNaN(objFunAbs_improvement))
                 {
-                    bestModel = curModel;
+                    if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
+                       RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
+                       curModel.Fitting.WasAbleToIdentify
+                       )
+                    {
+                        bestModel = curModel;
+                    }
+                }
+                else if (Double.IsNaN(RsqFittingDiff_improvement) || Double.IsNaN(objFunDiff_improvement))
+                {
+                    if (objFunAbs_improvement >= 0 &&
+                        RsqFittingAbs_improvement >= 0 &&
+                       curModel.Fitting.WasAbleToIdentify
+                       )
+                    {
+                        bestModel = curModel;
+                    }
+                }
+                else
+                {
+                    if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
+                       RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
+                       objFunAbs_improvement >= 0 &&
+                       RsqFittingAbs_improvement >= 0 &&
+                       curModel.Fitting.WasAbleToIdentify
+                       )
+                    {
+                        bestModel = curModel;
+                    }
                 }
             }
             return bestModel;
@@ -829,13 +880,17 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
                     parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
                 }
-                parameters.Fitting.RsqDiff = regResults.Rsq;
-                parameters.Fitting.ObjFunValDiff = regResults.ObjectiveFunctionValue;
-                parameters.Fitting.RsqDiff = SignificantDigits.Format(parameters.Fitting.RsqDiff, nDigits);
-
-                var fitting = parameters.Fitting;
-                CalcCommonFitMetrics(ref fitting, dataSet);
-                parameters.Fitting = fitting;
+                /*
+                if (useDynamicModel)
+                {
+                    parameters.Fitting.CalcCommonFitMetricsFromDiffData(regResults.Rsq, regResults.ObjectiveFunctionValue,
+                        dataSet);
+                }
+                else
+                {
+                    parameters.Fitting.CalcCommonFitMetricsFromDataset(regResults.Rsq, regResults.ObjectiveFunctionValue, dataSet);
+                }*/
+                parameters.Fitting.CalcCommonFitMetricsFromDataset(dataSet, yIndicesToIgnore);
 
                 // add inn uncertainty
                 if (useDynamicModel)
@@ -853,31 +908,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-        /// <summary>
-        /// populates a fittingInfo object based on a given dataset that includes Y_meas and Y_sim
-        /// </summary>
-        /// <param name="fitting"></param>
-        /// <param name="dataSet"></param>
-        static public void CalcCommonFitMetrics(ref FittingInfo fitting,  UnitDataSet dataSet)
-        {
-            Vec vec = new Vec();
 
-            /*var diffObj = vec.Sum(vec.Abs(vec.Diff(vec.Subtract(dataSet.Y_meas, dataSet.Y_sim))));
-            if ( diffObj.HasValue)
-            {
-                fitting.ObjFunValDiff = diffObj.Value;
-            }
-            else
-            {
-                fitting.ObjFunValDiff = Double.NaN;
-            }*/
-            fitting.ObjFunValDiff = SignificantDigits.Format(fitting.ObjFunValDiff, nDigits);
-
-            fitting.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
-            fitting.ObjFunValAbs = SignificantDigits.Format(fitting.ObjFunValAbs, nDigits);
-            fitting.RsqAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, dataSet.IndicesToIgnore, 0) * 100;
-            fitting.RsqAbs = SignificantDigits.Format(fitting.RsqAbs, nDigits);
-        }
 
 
         /// <summary>
@@ -1107,7 +1138,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double inputProcessGainValueToFix, double u0_fixedInput, double uNorm_fixedInput)
         {
             var internalDataset = new UnitDataSet(dataSet);
-            var vec = new Vec();
+            var vec = new Vec(dataSet.BadDataID);
             var D_fixedInput = vec.Multiply(vec.Multiply(vec.Subtract(dataSet.U.GetColumn(inputIdxToFix), u0_fixedInput),uNorm_fixedInput),
                 inputProcessGainValueToFix);
             if (dataSet.D != null)

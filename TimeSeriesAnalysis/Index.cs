@@ -77,6 +77,14 @@ namespace TimeSeriesAnalysis
         {
             List<int> ret = new List<int>();
 
+            if (sortedIndices == null)
+            {
+                return Index.MakeIndexArray(0, N - 1).ToList();
+            }
+            if (sortedIndices.Count() == 0)
+            {
+                return Index.MakeIndexArray(0, N - 1).ToList();
+            }
             int curInd = 0;
             bool lastSortedIndFound = false;
             int nSortedIndices = sortedIndices.Count();
