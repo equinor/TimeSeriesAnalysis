@@ -127,15 +127,14 @@ namespace TimeSeriesAnalysis.Dynamic
             // size by one, and this may cause RSquared to return NAN if not caught.
             if (ymeas_vals.Length +1 == ysim_vals.Length )
             {
-                ysim_vals.RemoveAt(0);
+                ysim_vals = Vec<double>.SubArray(ysim_vals, 1);
             }
             if (ymeas_diff.Length +1 == ysim_diff.Length )
             {
-                ysim_diff.RemoveAt(0);
+                ysim_diff = Vec<double>.SubArray(ysim_diff, 1);
             }
 
             this.RsqAbs = SignificantDigits.Format(vec.RSquared(ymeas_vals, ysim_vals) * 100, nDigits);
-
             this.RsqDiff = SignificantDigits.Format(vec.RSquared(ymeas_diff, ysim_diff) * 100, nDigits);
 
             // objective function " average of absolute model deviation
