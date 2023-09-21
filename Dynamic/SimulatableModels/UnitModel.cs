@@ -372,6 +372,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
+                        if (lastGoodValuesOfInputs == null)
+                        {
+                            lastGoodValuesOfInputs = new double[inputs.Length];
+                        }
                         lastGoodValuesOfInputs[curInput] = inputs[curInput];
                     }
                     x_static += CalculateLinearProcessGainTerm(curInput, curUvalue);
