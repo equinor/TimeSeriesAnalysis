@@ -125,13 +125,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // if fitting against a value that is itself simulated, the vector may have different
             // size by one, and this may cause RSquared to return NAN if not caught.
-            if (ymeas_vals.Length == ysim_vals.Length + 1)
+            if (ymeas_vals.Length +1 == ysim_vals.Length )
             {
-                ymeas_vals.RemoveAt(0);
+                ysim_vals.RemoveAt(0);
             }
-            if (ymeas_diff.Length == ysim_diff.Length + 1)
+            if (ymeas_diff.Length +1 == ysim_diff.Length )
             {
-                ymeas_diff.RemoveAt(0);
+                ysim_diff.RemoveAt(0);
             }
 
             this.RsqAbs = SignificantDigits.Format(vec.RSquared(ymeas_vals, ysim_vals) * 100, nDigits);
