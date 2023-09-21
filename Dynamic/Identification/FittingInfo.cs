@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accord.Math;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TimeSeriesAnalysis.Utility;
@@ -121,6 +122,17 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var ymeas_vals = vec.GetValues(dataSet.Y_meas, yIndicesToIgnore);
             var ysim_vals = vec.GetValues(dataSet.Y_sim, yIndicesToIgnore);
+
+            // if fitting against a value that is itself simulated, the vector may have different
+            // size by one, and this may cause RSquared to return NAN if not caught.
+            if (ymeas_vals.Length == ysim_vals.Length + 1)
+            {
+                ymeas_vals.RemoveAt(0);
+            }
+            if (ymeas_diff.Length == ysim_diff.Length + 1)
+            {
+                ymeas_diff.RemoveAt(0);
+            }
 
             this.RsqAbs = SignificantDigits.Format(vec.RSquared(ymeas_vals, ysim_vals) * 100, nDigits);
 
