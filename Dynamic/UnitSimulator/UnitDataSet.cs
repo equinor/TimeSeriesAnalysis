@@ -65,8 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double BadDataID { get; set; } = -9999;
 
-        private double[] U_min_fit = null;
-        private double[] U_max_fit = null;
+
         /// <summary>
         /// Constructor for data set without inputs - for "autonomous" processes such as sinusoids, 
         /// rand walks or other disturbancs.
@@ -127,6 +126,7 @@ namespace TimeSeriesAnalysis.Dynamic
             else
                 this.IndicesToIgnore = new List<int>(otherDataSet.IndicesToIgnore);
 
+            this.BadDataID = otherDataSet.BadDataID;
         }
 
         /// <summary>
@@ -160,14 +160,86 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 0;
         }
 
-        public double[] GetUminFit()
+        /// Tags indices to be removed if either of the output is outside the range defined by 
+        /// [Y_min,Y_max], an input is outside [u_min, umax] or if any data matches badDataId
+        /// 
+        public void DetermineIndicesToIgnore(FittingSpecs fittingSpecs)
         {
-            return U_min_fit;
+            if (fittingSpecs == null)
+            {
+                return;
+            }
+            var newIndToExclude = new List<int>();
+            var vec = new Vec();
+
+            // find values below minimum for each input
+            if (fittingSpecs.Y_min_fit.HasValue)
+            {
+                if (!Double.IsNaN(fittingSpecs.Y_min_fit.Value) && fittingSpecs.Y_min_fit.Value != BadDataID 
+                    && !Double.IsNegativeInfinity(fittingSpecs.Y_min_fit.Value))
+                {
+                    var indices =
+                        vec.FindValues(Y_meas, fittingSpecs.Y_min_fit.Value, VectorFindValueType.SmallerThan, IndicesToIgnore);
+                    newIndToExclude.AddRange(indices);
+                }
+            }
+            if (fittingSpecs.Y_max_fit.HasValue)
+            {
+                if (!Double.IsNaN(fittingSpecs.Y_max_fit.Value) && fittingSpecs.Y_max_fit.Value != BadDataID 
+                    && !Double.IsPositiveInfinity(fittingSpecs.Y_max_fit.Value))
+                {
+                    var indices =
+                        vec.FindValues(Y_meas, fittingSpecs.Y_max_fit.Value, VectorFindValueType.BiggerThan, IndicesToIgnore);
+                    newIndToExclude.AddRange(indices);
+                }
+            }
+            // find values below minimum for each input
+            if (fittingSpecs.U_min_fit != null)
+            {
+                for (int idx = 0; idx < Math.Min(fittingSpecs.U_min_fit.Length, U.GetNColumns()); idx++)
+                {
+                    if (Double.IsNaN(fittingSpecs.U_min_fit[idx]) || fittingSpecs.U_min_fit[idx] == BadDataID 
+                        || Double.IsNegativeInfinity(fittingSpecs.U_min_fit[idx]))
+                        continue;
+                    var indices =
+                        vec.FindValues(U.GetColumn(idx), fittingSpecs.U_min_fit[idx], VectorFindValueType.SmallerThan, IndicesToIgnore);
+                    newIndToExclude.AddRange(indices);
+                }
+            }
+            if (fittingSpecs.U_max_fit != null)
+            {
+                for (int idx = 0; idx < Math.Min(fittingSpecs.U_max_fit.Length, U.GetNColumns()); idx++)
+                {
+                    if (Double.IsNaN(fittingSpecs.U_max_fit[idx]) || fittingSpecs.U_max_fit[idx] == BadDataID 
+                        || Double.IsNegativeInfinity(fittingSpecs.U_max_fit[idx]))
+                        continue;
+                    var indices =
+                        vec.FindValues(U.GetColumn(idx), fittingSpecs.U_max_fit[idx], 
+                        VectorFindValueType.BiggerThan, IndicesToIgnore);
+                    newIndToExclude.AddRange(indices);
+                }
+            }
+            if (newIndToExclude.Count > 0)
+            {
+                var result = Vec<int>.Sort(newIndToExclude.ToArray(), VectorSortType.Ascending);
+                newIndToExclude = result.ToList();
+                var newIndToExcludeDistinct = newIndToExclude.Distinct();
+                newIndToExclude = newIndToExcludeDistinct.ToList();
+            }
+
+            if (IndicesToIgnore != null)
+            {
+                if (newIndToExclude.Count > 0)
+                {
+                    IndicesToIgnore.AddRange(newIndToExclude);
+                }
+            }
+            else
+            {
+                IndicesToIgnore = newIndToExclude;
+            }
         }
-        public double[] GetUmaxFit()
-        {
-            return U_max_fit;
-        }
+
 
         /// <summary>
         /// Tags indices to be removed if either of the inputs are outside the range defined by 
@@ -181,9 +253,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             if ((uMinFit == null && uMaxFit == null) || this.U == null)
                 return;
-
-            U_min_fit = uMinFit;
-            U_max_fit = uMaxFit;
 
             var newIndToExclude = new List<int>();
             var vec = new Vec();

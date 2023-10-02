@@ -72,16 +72,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
-        /// <param name="u0">Optionally sets the local working point for the inputs
-        /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
-        /// <param name="uMinFit">optional minimum values to include in tuning data</param>
-        /// <param name="uMaxFit">optional minimum values to include in tuning dat</param>
+        /// <param name="fittingSpecs">optional fitting specs object for  tuning data</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null, 
-            double[] uMinFit=null, double[] uMaxFit = null)
+        public UnitModel Identify(ref UnitDataSet dataSet,
+            FittingSpecs fittingSpecs= null)
         {
-            return Identify_Internal(ref dataSet,u0,uNorm);
+            return Identify_Internal(ref dataSet,fittingSpecs);
         }
 
         /// <summary>
@@ -93,9 +89,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel IdentifyStatic(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)
+        public UnitModel IdentifyStatic(ref UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
         {
-            return Identify_Internal(ref dataSet, u0, uNorm,false);
+            return Identify_Internal(ref dataSet, fittingSpecs,false);
         }
 
         /// <summary>
@@ -104,13 +100,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
         /// <param name="doEstimateTimeDelay">if set to false, estimation of time delays are disabled</param>
-        /// <param name="u0">Optionally sets the local working point for the inputs
-        /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel IdentifyLinear(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)
+        public UnitModel IdentifyLinear(ref UnitDataSet dataSet, FittingSpecs fittingSpecs,bool doEstimateTimeDelay = true  )
         {
-            return Identify_Internal(ref dataSet, u0, uNorm, true,false, doEstimateTimeDelay);
+            return Identify_Internal(ref dataSet, fittingSpecs, true,false, doEstimateTimeDelay);
         }
 
         /// <summary>
@@ -123,11 +116,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel IdentifyLinearDiff(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)
+        public UnitModel IdentifyLinearDiff(ref UnitDataSet dataSet, FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)
         {
             var diffDataSet = new UnitDataSet(dataSet);
             ConvertDatasetToDiffForm(ref diffDataSet);
-            var model =  Identify_Internal(ref diffDataSet, u0, uNorm, true, false, doEstimateTimeDelay);
+            var model =  Identify_Internal(ref diffDataSet, fittingSpecs, true, false, doEstimateTimeDelay);
 
             if (model.modelParameters.Fitting.WasAbleToIdentify)
             {
@@ -150,9 +143,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel IdentifyLinearAndStatic(ref UnitDataSet dataSet, bool doEstimateTimeDelay=true,  double[] u0 = null, double[] uNorm = null)
+        public UnitModel IdentifyLinearAndStatic(ref UnitDataSet dataSet, FittingSpecs fittingSpecs,bool doEstimateTimeDelay=true)
         {
-            return Identify_Internal(ref dataSet, u0, uNorm, false, false, doEstimateTimeDelay);
+            return Identify_Internal(ref dataSet, fittingSpecs, false, false, doEstimateTimeDelay);
         }
 
         /// <summary>
@@ -165,10 +158,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// around which the model is to be designed(can be set to <c>null</c>)</param>
         /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
-        public UnitModel IdentifyLinearAndStaticDiff(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)
+        public UnitModel IdentifyLinearAndStaticDiff(ref UnitDataSet dataSet,FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)
         {
             ConvertDatasetToDiffForm(ref dataSet);
-            return Identify_Internal(ref dataSet, u0, uNorm, false, false, doEstimateTimeDelay);
+            return Identify_Internal(ref dataSet, fittingSpecs, false, false, doEstimateTimeDelay);
         }
 
         private void ConvertDatasetToDiffForm(ref UnitDataSet dataSet)
@@ -186,61 +179,93 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-
-
         /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
-        /// <param name="u0">Optionally sets the local working point for the inputs
-        /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
+
         /// <returns> the identified model parameters and some information about the fit</returns>
-        private UnitModel Identify_Internal(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm= null,
+        private UnitModel Identify_Internal(ref UnitDataSet dataSet, FittingSpecs fittingSpecs,
             bool doUseDynamicModel=true, bool doEstimateCurvature = true, bool doEstimateTimeDelay = true)
         {
             var vec = new Vec(dataSet.BadDataID);
+
+            dataSet.DetermineIndicesToIgnore(fittingSpecs);
+
             var constantInputInds = new List<int>();
             var correlatedInputInds = new List<int>();
             bool doNonzeroU0 = true;// should be: true
             double FilterTc_s = 0;// experimental: by default set to zero.
             bool assumeThatYkminusOneApproxXkminusOne = true;// by default this should be set to true
-           
-            if (u0 == null)
+
+
+            double[] u0 = null;
+            double[] uNorm = null;
+
+            bool hasU0 = false;
+            if (fittingSpecs == null)
+            {
+                hasU0 = false;
+            }
+            else if (fittingSpecs.u0 == null)
+            {
+                hasU0 = false;
+            }
+            else
+            {
+                hasU0 = true;
+                u0 = fittingSpecs.u0;
+            }
+
+            bool hasUNorm = false;
+            if (fittingSpecs == null)
+            {
+                hasUNorm = false;
+            }
+            else if (fittingSpecs.uNorm == null)
+            {
+                hasUNorm = false;
+            }
+            else
+            {
+                hasUNorm = true;
+                uNorm = fittingSpecs.uNorm;
+            }
+
+            if (!hasU0)
             {
                 u0 = Vec<double>.Fill(dataSet.U.GetNColumns(), 0);
                 if (doNonzeroU0)
                 {
-                    u0 = SignificantDigits.Format(dataSet.GetAverageU(),nDigits);
+                    u0 = SignificantDigits.Format(dataSet.GetAverageU(), nDigits);
                 }
             }
-            if (uNorm == null)
+            if (!hasUNorm)
             {
                 uNorm = Vec<double>.Fill(1, dataSet.U.GetNColumns());
-
-                    for (int k = 0; k < dataSet.U.GetNColumns(); k++)
+                for (int k = 0; k < dataSet.U.GetNColumns(); k++)
+                {
+                    var u = dataSet.U.GetColumn(k);
+                    if (!doUnityUNorm)
                     {
-                        var u = dataSet.U.GetColumn(k);
-                        if (!doUnityUNorm)
-                        {
-                            uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
-                        }
-                        //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
-                        if (vec.Max(u) == vec.Min(u))// input is constant
-                        {
-                            constantInputInds.Add(k);
-                            uNorm[k] = Double.PositiveInfinity;
-                        }
-                        if (uNorm[k] == 0)// avoid div by zero
-                        {
-                            constantInputInds.Add(k);
-                            uNorm[k] = 0;
-                        }
+                        uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
                     }
-                
+                    //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
+                    if (vec.Max(u) == vec.Min(u))// input is constant
+                    {
+                        constantInputInds.Add(k);
+                        uNorm[k] = Double.PositiveInfinity;
+                    }
+                    if (uNorm[k] == 0)// avoid div by zero
+                    {
+                        constantInputInds.Add(k);
+                        uNorm[k] = 0;
+                    }
+                }
                 uNorm = SignificantDigits.Format(uNorm, nDigits);
             }
+            
             TimeSpan span = dataSet.GetTimeSpan();
             double maxExpectedTc_s = span.TotalSeconds / 4;
             UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
@@ -386,15 +411,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             }
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
-            // if time-delay had issues, then fallback to using the first dynamic model without timedelay
-            // more effort could be put on improving the logic here in the future, but this is a simple workaround for now
-            /*if (timeDelayWarnings.Contains(ProcessTimeDelayIdentWarnings.NonConvexRsquaredSolutionSpace) )
-            {
-                if (modelList.Count >0)
-                    modelParameters = modelList[0];
-                else
-                    modelParameters = modelParams_StaticAndNoCurvature;
-            }*/
+
             if (constantInputInds.Count > 0)
             {
                 modelParameters.AddWarning(UnitdentWarnings.ConstantInputU);
@@ -404,8 +421,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 modelParameters.AddWarning(UnitdentWarnings.CorrelatedInputsU);
             }
 
-            modelParameters.U_min_fit = dataSet.GetUminFit();
-            modelParameters.U_max_fit = dataSet.GetUmaxFit();
+            modelParameters.FittingSpecs = fittingSpecs;
+
 
             // END While loop 
             /////////////////////////////////////////////////////////////////
@@ -551,6 +568,12 @@ namespace TimeSeriesAnalysis.Dynamic
             List<int> indYcurBad = vec.FindValues(ycur, dataSet.BadDataID, VectorFindValueType.NaN);
 
             List<int> yIndicesToIgnore = new List<int>();
+            if (dataSet.IndicesToIgnore != null)
+                if (dataSet.IndicesToIgnore.Count > 0)
+                {
+                    yIndicesToIgnore = new List<int>(dataSet.IndicesToIgnore);
+                }
+
             // the above code misses the special case that y_prev[0] is bad, as it only looks at y_cur
             if (useDynamicModel)
             {
@@ -1164,7 +1187,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             internalDataset.U = newU;
             
-            var idUnitModel   = IdentifyLinearAndStatic(ref internalDataset);
+            var idUnitModel   = IdentifyLinearAndStatic(ref internalDataset,new FittingSpecs());
             if (!idUnitModel.modelParameters.Fitting.WasAbleToIdentify)
                 return idUnitModel;
             //trick now is to add back the paramters that are fixed to the returned model:

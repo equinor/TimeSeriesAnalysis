@@ -861,6 +861,8 @@ namespace TimeSeriesAnalysis
             double[] weights = Vec<double>.Fill(1, Y.Length); //null;
             if (yIndToIgnore != null)
             {
+           //     yIndToIgnore.Sort();
+
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
                     int curInd = yIndToIgnore[i];

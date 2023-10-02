@@ -57,6 +57,7 @@ namespace TimeSeriesAnalysis.Test.SysID
     {
         static Plot4Test plot = new Plot4Test(false);
         double timeBase_s = 1;
+        FittingSpecs fittingSpecs = new FittingSpecs(); 
 
         public UnitDataSet CreateDataSet(UnitParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN,
@@ -102,47 +103,46 @@ namespace TimeSeriesAnalysis.Test.SysID
                     dataSet.Y_meas[i] = badValueId;
                 }
             }
-            dataSet.SetInputUFitMaxAndMin(designParameters.U_min_fit, designParameters.U_max_fit);
             return dataSet;
         }
 
-        public UnitModel Identify(UnitDataSet dataSet, UnitParameters designParameters)
+        public UnitModel Identify(UnitDataSet dataSet, FittingSpecs fittingSpecs)
         {
             var modelId = new UnitIdentifier();
-            UnitModel identifiedModel = modelId.Identify(ref dataSet, designParameters.U0, designParameters.UNorm);
+            UnitModel identifiedModel = modelId.Identify(ref dataSet, fittingSpecs);
             return identifiedModel;
         }
-        public UnitModel IdentifyStatic(UnitDataSet dataSet, UnitParameters designParameters)
+        public UnitModel IdentifyStatic(UnitDataSet dataSet, FittingSpecs fittingSpecs)
         {
             var modelId = new UnitIdentifier();
-            UnitModel identifiedModel = modelId.IdentifyStatic(ref dataSet, designParameters.U0, designParameters.UNorm);
+            UnitModel identifiedModel = modelId.IdentifyStatic(ref dataSet, fittingSpecs);
             return identifiedModel;
         }
         public UnitModel CreateDataAndIdentify(
-            UnitParameters designParameters, double[,] U, double timeBase_s,
+            UnitParameters designParameters, double[,] U, double timeBase_s, FittingSpecs fittingSpecs,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude,
                 addInBadDataToYmeasAndU, badValueId);
-            return Identify(dataSet, designParameters);
+            return Identify(dataSet, fittingSpecs);
         }
 
         public UnitModel CreateDataAndIdentifyStatic(
-    UnitParameters designParameters, double[,] U, double timeBase_s,
-    double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
+            UnitParameters designParameters, double[,] U, double timeBase_s, FittingSpecs fittingSpecs,
+            double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude,
                 addInBadDataToYmeasAndU, badValueId);
-            return IdentifyStatic(dataSet, designParameters);
+            return IdentifyStatic(dataSet, fittingSpecs);
         }
 
         public UnitModel CreateDataWithNonWhiteNoiseAndIdentify(
-             UnitParameters designParameters, double[,] U, double timeBase_s,
+             UnitParameters designParameters, double[,] U, double timeBase_s, FittingSpecs fittingSpecs,
              double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN)
         {
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude,
                 addInBadDataToYmeasAndU, badValueId,true);
-            return Identify(dataSet, designParameters);
+            return Identify(dataSet, fittingSpecs);
         }
 
 
@@ -242,7 +242,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.IndicesToIgnore = (badDataIndices).ToList(); 
 
             var modelId = new UnitIdentifier();
-            var model = modelId.IdentifyLinear(ref dataSet,false);
+            var model = modelId.IdentifyLinear(ref dataSet,fittingSpecs,false);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1"}, (int)timeBase_s);
@@ -269,7 +269,8 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             bool addInBadDataToYmeas = false;
             double noiseAmplitude = 0.01;
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude, addInBadDataToYmeas, badValueId);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,
+                noiseAmplitude, addInBadDataToYmeas, badValueId);
 
             Assert.IsFalse(model.GetModelParameters().Fitting.WasAbleToIdentify);
             // also: the model shoudl not downright crash!
@@ -289,7 +290,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Bias = 1
             };
             double noiseAmplitude = 0.00;
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs, noiseAmplitude);
 
             Assert.IsTrue(model.modelParameters.Fitting.WasAbleToIdentify);
         }
@@ -317,7 +318,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1, 2),
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude,addInBadDataToYmeas, badValueId);
+
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, new FittingSpecs(designParameters.U0, null), noiseAmplitude,addInBadDataToYmeas, badValueId);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
@@ -347,7 +349,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1, 1),
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude, addInBadDataToYmeas, badValueId);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, new FittingSpecs(designParameters.U0, null), noiseAmplitude, addInBadDataToYmeas, badValueId);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s);
@@ -435,7 +437,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             else
                 dataSetDownsampled = new UnitDataSet(dataSet);
             var modelId = new UnitIdentifier();
-            var model  = modelId.Identify(ref dataSetDownsampled, designParameters.U0, designParameters.UNorm);
+            var model  = modelId.Identify(ref dataSetDownsampled, fittingSpecs);
 
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
@@ -520,7 +522,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1,1),
                 Bias            = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U,timeBase_s,noiseAmplitude);
+            var model = CreateDataAndIdentify(designParameters, U,timeBase_s,
+                new FittingSpecs(designParameters.U0,designParameters.UNorm),noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name; 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, 
                 model.GetFittedDataSet().Y_meas, u1 },
@@ -549,7 +552,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1, 1),
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, new FittingSpecs(designParameters.U0, designParameters.UNorm), noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
                 model.GetFittedDataSet().Y_meas, u1 },
@@ -563,14 +566,16 @@ namespace TimeSeriesAnalysis.Test.SysID
         public void UminFit_IsExcludedOk(double bias, double timeConstant_s, int timeDelay_s)
         {
             double noiseAmplitude = 0.00;
+            var fittingSpecs = new FittingSpecs();
+            fittingSpecs.U_min_fit = new double[] { -0.9, -0.9 };// NB! exclude negative data points
+            fittingSpecs.U_max_fit = new double[] { double.NaN, 1.9 };// NB! exclude negative data points
+            fittingSpecs.u0 = Vec<double>.Fill(0, 2);
+
             UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 1, 1.5 },
-                U_min_fit = new double[] { -0.9, -0.9 },// NB! exclude negative data points
-                U_max_fit = new double[] { double.NaN, 1.9 },// NB! exclude negative data points
-               // U0 = Vec<double>.Fill(0, 2),
                 Bias = bias
             };
             double[] u1 = TimeSeriesCreator.ThreeSteps(10, 34, 98, 100, 0, 2, 1, -9);
@@ -579,7 +584,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             u1[55] = double.NaN;
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
                 model.GetFittedDataSet().Y_meas, u1 },
@@ -587,11 +592,43 @@ namespace TimeSeriesAnalysis.Test.SysID
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
             Assert.AreEqual(57, model.modelParameters.Fitting.NFittingBadDataPoints, "negative u indices should be excluded!");
-            Assert.AreEqual(designParameters.U_min_fit, model.modelParameters.U_min_fit,"input umin fit should be preserved in model parameters");
+            Assert.AreEqual(fittingSpecs.U_min_fit, model.modelParameters.FittingSpecs.U_min_fit, "input umin fit should be preserved in model parameters");
             DefaultAsserts(model, designParameters);
         }
 
+        [TestCase(0, 0, 0, Category = "Static")]
+        public void YminFit_IsExcludedOk(double bias, double timeConstant_s, int timeDelay_s)
+        {
+            double noiseAmplitude = 0.00;
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 1, 1.5 },
+                Bias = bias
+            };
+            var fittingSpecs = new FittingSpecs();
+            fittingSpecs.Y_min_fit = 0;// try to remove negative output values.
+            fittingSpecs.Y_max_fit = 3.99;// max y value is four.
 
+
+            double[] u1 = TimeSeriesCreator.ThreeSteps(10, 34, 98, 100, 0, 2, 1, -9);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(25, 45, 70, 100, 1, 0, 2, -10);
+
+        //    u1[55] = double.NaN;
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
+
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,noiseAmplitude);
+            string caseId = TestContext.CurrentContext.Test.Name;
+            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas, u1 },
+                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
+                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
+
+            Assert.AreEqual(57, model.modelParameters.Fitting.NFittingBadDataPoints, "negative u indices should be excluded!");
+         //   Assert.AreEqual(designParameters.U_min_fit, model.modelParameters.U_min_fit, "input umin fit should be preserved in model parameters");
+            DefaultAsserts(model, designParameters);
+        }
 
 
         [TestCase(0.4, 0, 0, Category = "Nonlinear")]
@@ -643,6 +680,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = new double[] { 1 },
                 Bias = bias
             };
+            var fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);
             var refModel = new UnitModel(paramtersNoCurvature,"reference");
 
             var sim = new PlantSimulator(new List<ISimulatableModel> { refModel });
@@ -651,7 +689,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             inputData.CreateTimestamps(timeBase_s);
             var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
                 model.GetFittedDataSet().Y_meas,
@@ -720,6 +758,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Bias = bias
             };
 
+            var fittingSpecs = new FittingSpecs(designParameters.U0,designParameters.UNorm);
+
+
             UnitParameters paramtersNoCurvature = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
@@ -737,7 +778,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             inputData.CreateTimestamps(timeBase_s);
             var isOk = sim.Simulate(inputData,out TimeSeriesDataSet refData);
 
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,noiseAmplitude);
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
                 model.GetFittedDataSet().Y_meas,
@@ -771,7 +812,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1,2),
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters,U,timeBase_s, noiseAmplitude);
+            FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0,designParameters.UNorm);
+            var model = CreateDataAndIdentify(designParameters,U,timeBase_s, fittingSpecs,noiseAmplitude);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1,u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
@@ -831,7 +873,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1, 2),
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,noiseAmplitude);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
@@ -856,12 +898,13 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1, 2),
                 Bias = bias
             };
+            var fittingSpecs = new FittingSpecs(designParameters.U0,designParameters.UNorm);
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
             // introduce disturbance signal in y
             var disturbance = TimeSeriesCreator.Step(U.GetNRows() / 2, U.GetNRows(), 0, 1);
             dataSet.Y_meas = (new Vec()).Add(dataSet.Y_meas,disturbance);
             dataSet.D = disturbance;
-            var model = Identify(dataSet, designParameters);
+            var model = Identify(dataSet, fittingSpecs);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2, disturbance },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y4=dist" }, (int)timeBase_s,"excl_disturbance");
@@ -888,7 +931,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new double[] { 1, 2, 1.5 },
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U,timeBase_s, noiseAmplitude);
+            FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);
+
+            var model = CreateDataAndIdentify(designParameters, U,timeBase_s, fittingSpecs,noiseAmplitude);
             DefaultAsserts(model, designParameters);
         }
 
@@ -907,11 +952,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new double[] { 1, 2, 1.5 },
                 Bias = bias
             };
-            var model = CreateDataAndIdentifyStatic(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataAndIdentifyStatic(designParameters, U, timeBase_s, fittingSpecs, noiseAmplitude);
             DefaultAsserts(model, designParameters);
         }
-
-
 
         [TestCase(0, 0, Category = "Static")]
         [TestCase(1, 0, Category = "Static")]
@@ -932,7 +975,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new double[] { 1, 2, 1.5 },
                 Bias = bias
             };
-            var model = CreateDataWithNonWhiteNoiseAndIdentify(designParameters, U, timeBase_s, noiseAmplitude);
+            var model = CreateDataWithNonWhiteNoiseAndIdentify(designParameters, U, timeBase_s, fittingSpecs, noiseAmplitude);
 
             string caseId = TestContext.CurrentContext.Test.Name;
             plotLocal.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,

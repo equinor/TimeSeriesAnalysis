@@ -78,7 +78,10 @@ namespace TimeSeriesAnalysis._Examples
 
             // do identification
             var modelId = new UnitIdentifier();
-            UnitModel idModel = modelId.Identify(ref idDataSet, designParameters.U0, designParameters.UNorm);
+
+            FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);
+
+            UnitModel idModel = modelId.Identify(ref idDataSet, fittingSpecs);
 
             Plot.FromList(new List<double[]> { idModel.GetFittedDataSet().Y_sim,
                 idModel.GetFittedDataSet().Y_meas,

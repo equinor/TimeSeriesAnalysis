@@ -452,7 +452,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
 
                 // replace -9999 in dataset
-                List<int> indBadU = SysIdBadDataFinder.GetAllBadIndicesPlussNext(ucur);
+                List<int> indBadU = SysIdBadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
                 List<int> indBadEcur = vec.FindValues(ecur, -9999, VectorFindValueType.Equal);
                 List<int> indBadEprev = Index.Subtract(indBadEcur.ToArray(), 1).ToList();
 

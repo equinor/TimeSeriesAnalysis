@@ -1,5 +1,6 @@
 ﻿using Accord.Math;
 using System.Collections.Generic;
+using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -23,16 +24,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double Y_max = double.NaN;
 
+        public FittingSpecs FittingSpecs = new FittingSpecs();
 
-        /// <summary>
-        /// The minimum input value(if set to NaN,then fitting considers all data)
-        /// </summary>
-        public double[] U_min_fit = null;
-
-        /// <summary>
-        /// the maximum allowed input value(if set to NaN, then fitting considers all data)
-        /// </summary>
-        public double[] U_max_fit = null;
 
         /// <summary>
         /// A time constant in seconds, the time a 1. order linear system requires to do 63% of a step response.

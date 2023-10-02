@@ -21,7 +21,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inData"></param>
         /// <param name="badValueIndicatingValue"></param>
         /// <returns></returns>
-        static public List<int> GetAllBadIndices(double[] inData, double badValueIndicatingValue = -9999)
+        static private List<int> GetAllBadIndices(double[] inData, double badValueIndicatingValue)
         {
             List<int> badValueIndices = GetBadValueIndices(inData, badValueIndicatingValue);
             //   List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
@@ -37,14 +37,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inData"></param>
         /// <param name="badValueIndicatingValue"></param>
         /// <returns></returns>
-        static public List<int> GetAllBadIndicesPlussNext(double[] inData, double badValueIndicatingValue = -9999)
+        static public List<int> GetAllBadIndicesPlussNext(double[] inData, double badValueIndicatingValue)
         {
             return Index.AppendTrailingIndices(GetAllBadIndices(inData, badValueIndicatingValue));
         }
 
-        static public List<int> GetBadValueIndices(double[] inData, double badValueIndicatingValue=-9999)
+        static private List<int> GetBadValueIndices(double[] inData, double badValueIndicatingValue)
         {
-            List<int> badIndices = (new Vec()).FindValues(inData, badValueIndicatingValue, VectorFindValueType.NaN);
+            List<int> badIndices = (new Vec(badValueIndicatingValue)).FindValues(inData, badValueIndicatingValue, VectorFindValueType.NaN);
            // List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
             return badIndices;
         }

@@ -93,6 +93,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.U.GetColumn(colIdx), 0, VectorFindValueType.NaN));
                 }
             }
+            // set "indicestoignore" to exclude values outside ymin/ymax_fit and umin_fit,u_max_fit
+
+
+
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
             // estimate of the disturbance improves along with it.
@@ -108,6 +112,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var id = new UnitIdentifier();
 
+            FittingSpecs fittingSpecs = new FittingSpecs();
+            fittingSpecs.u0 = u0;
+
+
             int nGains=1;
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
@@ -121,7 +129,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     (dataSet1, null, pidInputIdx, pidParams);
 
                 dataSet1.D = distIdResult1.d_est;
-                var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, doTimeDelayEstOnRun1, u0);
+                var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, fittingSpecs, doTimeDelayEstOnRun1);
                 nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
                 idDisturbancesList.Add(distIdResult1);
                 idUnitModelsList.Add(unitModel_run1);
@@ -152,7 +160,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // first pass(wider grid with larger grid size)
                     var retPass1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx, 
                          unitModel_run1, pidProcessInputInitalGainEstimate, 
-                        min_gain, max_gain, firstPassNumIterations);
+                        min_gain, max_gain, fittingSpecs,firstPassNumIterations);
                     var bestUnitModel = retPass1.Item1;
 
                     if (bestUnitModel != null)
@@ -162,7 +170,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         {
                             var gainPass1 = retPass1.Item1.modelParameters.LinearGains[pidInputIdx];
                             var retPass2 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
-                               retPass1.Item1, gainPass1, gainPass1 - retPass1.Item2, gainPass1 + retPass1.Item2, secondPassNumIterations);
+                               retPass1.Item1, gainPass1, gainPass1 - retPass1.Item2, gainPass1 + retPass1.Item2, 
+                               fittingSpecs,secondPassNumIterations);
                             bestUnitModel = retPass2.Item1;
                         }
                     }
@@ -307,7 +316,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private Tuple<UnitModel,double> GlobalSearchLinearPidGain(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx, 
             UnitModel unitModel_run1, double pidProcessInputInitalGainEstimate, double minPidProcessGain,
-            double maxPidProcessGain, int numberOfGlobalSearchIterations = 40)
+            double maxPidProcessGain, FittingSpecs fittingSpecs, int numberOfGlobalSearchIterations = 40)
         {
              // bool isOK;
             var range = maxPidProcessGain - minPidProcessGain;
@@ -367,13 +376,13 @@ namespace TimeSeriesAnalysis.Dynamic
                         // really unsure about if it is better to use one or the other here!
                          if (doesSetpointChange)
                          {
-                             model_dist = ident_d.IdentifyLinear(ref dataSet_d, false);
+                             model_dist = ident_d.IdentifyLinear(ref dataSet_d, fittingSpecs,false);
                          }
                          else
                          {
                             // need to enable time delay estimation here, otherwise 
                             // "diff" estimate is very sensitive to incorrect dynamics.
-                             model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, true);
+                             model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, fittingSpecs, true);
                          }
 
                         // model_dist = ident_d.IdentifyLinear(ref dataSet_d, false);
