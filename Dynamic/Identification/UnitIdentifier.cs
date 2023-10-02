@@ -255,12 +255,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (vec.Max(u) == vec.Min(u))// input is constant
                     {
                         constantInputInds.Add(k);
-                        uNorm[k] = Double.PositiveInfinity;
+                        uNorm[k] = 1;
                     }
                     if (uNorm[k] == 0)// avoid div by zero
                     {
                         constantInputInds.Add(k);
-                        uNorm[k] = 0;
+                        uNorm[k] = 1;
                     }
                 }
                 uNorm = SignificantDigits.Format(uNorm, nDigits);
