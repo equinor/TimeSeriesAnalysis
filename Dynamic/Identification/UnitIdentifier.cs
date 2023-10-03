@@ -250,6 +250,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (!doUnityUNorm)
                     {
                         uNorm[k] = Math.Max(Math.Abs(vec.Max(u) - u0[k]), Math.Abs(vec.Min(u) - u0[k]));
+                        if (Double.IsInfinity(uNorm[k]))
+                        {
+                            uNorm[k] = 1;
+                        }
                     }
                     //uNorm[k] = Math.Max(Math.Abs(vec.Max(u)), Math.Abs(vec.Min(u)));
                     if (vec.Max(u) == vec.Min(u))// input is constant
