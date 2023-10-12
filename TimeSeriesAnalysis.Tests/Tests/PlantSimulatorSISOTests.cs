@@ -101,8 +101,46 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(isOk2);
             Assert.IsTrue(Math.Abs(simY2[0] - 55) < 0.01);
             Assert.IsTrue(Math.Abs(simY2.Last() - 60) < 0.01);
-
         }
+
+        // if linear gains are null, then the simualtion should still run but with zero output.
+        [TestCase]
+        public void SimulateSingle_NullGains_RunsWithZeroOutput()
+        {
+            modelParameters1 = new UnitParameters
+            {
+                TimeConstant_s = 10,
+                LinearGains = null,
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+
+            processModel1 = new UnitModel(modelParameters1, "SubProcess1");
+
+            var processSim = new PlantSimulator(
+                new List<ISimulatableModel> { processModel1 });
+
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            CommonAsserts(inputData, simData);
+            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
+            Assert.IsTrue(Math.Abs(simY[0]) == 0);
+
+            // now test that "simulateSingle" produces the same result!
+            var isOk2 = processSim.SimulateSingle(inputData, processModel1.ID, out TimeSeriesDataSet simData2);
+            /*
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                simData2.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                inputData.GetValues(processModel1.GetID(),SignalType.External_U)},
+            new List<string> { "y1=y_sim1", "y1=y_sim1(v2)", "y3=u" },
+            timeBase_s, "UnitTest_SingleSISO");
+            */
+        }
+
 
         [TestCase]
         public void Serial2_RunsAndConverges()

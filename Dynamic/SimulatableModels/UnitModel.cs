@@ -88,7 +88,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 explainStr = "modelParamters is null";
                 return false;
             }
-            if (modelParameters.LinearGains == null)
+           /* if (modelParameters.LinearGains == null)
             {
                 explainStr = "LinearGains is null"; 
                 return false;
@@ -97,17 +97,20 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 explainStr = "LinearGains is empty";
                 return false;
-            }
+            }*/
             if (ModelInputIDs == null)
             {
                 explainStr = "ModelInputIDs is null";
                 return false;
             }
 
-            if (modelParameters.LinearGains.Length < ModelInputIDs.Length)
+            if (modelParameters.LinearGains != null)
             {
-                explainStr = "fewer LinearGains than ModelInputIDs";
-                return false;
+                if (modelParameters.LinearGains.Length < ModelInputIDs.Length)
+                {
+                    explainStr = "fewer LinearGains than ModelInputIDs";
+                    return false;
+                }
             }
             return true;
         }
@@ -398,6 +401,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double? GetSteadyStateOutput(double[] u0)
         {
+            if (modelParameters.LinearGains == null)
+                return 0;
+
             double? ret = CalculateStaticStateWithoutAdditive(u0);
             if (ret.HasValue)
             {
@@ -449,6 +455,11 @@ namespace TimeSeriesAnalysis.Dynamic
             if (this.delayObj == null)
             {
                 this.delayObj = new TimeDelay(timeBase_s, modelParameters.TimeDelay_s);
+            }
+            // this is the case for newly created models that have not yet been fitted
+            if (modelParameters.LinearGains == null)
+            {
+                return new double[] { 0 }; 
             }
 
             // notice! the model does not use the paramters [a,b,c,unorm,td.u0] to simulate the process model
