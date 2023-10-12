@@ -215,19 +215,24 @@ namespace TimeSeriesAnalysis.Dynamic
         public double? GetSteadyStateInput(double x0, int inputIdx=0, double[] givenInputs=null)
         {
             double u0=0;
+
+            if (modelParameters.LinearGains == null)
+            {
+                return u0;
+            }
             // x = G*(u-u0)+bias ==>
             // y (approx) x
             // u =  (y-bias)/G+ u0 
-        /*    if (givenInputs == null)
-            {
-                u0 = (y0 - modelParameters.Bias) / modelParameters.LinearGains[inputIdx];
-                if (modelParameters.U0 != null)
+            /*    if (givenInputs == null)
                 {
-                    u0 += modelParameters.U0[inputIdx];
+                    u0 = (y0 - modelParameters.Bias) / modelParameters.LinearGains[inputIdx];
+                    if (modelParameters.U0 != null)
+                    {
+                        u0 += modelParameters.U0[inputIdx];
+                    }
+                    return u0;
                 }
-                return u0;
-            }
-            else*/
+                else*/
             {
                 double x_otherInputs = modelParameters.Bias;
                 //nb! input may include a disturbance!
