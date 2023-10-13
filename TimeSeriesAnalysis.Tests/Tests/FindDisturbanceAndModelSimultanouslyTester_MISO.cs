@@ -115,7 +115,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 doNegative, true,yset, pidInputIdx);
         }
         
-        [TestCase(0, false,false)] 
+        [TestCase(0, false,false), NonParallelizable] 
         [TestCase(1, false,false)]
         [TestCase(0, false, true),Category("NotWorking_AcceptanceTest")] 
         [TestCase(1, false, true),Category("NotWorking_AcceptanceTest")]

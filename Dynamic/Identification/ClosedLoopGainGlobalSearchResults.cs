@@ -134,7 +134,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (v1_Strength == 0 && v2_Strength == 0 && v3_Strength == 0)
             {
-                // defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
+                //defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
                 return new Tuple<UnitModel, bool>(null, false);
             }
             double[] objFun = v1;

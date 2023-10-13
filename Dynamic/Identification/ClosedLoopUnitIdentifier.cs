@@ -150,7 +150,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // in some cases the first linear regression done without any estimate of the disutrbance can even have the wrong
                     // sign of the linear gains, although the amplitude will in general be of the right order, thus 
                     // min_gain = -max_gain;  is a more robust choice than some small same-sign value or 0.
-                    var max_gain =  pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
+                    var max_gain =  Math.Abs(pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
                     var min_gain = - max_gain;
 
                     // when debugging, it might be advantageous to set min_gain equal to the known true value
