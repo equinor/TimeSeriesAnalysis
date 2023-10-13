@@ -117,8 +117,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         
         [TestCase(0, false,false)] 
         [TestCase(1, false,false)]
-        [TestCase(0, false, true)] 
-        [TestCase(1, false, true)]
+        [TestCase(0, false, true),Category("NotWorking_AcceptanceTest")] 
+        [TestCase(1, false, true),Category("NotWorking_AcceptanceTest")]
         public void StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(int pidInputIdx, 
             bool doNegative, bool addThirdInput)
         {
@@ -208,7 +208,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         // This case needs some work!!!
-        [TestCase(0)]
+        [TestCase(0),Category("NotWorking_AcceptanceTest")]
 
         public void DynamicMISO_no_disturbance_NO_setpointchange_CHangeinUexternaldetectsProcessOk(int pidInputIdx)
         {

@@ -1,0 +1,55 @@
+<Playlist Version="2.0">
+  <Rule Name="Includes" Match="Any">
+    <Rule Match="All">
+      <Property Name="Solution" />
+      <Rule Match="Any">
+        <Rule Match="All">
+          <Property Name="Project" Value="TimeSeriesAnalysis.Tests" />
+          <Rule Match="Any">
+            <Rule Match="All">
+              <Property Name="Namespace" Value="TimeSeriesAnalysis.Test.DisturbanceID" />
+              <Rule Match="Any">
+                <Rule Match="All">
+                  <Property Name="Class" Value="FindDisturbanceAndModelSimultanouslyTester_MISO" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="TimeSeriesAnalysis.Test.DisturbanceID.FindDisturbanceAndModelSimultanouslyTester_MISO.DynamicMISO_no_disturbance_NO_setpointchange_CHangeinUexternaldetectsProcessOk" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="DynamicMISO_no_disturbance_NO_setpointchange_CHangeinUexternaldetectsProcessOk(0)" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="TimeSeriesAnalysis.Test.DisturbanceID.FindDisturbanceAndModelSimultanouslyTester_MISO.StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(0,False,True)" />
+                        <Property Name="DisplayName" Value="StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(1,False,True)" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="FindDisturbanceAndModelSimultanouslyTester_SISO" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="TimeSeriesAnalysis.Test.DisturbanceID.FindDisturbanceAndModelSimultanouslyTester_SISO.Static_SinusDistANDSetpointStep" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Static_SinusDistANDSetpointStep(1,1.0d)" />
+                        <Property Name="DisplayName" Value="Static_SinusDistANDSetpointStep(5,1.0d)" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="TimeSeriesAnalysis.Test.DisturbanceID.FindDisturbanceAndModelSimultanouslyTester_SISO.Static_StepDist_EstimatesOk" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="Static_StepDist_EstimatesOk(-5,True)" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+              </Rule>
+            </Rule>
+          </Rule>
+        </Rule>
+      </Rule>
+    </Rule>
+  </Rule>
+</Playlist>
