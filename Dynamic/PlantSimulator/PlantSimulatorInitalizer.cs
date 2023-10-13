@@ -22,6 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         private PlantSimulator simulator;
         private List<string> orderedSimulatorIDs;
+        private List<List<string>> computationalLoopIDs;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -30,6 +31,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.simulator = simulator;
             var connections = simulator.GetConnections();
+            computationalLoopIDs = connections.FindComputationalLoops(simulator.GetModels());
             orderedSimulatorIDs = connections.InitAndDetermineCalculationOrderOfModels(simulator.GetModels());
         }
         /// <summary>

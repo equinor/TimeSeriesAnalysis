@@ -487,6 +487,50 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         }
 
+        // in this case there is a "computational loop":
+        //  - output of first model is input to second model 
+        //  - output of second model is input to first model
+        //
+
+        [TestCase(0)]
+
+        public void ComputationalLoop_TwoModels_RunsAndConverges(int ver)
+        {
+            var processSim = new PlantSimulator(
+                new List<ISimulatableModel> { processModel1, processModel2 });
+
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(60, N, 50, 55));
+            inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(240, N, 50, 40));
+            processSim.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
+            processSim.ConnectModels(processModel2, processModel1, (int)INDEX.SECOND);
+               inputData.CreateTimestamps(timeBase_s);
+            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            Assert.IsTrue(isOk);
+            SISOTests.CommonAsserts(inputData, simData);
+
+            double[] simY = simData.GetValues(processModel3.GetID(), SignalType.Output_Y);
+         //   double expStartVal = ((1 * 50 + 0.5 * 50 + 5) * 1.1 + 50 * 0.6 + 5) * 0.8 + 0.7 * 30 + 5;
+         //   double expEndVal = ((1 * 55 + 0.5 * 45 + 5) * 1.1 + 40 * 0.6 + 5) * 0.8 + 0.7 * 40 + 5;
+
+       //     Assert.IsTrue(Math.Abs(simY[0] - expStartVal) < 0.01, "unexpected starting value");
+       //     Assert.IsTrue(Math.Abs(simY.Last() - expEndVal) < 0.01, "unexpected ending value");
+            /*
+            
+            Plot.FromList(new List<double[]> {
+                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                 simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
+                 simData.GetValues(processModel3.GetID(),SignalType.Output_Y_sim),
+                 inputData.GetValues(processModel1.GetID(),SignalType.External_U,(int)INDEX.FIRST),
+                 inputData.GetValues(processModel1.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                 inputData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                 inputData.GetValues(processModel3.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                },
+                new List<string> { "y1=y_sim1", "y1=y_sim2","y1=y_sim3", "u1", "u2", "u4","u6" },
+                timeBase_s, "UnitTest_MISO3Serial");*/
+
+        }
 
 
 
@@ -556,15 +600,17 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 timeBase_s, "UnitTest_MISO3Serial");*/
 
         }
+
+
+
+
+
         [Test]
         public void Divide_RunsAndConverges()
         {
             DivideParameters divParams = new DivideParameters();
 
-
             Divide divideModel = new Divide(divParams, "divider");
-
-
 
             var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1, processModel2, divideModel });

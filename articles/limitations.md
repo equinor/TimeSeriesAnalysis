@@ -14,6 +14,9 @@ that the simulator may fail to initialize in some complex scenarios, as of yet u
 - PlantSimulator currenlty always consider ``e[i-1]`` when simulating PID-controllers
 (unlike UnitSimulator), this should be configurable, but requires a change to the 
 ``DetermineCalculationOrderOfModels()``
+- PlantSimulator cannot handle "computational loops", where two or more systems co-depend on each other. 
+
+
 
 ### Unit Simulator
 

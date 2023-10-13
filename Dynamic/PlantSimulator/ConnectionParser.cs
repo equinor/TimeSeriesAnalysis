@@ -85,6 +85,27 @@ namespace TimeSeriesAnalysis.Dynamic
             return;
         }
 
+        /// <summary>
+        /// Parses models and determines if there are an co-dependent models
+        /// </summary>
+        /// <param name="modelDict"></param>
+        /// <returns></returns>
+        public List<List<string>> FindComputationalLoops(Dictionary<string, ISimulatableModel> modelDict)
+        {
+            List<List<string>> retListOfLists = new List<List<string>>(); 
+
+            foreach(var model in modelDict)
+            { 
+            
+
+
+            
+            
+            }
+
+            return retListOfLists;
+        }
+
 
 
         /// <summary>
@@ -270,6 +291,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
+
+            // if there are still two or more unprocessed variables, there may be a "computational loop" where two or more models co-depend on eachother.
+
+
             // final sanity check
             if (unprocessedModels.Count() > 0)
             {
