@@ -95,7 +95,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         [TestCase(-5,false), NonParallelizable]
         [TestCase(5,false)]
-        [TestCase(-5, true), Category("NotWorking_AcceptanceTest")]
+        [TestCase(-5, true)]
     //    [TestCase(5, true)]
         public void Static_StepDist_EstimatesOk(double stepAmplitude,bool doNegativeGain)
         {
@@ -173,7 +173,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(5, 1.0), NonParallelizable, Category("NotWorking_AcceptanceTest")]
         [TestCase(1, 1.0) ]
         [TestCase(1, 5.0), Category("NotWorking_AcceptanceTest")]
-        public void Static_SinusDistANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude)
+        public void Static_SinusDistANDSetpointStep(double distSinusAmplitude,
+            double ysetStepAmplitude)
         {
             double precisionPrc = 20;
 
@@ -280,6 +281,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 usedProcParameters.Bias = 100;// 
                 usedProcessModel.SetModelParameters(usedProcParameters);
                 pidParameters1.Kp = -pidParameters1.Kp ;
+                UnitParameters trueParams = trueProcessModel.GetModelParameters();
+                trueParams.LinearGains[0] = -trueParams.LinearGains[0];
+                trueProcessModel.SetModelParameters(trueParams); ;
             }
 
             // create synthetic dataset

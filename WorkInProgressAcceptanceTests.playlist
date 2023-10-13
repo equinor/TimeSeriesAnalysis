@@ -19,10 +19,9 @@
                       </Rule>
                     </Rule>
                     <Rule Match="All">
-                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="TimeSeriesAnalysis.Test.DisturbanceID.FindDisturbanceAndModelSimultanouslyTester_MISO.StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk" />
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="TimeSeriesAnalysis.Test.DisturbanceID.FindDisturbanceAndModelSimultanouslyTester_MISO.DynamicMISO_externalUchanges_NoDisturbance_NOsetpointchange_DetectsProcessOk" />
                       <Rule Match="Any">
-                        <Property Name="DisplayName" Value="StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(0,False,True)" />
-                        <Property Name="DisplayName" Value="StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(1,False,True)" />
+                        <Property Name="DisplayName" Value="DynamicMISO_externalUchanges_NoDisturbance_NOsetpointchange_DetectsProcessOk(0)" />
                       </Rule>
                     </Rule>
                   </Rule>
@@ -35,12 +34,6 @@
                       <Rule Match="Any">
                         <Property Name="DisplayName" Value="Static_SinusDistANDSetpointStep(1,1.0d)" />
                         <Property Name="DisplayName" Value="Static_SinusDistANDSetpointStep(5,1.0d)" />
-                      </Rule>
-                    </Rule>
-                    <Rule Match="All">
-                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="TimeSeriesAnalysis.Test.DisturbanceID.FindDisturbanceAndModelSimultanouslyTester_SISO.Static_StepDist_EstimatesOk" />
-                      <Rule Match="Any">
-                        <Property Name="DisplayName" Value="Static_StepDist_EstimatesOk(-5,True)" />
                       </Rule>
                     </Rule>
                   </Rule>

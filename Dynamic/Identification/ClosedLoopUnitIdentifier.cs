@@ -325,6 +325,21 @@ namespace TimeSeriesAnalysis.Dynamic
             int nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
             Vec vec = new Vec();
             bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint, dataSet.IndicesToIgnore) == vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
+      /*      bool doesExternalUChange = false;
+            if (dataSet.U.GetNColumns() > 1)
+            {
+                for (int inputIdx = 0; inputIdx < dataSet.U.GetNColumns(); inputIdx++)
+                {
+                    if (inputIdx == pidInputIdx)
+                        continue;
+                    bool doesThisVarChange = !(vec.Max(dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore) == vec.Min(dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore));
+                    if (doesThisVarChange)
+                        doesExternalUChange = true;
+                }
+            }*/
+
+
+
             var isOK = true;
             double[] d_prev = null;
             for (var pidLinProcessGain = minPidProcessGain; pidLinProcessGain <= maxPidProcessGain; pidLinProcessGain += range / numberOfGlobalSearchIterations)
@@ -345,6 +360,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (nGains> 1)
                 {
                     bool doIncludeYsetpointAsInput = true;
+                    if(!doesSetpointChange)
+                        doIncludeYsetpointAsInput = false;
                     var alternativeMISOModel = new UnitModel(unitModel_run1.GetModelParameters().CreateCopy(), "MISO");
                     var pidProcess_u0 = unitModel_run1.modelParameters.U0[pidInputIdx];
                     var pidProcess_unorm = unitModel_run1.modelParameters.UNorm[pidInputIdx];
@@ -374,16 +391,52 @@ namespace TimeSeriesAnalysis.Dynamic
                         // then the "diff" version of the regression works better. 
                         UnitModel model_dist;
                         // really unsure about if it is better to use one or the other here!
+                        // new: try both and choose best.
+                        {
+                            var dataSet_diff = new UnitDataSet(dataSet_d);
+                            var model_dist_diff = ident_d.IdentifyLinearDiff(ref dataSet_diff, fittingSpecs, false);
+                            var model_dist_abs = ident_d.IdentifyLinear(ref dataSet_d, fittingSpecs, false);
+
+                            var diffParams = model_dist_diff.GetModelParameters().Fitting;
+                            var absParams = model_dist_abs.GetModelParameters().Fitting;
+
+                            if (diffParams.WasAbleToIdentify && !absParams.WasAbleToIdentify)
+                            {
+                                model_dist = model_dist_diff;
+                            }
+                            else if (!diffParams.WasAbleToIdentify && absParams.WasAbleToIdentify)
+                            {
+                                model_dist = model_dist_abs;
+                            }
+                            else
+                            {
+                                // RsqDiff does not a choose best method when acutal system has dynamics
+                                // RsqAbs and ObjFunvalAbs is better for dynamic systems, but sometimes faisl for static systems
+                                
+                                // this works equally well:
+                                //    if( vec.Sum(model_dist_diff.GetModelParameters().LinearGainUnc).Value<
+                                //      vec.Sum(model_dist_abs.GetModelParameters().LinearGainUnc).Value)
+                                if (model_dist_diff.GetModelParameters().Fitting.ObjFunValDiff >
+                                    model_dist_abs.GetModelParameters().Fitting.ObjFunValDiff)
+                          
+                                    model_dist = model_dist_diff;
+                                else
+                                    model_dist = model_dist_abs;
+                            }
+                        }
+                        /*
+
+
                          if (doesSetpointChange)
                          {
-                             model_dist = ident_d.IdentifyLinear(ref dataSet_d, fittingSpecs,false);
+                             model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, fittingSpecs,false);
                          }
                          else
                          {
                             // need to enable time delay estimation here, otherwise 
                             // "diff" estimate is very sensitive to incorrect dynamics.
-                             model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, fittingSpecs, true);
-                         }
+                            model_dist = ident_d.IdentifyLinearDiff(ref dataSet_d, fittingSpecs, true);
+                        }*/
 
                         // model_dist = ident_d.IdentifyLinear(ref dataSet_d, false);
 
