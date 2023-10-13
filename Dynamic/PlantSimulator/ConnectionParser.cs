@@ -33,19 +33,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-
-        /// <summary>
-        /// Adds a connection betweent the models with the given IDs
-        /// (consider deprecating)
-        /// </summary>
-        /// <param name="upstreamID"></param>
-        /// <param name="downstreamID"></param>
-        /*public void AddConnection(string upstreamID, string downstreamID)
-        {
-           //connections.Add((upstreamID,downstreamID));
-        }*/
-        
-        
         /// <summary>
         /// Parse a dictionary of models,and initalize the connections based on the names of inputsIDs/outputIDs
         /// </summary>
@@ -86,23 +73,97 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Parses models and determines if there are an co-dependent models
+        /// Parses models and determines if there are co-dependent models
         /// </summary>
         /// <param name="modelDict"></param>
         /// <returns></returns>
         public List<List<string>> FindComputationalLoops(Dictionary<string, ISimulatableModel> modelDict)
         {
             List<List<string>> retListOfLists = new List<List<string>>(); 
+            Dictionary<string,List<string>> eachModelsDependsOnDict = new Dictionary<string,List<string>>();
 
-            foreach(var model in modelDict)
-            { 
-            
+            // build eachModelsDependsOnDict
+            foreach (var connection in connections)
+            {
+                string upstreamId = connection.Item1;
+                string downstreamId = connection.Item2;
+                if (!eachModelsDependsOnDict.ContainsKey(downstreamId))
+                    eachModelsDependsOnDict.Add(downstreamId, new List<string>());
+                if (!eachModelsDependsOnDict.ContainsKey(upstreamId))
+                    eachModelsDependsOnDict.Add(upstreamId, new List<string>());
 
+                eachModelsDependsOnDict[downstreamId] .Add(upstreamId);
 
-            
-            
+                foreach (var item in eachModelsDependsOnDict)
+                {
+                    if (item.Value.Contains(downstreamId))
+                    {
+                        if (item.Key != upstreamId)
+                        {
+                            eachModelsDependsOnDict[item.Key].Add(upstreamId);
+                        }
+                    }
+                }
             }
 
+            foreach (var modelID in eachModelsDependsOnDict.Keys)
+            {
+                var curModelDependencies = eachModelsDependsOnDict[modelID];
+                foreach (var dependencyID in curModelDependencies)
+                {
+                    if (!eachModelsDependsOnDict.ContainsKey(dependencyID))
+                        continue;
+                
+                    if (eachModelsDependsOnDict[dependencyID].Contains(modelID))
+                    {
+                        bool addedToExistingLoop = false;
+                        bool dependencyAlreadyKnow = false;
+                        //  if the dependency of modelID depends on modelID, then you have a computational loop!
+                        // first check if this loop is to be added to an existing loop 
+                        if (retListOfLists.Count > 0)
+                        {
+                            int listNumber = 0;
+                            foreach (var listOfSingleLoop in retListOfLists)
+                            {
+                                if (listOfSingleLoop.Contains(modelID))
+                                {
+                                    if (!listOfSingleLoop.Contains(dependencyID))
+                                    {
+                                        retListOfLists.ElementAt(listNumber).Add(dependencyID);
+                                        addedToExistingLoop = true;
+                                    }
+                                    else
+                                    {
+                                        dependencyAlreadyKnow = true;
+                                    }
+                                }
+                                if (listOfSingleLoop.Contains(dependencyID))
+                                {
+                                    if (!listOfSingleLoop.Contains(modelID))
+                                    {
+                                        retListOfLists.ElementAt(listNumber).Add(modelID);
+                                        addedToExistingLoop = true;
+                                    }
+                                    else
+                                    {
+                                        dependencyAlreadyKnow = true;
+                                    }
+                                }
+                                listNumber++;
+                            }
+
+                        }
+                        // if this loop is not part of another big looper, add a new list for it.
+                        if (!addedToExistingLoop && !dependencyAlreadyKnow)
+                        {
+                            var newList = new List<string>();
+                            newList.Add(modelID);
+                            newList.Add(dependencyID);
+                            retListOfLists.Add(newList);
+                        }
+                    }
+                }
+            }
             return retListOfLists;
         }
 
