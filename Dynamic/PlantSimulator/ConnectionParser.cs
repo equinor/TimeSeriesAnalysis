@@ -198,6 +198,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
             int nLoops = 0;
+            const int maxNloops = 100;// while-loop protect
             int prevUnprocessedModels = unprocessedModels.Count();
             bool continueLoop = true;
             while (continueLoop)
@@ -433,10 +434,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
 
 
-                if (unprocessedModels.Count() > 0 && unprocessedModels.Count() < prevUnprocessedModels)
+                if (unprocessedModels.Count() > 0 && unprocessedModels.Count() < prevUnprocessedModels && 
+                    nLoops< maxNloops)
                 {
                     prevUnprocessedModels = unprocessedModels.Count();
                     continueLoop = true;
+                    nLoops++;
                 }
                 else
                     continueLoop = false;
