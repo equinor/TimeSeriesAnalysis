@@ -376,10 +376,52 @@ namespace TimeSeriesAnalysis.Dynamic
                 foreach (var loop in computationalLoopDict)
                 {
                     var modelsInLoop = loop.Value;
-                    foreach (var modelId in modelsInLoop)
+                    // note that the order in which computational-loop models are added will be important if the 
+                    // loop contains more than two subprocesses
+                    if (modelsInLoop.Count() == 2)
                     {
-                        orderedModelAndLoopIDs.Add(modelId);
-                        unprocessedModels.Remove(modelId);
+                        foreach (var modelId in modelsInLoop)
+                        {
+                            orderedModelAndLoopIDs.Add(modelId);
+                            unprocessedModels.Remove(modelId);
+                        }
+                    }
+                    else
+                    {
+                        // the principle seems to be that if any 
+                        // process in the comp loop takes the input of two 
+                        // other processes in the loop, it should be simulated last.
+                        var loopOutputs = new List<string>();
+                        foreach (var modelID in modelsInLoop)
+                        {
+                            loopOutputs.Add(modelDict[modelID].GetOutputID());
+                        }
+                        var modelNumLoopedInputsDict = new Dictionary<string, int>();
+                        int nMaxNumLoopedInputs = 1;
+                        foreach (var modelID in modelsInLoop)
+                        {
+                            var inputIDs = modelDict[modelID].GetBothKindsOfInputIDs();
+                            var commonItems = inputIDs.Intersect<string>(loopOutputs);
+                            modelNumLoopedInputsDict.Add(modelID, commonItems.Count());
+                            if (commonItems.Count() > nMaxNumLoopedInputs)
+                            {
+                                nMaxNumLoopedInputs = commonItems.Count();
+                            }
+                        }
+
+                        // add models to ordered list sorted by the amount of looped inputs they have.
+                        for (int nCurrentNumberOfInputsPerModel = 1; nCurrentNumberOfInputsPerModel <= nMaxNumLoopedInputs; 
+                            nCurrentNumberOfInputsPerModel++)
+                        {
+                            foreach (var modelID in modelsInLoop)
+                            {
+                                if (modelNumLoopedInputsDict[modelID] == nCurrentNumberOfInputsPerModel)
+                                {
+                                    orderedModelAndLoopIDs.Add(modelID);
+                                    unprocessedModels.Remove(modelID);
+                                }
+                            }
+                        }
                     }
                 }
             }
