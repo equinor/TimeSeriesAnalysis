@@ -197,239 +197,255 @@ namespace TimeSeriesAnalysis.Dynamic
             Dictionary<string, List<string>> computationalLoopDict = FindComputationalLoops(modelDict);
 
 
-            // forward-coupled models (i.e. models in series with no feedbacks and not dependant on feedbacks)
+            int nLoops = 0;
+            int prevUnprocessedModels = unprocessedModels.Count();
+            bool continueLoop = true;
+            while (continueLoop)
             {
-                // 1.any purely forward-coupled models should be processed from left->right
-                List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections(modelDict);
-                foreach (string forwardModelID in forwardModelIDs)
-                {
-                    orderedModelAndLoopIDs.Add(forwardModelID);
-                    unprocessedModels.Remove(forwardModelID);
-                }
-                // 2 add any models downstream of the above that depend only on said upstream models
-                int whileIterations = 0;
-                int whileIterationsMax = 100;
-                while (forwardModelIDs.Count() > 0 && whileIterations < whileIterationsMax)
-                {
-                    string forwardModelId = forwardModelIDs.First();
-                    forwardModelIDs.Remove(forwardModelId);
 
-                    // get the models downstream of forwardModelId, and see of any of them can be calculated
-                    List<string> downstreamModelIDs = GetAllDownstreamModelIDs(forwardModelId);
-                    foreach (string downstreamModelID in downstreamModelIDs)
+                // forward-coupled models (i.e. models in series with no feedbacks and not dependant on feedbacks)
+                {
+                    // 1.any purely forward-coupled models should be processed from left->right
+                    List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections(modelDict);
+                    foreach (string forwardModelID in forwardModelIDs)
                     {
-                        if (unprocessedModels.Count == 0)
-                            continue;
-                        List<string> upstreamModelIDs = GetAllUpstreamModels(downstreamModelID);
-                        if (DoesArrayContainAll(orderedModelAndLoopIDs, upstreamModelIDs))
-                        {
-                            orderedModelAndLoopIDs.Add(downstreamModelID);
-                            unprocessedModels.Remove(downstreamModelID);
-                            // you can have many serial models, model1->model2->model3->modle4 etc.
-                            // thus add to "forwardModelIDs" recursively. 
-                            forwardModelIDs.Add(downstreamModelID);
-                        }
+                        orderedModelAndLoopIDs.Add(forwardModelID);
+                        unprocessedModels.Remove(forwardModelID);
                     }
-                    whileIterations++;
-                }
-            }
-
-            // 3. find all the PID-controller models, these should be run first in any feedback loops, as the
-            // look back to the past data point and are easy to initalize based on their setpoint.
-
-            // Note that controllers may be in cascades, so the order in they are processed may be signficant
-            // the calculation order should always be to start with the outermost pid-controllers and to 
-            // work your way in.
-            if(unprocessedModels.Count>0)
-            {
-                bool areUnprocessedPIDModelsLeft = true;
-                int whileLoopIterations = 0;
-                int whileLoopIterationsMax = 500;
-                while (areUnprocessedPIDModelsLeft && whileLoopIterations < whileLoopIterationsMax)
-                {
-                    whileLoopIterations++;
-                    List<string> unprocessedModelsCopy = new List<string>(unprocessedModels);
-                    foreach (string modelID in unprocessedModelsCopy)
+                    // 2 add any models downstream of the above that depend only on said upstream models
+                    int whileIterations = 0;
+                    int whileIterationsMax = 100;
+                    while (forwardModelIDs.Count() > 0 && whileIterations < whileIterationsMax)
                     {
-                        // look for pid-models that either a) are not connected to any pid-models or 
-                        // b) are connected to a model that is already in "pidModels"
-                        if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
+                        string forwardModelId = forwardModelIDs.First();
+                        forwardModelIDs.Remove(forwardModelId);
+
+                        // get the models downstream of forwardModelId, and see of any of them can be calculated
+                        List<string> downstreamModelIDs = GetAllDownstreamModelIDs(forwardModelId);
+                        foreach (string downstreamModelID in downstreamModelIDs)
                         {
-                            var upstreamModelIDs = GetAllUpstreamModels(modelDict[modelID].GetID());
-                            bool modelHasUpstreamPIDNOTAlreadyProcessed = false;
-                            foreach (var upstreamModelID in upstreamModelIDs)
+                            if (unprocessedModels.Count == 0)
+                                continue;
+                            List<string> upstreamModelIDs = GetAllUpstreamModels(downstreamModelID);
+                            if (DoesArrayContainAll(orderedModelAndLoopIDs, upstreamModelIDs))
                             {
-                                if (modelDict[upstreamModelID].GetProcessModelType() == ModelType.PID)
+                                orderedModelAndLoopIDs.Add(downstreamModelID);
+                                unprocessedModels.Remove(downstreamModelID);
+                                // you can have many serial models, model1->model2->model3->modle4 etc.
+                                // thus add to "forwardModelIDs" recursively. 
+                                forwardModelIDs.Add(downstreamModelID);
+                            }
+                        }
+                        whileIterations++;
+                    }
+                }
+
+                // 3. find all the PID-controller models, these should be run first in any feedback loops, as the
+                // look back to the past data point and are easy to initalize based on their setpoint.
+
+                // Note that controllers may be in cascades, so the order in they are processed may be signficant
+                // the calculation order should always be to start with the outermost pid-controllers and to 
+                // work your way in.
+                if (unprocessedModels.Count > 0)
+                {
+                    bool areUnprocessedPIDModelsLeft = true;
+                    int whileLoopIterations = 0;
+                    int whileLoopIterationsMax = 500;
+                    while (areUnprocessedPIDModelsLeft && whileLoopIterations < whileLoopIterationsMax)
+                    {
+                        whileLoopIterations++;
+                        List<string> unprocessedModelsCopy = new List<string>(unprocessedModels);
+                        foreach (string modelID in unprocessedModelsCopy)
+                        {
+                            // look for pid-models that either a) are not connected to any pid-models or 
+                            // b) are connected to a model that is already in "pidModels"
+                            if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
+                            {
+                                var upstreamModelIDs = GetAllUpstreamModels(modelDict[modelID].GetID());
+                                bool modelHasUpstreamPIDNOTAlreadyProcessed = false;
+                                foreach (var upstreamModelID in upstreamModelIDs)
                                 {
-                                    if (unprocessedModels.Contains(upstreamModelID))
+                                    if (modelDict[upstreamModelID].GetProcessModelType() == ModelType.PID)
                                     {
-                                        modelHasUpstreamPIDNOTAlreadyProcessed = true;
+                                        if (unprocessedModels.Contains(upstreamModelID))
+                                        {
+                                            modelHasUpstreamPIDNOTAlreadyProcessed = true;
+                                        }
                                     }
                                 }
-                            }
-                            if (!modelHasUpstreamPIDNOTAlreadyProcessed)
-                            {
-                                orderedModelAndLoopIDs.Add(modelID);
-                                pidModels.Add(modelID);
-                                unprocessedModels.Remove(modelID);
-                            }
-                        }
-                    }
-
-                    // check to see if we need to do another round
-                    areUnprocessedPIDModelsLeft = false;
-                    foreach (string modelID in unprocessedModels)
-                    {
-                        // look for pid-models that either a) are not connected to any pid-models or 
-                        // b) are connected to a model that is already in "pidModels"
-                        if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
-                        {
-                            areUnprocessedPIDModelsLeft = true;
-                        }
-                    }
-                }
-            }
-            // 4. models that are left will be inside feedback loops. 
-            // these models should also be added left->right
-
-            // if there are multiple pid loops, then these should be added "left-to-right"
-            // but "pidModels" is unordered.
-            if (unprocessedModels.Count > 0)
-            { 
-                List<string> pidModelsLeftToParse = pidModels;
-
-                int pidModelIdx = -1;
-                int whileLoopIterations = 0;
-                int whileLoopIterationsMax = 500;
-                while (pidModelsLeftToParse.Count > 0 && whileLoopIterations < whileLoopIterationsMax)
-                {
-                    whileLoopIterations++;
-                    if (pidModelIdx >= pidModelsLeftToParse.Count - 1)
-                    {
-                        pidModelIdx = 0;
-                    }
-                    else
-                    {
-                        pidModelIdx++;
-                    }
-                    string pidModelID = pidModelsLeftToParse.ElementAt(pidModelIdx);
-                    // try to parse through entire model loop
-                    bool pidLoopCompletedOk = false;
-                    bool pidLoopDone = false;
-                    string currentModelID = pidModelID;
-                    int whileLoopSafetyCounter = 0; // fail-to-safe:avoid endless while loops.
-                    int whileLoopSafetyCounterMax = 20;
-                    // try to follow the entire pid loop, adding models as you go
-                    HashSet<string> modelsIDLeftToParse = new HashSet<string>();
-                    foreach (string ID in GetAllDownstreamModelIDs(pidModelID))
-                    {
-                        modelsIDLeftToParse.Add(ID);
-                    }
-                    while (!pidLoopDone && whileLoopSafetyCounter < whileLoopSafetyCounterMax)
-                    {
-                        whileLoopSafetyCounter++;
-                        // if stack is empty, finish.
-                        if (modelsIDLeftToParse.Count() == 0)
-                        {
-                            pidLoopDone = true;
-                            continue;
-                        }
-                        // pick first item, and remove it from stack
-                        currentModelID = modelsIDLeftToParse.ElementAt(0);
-                        modelsIDLeftToParse.Remove(currentModelID);
-                        // get all downstream items from current
-                        foreach (string ID in GetAllDownstreamModelIDs(currentModelID))
-                        {
-                            if (ID == pidModelID)
-                            {
-                                pidLoopCompletedOk = true;
-                            }
-                            else// avoid-looping around the same loop more than once!
-                            {
-                                modelsIDLeftToParse.Add(ID);
-                            }
-                        }
-                        // add model if it only depends on already solved models.
-                        if (orderedModelAndLoopIDs.Contains(currentModelID))
-                        {
-                            continue;
-                        }
-                        if (DoesModelDependOnlyOnGivenModels(currentModelID, orderedModelAndLoopIDs))
-                        {
-                            orderedModelAndLoopIDs.Add(currentModelID);
-                            unprocessedModels.Remove(currentModelID);
-                            modelsIDLeftToParse.Remove(currentModelID);
-                        }
-                    }
-                    // remove modelId from "left to parse" stack if we successfully traversed it.
-                    if (pidLoopCompletedOk)
-                    {
-                        pidModelsLeftToParse.Remove(pidModelID);
-                    }
-                }
-            }
-
-            // experimental:
-            // add in computational-loop models 
-            if (computationalLoopDict.Count > 0 && unprocessedModels.Count() > 0)
-            {
-                foreach (var loop in computationalLoopDict)
-                {
-                    var modelsInLoop = loop.Value;
-                    // note that the order in which computational-loop models are added will be important if the 
-                    // loop contains more than two subprocesses
-                    if (modelsInLoop.Count() == 2)
-                    {
-                        foreach (var modelId in modelsInLoop)
-                        {
-                            orderedModelAndLoopIDs.Add(modelId);
-                            unprocessedModels.Remove(modelId);
-                        }
-                    }
-                    else
-                    {
-                        // the principle seems to be that if any 
-                        // process in the comp loop takes the input of two 
-                        // other processes in the loop, it should be simulated last.
-                        var loopOutputs = new List<string>();
-                        foreach (var modelID in modelsInLoop)
-                        {
-                            loopOutputs.Add(modelDict[modelID].GetOutputID());
-                        }
-                        var modelNumLoopedInputsDict = new Dictionary<string, int>();
-                        int nMaxNumLoopedInputs = 1;
-                        foreach (var modelID in modelsInLoop)
-                        {
-                            var inputIDs = modelDict[modelID].GetBothKindsOfInputIDs();
-                            var commonItems = inputIDs.Intersect<string>(loopOutputs);
-                            modelNumLoopedInputsDict.Add(modelID, commonItems.Count());
-                            if (commonItems.Count() > nMaxNumLoopedInputs)
-                            {
-                                nMaxNumLoopedInputs = commonItems.Count();
-                            }
-                        }
-
-                        // add models to ordered list sorted by the amount of looped inputs they have.
-                        for (int nCurrentNumberOfInputsPerModel = 1; nCurrentNumberOfInputsPerModel <= nMaxNumLoopedInputs; 
-                            nCurrentNumberOfInputsPerModel++)
-                        {
-                            foreach (var modelID in modelsInLoop)
-                            {
-                                if (modelNumLoopedInputsDict[modelID] == nCurrentNumberOfInputsPerModel)
+                                if (!modelHasUpstreamPIDNOTAlreadyProcessed)
                                 {
                                     orderedModelAndLoopIDs.Add(modelID);
+                                    pidModels.Add(modelID);
                                     unprocessedModels.Remove(modelID);
                                 }
                             }
                         }
+
+                        // check to see if we need to do another round
+                        areUnprocessedPIDModelsLeft = false;
+                        foreach (string modelID in unprocessedModels)
+                        {
+                            // look for pid-models that either a) are not connected to any pid-models or 
+                            // b) are connected to a model that is already in "pidModels"
+                            if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
+                            {
+                                areUnprocessedPIDModelsLeft = true;
+                            }
+                        }
                     }
                 }
+                // 4. models that are left will be inside feedback loops. 
+                // these models should also be added left->right
+
+                // if there are multiple pid loops, then these should be added "left-to-right"
+                // but "pidModels" is unordered.
+                if (unprocessedModels.Count > 0)
+                {
+                    List<string> pidModelsLeftToParse = pidModels;
+
+                    int pidModelIdx = -1;
+                    int whileLoopIterations = 0;
+                    int whileLoopIterationsMax = 500;
+                    while (pidModelsLeftToParse.Count > 0 && whileLoopIterations < whileLoopIterationsMax)
+                    {
+                        whileLoopIterations++;
+                        if (pidModelIdx >= pidModelsLeftToParse.Count - 1)
+                        {
+                            pidModelIdx = 0;
+                        }
+                        else
+                        {
+                            pidModelIdx++;
+                        }
+                        string pidModelID = pidModelsLeftToParse.ElementAt(pidModelIdx);
+                        // try to parse through entire model loop
+                        bool pidLoopCompletedOk = false;
+                        bool pidLoopDone = false;
+                        string currentModelID = pidModelID;
+                        int whileLoopSafetyCounter = 0; // fail-to-safe:avoid endless while loops.
+                        int whileLoopSafetyCounterMax = 20;
+                        // try to follow the entire pid loop, adding models as you go
+                        HashSet<string> modelsIDLeftToParse = new HashSet<string>();
+                        foreach (string ID in GetAllDownstreamModelIDs(pidModelID))
+                        {
+                            modelsIDLeftToParse.Add(ID);
+                        }
+                        while (!pidLoopDone && whileLoopSafetyCounter < whileLoopSafetyCounterMax)
+                        {
+                            whileLoopSafetyCounter++;
+                            // if stack is empty, finish.
+                            if (modelsIDLeftToParse.Count() == 0)
+                            {
+                                pidLoopDone = true;
+                                continue;
+                            }
+                            // pick first item, and remove it from stack
+                            currentModelID = modelsIDLeftToParse.ElementAt(0);
+                            modelsIDLeftToParse.Remove(currentModelID);
+                            // get all downstream items from current
+                            foreach (string ID in GetAllDownstreamModelIDs(currentModelID))
+                            {
+                                if (ID == pidModelID)
+                                {
+                                    pidLoopCompletedOk = true;
+                                }
+                                else// avoid-looping around the same loop more than once!
+                                {
+                                    modelsIDLeftToParse.Add(ID);
+                                }
+                            }
+                            // add model if it only depends on already solved models.
+                            if (orderedModelAndLoopIDs.Contains(currentModelID))
+                            {
+                                continue;
+                            }
+                            if (DoesModelDependOnlyOnGivenModels(currentModelID, orderedModelAndLoopIDs))
+                            {
+                                orderedModelAndLoopIDs.Add(currentModelID);
+                                unprocessedModels.Remove(currentModelID);
+                                modelsIDLeftToParse.Remove(currentModelID);
+                            }
+                        }
+                        // remove modelId from "left to parse" stack if we successfully traversed it.
+                        if (pidLoopCompletedOk)
+                        {
+                            pidModelsLeftToParse.Remove(pidModelID);
+                        }
+                    }
+                }
+
+                // experimental:
+                // add in computational-loop models 
+                if (computationalLoopDict.Count > 0 && unprocessedModels.Count() > 0)
+                {
+                    foreach (var loop in computationalLoopDict)
+                    {
+                        var modelsInLoop = loop.Value;
+                        // note that the order in which computational-loop models are added will be important if the 
+                        // loop contains more than two subprocesses
+                        if (modelsInLoop.Count() == 2)
+                        {
+                            foreach (var modelId in modelsInLoop)
+                            {
+                                orderedModelAndLoopIDs.Add(modelId);
+                                unprocessedModels.Remove(modelId);
+                            }
+                        }
+                        else
+                        {
+                            // the principle seems to be that if any 
+                            // process in the comp loop takes the input of two 
+                            // other processes in the loop, it should be simulated last.
+                            var loopOutputs = new List<string>();
+                            foreach (var modelID in modelsInLoop)
+                            {
+                                loopOutputs.Add(modelDict[modelID].GetOutputID());
+                            }
+                            var modelNumLoopedInputsDict = new Dictionary<string, int>();
+                            int nMaxNumLoopedInputs = 1;
+                            foreach (var modelID in modelsInLoop)
+                            {
+                                var inputIDs = modelDict[modelID].GetBothKindsOfInputIDs();
+                                var commonItems = inputIDs.Intersect<string>(loopOutputs);
+                                modelNumLoopedInputsDict.Add(modelID, commonItems.Count());
+                                if (commonItems.Count() > nMaxNumLoopedInputs)
+                                {
+                                    nMaxNumLoopedInputs = commonItems.Count();
+                                }
+                            }
+
+                            // add models to ordered list sorted by the amount of looped inputs they have.
+                            for (int nCurrentNumberOfInputsPerModel = 1; nCurrentNumberOfInputsPerModel <= nMaxNumLoopedInputs;
+                                nCurrentNumberOfInputsPerModel++)
+                            {
+                                foreach (var modelID in modelsInLoop)
+                                {
+                                    if (modelNumLoopedInputsDict[modelID] == nCurrentNumberOfInputsPerModel)
+                                    {
+                                        orderedModelAndLoopIDs.Add(modelID);
+                                        unprocessedModels.Remove(modelID);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                if (unprocessedModels.Count() > 0 && unprocessedModels.Count() < prevUnprocessedModels)
+                {
+                    prevUnprocessedModels = unprocessedModels.Count();
+                    continueLoop = true;
+                }
+                else
+                    continueLoop = false;
             }
 
             // final sanity check
             if (unprocessedModels.Count() > 0)
             {
-                Shared.GetParserObj().AddError("CalculationParser.DetermineCalculationOrderOfModels() did not parse all models."); 
+                Shared.GetParserObj().AddError("ConnectionParser.DetermineCalculationOrderOfModels() did not parse all models."); 
             }
             return (orderedModelAndLoopIDs,computationalLoopDict);
         }

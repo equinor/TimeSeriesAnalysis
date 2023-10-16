@@ -148,6 +148,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         private bool InitComputationalLoops(Dictionary<string, List<string>> compLoopDict, ref Dictionary<string, double> signalValuesAtT0, ref List<string> uninitalizedPID_IDs)
         {
+            if (compLoopDict == null)
+                return true;
+
             foreach (var loop in compLoopDict)
             {
                 var loopModelList = loop.Value;
@@ -158,14 +161,17 @@ namespace TimeSeriesAnalysis.Dynamic
                 // initialize the input-vector for each model with other signals 
                 foreach (var modelId in loopModelList)
                 {
-                    int nInputs = simulator.modelDict[modelId].GetLengthOfInputVector();
+                    int nInputs = simulator.modelDict[modelId].GetBothKindsOfInputIDs().Count();
                     double[] input = new double[nInputs];
                     int inputIdx = 0;
                     foreach (string inputID in simulator.modelDict[modelId].GetBothKindsOfInputIDs())
                     {
-                        if (signalValuesAtT0.ContainsKey(inputID))
+                        if (inputID != null)
                         {
-                            input[inputIdx] = signalValuesAtT0[inputID];
+                            if (signalValuesAtT0.ContainsKey(inputID))
+                            {
+                                input[inputIdx] = signalValuesAtT0[inputID];
+                            }
                         }
                         inputIdx++;
                     }

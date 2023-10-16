@@ -581,8 +581,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(120, N, 50, 65));
             inputData.Add(plantSim.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(160, N, 54, 35));
             inputData.Add(plantSim.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(30, N, 23, 57));
-            inputData.Add(plantSim.AddExternalSignal(processModel4, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(200, N, 66, 57));
-            inputData.Add(plantSim.AddExternalSignal(processModel4, SignalType.External_U, (int)INDEX.THIRD), TimeSeriesCreator.Step(30, N, 55, 50));
+            inputData.Add(plantSim.AddExternalSignal(processModel4, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(300, N, 66, 57));
+            inputData.Add(plantSim.AddExternalSignal(processModel4, SignalType.External_U, (int)INDEX.THIRD), TimeSeriesCreator.Step(350, N, 55, 50));
 
             plantSim.ConnectModels(processModel1, processModel2, (int)INDEX.SECOND);
             plantSim.ConnectModels(processModel2, processModel1, (int)INDEX.SECOND);
@@ -595,9 +595,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData, simData, plantSim);
 
-
-
-
+            /*
             Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel4.GetID(),SignalType.Output_Y)
@@ -605,7 +603,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             new List<string> { "y1=y_sim4" },
             timeBase_s, "UnitTest_CompLoop_FourModels");
             Shared.DisablePlots();
-            
+            */
         }
 
 
