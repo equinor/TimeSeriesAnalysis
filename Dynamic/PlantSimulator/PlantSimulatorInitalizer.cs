@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TimeSeriesAnalysis;
@@ -22,7 +24,7 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         private PlantSimulator simulator;
         private List<string> orderedSimulatorIDs;
-        private List<List<string>> computationalLoopIDs;
+        private Dictionary <string,List<string>> computationalLoopDict;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -31,8 +33,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             this.simulator = simulator;
             var connections = simulator.GetConnections();
-            computationalLoopIDs = connections.FindComputationalLoops(simulator.GetModels());
-            orderedSimulatorIDs = connections.InitAndDetermineCalculationOrderOfModels(simulator.GetModels());
+            (orderedSimulatorIDs,computationalLoopDict) = connections.InitAndDetermineCalculationOrderOfModels(simulator.GetModels());
         }
         /// <summary>
         /// Initalize the empty datasets to their steady-state values 
@@ -46,7 +47,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </para>
         /// </summary>
         /// <param name="simData">simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</param>
-        public bool ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
+        public bool ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
+            Dictionary<string,List<string>> compLoopDict)
         {
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
             // the inital value will be calculated .Value, but is NaN unit calculated.
@@ -78,6 +80,9 @@ namespace TimeSeriesAnalysis.Dynamic
             isOk = BackwardsCalcFeedbackLoops(ref signalValuesAtT0,ref uninitalizedPID_IDs);
             if (!isOk)
                 return false;
+
+            isOk = InitComputationalLoops(compLoopDict, ref signalValuesAtT0, ref uninitalizedPID_IDs);
+
             // if will still be uninitalized pids if simulator contains a select-block, 
             // try to treat this now
             if (uninitalizedPID_IDs.Count > 0)
@@ -132,6 +137,92 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
                 return true;
+        }
+
+        /// <summary>
+        /// Try to initalize compulatational loops
+        /// </summary>
+        /// <param name="compLoopDict"> dictionary of computataio</param>
+        /// <param name="signalValuesAtT0"></param>
+        /// <param name="uninitalizedPID_IDs"></param>
+        /// <returns></returns>
+        private bool InitComputationalLoops(Dictionary<string, List<string>> compLoopDict, ref Dictionary<string, double> signalValuesAtT0, ref List<string> uninitalizedPID_IDs)
+        {
+            foreach (var loop in compLoopDict)
+            {
+                var loopModelList = loop.Value;
+
+                var inputEachModel = new Dictionary<string, double[]>();
+                var outputEachModel = new Dictionary<string, double>();
+                var ouputNamesEachModel = new Dictionary<string,string>();
+                // initialize the input-vector for each model with other signals 
+                foreach (var modelId in loopModelList)
+                {
+                    int nInputs = simulator.modelDict[modelId].GetLengthOfInputVector();
+                    double[] input = new double[nInputs];
+                    int inputIdx = 0;
+                    foreach (string inputID in simulator.modelDict[modelId].GetBothKindsOfInputIDs())
+                    {
+                        if (signalValuesAtT0.ContainsKey(inputID))
+                        {
+                            input[inputIdx] = signalValuesAtT0[inputID];
+                        }
+                        inputIdx++;
+                    }
+                    inputEachModel[modelId] = input;
+                    outputEachModel[modelId] = 0;
+                    ouputNamesEachModel.Add(modelId,simulator.modelDict[modelId].GetOutputID());
+                }
+
+                // try to iterativly solve the equation set in the stady-state to find a pair of 
+                // inital output values that are steady-state for the given other inputs.
+                int Niterations = 7;
+                int curIt = 0;
+                while (curIt < Niterations)
+                {
+                    int modelIdx = 0;
+                    foreach (var modelId in loopModelList)
+                    {
+                        double[] u = inputEachModel[modelId];
+                        var inputIds = simulator.modelDict[modelId].GetBothKindsOfInputIDs();
+            
+                        // for each outputName in the comp loop, see if this output is in the list of inputs to this model
+                        foreach (var keyValuePair in ouputNamesEachModel)
+                        {
+                            var outputName = keyValuePair.Value;
+                            var outputNameBelongsToModel = keyValuePair.Key;
+                            int inputIdxOfOtherOutput = Array.IndexOf(inputIds, outputName);
+                            if (inputIdxOfOtherOutput == -1)
+                            {
+                                continue;
+                            }
+                            u[inputIdxOfOtherOutput] = outputEachModel[outputNameBelongsToModel];
+                        }
+                        double? outputValue = simulator.modelDict[modelId].GetSteadyStateOutput(u);
+                        if (outputValue.HasValue)
+                        {
+                            outputEachModel[modelId] = outputValue.Value;
+                        }
+                        else
+                        {
+                            Shared.GetParserObj().AddError("PlantSimulatorInitializer: computational loop init failed");
+                            return false;
+                        }
+                        modelIdx++;
+                    }
+               //     Debug.WriteLine(outputEachModel.ElementAt(0).Value + " " + outputEachModel.ElementAt(1).Value);
+                    curIt++;
+                }
+
+                // write values
+                foreach (var modelId in loopModelList)
+                {
+                    var signalID = simulator.modelDict[modelId].GetOutputID();
+                    var value = outputEachModel[modelId];
+                    signalValuesAtT0[signalID] = value;
+                }
+            }
+            return true;
         }
 
 
@@ -356,7 +447,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var modelDict = simulator.GetModels();
             var connections = simulator.GetConnections();
-            var orderedSimulatorIDs = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
+            (var orderedSimulatorIDs,var compLoodDict) = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
             // forward-calculate the output for those systems where the inputs are given. 
             for (int subSystem = 0; subSystem < orderedSimulatorIDs.Count; subSystem++)
             {

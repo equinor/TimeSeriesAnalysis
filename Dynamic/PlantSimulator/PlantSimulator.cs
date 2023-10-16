@@ -542,26 +542,18 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            var orderedSimulatorIDs = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
+            (var orderedSimulatorIDs,var compLoopDict) = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
             simData = new TimeSeriesDataSet();
 
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
 
-            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputData, ref simData) ;
+            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputData, ref simData, compLoopDict) ;
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
                 return false;
             }
-            // if you have multiple models for the same output, this test will not work!
-            /*
-            if (simData.GetSignalNames().Length < orderedSimulatorIDs.Count())
-            {
-                Shared.GetParserObj().AddError("PlantSimulator initalized only "+ simData.GetSignalNames().Length+
-                    ". Expected "+ orderedSimulatorIDs.Count());
-                return false;
-            }*/
 
             // warm start every model
             int timeIdx = 0;

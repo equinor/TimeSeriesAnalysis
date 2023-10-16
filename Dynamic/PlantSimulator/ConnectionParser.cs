@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Data;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -18,6 +19,8 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ConnectionParser
     {
+
+        private string computationalLoopPrefix = "CompLoop_";
 
         [JsonInclude]
         public List<(string, string)> connections;
@@ -76,13 +79,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Parses models and determines if there are co-dependent models
         /// </summary>
         /// <param name="modelDict"></param>
-        /// <returns></returns>
-        public List<List<string>> FindComputationalLoops(Dictionary<string, ISimulatableModel> modelDict)
+        /// <returns>a dictionary with an ID and a list of all involved modelIDs</returns>
+        public Dictionary<string,List<string>> FindComputationalLoops(Dictionary<string, ISimulatableModel> modelDict)
         {
-            List<List<string>> retListOfLists = new List<List<string>>(); 
+            Dictionary<string,List<string>> compLoopDict = new Dictionary<string,List<string>>(); 
             Dictionary<string,List<string>> eachModelsDependsOnDict = new Dictionary<string,List<string>>();
 
-            // build eachModelsDependsOnDict
+            // build eachModelsDependsOnDict  - a dictionay that for each modelID has a list
+            // of all modelIds that it depends on
             foreach (var connection in connections)
             {
                 string upstreamId = connection.Item1;
@@ -106,6 +110,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
+            // parse eachModelsDependsOnDict and look for computational loops
+
             foreach (var modelID in eachModelsDependsOnDict.Keys)
             {
                 var curModelDependencies = eachModelsDependsOnDict[modelID];
@@ -120,16 +126,17 @@ namespace TimeSeriesAnalysis.Dynamic
                         bool dependencyAlreadyKnow = false;
                         //  if the dependency of modelID depends on modelID, then you have a computational loop!
                         // first check if this loop is to be added to an existing loop 
-                        if (retListOfLists.Count > 0)
+                        if (compLoopDict.Count > 0)
                         {
                             int listNumber = 0;
-                            foreach (var listOfSingleLoop in retListOfLists)
+                            foreach (var singleLoop in compLoopDict)
                             {
+                                var listOfSingleLoop = singleLoop.Value;
                                 if (listOfSingleLoop.Contains(modelID))
                                 {
                                     if (!listOfSingleLoop.Contains(dependencyID))
                                     {
-                                        retListOfLists.ElementAt(listNumber).Add(dependencyID);
+                                        compLoopDict[singleLoop.Key].Add(dependencyID);
                                         addedToExistingLoop = true;
                                     }
                                     else
@@ -141,7 +148,7 @@ namespace TimeSeriesAnalysis.Dynamic
                                 {
                                     if (!listOfSingleLoop.Contains(modelID))
                                     {
-                                        retListOfLists.ElementAt(listNumber).Add(modelID);
+                                        compLoopDict[singleLoop.Key].Add(modelID);
                                         addedToExistingLoop = true;
                                     }
                                     else
@@ -156,15 +163,17 @@ namespace TimeSeriesAnalysis.Dynamic
                         // if this loop is not part of another big looper, add a new list for it.
                         if (!addedToExistingLoop && !dependencyAlreadyKnow)
                         {
+                            var uniqueLoopNumber = compLoopDict.Count();
+                            var compLoopID = computationalLoopPrefix + uniqueLoopNumber;
                             var newList = new List<string>();
                             newList.Add(modelID);
                             newList.Add(dependencyID);
-                            retListOfLists.Add(newList);
+                            compLoopDict.Add(compLoopID,newList);
                         }
                     }
                 }
             }
-            return retListOfLists;
+            return compLoopDict;
         }
 
 
@@ -172,15 +181,21 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Determine the order in which the models must be solved
         /// </summary>
-        /// <returns>returns the string of sorted model IDs, the order in which modelDict models are to be run</returns>
-        public List<string> InitAndDetermineCalculationOrderOfModels(
+        /// <returns>returns the <see langword="string"/> of sorted model IDs, the order in which modelDict models are to be run.
+        /// If the plant contains computational loops, the IDs of the computational loops are also in these lists instead of 
+        /// the indivudal models. 
+        /// </returns>
+        public (List<string>, Dictionary<string, List<string>>) InitAndDetermineCalculationOrderOfModels(
             Dictionary<string, ISimulatableModel> modelDict)
         {
             Init(modelDict);
 
             List<string> unprocessedModels = modelDict.Keys.ToList();
-            List<string> orderedModels = new List<string>();
+            List<string> orderedModelAndLoopIDs = new List<string>();
             List<string> pidModels = new List<string>();
+
+            Dictionary<string, List<string>> computationalLoopDict = FindComputationalLoops(modelDict);
+
 
             // forward-coupled models (i.e. models in series with no feedbacks and not dependant on feedbacks)
             {
@@ -188,7 +203,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections(modelDict);
                 foreach (string forwardModelID in forwardModelIDs)
                 {
-                    orderedModels.Add(forwardModelID);
+                    orderedModelAndLoopIDs.Add(forwardModelID);
                     unprocessedModels.Remove(forwardModelID);
                 }
                 // 2 add any models downstream of the above that depend only on said upstream models
@@ -206,9 +221,9 @@ namespace TimeSeriesAnalysis.Dynamic
                         if (unprocessedModels.Count == 0)
                             continue;
                         List<string> upstreamModelIDs = GetAllUpstreamModels(downstreamModelID);
-                        if (DoesArrayContainAll(orderedModels, upstreamModelIDs))
+                        if (DoesArrayContainAll(orderedModelAndLoopIDs, upstreamModelIDs))
                         {
-                            orderedModels.Add(downstreamModelID);
+                            orderedModelAndLoopIDs.Add(downstreamModelID);
                             unprocessedModels.Remove(downstreamModelID);
                             // you can have many serial models, model1->model2->model3->modle4 etc.
                             // thus add to "forwardModelIDs" recursively. 
@@ -218,6 +233,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     whileIterations++;
                 }
             }
+
             // 3. find all the PID-controller models, these should be run first in any feedback loops, as the
             // look back to the past data point and are easy to initalize based on their setpoint.
 
@@ -253,7 +269,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             }
                             if (!modelHasUpstreamPIDNOTAlreadyProcessed)
                             {
-                                orderedModels.Add(modelID);
+                                orderedModelAndLoopIDs.Add(modelID);
                                 pidModels.Add(modelID);
                                 unprocessedModels.Remove(modelID);
                             }
@@ -280,11 +296,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // but "pidModels" is unordered.
             if (unprocessedModels.Count > 0)
             { 
-            List<string> pidModelsLeftToParse = pidModels;
+                List<string> pidModelsLeftToParse = pidModels;
 
-            int pidModelIdx = -1;
-            int whileLoopIterations = 0;
-            int whileLoopIterationsMax = 500;
+                int pidModelIdx = -1;
+                int whileLoopIterations = 0;
+                int whileLoopIterationsMax = 500;
                 while (pidModelsLeftToParse.Count > 0 && whileLoopIterations < whileLoopIterationsMax)
                 {
                     whileLoopIterations++;
@@ -334,13 +350,13 @@ namespace TimeSeriesAnalysis.Dynamic
                             }
                         }
                         // add model if it only depends on already solved models.
-                        if (orderedModels.Contains(currentModelID))
+                        if (orderedModelAndLoopIDs.Contains(currentModelID))
                         {
                             continue;
                         }
-                        if (DoesModelDependOnlyOnGivenModels(currentModelID, orderedModels))
+                        if (DoesModelDependOnlyOnGivenModels(currentModelID, orderedModelAndLoopIDs))
                         {
-                            orderedModels.Add(currentModelID);
+                            orderedModelAndLoopIDs.Add(currentModelID);
                             unprocessedModels.Remove(currentModelID);
                             modelsIDLeftToParse.Remove(currentModelID);
                         }
@@ -353,15 +369,27 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            // if there are still two or more unprocessed variables, there may be a "computational loop" where two or more models co-depend on eachother.
-
+            // experimental:
+            // add in computational-loop models 
+            if (computationalLoopDict.Count > 0 && unprocessedModels.Count() > 0)
+            {
+                foreach (var loop in computationalLoopDict)
+                {
+                    var modelsInLoop = loop.Value;
+                    foreach (var modelId in modelsInLoop)
+                    {
+                        orderedModelAndLoopIDs.Add(modelId);
+                        unprocessedModels.Remove(modelId);
+                    }
+                }
+            }
 
             // final sanity check
             if (unprocessedModels.Count() > 0)
             {
                 Shared.GetParserObj().AddError("CalculationParser.DetermineCalculationOrderOfModels() did not parse all models."); 
             }
-            return orderedModels;
+            return (orderedModelAndLoopIDs,computationalLoopDict);
         }
 
 

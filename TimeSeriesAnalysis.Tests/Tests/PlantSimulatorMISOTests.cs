@@ -502,14 +502,25 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(60, N, 50, 55));
             inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(240, N, 50, 40));
-            processSim.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
+            processSim.ConnectModels(processModel1, processModel2, (int)INDEX.SECOND);
             processSim.ConnectModels(processModel2, processModel1, (int)INDEX.SECOND);
                inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData, simData);
-       }
+
+         /*   Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                 simData.GetValues(processModel2.GetID(),SignalType.Output_Y),
+                 inputData.GetValues(processModel1.GetID(),SignalType.External_U),
+                 inputData.GetValues(processModel2.GetID(), SignalType.External_U)},
+            new List<string> { "y1=y_sim1", "y1=y_sim2", "y3=u1", "y3=u2" },
+            timeBase_s, "UnitTest_CompLoop_TwoModels");
+            Shared.DisablePlots();*/
+
+        }
 
         [Test]
 
@@ -520,10 +531,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var inputData = new TimeSeriesDataSet();
 
-            inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(240, N, 50, 40));
-            inputData.Add(processSim.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(120, N, 50, 65));
-            inputData.Add(processSim.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(160, N, 54, 35));
-            processSim.ConnectModels(processModel1, processModel2, (int)INDEX.FIRST);
+            //inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(240, N, 50, 40));
+            inputData.Add(processSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(120, N, 50, 65));
+            inputData.Add(processSim.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.FIRST), TimeSeriesCreator.Step(160, N, 54, 35));
+            inputData.Add(processSim.AddExternalSignal(processModel3, SignalType.External_U, (int)INDEX.SECOND), TimeSeriesCreator.Step(30, N, 23, 57));
+
+            processSim.ConnectModels(processModel1, processModel2, (int)INDEX.SECOND);
             processSim.ConnectModels(processModel2, processModel1, (int)INDEX.SECOND);
             processSim.ConnectModels(processModel3, processModel1, (int)INDEX.FIRST);
 
@@ -532,8 +545,22 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData, simData);
+            /*
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                simData.GetValues(processModel2.GetID(),SignalType.Output_Y),
+                inputData.GetValues(processModel1.GetID(),SignalType.External_U),
+                inputData.GetValues(processModel2.GetID(), SignalType.External_U)},
+            new List<string> { "y1=y_sim1", "y1=y_sim2", "y3=u1", "y3=u2" },
+            timeBase_s, "UnitTest_CompLoop_TwoModels");
+            Shared.DisablePlots();
+            */
+
         }
 
+        // this is a loop that consist of more than two subprocesses.
+        // subprocess1 and subpprocess 2 both connect to subprocess3, and subprocess3 connects back to both.
 
         [Test]
         public void ComputationalLoop_ThreeModelsLoop_RunsAndConverges()
@@ -554,10 +581,18 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData, simData);
+                        
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                simData.GetValues(processModel2.GetID(),SignalType.Output_Y),
+                simData.GetValues(processModel3.GetID(),SignalType.Output_Y),
+                inputData.GetValues(processModel1.GetID(),SignalType.External_U),
+                inputData.GetValues(processModel2.GetID(), SignalType.External_U)},
+            new List<string> { "y1=y_sim1", "y1=y_sim2", "y1=y_sim3", "y3=u1", "y3=u2" },
+            timeBase_s, "UnitTest_CompLoop_TwoModels");
+            Shared.DisablePlots();
         }
-
-
-
 
         [TestCase(0,Description ="this is the easiest, as it requires no res-")]
         [TestCase(1)]
