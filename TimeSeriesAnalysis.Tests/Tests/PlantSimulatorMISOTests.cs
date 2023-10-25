@@ -111,6 +111,10 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         UnitModel processModel2;
         UnitModel processModel3;
         UnitModel processModel4;
+
+        GainSchedModel gainSched1;
+        GainSchedParameters gainSchedParameters1;
+
         PidParameters pidParameters1;
         PidModel pidModel1;
         Select minSelect1;
@@ -120,6 +124,16 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void SetUp()
         {
             Shared.GetParserObj().EnableDebugOutput();
+
+            gainSchedParameters1 = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 10 },
+                LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
+                TimeDelay_s = 0,
+                Bias = 0
+            };
+
+
 
             modelParameters1 = new UnitParameters
             {
@@ -155,6 +169,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processModel2 = new UnitModel(modelParameters2,  "SubProcess2");
             processModel3 = new UnitModel(modelParameters3,  "SubProcess3");
             processModel4 = new UnitModel(modelParameters4, "SubProcess4");
+
+            gainSched1 = new GainSchedModel(gainSchedParameters1,"GainSched1");
 
             pidParameters1 = new PidParameters()
             {
@@ -195,6 +211,34 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
         }
+
+        [TestCase]
+        public void GainSched_Single_RunsAndConverges()
+        {
+            var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched1 });
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSim.AddExternalSignal(gainSched1, SignalType.External_U, (int)INDEX.FIRST),
+                TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3));
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
+
+            Assert.IsTrue(Math.Abs(simY[0] - (1 * 50 + 0.5 * 50 + 5)) < 0.01);
+            Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
+
+            /*Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                simData.GetValues(processModel1.GetID(),SignalType.External_U,0),
+                simData.GetValues(processModel1.GetID(),SignalType.External_U,1)
+            },
+                new List<string> { "y1=y_sim1", "y3=u1","y3=u2" },
+                timeBase_s, "UnitTest_SingleMISO");*/
+        }
+
+
+
 
         [TestCase]
         public void MISO_Single_RunsAndConverges()
