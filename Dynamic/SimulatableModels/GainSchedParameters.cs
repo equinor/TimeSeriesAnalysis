@@ -1,5 +1,6 @@
 ﻿using Accord.Math;
 using System.Collections.Generic;
+using System.Linq;
 using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -31,13 +32,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// A time constant in seconds, the time a 1. order linear system requires to do 63% of a step response.
         /// Set to zero to turn off time constant in model.
         /// </summary>
-        public double TimeConstant_s { get; set; } = 0;
+        public double[] TimeConstant_s { get; set; } =null;
 
 
         /// <summary>
         /// The uncertinty of the time constant estimate
         /// </summary>
-        public double? TimeConstantUnc_s { get; set; } = null;
+        public double[] TimeConstantUnc_s { get; set; } = null;
+
 
         /// <summary>
         /// The time delay in seconds.This number needs to be a multiple of the sampling rate.
@@ -47,7 +49,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// An array of gains that determine how much in the steady state each input change affects the output(multiplied with (u-u0))
         /// </summary>
-        public double[] LinearGains { get; set; } = null;
+        public List<double[]> LinearGains { get; set; } = null;
 
         /// <summary>
         /// An array of 95%  uncertatinty in the linear gains  (u-u0))
@@ -97,7 +99,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public int GetNumInputs()
         {
             if (LinearGains != null)
-                return LinearGains.Length;
+                return LinearGains.First().Length;
             else
                 return 0;
         }
@@ -111,11 +113,11 @@ namespace TimeSeriesAnalysis.Dynamic
             newP.Y_max = Y_max;
             newP.TimeConstant_s = TimeConstant_s;
             newP.TimeDelay_s = TimeDelay_s;
-            newP.LinearGains = (double[])LinearGains.Clone();
-            if (LinearGainUnc == null)
+            newP.LinearGains = new List<double[]> (LinearGains);
+        /*    if (LinearGainUnc == null)
                 newP.LinearGainUnc = null;
             else
-                newP.LinearGainUnc = (double[])LinearGainUnc.Clone();
+                newP.LinearGainUnc = new List<double[]>(LinearGains);*/
             newP.U0 = U0;
             newP.UNorm = UNorm;
             newP.Bias = Bias;
@@ -136,24 +138,16 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double GetTotalCombinedProcessGain(int inputIdx)
         {
-            if (LinearGains == null)
-            {
-                return double.NaN;
-            }
-            if (inputIdx > LinearGains.Length-1)
-            {
-                return double.NaN;
-            }
-
-            // the "gain" of u is dy/du
-            // d/du [c/(1-a)*(u-u0)^2)]=
-            //      d/du [c/(1-a)*(u^2-2*u*u0 +2u0))]= 
-            //      d/du [c/(1-a)*(u^2-2u*u0)] =
-            //      c/(1-a)*[2*u-2u*u0]
-
-            {
-                return LinearGains[inputIdx];
-            }
+            /* if (LinearGains == null)
+             {
+                 return double.NaN;
+             }
+             if (inputIdx > LinearGains.Length-1)
+             {
+                 return double.NaN;
+             }
+             return LinearGains[inputIdx];*/
+            return 0;
         }
 
         /// <summary>
@@ -167,21 +161,22 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double GetTotalCombinedProcessGainUncertainty(int inputIdx)
         {
-            if (LinearGainUnc == null)
-                return double.NaN;
+            /*  if (LinearGainUnc == null)
+                  return double.NaN;
 
-            if (inputIdx > LinearGainUnc.Length - 1)
-            {
-                return double.NaN;
-            }
-            return LinearGainUnc[inputIdx];
+              if (inputIdx > LinearGainUnc.Length - 1)
+              {
+                  return double.NaN;
+              }
+              return LinearGainUnc[inputIdx];*/
+            return 0;
         }
 
         /// <summary>
         /// Get all process gains (including both linear and any nonlinear terms)
         /// </summary>
         /// <returns>may return null if no process gains given</returns>
-        public double[] GetProcessGains()
+      /*  public double[] GetProcessGains()
         {
             var list = new List<double>();
 
@@ -197,13 +192,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 list.Add(GetTotalCombinedProcessGain(inputIdx));
             }
             return list.ToArray();
-        }
+        }*/
 
         /// <summary>
         /// Get all the process gain uncertainties
         /// </summary>
         /// <returns></returns>
-        public double[] GetProcessGainUncertainties()
+    /*    public double[] GetProcessGainUncertainties()
         {
             var list = new List<double>();
             for (int inputIdx = 0; inputIdx < U0.Length; inputIdx++)
@@ -212,7 +207,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return list.ToArray();
         }
-
+    */
 
         /// <summary>
         /// Adds a identifiation warning to the object

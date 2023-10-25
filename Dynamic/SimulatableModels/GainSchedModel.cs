@@ -88,16 +88,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 explainStr = "modelParamters is null";
                 return false;
             }
-           /* if (modelParameters.LinearGains == null)
+            if (modelParameters.LinearGains == null)
             {
                 explainStr = "LinearGains is null"; 
                 return false;
             }
-            if (modelParameters.LinearGains.Length == 0)
+            if (modelParameters.LinearGains.Count == 0)
             {
                 explainStr = "LinearGains is empty";
                 return false;
-            }*/
+            }
+            else
+            { 
+            
+            }
+
             if (ModelInputIDs == null)
             {
                 explainStr = "ModelInputIDs is null";
@@ -106,10 +111,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (modelParameters.LinearGains != null)
             {
-                if (modelParameters.LinearGains.Length < ModelInputIDs.Length)
+                foreach (var gain in modelParameters.LinearGains)
                 {
-                    explainStr = "fewer LinearGains than ModelInputIDs";
-                    return false;
+                    if (gain.Length < ModelInputIDs.Length)
+                    {
+                        explainStr = "fewer LinearGains than ModelInputIDs";
+                        return false;
+                    }
                 }
             }
             return true;
@@ -169,14 +177,14 @@ namespace TimeSeriesAnalysis.Dynamic
             if (inputIDs == null)
             {
                 if (modelParameters.LinearGains != null)
-                    return modelParameters.LinearGains.Length;
+                    return modelParameters.LinearGains.First().Length;
                 else
                     return 0;
             }
             else
             {
                 if (modelParameters.LinearGains != null)
-                    return Math.Max(modelParameters.LinearGains.Length, inputIDs.Length);
+                    return Math.Max(modelParameters.LinearGains.First().Length, inputIDs.Length);
                 else
                     return inputIDs.Length;
             }
@@ -253,18 +261,15 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 double y_contributionFromInput = x0 - x_otherInputs;
 
-
-
-
+                u0 = 0;
+                if (modelParameters.U0 != null)
                 {
-                    u0 = 0;
-                    if (modelParameters.U0 != null)
-                    {
-                        u0 += modelParameters.U0[inputIdx]; 
-                    }
-                    u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
-
+                    u0 += modelParameters.U0[inputIdx]; 
                 }
+                //TODO
+                //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
+
+      
                 return u0;
             }
         }
@@ -280,11 +285,13 @@ namespace TimeSeriesAnalysis.Dynamic
             double processGainTerm = 0;
             if (modelParameters.U0 != null)
             {
-                processGainTerm += modelParameters.LinearGains[inputIndex] * (u- modelParameters.U0[inputIndex]);
+                //TODO: use correct linear gain
+                processGainTerm += modelParameters.LinearGains.First()[inputIndex] * (u- modelParameters.U0[inputIndex]);
             }
             else
             {
-                processGainTerm += modelParameters.LinearGains[inputIndex] * u;
+                //TODO: use correct linear gain
+                processGainTerm += modelParameters.LinearGains.First()[inputIndex] * u;
             }
             return processGainTerm;
         }
@@ -304,7 +311,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // inputs U may include a disturbance as the last entry
             for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
-                if (curInput + 1 <= modelParameters.LinearGains.Length)
+                if (curInput + 1 <= modelParameters.GetNumInputs())
                 {
                     double curUvalue = inputs[curInput];
                     if (Double.IsNaN(inputs[curInput]) || inputs[curInput] == badValueIndicator)
@@ -400,7 +407,10 @@ namespace TimeSeriesAnalysis.Dynamic
             double x_static = CalculateStaticStateWithoutAdditive(inputs,badValueIndicator);
 
             // nb! if first iteration, start model at steady-state
-            double x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
+
+            double TimeConstant_s = modelParameters.TimeConstant_s.First();//TODO: get appropriate time constant
+
+            double x_dynamic = lowPass.Filter(x_static, TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
             double y = 0;
             if (modelParameters.TimeDelay_s <= 0)
@@ -442,11 +452,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Is the model static or dynamic?
         /// </summary>
         /// <returns>Returns true if the model is static(no time constant or time delay terms),otherwise false.</returns>
-        public bool IsModelStatic()
+    /*    public bool IsModelStatic()
         {
            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
         }
-
+    */
 
 
 
@@ -489,7 +499,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         override public string ToString()
         {
-            var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
+         /*   var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
             var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
             numberFormat.NumberDecimalSeparator = ".";
 
@@ -585,7 +595,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
             }
 
-
             sb.AppendLine(" -> u0 : " + Vec.ToString(modelParameters.U0, sDigits).ToString(writeCulture));
             if (modelParameters.UNorm == null)
             {
@@ -632,7 +641,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
             }
-            return sb.ToString();
+            return sb.ToString();*/
+         return "";
         }
 
 
