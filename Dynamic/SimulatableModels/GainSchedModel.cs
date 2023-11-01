@@ -14,31 +14,11 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary> 
-    /// Simulatable "default" process model. 
+    /// Simulatable gain schedule model.
     /// <remarks>
     /// <para>
-    /// This is a model that can be either dynamic or static, have one or multiple inputs
-    /// and can be either linear in inputs or have inputs nonlinearity described by a
-    /// second-order polynominal. Dynamics can be either 1.order time-constant, time-delay or both.
-    /// The model also supports "additive" signals added to its output(intended for modeling disturbances.)
-    /// </para>
-    /// <para>
-    /// The model is designed to lend itself well to identificaiton from industrial time-series
-    /// datasets, and is supported by the accompanying identificaiton method <seealso cref="UnitIdentifier"/>.
-    /// </para>
-    /// <para>
-    /// This model is also intended to be co-simulated with <seealso cref="PidModel"/> by <seealso cref="PlantSimulator"/> to study
-    /// process control feedback loops.
-    /// </para>
-    ///  <para>
-    /// It is assumed that for most unit processes in industrial process control systems can be described 
-    /// sufficiently by this model, and thus that larger plants can be modeled by connecting unit models
-    /// based on this model structure.
-    /// </para>
-    /// <para>
-    /// It would be possible to extend this model to also describe second-order dynamics along the same principles by
-    /// the intorduction of one additional paramters in future work. 
-    /// </para>
+    /// TODO: write a good description of the GainSchedModel
+    /// </par>
     /// </remarks>
     /// See also: <seealso cref="GainSchedParameters"/>
     /// </summary>
@@ -239,44 +219,42 @@ namespace TimeSeriesAnalysis.Dynamic
                     return u0;
                 }
                 else*/
+            double x_otherInputs = modelParameters.Bias;
+            double gainSched = givenInputs[modelParameters.GainSchedParameterIndex]; // TODO: make sure GainSchedParIndx is updated
+            //nb! input may include a disturbance!
+            if (givenInputs != null)
             {
-                double x_otherInputs = modelParameters.Bias;
-                double gainSched = givenInputs[modelParameters.GainSchedParameterIndex];
-                //nb! input may include a disturbance!
-                if (givenInputs != null)
+                for (int i = 0; i < givenInputs.Length; i++)
                 {
-                    for (int i = 0; i < givenInputs.Length; i++)
+                    if (Double.IsNaN(givenInputs[i]))
+                        continue;
+                    if (i < GetModelInputIDs().Length)//model inputs
                     {
-                        if (Double.IsNaN(givenInputs[i]))
-                            continue;
-                        if (i < GetModelInputIDs().Length)//model inputs
-                        {
-                            x_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i], gainSched);
-                        }
-                        else // additive inputs
-                        {
-                            x_otherInputs += givenInputs[i];
-                        }
+                        x_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i], gainSched);
+                    }
+                    else // additive inputs
+                    {
+                        x_otherInputs += givenInputs[i];
                     }
                 }
+            }
 
-                double y_contributionFromInput = x0 - x_otherInputs;
+            double y_contributionFromInput = x0 - x_otherInputs;
 
-                u0 = 0;
-                if (modelParameters.U0 != null)
-                {
-                    u0 += modelParameters.U0[inputIdx]; 
-                }
-                //TODO
-                //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
+            u0 = 0;
+            if (modelParameters.U0 != null)
+            {
+                u0 += modelParameters.U0[inputIdx]; 
+            }
+            //TODO
+            //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
 
       
-                return u0;
-            }
+            return u0;
         }
 
         /// <summary>
-        /// Determine the process-gain(linear) contribution to the outputof a particular index for a particular value
+        /// Determine the process-gain(linear) contribution to the output of a particular index for a particular value
         /// </summary>
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
@@ -334,14 +312,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
         /// <returns></returns>
-     
-
         private double CalculateStaticStateWithoutAdditive(double[] inputs, double badValueIndicator=-9999)
         {
             double x_static = modelParameters.Bias;
 
             // inputs U may include a disturbance as the last entry
-            double gainSched = inputs[modelParameters.GainSchedParameterIndex];
+            double gainSched = inputs[modelParameters.GainSchedParameterIndex]; // TODO: make sure GainSchedParIndx is updated
 
             for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
@@ -442,7 +418,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // nb! if first iteration, start model at steady-state
 
-            double TimeConstant_s = modelParameters.TimeConstant_s.First();//TODO: get appropriate time constant
+            double TimeConstant_s = modelParameters.TimeConstant_s.First(); //TODO: get appropriate time constant
+            // TimeConstant_s = chooseCorrectTimeConstant();
 
             double x_dynamic = lowPass.Filter(x_static, TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
