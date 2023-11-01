@@ -10,6 +10,7 @@ using TimeSeriesAnalysis.Utility;
 using NUnit.Framework;
 
 using TimeSeriesAnalysis._Examples;
+using System.Runtime.ConstrainedExecution;
 
 
 namespace TimeSeriesAnalysis.Test.PlantSimulations
@@ -113,7 +114,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         UnitModel processModel4;
 
         GainSchedModel gainSched1;
+        GainSchedModel gainSched2;
+        GainSchedModel gainSched3;
+        GainSchedModel gainSched4;
         GainSchedParameters gainSchedParameters1;
+        GainSchedParameters gainSchedParameters2;
+        GainSchedParameters gainSchedParameters3;
+        GainSchedParameters gainSchedParameters4;
 
         PidParameters pidParameters1;
         PidModel pidModel1;
@@ -128,14 +135,42 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             gainSchedParameters1 = new GainSchedParameters
             {
                 TimeConstant_s = new double[] { 10,20 },
-                TimeConstantThresholds = new double[] { 2},
+                TimeConstantThresholds = new double[] { 2 },
                 LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
                 LinearGainThresholds = new double[] { 2 },
                 TimeDelay_s = 0,
                 Bias = 0
             };
 
+            gainSchedParameters2 = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 10, 20 },
+                TimeConstantThresholds = new double[] { 2 },
+                LinearGains = new List<double[]> { new double[] { 20 }, new double[] { 5 } },
+                LinearGainThresholds = new double[] { 3 },
+                TimeDelay_s = 0,
+                Bias = 0
+            };
 
+            gainSchedParameters3 = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 10, 20 },
+                TimeConstantThresholds = new double[] { 2 },
+                LinearGains = new List<double[]> { new double[] { -20 }, new double[] { -15 } },
+                LinearGainThresholds = new double[] { 2 },
+                TimeDelay_s = 0,
+                Bias = 0
+            };
+
+            gainSchedParameters4 = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 10, 20 },
+                TimeConstantThresholds = new double[] { 2 },
+                LinearGains = new List<double[]> { new double[] { -20 }, new double[] { -15 } },
+                LinearGainThresholds = new double[] { 2 },
+                TimeDelay_s = 0,
+                Bias = 0
+            };
 
             modelParameters1 = new UnitParameters
             {
@@ -172,7 +207,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             processModel3 = new UnitModel(modelParameters3,  "SubProcess3");
             processModel4 = new UnitModel(modelParameters4, "SubProcess4");
 
-            gainSched1 = new GainSchedModel(gainSchedParameters1,"GainSched1");
+            gainSched1 = new GainSchedModel(gainSchedParameters1, "GainSched1");
+            gainSched2 = new GainSchedModel(gainSchedParameters2, "GainSched2");
+            gainSched3 = new GainSchedModel(gainSchedParameters3, "GainSched3");
+            gainSched4 = new GainSchedModel(gainSchedParameters3, "GainSched4");
+
 
             pidParameters1 = new PidParameters()
             {
@@ -214,35 +253,51 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
         }
 
-        [TestCase]
-        public void GainSched_Single_RunsAndConverges()
+        [TestCase(1, 5, 30)]
+        [TestCase(2, 20, 15)]
+        [TestCase(3,-20, -45)]
+        public void GainSched_Single_RunsAndConverges(int ver, double step1Out, double step3Out)
         {
-            var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched1 });
+            GainSchedModel gainSched = null;
+            if (ver == 1)
+            {
+                gainSched = gainSched1;
+            }
+            else if (ver == 2)
+            {
+                gainSched = gainSched2;
+            }
+            else if (ver == 3)
+            {
+                gainSched = gainSched3;
+            }
+
+            var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched });
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(plantSim.AddExternalSignal(gainSched1, SignalType.External_U, (int)INDEX.FIRST),
+            inputData.Add(plantSim.AddExternalSignal(gainSched, SignalType.External_U, (int)INDEX.FIRST),
                 TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
-            Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
-            double[] simY = simData.GetValues(gainSched1.GetID(), SignalType.Output_Y);
 
-            Assert.IsTrue(Math.Abs(simY[N/3-2] - 5) < 0.2,"first step should have a gain of 5");
-            Assert.IsTrue(Math.Abs(simY.Last() - 30) < 0.2, "third step should have a gain of 10");
+            // Act
+            var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y);
+            
+            // Assert
+            Assert.IsTrue(isSimulatable);
+            Assert.IsTrue(Math.Abs(simY1[N/3-2] - step1Out) < 0.2,"first step should have a gain of 5");
+            Assert.IsTrue(Math.Abs(simY1.Last() - step3Out) < 0.2, "third step should have a gain of 10");
             //  Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
 
-            //y[k] = a y[k-1] + b u[k]
             Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
-                simData.GetValues(gainSched1.GetID(),SignalType.Output_Y),
-                inputData.GetValues(gainSched1.GetID(),SignalType.External_U,0),
+                simData.GetValues(gainSched.GetID(),SignalType.Output_Y),
+                inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
             },
                 new List<string> { "y1=y_sim1", "y3=u1" },
                 timeBase_s, "GainSched_Single");
             Shared.DisablePlots();
         }
-
-
 
 
         [TestCase]
