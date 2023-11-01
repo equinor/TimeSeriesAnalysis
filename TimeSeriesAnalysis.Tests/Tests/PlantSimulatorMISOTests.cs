@@ -127,8 +127,10 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             gainSchedParameters1 = new GainSchedParameters
             {
-                TimeConstant_s = new double[] { 10 },
+                TimeConstant_s = new double[] { 10,20 },
+                TimeConstantThresholds = new double[] { 2},
                 LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
+                LinearGainThresholds = new double[] { 2 },
                 TimeDelay_s = 0,
                 Bias = 0
             };
@@ -223,18 +225,21 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             SISOTests.CommonAsserts(inputData, simData, plantSim);
-            double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
+            double[] simY = simData.GetValues(gainSched1.GetID(), SignalType.Output_Y);
 
-            Assert.IsTrue(Math.Abs(simY[0] - (1 * 50 + 0.5 * 50 + 5)) < 0.01);
-            Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
+            Assert.IsTrue(Math.Abs(simY[N/3-2] - 5) < 0.2,"first step should have a gain of 5");
+            Assert.IsTrue(Math.Abs(simY.Last() - 30) < 0.2, "third step should have a gain of 10");
+            //  Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
 
-            /*Plot.FromList(new List<double[]> {
-                simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
-                simData.GetValues(processModel1.GetID(),SignalType.External_U,0),
-                simData.GetValues(processModel1.GetID(),SignalType.External_U,1)
+            //y[k] = a y[k-1] + b u[k]
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(gainSched1.GetID(),SignalType.Output_Y),
+                inputData.GetValues(gainSched1.GetID(),SignalType.External_U,0),
             },
-                new List<string> { "y1=y_sim1", "y3=u1","y3=u2" },
-                timeBase_s, "UnitTest_SingleMISO");*/
+                new List<string> { "y1=y_sim1", "y3=u1" },
+                timeBase_s, "GainSched_Single");
+            Shared.DisablePlots();
         }
 
 

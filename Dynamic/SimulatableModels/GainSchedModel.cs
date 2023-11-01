@@ -241,6 +241,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 else*/
             {
                 double x_otherInputs = modelParameters.Bias;
+                double gainSched = givenInputs[modelParameters.GainSchedParameterIndex];
                 //nb! input may include a disturbance!
                 if (givenInputs != null)
                 {
@@ -250,7 +251,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             continue;
                         if (i < GetModelInputIDs().Length)//model inputs
                         {
-                            x_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i]);
+                            x_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i], gainSched);
                         }
                         else // additive inputs
                         {
@@ -279,19 +280,50 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
+        /// <param name="u_GainSched">the value of scheduling input</param>
         /// <returns>contribution to the output y, excluding bias and curvature contributions</returns>
-        private double CalculateLinearProcessGainTerm(int inputIndex, double u)
+        private double CalculateLinearProcessGainTerm(int inputIndex, double u, double u_GainSched)
         {
             double processGainTerm = 0;
+            int gainSchedModelIdx = 0;
+            for (int idx = 0; idx < modelParameters.LinearGainThresholds.Length; idx++)
+            {
+                if (idx == 0)
+                {
+                    if (u_GainSched < modelParameters.LinearGainThresholds[idx])
+                    {
+                        gainSchedModelIdx = idx;
+                        break;// jump out of for-loop
+                    }
+                    else
+                    {
+                        gainSchedModelIdx = idx+1;
+                    }
+                }
+                else if (idx == modelParameters.LinearGainThresholds.Length - 1)
+                {
+                    if (u_GainSched > modelParameters.LinearGainThresholds[idx])
+                    {
+                        gainSchedModelIdx = idx;
+                    }
+                }
+                else
+                {
+                    if (u_GainSched > modelParameters.LinearGainThresholds[idx-1] &&
+                        u_GainSched < modelParameters.LinearGainThresholds[idx])
+                    {
+                        gainSchedModelIdx = idx;
+                    }
+                }
+            }
+ 
             if (modelParameters.U0 != null)
             {
-                //TODO: use correct linear gain
-                processGainTerm += modelParameters.LinearGains.First()[inputIndex] * (u- modelParameters.U0[inputIndex]);
+                processGainTerm += modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * (u- modelParameters.U0[inputIndex]);
             }
             else
             {
-                //TODO: use correct linear gain
-                processGainTerm += modelParameters.LinearGains.First()[inputIndex] * u;
+                processGainTerm += modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * u;
             }
             return processGainTerm;
         }
@@ -309,6 +341,8 @@ namespace TimeSeriesAnalysis.Dynamic
             double x_static = modelParameters.Bias;
 
             // inputs U may include a disturbance as the last entry
+            double gainSched = inputs[modelParameters.GainSchedParameterIndex];
+
             for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
                 if (curInput + 1 <= modelParameters.GetNumInputs())
@@ -326,7 +360,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         lastGoodValuesOfInputs[curInput] = inputs[curInput];
                     }
-                    x_static += CalculateLinearProcessGainTerm(curInput, curUvalue);
+                    x_static += CalculateLinearProcessGainTerm(curInput, curUvalue, gainSched);
                 }
             }
             return x_static;

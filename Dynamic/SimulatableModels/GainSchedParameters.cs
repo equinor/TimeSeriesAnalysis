@@ -27,7 +27,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public FittingSpecs FittingSpecs = new FittingSpecs();
 
-
         /// <summary>
         /// A time constant in seconds, the time a 1. order linear system requires to do 63% of a step response.
         /// Set to zero to turn off time constant in model.
@@ -35,11 +34,22 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[] TimeConstant_s { get; set; } =null;
 
 
+
+        /// <summary>
+        /// The index of the parameter among the ModelInputIdx
+        /// </summary>
+        public int GainSchedParameterIndex = 0;
+
+
+        /// <summary>
+        /// Thresholds for when to use which gains
+        /// </summary>
+        public double[] TimeConstantThresholds { get; set; } = null;
+
         /// <summary>
         /// The uncertinty of the time constant estimate
         /// </summary>
         public double[] TimeConstantUnc_s { get; set; } = null;
-
 
         /// <summary>
         /// The time delay in seconds.This number needs to be a multiple of the sampling rate.
@@ -50,6 +60,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// An array of gains that determine how much in the steady state each input change affects the output(multiplied with (u-u0))
         /// </summary>
         public List<double[]> LinearGains { get; set; } = null;
+
+        /// <summary>
+        /// Threshold for when to use different gains
+        /// </summary>
+        public double[] LinearGainThresholds { get; set; } = null;
 
         /// <summary>
         /// An array of 95%  uncertatinty in the linear gains  (u-u0))
