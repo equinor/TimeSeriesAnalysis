@@ -266,42 +266,24 @@ namespace TimeSeriesAnalysis.Dynamic
             int gainSchedModelIdx = 0;
             for (int idx = 0; idx < modelParameters.LinearGainThresholds.Length; idx++)
             {
-                if (idx == 0)
+                if (u_GainSched < modelParameters.LinearGainThresholds[idx])
                 {
-                    if (u_GainSched < modelParameters.LinearGainThresholds[idx])
-                    {
-                        gainSchedModelIdx = idx;
-                        break;// jump out of for-loop
-                    }
-                    else
-                    {
-                        gainSchedModelIdx = idx+1;
-                    }
+                    gainSchedModelIdx = idx;
+                    break;
                 }
                 else if (idx == modelParameters.LinearGainThresholds.Length - 1)
                 {
-                    if (u_GainSched > modelParameters.LinearGainThresholds[idx])
-                    {
-                        gainSchedModelIdx = idx;
-                    }
-                }
-                else
-                {
-                    if (u_GainSched > modelParameters.LinearGainThresholds[idx-1] &&
-                        u_GainSched < modelParameters.LinearGainThresholds[idx])
-                    {
-                        gainSchedModelIdx = idx;
-                    }
+                    gainSchedModelIdx = idx + 1;
                 }
             }
  
-            if (modelParameters.U0 != null)
+            if (modelParameters.U0 != null) // For curvature only
             {
-                processGainTerm += modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * (u- modelParameters.U0[inputIndex]);
+                processGainTerm = modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * (u- modelParameters.U0[inputIndex]);
             }
             else
             {
-                processGainTerm += modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * u;
+                processGainTerm = modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * u;
             }
             return processGainTerm;
         }

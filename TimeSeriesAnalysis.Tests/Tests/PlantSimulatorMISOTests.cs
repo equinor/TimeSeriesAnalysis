@@ -117,10 +117,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         GainSchedModel gainSched2;
         GainSchedModel gainSched3;
         GainSchedModel gainSched4;
+        GainSchedModel gainSched5;
         GainSchedParameters gainSchedParameters1;
         GainSchedParameters gainSchedParameters2;
         GainSchedParameters gainSchedParameters3;
         GainSchedParameters gainSchedParameters4;
+        GainSchedParameters gainSchedParameters5;
 
         PidParameters pidParameters1;
         PidModel pidModel1;
@@ -137,7 +139,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 TimeConstant_s = new double[] { 10,20 },
                 TimeConstantThresholds = new double[] { 2 },
                 LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
-                LinearGainThresholds = new double[] { 2 },
+                LinearGainThresholds = new double[] { 4 },
                 TimeDelay_s = 0,
                 Bias = 0
             };
@@ -147,7 +149,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 TimeConstant_s = new double[] { 10, 20 },
                 TimeConstantThresholds = new double[] { 2 },
                 LinearGains = new List<double[]> { new double[] { 20 }, new double[] { 5 } },
-                LinearGainThresholds = new double[] { 3 },
+                LinearGainThresholds = new double[] { 0.5 },
                 TimeDelay_s = 0,
                 Bias = 0
             };
@@ -157,7 +159,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 TimeConstant_s = new double[] { 10, 20 },
                 TimeConstantThresholds = new double[] { 2 },
                 LinearGains = new List<double[]> { new double[] { -20 }, new double[] { -15 } },
-                LinearGainThresholds = new double[] { 2 },
+                LinearGainThresholds = new double[] { 1.5 },
                 TimeDelay_s = 0,
                 Bias = 0
             };
@@ -166,8 +168,18 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             {
                 TimeConstant_s = new double[] { 10, 20 },
                 TimeConstantThresholds = new double[] { 2 },
-                LinearGains = new List<double[]> { new double[] { -20 }, new double[] { -15 } },
-                LinearGainThresholds = new double[] { 2 },
+                LinearGains = new List<double[]> { new double[] { -20 }, new double[] { -15 }, new double[] { -10 } },
+                LinearGainThresholds = new double[] { 1.5, 2.5 },
+                TimeDelay_s = 0,
+                Bias = 0
+            };
+
+            gainSchedParameters5 = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 10, 20 },
+                TimeConstantThresholds = new double[] { 2 },
+                LinearGains = new List<double[]> { new double[] { -10 }, new double[] { -15 }, new double[] { -10 }, new double[] { 10 } },
+                LinearGainThresholds = new double[] { 0.5, 1.5, 2.5 },
                 TimeDelay_s = 0,
                 Bias = 0
             };
@@ -210,7 +222,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             gainSched1 = new GainSchedModel(gainSchedParameters1, "GainSched1");
             gainSched2 = new GainSchedModel(gainSchedParameters2, "GainSched2");
             gainSched3 = new GainSchedModel(gainSchedParameters3, "GainSched3");
-            gainSched4 = new GainSchedModel(gainSchedParameters3, "GainSched4");
+            gainSched4 = new GainSchedModel(gainSchedParameters4, "GainSched4");
+            gainSched5 = new GainSchedModel(gainSchedParameters5, "GainSched5");
 
 
             pidParameters1 = new PidParameters()
@@ -253,9 +266,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
         }
 
-        [TestCase(1, 5, 30)]
-        [TestCase(2, 20, 15)]
-        [TestCase(3,-20, -45)]
+        [TestCase(1, 5, 15)]
+        [TestCase(2, 5, 15)]
+        [TestCase(3, -20, -45)]
+        [TestCase(4, -20, -30)]
+        [TestCase(5, -15, 30)]
         public void GainSched_Single_RunsAndConverges(int ver, double step1Out, double step3Out)
         {
             GainSchedModel gainSched = null;
@@ -271,6 +286,14 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             {
                 gainSched = gainSched3;
             }
+            else if (ver == 4)
+            {
+                gainSched = gainSched4;
+            }
+            else if (ver == 5)
+            {
+                gainSched = gainSched5;
+            }
 
             var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched });
             var inputData = new TimeSeriesDataSet();
@@ -285,18 +308,20 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             
             // Assert
             Assert.IsTrue(isSimulatable);
-            Assert.IsTrue(Math.Abs(simY1[N/3-2] - step1Out) < 0.2,"first step should have a gain of 5");
-            Assert.IsTrue(Math.Abs(simY1.Last() - step3Out) < 0.2, "third step should have a gain of 10");
+            Assert.IsTrue(Math.Abs(simY1[N/3-2] - step1Out) < 0.2,"first step should have a gain of " + step1Out.ToString());
+            Assert.IsTrue(Math.Abs(simY1.Last() - step3Out) < 0.2, "third step should have a gain of " + step3Out.ToString());
             //  Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
+
 
             Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
-                simData.GetValues(gainSched.GetID(),SignalType.Output_Y),
+                simY1,
                 inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
-            },
-                new List<string> { "y1=y_sim1", "y3=u1" },
+                },
+                new List<string> { "y1=y_sim" + (ver + 5).ToString(), "y3=u1" },
                 timeBase_s, "GainSched_Single");
             Shared.DisablePlots();
+            
         }
 
 
