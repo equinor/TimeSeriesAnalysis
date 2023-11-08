@@ -289,6 +289,29 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Determine the time constant for a particular sceduling input
+        /// </summary>
+        /// <param name="u_GainSched">the value of scheduling input</param>
+        /// <returns>time constant at particular scheduling input</returns>
+        private double chooseCorrectTimeConstant(double u_GainSched)
+        {
+            int timeConstantIdx = 0;
+            for (int idx = 0; idx < modelParameters.TimeConstantThresholds.Length; idx++)
+            {
+                if (u_GainSched < modelParameters.TimeConstantThresholds[idx])
+                {
+                    timeConstantIdx = idx;
+                    break;
+                }
+                else if (idx == modelParameters.TimeConstantThresholds.Length - 1)
+                {
+                    timeConstantIdx = idx + 1;
+                }
+            }
+            return modelParameters.TimeConstant_s[timeConstantIdx];
+        }
+
+        /// <summary>
         /// Determine the curvature term contribution(c*(u-u0)^2/unorm) to the output from a particular input for a particular value
         /// </summary>
         /// <param name="inputIndex">the index of the input</param>
@@ -400,8 +423,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // nb! if first iteration, start model at steady-state
 
-            double TimeConstant_s = modelParameters.TimeConstant_s.First(); //TODO: get appropriate time constant
-            // TimeConstant_s = chooseCorrectTimeConstant();
+            double gainSched = inputs[modelParameters.GainSchedParameterIndex]; // TODO: make sure GainSchedParIndx is updated
+            double TimeConstant_s = chooseCorrectTimeConstant(gainSched);
 
             double x_dynamic = lowPass.Filter(x_static, TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
