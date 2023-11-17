@@ -423,6 +423,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // nb! if first iteration, start model at steady-state
 
+            // modelParameters.GainSchedParameterIndex = updateGainSchedParIndx();
             double gainSched = inputs[modelParameters.GainSchedParameterIndex]; // TODO: make sure GainSchedParIndx is updated
             double TimeConstant_s = chooseCorrectTimeConstant(gainSched);
 

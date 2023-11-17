@@ -19,7 +19,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Iterate the process model one timestep forward
         /// </summary>
         /// <param name="inputsU">a 2d array of inputs, one row for each time step, or <c>null</c> if model is autonomous</param>
-        /// <param name="inputsU">the time in seconds between the data samples of the inputs</param>
+        /// <param name="timeBase_s">the time in seconds between the data samples of the inputs</param>
         /// <param name="badDataID">is a special reserverd value of inputs U that is to be treated as NaN</param>
         /// <returns> First value: the value of the state x of the process model at the new time step(be aware that if a disturbance is defined, 
         /// they need ot be added to states to get <c>y_sim</c>), if the model has additive outputs, the second state is the "internal output" upstream of those. </returns>

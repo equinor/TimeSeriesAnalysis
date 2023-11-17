@@ -42,8 +42,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Divide block
         /// </summary>
-        Divide = 5
+        Divide = 5,
 
-
+        /// <summary>
+        /// Divide block
+        /// </summary>
+        GainSchedModel = 6
     }
 }
