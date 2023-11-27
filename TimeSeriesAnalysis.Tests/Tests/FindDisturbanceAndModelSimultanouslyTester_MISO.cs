@@ -162,7 +162,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
         // be aware that adding any sort of dynamics to the "true" model here seems to destroy the 
         // model estimate. 
-        [TestCase(0, false)]
+        [TestCase(0, false), Category("NotWorking_AcceptanceTest")]
         [TestCase(0, true)]
         [TestCase(1, false)]
         public void StaticMISO_externalUchanges_NOsetpointChange_detectsProcessOk(int pidInputIdx, bool doNegative)

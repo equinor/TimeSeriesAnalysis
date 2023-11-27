@@ -376,7 +376,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             //  Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
 
 
-            Shared.EnablePlots();
+            Shared.DisablePlots();
             Plot.FromList(new List<double[]> {
                 simY1,
                 inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
@@ -424,7 +424,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             //  Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
 
 
-            Shared.EnablePlots();
+            Shared.DisablePlots();
             Plot.FromList(new List<double[]> {
                 simY1,
                 inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
