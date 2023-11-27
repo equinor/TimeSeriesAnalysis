@@ -1,5 +1,6 @@
 ﻿using Accord.Math;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -124,7 +125,10 @@ namespace TimeSeriesAnalysis.Dynamic
             newP.Y_max = Y_max;
             newP.TimeConstant_s = TimeConstant_s;
             newP.TimeDelay_s = TimeDelay_s;
-            newP.LinearGains = (double[])LinearGains.Clone();
+            if (LinearGains == null)
+                newP.LinearGains = null;
+            else
+                newP.LinearGains = (double[])LinearGains.Clone();
             if (LinearGainUnc == null)
                 newP.LinearGainUnc = null;
             else
