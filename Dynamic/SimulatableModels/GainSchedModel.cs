@@ -32,7 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool isFirstIteration;
         private double[] lastGoodValuesOfInputs;
 
-        private UnitDataSet FittedDataSet=null;
+        private GainSchedDataSet FittedDataSet=null;
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
@@ -54,7 +54,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
-        public GainSchedModel(GainSchedParameters modelParameters, UnitDataSet dataSet,string ID = "not_named")
+        public GainSchedModel(GainSchedParameters modelParameters, GainSchedDataSet dataSet,string ID = "not_named")
         {
             processModelType = ModelType.SubProcess;
             this.ID = ID;
@@ -135,12 +135,12 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-        public void SetFittedDataSet(UnitDataSet dataset)
+        public void SetFittedDataSet(GainSchedDataSet dataset)
         {
             FittedDataSet = dataset;
         }
 
-        public UnitDataSet GetFittedDataSet()
+        public GainSchedDataSet GetFittedDataSet()
         {
             return FittedDataSet;
         }

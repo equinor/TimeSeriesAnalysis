@@ -376,14 +376,14 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             //  Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
 
 
-            Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
-                simY1,
-                inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
-                },
-                new List<string> { "y1=y_sim" + ver.ToString(), "y3=u1" },
-                timeBase_s, "GainSched_Single");
-            Shared.DisablePlots();
+            //Shared.EnablePlots();
+            //Plot.FromList(new List<double[]> {
+            //    simY1,
+            //    inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
+            //    },
+            //    new List<string> { "y1=y_sim" + ver.ToString(), "y3=u1" },
+            //    timeBase_s, "GainSched_Single");
+            //Shared.DisablePlots();
 
         }
 
@@ -424,15 +424,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             //  Assert.IsTrue(Math.Abs(simY.Last() - (1 * 55 + 0.5 * 45 + 5)) < 0.01);
 
 
-            Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
-                simY1,
-                inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
-                inputData.GetValues(gainSched.GetID(),SignalType.External_U,1),
-                inputData.GetValues(gainSched.GetID(),SignalType.External_U,2)},
-                new List<string> { "y1=y_sim" + ver.ToString(), "y3=u1", "y3=u2", "y3=u3"},
-                timeBase_s, "GainSched_Multiple");
-            Shared.DisablePlots();
+            //Shared.EnablePlots();
+            //Plot.FromList(new List<double[]> {
+            //    simY1,
+            //    inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
+            //    inputData.GetValues(gainSched.GetID(),SignalType.External_U,1),
+            //    inputData.GetValues(gainSched.GetID(),SignalType.External_U,2)},
+            //    new List<string> { "y1=y_sim" + ver.ToString(), "y3=u1", "y3=u2", "y3=u3"},
+            //    timeBase_s, "GainSched_Multiple");
+            //Shared.DisablePlots();
 
         }
 

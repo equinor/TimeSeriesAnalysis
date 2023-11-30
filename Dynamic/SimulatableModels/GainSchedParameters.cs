@@ -94,7 +94,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double? BiasUnc { get; set; } = null;
 
 
-        private List<UnitdentWarnings> errorsAndWarningMessages;
+        private List<GainScheddentWarnings> errorsAndWarningMessages;
         internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public GainSchedParameters()
         {
             Fitting = null;
-            errorsAndWarningMessages = new List<UnitdentWarnings>();
+            errorsAndWarningMessages = new List<GainScheddentWarnings>();
         }
 
 
@@ -228,7 +228,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Adds a identifiation warning to the object
         /// </summary>
         /// <param name="warning"></param>
-        public void AddWarning(UnitdentWarnings warning)
+        public void AddWarning(GainScheddentWarnings warning)
         {
             if (!errorsAndWarningMessages.Contains(warning))
                 errorsAndWarningMessages.Add(warning);
@@ -238,7 +238,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the list of all warnings given during identification of the model
         /// </summary>
         /// <returns></returns>
-        public List<UnitdentWarnings> GetWarningList()
+        public List<GainScheddentWarnings> GetWarningList()
         {
             return errorsAndWarningMessages;
         }
