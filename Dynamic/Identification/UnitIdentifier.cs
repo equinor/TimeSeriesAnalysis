@@ -907,16 +907,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
                     parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
                 }
-                /*
-                if (useDynamicModel)
-                {
-                    parameters.Fitting.CalcCommonFitMetricsFromDiffData(regResults.Rsq, regResults.ObjectiveFunctionValue,
-                        dataSet);
-                }
-                else
-                {
-                    parameters.Fitting.CalcCommonFitMetricsFromDataset(regResults.Rsq, regResults.ObjectiveFunctionValue, dataSet);
-                }*/
+
                 parameters.Fitting.CalcCommonFitMetricsFromDataset(dataSet, yIndicesToIgnore);
 
                 // add inn uncertainty

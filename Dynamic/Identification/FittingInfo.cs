@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TimeSeriesAnalysis.Dynamic.Identification;
 using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -63,16 +64,26 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double ObjFunValAbs { get; set; }
 
+
+        /// <summary>
+        /// A score that is 100% if model describes all variations 
+        /// and 0% if model is no better at describing variation than the flat average line.
+        /// Negative if the model is worse than a flat average line.
+        /// </summary>
+
+        public double FitScorePrc { get; set; }
+
         /// <summary>
         /// Number of bad data points ignored during fitting
         /// </summary>
+        /// 
+
         public double NFittingBadDataPoints { get; set; }
 
         /// <summary>
         /// Number of total data points (good and bad) available for fitting
         /// </summary>
         public double NFittingTotalDataPoints { get; set; }
-
 
         /// <summary>
         /// Start time of fitting data set
@@ -83,34 +94,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// End time of fitting data set
         /// </summary>
         public DateTime EndTime { get; set; }
-
-
-        /*
-        public void CalcCommonFitMetricsFromDiffData(double RsqDiff, double objValFunDiff, UnitDataSet dataSet)
-        {
-            Vec vec = new Vec();
-            var ymeas_diff = vec.Diff(dataSet.Y_meas, dataSet.IndicesToIgnore);
-            var ysim_diff = vec.Diff(dataSet.Y_sim, dataSet.IndicesToIgnore);
-            this.ObjFunValDiff = SignificantDigits.Format(objValFunDiff, nDigits);
-            this.RsqDiff = SignificantDigits.Format(vec.RSquared(ymeas_diff, ysim_diff) * 100, nDigits);
-            this.ObjFunValDiff = SignificantDigits.Format(objValFunDiff, nDigits);
-            this.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
-            this.ObjFunValAbs = SignificantDigits.Format(ObjFunValAbs, nDigits);
-            this.RsqAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, dataSet.IndicesToIgnore, 0) * 100;
-            this.RsqAbs = SignificantDigits.Format(this.RsqAbs, nDigits);
-        }
-
-        public void CalcCommonFitMetricsFromDataset(double RsqAbs, double objValAbs, UnitDataSet dataSet)
-        {
-            Vec vec = new Vec();
-            this.ObjFunValAbs = SignificantDigits.Format(objValAbs, nDigits);
-              this.RsqAbs = SignificantDigits.Format(vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, dataSet.IndicesToIgnore, 0) * 100, nDigits);
-            var ymeas_diff = vec.Diff(dataSet.Y_meas, dataSet.IndicesToIgnore);
-            var ysim_diff = vec.Diff(dataSet.Y_sim, dataSet.IndicesToIgnore);
-            this.RsqDiff = SignificantDigits.Format(vec.RSquared(ymeas_diff, ysim_diff) * 100, nDigits);
-            this.ObjFunValDiff = SignificantDigits.Format(
-                vec.SumOfSquareErr(ymeas_diff, ysim_diff), nDigits);
-        }*/
 
         public void CalcCommonFitMetricsFromDataset(UnitDataSet dataSet, List<int> yIndicesToIgnore)
         {
@@ -160,7 +143,8 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 this.ObjFunValDiff = Double.NaN;
             }
-
+            var fitScore = FitScore.Calc(ymeas_vals, ysim_vals);
+            this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);
         }
     }
 }

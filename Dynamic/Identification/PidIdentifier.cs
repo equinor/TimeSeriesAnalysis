@@ -7,6 +7,7 @@ using System.Text;
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
+using TimeSeriesAnalysis.Dynamic.Identification;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -587,7 +588,8 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
-              
+            pidParam.Fitting.FitScorePrc = FitScore.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0));
+            
             pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), U_sim.GetColumn(0), 0);
             pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), null, 0) * 100;
 
