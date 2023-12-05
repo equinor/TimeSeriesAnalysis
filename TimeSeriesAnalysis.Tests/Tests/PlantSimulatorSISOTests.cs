@@ -236,6 +236,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Assert.IsTrue(firstTwoValuesDiff < 0.01, "system should start up in steady-state");
                 Assert.IsTrue(lastTwoValuesDiff < 0.01, "system should end up in stedy-state");
             }
+
+
+
             Assert.AreEqual(simData.GetLength(), simData.GetTimeStamps().Count(), "number of timestamps should match number of data points in sim");
             Assert.AreEqual(simData.GetTimeStamps().Last(), inputData.GetTimeStamps().Last(),"datasets should end at same timestamp");
 

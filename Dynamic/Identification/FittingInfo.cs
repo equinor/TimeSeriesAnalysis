@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TimeSeriesAnalysis.Dynamic.Identification;
 using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic

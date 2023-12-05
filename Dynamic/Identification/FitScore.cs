@@ -1,13 +1,182 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace TimeSeriesAnalysis.Dynamic.Identification
+using TimeSeriesAnalysis.Dynamic;
+
+namespace TimeSeriesAnalysis
 {
     public class FitScore
     {
+
+
+        /// <summary>
+        /// Calculate a "fit score" between two signals. 
+        /// </summary>
+        /// <param name="meas"></param>
+        /// <param name="sim"></param>
+        /// <returns> a fit score that is maximum 100 percent, but can also go negative if fit is poor</returns>
+        public static double Calc(double[] meas, double[] sim)
+        {
+            if (meas == null)
+                return double.NaN;
+            if (sim == null)
+                return double.NaN;
+
+            double dev = Deviation(meas, sim);
+            double devFromSelf = DeviationFromAvg(meas);
+
+            double fitScore = 0;
+            if ( !Double.IsNaN(dev))
+            {
+                fitScore = (double)(1 - dev / devFromSelf) * 100;
+            }
+            else
+            {
+                fitScore = double.NaN;
+            }
+            return fitScore;
+        }
+
+        /// <summary>
+        /// Determines a score for how well a simulation fits with inputData. This can 
+        /// be compared over time to see any signs of degredation of the plant over time
+        /// 
+        /// </summary>
+        /// <param name="plantSimObj"></param>
+        /// <param name="inputData"></param>
+        /// <param name="simData"></param>
+        /// <returns></returns>
+        static public double GetPlantWideSimulated(PlantSimulator plantSimObj, TimeSeriesDataSet inputData, 
+            TimeSeriesDataSet simData)
+        {
+            const string disturbanceSignalPrefix = "_D";
+            List<double> fitScores = new List<double>();
+            foreach (var modelName in plantSimObj.modelDict.Keys)
+            {
+                double[] measY = null;
+                double[] simY = null;
+
+                var modelObj = plantSimObj.modelDict[modelName];
+                var outputName = modelObj.GetOutputID();
+                var outputIdentName = modelObj.GetOutputIdentID();
+                if (outputName == "" || outputName == null)
+                    continue;
+
+                if (plantSimObj.modelDict[modelName].GetProcessModelType() == ModelType.PID)
+                {
+                    if (inputData.ContainsSignal(outputName))
+                    {
+                        measY = inputData.GetValues(outputName);
+                    }
+
+                }
+                else //if (plantSimObj.modelDict[modelName].GetProcessModelType() == ModelType.SubProcess)
+                {
+                    if (outputIdentName != null)
+                    {
+                        if (inputData.ContainsSignal(outputIdentName))
+                        {
+                            measY = inputData.GetValues(outputIdentName);
+                        }
+                        else if (simData.ContainsSignal(outputIdentName))
+                        {
+                            measY = simData.GetValues(outputIdentName);
+                        }
+                    }
+                    // add in fit of process output, but only if "additive output signal" is not a
+                    // locally identified "_D_" signal, as then output matches 100%  always (any model error is put into disturbance signal as well)
+                    else if (modelObj.GetAdditiveInputIDs() != null)
+                    {
+                        if (!modelObj.GetAdditiveInputIDs()[0].StartsWith(disturbanceSignalPrefix))
+                        {
+                            measY = inputData.GetValues(outputName);
+                        }
+                    }
+                    else if (inputData.ContainsSignal(outputName))
+                    {
+                        measY = inputData.GetValues(outputName);
+                    }
+                }
+                if (simData.ContainsSignal(outputName))
+                { 
+                    simY = simData.GetValues(outputName);
+                }
+
+                if (measY != null && simY != null)
+                {
+                    var curFitScore = FitScore.Calc(measY, simY);
+
+                    if (curFitScore != double.NaN)
+                    {
+                        fitScores.Add(curFitScore);
+                    }
+                }
+
+            }
+            if (!fitScores.Any())
+                return double.NaN;
+            else
+            {
+                return fitScores.Average();
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// Get the average stored fit-scores in the "paramters.Fitting" object, 
+        /// indicating how well the plant on average described/aligned with the dataset when it was fitted. 
+        /// </summary>
+        /// <param name="plantSimObj"></param>
+        /// <returns></returns>
+        static public double GetPlantWideStored(PlantSimulator plantSimObj)
+        {
+            List<double> fitScores = new List<double>();
+            foreach (var modelName in plantSimObj.modelDict.Keys)
+            {
+                double curFitScore = 0;
+                if (plantSimObj.modelDict[modelName].GetProcessModelType() == ModelType.PID)
+                {
+                    var modelObj = (PidModel)plantSimObj.modelDict[modelName];
+                    if (modelObj.pidParameters.Fitting != null)
+                    {
+                        curFitScore = modelObj.pidParameters.Fitting.FitScorePrc;
+                    }
+                }
+                else if (plantSimObj.modelDict[modelName].GetProcessModelType() == ModelType.SubProcess)
+                {
+                    var modelObj = (UnitModel)plantSimObj.modelDict[modelName];
+                    if (modelObj.modelParameters.Fitting != null)
+                    {
+                        curFitScore = modelObj.modelParameters.Fitting.FitScorePrc;
+                    }
+                }
+                if (curFitScore != 0)
+                {
+                    fitScores.Add(curFitScore);
+                }
+
+            }
+            if (!fitScores.Any())
+                return double.NaN;
+            else
+            {
+                return fitScores.Average();
+            }
+        }
+
+
+        /// <summary>
+        /// Get the absolute average deviation between the referene and model signals
+        /// </summary>
+        /// <param name="reference"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private static double Deviation(double[] reference, double[] model)
         {
             if (reference == null)
@@ -32,7 +201,7 @@ namespace TimeSeriesAnalysis.Dynamic.Identification
         }
 
         private static double DeviationFromAvg(double[] signal)
-        { 
+        {
             if (signal == null) return double.NaN;
             if (signal.Length == 0) return double.NaN;
 
@@ -48,29 +217,7 @@ namespace TimeSeriesAnalysis.Dynamic.Identification
             {
                 ret += Math.Abs(signal[i] - avg.Value);
             }
-            return ret/N;
-        }
-
-        public static double Calc(double[] meas, double[] sim)
-        {
-            if (meas == null)
-                return double.NaN;
-            if (sim == null)
-                return double.NaN;
-
-            double dev = Deviation(meas, sim);
-            double devFromSelf = DeviationFromAvg(meas);
-
-            double fitScore = 0;
-            if ( !Double.IsNaN(dev))
-            {
-                fitScore = (double)(1 - dev / devFromSelf) * 100;
-            }
-            else
-            {
-                fitScore = double.NaN;
-            }
-            return fitScore;
+            return ret / N;
         }
 
 
