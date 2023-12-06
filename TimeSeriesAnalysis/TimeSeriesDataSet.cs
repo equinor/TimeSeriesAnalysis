@@ -654,7 +654,7 @@ namespace TimeSeriesAnalysis
         /// Create a dictionary of all dataset values. Constants are padded out to be of N length.
         /// </summary>
         /// <returns>Returns the dataset as a dictionary </returns>
-        Dictionary<string, double[]> ToDict()
+        public Dictionary<string, double[]> ToDict()
         {
             Dictionary<string, double[]> ret = new Dictionary<string, double[]>();
             ret.Concat(dataset);
