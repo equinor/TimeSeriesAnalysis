@@ -656,8 +656,7 @@ namespace TimeSeriesAnalysis
         /// <returns>Returns the dataset as a dictionary </returns>
         public Dictionary<string, double[]> ToDict()
         {
-            Dictionary<string, double[]> ret = new Dictionary<string, double[]>();
-            ret.Concat(dataset);
+            Dictionary<string, double[]> ret = new Dictionary<string, double[]>(dataset);
             Vec vec = new Vec();
             foreach (var constant in dataset_constants)
             {
