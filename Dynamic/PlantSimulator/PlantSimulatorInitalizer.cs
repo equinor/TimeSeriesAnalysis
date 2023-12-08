@@ -256,6 +256,9 @@ namespace TimeSeriesAnalysis.Dynamic
             foreach (var pidID in pidIDs)
             {
                 var upstreamModels = simulator.connections.GetAllUpstreamModels(pidID);
+
+                if (upstreamModels.Count == 0)
+                    continue;
                 var processId = upstreamModels.First();
                 var isOK = simulator.SimulateSingleInternal(inputData, processId,
                     out TimeSeriesDataSet singleSimDataSetWithDisturbance);
