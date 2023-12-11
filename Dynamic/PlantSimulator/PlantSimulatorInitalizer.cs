@@ -241,7 +241,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputData">note that for closed loop systems u and y signals are removed(these are used to estimate disturbance, removing them triggers code in PlantSimulator to re-estimate them)</param>
         /// <param name="simData"></param>
         /// <returns>true if everything went ok, otherwise false</returns>
-        /// <exception cref="NotImplementedException"></exception>
         private bool EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,ref Dictionary<string, double> signalValuesAtT0)
         {
             // find all PID-controllers
@@ -278,13 +277,28 @@ namespace TimeSeriesAnalysis.Dynamic
                         // an alterntive to this would hav been to to alter the code in the plant simulator to add signals in simData output that are duplicates of signal names in inputData
                         // or better: make an internal "stripped" version of "inputData"
                         {
-                            string y_meas_signal = simulator.modelDict[processId].GetOutputID();
-                            signalValuesAtT0.Add(y_meas_signal,inputData.GetValue(y_meas_signal,0).Value);
-                            inputData.Remove(y_meas_signal);
-
-                            string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
-                            signalValuesAtT0.Add(u_pid_signal, inputData.GetValue(u_pid_signal, 0).Value);
-                            inputData.Remove(u_pid_signal);
+                            { 
+                                string y_meas_signal = simulator.modelDict[processId].GetOutputID();
+                                double? value = inputData.GetValue(y_meas_signal, 0);
+                                if (value.HasValue)
+                                {
+                                    signalValuesAtT0.Add(y_meas_signal, value.Value);
+                                    inputData.Remove(y_meas_signal);
+                                }
+                                else
+                                    return false;
+                            }
+                            {
+                                string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
+                                double? value = inputData.GetValue(u_pid_signal, 0);
+                                if (value.HasValue)
+                                {
+                                    signalValuesAtT0.Add(u_pid_signal,value.Value);
+                                    inputData.Remove(u_pid_signal);
+                                }
+                                else
+                                    return false;
+                            }
                         }
                     }
                 }
