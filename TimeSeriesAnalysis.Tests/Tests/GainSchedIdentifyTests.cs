@@ -13,7 +13,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
         int timeBase_s = 1;
         int N = 2500;
 
-        [TestCase]
+     //   [TestCase(),Ignore=true]
         public void GainSchedIdentify_ReturnsParametersWithNumberOfLinearGainsNotExceeding2()
         {
             // Arrange

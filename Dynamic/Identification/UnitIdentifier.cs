@@ -288,11 +288,17 @@ namespace TimeSeriesAnalysis.Dynamic
             // 
             var modelList = new List<UnitParameters>();
             int timeDelayIdx = 0;
+
+            var dataset_copy = new UnitDataSet(dataSet);   
+
             UnitParameters modelParams_StaticAndNoCurvature =
                 EstimateProcessForAGivenTimeDelay
                 (timeDelayIdx, dataSet, false, allCurvesDisabled,
                 FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
             modelList.Add(modelParams_StaticAndNoCurvature);
+
+           var warningList = new List<UnitdentWarnings>();
+
             /////////////////////////////////////////////////////////////////
             // BEGIN WHILE loop to model process for different time delays               
             bool continueIncreasingTimeDelayEst = true;
@@ -303,9 +309,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 modelParams = null;
                 UnitParameters modelParams_noCurvature =
                     EstimateProcessForAGivenTimeDelay
-                    (timeDelayIdx, dataSet, doUseDynamicModel, allCurvesDisabled,
+                    (timeDelayIdx, dataset_copy, doUseDynamicModel, allCurvesDisabled,
                     FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
                 modelList.Add(modelParams_noCurvature);
+                if (!modelParams_noCurvature.Fitting.WasAbleToIdentify)
+                {
+                    warningList.Add(UnitdentWarnings.DynamicModelEstimationFailed);
+                }
+
                 if (doEstimateCurvature && modelParams_noCurvature.Fitting.WasAbleToIdentify)
                 {
                    UnitParameters modelParams_allCurvature =
@@ -339,6 +350,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
+
                     modelParams = modelParams_noCurvature;
                 }
                 if (!continueIncreasingTimeDelayEst)
@@ -351,7 +363,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // fail-to-safe
                 if (timeDelayIdx * dataSet.GetTimeBase() > maxExpectedTc_s)
                 {
-                    modelParams.AddWarning(UnitdentWarnings.TimeDelayAtMaximumConstraint);
+                    warningList.Add(UnitdentWarnings.TimeDelayAtMaximumConstraint);
                     continueIncreasingTimeDelayEst = false;
                 }
                 if (doEstimateTimeDelay == false)
@@ -411,10 +423,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (modelParams_StaticAndNoCurvature.Fitting.ObjFunValAbs < modelParameters.Fitting.ObjFunValAbs)
                         modelParameters = modelParams_StaticAndNoCurvature;
                 }
-
-
             }
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
+           foreach (var warning in warningList)
+            {
+                modelParameters.AddWarning(warning);
+            }
 
             if (constantInputInds.Count > 0)
             {
@@ -907,16 +921,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.AddWarning(UnitdentWarnings.ReEstimateBiasFailed);
                     parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
                 }
-                /*
-                if (useDynamicModel)
-                {
-                    parameters.Fitting.CalcCommonFitMetricsFromDiffData(regResults.Rsq, regResults.ObjectiveFunctionValue,
-                        dataSet);
-                }
-                else
-                {
-                    parameters.Fitting.CalcCommonFitMetricsFromDataset(regResults.Rsq, regResults.ObjectiveFunctionValue, dataSet);
-                }*/
+
                 parameters.Fitting.CalcCommonFitMetricsFromDataset(dataSet, yIndicesToIgnore);
 
                 // add inn uncertainty

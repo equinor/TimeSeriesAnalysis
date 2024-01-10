@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         public double ObjectiveFunctionValue { get; set; }
         /// <summary>
-        /// All regression paramters, first the gains, then the bias term.
+        /// All regression parameters, first the gains, then the bias term.
         /// </summary>
         public double[] Param { get; set; }
         /// <summary>

@@ -85,37 +85,17 @@ namespace TimeSeriesAnalysis.Dynamic
         public DateTime EndTime { get; set; }
 
 
-        /*
-        public void CalcCommonFitMetricsFromDiffData(double RsqDiff, double objValFunDiff, UnitDataSet dataSet)
-        {
-            Vec vec = new Vec();
-            var ymeas_diff = vec.Diff(dataSet.Y_meas, dataSet.IndicesToIgnore);
-            var ysim_diff = vec.Diff(dataSet.Y_sim, dataSet.IndicesToIgnore);
-            this.ObjFunValDiff = SignificantDigits.Format(objValFunDiff, nDigits);
-            this.RsqDiff = SignificantDigits.Format(vec.RSquared(ymeas_diff, ysim_diff) * 100, nDigits);
-            this.ObjFunValDiff = SignificantDigits.Format(objValFunDiff, nDigits);
-            this.ObjFunValAbs = vec.SumOfSquareErr(dataSet.Y_meas, dataSet.Y_sim, 0);
-            this.ObjFunValAbs = SignificantDigits.Format(ObjFunValAbs, nDigits);
-            this.RsqAbs = vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, dataSet.IndicesToIgnore, 0) * 100;
-            this.RsqAbs = SignificantDigits.Format(this.RsqAbs, nDigits);
-        }
 
-        public void CalcCommonFitMetricsFromDataset(double RsqAbs, double objValAbs, UnitDataSet dataSet)
-        {
-            Vec vec = new Vec();
-            this.ObjFunValAbs = SignificantDigits.Format(objValAbs, nDigits);
-              this.RsqAbs = SignificantDigits.Format(vec.RSquared(dataSet.Y_meas, dataSet.Y_sim, dataSet.IndicesToIgnore, 0) * 100, nDigits);
-            var ymeas_diff = vec.Diff(dataSet.Y_meas, dataSet.IndicesToIgnore);
-            var ysim_diff = vec.Diff(dataSet.Y_sim, dataSet.IndicesToIgnore);
-            this.RsqDiff = SignificantDigits.Format(vec.RSquared(ymeas_diff, ysim_diff) * 100, nDigits);
-            this.ObjFunValDiff = SignificantDigits.Format(
-                vec.SumOfSquareErr(ymeas_diff, ysim_diff), nDigits);
-        }*/
 
+        /// <summary>
+        /// NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.
+        /// It may be preferable to use the output of the regression, as this avoids duplicating logic.
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="yIndicesToIgnore"></param>
         public void CalcCommonFitMetricsFromDataset(UnitDataSet dataSet, List<int> yIndicesToIgnore)
         {
             Vec vec = new Vec(dataSet.BadDataID);
-
 
             var ymeas_diff = vec.Diff(dataSet.Y_meas, yIndicesToIgnore);
             var ysim_diff = vec.Diff(dataSet.Y_sim, yIndicesToIgnore);

@@ -804,7 +804,7 @@ namespace TimeSeriesAnalysis
         /// Robust linear regression
         /// To avoid paramters taking on exteremly high values in the case of little excitation in the inputs, 
         /// two mitigating actions are implemented by the solver, to be "robust"
-        /// - a "robust" Signular Value Decomposition(SVD)-based solver is used
+        /// - a "robust" Singular Value Decomposition(SVD)-based solver is used
         /// - a regularization term is added to the objective function that will bring paramters to zero if (Y,X) does not contain
         ///  any information to force the parameter away from zero
         /// </summary>
@@ -866,6 +866,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
                     int curInd = yIndToIgnore[i];
+                    // NB! "weights" dont actully do anything, it is the below code that ensures bad data is removed.
                     if (curInd >= 0 && curInd < weights.Length)
                     {
                         weights[curInd] = 0;
@@ -996,14 +997,12 @@ namespace TimeSeriesAnalysis
                     yIndToIgnoreList = yIndToIgnore.ToList();
                 }
                 results.ObjectiveFunctionValue = vec.SumOfSquareErr(results.Y_modelled, Y, 0, false, yIndToIgnoreList);
-
+                // NB! note that Accord here uses the term "weigths" to mean "parameters.
                 results.Bias = regression.Weights.Last();
                 results.Gains = Vec<double>.SubArray(regression.Weights,0, regression.Weights.Length-2);
                 results.Param = regression.Weights;
 
-                
                 // uncertainty estimation
-
                 try
                 {
                     //re-run regression without regularization, use that to get information matrix.

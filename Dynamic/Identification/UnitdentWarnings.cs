@@ -88,8 +88,12 @@
         /// trying different gains. This warning likely means that the linear gain can be totally off the mark and may be too low. 
         /// </summary>
         /// 
-        ClosedLoopEst_GlobalSearchFailedToFindLocalMinima = 15
-
+        ClosedLoopEst_GlobalSearchFailedToFindLocalMinima = 15,
+        /// <summary>
+        /// UnitIdentify was able to solve the given estimation problem for the linear/static case, but when adding dynamics, the estimation failed for some reason.
+        /// </summary>
+        /// 
+       DynamicModelEstimationFailed = 16
 
 
     }
