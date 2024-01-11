@@ -936,7 +936,6 @@ namespace TimeSeriesAnalysis
                     var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, regX.Count()));
                     double? Y_mean = vec.Mean(Y);
                     double regressionWeight = (double)Y.Length / 1000;
-                    //double regressionWeight = (double)1;
                     var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, regX.Count())) ;
 
                     // note: weights have no effect prior to accord 3.7.0 

@@ -191,6 +191,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             var vec = new Vec(dataSet.BadDataID);
 
+            // uminfit unit tests give correct time constant and time-delay when this line is commented out?
             dataSet.DetermineIndicesToIgnore(fittingSpecs);
 
             var constantInputInds = new List<int>();
@@ -577,6 +578,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 dcur = Vec<double>.SubArray(dataSet.D, idxStart, idxEnd);
             }
 
+            // find instances of "badDataID" value in u or y
             var indUbad = new List<int>();
             for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
             {

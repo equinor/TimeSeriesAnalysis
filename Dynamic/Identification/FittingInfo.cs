@@ -131,7 +131,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // "objective function" average of absolute diffs of model deviation
             //  var diffObj = vec.SumOfSquareErr(ymeas_diff, ysim_diff)
-            var diffObj = vec.Mean(vec.Abs(vec.Diff(vec.Subtract(ymeas_vals, ysim_vals), dataSet.IndicesToIgnore)));
+            var diffObj = vec.Mean(vec.Abs(vec.Diff(vec.Subtract(ymeas_vals, ysim_vals), yIndicesToIgnore)));
             if (diffObj.HasValue)
             {
                 this.ObjFunValDiff = SignificantDigits.Format(diffObj.Value, nDigits);
@@ -140,6 +140,11 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 this.ObjFunValDiff = Double.NaN;
             }
+
+  //          this.NFittingBadDataPoints = yIndicesToIgnore.Count;
+
+
+
 
         }
     }

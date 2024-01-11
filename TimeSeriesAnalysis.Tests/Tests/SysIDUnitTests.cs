@@ -214,30 +214,35 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(model.GetModelParameters().LinearGains.First() >0.98);
         }
 
-        [TestCase(new int[] { 0, 10 })]
-        [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8,})]
-        // [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8,9,10,11 })]//fails
+        [TestCase(new int[] { 0, 10, 20, 28 })]
+        [TestCase(new int[] { 0, 10 ,20,29})]//TOOD: this unit test failsif the last point in the data set is excluded
+        [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8})]
+        [TestCase(new int[] { 11, 13, 15, 17})]
+        [TestCase(new int[] { 20, 21, 22, 23,24,25,26,27 })]
+
+
+        //    [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8,9,10,11 })]//fails
         // makes u2-non-observable -causing gain of u2 to be too big. (this needs to be treated more thourougly)
         //    [TestCase(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 })]
 
-        public void IndicesToIgnore(int[] badDataIndices)
+        public void IndicesToIgnoreProvided_FiltersOutDataAndGivesCorrectDynamicModel(int[] badDataIndices)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(10, 30, 0, 1);
-        //    double[] u2 = TimeSeriesCreator.Step(10, 100, 0, 1);
-            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
+            double[] u2 = TimeSeriesCreator.ThreeSteps (5,20,25, 30, 0, 1,0, 1);
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
             UnitParameters designParameters = new UnitParameters
             {
-                TimeConstant_s = 10,
+                TimeConstant_s = 5,
                 TimeDelay_s = 0,
-                LinearGains = new double[] { 1},
+                LinearGains = new double[] { 1,1.6},
                 Bias = 2
             };
 
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
             foreach(var index in badDataIndices)
-            dataSet.Y_meas[index] = +5;// data to be ignored
+                dataSet.Y_meas[index] = +5;// data to be ignored
 
             dataSet.IndicesToIgnore = (badDataIndices).ToList(); 
 
@@ -583,7 +588,9 @@ namespace TimeSeriesAnalysis.Test.SysID
             double[] u1 = TimeSeriesCreator.ThreeSteps(10, 34, 98, 100, 0, 2, 1, -9);
             double[] u2 = TimeSeriesCreator.ThreeSteps(25, 45, 70, 100, 1, 0, 2, -10);
 
-         //   u1[55] = double.NaN;
+
+            // add one "Bad" data points- this should cause two data points to be removed from the identification 
+            u1[55] = double.NaN;
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,noiseAmplitude,false);
@@ -592,9 +599,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 model.GetFittedDataSet().Y_meas, u1 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
-
-          //  Assert.AreEqual(57, model.modelParameters.Fitting.NFittingBadDataPoints, "negative u indices should be excluded!");
-           // Assert.AreEqual(fittingSpecs.U_min_fit, model.modelParameters.FittingSpecs.U_min_fit, "input umin fit should be preserved in model parameters");
+            Assert.Greater(model.modelParameters.Fitting.NFittingBadDataPoints,0, "number of excluded data points should be more than zero");
+            //  Assert.AreEqual(57, model.modelParameters.Fitting.NFittingBadDataPoints, "negative u indices should be excluded!");
+            // Assert.AreEqual(fittingSpecs.U_min_fit, model.modelParameters.FittingSpecs.U_min_fit, "input umin fit should be preserved in model parameters");
             DefaultAsserts(model, designParameters);
         }
 
