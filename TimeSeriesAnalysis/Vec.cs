@@ -1024,7 +1024,14 @@ namespace TimeSeriesAnalysis
                 {
                     results.Param95prcConfidence = null;
                 }
-                results.AbleToIdentify = true;
+                if (Vec.IsAllValue(results.Param, 0))
+                {
+                    results.AbleToIdentify = false;
+                }
+                else
+                {
+                    results.AbleToIdentify = true;
+                }
                 return results;
             }
             catch 
