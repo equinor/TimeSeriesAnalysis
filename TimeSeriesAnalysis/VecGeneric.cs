@@ -21,6 +21,12 @@ namespace TimeSeriesAnalysis
         ///</summary>
         public static T[] Concat(T[] x, T[] y)
         {
+            if (x == null && y != null)
+                return y;
+            if (x != null && y == null)
+                return x;
+            if (x == null && y == null) 
+                return new T[0];
             var z = new T[x.Length + y.Length];
             x.CopyTo(z, 0);
             y.CopyTo(z, x.Length);
@@ -263,7 +269,7 @@ namespace TimeSeriesAnalysis
         /// <param name="array1">array to get subarray from</param>
         /// <param name="indStart">starting index</param>
         /// <param name="indEnd">ending index(or to the end if omitted)</param>
-        /// <returns></returns>
+        /// <returns>null if indStart and indEnd are the same, otherwise the subarray</returns>
         public static T[] SubArray(T[] array1, int indStart, int indEnd = -9999)
         {
             if (array1 == null)
@@ -279,14 +285,19 @@ namespace TimeSeriesAnalysis
             if (indStart < 0)
                 indStart = 0;
             int length = indEnd - indStart + 1;
-            T[] retArray = new T[length];
-            int outInd = 0;
-            for (int i = indStart; i <= indEnd; i++)
+            if (length > 0)
             {
-                retArray[outInd] = array1[i];
-                outInd++;
+                T[] retArray = new T[length];
+                int outInd = 0;
+                for (int i = indStart; i <= indEnd; i++)
+                {
+                    retArray[outInd] = array1[i];
+                    outInd++;
+                }
+                return retArray;
             }
-            return retArray;
+            else
+                return null;
         }
 
 
