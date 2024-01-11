@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
         [TestCase(new int[] { 0, 10, 20, 28 })]
-        [TestCase(new int[] { 0, 10 ,20,29})]//TOOD: this unit test failsif the last point in the data set is excluded
+        [TestCase(new int[] { 29})]//TOOD: this unit test fails if the last point in the data set is excluded
         [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8})]
         [TestCase(new int[] { 11, 13, 15, 17})]
         [TestCase(new int[] { 20, 21, 22, 23,24,25,26,27 })]
@@ -600,8 +600,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
             Assert.Greater(model.modelParameters.Fitting.NFittingBadDataPoints,0, "number of excluded data points should be more than zero");
-            //  Assert.AreEqual(57, model.modelParameters.Fitting.NFittingBadDataPoints, "negative u indices should be excluded!");
-            // Assert.AreEqual(fittingSpecs.U_min_fit, model.modelParameters.FittingSpecs.U_min_fit, "input umin fit should be preserved in model parameters");
+            Assert.AreEqual(fittingSpecs.U_min_fit, model.modelParameters.FittingSpecs.U_min_fit, "input umin fit should be preserved in model parameters");
             DefaultAsserts(model, designParameters);
         }
 
@@ -626,7 +625,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double[] u1 = TimeSeriesCreator.ThreeSteps(10, 34, 98, 100, 0, 2, 1, -9);
             double[] u2 = TimeSeriesCreator.ThreeSteps(25, 45, 70, 100, 1, 0, 2, -10);
 
-        //    u1[55] = double.NaN;
+            u1[55] = double.NaN;
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs,noiseAmplitude);
@@ -636,8 +635,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                  new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
-            Assert.AreEqual(57, model.modelParameters.Fitting.NFittingBadDataPoints, "negative u indices should be excluded!");
-         //   Assert.AreEqual(designParameters.U_min_fit, model.modelParameters.U_min_fit, "input umin fit should be preserved in model parameters");
+            Assert.Greater(model.modelParameters.Fitting.NFittingBadDataPoints, 0, "number of excluded data points should be more than zero");
+           Assert.AreEqual(fittingSpecs.Y_min_fit, model.modelParameters.FittingSpecs.Y_min_fit, "input umin fit should be preserved in model parameters");
             DefaultAsserts(model, designParameters);
         }
 

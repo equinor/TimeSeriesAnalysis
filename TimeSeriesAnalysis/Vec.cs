@@ -968,6 +968,8 @@ namespace TimeSeriesAnalysis
                         for (int i = 0; i < yIndToIgnore.Length; i++)
                         {
                             int curInd = yIndToIgnore[i];
+                            if (yIndToIgnore[i] >= results.Y_modelled.Length)
+                                continue;
                             if (curInd == lastIgnoredInd + 1)
                             {
                                 results.Y_modelled[yIndToIgnore[i]] = lastGoodValue;
@@ -1134,6 +1136,8 @@ namespace TimeSeriesAnalysis
 
             foreach (int ind in indToIgnore)
             {
+                if (ind > x_mod_int.Length - 1)
+                    continue;
                 x_mod_int[ind] = 0;
                 x_meas_int[ind] = 0;
             }
