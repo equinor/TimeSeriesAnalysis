@@ -30,9 +30,9 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
 
             GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
             {
-                TimeConstant_s = new double[] { 5, 25 },
+                TimeConstant_s = new double[] { 3, 10 },
                 TimeConstantThresholds = new double[] { 3.1 },
-                LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 2 } },
+                LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 5 } },
                 LinearGainThresholds = new double[] { 3.1 },
                 TimeDelay_s = 0,
                 Bias = 0
@@ -147,6 +147,61 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             Assert.That(largest_gain_amplitude, Is.LessThanOrEqualTo(largest_correct_gain_amplitude),
                 "The largest gain in the best fitting model cannot exceed the largest gain amplitude of the correct model");
 
+        }
+
+
+        [TestCase()]
+        public void GainSchedIdentify_EstimatedTimeConstantsAreCloseToCorrectTimeConstants()
+        {
+            // Arrange
+            var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
+            double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
+            double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
+            unitData.U = U;
+            unitData.Times = TimeSeriesCreator.CreateDateStampArray(
+                new DateTime(2000, 1, 1), timeBase_s, N);
+
+            var gainSchedIdentifier = new GainSchedIdentifier();
+
+            GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 3, 10 },
+                TimeConstantThresholds = new double[] { 3.1 },
+                LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 5 } },
+                LinearGainThresholds = new double[] { 3.1 },
+                TimeDelay_s = 0,
+                Bias = 0
+            };
+            GainSchedModel correct_model = new GainSchedModel(correct_gain_sched_parameters, "Correct gain sched model");
+            var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { correct_model });
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(correct_plantSim.AddExternalSignal(correct_model, SignalType.External_U, (int)INDEX.FIRST), u);
+            inputData.CreateTimestamps(timeBase_s);
+            var CorrectisSimulatable = correct_plantSim.Simulate(inputData, out TimeSeriesDataSet CorrectsimData);
+            SISOTests.CommonAsserts(inputData, CorrectsimData, correct_plantSim);
+            double[] simY1 = CorrectsimData.GetValues(correct_model.GetID(), SignalType.Output_Y);
+            unitData.Y_meas = simY1;
+
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                simY1,
+                unitData.U.GetColumn(0) },
+                new List<string> { "y1=correct_model", "y3=u1" },
+                timeBase_s,
+                "GainSched - Time constant inspection");
+            Shared.DisablePlots();
+
+            // Act
+            GainSchedParameters best_params = gainSchedIdentifier.GainSchedIdentify(unitData);
+
+            // Assert
+            for (int k = 0; k < correct_gain_sched_parameters.TimeConstant_s.Length; k++)
+            {
+                Assert.That(Math.Pow(best_params.TimeConstant_s[k] - correct_gain_sched_parameters.TimeConstant_s[k], 2), Is.LessThanOrEqualTo(1),
+                "There are too large differences in the time constant on index " + k.ToString());
+            }
         }
         // TODO: Additional test cases as needed...
 

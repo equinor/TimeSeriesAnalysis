@@ -221,7 +221,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 // Time constant thresholds
                 // TODO: Should consider to remove this threshold as this should be the same thresholds as gainSchedThresholds
-                GSp2.TimeConstantThresholds = GS_TimeConstantThreshold2;
+                GSp2.TimeConstantThresholds = new double[] { potential_gainthresholds[i]};
                 GSp2.LinearGainThresholds[0] = potential_gainthresholds[i];
                 
 
