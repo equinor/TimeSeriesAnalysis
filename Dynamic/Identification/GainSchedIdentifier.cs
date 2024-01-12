@@ -36,6 +36,9 @@ namespace TimeSeriesAnalysis.Dynamic
             //List<GainSchedParameters> GainSchedParameterList6 = null;
             //List<GainSchedParameters> GainSchedParameterList7 = null;
 
+            double min_u = dataSet.U.GetColumn(0).Min();
+            double max_u = dataSet.U.GetColumn(0).Max();
+
             // ## 1gain 1 time constant ##
             // Linear gain thresholds
             double[] GS_LinearGainThreshold1 = new double[] { };
@@ -50,8 +53,8 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 if (idx == 0)
                 {
-                    u_min_fit_1g[idx] = 0;
-                    u_max_fit_1g[idx] = 3; // TODO: Magic number
+                    u_min_fit_1g[idx] = min_u;
+                    u_max_fit_1g[idx] = max_u;
                 }
                 else
                 {
@@ -79,15 +82,15 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // Plot here!
 
-            Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
-                simY1,
-                y_ref,
-                dataSet.U.GetColumn(0) },
-                new List<string> { "y1=simY1", "y1=y_ref", "y3=u1" },
-            timeBase_s,
-                "GainSched split ");
-            Shared.DisablePlots();
+            //Shared.EnablePlots();
+            //Plot.FromList(new List<double[]> {
+            //    simY1,
+            //    y_ref,
+            //    dataSet.U.GetColumn(0) },
+            //    new List<string> { "y1=simY1_UM1", "y1=y_ref", "y3=u1" },
+            //timeBase_s,
+            //    "GainSched split ");
+            //Shared.DisablePlots();
 
 
             // Linear gains
@@ -96,33 +99,50 @@ namespace TimeSeriesAnalysis.Dynamic
             GSp1.LinearGains = GS_LinearGains1;
 
             // Time constants
-            double[] GS_TimeConstants_s1 = new double[] { 10 }; // TODO: UMp1.TimeConstant_s
-            if (GS_TimeConstants_s1.First() > min_time_constants.First()) // For adding some dynamics
-            {
-                GSp1.TimeConstant_s = GS_TimeConstants_s1;
-            }
-            else
-            {
-                GSp1.TimeConstant_s = min_time_constants;
-            }
-
+            double[] GS_TimeConstants_s1 = new double[] {UMp1.TimeConstant_s };
+            GSp1.TimeConstant_s = GS_TimeConstants_s1;
 
             // Time constants thresholds
-            double[] GS_TimeConstantThreshold1 = new double[] { };
+            // TODO: Should consider to remove this threshold as this should be the same thresholds as gainSchedThresholds
+            double[] GS_TimeConstantThreshold1 = new double[] { }; 
+
             GSp1.TimeConstantThresholds = GS_TimeConstantThreshold1;
 
             GSp1.Fitting = UMp1.Fitting;
 
             double GSp1_rsqdiff_points = UMp1.Fitting.RsqDiff;
 
+            //GainSchedModel GSM1 = new GainSchedModel(GSp1, "my simple model");
+
+            //var plantSim1 = new PlantSimulator(new List<ISimulatableModel> { GSM1 });
+            //var inputData1 = new TimeSeriesDataSet();
+            //for (int k = 0; k < number_of_inputs; k++)
+            //{
+            //    inputData1.Add(plantSim.AddExternalSignal(GSM1, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(k));
+            //}
+            //inputData1.CreateTimestamps(timeBase_s);
+            //var CorrectisSimulatable1 = plantSim1.Simulate(inputData1, out TimeSeriesDataSet simData1);
+            //double[] simY11 = simData1.GetValues(GSM1.GetID(), SignalType.Output_Y);
+
+            //// Plot here!
+
+            //Shared.EnablePlots();
+            //Plot.FromList(new List<double[]> {
+            //    simY11,
+            //    y_ref,
+            //    dataSet.U.GetColumn(0) },
+            //    new List<string> { "y1=simY1_GSM1", "y1=y_ref", "y3=u1" },
+            //timeBase_s,
+            //    "GainSched split ");
+            //Shared.DisablePlots();
+
+
             // ## 2gain 1 time constant ##
-            double min_u = dataSet.U.GetColumn(0).Min();
-            double max_u = dataSet.U.GetColumn(0).Max();
             double[] potential_gainthresholds = new double[10]; // TODO: magic number
 
             for (int k = -5; k < 5; k++)
             {
-                potential_gainthresholds[k+5] = (max_u-min_u)/2 + k*0.05;
+                potential_gainthresholds[k+5] = (max_u-min_u)/2 + k*0.2; // TODO: magic number
             }
        
             List<GainSchedParameters> potential_2g_1t_gainsched_parameters = new List<GainSchedParameters>();
@@ -143,7 +163,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (idx == 0)
                     {
                         u_min_fit_a[idx] = min_u;
-                        u_max_fit_a[idx] = potential_gainthresholds[i] + 0.6; // TODO: Magic number
+                        u_max_fit_a[idx] = potential_gainthresholds[i] + (max_u - min_u)*0.05; // TODO: Magic number
                     }
                     else
                     {
@@ -156,29 +176,16 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 List<double[]> GS_LinearGains2 = new List<double[]>();
                 double[] GS_TimeConstants_s2 = new double[2];
-                double[] GS_TimeConstantThreshold2 = new double[1];
+                double[] GS_TimeConstantThreshold2 = new double[1]; // TODO: Should be considered to remove
 
+                UnitModel UM2_a = ui_2g_1t_a.IdentifyLinear(ref DS2, fittingSpecs_a); ;
+                UnitParameters UMp2_a = UM2_a.GetModelParameters(); ;
+      
+                // Linear gains
+                GS_LinearGains2.Add(UMp2_a.LinearGains);
 
-                UnitModel UM2_a;
-                UnitParameters UMp2_a;
-                try
-                {
-                    UM2_a = ui_2g_1t_a.IdentifyLinear(ref DS2, fittingSpecs_a);
-                    UMp2_a = UM2_a.GetModelParameters();
-
-                    // Linear gains
-                    GS_LinearGains2.Add(UMp2_a.LinearGains);
-
-                    // Time constants
-                    GS_TimeConstants_s2[0] = 10; // TODO: UMp2_a.TimeConstant_s;
-
-                    Console.WriteLine("a worked");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    continue;
-                }
+                // Time constants
+                GS_TimeConstants_s2[0] = UMp2_a.TimeConstant_s;
 
                 // b)
                 var ui_2g_1t_b = new UnitIdentifier();
@@ -189,8 +196,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     if (idx == 0)
                     {
-                        u_min_fit_b[idx] = potential_gainthresholds[i] - 0.6; // TODO: Magic number
-                        u_max_fit_b[idx] = double.NaN; // TODO: u_max
+                        u_min_fit_b[idx] = potential_gainthresholds[i] - (max_u - min_u)*0.05; // TODO: Magic number
+                        u_max_fit_b[idx] = max_u;
                     }
                     else
                     {
@@ -201,31 +208,23 @@ namespace TimeSeriesAnalysis.Dynamic
                 fittingSpecs_b.U_min_fit = u_min_fit_b;
                 fittingSpecs_b.U_max_fit = u_max_fit_b;
 
-                UnitModel UM2_b;
-                UnitParameters UMp2_b;
-                try
-                {
-                    UM2_b = ui_2g_1t_b.IdentifyLinear(ref DS3, fittingSpecs_b);
-                    UMp2_b = UM2_b.GetModelParameters();
+                UnitModel UM2_b = ui_2g_1t_b.IdentifyLinear(ref DS3, fittingSpecs_b); ;
+                UnitParameters UMp2_b = UM2_b.GetModelParameters(); ;
+               
+                // Linear gains
+                GS_LinearGains2.Add(UMp2_b.LinearGains);
+                GSp2.LinearGains = GS_LinearGains2;
 
-                    // Linear gains
-                    GS_LinearGains2.Add(UMp2_b.LinearGains);
-                    GSp2.LinearGains = GS_LinearGains2;
+                // Time constants
+                GS_TimeConstants_s2[1] = UMp2_b.TimeConstant_s;
+                GSp2.TimeConstant_s = GS_TimeConstants_s2;
 
-                    // Time constants
-                    GS_TimeConstants_s2[1] = 10; // TODO: UMp2_b.TimeConstant_s;
-                    GSp2.TimeConstant_s = GS_TimeConstants_s2;
-
-                    // Time constant thresholds
-                    GSp2.TimeConstantThresholds = GS_TimeConstantThreshold2;
-                    Console.WriteLine("b worked");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    continue;
-                }
+                // Time constant thresholds
+                // TODO: Should consider to remove this threshold as this should be the same thresholds as gainSchedThresholds
+                GSp2.TimeConstantThresholds = GS_TimeConstantThreshold2;
                 GSp2.LinearGainThresholds[0] = potential_gainthresholds[i];
+                
+
                 potential_2g_1t_gainsched_parameters.Add(GSp2);
                 
 
@@ -310,15 +309,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     str_linear_gains = str_linear_gains + string.Concat(GSp.LinearGains[j].Select(x => x.ToString())) + " - ";
                 }
 
-                Shared.EnablePlots();
-                Plot.FromList(new List<double[]> {
-                simY1,
-                y_ref,
-                dataSet.U.GetColumn(0) },
-                    new List<string> { "y1=simY1", "y1=y_ref", "y3=u1" },
-                timeBase_s,
-                    "GainSched split " + i.ToString() + " " +  str_linear_gains + string.Concat(GSp.LinearGainThresholds.Select(x => x.ToString())));
-                Shared.DisablePlots();
+                //Shared.EnablePlots();
+                //Plot.FromList(new List<double[]> {
+                //simY1,
+                //y_ref,
+                //dataSet.U.GetColumn(0) },
+                //    new List<string> { "y1=simY1", "y1=y_ref", "y3=u1" },
+                //timeBase_s,
+                //    "GainSched split " + i.ToString() + " " +  str_linear_gains + string.Concat(GSp.LinearGainThresholds.Select(x => x.ToString())));
+                //Shared.DisablePlots();
 
                 if (rms < lowest_rms)
                 {
