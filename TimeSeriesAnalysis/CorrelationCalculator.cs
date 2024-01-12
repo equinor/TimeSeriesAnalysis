@@ -94,13 +94,14 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="mainSignalName"></param>
         /// <param name="dataSet">the dataset, which must have a correctly set timestamps in order to estimate time constants</param>
+        /// <param name="minimumCorrCoeffToDoTimeshiftCalc">calculate time-shift for every corr coeff that is above this threshold(0.0-1.0)</param>
+        /// <param name="minimumRsqAbs">for a time-shift to be valid, the resulting model nees to have Rsq over this threshold</param>
         /// <returns>a</returns>
-        public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet)
+        public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet,
+            double minimumCorrCoeffToDoTimeshiftCalc=0.4,double  minimumRsqAbs = 10)
         {
-            const double minimumCorrCoeffToDoTimeshiftCalc = 0.4;
-            (double?,double?) EstiamteTimeShift(double[] signalIn, double[] signalOut)
+            (double?,double?) EstimateTimeShift(double[] signalIn, double[] signalOut)
             {
-                const double minimumRsqAbs = 10;
                 var dataSetUnit = new UnitDataSet();
                 dataSetUnit.Y_meas = signalOut;
                 dataSetUnit.U = Array2D<double>.CreateFromList(new List<double[]> { signalIn });
@@ -148,7 +149,7 @@ namespace TimeSeriesAnalysis
                     double[] curSignalValues = dataSet.GetValues(curSignalName);
                     if (curSignalValues != null)
                     {
-                        (timeConstant_s,timeDelay_s) = EstiamteTimeShift(curSignalValues,mainSignalValues);
+                        (timeConstant_s,timeDelay_s) = EstimateTimeShift(curSignalValues,mainSignalValues);
                        //  else
                         { // check if it is possible to identify model if we reverse which signal is in and which is out.
                       //      var timeShiftReversed = EstiamteTimeShift(mainSignalValues,curSignalValues );
