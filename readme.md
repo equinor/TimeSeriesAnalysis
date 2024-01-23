@@ -76,4 +76,4 @@ The contact person for this repository is Steinar Elgsæter, please post any que
 in the [github discussion pages](https://github.com/equinor/TimeSeriesAnalysis/discussions).
 
 ## License
-TimeSeriesAnalysis is distributed under the [MIT license](LICENSE).
+TimeSeriesAnalysis is distributed under the [Apache 2.0 license](LICENSE).
