@@ -63,16 +63,26 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double ObjFunValAbs { get; set; }
 
+
+        /// <summary>
+        /// A score that is 100% if model describes all variations 
+        /// and 0% if model is no better at describing variation than the flat average line.
+        /// Negative if the model is worse than a flat average line.
+        /// </summary>
+
+        public double FitScorePrc { get; set; }
+
         /// <summary>
         /// Number of bad data points ignored during fitting
         /// </summary>
+        /// 
+
         public double NFittingBadDataPoints { get; set; }
 
         /// <summary>
         /// Number of total data points (good and bad) available for fitting
         /// </summary>
         public double NFittingTotalDataPoints { get; set; }
-
 
         /// <summary>
         /// Start time of fitting data set
@@ -85,14 +95,13 @@ namespace TimeSeriesAnalysis.Dynamic
         public DateTime EndTime { get; set; }
 
 
-
-
         /// <summary>
         /// NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.
         /// It may be preferable to use the output of the regression, as this avoids duplicating logic.
         /// </summary>
         /// <param name="dataSet"></param>
         /// <param name="yIndicesToIgnore"></param>
+
         public void CalcCommonFitMetricsFromDataset(UnitDataSet dataSet, List<int> yIndicesToIgnore)
         {
             Vec vec = new Vec(dataSet.BadDataID);
@@ -140,11 +149,11 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 this.ObjFunValDiff = Double.NaN;
             }
-
-  //          this.NFittingBadDataPoints = yIndicesToIgnore.Count;
-
+           this.NFittingBadDataPoints = yIndicesToIgnore.Count;
 
 
+            var fitScore = FitScore.Calc(ymeas_vals, ysim_vals);
+            this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);
 
         }
     }

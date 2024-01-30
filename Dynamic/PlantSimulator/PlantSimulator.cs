@@ -72,6 +72,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public List<Comment> comments;
 
+        /// <summary>
+        /// The date of when the model was last saved
+        /// </summary>
+        public DateTime date { get; set; }
+
+
         public Dictionary<string, ISimulatableModel> modelDict;
         public List<string> externalInputSignalIDs;
         public ConnectionParser connections;

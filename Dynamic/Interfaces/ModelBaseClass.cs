@@ -240,6 +240,18 @@ namespace TimeSeriesAnalysis.Dynamic
                 return this.outputID;
         }
 
+
+        /// <summary>
+        /// returns the ID of the signal the output is identified against
+        /// </summary>
+        /// <returns> may return <c>null</c> if output is not set</returns>
+        public virtual string GetOutputIdentID()
+        {
+            return this.outputIdentID;
+        }
+
+
+
         /// <summary>
         /// Get the length of the output vector
         /// </summary>

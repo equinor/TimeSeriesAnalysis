@@ -84,6 +84,13 @@ namespace TimeSeriesAnalysis.Dynamic
         string GetOutputID();
 
         /// <summary>
+        /// Get the ID of the "OutputIdent" signal
+        /// </summary>
+        /// <returns></returns>
+        string GetOutputIdentID();
+
+
+        /// <summary>
         /// Set the output ID
         /// </summary>
         /// <param name="outputID"></param>

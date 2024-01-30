@@ -116,7 +116,7 @@ namespace TimeSeriesAnalysis.Dynamic
             fittingSpecs.u0 = u0;
 
 
-            int nGains=1;
+            //int nGains=1;
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give afirst estimate of the disturbance
@@ -130,7 +130,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 dataSet1.D = distIdResult1.d_est;
                 var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, fittingSpecs, doTimeDelayEstOnRun1);
-                nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
+              //  nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
                 idDisturbancesList.Add(distIdResult1);
                 idUnitModelsList.Add(unitModel_run1);
                 isOK = ClosedLoopSim(dataSet1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");

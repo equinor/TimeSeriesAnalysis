@@ -2,21 +2,38 @@
 ![Build Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg?branch=master)
 
 # TimeSeriesAnalysis
-An open-source library for development and testing of time-series-based algorithms, including
-- Transients/dynamic model identification, 
-- dynamic simulation, and
-- advanced industrial PID-control. 
+This library that deals with developing *time-series models and simulators* from *time-series data*. 
 
-The library can be used from C# or any other .NET language, Matlab or Python. The target framework is <i>.NET Standard 2.0.</i>
+The methods in this library are primarily designed to describe time-series of physical, real-world systems for an industrial setting.
 
-## Use case
+Real-world industrial systems 
+- often exhibit repeatable *transient responses* to changes in inputs
+- usually include *feeback loops*, either due to recirculation in the process or because the system is controlled with *PID-controllers*(PID-model is included)
+- and often consist of a network of interconnected units that interact. 
 
-Building industrial data-driven digital twins simulations that are
-- scalable 
-- modular 
-- explainable (ie.e based on "trusted black boxes" or "grey box" models).
+This library was designed to create *dynamic unit models* that can be chained into interconnected networks that can include PID-control or other feedback- or circulation loops.
 
-These digital twins could be used as foundation for advanced analytics applications. 
+Models are not derived from physical first principles, but are inferred from time-series data using the principles of *system identification*, the methods to infer models are built on multiple modfied linear regression steps(identification methods are included).   
+
+The library is written in C# but can be referenced from any language that can reference .NET language, including Matlab or Python. The target framework is <i>.NET Standard 2.0.</i>
+
+## Use cases: Digital twins, anomaly detection, "what-if", PID-tuning, monitoring and screening
+
+The power of this library lies in the ability to automate or semi-automate the steps of identfiying new models or simulating existing models at scale. In effect this libary can create "digital twin" models of sections of a process. 
+
+The methods lend themselves readily to for instance automatically building a large number of similar models for similar sections of a process, for instance to monitor every valve, separation tank or PID-control loop in a similar fashion, in a way that lends itself to process monitoring and -screening. 
+
+The methods in this library are *scalable* and *modular*, i.e. by chaining together unit models, the library can also simulate larger sections of a process plant, so the methodology could in principle be extended to assemble a digital twin of an entire process plant. 
+
+Models can be run alongside the plant, and monitoring the difference between measured and modelled values can provide insight into changes in the plant (anomaly detection.) By manually simulating changes on these kinds of models, "what-if" scenarios can be evaluted either manually or automatically. One very interesting such use-case is to evaluate the possible benefits of re-tuning PID-controllers.
+
+The above use-cases could be put under the umbrella term "advanced analytics", i.e. using algorithms and data to make deep insights about causes and effects to make predictions and reccomendations. 
+
+## Explainable models for low-information datasets
+
+Note that although this library uses regression methods and algorithms to learn parameters to describe data, the methodology is somewhat different from traditional machine learning in that models follow the principles of system identification rather than AI. 
+The number of free parameters are kept low by design, as this makes reduces the likelihood of over-fitting. Over-fitting is particularly important when dealing with industrial data, as this kind of data has to be used "as-is" and one often has less information than one would like. 
+Another benefit of keepting the number of fitted paramters low is that models remain *explainable* and human-understandable, and it becomes possible to combine fitted models with human pre-knowledge, what is often referred to as "grey-box" modeling.
 
 ## Documentation:
 
@@ -76,4 +93,4 @@ The contact person for this repository is Steinar Elgsæter, please post any que
 in the [github discussion pages](https://github.com/equinor/TimeSeriesAnalysis/discussions).
 
 ## License
-TimeSeriesAnalysis is distributed under the [MIT license](LICENSE).
+TimeSeriesAnalysis is distributed under the [Apache 2.0 license](LICENSE).

@@ -587,7 +587,8 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
-              
+            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScore.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0)), nDigits);
+            
             pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), U_sim.GetColumn(0), 0);
             pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), null, 0) * 100;
 

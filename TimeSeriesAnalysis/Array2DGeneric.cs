@@ -146,6 +146,11 @@ namespace TimeSeriesAnalysis
         /// <returns>null if list columnList dimensions do not match</returns>
         static public T[,] CreateFromList(List<T[]> columnList)
         {
+            if (columnList == null)
+                return null;
+            if (columnList.Count() == 0)
+                return null;
+
             int nColumns = columnList.Count;
             if (columnList.ElementAt(0) == null)
                 return null;
