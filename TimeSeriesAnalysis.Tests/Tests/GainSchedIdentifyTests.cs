@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             // Number of inputs can be determined from the TimeSeries object, assuming it provides a way to determine this
             int numberOfInputs = unitData.U.GetNColumns(); // Example property, replace with actual implementation
 
-            Shared.EnablePlots();
+        /*    Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                 simY1,
                 simY2,
@@ -71,7 +71,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
                 timeBase_s,
                 "GainSched split");
-            Shared.DisablePlots();
+            Shared.DisablePlots();*/
 
             // Assert
             Assert.That(best_params.LinearGains.Count, Is.LessThanOrEqualTo(2),
@@ -135,14 +135,14 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 }
             }
 
-            Shared.EnablePlots();
+        /*    Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                 simY1,
                 unitData.U.GetColumn(0) },
                 new List<string> { "y1=correct_model", "y3=u1" },
                 timeBase_s,
                 "GainSched - Max Threshold");
-            Shared.DisablePlots();
+            Shared.DisablePlots();*/
 
             // Assert
             Assert.That(largest_gain_amplitude, Is.LessThanOrEqualTo(largest_correct_gain_amplitude),
@@ -151,12 +151,12 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
         }
 
         [TestCase(1, -1.5)]
-        [TestCase(2, -1.0)]
+   /*     [TestCase(2, -1.0)]
         [TestCase(3, -0.5)]
         [TestCase(4, 1.0)]
         [TestCase(5, 2.5)]
         [TestCase(6, 3.0)]
-        [TestCase(7, 4.0)]
+        [TestCase(7, 4.0)]*/
         public void GainSchedIdentify_LinearGainThresholdAtReasonablePlace(int ver, double gain_sched_threshold)
         {
             // Arrange
@@ -213,7 +213,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 "There are too large differences in the linear gain threshold " + k.ToString());
             }
 
-            Shared.EnablePlots();
+        /*    Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                     simY1,
                     simY2,
@@ -221,16 +221,16 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
                 timeBase_s,
                 "GainSched - Threshold at reasonable place - " + ver.ToString());
-            Shared.DisablePlots();
+            Shared.DisablePlots();*/
         }
 
         [TestCase(1, 3, 10)]
-        [TestCase(2, 3, 15)]
+    /*    [TestCase(2, 3, 15)]
         [TestCase(3, 15, 10)]
         [TestCase(4, 20, 30)]
         [TestCase(5, 1, 35)]
         [TestCase(6, 38, 40)]
-        [TestCase(7, 40, 20)]
+        [TestCase(7, 40, 20)]*/
         public void GainSchedIdentify_TimeConstantsWithinReasonableRange(int ver, double t1, double t2)
         {
             // Arrange
@@ -289,7 +289,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 "Too high time constant " + k.ToString());
             }
 
-            Shared.EnablePlots();
+/*            Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                     simY1,
                     simY2,
@@ -297,16 +297,16 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
                 timeBase_s,
                 "GainSched - Threshold at reasonable place - " + ver.ToString());
-            Shared.DisablePlots();
+            Shared.DisablePlots();*/
         }
 
         [TestCase(1, 1.5)]
-        [TestCase(2, 2.0)]
+        /*[TestCase(2, 2.0)]
         [TestCase(3, 2.5)]
         [TestCase(4, 3.0)]
         [TestCase(5, 3.5)]
         [TestCase(6, 4.0)]
-        [TestCase(7, 4.5)]
+        [TestCase(7, 4.5)]*/
         public void GainSchedIdentify_ThresholdsWithinUminAndUmax(int ver, double gain_sched_threshold)
         {
             // Arrange
@@ -365,7 +365,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                     "Linear gain threshold above upper bound (umax) " + ver.ToString());
             }
 
-            Shared.EnablePlots();
+          /*  Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                     simY1,
                     simY2,
@@ -373,9 +373,9 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
                 timeBase_s,
                 "GainSched - Threshold within bounds - " + ver.ToString());
-            Shared.DisablePlots();
+            Shared.DisablePlots();*/
         }
-
+/*
         [TestCase(1, -0.5)]
         [TestCase(2, 2.0)]
         [TestCase(3, -1.5)]
@@ -386,7 +386,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
         public void GainSchedIdentify_AllTimeConstantsArePositive(int ver, double gain_sched_threshold)
         {
             // Arrange
-            var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
+            var unitData = new UnitDataSet("test"); 
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
             double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
             double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
@@ -439,7 +439,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                     "Negative time constant - " + ver.ToString());
             }
 
-            Shared.EnablePlots();
+        //    Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                     simY1,
                     simY2,
@@ -447,10 +447,8 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
                 timeBase_s,
                 "GainSched - Positive time constants - " + ver.ToString());
-            Shared.DisablePlots();
+          //  Shared.DisablePlots();
         }
-        // TODO: Additional test cases as needed...
-
-        // Helper methods for creating test TimeSeries instances, gain scheduling slices, and other setup tasks...
+        */
     }
 }

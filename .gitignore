@@ -19,3 +19,6 @@ UpgradeLog2.htm
 TimeSeriesAnalysis.targetnetstandard20.notworking.csproj
 *.zip
 runtest.bat
+InternalTrace.11860.log
+InternalTrace*
+TestResult.xml
