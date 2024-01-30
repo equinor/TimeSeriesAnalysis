@@ -33,16 +33,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double[] TimeConstant_s { get; set; } =null;
 
-
-
         /// <summary>
-        /// The index of the parameter among the ModelInputIdx
+        /// The index of the scheduling-parameter among the model inputs(by default the first input is the schedulng variable)
         /// </summary>
         public int GainSchedParameterIndex = 0;
 
-
         /// <summary>
-        /// Thresholds for when to use which gains
+        /// Thresholds for when to use timeconstants. 
         /// </summary>
         public double[] TimeConstantThresholds { get; set; } = null;
 
@@ -53,16 +50,18 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// The time delay in seconds.This number needs to be a multiple of the sampling rate.
-        /// Set to zero to turn of time delay in model.
+        /// Set to zero to turn off time delay in model.
+        /// There is no scheduling on the time delay.
         /// </summary>
         public double TimeDelay_s { get; set; } = 0;
         /// <summary>
-        /// An array of gains that determine how much in the steady state each input change affects the output(multiplied with (u-u0))
+        /// An list of arrays of gains that determine how much in the steady state each input change affects the output(multiplied with (u-u0))
+        /// The size of the list should be one higher than the size of LinearGainThresholds.
         /// </summary>
         public List<double[]> LinearGains { get; set; } = null;
 
         /// <summary>
-        /// Threshold for when to use different gains
+        /// Threshold for when to use different LinearGains, the size should be one less than LinearGains
         /// </summary>
         public double[] LinearGainThresholds { get; set; } = null;
 

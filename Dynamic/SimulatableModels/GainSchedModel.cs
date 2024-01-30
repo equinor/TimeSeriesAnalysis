@@ -14,11 +14,23 @@ namespace TimeSeriesAnalysis.Dynamic
 {
 
     /// <summary> 
-    /// Simulatable gain schedule model.
+    /// Simulatable gain-scheduled model.
     /// <remarks>
     /// <para>
-    /// TODO: write a good description of the GainSchedModel
-    /// </par>
+    /// A model for systems that cannot be adequately modelled by UnitModel,because they either have time constants or gains or both that vary 
+    /// signficantly depending on the value of one of the inputs. 
+    /// </para>
+    /// <para>
+    /// One input is selected as the "scheduling varible" and one ore more thresholds are given for this scheduling variable. 
+    /// The thresholds can be set indepently for time-contant and linear gain.
+    /// </para>
+    /// <para>
+    /// Remember that with more thresholds defined, the higher the requirement for information content in data will be if the model is to be identified from it. 
+    /// </para>
+    /// <para>
+    /// This should not be confuesed with "gain-scheduled" PID-control, which is a similar concept but applied to PID-control parameters.
+    /// </para>
+    /// 
     /// </remarks>
     /// See also: <seealso cref="GainSchedParameters"/>
     /// </summary>
@@ -39,7 +51,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="modelParameters">model paramter object</param>
+        /// <param name="modelParameters">model parameter object</param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
         [JsonConstructor]
         public GainSchedModel(GainSchedParameters modelParameters, string ID="not_named")
@@ -78,9 +90,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 explainStr = "LinearGains is empty";
                 return false;
             }
-            else
-            { 
-            
+            if (modelParameters.GainSchedParameterIndex >= modelParameters.LinearGains.Count)
+            {
+                explainStr = "GainSchedParamterIndex must be smaller than number of linear gains";
+                return false;
             }
 
             if (ModelInputIDs == null)
@@ -88,7 +101,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 explainStr = "ModelInputIDs is null";
                 return false;
             }
-
             if (modelParameters.LinearGains != null)
             {
                 foreach (var gain in modelParameters.LinearGains)
@@ -238,9 +250,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-
             double y_contributionFromInput = x0 - x_otherInputs;
-
             u0 = 0;
             if (modelParameters.U0 != null)
             {
@@ -248,8 +258,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             //TODO
             //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
-
-      
             return u0;
         }
 
@@ -293,8 +301,27 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="u_GainSched">the value of scheduling input</param>
         /// <returns>time constant at particular scheduling input</returns>
-        private double chooseCorrectTimeConstant(double u_GainSched)
+        private double GetScheduledTimeConstant(double u_GainSched)
         {
+            if (modelParameters.TimeConstantThresholds == null)
+            {
+                if (modelParameters.TimeConstant_s != null)
+                    if (modelParameters.TimeConstant_s.Count() > 0)
+                        return modelParameters.TimeConstant_s.First();
+                 return 0;
+            }
+            if (modelParameters.TimeConstantThresholds.Count() == 0)
+            {
+                if (modelParameters.TimeConstant_s != null)
+                    if (modelParameters.TimeConstant_s.Count() > 0)
+                        return modelParameters.TimeConstant_s.First();
+                return 0;
+            }
+            if (modelParameters.TimeConstant_s == null)
+                return 0;
+            if (modelParameters.TimeConstant_s.Count() == 0)
+                return 0;
+
             int timeConstantIdx = 0;
             for (int idx = 0; idx < modelParameters.TimeConstantThresholds.Length; idx++)
             {
@@ -425,7 +452,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // modelParameters.GainSchedParameterIndex = updateGainSchedParIndx();
             double gainSched = inputs[modelParameters.GainSchedParameterIndex]; // TODO: make sure GainSchedParIndx is updated
-            double TimeConstant_s = chooseCorrectTimeConstant(gainSched);
+            double TimeConstant_s = GetScheduledTimeConstant(gainSched);
 
             double x_dynamic = lowPass.Filter(x_static, TimeConstant_s, 1, isFirstIteration);
             isFirstIteration = false;
@@ -516,150 +543,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         override public string ToString()
         {
-         /*   var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
-            var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
-            numberFormat.NumberDecimalSeparator = ".";
-
-            int sDigits = 3;
-            int sDigitsUnc = 2;
-
-            int cutOffForUsingDays_s = 86400;
-            int cutOffForUsingHours_s = 3600;
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(this.GetType().ToString());
-            sb.AppendLine("-------------------------");
-            if (modelParameters.Fitting == null)
-            {
-                sb.AppendLine("a priori model");
-            }
-            else
-            {
-                if (modelParameters.Fitting.WasAbleToIdentify)
-                {
-                    sb.AppendLine("ABLE to identify");
-                }
-                else
-                {
-                    sb.AppendLine("---NOT able to identify---");
-                }
-            }
-
-            string timeConstantString = "TimeConstant : ";
-
-            // time constant
-            if (modelParameters.TimeConstant_s < cutOffForUsingHours_s)
-            {
-                timeConstantString +=
-                    SignificantDigits.Format(modelParameters.TimeConstant_s, sDigits).ToString(writeCulture) + " sec";
-            }
-            else if (modelParameters.TimeConstant_s < cutOffForUsingDays_s)
-            {
-                timeConstantString +=
-                    SignificantDigits.Format(modelParameters.TimeConstant_s/3600, sDigits).ToString(writeCulture) + " hours";
-            }
-            else // use days
-            {
-                timeConstantString +=
-                    SignificantDigits.Format(modelParameters.TimeConstant_s/86400, sDigits).ToString(writeCulture) + " days";
-            }
-            if (modelParameters.TimeConstantUnc_s.HasValue)
-            {
-                timeConstantString += " ± " + SignificantDigits.Format(modelParameters.TimeConstantUnc_s.Value, sDigitsUnc).ToString(writeCulture);
-            }
-            sb.AppendLine(timeConstantString);
-
-            // time delay
-            if (modelParameters.TimeDelay_s < cutOffForUsingHours_s)
-            {
-                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s.ToString(writeCulture) + " sec");
-            }
-            else if (modelParameters.TimeDelay_s < cutOffForUsingDays_s)
-            {
-                sb.AppendLine("TimeDelay : " + (modelParameters.TimeDelay_s/3600).ToString(writeCulture) + " sec");
-            }
-            else
-            {
-                sb.AppendLine("TimeDelay : " + (modelParameters.TimeDelay_s/86400).ToString(writeCulture) + " days");
-            }
-           
-         
-            {
-                sb.AppendLine("ProcessGains(at u0) : ");
-                for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
-                {
-                    sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGain(idx), sDigits).ToString(writeCulture) + " ± "
-                            + SignificantDigits.Format(modelParameters.GetTotalCombinedProcessGainUncertainty(idx), sDigitsUnc).ToString(writeCulture)
-                        );
-                }
-                sb.AppendLine(" -> Linear Gain : "); //+ Vec.ToString(modelParameters.LinearGains, sDigits));
-                for (int idx = 0; idx < modelParameters.GetNumInputs(); idx++)
-                {
-                    if (modelParameters.LinearGainUnc != null)
-                    {
-                        sb.AppendLine(
-                            "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits).ToString(writeCulture) + " ± "
-                                + SignificantDigits.Format(modelParameters.LinearGainUnc[idx], sDigitsUnc).ToString(writeCulture)
-                            );
-                    }
-                    else
-                    {
-                        sb.AppendLine(
-                            "\t" + SignificantDigits.Format(modelParameters.LinearGains[idx], sDigits).ToString(writeCulture)   );
-                    }
-                }
-
-            }
-
-            sb.AppendLine(" -> u0 : " + Vec.ToString(modelParameters.U0, sDigits).ToString(writeCulture));
-            if (modelParameters.UNorm == null)
-            {
-                sb.AppendLine(" -> uNorm : " + "none");
-            }
-            else
-            {
-                sb.AppendLine(" -> uNorm : " + Vec.ToString(modelParameters.UNorm, sDigits).ToString(writeCulture));
-            }
-
-            if (modelParameters.BiasUnc == null)
-            {
-                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits).ToString(writeCulture));
-            }
-            else
-            {
-                sb.AppendLine("Bias : " + SignificantDigits.Format(modelParameters.Bias, sDigits).ToString(writeCulture) + 
-                    " ± " + SignificantDigits.Format(modelParameters.BiasUnc.Value, sDigitsUnc).ToString(writeCulture));
-            }
-
-            sb.AppendLine("-------------------------");
-            if (modelParameters.Fitting != null)
-            {
-                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValDiff, 4).ToString(writeCulture));
-                sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqDiff, 4).ToString(writeCulture));
-                sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqAbs, 4).ToString(writeCulture));
-
-                sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were excluded");
-                foreach (var warning in modelParameters.GetWarningList())
-                    sb.AppendLine("model fit warning :" + warning.ToString());
-                if (modelParameters.GetWarningList().Count == 0)
-                {
-                    sb.AppendLine("model fit : no error or warnings");
-                }
-
-                if (modelParameters.TimeDelayEstimationWarnings != null)
-                {
-                    foreach (var warning in modelParameters.TimeDelayEstimationWarnings)
-                        sb.AppendLine("time delay est. warning :" + warning.ToString());
-                    if (modelParameters.TimeDelayEstimationWarnings.Count == 0)
-                    {
-                        sb.AppendLine("time delay est : no error or warnings");
-                    }
-                }
-                sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
-            }
-            return sb.ToString();*/
-         return "";
+           return "";
         }
 
 

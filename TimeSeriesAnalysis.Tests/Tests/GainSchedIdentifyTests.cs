@@ -224,15 +224,17 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             Shared.DisablePlots();*/
         }
 
-        [TestCase(1, 3, 10)]
-    /*    [TestCase(2, 3, 15)]
-        [TestCase(3, 15, 10)]
-        [TestCase(4, 20, 30)]
-        [TestCase(5, 1, 35)]
-        [TestCase(6, 38, 40)]
-        [TestCase(7, 40, 20)]*/
-        public void GainSchedIdentify_TimeConstantsWithinReasonableRange(int ver, double t1, double t2)
+        [TestCase(3, 10)]
+    /*    [TestCase(3, 15)]
+        [TestCase(15, 10)]
+        [TestCase(20, 30)]
+        [TestCase(1, 35)]
+        [TestCase(38, 40)]
+        [TestCase(40, 20)]*/
+        public void TwoGains_TimeConstantsAndThresholdFoundOk(double TimeConstant1_s, double TimeConstant2_s)
         {
+            double TimeConstantAllowedDev_s = 0.5;
+
             // Arrange
             var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
@@ -247,7 +249,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
 
             GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
             {
-                TimeConstant_s = new double[] { t1, t2 },
+                TimeConstant_s = new double[] { TimeConstant1_s, TimeConstant2_s },
                 TimeConstantThresholds = new double[] { 1.1 },
                 LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
                 LinearGainThresholds = new double[] { 1.1 },
@@ -283,9 +285,9 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             int min_number_of_time_constants = Math.Min(best_params.TimeConstant_s.Length, correct_gain_sched_parameters.TimeConstant_s.Length);
             for (int k = 0; k < min_number_of_time_constants; k++)
             {
-                Assert.That(best_params.TimeConstant_s[k].IsGreaterThanOrEqual(Math.Max(0,Math.Min(t1,t2) - 0.5)),
+                Assert.That(best_params.TimeConstant_s[k].IsGreaterThanOrEqual(Math.Max(0,Math.Min(TimeConstant1_s,TimeConstant2_s) - TimeConstantAllowedDev_s)),
                 "Too low time constant " + k.ToString());
-                Assert.That(best_params.TimeConstant_s[k].IsLessThanOrEqual(Math.Max(t1, t2) + 0.5),
+                Assert.That(best_params.TimeConstant_s[k].IsLessThanOrEqual(Math.Max(TimeConstant1_s, TimeConstant2_s) + TimeConstantAllowedDev_s),
                 "Too high time constant " + k.ToString());
             }
 
