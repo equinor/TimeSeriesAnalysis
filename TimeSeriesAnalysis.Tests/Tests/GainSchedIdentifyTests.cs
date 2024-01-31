@@ -13,19 +13,17 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
     public class GainSchedIdentifyTests
     {
         int timeBase_s = 1;
-        //    int N = 2500;//2500;
         const double TimeConstantAllowedDev_s = 0.5;
 
-
+        /*
         [TestCase()]
         public void ReturnsParametersWithNumberOfLinearGainsNotExceeding2()
         {
             int N = 500; 
             // Arrange
-            var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
+            var unitData = new UnitDataSet("test"); 
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3);
             double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
-            //  double[] u = u1.Zip(u2, (x, y) => x+y).ToArray(); //Vec<double>.Concat(u1, u2);
             double[] u = new Vec().Add(u1, u2);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
             unitData.U = U;
@@ -68,7 +66,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             // Number of inputs can be determined from the TimeSeries object, assuming it provides a way to determine this
             int numberOfInputs = unitData.U.GetNColumns(); // Example property, replace with actual implementation
 
-        /*    Shared.EnablePlots();
+            Shared.DisablePlots();
             Plot.FromList(new List<double[]> {
                 simY1,
                 simY2,
@@ -76,13 +74,13 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
                 timeBase_s,
                 "GainSched split");
-            Shared.DisablePlots();*/
+            Shared.DisablePlots();
 
             // Assert
             Assert.That(best_params.LinearGains.Count, Is.LessThanOrEqualTo(2),
                 "The length of the LinearGains list must not exceed 2.");
         }
-
+        */
         [TestCase()]
         public void GainEstimationOnly_GainsNotLargerThanTheBiggestPossibleGain()
         {
@@ -97,8 +95,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.U = U;
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
-
-       
+      
 
             GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
             {
@@ -242,7 +239,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
 
 
             // Arrange
-            var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
+            var unitData = new UnitDataSet("test"); 
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
             double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
             double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();

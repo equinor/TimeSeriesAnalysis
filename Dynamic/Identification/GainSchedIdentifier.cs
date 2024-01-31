@@ -25,7 +25,8 @@ namespace TimeSeriesAnalysis.Dynamic
             var vec = new Vec();
 
             const int MAX_NUMBER_OF_THRESHOLDS = 40; // TODO: magic number
-
+            const double  GAIN_THRESHOLD_MAGIC_FACTOR = 0.02;// TODO: Magic number
+            const double GAIN_THRESHOLD_MAGIC_FACTOR_2 = 0.09;//TODO magic number
 
             UnitDataSet DS1 = new UnitDataSet(dataSet);
             UnitDataSet DS2 = new UnitDataSet(dataSet);
@@ -35,11 +36,6 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] min_time_constants = new double[] { 1 };
 
             GainSchedParameters GSp1 = new GainSchedParameters();
-            //List<GainSchedParameters> GainSchedParameterList3 = null;
-            //List<GainSchedParameters> GainSchedParameterList4 = null;
-            //List<GainSchedParameters> GainSchedParameterList5 = null;
-            //List<GainSchedParameters> GainSchedParameterList6 = null;
-            //List<GainSchedParameters> GainSchedParameterList7 = null;
 
             double min_u = dataSet.U.GetColumn(0).Min();
             double max_u = dataSet.U.GetColumn(0).Max();
@@ -69,7 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             fittingSpecs_1g.U_min_fit = u_min_fit_1g;
             fittingSpecs_1g.U_max_fit = u_max_fit_1g;
-            UnitModel UM1 = ui_1_1.IdentifyLinear(ref DS1, fittingSpecs_1g);
+            UnitModel UM1 = ui_1_1.IdentifyLinear(ref DS1, fittingSpecs_1g,false);
             UnitParameters UMp1 = UM1.GetModelParameters();
 
             // Simulate
@@ -145,7 +141,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             for (int k = -m; k < m; k++)
             {
-                potential_gainthresholds[k+m] = (max_u-min_u)/2 + k*0.09; // TODO: magic number
+                potential_gainthresholds[k+m] = (max_u-min_u)/2 + k* GAIN_THRESHOLD_MAGIC_FACTOR_2; 
             }
        
             List<GainSchedParameters> potential_2g_1t_gainsched_parameters = new List<GainSchedParameters>();
@@ -166,7 +162,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (idx == 0)
                     {
                         u_min_fit_a[idx] = min_u;
-                        u_max_fit_a[idx] = potential_gainthresholds[i] + (max_u - min_u)*0.02; // TODO: Magic number
+                        u_max_fit_a[idx] = potential_gainthresholds[i] + (max_u - min_u)* GAIN_THRESHOLD_MAGIC_FACTOR; 
                     }
                     else
                     {
@@ -183,7 +179,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] GS_TimeConstantThreshold2 = new double[1]; // TODO: Should be considered to remove
 
                 // TODO: Should add a try - except block on this block
-                UnitModel UM2_a = ui_2g_1t_a.IdentifyLinear(ref DS2, fittingSpecs_a); ;
+                UnitModel UM2_a = ui_2g_1t_a.IdentifyLinear(ref DS2, fittingSpecs_a, false); ;
                 UnitParameters UMp2_a = UM2_a.GetModelParameters();
       
                 // Linear gains
@@ -201,7 +197,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     if (idx == 0)
                     {
-                        u_min_fit_b[idx] = potential_gainthresholds[i] - (max_u - min_u)*0.02; // TODO: Magic number
+                        u_min_fit_b[idx] = potential_gainthresholds[i] - (max_u - min_u)*GAIN_THRESHOLD_MAGIC_FACTOR; 
                         u_max_fit_b[idx] = max_u;
                     }
                     else
@@ -213,24 +209,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 fittingSpecs_b.U_min_fit = u_min_fit_b;
                 fittingSpecs_b.U_max_fit = u_max_fit_b;
                 fittingSpecs_b.u0 = new double[] { u_min_fit_b[0] + (u_max_fit_b[0] - u_min_fit_b[0])/2 };
-
-                // TODO: Should add a try - except block on this block
-                UnitModel UM2_b = ui_2g_1t_b.IdentifyLinear(ref DS3, fittingSpecs_b); ;
+ 
+                UnitModel UM2_b = ui_2g_1t_b.IdentifyLinear(ref DS3, fittingSpecs_b,false); ;
                 UnitParameters UMp2_b = UM2_b.GetModelParameters();
                
-                // Linear gains
                 GS_LinearGains2.Add(UMp2_b.LinearGains);
                 GSp2.LinearGains = GS_LinearGains2;
-
-                // Time constants
                 GS_TimeConstants_s2[1] = UMp2_b.TimeConstant_s;
                 GSp2.TimeConstant_s = GS_TimeConstants_s2;
-
-                // Time constant thresholds
-                // TODO: Should consider to remove this threshold as this should be the same thresholds as gainSchedThresholds
                 GSp2.TimeConstantThresholds = new double[] { potential_gainthresholds[i]};
                 GSp2.LinearGainThresholds[0] = potential_gainthresholds[i];
-
                 potential_2g_1t_gainsched_parameters.Add(GSp2);
                 
 
