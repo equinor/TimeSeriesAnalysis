@@ -22,7 +22,6 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         public GainSchedParameters Identify(UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
         {
-            var vec = new Vec();
 
             const int MAX_NUMBER_OF_THRESHOLDS = 40; // TODO: magic number
             const double  GAIN_THRESHOLD_MAGIC_FACTOR = 0.02;// TODO: Magic number
@@ -188,65 +187,36 @@ namespace TimeSeriesAnalysis.Dynamic
                 GSp2.TimeConstantThresholds = new double[] { potential_gainthresholds[i]};
                 GSp2.LinearGainThresholds[0] = potential_gainthresholds[i];
                 potential_2g_1t_gainsched_parameters.Add(GSp2);
-                
-
-                // ## End of 2 gains, 1 time constant
-
-                //// 2gains 2 time constants
-                //for time_series_slice in sliced_time_series:
-                //{
-                //    GainSchedParameters GSPs = Identify(time_series_slice, TimeConstantThresh);
-                //    GainSchedParameterList3.append(GSPs);
-                //}
-
-
-                //// 3gains 1 time constants
-                //for time_series_slice in sliced_time_series:
-                //{
-                //    GainSchedParameters GSPs = Identify(time_series_slice)
-                //    GainSchedParameterList4.append(GainSchedParameters);
-                //}
-
-
-                //// 3gains 2 time constants
-                //for time_series_slice in sliced_time_series:
-                //{
-                //    GainSchedParameters GSPs = Identify(time_series_slice, TimeConstantThresh);
-                //    GainSchedParameterList5.append(GainSchedParameters);
-                //}
-
-
-                //// 4gains 1 time constant
-                //for time_series_slice in sliced_time_series:
-                //{
-                //    GainSchedParameters = Identify(time_series_slice);
-                //    GainSchedParameterList6.append(GainSchedParameters);
-                //}
-
-
-                //// 4gains 2 time constants
-                //for time_series_slice in sliced_time_series:
-                //{
-                //    GainSchedParameters = Identify(time_series_slice, TimeConstantThresh);
-                //    GainSchedParameterList7.append(GainSchedParameters);
-                //}
             }
 
 
             // Evaluate GainScheds
-            List<GainSchedParameters> allGainSchedParams = new List<GainSchedParameters> { GSp1 };
+            var allGainSchedParams = new List<GainSchedParameters> { GSp1 };
             allGainSchedParams.AddRange(potential_2g_1t_gainsched_parameters);
-            
+            return ChooseBestGainScheduledModel(allGainSchedParams, dataSet);
+        }
 
+        /// <summary>
+        /// Runs a simulation for each of the parameters sets given and returns the paramtes that best matches the dataset
+        /// </summary>
+        /// <param name="allGainSchedParams"></param>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        GainSchedParameters ChooseBestGainScheduledModel(List<GainSchedParameters> allGainSchedParams,UnitDataSet dataSet)
+        {
+            var vec = new Vec();
             GainSchedParameters BestGainSchedParams = null;
             double lowest_rms = 100000000000;
+            int number_of_inputs = dataSet.U.GetNColumns();
+
             for (int i = 0; i < allGainSchedParams.Count; i++)
             {
                 var GSp = allGainSchedParams[i];
                 GainSchedModel GSM = new GainSchedModel(GSp, i.ToString());
 
                 var plantSim = new PlantSimulator(new List<ISimulatableModel> { GSM });
-                var  inputData = new TimeSeriesDataSet();
+                var inputData = new TimeSeriesDataSet();
+
                 for (int k = 0; k < number_of_inputs; k++)
                 {
                     inputData.Add(plantSim.AddExternalSignal(GSM, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(k));
@@ -285,10 +255,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-
-
             return BestGainSchedParams;
+
         }
-        
+
+
+
+
     } 
 }
