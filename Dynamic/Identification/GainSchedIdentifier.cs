@@ -20,9 +20,14 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     public class GainSchedIdentifier
     {
-        public GainSchedParameters GainSchedIdentify(UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
+        public GainSchedParameters Identify(UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
         {
-            UnitDataSet DS1 = new UnitDataSet(dataSet); // TODO: Why is it necessary with copies? - because the UnitModel.Identify affect the data.
+            var vec = new Vec();
+
+            const int MAX_NUMBER_OF_THRESHOLDS = 40; // TODO: magic number
+
+
+            UnitDataSet DS1 = new UnitDataSet(dataSet);
             UnitDataSet DS2 = new UnitDataSet(dataSet);
             UnitDataSet DS3 = new UnitDataSet(dataSet);
 
@@ -103,13 +108,9 @@ namespace TimeSeriesAnalysis.Dynamic
             GSp1.TimeConstant_s = GS_TimeConstants_s1;
 
             // Time constants thresholds
-            // TODO: Should consider to remove this threshold as this should be the same thresholds as gainSchedThresholds
             double[] GS_TimeConstantThreshold1 = new double[] { }; 
-
             GSp1.TimeConstantThresholds = GS_TimeConstantThreshold1;
-
             GSp1.Fitting = UMp1.Fitting;
-
             double GSp1_rsqdiff_points = UMp1.Fitting.RsqDiff;
 
             //GainSchedModel GSM1 = new GainSchedModel(GSp1, "my simple model");
@@ -138,9 +139,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
             // ## 2gain 1 time constant ##
-            int num_of_thresholds = 40; // TODO: magic number
-            double[] potential_gainthresholds = new double[num_of_thresholds]; 
-            int m = (int)num_of_thresholds/2;
+
+            double[] potential_gainthresholds = new double[MAX_NUMBER_OF_THRESHOLDS]; 
+            int m = (int)MAX_NUMBER_OF_THRESHOLDS/2;
 
             for (int k = -m; k < m; k++)
             {
@@ -283,12 +284,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
             GainSchedParameters BestGainSchedParams = null;
             double lowest_rms = 100000000000;
-            //int timeBase_s = 1;
             for (int i = 0; i < allGainSchedParams.Count; i++)
             {
                 var GSp = allGainSchedParams[i];
                 GainSchedModel GSM = new GainSchedModel(GSp, i.ToString());
-                //double[] y_ref = dataSet.Y_meas;
 
                 plantSim = new PlantSimulator(new List<ISimulatableModel> { GSM });
                 inputData = new TimeSeriesDataSet();
@@ -298,36 +297,36 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 inputData.CreateTimestamps(timeBase_s);
                 CorrectisSimulatable = plantSim.Simulate(inputData, out simData);
-                simY1 = simData.GetValues(GSM.GetID(), SignalType.Output_Y);
-
-                // Evaluate
-                var diff = y_ref.Zip(simY1, (ai, bi) => ai - bi);
-                double rms = 0;
-                for (int j = 0; j < simY1.Length; j++)
+                if (CorrectisSimulatable)
                 {
-                    rms = rms + Math.Pow(diff.ElementAt(j),2);
-                }
+                    simY1 = simData.GetValues(GSM.GetID(), SignalType.Output_Y);
+                    var diff = vec.Subtract(simY1, y_ref);
+                    double rms = 0;
+                    for (int j = 0; j < simY1.Length; j++)
+                    {
+                        rms = rms + Math.Pow(diff.ElementAt(j), 2);
+                    }
+                    /*                string str_linear_gains = "";
+                                    for (int j = 0; j < GSp.LinearGains.Count; j++)
+                                    {
+                                        str_linear_gains = str_linear_gains + string.Concat(GSp.LinearGains[j].Select(x => x.ToString())) + " - ";
+                                    }
 
-                string str_linear_gains = "";
-                for (int j = 0; j < GSp.LinearGains.Count; j++)
-                {
-                    str_linear_gains = str_linear_gains + string.Concat(GSp.LinearGains[j].Select(x => x.ToString())) + " - ";
-                }
-
-                //Shared.EnablePlots();
-                //Plot.FromList(new List<double[]> {
-                //simY1,
-                //y_ref,
-                //dataSet.U.GetColumn(0) },
-                //    new List<string> { "y1=simY1", "y1=y_ref", "y3=u1" },
-                //timeBase_s,
-                //    "GainSched split " + i.ToString() + " " +  str_linear_gains + string.Concat(GSp.LinearGainThresholds.Select(x => x.ToString())));
-                //Shared.DisablePlots();
-
-                if (rms < lowest_rms)
-                {
-                    BestGainSchedParams = GSp;
-                    lowest_rms = rms;
+                                    Shared.EnablePlots();
+                                    Plot.FromList(new List<double[]> {
+                                    simY1,
+                                    y_ref,
+                                    dataSet.U.GetColumn(0) },
+                                        new List<string> { "y1=simY1", "y1=y_ref", "y3=u1" },
+                                    timeBase_s,
+                                        "GainSched split " + i.ToString() + " " +  str_linear_gains + string.Concat(GSp.LinearGainThresholds.Select(x => x.ToString())));
+                                    Shared.DisablePlots();
+                    */
+                    if (rms < lowest_rms)
+                    {
+                        BestGainSchedParams = GSp;
+                        lowest_rms = rms;
+                    }
                 }
             }
             return BestGainSchedParams;

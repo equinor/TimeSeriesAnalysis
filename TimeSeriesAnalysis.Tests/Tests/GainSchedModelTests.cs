@@ -18,11 +18,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         GainSchedModel gainSched2_singleThreshold_singleInput;
         GainSchedModel gainSched3_singleThreshold_singleInput;
 
+        GainSchedModel gainSched4_nineThresholds_singleInput;
+
         GainSchedModel gainSched8_singleThreshold_threeInputs;
         GainSchedModel gainSched9_singleThreshold_threeInputs_bias_and_timedelay;
         GainSchedParameters gainSchedP1_singleThreshold_singleInput_static;
         GainSchedParameters gainSchedP2_singleThreshold_singleInput;
         GainSchedParameters gainSchedP3_singleThreshold_singleInput_bias_and_timedelay;
+
+        GainSchedParameters gainSchedP4_nineThresholds_singleInput;
 
         GainSchedParameters gainSchedP8_singleThreshold_threeInputs;
         GainSchedParameters gainSchedP9_singleThreshold_threeInputs_nonzeroGainSchedIdx_bias_and_time_delay;
@@ -65,6 +69,18 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 GainSchedParameterIndex = 0
             };
 
+            gainSchedP4_nineThresholds_singleInput = new GainSchedParameters
+            {
+                TimeConstant_s = null,
+                TimeConstantThresholds = null,
+                LinearGains = new List<double[]> { new double[] { 0 }, new double[] { 1 }, new double[] { 2 }, new double[] { 3 }, new double[] { 4 }, new double[] { 5 },
+                    new double[] { 6 }, new double[] { 7 }, new double[] { 8 }, new double[] { 9 }, new double[] { 10 } },
+                LinearGainThresholds = new double[] { 1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 },
+                TimeDelay_s = 0,
+                Bias = 5,
+                GainSchedParameterIndex = 0
+            };
+
             gainSchedP8_singleThreshold_threeInputs = new GainSchedParameters
             {
                 TimeConstant_s = new double[] { 10, 20 },
@@ -92,18 +108,58 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             gainSched2_singleThreshold_singleInput = new GainSchedModel(gainSchedP2_singleThreshold_singleInput, "GainSched2");
             gainSched3_singleThreshold_singleInput = new GainSchedModel(gainSchedP3_singleThreshold_singleInput_bias_and_timedelay, "GainSched3");
 
+            gainSched4_nineThresholds_singleInput = new GainSchedModel(gainSchedP4_nineThresholds_singleInput, "GainSched4");
+
             gainSched8_singleThreshold_threeInputs = new GainSchedModel(gainSchedP8_singleThreshold_threeInputs, "GainSched8");
             gainSched9_singleThreshold_threeInputs_bias_and_timedelay =
                 new GainSchedModel(gainSchedP9_singleThreshold_threeInputs_nonzeroGainSchedIdx_bias_and_time_delay, "GainSched9");
 
         }
 
+        [Test,Ignore("work in progress")]
 
+        public void NineThresholds_DifferentGainsAboveEachThreshold()
+        {
+            var tolerance = 0.2;
+            // Arrange
+            GainSchedModel gainSched = gainSched4_nineThresholds_singleInput;
 
+            int N = 40;
 
+            var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched });
+            var inputData = new TimeSeriesDataSet();
 
+            var input = TimeSeriesCreator.ThreeSteps(N / 4, N *2/4, N * 3/4, N, 0, 1, 2, 3).
+                Concat( TimeSeriesCreator.ThreeSteps(N / 4, N *2/4, N * 3/4, N, 4, 5, 6, 7)).
+                Concat( TimeSeriesCreator.ThreeSteps(N / 4, N *2/4, N * 3/4, N, 8, 9, 10, 11)).ToArray();
 
-  
+            inputData.Add(plantSim.AddExternalSignal(gainSched, SignalType.External_U, (int)INDEX.FIRST),input );
+            inputData.CreateTimestamps(timeBase_s);
+
+            // Act
+            var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y); // TODO: Change .GetID() with input ID from parameterlist?
+
+            for (int stepIdx = 0; stepIdx < gainSchedP4_nineThresholds_singleInput.LinearGains.Count; stepIdx++)
+            {
+                //assume that steps happen every N/4, data points     
+                int idxBefore = (stepIdx+1) * N / 4 - 3;
+                int idxAfter = (stepIdx+1) * N / 4 + 3;
+                double observedGain = simY1[idxAfter]-simY1[idxBefore]; // all steps are exactly 1.
+                Assert.AreEqual( gainSchedP4_nineThresholds_singleInput.LinearGains[stepIdx].First(), observedGain , "step idx:"+stepIdx);
+            }
+
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                simY1,
+                inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
+                },
+                new List<string> { "y1=y_sim", "y3=u1" },
+                timeBase_s, TestContext.CurrentContext.Test.Name);
+            Shared.DisablePlots();
+        }
+
 
         [TestCase(1, 5, 30)]
         [TestCase(2, 5, 15)]

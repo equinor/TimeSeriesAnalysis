@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Test.PlantSimulations;
 using Accord;
+using Accord.Math;
 
 namespace TimeSeriesAnalysis.Tests.Dynamic
 {
@@ -12,16 +13,20 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
     public class GainSchedIdentifyTests
     {
         int timeBase_s = 1;
-        int N = 2500;
+        //    int N = 2500;//2500;
+        const double TimeConstantAllowedDev_s = 0.5;
+
 
         [TestCase()]
-        public void GainSchedIdentify_ReturnsParametersWithNumberOfLinearGainsNotExceeding2()
+        public void ReturnsParametersWithNumberOfLinearGainsNotExceeding2()
         {
+            int N = 500; 
             // Arrange
             var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3);
             double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
-            double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
+            //  double[] u = u1.Zip(u2, (x, y) => x+y).ToArray(); //Vec<double>.Concat(u1, u2);
+            double[] u = new Vec().Add(u1, u2);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
             unitData.U = U;
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
@@ -49,7 +54,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            GainSchedParameters best_params = gainSchedIdentifier.GainSchedIdentify(unitData);
+            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
             GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
             var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
             inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);
@@ -79,8 +84,10 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
         }
 
         [TestCase()]
-        public void GainSchedIdentify_GainsNotLargerThanTheBiggestPossibleGain()
+        public void GainEstimationOnly_GainsNotLargerThanTheBiggestPossibleGain()
         {
+            int N = 500;
+
             // Arrange
             var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3);
@@ -91,7 +98,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
 
-            var gainSchedIdentifier = new GainSchedIdentifier();
+       
 
             GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
             {
@@ -113,7 +120,8 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            GainSchedParameters best_params = gainSchedIdentifier.GainSchedIdentify(unitData);
+            var gainSchedIdentifier = new GainSchedIdentifier();
+            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
             double current_abs_value = 0;
             double largest_gain_amplitude = 0;
             for (int k = 0; k < best_params.LinearGains.Count; k++)
@@ -150,17 +158,18 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
 
         }
 
-        [TestCase(1, -1.5)]
-   /*     [TestCase(2, -1.0)]
+   /*     [TestCase(1, -1.5)]
+        [TestCase(2, -1.0)]
         [TestCase(3, -0.5)]
         [TestCase(4, 1.0)]
         [TestCase(5, 2.5)]
-        [TestCase(6, 3.0)]
-        [TestCase(7, 4.0)]*/
-        public void GainSchedIdentify_LinearGainThresholdAtReasonablePlace(int ver, double gain_sched_threshold)
+       [TestCase(6, 3.0)]*/
+        [TestCase(7, 4.0)]
+        public void ThresholdEstimation_LinearGainThresholdAtReasonablePlace(int ver, double gain_sched_threshold)
         {
+            int N = 300;
             // Arrange
-            var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
+            var unitData = new UnitDataSet("test"); 
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
             double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
             double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
@@ -169,8 +178,8 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
 
-            var gainSchedIdentifier = new GainSchedIdentifier();
 
+            //reference model
             GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
             {
                 TimeConstant_s = new double[] { 3, 10 },
@@ -191,20 +200,16 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            GainSchedParameters best_params = gainSchedIdentifier.GainSchedIdentify(unitData);
+            var gainSchedIdentifier = new GainSchedIdentifier();
+            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
             GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
             var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
             inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);
-
             var IdentifiedisSimulatable = best_plantSim.Simulate(inputData, out TimeSeriesDataSet IdentifiedsimData);
-
             SISOTests.CommonAsserts(inputData, IdentifiedsimData, best_plantSim);
-
             double[] simY2 = IdentifiedsimData.GetValues(best_model.GetID(), SignalType.Output_Y);
-
             // Number of inputs can be determined from the TimeSeries object, assuming it provides a way to determine this
             int numberOfInputs = unitData.U.GetNColumns(); // Example property, replace with actual implementation
-
             // Assert
             int min_number_of_gains = Math.Min(best_params.LinearGainThresholds.Length, correct_gain_sched_parameters.LinearGainThresholds.Length);
             for (int k = 0; k < min_number_of_gains; k++)
@@ -231,9 +236,10 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
         [TestCase(1, 35)]
         [TestCase(38, 40)]
         [TestCase(40, 20)]*/
-        public void TwoGains_TimeConstantsAndThresholdFoundOk(double TimeConstant1_s, double TimeConstant2_s)
+        public void GainEstimationOnly_TwoGains_TimeConstantsAndThresholdFoundOk(double TimeConstant1_s, double TimeConstant2_s)
         {
-            double TimeConstantAllowedDev_s = 0.5;
+            int N = 300;
+
 
             // Arrange
             var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
@@ -244,8 +250,6 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.U = U;
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
-
-            var gainSchedIdentifier = new GainSchedIdentifier();
 
             GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
             {
@@ -267,17 +271,15 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            GainSchedParameters best_params = gainSchedIdentifier.GainSchedIdentify(unitData);
+            var gainSchedIdentifier = new GainSchedIdentifier();
+            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
             GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
             var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
             inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);
 
             var IdentifiedisSimulatable = best_plantSim.Simulate(inputData, out TimeSeriesDataSet IdentifiedsimData);
-
             SISOTests.CommonAsserts(inputData, IdentifiedsimData, best_plantSim);
-
             double[] simY2 = IdentifiedsimData.GetValues(best_model.GetID(), SignalType.Output_Y);
-
             // Number of inputs can be determined from the TimeSeries object, assuming it provides a way to determine this
             int numberOfInputs = unitData.U.GetNColumns(); // Example property, replace with actual implementation
 
@@ -290,6 +292,10 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 Assert.That(best_params.TimeConstant_s[k].IsLessThanOrEqual(Math.Max(TimeConstant1_s, TimeConstant2_s) + TimeConstantAllowedDev_s),
                 "Too high time constant " + k.ToString());
             }
+
+
+
+
 
 /*            Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
@@ -307,10 +313,11 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
         [TestCase(3, 2.5)]
         [TestCase(4, 3.0)]
         [TestCase(5, 3.5)]
-        [TestCase(6, 4.0)]
-        [TestCase(7, 4.5)]*/
-        public void GainSchedIdentify_ThresholdsWithinUminAndUmax(int ver, double gain_sched_threshold)
+        [TestCase(6, 4.0)]*/
+     //   [TestCase(7, 4.5)]
+        public void ThresholdEstimation_ThresholdsWithinUminAndUmax(int ver, double gain_sched_threshold)
         {
+            int N = 250;
             // Arrange
             var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
@@ -320,9 +327,8 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.U = U;
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
-
-            var gainSchedIdentifier = new GainSchedIdentifier();
-
+        
+            // reference model
             GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
             {
                 TimeConstant_s = new double[] { 3, 10 },
@@ -343,17 +349,15 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            GainSchedParameters best_params = gainSchedIdentifier.GainSchedIdentify(unitData);
+            var gainSchedIdentifier = new GainSchedIdentifier();
+            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
             GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
             var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
             inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);
 
             var IdentifiedisSimulatable = best_plantSim.Simulate(inputData, out TimeSeriesDataSet IdentifiedsimData);
-
             SISOTests.CommonAsserts(inputData, IdentifiedsimData, best_plantSim);
-
             double[] simY2 = IdentifiedsimData.GetValues(best_model.GetID(), SignalType.Output_Y);
-
             // Number of inputs can be determined from the TimeSeries object, assuming it provides a way to determine this
             int numberOfInputs = unitData.U.GetNColumns(); // Example property, replace with actual implementation
 

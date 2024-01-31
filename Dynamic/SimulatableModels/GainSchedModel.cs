@@ -101,10 +101,26 @@ namespace TimeSeriesAnalysis.Dynamic
                 explainStr = "ModelInputIDs is null";
                 return false;
             }
-            if (modelParameters.LinearGains != null)
+           if (modelParameters.LinearGains == null)
             {
+                explainStr = "LinearGains is null";
+                return false;
+            }
+            else
+            {
+                if (modelParameters.LinearGains.Count == 0)
+                {
+                    explainStr = "LinearGains is empty";
+                    return false;
+                }
+
                 foreach (var gain in modelParameters.LinearGains)
                 {
+                    if (gain == null)
+                    {
+                        explainStr = "null gains in LinearGainss";
+                        return false;
+                    }
                     if (gain.Length < ModelInputIDs.Length)
                     {
                         explainStr = "fewer LinearGains than ModelInputIDs";
