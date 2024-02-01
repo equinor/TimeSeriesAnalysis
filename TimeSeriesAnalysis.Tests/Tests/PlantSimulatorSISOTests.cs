@@ -223,6 +223,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         public static void CommonAsserts(TimeSeriesDataSet inputData,TimeSeriesDataSet simData, PlantSimulator plant)
         {
+            Assert.IsNotNull(simData,"simData should not be null");
+
             var signalNames = simData.GetSignalNames();
 
             foreach (string signalName in signalNames)

@@ -90,6 +90,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 explainStr = "LinearGains is empty";
                 return false;
             }
+
             if (modelParameters.GainSchedParameterIndex >= modelParameters.LinearGains.Count)
             {
                 explainStr = "GainSchedParamterIndex must be smaller than number of linear gains";
@@ -127,6 +128,14 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
                 }
+
+                if (modelParameters.LinearGains.Count -1  != modelParameters.LinearGainThresholds.Count())
+                {
+                    explainStr = "LinearGainThresholds size:"+ modelParameters.LinearGainThresholds.Count() 
+                        + " should be one element smaller than LinearGains size:" + modelParameters.LinearGains.Count;
+                    return false;
+                }
+
             }
             return true;
         }
@@ -248,7 +257,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else*/
             double x_otherInputs = modelParameters.Bias;
-            double gainSched = givenInputs[modelParameters.GainSchedParameterIndex]; // TODO: make sure GainSchedParIndx is updated
+            double gainSched = givenInputs[modelParameters.GainSchedParameterIndex]; 
             //nb! input may include a disturbance!
             if (givenInputs != null)
             {

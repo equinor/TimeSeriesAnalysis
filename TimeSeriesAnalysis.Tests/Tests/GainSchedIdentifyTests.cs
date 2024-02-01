@@ -7,7 +7,7 @@ using TimeSeriesAnalysis.Test.PlantSimulations;
 using Accord;
 using Accord.Math;
 
-namespace TimeSeriesAnalysis.Tests.Dynamic
+namespace TimeSeriesAnalysis.Test.SysID
 {
     [TestFixture]
     public class GainSchedIdentifyTests
@@ -97,7 +97,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
                 new DateTime(2000, 1, 1), timeBase_s, N);
       
 
-            GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
+            var correct_gain_sched_parameters = new GainSchedParameters
             {
                 TimeConstant_s = new double[] { 10 },
                 TimeConstantThresholds = new double[] { },
@@ -117,8 +117,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            var gainSchedIdentifier = new GainSchedIdentifier();
-            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
+            var best_params = GainSchedIdentifier.Identify(unitData);
             double current_abs_value = 0;
             double largest_gain_amplitude = 0;
             for (int k = 0; k < best_params.LinearGains.Count; k++)
@@ -197,8 +196,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            var gainSchedIdentifier = new GainSchedIdentifier();
-            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
+            GainSchedParameters best_params = GainSchedIdentifier.Identify(unitData);
             GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
             var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
             inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);
@@ -268,8 +266,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            var gainSchedIdentifier = new GainSchedIdentifier();
-            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
+            GainSchedParameters best_params = GainSchedIdentifier.Identify(unitData);
             GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
             var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
             inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);
@@ -346,8 +343,7 @@ namespace TimeSeriesAnalysis.Tests.Dynamic
             unitData.Y_meas = simY1;
 
             // Act
-            var gainSchedIdentifier = new GainSchedIdentifier();
-            GainSchedParameters best_params = gainSchedIdentifier.Identify(unitData);
+            GainSchedParameters best_params = GainSchedIdentifier.Identify(unitData);
             GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
             var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
             inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);

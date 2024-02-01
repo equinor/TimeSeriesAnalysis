@@ -18,7 +18,7 @@ using System.Configuration;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    public class GainSchedIdentifier
+    static public class GainSchedIdentifier
     {
 
         const int MAX_NUMBER_OF_THRESHOLDS = 40; // TODO: magic number
@@ -26,18 +26,18 @@ namespace TimeSeriesAnalysis.Dynamic
         const double GAIN_THRESHOLD_MAGIC_FACTOR_2 = 0.09;//TODO magic number
 
 
-        public GainSchedParameters Identify(UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
+        static public GainSchedParameters Identify(UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
         {
 
+            // todo:move to fittingspecs
+            int gainSchedInputIndex = 0;
 
             UnitDataSet DS1 = new UnitDataSet(dataSet);
-
 
             int number_of_inputs = dataSet.U.GetNColumns();
             //   double[] min_time_constants = new double[] { 1 };
 
             GainSchedParameters GSp_noGainSchedReference = new GainSchedParameters();
-
             double min_u = dataSet.U.GetColumn(0).Min();
             double max_u = dataSet.U.GetColumn(0).Max();
 
@@ -49,18 +49,6 @@ namespace TimeSeriesAnalysis.Dynamic
             // Reference case: no gain scheduling 
             {
                 var ui_1_1 = new UnitIdentifier();
-                //   FittingSpecs fittingSpecs_1g = new FittingSpecs();
-                double[] u_min_fit_1g = new double[number_of_inputs];
-                double[] u_max_fit_1g = new double[number_of_inputs];
-                /*     for (int idx = 0; idx < number_of_inputs; idx++)
-                     {
-                         {
-                             u_min_fit_1g[idx] = double.NaN;
-                             u_max_fit_1g[idx] = double.NaN;
-                         }
-                     }*/
-                //  fittingSpecs_1g.U_min_fit = u_min_fit_1g;
-                //  fittingSpecs_1g.U_max_fit = u_max_fit_1g;
                 UnitModel UM1 = ui_1_1.IdentifyLinear(ref DS1, null, false);// Todo:consider modelling with nonlinear model?
                 UnitParameters UMp1 = UM1.GetModelParameters();
 
@@ -109,9 +97,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             ////////////////////////////////////////////////////
             int nThresholds = 1;
-            List<GainSchedParameters> potentialGainschedParameters = IdentifyGainScheduledGainsAndThresholds(dataSet, nThresholds);
-
-
+            List<GainSchedParameters> potentialGainschedParameters = 
+                IdentifyGainScheduledGainsAndThresholds(dataSet, nThresholds, gainSchedInputIndex);
 
             ////////////////////////////////////////////////////
             // Final step: choose the best GainSched from all the candidates
@@ -119,13 +106,14 @@ namespace TimeSeriesAnalysis.Dynamic
             return ChooseBestGainScheduledModel(allGainSchedParams, dataSet);
         }
 
-        private static List<GainSchedParameters> IdentifyGainScheduledGainsAndThresholds(UnitDataSet dataSet )
+        private static List<GainSchedParameters> IdentifyGainScheduledGainsAndThresholds(UnitDataSet dataSet, 
+            int nThresholds, int gainSchedInputIndex )
         {
             UnitDataSet DS2 = new UnitDataSet(dataSet);
             UnitDataSet DS3 = new UnitDataSet(dataSet);
             int number_of_inputs = dataSet.U.GetNColumns();
-            double min_u = dataSet.U.GetColumn(0).Min();// TODO: this should be the gainSchedIndex, not always zero?
-            double max_u = dataSet.U.GetColumn(0).Max();// TODO: this should be the gainSchedIndex, not always zero?
+            double gsVarMinU = dataSet.U.GetColumn(gainSchedInputIndex).Min();// TODO: this should be the gainSchedIndex, not always zero?
+            double gsVarMaxU = dataSet.U.GetColumn(gainSchedInputIndex).Max();// TODO: this should be the gainSchedIndex, not always zero?
 
             List<GainSchedParameters> potentialGainschedParameters = new List<GainSchedParameters>();
 
@@ -133,9 +121,8 @@ namespace TimeSeriesAnalysis.Dynamic
             int m = (int)MAX_NUMBER_OF_THRESHOLDS / 2;
             for (int k = -m; k < m; k++)// TODO: rename m and k
             {
-                potential_gainthresholds[k + m] = (max_u - min_u) / 2 + k * GAIN_THRESHOLD_MAGIC_FACTOR_2;
+                potential_gainthresholds[k + m] = (gsVarMaxU - gsVarMinU) / 2 + k * GAIN_THRESHOLD_MAGIC_FACTOR_2;
             }
-
 
             for (int i = 0; i < potential_gainthresholds.Length; i++)
             {
@@ -144,6 +131,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] GS_LinearGainThreshold2 = new double[] { potential_gainthresholds[i] };
                 GSp2.LinearGainThresholds = GS_LinearGainThreshold2;
 
+                List<double[]> GS_LinearGains2 = new List<double[]>();
+                double[] GS_TimeConstants_s2 = new double[2];
                 // a)
                 {
                     var ui_2g_1t_a = new UnitIdentifier();
@@ -152,10 +141,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     double[] u_max_fit_a = new double[number_of_inputs];
                     for (int idx = 0; idx < number_of_inputs; idx++)
                     {
-                        if (idx == 0)// todo: should be gainSchedIndex?
+                        if (idx == gainSchedInputIndex)
                         {
-                            u_min_fit_a[idx] = min_u;
-                            u_max_fit_a[idx] = potential_gainthresholds[i] + (max_u - min_u) * GAIN_THRESHOLD_MAGIC_FACTOR;
+                            u_min_fit_a[idx] = gsVarMinU;
+                            u_max_fit_a[idx] = potential_gainthresholds[i] + (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_MAGIC_FACTOR;
                         }
                         else
                         {
@@ -167,13 +156,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     fittingSpecs_a.U_max_fit = u_max_fit_a;
                     fittingSpecs_a.u0 = new double[] { u_min_fit_a[0] + (u_max_fit_a[0] - u_min_fit_a[0]) / 2 };
 
-                    List<double[]> GS_LinearGains2 = new List<double[]>();
-                    double[] GS_TimeConstants_s2 = new double[2];
                     UnitModel UM2_a = ui_2g_1t_a.IdentifyLinear(ref DS2, fittingSpecs_a, false); ;
                     UnitParameters UMp2_a = UM2_a.GetModelParameters();
                     GS_LinearGains2.Add(UMp2_a.LinearGains);
                     GS_TimeConstants_s2[0] = UMp2_a.TimeConstant_s;
-
                 }
                 // b)
                 {
@@ -182,10 +168,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     double[] u_max_fit_b = new double[number_of_inputs];
                     for (int idx = 0; idx < number_of_inputs; idx++)
                     {
-                        if (idx == 0)// todo: should be gainSchedIndex?
+                        if (idx == gainSchedInputIndex)
                         {
-                            u_min_fit_b[idx] = potential_gainthresholds[i] - (max_u - min_u) * GAIN_THRESHOLD_MAGIC_FACTOR;
-                            u_max_fit_b[idx] = max_u;
+                            u_min_fit_b[idx] = potential_gainthresholds[i] - (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_MAGIC_FACTOR;
+                            u_max_fit_b[idx] = gsVarMaxU;
                         }
                         else
                         {
@@ -220,7 +206,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="allGainSchedParams"></param>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        GainSchedParameters ChooseBestGainScheduledModel(List<GainSchedParameters> allGainSchedParams,UnitDataSet dataSet)
+        static private GainSchedParameters ChooseBestGainScheduledModel(List<GainSchedParameters> allGainSchedParams,UnitDataSet dataSet)
         {
             var vec = new Vec();
             GainSchedParameters BestGainSchedParams = null;
