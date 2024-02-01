@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis.Dynamic
             ret.GainSchedParameterIndex = gsFittingSpecs.uGainScheduledInputIndex;
             ret.LinearGainThresholds = gsFittingSpecs.uGainThresholds;
 
-            const int WIDTH = 1; // 
+            const int WIDTH = 1; // if 0 each identification only consider data inside two threshold pair, if 1, then also the two neighboring sections are added. 
 
             int number_of_inputs = dataSet.U.GetLength(1);
             double gsVarMinU = vec.Min(Array2D<double>.GetColumn(dataSet.U, ret.GainSchedParameterIndex));
@@ -127,9 +127,10 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 double[] uMinFit = new double[number_of_inputs];
                 double[] uMaxFit = new double[number_of_inputs];
+                double u0 = 0;
 
                 if (curGainIdx < ret.LinearGainThresholds.Count()- WIDTH)
-                    gsVarMaxU = ret.LinearGainThresholds[curGainIdx+ WIDTH];//NB! +1
+                    gsVarMaxU = ret.LinearGainThresholds[curGainIdx+ WIDTH];
                 else
                     gsVarMaxU = vec.Max(Array2D<double>.GetColumn(dataSet.U, ret.GainSchedParameterIndex));
                 for (int idx = 0; idx < number_of_inputs; idx++)
@@ -145,7 +146,10 @@ namespace TimeSeriesAnalysis.Dynamic
                         uMaxFit[idx] = double.NaN;
                     }
                 }
-                var idResults = IdentifySingleGainForGivenThresholds(ref dataSet, uMinFit, uMaxFit);
+            //    Console.WriteLine("min"+gsVarMinU+ " max:"+ gsVarMaxU);
+
+                var idResults = IdentifySingleGainForGivenThresholds(ref dataSet , uMinFit, uMaxFit,null);//
+                dataSet.IndicesToIgnore = null;
                 if (curGainIdx>-1+ WIDTH)
                     gsVarMinU = ret.LinearGainThresholds[curGainIdx- WIDTH];
                //  if (idResults.Item1 != null)
@@ -154,6 +158,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // final gain:above the highest threshold
             ret.LinearGains = linearGains;
             return ret;
+
         }
 
 
@@ -234,18 +239,23 @@ namespace TimeSeriesAnalysis.Dynamic
                 GSp2.LinearGainThresholds[0] = potential_gainthresholds[i];
                 potentialGainschedParameters.Add(GSp2);
             }
-
             return potentialGainschedParameters;
         }
 
-        private static (double[], double) IdentifySingleGainForGivenThresholds(ref UnitDataSet dataSet,double[] u_min_fit, double[] u_max_fit)
+        private static (double[], double) IdentifySingleGainForGivenThresholds(ref UnitDataSet dataSet,double[] u_min_fit, double[] u_max_fit, double? u0= null)
         {
             var fittingSpecs = new FittingSpecs();
             fittingSpecs.U_min_fit = u_min_fit;
             fittingSpecs.U_max_fit = u_max_fit;
-            fittingSpecs.u0 = new double[] { u_min_fit[0] + (u_max_fit[0] - u_min_fit[0]) / 2 };
-            //     var unitModel = UnitIdentifier.IdentifyLinear(ref dataSet, fittingSpecs, false); ;
-            var unitModel = UnitIdentifier.IdentifyLinearAndStatic(ref dataSet, fittingSpecs, false); ;
+             if (!u0.HasValue )
+                 fittingSpecs.u0 = new double[] { u_min_fit[0] + (u_max_fit[0] - u_min_fit[0]) / 2 };
+             else
+                 fittingSpecs.u0 = new double[] { u0.Value };
+            
+            //fittingSpecs.u0 = new double[] { 0};
+
+            var unitModel = UnitIdentifier.IdentifyLinear(ref dataSet, fittingSpecs, false); ;
+          //  var unitModel = UnitIdentifier.IdentifyLinearAndStatic(ref dataSet, fittingSpecs, false); ;
             var unitParams = unitModel.GetModelParameters();
 
             return (unitParams.LinearGains, unitParams.TimeConstant_s);
