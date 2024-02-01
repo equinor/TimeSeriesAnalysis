@@ -15,6 +15,48 @@ namespace TimeSeriesAnalysis.Test.SysID
         int timeBase_s = 1;
         const double TimeConstantAllowedDev_s = 0.5;
 
+        [Test]
+        public void GainEstOnly_CorrectTresholdsGiven_CorrectGainsReturned()
+        {
+            int N = 100;
+
+            var gainSched_tenThresholds_singleInput = new GainSchedParameters
+            {
+                TimeConstant_s = null,
+                TimeConstantThresholds = null,
+                LinearGains = new List<double[]> { new double[] { 0 }, new double[] { 1 }, new double[] { 2 }, new double[] { 3 }, new double[] { 4 }, new double[] { 5 },
+                    new double[] { 6 }, new double[] { 7 }, new double[] { 8 }, new double[] { 9 }, new double[] { 10 } },
+                LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
+                TimeDelay_s = 0,
+                Bias = 5,
+                GainSchedParameterIndex = 0
+            };
+
+            var refModel = new GainSchedModel(gainSched_tenThresholds_singleInput);
+            var gsFittingSpecs= new GainSchedFittingSpecs();
+            gsFittingSpecs.uGainThresholds = refModel.GetModelParameters().LinearGainThresholds;
+
+            var plantSim = new PlantSimulator(new List<ISimulatableModel> { refModel });
+            var inputData = new TimeSeriesDataSet();
+            var input = TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 0, 1, 2, 3).
+                 Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 4, 5, 6, 7)).
+                 Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 8, 9, 10, 11)).ToArray();
+            inputData.Add(plantSim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), input);
+            inputData.CreateTimestamps(timeBase_s);
+
+            // Act
+            var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isSimulatable);
+            var dataSet = new UnitDataSet();
+            dataSet.Y_meas = simData.GetValues(refModel.ID, SignalType.Output_Y);
+            dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { inputData.GetValues(refModel.ID,SignalType.External_U)});
+
+            GainSchedIdentifier.IdentifyGainsForGivenThresholds(dataSet, gsFittingSpecs);
+
+        }
+
+
+
         /*
         [TestCase()]
         public void ReturnsParametersWithNumberOfLinearGainsNotExceeding2()
@@ -82,7 +124,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
         */
         [TestCase()]
-        public void GainEstimationOnly_GainsNotLargerThanTheBiggestPossibleGain()
+        public void GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain()
         {
             int N = 500;
 
@@ -161,7 +203,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(5, 2.5)]
        [TestCase(6, 3.0)]*/
         [TestCase(7, 4.0)]
-        public void ThresholdEstimation_LinearGainThresholdAtReasonablePlace(int ver, double gain_sched_threshold)
+        public void GainAndThreshold_LinearGainThresholdAtReasonablePlace(int ver, double gain_sched_threshold)
         {
             int N = 300;
             // Arrange
@@ -231,10 +273,9 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(1, 35)]
         [TestCase(38, 40)]
         [TestCase(40, 20)]*/
-        public void GainEstimationOnly_TwoGains_TimeConstantsAndThresholdFoundOk(double TimeConstant1_s, double TimeConstant2_s)
+        public void GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk(double TimeConstant1_s, double TimeConstant2_s)
         {
             int N = 300;
-
 
             // Arrange
             var unitData = new UnitDataSet("test"); 
@@ -288,9 +329,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
 
 
-
-
-
 /*            Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                     simY1,
@@ -309,7 +347,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(5, 3.5)]
         [TestCase(6, 4.0)]*/
      //   [TestCase(7, 4.5)]
-        public void ThresholdEstimation_ThresholdsWithinUminAndUmax(int ver, double gain_sched_threshold)
+        public void GainAndThreshold_ThresholdsWithinUminAndUmax(int ver, double gain_sched_threshold)
         {
             int N = 250;
             // Arrange
@@ -449,5 +487,9 @@ namespace TimeSeriesAnalysis.Test.SysID
           //  Shared.DisablePlots();
         }
         */
+
+
+
+
     }
 }

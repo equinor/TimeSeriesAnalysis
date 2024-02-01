@@ -112,7 +112,48 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public static GainSchedParameters IdentifyGainsForGivenThresholds(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs)
         {
-            return null;
+            var vec = new Vec();
+            GainSchedParameters ret = new GainSchedParameters();
+            ret.GainSchedParameterIndex = gsFittingSpecs.uGainScheduledInputIndex;
+            ret.LinearGainThresholds = gsFittingSpecs.uGainThresholds;
+
+            const int WIDTH = 1; // 
+
+            int number_of_inputs = dataSet.U.GetLength(1);
+            double gsVarMinU = vec.Min(Array2D<double>.GetColumn(dataSet.U, ret.GainSchedParameterIndex));
+            double gsVarMaxU = 0;
+            var linearGains = new List<double[]>();
+            for (int curGainIdx = 0; curGainIdx < ret.LinearGainThresholds.Count()+1; curGainIdx++)
+            {
+                double[] uMinFit = new double[number_of_inputs];
+                double[] uMaxFit = new double[number_of_inputs];
+
+                if (curGainIdx < ret.LinearGainThresholds.Count()- WIDTH)
+                    gsVarMaxU = ret.LinearGainThresholds[curGainIdx+ WIDTH];//NB! +1
+                else
+                    gsVarMaxU = vec.Max(Array2D<double>.GetColumn(dataSet.U, ret.GainSchedParameterIndex));
+                for (int idx = 0; idx < number_of_inputs; idx++)
+                {
+                    if (idx == ret.GainSchedParameterIndex)
+                    {
+                        uMinFit[idx] = gsVarMinU;
+                        uMaxFit[idx] = gsVarMaxU;
+                    }
+                    else
+                    {
+                        uMinFit[idx] = double.NaN;
+                        uMaxFit[idx] = double.NaN;
+                    }
+                }
+                var idResults = IdentifySingleGainForGivenThresholds(ref dataSet, uMinFit, uMaxFit);
+                if (curGainIdx>-1+ WIDTH)
+                    gsVarMinU = ret.LinearGainThresholds[curGainIdx- WIDTH];
+               //  if (idResults.Item1 != null)
+                linearGains.Add(idResults.Item1);
+            }
+            // final gain:above the highest threshold
+            ret.LinearGains = linearGains;
+            return ret;
         }
 
 
@@ -203,7 +244,8 @@ namespace TimeSeriesAnalysis.Dynamic
             fittingSpecs.U_min_fit = u_min_fit;
             fittingSpecs.U_max_fit = u_max_fit;
             fittingSpecs.u0 = new double[] { u_min_fit[0] + (u_max_fit[0] - u_min_fit[0]) / 2 };
-            var unitModel = UnitIdentifier.IdentifyLinear(ref dataSet, fittingSpecs, false); ;
+            //     var unitModel = UnitIdentifier.IdentifyLinear(ref dataSet, fittingSpecs, false); ;
+            var unitModel = UnitIdentifier.IdentifyLinearAndStatic(ref dataSet, fittingSpecs, false); ;
             var unitParams = unitModel.GetModelParameters();
 
             return (unitParams.LinearGains, unitParams.TimeConstant_s);
