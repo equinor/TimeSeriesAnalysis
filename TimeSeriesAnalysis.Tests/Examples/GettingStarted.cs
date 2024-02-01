@@ -138,8 +138,7 @@ namespace TimeSeriesAnalysis._Examples
             Plot.FromList(new List<double[]> { dataSet.Y_meas, u1, u2 },
                 new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s,"ex4_data");
 
-            var modelId = new UnitIdentifier();
-            var identifiedModel = modelId.Identify(ref dataSet);
+            var identifiedModel = UnitIdentifier.Identify(ref dataSet);
     
             Plot.FromList(new List<double[]> { identifiedModel.GetFittedDataSet().Y_meas, 
                 identifiedModel.GetFittedDataSet().Y_sim },

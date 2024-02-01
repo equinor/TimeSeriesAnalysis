@@ -145,7 +145,6 @@ namespace TimeSeriesAnalysis.Tests.Serialization
 
                 var isOk = plantSim1.Simulate(inputData, out simData);
             }
-            var ident = new UnitIdentifier();
             var fitData = new UnitDataSet();
             
             fitData.U = Array2D<double>.CreateFromList(new List<double[]> { 
@@ -155,7 +154,7 @@ namespace TimeSeriesAnalysis.Tests.Serialization
             fitData.Y_meas = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
             fitData.Times= inputData.GetTimeStamps();
 
-            var identModel = ident.Identify(ref fitData);
+            var identModel = UnitIdentifier.Identify(ref fitData);
 
            Console.WriteLine(identModel.ToString());
 

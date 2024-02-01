@@ -534,8 +534,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        var ident = new UnitIdentifier();
-                        unitModel = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet_raw, pidInputIdx, estPidInputProcessGain,
+                        unitModel = UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet_raw, pidInputIdx, estPidInputProcessGain,
                             pidInput_u0[indexOfFirstGoodValue], 1);
                     }
                 }

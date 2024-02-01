@@ -108,14 +108,12 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         public UnitModel Identify(UnitDataSet dataSet, FittingSpecs fittingSpecs)
         {
-            var modelId = new UnitIdentifier();
-            UnitModel identifiedModel = modelId.Identify(ref dataSet, fittingSpecs);
+            UnitModel identifiedModel = UnitIdentifier.Identify(ref dataSet, fittingSpecs);
             return identifiedModel;
         }
         public UnitModel IdentifyStatic(UnitDataSet dataSet, FittingSpecs fittingSpecs)
         {
-            var modelId = new UnitIdentifier();
-            UnitModel identifiedModel = modelId.IdentifyStatic(ref dataSet, fittingSpecs);
+            UnitModel identifiedModel = UnitIdentifier.IdentifyStatic(ref dataSet, fittingSpecs);
             return identifiedModel;
         }
         public UnitModel CreateDataAndIdentify(
@@ -200,11 +198,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             // u-dataset starts one minute before y and finishes one minute before
             var dateu = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1, 0, 0, 0), 1, 240);
             var datey = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1, 0, 1, 0), 1, 240);
-
             var data = new UnitDataSet((u, dateu), (y, datey));
-
-            var id = new UnitIdentifier();
-            var model = id.Identify(ref data);
+            var model = UnitIdentifier.Identify(ref data);
 
         //    Plot.FromList(new List<double[]> { data.U.GetColumn(0),data.Y_sim, data.Y_meas},
          //       new List<string> { "y3=u", "y1=y_sim", "y1=y_meas" }, data.Times, "partlyoverlaptest");
@@ -246,8 +241,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             dataSet.IndicesToIgnore = (badDataIndices).ToList(); 
 
-            var modelId = new UnitIdentifier();
-            var model = modelId.IdentifyLinear(ref dataSet,fittingSpecs,false);
+            var model = UnitIdentifier.IdentifyLinear(ref dataSet,fittingSpecs,false);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1"}, (int)timeBase_s);
@@ -391,8 +385,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             double frozen_unorm = 1;
      
             var dataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
-            var ident = new UnitIdentifier();
-            var model = ident.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet, frozenIdx,
+
+            var model = UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet, frozenIdx,
                 designParameters.LinearGains[frozenIdx], frozen_u0, frozen_unorm);
 
             string caseId = TestContext.CurrentContext.Test.Name;
@@ -441,8 +435,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 dataSetDownsampled = new UnitDataSet(dataSet, downsampleFactor);
             else
                 dataSetDownsampled = new UnitDataSet(dataSet);
-            var modelId = new UnitIdentifier();
-            var model  = modelId.Identify(ref dataSetDownsampled, fittingSpecs);
+            var model  = UnitIdentifier.Identify(ref dataSetDownsampled, fittingSpecs);
 
             string caseId = TestContext.CurrentContext.Test.Name;
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,

@@ -3,7 +3,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Enum of recognized warning or error states during identification of process model
     /// </summary>
-    public enum GainScheddentWarnings
+    public enum GainSchedIdentWarnings
     {
         /// <summary>
         /// No errors or warnings

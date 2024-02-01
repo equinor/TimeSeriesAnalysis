@@ -106,8 +106,7 @@ namespace TimeSeriesAnalysis
                 dataSetUnit.Y_meas = signalOut;
                 dataSetUnit.U = Array2D<double>.CreateFromList(new List<double[]> { signalIn });
                 dataSetUnit.CreateTimeStamps(dataSet.GetTimeBase());
-                UnitIdentifier ident = new UnitIdentifier();
-                var identModel = ident.Identify(ref dataSetUnit);
+                var identModel = UnitIdentifier.Identify(ref dataSetUnit);
                 if (identModel.modelParameters.Fitting.WasAbleToIdentify && identModel.modelParameters.Fitting.RsqAbs > minimumRsqAbs)
                 {
                     return (Math.Round(identModel.modelParameters.TimeConstant_s),

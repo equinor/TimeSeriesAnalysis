@@ -77,11 +77,8 @@ namespace TimeSeriesAnalysis._Examples
             sim.SimulateYmeas(ref idDataSet, noiseAmplitude);
 
             // do identification
-            var modelId = new UnitIdentifier();
-
             FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);
-
-            UnitModel idModel = modelId.Identify(ref idDataSet, fittingSpecs);
+            UnitModel idModel = UnitIdentifier.Identify(ref idDataSet, fittingSpecs);
 
             Plot.FromList(new List<double[]> { idModel.GetFittedDataSet().Y_sim,
                 idModel.GetFittedDataSet().Y_meas,

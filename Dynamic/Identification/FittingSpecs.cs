@@ -17,9 +17,16 @@
             this.uNorm = uNorm; 
         }
 
-
+        /// <summary>
+        /// A vector of values subtracted form u to set the local opertating point: (u-u0)/uNorm
+        /// Can be set to null, in which case no value is subtracted from u
+        /// </summary>
         public double[] u0 = null;
 
+        /// <summary>
+        /// A vector of values used to normalize u internally in the model by the equation: (u-u0)/uNorm
+        /// Can be set to null, in which case u is left un-normalized.
+        /// </summary>
         public double[] uNorm = null;
 
         /// <summary>
@@ -42,8 +49,5 @@
         /// the maximum allowed input value(if set to NaN, then fitting considers all data)
         /// </summary>
         public double[] U_max_fit = null;
-
-
-
     }
 }

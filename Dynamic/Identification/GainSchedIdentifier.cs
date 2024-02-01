@@ -15,31 +15,29 @@ using System.Reflection;
 using System.ComponentModel.Design;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
+using System.Security.Cryptography;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
     static public class GainSchedIdentifier
     {
 
-        const int MAX_NUMBER_OF_THRESHOLDS = 40; // TODO: magic number
+        const int THRESHOLD_GLOBALSEARCH_MAX_IT = 40; // TODO: magic number
         const double GAIN_THRESHOLD_MAGIC_FACTOR = 0.02;// TODO: Magic number
         const double GAIN_THRESHOLD_MAGIC_FACTOR_2 = 0.09;//TODO magic number
 
 
-        static public GainSchedParameters Identify(UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
+        static public GainSchedParameters Identify(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs = null)
         {
-
-            // todo:move to fittingspecs
             int gainSchedInputIndex = 0;
+            if (gsFittingSpecs != null)
+            {
+                gainSchedInputIndex = gsFittingSpecs.uGainScheduledInputIndex;
+            }
 
             UnitDataSet DS1 = new UnitDataSet(dataSet);
-
             int number_of_inputs = dataSet.U.GetNColumns();
-            //   double[] min_time_constants = new double[] { 1 };
-
             GainSchedParameters GSp_noGainSchedReference = new GainSchedParameters();
-            double min_u = dataSet.U.GetColumn(0).Min();
-            double max_u = dataSet.U.GetColumn(0).Max();
 
             // ## 1gain 1 time constant ##
             // Linear gain thresholds
@@ -48,8 +46,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // Reference case: no gain scheduling 
             {
-                var ui_1_1 = new UnitIdentifier();
-                UnitModel UM1 = ui_1_1.IdentifyLinear(ref DS1, null, false);// Todo:consider modelling with nonlinear model?
+                UnitModel UM1 = UnitIdentifier.IdentifyLinear(ref DS1, null, false);// Todo:consider modelling with nonlinear model?
                 UnitParameters UMp1 = UM1.GetModelParameters();
 
                 // Simulate
@@ -106,19 +103,33 @@ namespace TimeSeriesAnalysis.Dynamic
             return ChooseBestGainScheduledModel(allGainSchedParams, dataSet);
         }
 
+
+        /// <summary>
+        /// Identify a model when a given set of thresholds is already given in the supplied gsFittingSpecs
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="gsFittingSpecs"></param>
+        /// <returns></returns>
+        public static GainSchedParameters IdentifyGainsForGivenThresholds(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs)
+        {
+            return null;
+        }
+
+
         private static List<GainSchedParameters> IdentifyGainScheduledGainsAndThresholds(UnitDataSet dataSet, 
             int nThresholds, int gainSchedInputIndex )
         {
             UnitDataSet DS2 = new UnitDataSet(dataSet);
             UnitDataSet DS3 = new UnitDataSet(dataSet);
             int number_of_inputs = dataSet.U.GetNColumns();
-            double gsVarMinU = dataSet.U.GetColumn(gainSchedInputIndex).Min();// TODO: this should be the gainSchedIndex, not always zero?
-            double gsVarMaxU = dataSet.U.GetColumn(gainSchedInputIndex).Max();// TODO: this should be the gainSchedIndex, not always zero?
+            double gsVarMinU = dataSet.U.GetColumn(gainSchedInputIndex).Min();
+            double gsVarMaxU = dataSet.U.GetColumn(gainSchedInputIndex).Max();
 
             List<GainSchedParameters> potentialGainschedParameters = new List<GainSchedParameters>();
 
-            double[] potential_gainthresholds = new double[MAX_NUMBER_OF_THRESHOLDS];
-            int m = (int)MAX_NUMBER_OF_THRESHOLDS / 2;
+            double[] potential_gainthresholds = new double[THRESHOLD_GLOBALSEARCH_MAX_IT];
+
+            int m = (int)THRESHOLD_GLOBALSEARCH_MAX_IT / 2;
             for (int k = -m; k < m; k++)// TODO: rename m and k
             {
                 potential_gainthresholds[k + m] = (gsVarMaxU - gsVarMinU) / 2 + k * GAIN_THRESHOLD_MAGIC_FACTOR_2;
@@ -135,61 +146,47 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] GS_TimeConstants_s2 = new double[2];
                 // a)
                 {
-                    var ui_2g_1t_a = new UnitIdentifier();
-                    FittingSpecs fittingSpecs_a = new FittingSpecs();
-                    double[] u_min_fit_a = new double[number_of_inputs];
-                    double[] u_max_fit_a = new double[number_of_inputs];
+                    double[] uMinFit = new double[number_of_inputs];
+                    double[] uMaxFit = new double[number_of_inputs];
                     for (int idx = 0; idx < number_of_inputs; idx++)
                     {
                         if (idx == gainSchedInputIndex)
                         {
-                            u_min_fit_a[idx] = gsVarMinU;
-                            u_max_fit_a[idx] = potential_gainthresholds[i] + (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_MAGIC_FACTOR;
+                            uMinFit[idx] = gsVarMinU;
+                            uMaxFit[idx] = potential_gainthresholds[i] + (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_MAGIC_FACTOR;
                         }
                         else
                         {
-                            u_min_fit_a[idx] = double.NaN;
-                            u_max_fit_a[idx] = double.NaN;
+                            uMinFit[idx] = double.NaN;
+                            uMaxFit[idx] = double.NaN;
                         }
                     }
-                    fittingSpecs_a.U_min_fit = u_min_fit_a;
-                    fittingSpecs_a.U_max_fit = u_max_fit_a;
-                    fittingSpecs_a.u0 = new double[] { u_min_fit_a[0] + (u_max_fit_a[0] - u_min_fit_a[0]) / 2 };
-
-                    UnitModel UM2_a = ui_2g_1t_a.IdentifyLinear(ref DS2, fittingSpecs_a, false); ;
-                    UnitParameters UMp2_a = UM2_a.GetModelParameters();
-                    GS_LinearGains2.Add(UMp2_a.LinearGains);
-                    GS_TimeConstants_s2[0] = UMp2_a.TimeConstant_s;
+                    var ret = IdentifySingleGainForGivenThresholds(ref DS2, uMinFit, uMaxFit);
+                    GS_LinearGains2.Add(ret.Item1);
+                    GS_TimeConstants_s2[0] = ret.Item2;
                 }
                 // b)
                 {
-                    var ui_2g_1t_b = new UnitIdentifier();
-                    double[] u_min_fit_b = new double[number_of_inputs];
-                    double[] u_max_fit_b = new double[number_of_inputs];
+                  
+                    double[] uMinFit = new double[number_of_inputs];
+                    double[] uMaxFit = new double[number_of_inputs];
                     for (int idx = 0; idx < number_of_inputs; idx++)
                     {
                         if (idx == gainSchedInputIndex)
                         {
-                            u_min_fit_b[idx] = potential_gainthresholds[i] - (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_MAGIC_FACTOR;
-                            u_max_fit_b[idx] = gsVarMaxU;
+                            uMinFit[idx] = potential_gainthresholds[i] - (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_MAGIC_FACTOR;
+                            uMaxFit[idx] = gsVarMaxU;
                         }
                         else
                         {
-                            u_min_fit_b[idx] = double.NaN;
-                            u_max_fit_b[idx] = double.NaN;
+                            uMinFit[idx] = double.NaN;
+                            uMaxFit[idx] = double.NaN;
                         }
                     }
-                    FittingSpecs fittingSpecs_b = new FittingSpecs();
-                    fittingSpecs_b.U_min_fit = u_min_fit_b;
-                    fittingSpecs_b.U_max_fit = u_max_fit_b;
-                    fittingSpecs_b.u0 = new double[] { u_min_fit_b[0] + (u_max_fit_b[0] - u_min_fit_b[0]) / 2 };
-
-                    UnitModel UM2_b = ui_2g_1t_b.IdentifyLinear(ref DS3, fittingSpecs_b, false); ;
-                    UnitParameters UMp2_b = UM2_b.GetModelParameters();
-
-                    GS_LinearGains2.Add(UMp2_b.LinearGains);
+                    var ret = IdentifySingleGainForGivenThresholds(ref DS3, uMinFit, uMaxFit);
+                    GS_LinearGains2.Add(ret.Item1);
                     GSp2.LinearGains = GS_LinearGains2;
-                    GS_TimeConstants_s2[1] = UMp2_b.TimeConstant_s;
+                    GS_TimeConstants_s2[1] = ret.Item2; 
                 }
                 GSp2.TimeConstant_s = GS_TimeConstants_s2;
                 GSp2.TimeConstantThresholds = new double[] { potential_gainthresholds[i] };
@@ -199,6 +196,20 @@ namespace TimeSeriesAnalysis.Dynamic
 
             return potentialGainschedParameters;
         }
+
+        private static (double[], double) IdentifySingleGainForGivenThresholds(ref UnitDataSet dataSet,double[] u_min_fit, double[] u_max_fit)
+        {
+            var fittingSpecs = new FittingSpecs();
+            fittingSpecs.U_min_fit = u_min_fit;
+            fittingSpecs.U_max_fit = u_max_fit;
+            fittingSpecs.u0 = new double[] { u_min_fit[0] + (u_max_fit[0] - u_min_fit[0]) / 2 };
+            var unitModel = UnitIdentifier.IdentifyLinear(ref dataSet, fittingSpecs, false); ;
+            var unitParams = unitModel.GetModelParameters();
+
+            return (unitParams.LinearGains, unitParams.TimeConstant_s);
+        }
+
+
 
         /// <summary>
         /// Runs a simulation for each of the parameters sets given and returns the paramtes that best matches the dataset
@@ -226,8 +237,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     inputData.Add(plantSim.AddExternalSignal(GSM, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(k));
                 }
                 inputData.CreateTimestamps(dataSet.GetTimeBase());
-                var CorrectisSimulatable = plantSim.Simulate(inputData, out var simData);
-                if (CorrectisSimulatable)
+                var isSimOk = plantSim.Simulate(inputData, out var simData);
+                if (isSimOk)
                 {
                     var simY1 = simData.GetValues(GSM.GetID(), SignalType.Output_Y);
                     var diff = vec.Subtract(simY1, dataSet.Y_meas);

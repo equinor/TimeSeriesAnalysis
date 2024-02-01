@@ -110,7 +110,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var dataSet1 = new UnitDataSet(dataSet);
             var dataSet2 = new UnitDataSet(dataSet);
 
-            var id = new UnitIdentifier();
 
             FittingSpecs fittingSpecs = new FittingSpecs();
             fittingSpecs.u0 = u0;
@@ -129,7 +128,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     (dataSet1, null, pidInputIdx, pidParams);
 
                 dataSet1.D = distIdResult1.d_est;
-                var unitModel_run1 = id.IdentifyLinearAndStatic(ref dataSet1, fittingSpecs, doTimeDelayEstOnRun1);
+                var unitModel_run1 = UnitIdentifier.IdentifyLinearAndStatic(ref dataSet1, fittingSpecs, doTimeDelayEstOnRun1);
               //  nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
                 idDisturbancesList.Add(distIdResult1);
                 idUnitModelsList.Add(unitModel_run1);
@@ -369,7 +368,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     // the d_est from above will give a d_est that also include terms related to any changes in y_set
                     // but also in the non-pid input ("external" inputs u)
                     {
-                        var ident_d = new UnitIdentifier();
                         var dataSet_d = new UnitDataSet("dist");
                         dataSet_d.Y_meas = d_est;
                         var inputList = new List<double[]>();
@@ -394,8 +392,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         // new: try both and choose best.
                         {
                             var dataSet_diff = new UnitDataSet(dataSet_d);
-                            var model_dist_diff = ident_d.IdentifyLinearDiff(ref dataSet_diff, fittingSpecs, false);
-                            var model_dist_abs = ident_d.IdentifyLinear(ref dataSet_d, fittingSpecs, false);
+                            var model_dist_diff = UnitIdentifier.IdentifyLinearDiff(ref dataSet_diff, fittingSpecs, false);
+                            var model_dist_abs = UnitIdentifier.IdentifyLinear(ref dataSet_d, fittingSpecs, false);
 
                             var diffParams = model_dist_diff.GetModelParameters().Fitting;
                             var absParams = model_dist_abs.GetModelParameters().Fitting;
