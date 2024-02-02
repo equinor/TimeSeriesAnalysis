@@ -118,11 +118,14 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// returns an array of the values that are in array at the indices given by indices list
+        /// returns an array of the values that are in array at the indices given by indices list, or null if input is null
         ///</summary>
 
         public static T[] GetValuesAtIndices(T[] array, List<int> indices)
         {
+            if (array == null|| indices == null)
+                return null;
+
             T[] ret = new T[indices.Count()];
 
             for (int i = 0; i < indices.Count(); i++)

@@ -151,7 +151,7 @@ namespace TimeSeriesAnalysis.Utility
                 return "";
             if (plotNames.Count() == 0)
                 return "";
-            if (dataList.ElementAt(0).Count() == 0)
+            if (dataList.Count() == 0)
                 return "";
 
             if (!ShouldPlottingBeDone())
@@ -172,6 +172,12 @@ namespace TimeSeriesAnalysis.Utility
             int j = 0;
             foreach (string plotName in plotNames)
             {
+                if (dataList.ElementAt(j) == null)
+                    continue;
+
+                if (plotName == null)
+                    continue;
+
                 string csvName = plotName;
                 if (caseName != null)
                 {
