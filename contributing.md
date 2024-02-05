@@ -94,9 +94,16 @@ To do so, you should replicate how the ``DefaultProcessModel`` has been implemen
 In general, this class library is intended to be applied to industrial data where excitation may be less-than-ideal. For that reason the focus should be on parametric identification, **not** non-parametric
 models like Finite-Impulse Repsonse(FIR) models.
 
-
 ## Coding convention
 
-All code should follow conventional C# naming convetions, including using camelCase. 
-
-
+- All code should follow conventional C# naming conventions, please refer to https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines, 
+	- this includes using camelCase or PascalCase as appropriate for varibale names, and
+   	- names of variables and classes should prioritize readability over brevity, and not include abbreviations or underscores
+   	- name new classes and variables in ways that are consistent with the names already used. 
+- Organize code so that others can easily undertand, maintain and extend it:
+ 	- Favor smaller classes and methods that have a single specific purpose, clearly expressed in the name. 
+- Use unit test framework during development, and keep tests in project as part of documentation and as a "fail-safe" mechanism for other developers
+	- To understand how code works, how it is called and what it should do, refer to the tests
+   	- When re-writing functionality, unit-tests are important fail-safe to check that nothing is broken. Unit tests are important for refactoring.
+   	- Unit tests need to be quick, so that they can be run frequently without hurting developer output.
+   	  
