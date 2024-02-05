@@ -33,6 +33,49 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         {
             Shared.GetParserObj().EnableDebugOutput();
 
+            modelParameters1 = new UnitParameters
+            {
+                TimeConstant_s = 10,
+                LinearGains = new double[] { 1, 0.5 },
+                TimeDelay_s = 5,
+                Bias = 5
+            };
+            modelParameters2 = new UnitParameters
+            {
+                TimeConstant_s = 20,
+                LinearGains = new double[] { 1.1, 0.6 },
+                TimeDelay_s = 10,
+                Bias = 5
+            };
+            modelParameters3 = new UnitParameters
+            {
+                TimeConstant_s = 20,
+                LinearGains = new double[] { 0.8, 0.7 },
+                TimeDelay_s = 10,
+                Bias = 5
+            };
+            modelParameters4 = new UnitParameters
+            {
+                TimeConstant_s = 20,
+                LinearGains = new double[] { 0.8, 0.7, 2 },
+                TimeDelay_s = 10,
+                Bias = 5
+            };
+
+
+            processModel1 = new UnitModel(modelParameters1, "SubProcess1");
+            processModel2 = new UnitModel(modelParameters2, "SubProcess2");
+            processModel3 = new UnitModel(modelParameters3, "SubProcess3");
+            processModel4 = new UnitModel(modelParameters4, "SubProcess4");
+            pidParameters1 = new PidParameters()
+            {
+                Kp = 0.5,
+                Ti_s = 20
+            };
+            pidModel1 = new PidModel(pidParameters1, "PID1");
+
+            minSelect1 = new Select(SelectType.MIN, "MINSELECT");
+            maxSelect1 = new Select(SelectType.MAX, "MAXSELECT");
         }
 
         [Test]

@@ -290,8 +290,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             double noiseAmplitude = 0.00;
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs, noiseAmplitude);
-
-            Assert.IsTrue(model.modelParameters.Fitting.WasAbleToIdentify);
+            Assert.IsTrue(model.modelParameters.GetWarningList().Count() > 0);
+            Assert.IsFalse(model.modelParameters.Fitting.WasAbleToIdentify);
         }
 
 
@@ -409,6 +409,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="N">number of samples in the dataset,</param>
         /// <param name="downsampleFactor">Only use every N-th sample for identification</param>
         [TestCase(1000,10)]// downsample by factor 10
+     //   [TestCase(1000, 1)]// downsample by factor 1
         public void DownsampleOversampledData(int N, int downsampleFactor)
         {
             double timeConstant_s = 20;
@@ -813,6 +814,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 TimeDelay_s = timeDelay_s,
                 LinearGains = new double[] { 1,2 },
                 U0 = Vec<double>.Fill(1,2),
+                UNorm = Vec<double>.Fill(2, 2),// testing unorm different from 1.
                 Bias = bias
             };
             FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0,designParameters.UNorm);
@@ -857,7 +859,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         [TestCase(0, 0, 0, Category = "Static")]
         [TestCase(1, 0, 0, Category = "Static")]
-       // [TestCase(0, 15, 0, Category = "Dynamic")]
+        [TestCase(0, 15, 0, Category = "Dynamic")]
        // [TestCase(1, 15, 0, Category = "Dynamic")]
        // [TestCase(1, 0, 2, Category = "Delayed")]
 

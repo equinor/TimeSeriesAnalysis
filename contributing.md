@@ -106,4 +106,4 @@ models like Finite-Impulse Repsonse(FIR) models.
 	- To understand how code works, how it is called and what it should do, refer to the tests
    	- When re-writing functionality, unit-tests are important fail-safe to check that nothing is broken. Unit tests are important for refactoring.
    	- Unit tests need to be quick, so that they can be run frequently without hurting developer output.
-   	  
+   	- During development, it is advised to use the ``Plot.FromList()`` to plot time-series together, but care should be taken to not check in code that will cause plotting.

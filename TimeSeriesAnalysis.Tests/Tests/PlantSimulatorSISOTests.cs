@@ -282,12 +282,14 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             if (false)
             {
+                Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
                  simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
                  simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
                  inputData.GetValues(processModel1.GetID(),SignalType.Disturbance_D) },
                  new List<string> { "y1=y_sim1", "y3=u", "y4=d" },
-                 timeBase_s, "BasicPID_DisturbanceStep"); ;
+                 timeBase_s, "BasicPID_DisturbanceStep");
+                Shared.DisablePlots();
             }
 
             Assert.IsTrue(isOk);

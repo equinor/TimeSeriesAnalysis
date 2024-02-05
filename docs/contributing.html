@@ -151,7 +151,27 @@ To do so, you should replicate how the <code>DefaultProcessModel</code> has been
 <p>In general, this class library is intended to be applied to industrial data where excitation may be less-than-ideal. For that reason the focus should be on parametric identification, <strong>not</strong> non-parametric
 models like Finite-Impulse Repsonse(FIR) models.</p>
 <h2 id="coding-convention">Coding convention</h2>
-<p>All code should follow conventional C# naming convetions, including using camelCase.</p>
+<ul>
+<li>All code should follow conventional C# naming conventions, please refer to <a href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines</a>,
+<ul>
+<li>this includes using camelCase or PascalCase as appropriate for varibale names, and</li>
+<li>names of variables and classes should prioritize readability over brevity, and not include abbreviations or underscores</li>
+<li>name new classes and variables in ways that are consistent with the names already used.</li>
+</ul>
+</li>
+<li>Organize code so that others can easily undertand, maintain and extend it:
+<ul>
+<li>Favor smaller classes and methods that have a single specific purpose, clearly expressed in the name.</li>
+</ul>
+</li>
+<li>Use unit test framework during development, and keep tests in project as part of documentation and as a &quot;fail-safe&quot; mechanism for other developers
+<ul>
+<li>To understand how code works, how it is called and what it should do, refer to the tests</li>
+<li>When re-writing functionality, unit-tests are important fail-safe to check that nothing is broken. Unit tests are important for refactoring.</li>
+<li>Unit tests need to be quick, so that they can be run frequently without hurting developer output.</li>
+</ul>
+</li>
+</ul>
 </article>
           </div>
           
