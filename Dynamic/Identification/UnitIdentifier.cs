@@ -68,11 +68,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
         /// <param name="fittingSpecs">optional fitting specs object for  tuning data</param>
+        /// <param name="doEstimateTimeDelay">(default:true) if set to false, time delay estimation is disabled (can drastically speeed up identification)
+        /// 
+        /// 
         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel Identify(ref UnitDataSet dataSet,
-            FittingSpecs fittingSpecs= null)
+            FittingSpecs fittingSpecs= null, bool doEstimateTimeDelay=true)
         {
-            return Identify_Internal(ref dataSet,fittingSpecs);
+            return Identify_Internal(ref dataSet,fittingSpecs, doEstimateTimeDelay);
         }
 
         /// <summary>
