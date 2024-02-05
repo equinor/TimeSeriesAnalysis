@@ -12,6 +12,7 @@ or any other method with the owners of this repository **before** making a chang
 ### Pull request
 
 Requirements for pull requests:
+- should follow the coding convention below
 - pull request should only address a single feature/issue,
 - all existing tests should pass,
 - any new feature should be supported by at least one new unit test, that both shows that the new feature works and documents how to use the new feature,
@@ -30,20 +31,8 @@ An important part of Lean is *"maximizing the work not done"* - we want to apply
 
 This repository should not become an encyclopedia of everything time-series related.
 
-You may of course pull this library into your own projects and in those you can mix and match and add functionality on top of or beside of to meet your needs. 
-The question is though *under what circumstances should something be added back into this repository*?
-
-Take for instance **file input**: Time-series can be stored on file in *endless* different ways, does that mean that we should add drivers for reading every kind of file format?
-
-*No*
-
-To keep things simple and maintainable, adding file drivers is something we would like to keep outside of the repository (even though we have broken our own rule and added 
-support for comma-separated-variable files). 
-
-The same goes for other areas than file IO. **Filters** for instance, they are many different ways to make a filter, but this repository is not an encyclopedia of every possible such method. 
-
 It is hard to give absolute rules, but some guidelines to consider before proposing to add new functionality to this class library:
-- If the functionality is useful on its won, could the functionality instead be a stand-alone repository and ``NuGet`` package?
+- If the functionality is useful on its own, could the functionality instead be a stand-alone repository and ``NuGet`` package?
 - If the stand-alone functionality *already exists* on ``NuGet`` in another repository, it is probably better for users to just pull in that package.
 - If the new feature does a task like process modeling, filtering or PID-control in a different way than what the repository already does, there should be a clear benefit of the 
 new approach in terms of *performance* or *features*.
@@ -53,11 +42,13 @@ that have academic interest but lack proven practical benefit on real-world data
 	- **generally applicable methodology** with 
 	- **practical and industrial** use-cases.
 
-In general the repository should be kept as *"narrow"* as possible, so we do not want to add in different ways of accomplishing the same things, **but** methods that build on top of existing methods
-in the repository to go **"deeper"** are very welcome.
-
-
 ## What kind of contributions?
+
+### Reporting issues 
+
+If you during the use of this library discover that something is not working, you are encouraged to report it as an issue in the github issues page.
+If you can propose how to fix it that increases the likelihood it will be fixed. If you have made a fix that you would like to propse be merged in, 
+make a push request.
 
 ### Data mining/ advanced analytics methods that build on top of existing methods 
 
@@ -69,30 +60,10 @@ If you would like to compare and benchmark other methods in this project, such a
  that would be much appreciated (even if the other methods you tried appear to be better). For academic use, this project could be used as a reference
  for academics who are developing their own methods. 
 
-### Bug fixes
-
-Any bugs you may find, you are encouraged to report using our issue tracker, and if you can propose a fix, that is much appreciated
-
-### Expanding on the capability of the PID-controller 
-
-It will always be possible to add more functionality to the PID-controller, to accommodate different types of advanced control that it may not currently support.
-
-### Expanding on capability of the array/matrix classes
-
-Array/Matrix/Vector classes do not contain every conceivable operation. If you find that the method you need is missing, addition of new methods that perform new operations 
-are appreciated. Be aware that ``Accord.Math`` already contains a ``Matrix`` namespace with many familiar operators - instead of just duplicating functionality, consider if you can 
-use ``Accord.Math.Matrix`` directly.
-
 ### Expanding on the (dynamic) system-identification tool set 
 
 Do you have a great idea for how better to identify models for dynamic systems? If you would like to contribute your own method into the tool set, that sort of method is much
 appreciated. 
-
-This library was initially developed with the ``DefaultProcessModel`` in mind, but is should be possible to extend the library with other process model parametrization.
-To do so, you should replicate how the ``DefaultProcessModel`` has been implemented, and your model classes should implement the interfaces specified.
-
-In general, this class library is intended to be applied to industrial data where excitation may be less-than-ideal. For that reason the focus should be on parametric identification, **not** non-parametric
-models like Finite-Impulse Repsonse(FIR) models.
 
 ## Coding convention
 
