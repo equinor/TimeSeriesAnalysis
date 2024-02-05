@@ -1,7 +1,9 @@
 
 ![Build Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg?branch=master)
 
-# TimeSeriesAnalysis
+# TimeSeriesAnalysis : Data-driven dynamic modeling and simulation 
+
+## Overview
 This library that deals with developing *time-series models and simulators* from *time-series data*. 
 
 The methods in this library are primarily designed to describe time-series of physical, real-world systems for an industrial setting.
@@ -17,7 +19,7 @@ Models are not derived from physical first principles, but are inferred from tim
 
 The library is written in C# but can be referenced from any language that can reference .NET language, including Matlab or Python. The target framework is <i>.NET Standard 2.0.</i>
 
-## Use cases: Digital twins, anomaly detection, "what-if", PID-tuning, monitoring and screening
+### Use cases: Digital twins, anomaly detection, "what-if", PID-tuning, monitoring and screening
 
 The power of this library lies in the ability to automate or semi-automate the steps of identfiying new models or simulating existing models at scale. In effect this libary can create "digital twin" models of sections of a process. 
 
@@ -29,7 +31,7 @@ Models can be run alongside the plant, and monitoring the difference between mea
 
 The above use-cases could be put under the umbrella term "advanced analytics", i.e. using algorithms and data to make deep insights about causes and effects to make predictions and reccomendations. 
 
-## Explainable models for low-information datasets
+### Explainable models for low-information datasets
 
 Note that although this library uses regression methods and algorithms to learn parameters to describe data, the methodology is somewhat different from traditional machine learning in that models follow the principles of system identification rather than AI. 
 The number of free parameters are kept low by design, as this makes reduces the likelihood of over-fitting. Over-fitting is particularly important when dealing with industrial data, as this kind of data has to be used "as-is" and one often has less information than one would like. 
@@ -40,6 +42,18 @@ Another benefit of keepting the number of fitted paramters low is that models re
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis">TimeSeriesAnalysis documentation</a>** :red_circle:
 
 :red_circle: **<a href="https://equinor.github.io/TimeSeriesAnalysis/api/TimeSeriesAnalysis.html">TimeSeriesAnalysis API documentation</a>** :red_circle:
+
+## Roadmap
+
+The aim of this repository is to collect building blocks to developing digital twins from datasets in a manner that can be automated. 
+This repository development in versions ``1.x``, is focused on  "getting the basics right"
+- defining a set of unit models that together can simulate most industrial processes (especially ``PidModel`` and ``UnitModel``),
+- establishing unit identification methods for each unit model type, and
+- efficent simulation of "plants" of unit models
+
+## Contributing
+This project welcomes contributions and suggestions. 
+Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests. 
 
 ## Getting started
 
@@ -75,18 +89,6 @@ The library be conveniently used from ``Matlab``
 - make sure [NuGet is setup](https://equinor.github.io/TimeSeriesAnalysis/articles/nuget_setup.html) correctly, and
 - all examples are implemented as [unit-tests](/articles/unit_tests.html) using NUnit, try running these to 
 
-## Roadmap
-
-Currently in versions ``1.x``, the development focuses on creating small-scale "building blocks", 
-modeling components such as individual PID-controllers and small-scale process models.
- Toward version ``2.x`` the plan is to build on top the established building blocks to expand 
- into more *automated* modeling and analysis of *large-scale* systems (connecting sub-systems together), 
- to build **"digital twins"** of larger parts of process plants based on **data mining**. 
-Models should be *human-configurable* and *human-readable* so that "mined" models can be adjusted with human insight ("grey-box" rather than "black-box").
-
-## Contributing
-This project welcomes contributions and suggestions. 
-Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests. 
 
 ## Discussion forum and contact person
 The contact person for this repository is Steinar Elgsæter, please post any question you may have related to TimeSeriesAnalysis 
