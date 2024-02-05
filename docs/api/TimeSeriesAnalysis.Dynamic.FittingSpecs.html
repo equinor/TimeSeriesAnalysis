@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class DisturbanceIdResult
+    <title>Class FittingSpecs
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class DisturbanceIdResult
+    <meta name="title" content="Class FittingSpecs
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.59.4.0">
     
@@ -78,18 +78,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult" class="text-break">Class DisturbanceIdResult
+  <h1 id="TimeSeriesAnalysis_Dynamic_FittingSpecs" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs" class="text-break">Class FittingSpecs
   </h1>
-  <div class="markdown level0 summary"><p>Internal class to store a single sub-run of the DisturnanceIdentifierInternal</p>
+  <div class="markdown level0 summary"><p>variables that are set prior to fitting.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DisturbanceIdResult</span></div>
+    <div class="level1"><span class="xref">FittingSpecs</span></div>
+      <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.html">GainSchedFittingSpecs</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -117,21 +118,31 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_FittingSpecs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DisturbanceIdResult</code></pre>
+    <pre><code class="lang-csharp hljs">public class FittingSpecs</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult__ctor_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.#ctor(System.Int32)">DisturbanceIdResult(Int32)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_FittingSpecs__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs__ctor" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor">FittingSpecs()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DisturbanceIdResult(int N)</code></pre>
+    <pre><code class="lang-csharp hljs">public FittingSpecs()</code></pre>
+  </div>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_FittingSpecs__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs__ctor_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor(System.Double[],System.Double[])">FittingSpecs(Double[], Double[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FittingSpecs(double[] u0, double[] uNorm)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,35 +155,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">N</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">u0</span></td>
         <td></td>
       </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult__ctor_TimeSeriesAnalysis_Dynamic_UnitDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.#ctor(TimeSeriesAnalysis.Dynamic.UnitDataSet)">DisturbanceIdResult(UnitDataSet)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DisturbanceIdResult(UnitDataSet dataSet)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
       <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
-        <td><span class="parametername">dataSet</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">uNorm</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -181,36 +170,13 @@
   </h3>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_adjustedUnitDataSet" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.adjustedUnitDataSet">adjustedUnitDataSet</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs_U_max_fit" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.U_max_fit">U_max_fit</h4>
+  <div class="markdown level1 summary"><p>the maximum allowed input value(if set to NaN, then fitting considers all data)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitDataSet adjustedUnitDataSet</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_d_est" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_est">d_est</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] d_est</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] U_max_fit</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -229,12 +195,13 @@
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_d_HF" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_HF">d_HF</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs_U_min_fit" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.U_min_fit">U_min_fit</h4>
+  <div class="markdown level1 summary"><p>The minimum input value(if set to NaN,then fitting considers all data)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] d_HF</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] U_min_fit</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -253,12 +220,14 @@
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_d_LF" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_LF">d_LF</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs_u0" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.u0">u0</h4>
+  <div class="markdown level1 summary"><p>A vector of values subtracted form u to set the local opertating point: (u-u0)/uNorm
+Can be set to null, in which case no value is subtracted from u</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] d_LF</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] u0</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -277,12 +246,14 @@
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_estPidProcessGain" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.estPidProcessGain">estPidProcessGain</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs_uNorm" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.uNorm">uNorm</h4>
+  <div class="markdown level1 summary"><p>A vector of values used to normalize u internally in the model by the equation: (u-u0)/uNorm
+Can be set to null, in which case u is left un-normalized.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double estPidProcessGain</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] uNorm</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -294,19 +265,20 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_isAllZero" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.isAllZero">isAllZero</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs_Y_max_fit" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_max_fit">Y_max_fit</h4>
+  <div class="markdown level1 summary"><p>all values above this threshold are ignored during fitting(if set to NaN, no maximum is applied)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool isAllZero</code></pre>
+    <pre><code class="lang-csharp hljs">public double? Y_max_fit</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -318,19 +290,20 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_N" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.N">N</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingSpecs_Y_min_fit" data-uid="TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_min_fit">Y_min_fit</h4>
+  <div class="markdown level1 summary"><p>all values below this threshold are ignored during fitting(if set to NaN, no minimum is applied)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int N</code></pre>
+    <pre><code class="lang-csharp hljs">public double? Y_min_fit</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -342,72 +315,11 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_zeroReason" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.zeroReason">zeroReason</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DisturbanceSetToZeroReason zeroReason</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.html">DisturbanceSetToZeroReason</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_Copy_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.Copy*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_Copy" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.Copy">Copy()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DisturbanceIdResult Copy()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html">DisturbanceIdResult</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_SetToZero_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.SetToZero*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_SetToZero" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.SetToZero">SetToZero()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetToZero()</code></pre>
-  </div>
 </article>
           </div>
           

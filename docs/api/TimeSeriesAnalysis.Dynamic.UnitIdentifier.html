@@ -153,33 +153,19 @@ Since the aim is to identify transients/dynamics, the regression is done on mode
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
   <h5 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class UnitIdentifier</code></pre>
-  </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier__ctor" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor">UnitIdentifier()</h4>
-  <div class="markdown level1 summary"><p>Default Constructor</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitIdentifier()</code></pre>
+    <pre><code class="lang-csharp hljs">public static class UnitIdentifier</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])">Identify(ref UnitDataSet, Double[], Double[])</h4>
-  <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model that best fits the dataSet given</p>
-</div>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)">Identify(ref UnitDataSet, FittingSpecs, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitModel Identify(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static UnitModel Identify(ref UnitDataSet dataSet, FittingSpecs fittingSpecs = null, bool doEstimateTimeDelay = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,22 +180,17 @@ Since the aim is to identify transients/dynamics, the regression is done on mode
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
         <td><span class="parametername">dataSet</span></td>
-        <td><p>The dataset containing the ymeas and U that is to be fitted against,
-a new y_sim is also added</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">u0</span></td>
-        <td><p>Optionally sets the local working point for the inputs
-around which the model is to be designed(can be set to <code>null</code>)</p>
-</td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
+        <td><span class="parametername">fittingSpecs</span></td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">uNorm</span></td>
-        <td><p>normalizing paramter for u-u0 (its range)</p>
-</td>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doEstimateTimeDelay</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -224,21 +205,20 @@ around which the model is to be designed(can be set to <code>null</code>)</p>
     <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
-        <td><p>the identified model parameters and some information about the fit</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Boolean_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])">IdentifyLinear(ref UnitDataSet, Boolean, Double[], Double[])</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)">IdentifyLinear(ref UnitDataSet, FittingSpecs, Boolean)</h4>
   <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model that best fits the dataSet given, but disables curvatures</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitModel IdentifyLinear(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static UnitModel IdentifyLinear(ref UnitDataSet dataSet, FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -258,22 +238,14 @@ a new y_sim is also added</p>
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
+        <td><span class="parametername">fittingSpecs</span></td>
+        <td></td>
+      </tr>
+      <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">doEstimateTimeDelay</span></td>
         <td><p>if set to false, estimation of time delays are disabled</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">u0</span></td>
-        <td><p>Optionally sets the local working point for the inputs
-around which the model is to be designed(can be set to <code>null</code>)</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">uNorm</span></td>
-        <td><p>normalizing paramter for u-u0 (its range)</p>
 </td>
       </tr>
     </tbody>
@@ -297,13 +269,13 @@ around which the model is to be designed(can be set to <code>null</code>)</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Boolean_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])">IdentifyLinearAndStatic(ref UnitDataSet, Boolean, Double[], Double[])</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)">IdentifyLinearAndStatic(ref UnitDataSet, FittingSpecs, Boolean)</h4>
   <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model that best fits the dataSet given, but disables curvatures and time-constants</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitModel IdentifyLinearAndStatic(ref UnitDataSet dataSet, bool doEstimateTimeDelay = true, double[] u0 = null, double[] uNorm = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static UnitModel IdentifyLinearAndStatic(ref UnitDataSet dataSet, FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -323,22 +295,196 @@ a new y_sim is also added</p>
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
+        <td><span class="parametername">fittingSpecs</span></td>
+        <td></td>
+      </tr>
+      <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">doEstimateTimeDelay</span></td>
         <td><p>if set to false, modeling does not identify time-delays</p>
 </td>
       </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">u0</span></td>
-        <td><p>Optionally sets the local working point for the inputs
-around which the model is to be designed(can be set to <code>null</code>)</p>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
+        <td><p>the identified model parameters and some information about the fit</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticDiff_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticDiff_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)">IdentifyLinearAndStaticDiff(ref UnitDataSet, FittingSpecs, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Identifies the process model that best fits the dataSet given by minimizing differences y[k]-y[k-1], but disables curvatures and time-constants.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static UnitModel IdentifyLinearAndStaticDiff(ref UnitDataSet dataSet, FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataSet</span></td>
+        <td><p>The dataset containing the ymeas and U that is to be fitted against,
+a new y_sim is also added</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">uNorm</span></td>
-        <td><p>normalizing paramter for u-u0 (its range)</p>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
+        <td><span class="parametername">fittingSpecs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doEstimateTimeDelay</span></td>
+        <td><p>if set to false, modeling does not identify time-delays</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
+        <td><p>the identified model parameters and some information about the fit</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticWhileKeepingLinearGainFixed_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticWhileKeepingLinearGainFixed_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_Int32_System_Double_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Int32,System.Double,System.Double,System.Double)">IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet, Int32, Double, Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Freezed one input to a given pre-determined value, but re-identifies other static paramters.
+This is useful if doing a &quot;global search&quot; where varying a single gain.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, double inputProcessGainValueToFix, double u0_fixedInput, double uNorm_fixedInput)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataSet</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">inputIdxToFix</span></td>
+        <td><p>the index of the value to freeze</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">inputProcessGainValueToFix</span></td>
+        <td><p>the linear gain to freeze the at</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">u0_fixedInput</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">uNorm_fixedInput</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
+        <td><p>identified model, to check if identification suceeded, check
+.modelParameters.Fitting.WasAbleToIdentify</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearDiff_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearDiff_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)">IdentifyLinearDiff(ref UnitDataSet, FittingSpecs, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model based on differences y[k]-y[k-1] that best fits the dataSet given, but disables curvatures</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static UnitModel IdentifyLinearDiff(ref UnitDataSet dataSet, FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataSet</span></td>
+        <td><p>The dataset containing the ymeas and U that is to be fitted against,
+a new y_sim is also added</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
+        <td><span class="parametername">fittingSpecs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doEstimateTimeDelay</span></td>
+        <td><p>if set to false, estimation of time delays are disabled</p>
 </td>
       </tr>
     </tbody>
@@ -362,13 +508,13 @@ around which the model is to be designed(can be set to <code>null</code>)</p>
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])">IdentifyStatic(ref UnitDataSet, Double[], Double[])</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs)">IdentifyStatic(ref UnitDataSet, FittingSpecs)</h4>
   <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model that best fits the dataSet given, but no time-constants</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitModel IdentifyStatic(ref UnitDataSet dataSet, double[] u0 = null, double[] uNorm = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static UnitModel IdentifyStatic(ref UnitDataSet dataSet, FittingSpecs fittingSpecs = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -388,17 +534,9 @@ a new element <code>y_sim</code> is also added to this dataset</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">u0</span></td>
-        <td><p>Optionally sets the local working point for the inputs
-around which the model is to be designed(can be set to <code>null</code>)</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">uNorm</span></td>
-        <td><p>normalizing paramter for u-u0 (its range)</p>
-</td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
+        <td><span class="parametername">fittingSpecs</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -415,6 +553,53 @@ around which the model is to be designed(can be set to <code>null</code>)</p>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
         <td><p>the identified model parameters and some information about the fit</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_SimulateAndReEstimateBias_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_SimulateAndReEstimateBias_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitParameters_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters)">SimulateAndReEstimateBias(UnitDataSet, UnitParameters)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (double? , double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataSet</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">UnitParameters</a></td>
+        <td><span class="parametername">parameters</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;, <span class="xref">System.Double</span>[]&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>

@@ -103,6 +103,12 @@
     <thead>
     <tbody>
       <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ClosedLoopEst_GlobalSearchFailedToFindLocalMinima">ClosedLoopEst_GlobalSearchFailedToFindLocalMinima</td>
+        <td><p>If this is a closed loop system where setpoints of PID-controller change, and the &quot;global search&quot; at step1 of the ClosedLoopIdentifier failed to find a local minima when
+trying different gains. This warning likely means that the linear gain can be totally off the mark and may be too low.</p>
+</td>
+      </tr>
+      <tr>
         <td id="TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ConstantInputU">ConstantInputU</td>
         <td><p>One or more inputs were constant and not identifiable, this can affect other parameters as well, and consider removing the input
 or using a different dataset</p>
@@ -116,6 +122,11 @@ or using a different dataset</p>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_UnitdentWarnings_DataSetVeryShortComparedtoTMax">DataSetVeryShortComparedtoTMax</td>
         <td><p>The dataset is time span is very short compared to the maximal time-constant given as input to the algorithm</p>
+</td>
+      </tr>
+      <tr>
+        <td id="TimeSeriesAnalysis_Dynamic_UnitdentWarnings_DynamicModelEstimationFailed">DynamicModelEstimationFailed</td>
+        <td><p>UnitIdentify was able to solve the given estimation problem for the linear/static case, but when adding dynamics, the estimation failed for some reason.</p>
 </td>
       </tr>
       <tr>

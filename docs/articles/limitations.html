@@ -92,6 +92,7 @@ that the simulator may fail to initialize in some complex scenarios, as of yet u
 <li>PlantSimulator currenlty always consider <code>e[i-1]</code> when simulating PID-controllers
 (unlike UnitSimulator), this should be configurable, but requires a change to the
 <code>DetermineCalculationOrderOfModels()</code></li>
+<li>PlantSimulator cannot handle &quot;computational loops&quot;, where two or more systems co-depend on each other.</li>
 </ul>
 <h3 id="unit-simulator">Unit Simulator</h3>
 <ul>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Select
+    <title>Class GainSchedModel
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Select
+    <meta name="title" content="Class GainSchedModel
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.59.4.0">
     
@@ -78,24 +78,36 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.Select">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_Select" data-uid="TimeSeriesAnalysis.Dynamic.Select" class="text-break">Class Select
+  <h1 id="TimeSeriesAnalysis_Dynamic_GainSchedModel" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel" class="text-break">Class GainSchedModel
   </h1>
-  <div class="markdown level0 summary"><p>Simulatable select block</p>
+  <div class="markdown level0 summary"><p>Simulatable gain-scheduled model.
+<remarks><p>
 <p>
-This block can function either as &quot;minimum&quot; or &quot;maximum&quot; selector, mainly inteded
-for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by combining with
-<a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
+A model for systems that cannot be adequately modelled by UnitModel,because they either have time constants or gains or both that vary 
+signficantly depending on the value of one of the inputs. 
 </p>
+<p>
+One input is selected as the &quot;scheduling varible&quot; and one ore more thresholds are given for this scheduling variable. 
+The thresholds can be set indepently for time-contant and linear gain.
+</p>
+<p>
+Remember that with more thresholds defined, the higher the requirement for information content in data will be if the model is to be identified from it. 
+</p>
+<p>
+This should not be confuesed with &quot;gain-scheduled&quot; PID-control, which is a similar concept but applied to PID-control parameters.
+</p>
+</remarks>
+See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedParameters.html">GainSchedParameters</a>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html">ModelBaseClass</a></div>
-    <div class="level2"><span class="xref">Select</span></div>
+    <div class="level2"><span class="xref">GainSchedModel</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -170,9 +182,6 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputIdentID">ModelBaseClass.GetOutputIdentID()</a>
     </div>
     <div>
-      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetLengthOfInputVector">ModelBaseClass.GetLengthOfInputVector()</a>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -190,28 +199,26 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
     <div>
       <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_Select_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Select : ModelBaseClass, ISimulatableModel</code></pre>
+    <pre><code class="lang-csharp hljs">public class GainSchedModel : ModelBaseClass, ISimulatableModel</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_Select__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.Select.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select__ctor_TimeSeriesAnalysis_Dynamic_SelectType_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.Select.#ctor(TimeSeriesAnalysis.Dynamic.SelectType,System.String)">Select(SelectType, String)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel__ctor_TimeSeriesAnalysis_Dynamic_GainSchedParameters_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedParameters,System.String)">GainSchedModel(GainSchedParameters, String)</h4>
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Select(SelectType type, string ID)</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonConstructor]
+public GainSchedModel(GainSchedParameters modelParameters, string ID = &quot;not_named&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -224,14 +231,55 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SelectType.html">SelectType</a></td>
-        <td><span class="parametername">type</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedParameters.html">GainSchedParameters</a></td>
+        <td><span class="parametername">modelParameters</span></td>
+        <td><p>model parameter object</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">ID</span></td>
+        <td><p>a unique string that identifies this model in larger process models</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel__ctor_TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeSeriesAnalysis_Dynamic_GainSchedDataSet_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedParameters,TimeSeriesAnalysis.Dynamic.GainSchedDataSet,System.String)">GainSchedModel(GainSchedParameters, GainSchedDataSet, String)</h4>
+  <div class="markdown level1 summary"><p>Initalizer of model that for the given dataSet also creates the resulting y_sim</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GainSchedModel(GainSchedParameters modelParameters, GainSchedDataSet dataSet, string ID = &quot;not_named&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedParameters.html">GainSchedParameters</a></td>
+        <td><span class="parametername">modelParameters</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html">GainSchedDataSet</a></td>
+        <td><span class="parametername">dataSet</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">ID</span></td>
-        <td></td>
+        <td><p>a unique string that identifies this model in larger process models</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -239,12 +287,12 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
   </h3>
   
   
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_type" data-uid="TimeSeriesAnalysis.Dynamic.Select.type">type</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_modelParameters" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.modelParameters">modelParameters</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SelectType type</code></pre>
+    <pre><code class="lang-csharp hljs">public GainSchedParameters modelParameters</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -256,7 +304,7 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.SelectType.html">SelectType</a></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedParameters.html">GainSchedParameters</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -265,9 +313,90 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_Select_GetOutputSignalType_" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_GetOutputSignalType" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetOutputSignalType">GetOutputSignalType()</h4>
-  <div class="markdown level1 summary"><p>Gives the type of the output signal</p>
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetFittedDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetFittedDataSet" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet">GetFittedDataSet()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GainSchedDataSet GetFittedDataSet()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html">GainSchedDataSet</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetLengthOfInputVector_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetLengthOfInputVector" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector">GetLengthOfInputVector()</h4>
+  <div class="markdown level1 summary"><p>Returns the number of external inputs U of the model. Note that this model may have an disturbance signal
+added to the output in addition to the other signals.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetLengthOfInputVector()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetLengthOfInputVector">ModelBaseClass.GetLengthOfInputVector()</a></div>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetModelParameters_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetModelParameters" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters">GetModelParameters()</h4>
+  <div class="markdown level1 summary"><p>Get the objet of model paramters contained in the model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GainSchedParameters GetModelParameters()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedParameters.html">GainSchedParameters</a></td>
+        <td><p>Model paramter object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetOutputSignalType_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetOutputSignalType" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType">GetOutputSignalType()</h4>
+  <div class="markdown level1 summary"><p>Get the type of output signal</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -293,14 +422,14 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
   <div><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputSignalType">ModelBaseClass.GetOutputSignalType()</a></div>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateInput_System_Double_System_Int32_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateInput(System.Double,System.Int32,System.Double[])">GetSteadyStateInput(Double, Int32, Double[])</h4>
-  <div class="markdown level1 summary"><p>Not implemented</p>
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateInput_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateInput_System_Double_System_Int32_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])">GetSteadyStateInput(Double, Int32, Double[])</h4>
+  <div class="markdown level1 summary"><p>Calcuate the steady-state input if the output and all-but-one input are known</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double? GetSteadyStateInput(double y0, int inputIdx = 0, double[] givenInputValues = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public double? GetSteadyStateInput(double x0, int inputIdx = 0, double[] givenInputs = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -314,8 +443,9 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">y0</span></td>
-        <td></td>
+        <td><span class="parametername">x0</span></td>
+        <td><p>If no additive inputs y=x, otherwise subtract additive inputs from y to get x</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
@@ -324,7 +454,7 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
       </tr>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">givenInputValues</span></td>
+        <td><span class="parametername">givenInputs</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -346,9 +476,9 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateOutput_" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_GetSteadyStateOutput_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.Select.GetSteadyStateOutput(System.Double[])">GetSteadyStateOutput(Double[])</h4>
-  <div class="markdown level1 summary"><p>Get the steady state value of the model output</p>
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateOutput_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateOutput_System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput(System.Double[])">GetSteadyStateOutput(Double[])</h4>
+  <div class="markdown level1 summary"><p>Get the steady state output y for a given input(including additive terms)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -368,8 +498,7 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">u0</span></td>
-        <td><p>vector of inputs for which the steady state is to be calculated</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -384,20 +513,19 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
     <tbody>
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
-        <td><p>the steady-state value, if it is not possible to calculate, a <code>null</code> is returned</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_Select_IsModelSimulatable_" data-uid="TimeSeriesAnalysis.Dynamic.Select.IsModelSimulatable*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_IsModelSimulatable_System_String__" data-uid="TimeSeriesAnalysis.Dynamic.Select.IsModelSimulatable(System.String@)">IsModelSimulatable(out String)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_IsModelSimulatable_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_IsModelSimulatable_System_String__" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable(System.String@)">IsModelSimulatable(out String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsModelSimulatable(out string explain)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsModelSimulatable(out string explainStr)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -411,7 +539,7 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">explain</span></td>
+        <td><span class="parametername">explainStr</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -433,67 +561,14 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_Select_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.Select.Iterate*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.Select.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
-  <div class="markdown level1 summary"><p>Iterate simulation</p>
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_Iterate_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_Iterate_System_Double___System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate(System.Double[],System.Double,System.Double)">Iterate(Double[], Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Iterates the process model state one time step, based on the inputs given</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] Iterate(double[] inputsU, double timeBase_s, double badDataID = -9999)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">inputsU</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">timeBase_s</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">badDataID</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_Select_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.Select.WarmStart*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_Select_WarmStart_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.Select.WarmStart(System.Double[],System.Double)">WarmStart(Double[], Double)</h4>
-  <div class="markdown level1 summary"><p>Not implemented</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void WarmStart(double[] inputs, double output)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Iterate(double[] inputs, double timeBase_s, double badValueIndicator = -9999)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -508,12 +583,156 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">inputs</span></td>
+        <td><p>vector of inputs U. Optionally the output disturbance D can be added as the last value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">timeBase_s</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">output</span></td>
+        <td><span class="parametername">badValueIndicator</span></td>
+        <td><p>value in U that is to be treated as NaN</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><p>the updated process model state(x) - the output without any output noise or disturbance.
+NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
+If some data points in U inputsU are NaN or equal to <code>badValueIndicator</code>, the last good value is returned</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_SetFittedDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_SetFittedDataSet_TimeSeriesAnalysis_Dynamic_GainSchedDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet(TimeSeriesAnalysis.Dynamic.GainSchedDataSet)">SetFittedDataSet(GainSchedDataSet)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetFittedDataSet(GainSchedDataSet dataset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html">GainSchedDataSet</a></td>
+        <td><span class="parametername">dataset</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_SetModelParameters_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_SetModelParameters_TimeSeriesAnalysis_Dynamic_GainSchedParameters_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters(TimeSeriesAnalysis.Dynamic.GainSchedParameters)">SetModelParameters(GainSchedParameters)</h4>
+  <div class="markdown level1 summary"><p>Update the paramter object of the model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetModelParameters(GainSchedParameters parameters)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedParameters.html">GainSchedParameters</a></td>
+        <td><span class="parametername">parameters</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_ToString_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_ToString" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Create a nice human-readable summary of all the important data contained in the model object.
+This is especially useful for unit-testing and development.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedModel_WarmStart_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedModel_WarmStart_System_Double___System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart(System.Double[],System.Double)">WarmStart(Double[], Double)</h4>
+  <div class="markdown level1 summary"><p>Warm-starting</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WarmStart(double[] inputs = null, double output = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">inputs</span></td>
+        <td><p>not used, leave as null</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>not used, leave as null</p>
+</td>
       </tr>
     </tbody>
   </table>

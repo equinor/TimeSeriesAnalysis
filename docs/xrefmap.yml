@@ -146,15 +146,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreateJaggedFrom2D
   nameWithType: Array2D<T>.CreateJaggedFrom2D
   nameWithType.vb: Array2D(Of T).CreateJaggedFrom2D
-- uid: TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]})
-  name: CreateJaggedFromList(List<T[]>)
-  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_System_Collections_Generic_List__0____
-  commentId: M:TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]})
-  name.vb: CreateJaggedFromList(List(Of T()))
-  fullName: TimeSeriesAnalysis.Array2D<T>.CreateJaggedFromList(System.Collections.Generic.List<T[]>)
-  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreateJaggedFromList(System.Collections.Generic.List(Of T()))
-  nameWithType: Array2D<T>.CreateJaggedFromList(List<T[]>)
-  nameWithType.vb: Array2D(Of T).CreateJaggedFromList(List(Of T()))
+- uid: TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]},System.Collections.Generic.List{System.Int32})
+  name: CreateJaggedFromList(List<T[]>, List<Int32>)
+  href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_System_Collections_Generic_List__0____System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]},System.Collections.Generic.List{System.Int32})
+  name.vb: CreateJaggedFromList(List(Of T()), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Array2D<T>.CreateJaggedFromList(System.Collections.Generic.List<T[]>, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Array2D(Of T).CreateJaggedFromList(System.Collections.Generic.List(Of T()), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Array2D<T>.CreateJaggedFromList(List<T[]>, List<Int32>)
+  nameWithType.vb: Array2D(Of T).CreateJaggedFromList(List(Of T()), List(Of Int32))
 - uid: TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList*
   name: CreateJaggedFromList
   href: api/TimeSeriesAnalysis.Array2D-1.html#TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_
@@ -530,12 +530,24 @@ references:
   commentId: T:TimeSeriesAnalysis.CorrelationCalculator
   fullName: TimeSeriesAnalysis.CorrelationCalculator
   nameWithType: CorrelationCalculator
-- uid: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String,TimeSeriesAnalysis.TimeSeriesDataSet)
-  name: Calculate(String, TimeSeriesDataSet)
-  href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_Calculate_System_String_TimeSeriesAnalysis_TimeSeriesDataSet_
-  commentId: M:TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String,TimeSeriesAnalysis.TimeSeriesDataSet)
-  fullName: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String, TimeSeriesAnalysis.TimeSeriesDataSet)
-  nameWithType: CorrelationCalculator.Calculate(String, TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
+  name: Calculate(Double[], Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_Calculate_System_Double___System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: Calculate(Double(), Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.Double[], System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.Double(), System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: CorrelationCalculator.Calculate(Double[], Double[], List<Int32>)
+  nameWithType.vb: CorrelationCalculator.Calculate(Double(), Double(), List(Of Int32))
+- uid: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String,TimeSeriesAnalysis.TimeSeriesDataSet,System.Collections.Generic.List{System.Int32})
+  name: Calculate(String, TimeSeriesDataSet, List<Int32>)
+  href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_Calculate_System_String_TimeSeriesAnalysis_TimeSeriesDataSet_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String,TimeSeriesAnalysis.TimeSeriesDataSet,System.Collections.Generic.List{System.Int32})
+  name.vb: Calculate(String, TimeSeriesDataSet, List(Of Int32))
+  fullName: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String, TimeSeriesAnalysis.TimeSeriesDataSet, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String, TimeSeriesAnalysis.TimeSeriesDataSet, System.Collections.Generic.List(Of System.Int32))
+  nameWithType: CorrelationCalculator.Calculate(String, TimeSeriesDataSet, List<Int32>)
+  nameWithType.vb: CorrelationCalculator.Calculate(String, TimeSeriesDataSet, List(Of Int32))
 - uid: TimeSeriesAnalysis.CorrelationCalculator.Calculate*
   name: Calculate
   href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_Calculate_
@@ -543,12 +555,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.CorrelationCalculator.Calculate
   nameWithType: CorrelationCalculator.Calculate
-- uid: TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder(System.String,TimeSeriesAnalysis.TimeSeriesDataSet)
-  name: CalculateAndOrder(String, TimeSeriesDataSet)
-  href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_CalculateAndOrder_System_String_TimeSeriesAnalysis_TimeSeriesDataSet_
-  commentId: M:TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder(System.String,TimeSeriesAnalysis.TimeSeriesDataSet)
-  fullName: TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder(System.String, TimeSeriesAnalysis.TimeSeriesDataSet)
-  nameWithType: CorrelationCalculator.CalculateAndOrder(String, TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder(System.String,TimeSeriesAnalysis.TimeSeriesDataSet,System.Double,System.Double)
+  name: CalculateAndOrder(String, TimeSeriesDataSet, Double, Double)
+  href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_CalculateAndOrder_System_String_TimeSeriesAnalysis_TimeSeriesDataSet_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder(System.String,TimeSeriesAnalysis.TimeSeriesDataSet,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder(System.String, TimeSeriesAnalysis.TimeSeriesDataSet, System.Double, System.Double)
+  nameWithType: CorrelationCalculator.CalculateAndOrder(String, TimeSeriesDataSet, Double, Double)
 - uid: TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder*
   name: CalculateAndOrder
   href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_CalculateAndOrder_
@@ -556,6 +568,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder
   nameWithType: CorrelationCalculator.CalculateAndOrder
+- uid: TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
+  name: CorrelateTwoVectors(Double[], Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_CorrelateTwoVectors_System_Double___System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: CorrelateTwoVectors(Double(), Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors(System.Double[], System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors(System.Double(), System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: CorrelationCalculator.CorrelateTwoVectors(Double[], Double[], List<Int32>)
+  nameWithType.vb: CorrelationCalculator.CorrelateTwoVectors(Double(), Double(), List(Of Int32))
+- uid: TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors*
+  name: CorrelateTwoVectors
+  href: api/TimeSeriesAnalysis.CorrelationCalculator.html#TimeSeriesAnalysis_CorrelationCalculator_CorrelateTwoVectors_
+  commentId: Overload:TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors
+  nameWithType: CorrelationCalculator.CorrelateTwoVectors
 - uid: TimeSeriesAnalysis.CorrelationObject
   name: CorrelationObject
   href: api/TimeSeriesAnalysis.CorrelationObject.html
@@ -711,32 +739,64 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ConnectionParser.connections
   fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.connections
   nameWithType: ConnectionParser.connections
-- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs(System.String)
-  name: GetDownstreamModelIDs(String)
-  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModelIDs_System_String_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs(System.String)
-  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs(System.String)
-  nameWithType: ConnectionParser.GetDownstreamModelIDs(String)
-- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs*
-  name: GetDownstreamModelIDs
-  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModelIDs_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops(System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name: FindComputationalLoops(Dictionary<String, ISimulatableModel>)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_FindComputationalLoops_System_Collections_Generic_Dictionary_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops(System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name.vb: FindComputationalLoops(Dictionary(Of String, ISimulatableModel))
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops(System.Collections.Generic.Dictionary<System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops(System.Collections.Generic.Dictionary(Of System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel))
+  nameWithType: ConnectionParser.FindComputationalLoops(Dictionary<String, ISimulatableModel>)
+  nameWithType.vb: ConnectionParser.FindComputationalLoops(Dictionary(Of String, ISimulatableModel))
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops*
+  name: FindComputationalLoops
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_FindComputationalLoops_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs
-  nameWithType: ConnectionParser.GetDownstreamModelIDs
-- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels(System.String)
-  name: GetUpstreamModels(String)
-  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamModels_System_String_
-  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels(System.String)
-  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels(System.String)
-  nameWithType: ConnectionParser.GetUpstreamModels(String)
-- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels*
-  name: GetUpstreamModels
-  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamModels_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops
+  nameWithType: ConnectionParser.FindComputationalLoops
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs(System.String)
+  name: GetAllDownstreamModelIDs(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllDownstreamModelIDs_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs(System.String)
+  nameWithType: ConnectionParser.GetAllDownstreamModelIDs(String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs*
+  name: GetAllDownstreamModelIDs
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllDownstreamModelIDs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels
-  nameWithType: ConnectionParser.GetUpstreamModels
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs
+  nameWithType: ConnectionParser.GetAllDownstreamModelIDs
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels(System.String)
+  name: GetAllUpstreamModels(String)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllUpstreamModels_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels(System.String)
+  nameWithType: ConnectionParser.GetAllUpstreamModels(String)
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels*
+  name: GetAllUpstreamModels
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllUpstreamModels_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels
+  nameWithType: ConnectionParser.GetAllUpstreamModels
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID(System.String,System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name: GetUnitModelControlledByPID(String, Dictionary<String, ISimulatableModel>)
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUnitModelControlledByPID_System_String_System_Collections_Generic_Dictionary_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
+  commentId: M:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID(System.String,System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})
+  name.vb: GetUnitModelControlledByPID(String, Dictionary(Of String, ISimulatableModel))
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID(System.String, System.Collections.Generic.Dictionary<System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID(System.String, System.Collections.Generic.Dictionary(Of System.String, TimeSeriesAnalysis.Dynamic.ISimulatableModel))
+  nameWithType: ConnectionParser.GetUnitModelControlledByPID(String, Dictionary<String, ISimulatableModel>)
+  nameWithType.vb: ConnectionParser.GetUnitModelControlledByPID(String, Dictionary(Of String, ISimulatableModel))
+- uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID*
+  name: GetUnitModelControlledByPID
+  href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUnitModelControlledByPID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID
+  nameWithType: ConnectionParser.GetUnitModelControlledByPID
 - uid: TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamPIDIds(System.String,System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})
   name: GetUpstreamPIDIds(String, Dictionary<String, ISimulatableModel>)
   href: api/TimeSeriesAnalysis.Dynamic.ConnectionParser.html#TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamPIDIds_System_String_System_Collections_Generic_Dictionary_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel__
@@ -804,12 +864,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel
   nameWithType: DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel
-- uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,System.Int32)
-  name: EstimateDisturbance(UnitDataSet, UnitModel, Int32)
-  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_EstimateDisturbance_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,System.Int32)
-  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitModel, System.Int32)
-  nameWithType: DisturbanceIdentifier.EstimateDisturbance(UnitDataSet, UnitModel, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,System.Int32,TimeSeriesAnalysis.Dynamic.PidParameters,System.Boolean)
+  name: EstimateDisturbance(UnitDataSet, UnitModel, Int32, PidParameters, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_EstimateDisturbance_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_System_Int32_TimeSeriesAnalysis_Dynamic_PidParameters_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,System.Int32,TimeSeriesAnalysis.Dynamic.PidParameters,System.Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitModel, System.Int32, TimeSeriesAnalysis.Dynamic.PidParameters, System.Boolean)
+  nameWithType: DisturbanceIdentifier.EstimateDisturbance(UnitDataSet, UnitModel, Int32, PidParameters, Boolean)
 - uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance*
   name: EstimateDisturbance
   href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_EstimateDisturbance_
@@ -842,6 +902,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.DisturbanceIdResult
   nameWithType: DisturbanceIdResult.DisturbanceIdResult
+- uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.adjustedUnitDataSet
+  name: adjustedUnitDataSet
+  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_adjustedUnitDataSet
+  commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.adjustedUnitDataSet
+  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.adjustedUnitDataSet
+  nameWithType: DisturbanceIdResult.adjustedUnitDataSet
 - uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.Copy
   name: Copy()
   href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_Copy
@@ -867,18 +933,18 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_HF
   fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_HF
   nameWithType: DisturbanceIdResult.d_HF
-- uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_u
-  name: d_u
-  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_d_u
-  commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_u
-  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_u
-  nameWithType: DisturbanceIdResult.d_u
-- uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.f1EstProcessGain
-  name: f1EstProcessGain
-  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_f1EstProcessGain
-  commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.f1EstProcessGain
-  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.f1EstProcessGain
-  nameWithType: DisturbanceIdResult.f1EstProcessGain
+- uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_LF
+  name: d_LF
+  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_d_LF
+  commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_LF
+  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.d_LF
+  nameWithType: DisturbanceIdResult.d_LF
+- uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.estPidProcessGain
+  name: estPidProcessGain
+  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_estPidProcessGain
+  commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.estPidProcessGain
+  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.estPidProcessGain
+  nameWithType: DisturbanceIdResult.estPidProcessGain
 - uid: TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.isAllZero
   name: isAllZero
   href: api/TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html#TimeSeriesAnalysis_Dynamic_DisturbanceIdResult_isAllZero
@@ -928,12 +994,223 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.SetpointWasDetected
   fullName: TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.SetpointWasDetected
   nameWithType: DisturbanceSetToZeroReason.SetpointWasDetected
+- uid: TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.UnitSimulatorUnableToRun
+  name: UnitSimulatorUnableToRun
+  href: api/TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.html#TimeSeriesAnalysis_Dynamic_DisturbanceSetToZeroReason_UnitSimulatorUnableToRun
+  commentId: F:TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.UnitSimulatorUnableToRun
+  fullName: TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.UnitSimulatorUnableToRun
+  nameWithType: DisturbanceSetToZeroReason.UnitSimulatorUnableToRun
+- uid: TimeSeriesAnalysis.Dynamic.Divide
+  name: Divide
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.Divide
+  fullName: TimeSeriesAnalysis.Dynamic.Divide
+  nameWithType: Divide
+- uid: TimeSeriesAnalysis.Dynamic.Divide.#ctor(TimeSeriesAnalysis.Dynamic.DivideParameters,System.String)
+  name: Divide(DivideParameters, String)
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide__ctor_TimeSeriesAnalysis_Dynamic_DivideParameters_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.Divide.#ctor(TimeSeriesAnalysis.Dynamic.DivideParameters,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.Divide(TimeSeriesAnalysis.Dynamic.DivideParameters, System.String)
+  nameWithType: Divide.Divide(DivideParameters, String)
+- uid: TimeSeriesAnalysis.Dynamic.Divide.#ctor*
+  name: Divide
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Divide.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.Divide
+  nameWithType: Divide.Divide
+- uid: TimeSeriesAnalysis.Dynamic.Divide.divideParameters
+  name: divideParameters
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_divideParameters
+  commentId: F:TimeSeriesAnalysis.Dynamic.Divide.divideParameters
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.divideParameters
+  nameWithType: Divide.divideParameters
+- uid: TimeSeriesAnalysis.Dynamic.Divide.GetOutputSignalType
+  name: GetOutputSignalType()
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_GetOutputSignalType
+  commentId: M:TimeSeriesAnalysis.Dynamic.Divide.GetOutputSignalType
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.GetOutputSignalType()
+  nameWithType: Divide.GetOutputSignalType()
+- uid: TimeSeriesAnalysis.Dynamic.Divide.GetOutputSignalType*
+  name: GetOutputSignalType
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_GetOutputSignalType_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Divide.GetOutputSignalType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.GetOutputSignalType
+  nameWithType: Divide.GetOutputSignalType
+- uid: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name: GetSteadyStateInput(Double, Int32, Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_GetSteadyStateInput_System_Double_System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name.vb: GetSteadyStateInput(Double, Int32, Double())
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateInput(System.Double, System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateInput(System.Double, System.Int32, System.Double())
+  nameWithType: Divide.GetSteadyStateInput(Double, Int32, Double[])
+  nameWithType.vb: Divide.GetSteadyStateInput(Double, Int32, Double())
+- uid: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateInput*
+  name: GetSteadyStateInput
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_GetSteadyStateInput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateInput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateInput
+  nameWithType: Divide.GetSteadyStateInput
+- uid: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateOutput(System.Double[])
+  name: GetSteadyStateOutput(Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_GetSteadyStateOutput_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateOutput(System.Double[])
+  name.vb: GetSteadyStateOutput(Double())
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateOutput(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateOutput(System.Double())
+  nameWithType: Divide.GetSteadyStateOutput(Double[])
+  nameWithType.vb: Divide.GetSteadyStateOutput(Double())
+- uid: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateOutput*
+  name: GetSteadyStateOutput
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_GetSteadyStateOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.GetSteadyStateOutput
+  nameWithType: Divide.GetSteadyStateOutput
+- uid: TimeSeriesAnalysis.Dynamic.Divide.IsModelSimulatable(System.String@)
+  name: IsModelSimulatable(out String)
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_IsModelSimulatable_System_String__
+  commentId: M:TimeSeriesAnalysis.Dynamic.Divide.IsModelSimulatable(System.String@)
+  name.vb: IsModelSimulatable(ByRef String)
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.IsModelSimulatable(out System.String)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Divide.IsModelSimulatable(ByRef System.String)
+  nameWithType: Divide.IsModelSimulatable(out String)
+  nameWithType.vb: Divide.IsModelSimulatable(ByRef String)
+- uid: TimeSeriesAnalysis.Dynamic.Divide.IsModelSimulatable*
+  name: IsModelSimulatable
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_IsModelSimulatable_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Divide.IsModelSimulatable
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.IsModelSimulatable
+  nameWithType: Divide.IsModelSimulatable
+- uid: TimeSeriesAnalysis.Dynamic.Divide.Iterate(System.Double[],System.Double,System.Double)
+  name: Iterate(Double[], Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_Iterate_System_Double___System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.Divide.Iterate(System.Double[],System.Double,System.Double)
+  name.vb: Iterate(Double(), Double, Double)
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.Iterate(System.Double[], System.Double, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Divide.Iterate(System.Double(), System.Double, System.Double)
+  nameWithType: Divide.Iterate(Double[], Double, Double)
+  nameWithType.vb: Divide.Iterate(Double(), Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.Divide.Iterate*
+  name: Iterate
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_Iterate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Divide.Iterate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.Iterate
+  nameWithType: Divide.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.Divide.WarmStart(System.Double[],System.Double)
+  name: WarmStart(Double[], Double)
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_WarmStart_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.Divide.WarmStart(System.Double[],System.Double)
+  name.vb: WarmStart(Double(), Double)
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.WarmStart(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.Divide.WarmStart(System.Double(), System.Double)
+  nameWithType: Divide.WarmStart(Double[], Double)
+  nameWithType.vb: Divide.WarmStart(Double(), Double)
+- uid: TimeSeriesAnalysis.Dynamic.Divide.WarmStart*
+  name: WarmStart
+  href: api/TimeSeriesAnalysis.Dynamic.Divide.html#TimeSeriesAnalysis_Dynamic_Divide_WarmStart_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.Divide.WarmStart
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.Divide.WarmStart
+  nameWithType: Divide.WarmStart
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters
+  name: DivideParameters
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.DivideParameters
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters
+  nameWithType: DivideParameters
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.#ctor
+  name: DivideParameters()
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.DivideParameters.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.DivideParameters()
+  nameWithType: DivideParameters.DivideParameters()
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.#ctor*
+  name: DivideParameters
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DivideParameters.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.DivideParameters
+  nameWithType: DivideParameters.DivideParameters
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueIn
+  name: NanValueIn
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_NanValueIn
+  commentId: P:TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueIn
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueIn
+  nameWithType: DivideParameters.NanValueIn
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueIn*
+  name: NanValueIn
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_NanValueIn_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueIn
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueIn
+  nameWithType: DivideParameters.NanValueIn
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueOut
+  name: NanValueOut
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_NanValueOut
+  commentId: P:TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueOut
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueOut
+  nameWithType: DivideParameters.NanValueOut
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueOut*
+  name: NanValueOut
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_NanValueOut_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueOut
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.NanValueOut
+  nameWithType: DivideParameters.NanValueOut
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_max
+  name: Y_max
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_Y_max
+  commentId: P:TimeSeriesAnalysis.Dynamic.DivideParameters.Y_max
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_max
+  nameWithType: DivideParameters.Y_max
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_max*
+  name: Y_max
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_Y_max_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DivideParameters.Y_max
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_max
+  nameWithType: DivideParameters.Y_max
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_min
+  name: Y_min
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_Y_min
+  commentId: P:TimeSeriesAnalysis.Dynamic.DivideParameters.Y_min
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_min
+  nameWithType: DivideParameters.Y_min
+- uid: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_min*
+  name: Y_min
+  href: api/TimeSeriesAnalysis.Dynamic.DivideParameters.html#TimeSeriesAnalysis_Dynamic_DivideParameters_Y_min_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.DivideParameters.Y_min
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.DivideParameters.Y_min
+  nameWithType: DivideParameters.Y_min
 - uid: TimeSeriesAnalysis.Dynamic.FittingInfo
   name: FittingInfo
   href: api/TimeSeriesAnalysis.Dynamic.FittingInfo.html
   commentId: T:TimeSeriesAnalysis.Dynamic.FittingInfo
   fullName: TimeSeriesAnalysis.Dynamic.FittingInfo
   nameWithType: FittingInfo
+- uid: TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Collections.Generic.List{System.Int32})
+  name: CalcCommonFitMetricsFromDataset(UnitDataSet, List<Int32>)
+  href: api/TimeSeriesAnalysis.Dynamic.FittingInfo.html#TimeSeriesAnalysis_Dynamic_FittingInfo_CalcCommonFitMetricsFromDataset_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Collections.Generic.List{System.Int32})
+  name.vb: CalcCommonFitMetricsFromDataset(UnitDataSet, List(Of Int32))
+  fullName: TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset(TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset(TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Collections.Generic.List(Of System.Int32))
+  nameWithType: FittingInfo.CalcCommonFitMetricsFromDataset(UnitDataSet, List<Int32>)
+  nameWithType.vb: FittingInfo.CalcCommonFitMetricsFromDataset(UnitDataSet, List(Of Int32))
+- uid: TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset*
+  name: CalcCommonFitMetricsFromDataset
+  href: api/TimeSeriesAnalysis.Dynamic.FittingInfo.html#TimeSeriesAnalysis_Dynamic_FittingInfo_CalcCommonFitMetricsFromDataset_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset
+  nameWithType: FittingInfo.CalcCommonFitMetricsFromDataset
 - uid: TimeSeriesAnalysis.Dynamic.FittingInfo.EndTime
   name: EndTime
   href: api/TimeSeriesAnalysis.Dynamic.FittingInfo.html#TimeSeriesAnalysis_Dynamic_FittingInfo_EndTime
@@ -947,6 +1224,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.FittingInfo.EndTime
   nameWithType: FittingInfo.EndTime
+- uid: TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc
+  name: FitScorePrc
+  href: api/TimeSeriesAnalysis.Dynamic.FittingInfo.html#TimeSeriesAnalysis_Dynamic_FittingInfo_FitScorePrc
+  commentId: P:TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc
+  fullName: TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc
+  nameWithType: FittingInfo.FitScorePrc
+- uid: TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc*
+  name: FitScorePrc
+  href: api/TimeSeriesAnalysis.Dynamic.FittingInfo.html#TimeSeriesAnalysis_Dynamic_FittingInfo_FitScorePrc_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc
+  nameWithType: FittingInfo.FitScorePrc
 - uid: TimeSeriesAnalysis.Dynamic.FittingInfo.NFittingBadDataPoints
   name: NFittingBadDataPoints
   href: api/TimeSeriesAnalysis.Dynamic.FittingInfo.html#TimeSeriesAnalysis_Dynamic_FittingInfo_NFittingBadDataPoints
@@ -1064,6 +1354,987 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.FittingInfo.WasAbleToIdentify
   nameWithType: FittingInfo.WasAbleToIdentify
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs
+  name: FittingSpecs
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.FittingSpecs
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs
+  nameWithType: FittingSpecs
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor
+  name: FittingSpecs()
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.FittingSpecs()
+  nameWithType: FittingSpecs.FittingSpecs()
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor(System.Double[],System.Double[])
+  name: FittingSpecs(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs__ctor_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor(System.Double[],System.Double[])
+  name.vb: FittingSpecs(Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.FittingSpecs(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.FittingSpecs.FittingSpecs(System.Double(), System.Double())
+  nameWithType: FittingSpecs.FittingSpecs(Double[], Double[])
+  nameWithType.vb: FittingSpecs.FittingSpecs(Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor*
+  name: FittingSpecs
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.FittingSpecs.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.FittingSpecs
+  nameWithType: FittingSpecs.FittingSpecs
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.U_max_fit
+  name: U_max_fit
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs_U_max_fit
+  commentId: F:TimeSeriesAnalysis.Dynamic.FittingSpecs.U_max_fit
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.U_max_fit
+  nameWithType: FittingSpecs.U_max_fit
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.U_min_fit
+  name: U_min_fit
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs_U_min_fit
+  commentId: F:TimeSeriesAnalysis.Dynamic.FittingSpecs.U_min_fit
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.U_min_fit
+  nameWithType: FittingSpecs.U_min_fit
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.u0
+  name: u0
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs_u0
+  commentId: F:TimeSeriesAnalysis.Dynamic.FittingSpecs.u0
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.u0
+  nameWithType: FittingSpecs.u0
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.uNorm
+  name: uNorm
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs_uNorm
+  commentId: F:TimeSeriesAnalysis.Dynamic.FittingSpecs.uNorm
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.uNorm
+  nameWithType: FittingSpecs.uNorm
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_max_fit
+  name: Y_max_fit
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs_Y_max_fit
+  commentId: F:TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_max_fit
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_max_fit
+  nameWithType: FittingSpecs.Y_max_fit
+- uid: TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_min_fit
+  name: Y_min_fit
+  href: api/TimeSeriesAnalysis.Dynamic.FittingSpecs.html#TimeSeriesAnalysis_Dynamic_FittingSpecs_Y_min_fit
+  commentId: F:TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_min_fit
+  fullName: TimeSeriesAnalysis.Dynamic.FittingSpecs.Y_min_fit
+  nameWithType: FittingSpecs.Y_min_fit
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet
+  name: GainSchedDataSet
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedDataSet
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet
+  nameWithType: GainSchedDataSet
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(System.String)
+  name: GainSchedDataSet(String)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet__ctor_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GainSchedDataSet(System.String)
+  nameWithType: GainSchedDataSet.GainSchedDataSet(String)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(System.ValueTuple{System.Double[],System.DateTime[]},System.ValueTuple{System.Double[],System.DateTime[]},System.String)
+  name: GainSchedDataSet((Double[], DateTime[]), (Double[], DateTime[]), String)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet__ctor_System_ValueTuple_System_Double___System_DateTime____System_ValueTuple_System_Double___System_DateTime____System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(System.ValueTuple{System.Double[],System.DateTime[]},System.ValueTuple{System.Double[],System.DateTime[]},System.String)
+  name.vb: GainSchedDataSet((Double(), DateTime())(Of Double(), DateTime()), (Double(), DateTime())(Of Double(), DateTime()), String)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GainSchedDataSet(System.ValueTuple<System.Double[], System.DateTime[]>, System.ValueTuple<System.Double[], System.DateTime[]>, System.String)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GainSchedDataSet(System.ValueTuple(Of System.Double(), System.DateTime()), System.ValueTuple(Of System.Double(), System.DateTime()), System.String)
+  nameWithType: GainSchedDataSet.GainSchedDataSet((Double[], DateTime[]), (Double[], DateTime[]), String)
+  nameWithType.vb: GainSchedDataSet.GainSchedDataSet((Double(), DateTime())(Of Double(), DateTime()), (Double(), DateTime())(Of Double(), DateTime()), String)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedDataSet)
+  name: GainSchedDataSet(GainSchedDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet__ctor_TimeSeriesAnalysis_Dynamic_GainSchedDataSet_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GainSchedDataSet(TimeSeriesAnalysis.Dynamic.GainSchedDataSet)
+  nameWithType: GainSchedDataSet.GainSchedDataSet(GainSchedDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedDataSet,System.Int32)
+  name: GainSchedDataSet(GainSchedDataSet, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet__ctor_TimeSeriesAnalysis_Dynamic_GainSchedDataSet_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedDataSet,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GainSchedDataSet(TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.Int32)
+  nameWithType: GainSchedDataSet.GainSchedDataSet(GainSchedDataSet, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor*
+  name: GainSchedDataSet
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GainSchedDataSet
+  nameWithType: GainSchedDataSet.GainSchedDataSet
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.BadDataID
+  name: BadDataID
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_BadDataID
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.BadDataID
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.BadDataID
+  nameWithType: GainSchedDataSet.BadDataID
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.BadDataID*
+  name: BadDataID
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_BadDataID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.BadDataID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.BadDataID
+  nameWithType: GainSchedDataSet.BadDataID
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.CreateTimeStamps(System.Double,System.Nullable{System.DateTime})
+  name: CreateTimeStamps(Double, Nullable<DateTime>)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_CreateTimeStamps_System_Double_System_Nullable_System_DateTime__
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.CreateTimeStamps(System.Double,System.Nullable{System.DateTime})
+  name.vb: CreateTimeStamps(Double, Nullable(Of DateTime))
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.CreateTimeStamps(System.Double, System.Nullable<System.DateTime>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.CreateTimeStamps(System.Double, System.Nullable(Of System.DateTime))
+  nameWithType: GainSchedDataSet.CreateTimeStamps(Double, Nullable<DateTime>)
+  nameWithType.vb: GainSchedDataSet.CreateTimeStamps(Double, Nullable(Of DateTime))
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.CreateTimeStamps*
+  name: CreateTimeStamps
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_CreateTimeStamps_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.CreateTimeStamps
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.CreateTimeStamps
+  nameWithType: GainSchedDataSet.CreateTimeStamps
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.D
+  name: D
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_D
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.D
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.D
+  nameWithType: GainSchedDataSet.D
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.D*
+  name: D
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_D_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.D
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.D
+  nameWithType: GainSchedDataSet.D
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.DetermineIndicesToIgnore(TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  name: DetermineIndicesToIgnore(FittingSpecs)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_DetermineIndicesToIgnore_TimeSeriesAnalysis_Dynamic_FittingSpecs_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.DetermineIndicesToIgnore(TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.DetermineIndicesToIgnore(TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  nameWithType: GainSchedDataSet.DetermineIndicesToIgnore(FittingSpecs)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.DetermineIndicesToIgnore*
+  name: DetermineIndicesToIgnore
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_DetermineIndicesToIgnore_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.DetermineIndicesToIgnore
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.DetermineIndicesToIgnore
+  nameWithType: GainSchedDataSet.DetermineIndicesToIgnore
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetAverageU
+  name: GetAverageU()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetAverageU
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetAverageU
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetAverageU()
+  nameWithType: GainSchedDataSet.GetAverageU()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetAverageU*
+  name: GetAverageU
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetAverageU_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetAverageU
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetAverageU
+  nameWithType: GainSchedDataSet.GetAverageU
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetNumDataPoints
+  name: GetNumDataPoints()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetNumDataPoints
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetNumDataPoints
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetNumDataPoints()
+  nameWithType: GainSchedDataSet.GetNumDataPoints()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetNumDataPoints*
+  name: GetNumDataPoints
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetNumDataPoints_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetNumDataPoints
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetNumDataPoints
+  nameWithType: GainSchedDataSet.GetNumDataPoints
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeBase
+  name: GetTimeBase()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetTimeBase
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeBase
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeBase()
+  nameWithType: GainSchedDataSet.GetTimeBase()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeBase*
+  name: GetTimeBase
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetTimeBase_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeBase
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeBase
+  nameWithType: GainSchedDataSet.GetTimeBase
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeSpan
+  name: GetTimeSpan()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetTimeSpan
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeSpan
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeSpan()
+  nameWithType: GainSchedDataSet.GetTimeSpan()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeSpan*
+  name: GetTimeSpan
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_GetTimeSpan_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeSpan
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.GetTimeSpan
+  nameWithType: GainSchedDataSet.GetTimeSpan
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.IndicesToIgnore
+  name: IndicesToIgnore
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_IndicesToIgnore
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.IndicesToIgnore
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.IndicesToIgnore
+  nameWithType: GainSchedDataSet.IndicesToIgnore
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.ProcessName
+  name: ProcessName
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_ProcessName
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.ProcessName
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.ProcessName
+  nameWithType: GainSchedDataSet.ProcessName
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.ProcessName*
+  name: ProcessName
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_ProcessName_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.ProcessName
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.ProcessName
+  nameWithType: GainSchedDataSet.ProcessName
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.SetInputUFitMaxAndMin(System.Double[],System.Double[])
+  name: SetInputUFitMaxAndMin(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_SetInputUFitMaxAndMin_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.SetInputUFitMaxAndMin(System.Double[],System.Double[])
+  name.vb: SetInputUFitMaxAndMin(Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.SetInputUFitMaxAndMin(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.SetInputUFitMaxAndMin(System.Double(), System.Double())
+  nameWithType: GainSchedDataSet.SetInputUFitMaxAndMin(Double[], Double[])
+  nameWithType.vb: GainSchedDataSet.SetInputUFitMaxAndMin(Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.SetInputUFitMaxAndMin*
+  name: SetInputUFitMaxAndMin
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_SetInputUFitMaxAndMin_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.SetInputUFitMaxAndMin
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.SetInputUFitMaxAndMin
+  nameWithType: GainSchedDataSet.SetInputUFitMaxAndMin
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Times
+  name: Times
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Times
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Times
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Times
+  nameWithType: GainSchedDataSet.Times
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Times*
+  name: Times
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Times_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Times
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Times
+  nameWithType: GainSchedDataSet.Times
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U
+  name: U
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_U
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U
+  nameWithType: GainSchedDataSet.U
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U*
+  name: U
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_U_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U
+  nameWithType: GainSchedDataSet.U
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U_sim
+  name: U_sim
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_U_sim
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U_sim
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U_sim
+  nameWithType: GainSchedDataSet.U_sim
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U_sim*
+  name: U_sim
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_U_sim_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U_sim
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.U_sim
+  nameWithType: GainSchedDataSet.U_sim
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Warnings
+  name: Warnings
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Warnings
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Warnings
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Warnings
+  nameWithType: GainSchedDataSet.Warnings
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Warnings*
+  name: Warnings
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Warnings_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Warnings
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Warnings
+  nameWithType: GainSchedDataSet.Warnings
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_meas
+  name: Y_meas
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Y_meas
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_meas
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_meas
+  nameWithType: GainSchedDataSet.Y_meas
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_meas*
+  name: Y_meas
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Y_meas_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_meas
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_meas
+  nameWithType: GainSchedDataSet.Y_meas
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_setpoint
+  name: Y_setpoint
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Y_setpoint
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_setpoint
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_setpoint
+  nameWithType: GainSchedDataSet.Y_setpoint
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_setpoint*
+  name: Y_setpoint
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Y_setpoint_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_setpoint
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_setpoint
+  nameWithType: GainSchedDataSet.Y_setpoint
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_sim
+  name: Y_sim
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Y_sim
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_sim
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_sim
+  nameWithType: GainSchedDataSet.Y_sim
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_sim*
+  name: Y_sim
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html#TimeSeriesAnalysis_Dynamic_GainSchedDataSet_Y_sim_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_sim
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedDataSet.Y_sim
+  nameWithType: GainSchedDataSet.Y_sim
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs
+  name: GainSchedFittingSpecs
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs
+  nameWithType: GainSchedFittingSpecs
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.#ctor
+  name: GainSchedFittingSpecs()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.html#TimeSeriesAnalysis_Dynamic_GainSchedFittingSpecs__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.GainSchedFittingSpecs()
+  nameWithType: GainSchedFittingSpecs.GainSchedFittingSpecs()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.#ctor*
+  name: GainSchedFittingSpecs
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.html#TimeSeriesAnalysis_Dynamic_GainSchedFittingSpecs__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.GainSchedFittingSpecs
+  nameWithType: GainSchedFittingSpecs.GainSchedFittingSpecs
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uGainScheduledInputIndex
+  name: uGainScheduledInputIndex
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.html#TimeSeriesAnalysis_Dynamic_GainSchedFittingSpecs_uGainScheduledInputIndex
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uGainScheduledInputIndex
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uGainScheduledInputIndex
+  nameWithType: GainSchedFittingSpecs.uGainScheduledInputIndex
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uGainThresholds
+  name: uGainThresholds
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.html#TimeSeriesAnalysis_Dynamic_GainSchedFittingSpecs_uGainThresholds
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uGainThresholds
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uGainThresholds
+  nameWithType: GainSchedFittingSpecs.uGainThresholds
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uTimeConstantThresholds
+  name: uTimeConstantThresholds
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.html#TimeSeriesAnalysis_Dynamic_GainSchedFittingSpecs_uTimeConstantThresholds
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uTimeConstantThresholds
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs.uTimeConstantThresholds
+  nameWithType: GainSchedFittingSpecs.uTimeConstantThresholds
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier
+  name: GainSchedIdentifier
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedIdentifier
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier
+  nameWithType: GainSchedIdentifier
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs)
+  name: Identify(UnitDataSet, GainSchedFittingSpecs)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.html#TimeSeriesAnalysis_Dynamic_GainSchedIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_GainSchedFittingSpecs_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs)
+  nameWithType: GainSchedIdentifier.Identify(UnitDataSet, GainSchedFittingSpecs)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.Identify*
+  name: Identify
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.html#TimeSeriesAnalysis_Dynamic_GainSchedIdentifier_Identify_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.Identify
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.Identify
+  nameWithType: GainSchedIdentifier.Identify
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.IdentifyGainsForGivenThresholds(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs)
+  name: IdentifyGainsForGivenThresholds(UnitDataSet, GainSchedFittingSpecs)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.html#TimeSeriesAnalysis_Dynamic_GainSchedIdentifier_IdentifyGainsForGivenThresholds_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_GainSchedFittingSpecs_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.IdentifyGainsForGivenThresholds(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.IdentifyGainsForGivenThresholds(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.GainSchedFittingSpecs)
+  nameWithType: GainSchedIdentifier.IdentifyGainsForGivenThresholds(UnitDataSet, GainSchedFittingSpecs)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.IdentifyGainsForGivenThresholds*
+  name: IdentifyGainsForGivenThresholds
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.html#TimeSeriesAnalysis_Dynamic_GainSchedIdentifier_IdentifyGainsForGivenThresholds_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.IdentifyGainsForGivenThresholds
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.IdentifyGainsForGivenThresholds
+  nameWithType: GainSchedIdentifier.IdentifyGainsForGivenThresholds
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings
+  name: GainSchedIdentWarnings
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings
+  nameWithType: GainSchedIdentWarnings
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains
+  name: InsufficientExcitationBetweenEachThresholdToBeCertainOfGains
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.html#TimeSeriesAnalysis_Dynamic_GainSchedIdentWarnings_InsufficientExcitationBetweenEachThresholdToBeCertainOfGains
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains
+  nameWithType: GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.Nothing
+  name: Nothing
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.html#TimeSeriesAnalysis_Dynamic_GainSchedIdentWarnings_Nothing
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.Nothing
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.Nothing
+  nameWithType: GainSchedIdentWarnings.Nothing
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.UnableToIdentifySomeSubmodels
+  name: UnableToIdentifySomeSubmodels
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.html#TimeSeriesAnalysis_Dynamic_GainSchedIdentWarnings_UnableToIdentifySomeSubmodels
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.UnableToIdentifySomeSubmodels
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.UnableToIdentifySomeSubmodels
+  nameWithType: GainSchedIdentWarnings.UnableToIdentifySomeSubmodels
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel
+  name: GainSchedModel
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedModel
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel
+  nameWithType: GainSchedModel
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedParameters,System.String)
+  name: GainSchedModel(GainSchedParameters, String)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel__ctor_TimeSeriesAnalysis_Dynamic_GainSchedParameters_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedParameters,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GainSchedModel(TimeSeriesAnalysis.Dynamic.GainSchedParameters, System.String)
+  nameWithType: GainSchedModel.GainSchedModel(GainSchedParameters, String)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedParameters,TimeSeriesAnalysis.Dynamic.GainSchedDataSet,System.String)
+  name: GainSchedModel(GainSchedParameters, GainSchedDataSet, String)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel__ctor_TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeSeriesAnalysis_Dynamic_GainSchedDataSet_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedParameters,TimeSeriesAnalysis.Dynamic.GainSchedDataSet,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GainSchedModel(TimeSeriesAnalysis.Dynamic.GainSchedParameters, TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.String)
+  nameWithType: GainSchedModel.GainSchedModel(GainSchedParameters, GainSchedDataSet, String)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor*
+  name: GainSchedModel
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GainSchedModel
+  nameWithType: GainSchedModel.GainSchedModel
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet
+  name: GetFittedDataSet()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetFittedDataSet
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet()
+  nameWithType: GainSchedModel.GetFittedDataSet()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet*
+  name: GetFittedDataSet
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetFittedDataSet_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetFittedDataSet
+  nameWithType: GainSchedModel.GetFittedDataSet
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector
+  name: GetLengthOfInputVector()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetLengthOfInputVector
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector()
+  nameWithType: GainSchedModel.GetLengthOfInputVector()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector*
+  name: GetLengthOfInputVector
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetLengthOfInputVector_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetLengthOfInputVector
+  nameWithType: GainSchedModel.GetLengthOfInputVector
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters
+  name: GetModelParameters()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetModelParameters
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters()
+  nameWithType: GainSchedModel.GetModelParameters()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters*
+  name: GetModelParameters
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetModelParameters_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetModelParameters
+  nameWithType: GainSchedModel.GetModelParameters
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType
+  name: GetOutputSignalType()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetOutputSignalType
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType()
+  nameWithType: GainSchedModel.GetOutputSignalType()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType*
+  name: GetOutputSignalType
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetOutputSignalType_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetOutputSignalType
+  nameWithType: GainSchedModel.GetOutputSignalType
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name: GetSteadyStateInput(Double, Int32, Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateInput_System_Double_System_Int32_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput(System.Double,System.Int32,System.Double[])
+  name.vb: GetSteadyStateInput(Double, Int32, Double())
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput(System.Double, System.Int32, System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput(System.Double, System.Int32, System.Double())
+  nameWithType: GainSchedModel.GetSteadyStateInput(Double, Int32, Double[])
+  nameWithType.vb: GainSchedModel.GetSteadyStateInput(Double, Int32, Double())
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput*
+  name: GetSteadyStateInput
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateInput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateInput
+  nameWithType: GainSchedModel.GetSteadyStateInput
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput(System.Double[])
+  name: GetSteadyStateOutput(Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateOutput_System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput(System.Double[])
+  name.vb: GetSteadyStateOutput(Double())
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput(System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput(System.Double())
+  nameWithType: GainSchedModel.GetSteadyStateOutput(Double[])
+  nameWithType.vb: GainSchedModel.GetSteadyStateOutput(Double())
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput*
+  name: GetSteadyStateOutput
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_GetSteadyStateOutput_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.GetSteadyStateOutput
+  nameWithType: GainSchedModel.GetSteadyStateOutput
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable(System.String@)
+  name: IsModelSimulatable(out String)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_IsModelSimulatable_System_String__
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable(System.String@)
+  name.vb: IsModelSimulatable(ByRef String)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable(out System.String)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable(ByRef System.String)
+  nameWithType: GainSchedModel.IsModelSimulatable(out String)
+  nameWithType.vb: GainSchedModel.IsModelSimulatable(ByRef String)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable*
+  name: IsModelSimulatable
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_IsModelSimulatable_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.IsModelSimulatable
+  nameWithType: GainSchedModel.IsModelSimulatable
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate(System.Double[],System.Double,System.Double)
+  name: Iterate(Double[], Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_Iterate_System_Double___System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate(System.Double[],System.Double,System.Double)
+  name.vb: Iterate(Double(), Double, Double)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate(System.Double[], System.Double, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate(System.Double(), System.Double, System.Double)
+  nameWithType: GainSchedModel.Iterate(Double[], Double, Double)
+  nameWithType.vb: GainSchedModel.Iterate(Double(), Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate*
+  name: Iterate
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_Iterate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.Iterate
+  nameWithType: GainSchedModel.Iterate
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.modelParameters
+  name: modelParameters
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_modelParameters
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedModel.modelParameters
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.modelParameters
+  nameWithType: GainSchedModel.modelParameters
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet(TimeSeriesAnalysis.Dynamic.GainSchedDataSet)
+  name: SetFittedDataSet(GainSchedDataSet)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_SetFittedDataSet_TimeSeriesAnalysis_Dynamic_GainSchedDataSet_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet(TimeSeriesAnalysis.Dynamic.GainSchedDataSet)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet(TimeSeriesAnalysis.Dynamic.GainSchedDataSet)
+  nameWithType: GainSchedModel.SetFittedDataSet(GainSchedDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet*
+  name: SetFittedDataSet
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_SetFittedDataSet_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetFittedDataSet
+  nameWithType: GainSchedModel.SetFittedDataSet
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters(TimeSeriesAnalysis.Dynamic.GainSchedParameters)
+  name: SetModelParameters(GainSchedParameters)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_SetModelParameters_TimeSeriesAnalysis_Dynamic_GainSchedParameters_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters(TimeSeriesAnalysis.Dynamic.GainSchedParameters)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters(TimeSeriesAnalysis.Dynamic.GainSchedParameters)
+  nameWithType: GainSchedModel.SetModelParameters(GainSchedParameters)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters*
+  name: SetModelParameters
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_SetModelParameters_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.SetModelParameters
+  nameWithType: GainSchedModel.SetModelParameters
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString
+  name: ToString()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_ToString
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString()
+  nameWithType: GainSchedModel.ToString()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString*
+  name: ToString
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_ToString_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.ToString
+  nameWithType: GainSchedModel.ToString
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart(System.Double[],System.Double)
+  name: WarmStart(Double[], Double)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_WarmStart_System_Double___System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart(System.Double[],System.Double)
+  name.vb: WarmStart(Double(), Double)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart(System.Double[], System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart(System.Double(), System.Double)
+  nameWithType: GainSchedModel.WarmStart(Double[], Double)
+  nameWithType.vb: GainSchedModel.WarmStart(Double(), Double)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart*
+  name: WarmStart
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedModel.html#TimeSeriesAnalysis_Dynamic_GainSchedModel_WarmStart_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedModel.WarmStart
+  nameWithType: GainSchedModel.WarmStart
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters
+  name: GainSchedParameters
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedParameters
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters
+  nameWithType: GainSchedParameters
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.#ctor
+  name: GainSchedParameters()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters__ctor
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedParameters.#ctor
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GainSchedParameters()
+  nameWithType: GainSchedParameters.GainSchedParameters()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.#ctor*
+  name: GainSchedParameters
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GainSchedParameters
+  nameWithType: GainSchedParameters.GainSchedParameters
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.AddWarning(TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings)
+  name: AddWarning(GainSchedIdentWarnings)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_AddWarning_TimeSeriesAnalysis_Dynamic_GainSchedIdentWarnings_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedParameters.AddWarning(TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.AddWarning(TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings)
+  nameWithType: GainSchedParameters.AddWarning(GainSchedIdentWarnings)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.AddWarning*
+  name: AddWarning
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_AddWarning_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.AddWarning
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.AddWarning
+  nameWithType: GainSchedParameters.AddWarning
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Bias
+  name: Bias
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_Bias
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.Bias
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Bias
+  nameWithType: GainSchedParameters.Bias
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Bias*
+  name: Bias
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_Bias_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.Bias
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Bias
+  nameWithType: GainSchedParameters.Bias
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.BiasUnc
+  name: BiasUnc
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_BiasUnc
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.BiasUnc
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.BiasUnc
+  nameWithType: GainSchedParameters.BiasUnc
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.BiasUnc*
+  name: BiasUnc
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_BiasUnc_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.BiasUnc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.BiasUnc
+  nameWithType: GainSchedParameters.BiasUnc
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.CreateCopy
+  name: CreateCopy()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_CreateCopy
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedParameters.CreateCopy
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.CreateCopy()
+  nameWithType: GainSchedParameters.CreateCopy()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.CreateCopy*
+  name: CreateCopy
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_CreateCopy_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.CreateCopy
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.CreateCopy
+  nameWithType: GainSchedParameters.CreateCopy
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.FittingSpecs
+  name: FittingSpecs
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_FittingSpecs
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedParameters.FittingSpecs
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.FittingSpecs
+  nameWithType: GainSchedParameters.FittingSpecs
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GainSchedParameterIndex
+  name: GainSchedParameterIndex
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GainSchedParameterIndex
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GainSchedParameterIndex
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GainSchedParameterIndex
+  nameWithType: GainSchedParameters.GainSchedParameterIndex
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetNumInputs
+  name: GetNumInputs()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetNumInputs
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetNumInputs
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetNumInputs()
+  nameWithType: GainSchedParameters.GetNumInputs()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetNumInputs*
+  name: GetNumInputs
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetNumInputs_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetNumInputs
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetNumInputs
+  nameWithType: GainSchedParameters.GetNumInputs
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGain(System.Int32)
+  name: GetTotalCombinedProcessGain(Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetTotalCombinedProcessGain_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGain(System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGain(System.Int32)
+  nameWithType: GainSchedParameters.GetTotalCombinedProcessGain(Int32)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGain*
+  name: GetTotalCombinedProcessGain
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetTotalCombinedProcessGain_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGain
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGain
+  nameWithType: GainSchedParameters.GetTotalCombinedProcessGain
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGainUncertainty(System.Int32)
+  name: GetTotalCombinedProcessGainUncertainty(Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetTotalCombinedProcessGainUncertainty_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGainUncertainty(System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGainUncertainty(System.Int32)
+  nameWithType: GainSchedParameters.GetTotalCombinedProcessGainUncertainty(Int32)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGainUncertainty*
+  name: GetTotalCombinedProcessGainUncertainty
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetTotalCombinedProcessGainUncertainty_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGainUncertainty
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetTotalCombinedProcessGainUncertainty
+  nameWithType: GainSchedParameters.GetTotalCombinedProcessGainUncertainty
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetWarningList
+  name: GetWarningList()
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetWarningList
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetWarningList
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetWarningList()
+  nameWithType: GainSchedParameters.GetWarningList()
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetWarningList*
+  name: GetWarningList
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_GetWarningList_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetWarningList
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.GetWarningList
+  nameWithType: GainSchedParameters.GetWarningList
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGains
+  name: LinearGains
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_LinearGains
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGains
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGains
+  nameWithType: GainSchedParameters.LinearGains
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGains*
+  name: LinearGains
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_LinearGains_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGains
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGains
+  nameWithType: GainSchedParameters.LinearGains
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainThresholds
+  name: LinearGainThresholds
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_LinearGainThresholds
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainThresholds
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainThresholds
+  nameWithType: GainSchedParameters.LinearGainThresholds
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainThresholds*
+  name: LinearGainThresholds
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_LinearGainThresholds_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainThresholds
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainThresholds
+  nameWithType: GainSchedParameters.LinearGainThresholds
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainUnc
+  name: LinearGainUnc
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_LinearGainUnc
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainUnc
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainUnc
+  nameWithType: GainSchedParameters.LinearGainUnc
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainUnc*
+  name: LinearGainUnc
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_LinearGainUnc_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainUnc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.LinearGainUnc
+  nameWithType: GainSchedParameters.LinearGainUnc
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstant_s
+  name: TimeConstant_s
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeConstant_s
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstant_s
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstant_s
+  nameWithType: GainSchedParameters.TimeConstant_s
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstant_s*
+  name: TimeConstant_s
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeConstant_s_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstant_s
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstant_s
+  nameWithType: GainSchedParameters.TimeConstant_s
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantThresholds
+  name: TimeConstantThresholds
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeConstantThresholds
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantThresholds
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantThresholds
+  nameWithType: GainSchedParameters.TimeConstantThresholds
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantThresholds*
+  name: TimeConstantThresholds
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeConstantThresholds_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantThresholds
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantThresholds
+  nameWithType: GainSchedParameters.TimeConstantThresholds
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantUnc_s
+  name: TimeConstantUnc_s
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeConstantUnc_s
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantUnc_s
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantUnc_s
+  nameWithType: GainSchedParameters.TimeConstantUnc_s
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantUnc_s*
+  name: TimeConstantUnc_s
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeConstantUnc_s_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantUnc_s
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeConstantUnc_s
+  nameWithType: GainSchedParameters.TimeConstantUnc_s
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeDelay_s
+  name: TimeDelay_s
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeDelay_s
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeDelay_s
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeDelay_s
+  nameWithType: GainSchedParameters.TimeDelay_s
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeDelay_s*
+  name: TimeDelay_s
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_TimeDelay_s_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeDelay_s
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.TimeDelay_s
+  nameWithType: GainSchedParameters.TimeDelay_s
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.U0
+  name: U0
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_U0
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.U0
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.U0
+  nameWithType: GainSchedParameters.U0
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.U0*
+  name: U0
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_U0_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.U0
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.U0
+  nameWithType: GainSchedParameters.U0
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.UNorm
+  name: UNorm
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_UNorm
+  commentId: P:TimeSeriesAnalysis.Dynamic.GainSchedParameters.UNorm
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.UNorm
+  nameWithType: GainSchedParameters.UNorm
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.UNorm*
+  name: UNorm
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_UNorm_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedParameters.UNorm
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.UNorm
+  nameWithType: GainSchedParameters.UNorm
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Y_max
+  name: Y_max
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_Y_max
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedParameters.Y_max
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Y_max
+  nameWithType: GainSchedParameters.Y_max
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Y_min
+  name: Y_min
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedParameters.html#TimeSeriesAnalysis_Dynamic_GainSchedParameters_Y_min
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedParameters.Y_min
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedParameters.Y_min
+  nameWithType: GainSchedParameters.Y_min
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator
+  name: GainSchedSimulator
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedSimulator
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator
+  nameWithType: GainSchedSimulator
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedModel)
+  name: GainSchedSimulator(GainSchedModel)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator__ctor_TimeSeriesAnalysis_Dynamic_GainSchedModel_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedModel)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.GainSchedSimulator(TimeSeriesAnalysis.Dynamic.GainSchedModel)
+  nameWithType: GainSchedSimulator.GainSchedSimulator(GainSchedModel)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.#ctor*
+  name: GainSchedSimulator
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator__ctor_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.#ctor
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.GainSchedSimulator
+  nameWithType: GainSchedSimulator.GainSchedSimulator
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate(TimeSeriesAnalysis.Dynamic.PidModel,TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Boolean,System.Boolean)
+  name: CoSimulate(PidModel, ref GainSchedDataSet, Boolean, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator_CoSimulate_TimeSeriesAnalysis_Dynamic_PidModel_TimeSeriesAnalysis_Dynamic_GainSchedDataSet__System_Boolean_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate(TimeSeriesAnalysis.Dynamic.PidModel,TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Boolean,System.Boolean)
+  name.vb: CoSimulate(PidModel, ByRef GainSchedDataSet, Boolean, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate(TimeSeriesAnalysis.Dynamic.PidModel, ref TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.Boolean, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate(TimeSeriesAnalysis.Dynamic.PidModel, ByRef TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.Boolean, System.Boolean)
+  nameWithType: GainSchedSimulator.CoSimulate(PidModel, ref GainSchedDataSet, Boolean, Boolean)
+  nameWithType.vb: GainSchedSimulator.CoSimulate(PidModel, ByRef GainSchedDataSet, Boolean, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate*
+  name: CoSimulate
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator_CoSimulate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate
+  nameWithType: GainSchedSimulator.CoSimulate
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate(TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Boolean,System.Boolean)
+  name: Simulate(ref GainSchedDataSet, Boolean, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator_Simulate_TimeSeriesAnalysis_Dynamic_GainSchedDataSet__System_Boolean_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate(TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Boolean,System.Boolean)
+  name.vb: Simulate(ByRef GainSchedDataSet, Boolean, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate(ref TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.Boolean, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate(ByRef TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.Boolean, System.Boolean)
+  nameWithType: GainSchedSimulator.Simulate(ref GainSchedDataSet, Boolean, Boolean)
+  nameWithType.vb: GainSchedSimulator.Simulate(ByRef GainSchedDataSet, Boolean, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate*
+  name: Simulate
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator_Simulate_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate
+  nameWithType: GainSchedSimulator.Simulate
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas(TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Double)
+  name: SimulateYmeas(ref GainSchedDataSet, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator_SimulateYmeas_TimeSeriesAnalysis_Dynamic_GainSchedDataSet__System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas(TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Double)
+  name.vb: SimulateYmeas(ByRef GainSchedDataSet, Double)
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas(ref TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.Double)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas(ByRef TimeSeriesAnalysis.Dynamic.GainSchedDataSet, System.Double)
+  nameWithType: GainSchedSimulator.SimulateYmeas(ref GainSchedDataSet, Double)
+  nameWithType.vb: GainSchedSimulator.SimulateYmeas(ByRef GainSchedDataSet, Double)
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas*
+  name: SimulateYmeas
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedSimulator.html#TimeSeriesAnalysis_Dynamic_GainSchedSimulator_SimulateYmeas_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas
+  nameWithType: GainSchedSimulator.SimulateYmeas
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedWarnings
+  name: GainSchedWarnings
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedWarnings.html
+  commentId: T:TimeSeriesAnalysis.Dynamic.GainSchedWarnings
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedWarnings
+  nameWithType: GainSchedWarnings
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedWarnings.FailedToInitializeGainSchedModel
+  name: FailedToInitializeGainSchedModel
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedWarnings.html#TimeSeriesAnalysis_Dynamic_GainSchedWarnings_FailedToInitializeGainSchedModel
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedWarnings.FailedToInitializeGainSchedModel
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedWarnings.FailedToInitializeGainSchedModel
+  nameWithType: GainSchedWarnings.FailedToInitializeGainSchedModel
+- uid: TimeSeriesAnalysis.Dynamic.GainSchedWarnings.Nothing
+  name: Nothing
+  href: api/TimeSeriesAnalysis.Dynamic.GainSchedWarnings.html#TimeSeriesAnalysis_Dynamic_GainSchedWarnings_Nothing
+  commentId: F:TimeSeriesAnalysis.Dynamic.GainSchedWarnings.Nothing
+  fullName: TimeSeriesAnalysis.Dynamic.GainSchedWarnings.Nothing
+  nameWithType: GainSchedWarnings.Nothing
 - uid: TimeSeriesAnalysis.Dynamic.INDEX
   name: INDEX
   href: api/TimeSeriesAnalysis.Dynamic.INDEX.html
@@ -1197,6 +2468,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputID
   nameWithType: ISimulatableModel.GetOutputID
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputIdentID
+  name: GetOutputIdentID()
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetOutputIdentID
+  commentId: M:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputIdentID
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputIdentID()
+  nameWithType: ISimulatableModel.GetOutputIdentID()
+- uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputIdentID*
+  name: GetOutputIdentID
+  href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetOutputIdentID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputIdentID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputIdentID
+  nameWithType: ISimulatableModel.GetOutputIdentID
 - uid: TimeSeriesAnalysis.Dynamic.ISimulatableModel.GetOutputSignalType
   name: GetOutputSignalType()
   href: api/TimeSeriesAnalysis.Dynamic.ISimulatableModel.html#TimeSeriesAnalysis_Dynamic_ISimulatableModel_GetOutputSignalType
@@ -1357,6 +2641,18 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.AddSignalToOutput
   nameWithType: ModelBaseClass.AddSignalToOutput
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.color
+  name: color
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_color
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.color
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.color
+  nameWithType: ModelBaseClass.color
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.comment
+  name: comment
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_comment
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.comment
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.comment
+  nameWithType: ModelBaseClass.comment
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetAdditiveInputIDs
   name: GetAdditiveInputIDs()
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetAdditiveInputIDs
@@ -1435,6 +2731,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputID
   nameWithType: ModelBaseClass.GetOutputID
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID
+  name: GetOutputIdentID()
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputIdentID
+  commentId: M:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID()
+  nameWithType: ModelBaseClass.GetOutputIdentID()
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID*
+  name: GetOutputIdentID
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputIdentID_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID
+  nameWithType: ModelBaseClass.GetOutputIdentID
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputSignalType
   name: GetOutputSignalType()
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputSignalType
@@ -1486,6 +2795,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputID
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputID
   nameWithType: ModelBaseClass.outputID
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputIdentID
+  name: outputIdentID
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_outputIdentID
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputIdentID
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputIdentID
+  nameWithType: ModelBaseClass.outputIdentID
 - uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.processModelType
   name: processModelType
   href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_processModelType
@@ -1547,6 +2862,18 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.SetProcessModelType
   nameWithType: ModelBaseClass.SetProcessModelType
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.x
+  name: x
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_x
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.x
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.x
+  nameWithType: ModelBaseClass.x
+- uid: TimeSeriesAnalysis.Dynamic.ModelBaseClass.y
+  name: y
+  href: api/TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_y
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelBaseClass.y
+  fullName: TimeSeriesAnalysis.Dynamic.ModelBaseClass.y
+  nameWithType: ModelBaseClass.y
 - uid: TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass
   name: ModelParametersBaseClass
   href: api/TimeSeriesAnalysis.Dynamic.ModelParametersBaseClass.html
@@ -1578,6 +2905,18 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.ModelType.Disturbance
   fullName: TimeSeriesAnalysis.Dynamic.ModelType.Disturbance
   nameWithType: ModelType.Disturbance
+- uid: TimeSeriesAnalysis.Dynamic.ModelType.Divide
+  name: Divide
+  href: api/TimeSeriesAnalysis.Dynamic.ModelType.html#TimeSeriesAnalysis_Dynamic_ModelType_Divide
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelType.Divide
+  fullName: TimeSeriesAnalysis.Dynamic.ModelType.Divide
+  nameWithType: ModelType.Divide
+- uid: TimeSeriesAnalysis.Dynamic.ModelType.GainSchedModel
+  name: GainSchedModel
+  href: api/TimeSeriesAnalysis.Dynamic.ModelType.html#TimeSeriesAnalysis_Dynamic_ModelType_GainSchedModel
+  commentId: F:TimeSeriesAnalysis.Dynamic.ModelType.GainSchedModel
+  fullName: TimeSeriesAnalysis.Dynamic.ModelType.GainSchedModel
+  nameWithType: ModelType.GainSchedModel
 - uid: TimeSeriesAnalysis.Dynamic.ModelType.PID
   name: PID
   href: api/TimeSeriesAnalysis.Dynamic.ModelType.html#TimeSeriesAnalysis_Dynamic_ModelType_PID
@@ -3343,6 +4682,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.ConnectSignalToInput
   nameWithType: PlantSimulator.ConnectSignalToInput
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.date
+  name: date
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_date
+  commentId: P:TimeSeriesAnalysis.Dynamic.PlantSimulator.date
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.date
+  nameWithType: PlantSimulator.date
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.date*
+  name: date
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_date_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.PlantSimulator.date
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulator.date
+  nameWithType: PlantSimulator.date
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulator.externalInputSignalIDs
   name: externalInputSignalIDs
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulator.html#TimeSeriesAnalysis_Dynamic_PlantSimulator_externalInputSignalIDs
@@ -3548,15 +4900,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.PlantSimulatorInitalizer
   nameWithType: PlantSimulatorInitalizer.PlantSimulatorInitalizer
-- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(TimeSeriesAnalysis.TimeSeriesDataSet@,TimeSeriesAnalysis.TimeSeriesDataSet@)
-  name: ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet, ref TimeSeriesDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyStateAndEstimateDisturbances_TimeSeriesAnalysis_TimeSeriesDataSet__TimeSeriesAnalysis_TimeSeriesDataSet__
-  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(TimeSeriesAnalysis.TimeSeriesDataSet@,TimeSeriesAnalysis.TimeSeriesDataSet@)
-  name.vb: ToSteadyStateAndEstimateDisturbances(ByRef TimeSeriesDataSet, ByRef TimeSeriesDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ref TimeSeriesAnalysis.TimeSeriesDataSet, ref TimeSeriesAnalysis.TimeSeriesDataSet)
-  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ByRef TimeSeriesAnalysis.TimeSeriesDataSet, ByRef TimeSeriesAnalysis.TimeSeriesDataSet)
-  nameWithType: PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet, ref TimeSeriesDataSet)
-  nameWithType.vb: PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ByRef TimeSeriesDataSet, ByRef TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(TimeSeriesAnalysis.TimeSeriesDataSet@,TimeSeriesAnalysis.TimeSeriesDataSet@,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})
+  name: ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet, ref TimeSeriesDataSet, Dictionary<String, List<String>>)
+  href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyStateAndEstimateDisturbances_TimeSeriesAnalysis_TimeSeriesDataSet__TimeSeriesAnalysis_TimeSeriesDataSet__System_Collections_Generic_Dictionary_System_String_System_Collections_Generic_List_System_String___
+  commentId: M:TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(TimeSeriesAnalysis.TimeSeriesDataSet@,TimeSeriesAnalysis.TimeSeriesDataSet@,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})
+  name.vb: ToSteadyStateAndEstimateDisturbances(ByRef TimeSeriesDataSet, ByRef TimeSeriesDataSet, Dictionary(Of String, List(Of String)))
+  fullName: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ref TimeSeriesAnalysis.TimeSeriesDataSet, ref TimeSeriesAnalysis.TimeSeriesDataSet, System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.List<System.String>>)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ByRef TimeSeriesAnalysis.TimeSeriesDataSet, ByRef TimeSeriesAnalysis.TimeSeriesDataSet, System.Collections.Generic.Dictionary(Of System.String, System.Collections.Generic.List(Of System.String)))
+  nameWithType: PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet, ref TimeSeriesDataSet, Dictionary<String, List<String>>)
+  nameWithType.vb: PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances(ByRef TimeSeriesDataSet, ByRef TimeSeriesDataSet, Dictionary(Of String, List(Of String)))
 - uid: TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.ToSteadyStateAndEstimateDisturbances*
   name: ToSteadyStateAndEstimateDisturbances
   href: api/TimeSeriesAnalysis.Dynamic.PlantSimulatorInitalizer.html#TimeSeriesAnalysis_Dynamic_PlantSimulatorInitalizer_ToSteadyStateAndEstimateDisturbances_
@@ -4011,6 +5363,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.D
   nameWithType: UnitDataSet.D
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.DetermineIndicesToIgnore(TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  name: DetermineIndicesToIgnore(FittingSpecs)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_DetermineIndicesToIgnore_TimeSeriesAnalysis_Dynamic_FittingSpecs_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.DetermineIndicesToIgnore(TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.DetermineIndicesToIgnore(TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  nameWithType: UnitDataSet.DetermineIndicesToIgnore(FittingSpecs)
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.DetermineIndicesToIgnore*
+  name: DetermineIndicesToIgnore
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_DetermineIndicesToIgnore_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitDataSet.DetermineIndicesToIgnore
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.DetermineIndicesToIgnore
+  nameWithType: UnitDataSet.DetermineIndicesToIgnore
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.GetAverageU
   name: GetAverageU()
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_GetAverageU
@@ -4082,6 +5447,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.ProcessName
   nameWithType: UnitDataSet.ProcessName
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double[],System.Double[])
+  name: SetInputUFitMaxAndMin(Double[], Double[])
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SetInputUFitMaxAndMin_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double[],System.Double[])
+  name.vb: SetInputUFitMaxAndMin(Double(), Double())
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double(), System.Double())
+  nameWithType: UnitDataSet.SetInputUFitMaxAndMin(Double[], Double[])
+  nameWithType.vb: UnitDataSet.SetInputUFitMaxAndMin(Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin*
+  name: SetInputUFitMaxAndMin
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SetInputUFitMaxAndMin_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin
+  nameWithType: UnitDataSet.SetInputUFitMaxAndMin
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.Times
   name: Times
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_Times
@@ -4179,6 +5560,12 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.UnitdentWarnings
   fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings
   nameWithType: UnitdentWarnings
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima
+  name: ClosedLoopEst_GlobalSearchFailedToFindLocalMinima
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ClosedLoopEst_GlobalSearchFailedToFindLocalMinima
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima
+  nameWithType: UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima
 - uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.ConstantInputU
   name: ConstantInputU
   href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_ConstantInputU
@@ -4197,6 +5584,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DataSetVeryShortComparedtoTMax
   fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DataSetVeryShortComparedtoTMax
   nameWithType: UnitdentWarnings.DataSetVeryShortComparedtoTMax
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DynamicModelEstimationFailed
+  name: DynamicModelEstimationFailed
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_DynamicModelEstimationFailed
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DynamicModelEstimationFailed
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DynamicModelEstimationFailed
+  nameWithType: UnitdentWarnings.DynamicModelEstimationFailed
 - uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.Nothing
   name: Nothing
   href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_Nothing
@@ -4269,28 +5662,15 @@ references:
   commentId: T:TimeSeriesAnalysis.Dynamic.UnitIdentifier
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier
   nameWithType: UnitIdentifier
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor
-  name: UnitIdentifier()
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier__ctor
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.UnitIdentifier()
-  nameWithType: UnitIdentifier.UnitIdentifier()
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor*
-  name: UnitIdentifier
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier__ctor_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitIdentifier.#ctor
-  isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.UnitIdentifier
-  nameWithType: UnitIdentifier.UnitIdentifier
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name: Identify(ref UnitDataSet, Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name.vb: Identify(ByRef UnitDataSet, Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double(), System.Double())
-  nameWithType: UnitIdentifier.Identify(ref UnitDataSet, Double[], Double[])
-  nameWithType.vb: UnitIdentifier.Identify(ByRef UnitDataSet, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name: Identify(ref UnitDataSet, FittingSpecs, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name.vb: Identify(ByRef UnitDataSet, FittingSpecs, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  nameWithType: UnitIdentifier.Identify(ref UnitDataSet, FittingSpecs, Boolean)
+  nameWithType.vb: UnitIdentifier.Identify(ByRef UnitDataSet, FittingSpecs, Boolean)
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify*
   name: Identify
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_
@@ -4298,15 +5678,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify
   nameWithType: UnitIdentifier.Identify
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
-  name: IdentifyLinear(ref UnitDataSet, Boolean, Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Boolean_System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
-  name.vb: IdentifyLinear(ByRef UnitDataSet, Boolean, Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double(), System.Double())
-  nameWithType: UnitIdentifier.IdentifyLinear(ref UnitDataSet, Boolean, Double[], Double[])
-  nameWithType.vb: UnitIdentifier.IdentifyLinear(ByRef UnitDataSet, Boolean, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name: IdentifyLinear(ref UnitDataSet, FittingSpecs, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name.vb: IdentifyLinear(ByRef UnitDataSet, FittingSpecs, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  nameWithType: UnitIdentifier.IdentifyLinear(ref UnitDataSet, FittingSpecs, Boolean)
+  nameWithType.vb: UnitIdentifier.IdentifyLinear(ByRef UnitDataSet, FittingSpecs, Boolean)
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear*
   name: IdentifyLinear
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinear_
@@ -4314,15 +5694,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinear
   nameWithType: UnitIdentifier.IdentifyLinear
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
-  name: IdentifyLinearAndStatic(ref UnitDataSet, Boolean, Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Boolean_System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Boolean,System.Double[],System.Double[])
-  name.vb: IdentifyLinearAndStatic(ByRef UnitDataSet, Boolean, Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Boolean, System.Double(), System.Double())
-  nameWithType: UnitIdentifier.IdentifyLinearAndStatic(ref UnitDataSet, Boolean, Double[], Double[])
-  nameWithType.vb: UnitIdentifier.IdentifyLinearAndStatic(ByRef UnitDataSet, Boolean, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name: IdentifyLinearAndStatic(ref UnitDataSet, FittingSpecs, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name.vb: IdentifyLinearAndStatic(ByRef UnitDataSet, FittingSpecs, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  nameWithType: UnitIdentifier.IdentifyLinearAndStatic(ref UnitDataSet, FittingSpecs, Boolean)
+  nameWithType.vb: UnitIdentifier.IdentifyLinearAndStatic(ByRef UnitDataSet, FittingSpecs, Boolean)
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic*
   name: IdentifyLinearAndStatic
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStatic_
@@ -4330,15 +5710,60 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStatic
   nameWithType: UnitIdentifier.IdentifyLinearAndStatic
-- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name: IdentifyStatic(ref UnitDataSet, Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,System.Double[],System.Double[])
-  name.vb: IdentifyStatic(ByRef UnitDataSet, Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Double(), System.Double())
-  nameWithType: UnitIdentifier.IdentifyStatic(ref UnitDataSet, Double[], Double[])
-  nameWithType.vb: UnitIdentifier.IdentifyStatic(ByRef UnitDataSet, Double(), Double())
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name: IdentifyLinearAndStaticDiff(ref UnitDataSet, FittingSpecs, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticDiff_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name.vb: IdentifyLinearAndStaticDiff(ByRef UnitDataSet, FittingSpecs, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  nameWithType: UnitIdentifier.IdentifyLinearAndStaticDiff(ref UnitDataSet, FittingSpecs, Boolean)
+  nameWithType.vb: UnitIdentifier.IdentifyLinearAndStaticDiff(ByRef UnitDataSet, FittingSpecs, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff*
+  name: IdentifyLinearAndStaticDiff
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticDiff_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticDiff
+  nameWithType: UnitIdentifier.IdentifyLinearAndStaticDiff
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Int32,System.Double,System.Double,System.Double)
+  name: IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet, Int32, Double, Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticWhileKeepingLinearGainFixed_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_Int32_System_Double_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Int32,System.Double,System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(TimeSeriesAnalysis.Dynamic.UnitDataSet, System.Int32, System.Double, System.Double, System.Double)
+  nameWithType: UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet, Int32, Double, Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed*
+  name: IdentifyLinearAndStaticWhileKeepingLinearGainFixed
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearAndStaticWhileKeepingLinearGainFixed_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed
+  nameWithType: UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name: IdentifyLinearDiff(ref UnitDataSet, FittingSpecs, Boolean)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearDiff_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)
+  name.vb: IdentifyLinearDiff(ByRef UnitDataSet, FittingSpecs, Boolean)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs, System.Boolean)
+  nameWithType: UnitIdentifier.IdentifyLinearDiff(ref UnitDataSet, FittingSpecs, Boolean)
+  nameWithType.vb: UnitIdentifier.IdentifyLinearDiff(ByRef UnitDataSet, FittingSpecs, Boolean)
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff*
+  name: IdentifyLinearDiff
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearDiff_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff
+  nameWithType: UnitIdentifier.IdentifyLinearDiff
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  name: IdentifyStatic(ref UnitDataSet, FittingSpecs)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  name.vb: IdentifyStatic(ByRef UnitDataSet, FittingSpecs)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(ref TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic(ByRef TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.FittingSpecs)
+  nameWithType: UnitIdentifier.IdentifyStatic(ref UnitDataSet, FittingSpecs)
+  nameWithType.vb: UnitIdentifier.IdentifyStatic(ByRef UnitDataSet, FittingSpecs)
 - uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic*
   name: IdentifyStatic
   href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyStatic_
@@ -4346,6 +5771,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyStatic
   nameWithType: UnitIdentifier.IdentifyStatic
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters)
+  name: SimulateAndReEstimateBias(UnitDataSet, UnitParameters)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_SimulateAndReEstimateBias_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitParameters_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias(TimeSeriesAnalysis.Dynamic.UnitDataSet, TimeSeriesAnalysis.Dynamic.UnitParameters)
+  nameWithType: UnitIdentifier.SimulateAndReEstimateBias(UnitDataSet, UnitParameters)
+- uid: TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias*
+  name: SimulateAndReEstimateBias
+  href: api/TimeSeriesAnalysis.Dynamic.UnitIdentifier.html#TimeSeriesAnalysis_Dynamic_UnitIdentifier_SimulateAndReEstimateBias_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias
+  nameWithType: UnitIdentifier.SimulateAndReEstimateBias
 - uid: TimeSeriesAnalysis.Dynamic.UnitModel
   name: UnitModel
   href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html
@@ -4358,12 +5796,12 @@ references:
   commentId: M:TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,System.String)
   fullName: TimeSeriesAnalysis.Dynamic.UnitModel.UnitModel(TimeSeriesAnalysis.Dynamic.UnitParameters, System.String)
   nameWithType: UnitModel.UnitModel(UnitParameters, String)
-- uid: TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  name: UnitModel(UnitParameters, UnitDataSet)
-  href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html#TimeSeriesAnalysis_Dynamic_UnitModel__ctor_TimeSeriesAnalysis_Dynamic_UnitParameters_TimeSeriesAnalysis_Dynamic_UnitDataSet_
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  fullName: TimeSeriesAnalysis.Dynamic.UnitModel.UnitModel(TimeSeriesAnalysis.Dynamic.UnitParameters, TimeSeriesAnalysis.Dynamic.UnitDataSet)
-  nameWithType: UnitModel.UnitModel(UnitParameters, UnitDataSet)
+- uid: TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet,System.String)
+  name: UnitModel(UnitParameters, UnitDataSet, String)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html#TimeSeriesAnalysis_Dynamic_UnitModel__ctor_TimeSeriesAnalysis_Dynamic_UnitParameters_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_String_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet,System.String)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitModel.UnitModel(TimeSeriesAnalysis.Dynamic.UnitParameters, TimeSeriesAnalysis.Dynamic.UnitDataSet, System.String)
+  nameWithType: UnitModel.UnitModel(UnitParameters, UnitDataSet, String)
 - uid: TimeSeriesAnalysis.Dynamic.UnitModel.#ctor*
   name: UnitModel
   href: api/TimeSeriesAnalysis.Dynamic.UnitModel.html#TimeSeriesAnalysis_Dynamic_UnitModel__ctor_
@@ -4658,6 +6096,12 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.CurvatureUnc
   nameWithType: UnitParameters.CurvatureUnc
+- uid: TimeSeriesAnalysis.Dynamic.UnitParameters.FittingSpecs
+  name: FittingSpecs
+  href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_FittingSpecs
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitParameters.FittingSpecs
+  fullName: TimeSeriesAnalysis.Dynamic.UnitParameters.FittingSpecs
+  nameWithType: UnitParameters.FittingSpecs
 - uid: TimeSeriesAnalysis.Dynamic.UnitParameters.GetNumInputs
   name: GetNumInputs()
   href: api/TimeSeriesAnalysis.Dynamic.UnitParameters.html#TimeSeriesAnalysis_Dynamic_UnitParameters_GetNumInputs
@@ -4924,6 +6368,54 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.UnitWarnings.Nothing
   fullName: TimeSeriesAnalysis.Dynamic.UnitWarnings.Nothing
   nameWithType: UnitWarnings.Nothing
+- uid: TimeSeriesAnalysis.FitScore
+  name: FitScore
+  href: api/TimeSeriesAnalysis.FitScore.html
+  commentId: T:TimeSeriesAnalysis.FitScore
+  fullName: TimeSeriesAnalysis.FitScore
+  nameWithType: FitScore
+- uid: TimeSeriesAnalysis.FitScore.Calc(System.Double[],System.Double[])
+  name: Calc(Double[], Double[])
+  href: api/TimeSeriesAnalysis.FitScore.html#TimeSeriesAnalysis_FitScore_Calc_System_Double___System_Double___
+  commentId: M:TimeSeriesAnalysis.FitScore.Calc(System.Double[],System.Double[])
+  name.vb: Calc(Double(), Double())
+  fullName: TimeSeriesAnalysis.FitScore.Calc(System.Double[], System.Double[])
+  fullName.vb: TimeSeriesAnalysis.FitScore.Calc(System.Double(), System.Double())
+  nameWithType: FitScore.Calc(Double[], Double[])
+  nameWithType.vb: FitScore.Calc(Double(), Double())
+- uid: TimeSeriesAnalysis.FitScore.Calc*
+  name: Calc
+  href: api/TimeSeriesAnalysis.FitScore.html#TimeSeriesAnalysis_FitScore_Calc_
+  commentId: Overload:TimeSeriesAnalysis.FitScore.Calc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.FitScore.Calc
+  nameWithType: FitScore.Calc
+- uid: TimeSeriesAnalysis.FitScore.GetPlantWideSimulated(TimeSeriesAnalysis.Dynamic.PlantSimulator,TimeSeriesAnalysis.TimeSeriesDataSet,TimeSeriesAnalysis.TimeSeriesDataSet)
+  name: GetPlantWideSimulated(PlantSimulator, TimeSeriesDataSet, TimeSeriesDataSet)
+  href: api/TimeSeriesAnalysis.FitScore.html#TimeSeriesAnalysis_FitScore_GetPlantWideSimulated_TimeSeriesAnalysis_Dynamic_PlantSimulator_TimeSeriesAnalysis_TimeSeriesDataSet_TimeSeriesAnalysis_TimeSeriesDataSet_
+  commentId: M:TimeSeriesAnalysis.FitScore.GetPlantWideSimulated(TimeSeriesAnalysis.Dynamic.PlantSimulator,TimeSeriesAnalysis.TimeSeriesDataSet,TimeSeriesAnalysis.TimeSeriesDataSet)
+  fullName: TimeSeriesAnalysis.FitScore.GetPlantWideSimulated(TimeSeriesAnalysis.Dynamic.PlantSimulator, TimeSeriesAnalysis.TimeSeriesDataSet, TimeSeriesAnalysis.TimeSeriesDataSet)
+  nameWithType: FitScore.GetPlantWideSimulated(PlantSimulator, TimeSeriesDataSet, TimeSeriesDataSet)
+- uid: TimeSeriesAnalysis.FitScore.GetPlantWideSimulated*
+  name: GetPlantWideSimulated
+  href: api/TimeSeriesAnalysis.FitScore.html#TimeSeriesAnalysis_FitScore_GetPlantWideSimulated_
+  commentId: Overload:TimeSeriesAnalysis.FitScore.GetPlantWideSimulated
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.FitScore.GetPlantWideSimulated
+  nameWithType: FitScore.GetPlantWideSimulated
+- uid: TimeSeriesAnalysis.FitScore.GetPlantWideStored(TimeSeriesAnalysis.Dynamic.PlantSimulator)
+  name: GetPlantWideStored(PlantSimulator)
+  href: api/TimeSeriesAnalysis.FitScore.html#TimeSeriesAnalysis_FitScore_GetPlantWideStored_TimeSeriesAnalysis_Dynamic_PlantSimulator_
+  commentId: M:TimeSeriesAnalysis.FitScore.GetPlantWideStored(TimeSeriesAnalysis.Dynamic.PlantSimulator)
+  fullName: TimeSeriesAnalysis.FitScore.GetPlantWideStored(TimeSeriesAnalysis.Dynamic.PlantSimulator)
+  nameWithType: FitScore.GetPlantWideStored(PlantSimulator)
+- uid: TimeSeriesAnalysis.FitScore.GetPlantWideStored*
+  name: GetPlantWideStored
+  href: api/TimeSeriesAnalysis.FitScore.html#TimeSeriesAnalysis_FitScore_GetPlantWideStored_
+  commentId: Overload:TimeSeriesAnalysis.FitScore.GetPlantWideStored
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.FitScore.GetPlantWideStored
+  nameWithType: FitScore.GetPlantWideStored
 - uid: TimeSeriesAnalysis.HighPass
   name: HighPass
   href: api/TimeSeriesAnalysis.HighPass.html
@@ -5032,15 +6524,6 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Index.MakeIndexArray
   nameWithType: Index.MakeIndexArray
-- uid: TimeSeriesAnalysis.Index.Max(System.Double[],System.Int32,System.Int32)
-  name: Max(Double[], Int32, Int32)
-  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Max_System_Double___System_Int32_System_Int32_
-  commentId: M:TimeSeriesAnalysis.Index.Max(System.Double[],System.Int32,System.Int32)
-  name.vb: Max(Double(), Int32, Int32)
-  fullName: TimeSeriesAnalysis.Index.Max(System.Double[], System.Int32, System.Int32)
-  fullName.vb: TimeSeriesAnalysis.Index.Max(System.Double(), System.Int32, System.Int32)
-  nameWithType: Index.Max(Double[], Int32, Int32)
-  nameWithType.vb: Index.Max(Double(), Int32, Int32)
 - uid: TimeSeriesAnalysis.Index.Max(System.Int32[],System.Int32)
   name: Max(Int32[], Int32)
   href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Max_System_Int32___System_Int32_
@@ -5057,6 +6540,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Index.Max
   nameWithType: Index.Max
+- uid: TimeSeriesAnalysis.Index.Remove(System.Int32[],System.Collections.Generic.List{System.Int32})
+  name: Remove(Int32[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Remove_System_Int32___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Index.Remove(System.Int32[],System.Collections.Generic.List{System.Int32})
+  name.vb: Remove(Int32(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Index.Remove(System.Int32[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Index.Remove(System.Int32(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Index.Remove(Int32[], List<Int32>)
+  nameWithType.vb: Index.Remove(Int32(), List(Of Int32))
+- uid: TimeSeriesAnalysis.Index.Remove*
+  name: Remove
+  href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Remove_
+  commentId: Overload:TimeSeriesAnalysis.Index.Remove
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Index.Remove
+  nameWithType: Index.Remove
 - uid: TimeSeriesAnalysis.Index.Subtract(System.Int32[],System.Int32)
   name: Subtract(Int32[], Int32)
   href: api/TimeSeriesAnalysis.Index.html#TimeSeriesAnalysis_Index_Subtract_System_Int32___System_Int32_
@@ -5114,15 +6613,15 @@ references:
   commentId: M:TimeSeriesAnalysis.LowPass.Filter(System.Double,System.Double,System.Int32,System.Boolean)
   fullName: TimeSeriesAnalysis.LowPass.Filter(System.Double, System.Double, System.Int32, System.Boolean)
   nameWithType: LowPass.Filter(Double, Double, Int32, Boolean)
-- uid: TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32)
-  name: Filter(Double[], Double, Int32)
-  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_System_Double___System_Double_System_Int32_
-  commentId: M:TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32)
-  name.vb: Filter(Double(), Double, Int32)
-  fullName: TimeSeriesAnalysis.LowPass.Filter(System.Double[], System.Double, System.Int32)
-  fullName.vb: TimeSeriesAnalysis.LowPass.Filter(System.Double(), System.Double, System.Int32)
-  nameWithType: LowPass.Filter(Double[], Double, Int32)
-  nameWithType.vb: LowPass.Filter(Double(), Double, Int32)
+- uid: TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32,System.Collections.Generic.List{System.Int32})
+  name: Filter(Double[], Double, Int32, List<Int32>)
+  href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_System_Double___System_Double_System_Int32_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.LowPass.Filter(System.Double[],System.Double,System.Int32,System.Collections.Generic.List{System.Int32})
+  name.vb: Filter(Double(), Double, Int32, List(Of Int32))
+  fullName: TimeSeriesAnalysis.LowPass.Filter(System.Double[], System.Double, System.Int32, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.LowPass.Filter(System.Double(), System.Double, System.Int32, System.Collections.Generic.List(Of System.Int32))
+  nameWithType: LowPass.Filter(Double[], Double, Int32, List<Int32>)
+  nameWithType.vb: LowPass.Filter(Double(), Double, Int32, List(Of Int32))
 - uid: TimeSeriesAnalysis.LowPass.Filter*
   name: Filter
   href: api/TimeSeriesAnalysis.LowPass.html#TimeSeriesAnalysis_LowPass_Filter_
@@ -5523,6 +7022,83 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Shared.IsPlottingEnabled
   nameWithType: Shared.IsPlottingEnabled
+- uid: TimeSeriesAnalysis.Test.SysID
+  name: TimeSeriesAnalysis.Test.SysID
+  href: api/TimeSeriesAnalysis.Test.SysID.html
+  commentId: N:TimeSeriesAnalysis.Test.SysID
+  fullName: TimeSeriesAnalysis.Test.SysID
+  nameWithType: TimeSeriesAnalysis.Test.SysID
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests
+  name: GainSchedIdentifyTests
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html
+  commentId: T:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests
+  nameWithType: GainSchedIdentifyTests
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain
+  name: GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain()
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain
+  commentId: M:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain()
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain()
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain*
+  name: GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain_
+  commentId: Overload:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_GainsNotLargerThanTheBiggestPossibleGain
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace(System.Int32,System.Double)
+  name: GainAndThreshold_LinearGainThresholdAtReasonablePlace(Int32, Double)
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_LinearGainThresholdAtReasonablePlace_System_Int32_System_Double_
+  commentId: M:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace(System.Int32,System.Double)
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace(System.Int32, System.Double)
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace(Int32, Double)
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace*
+  name: GainAndThreshold_LinearGainThresholdAtReasonablePlace
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_LinearGainThresholdAtReasonablePlace_
+  commentId: Overload:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_LinearGainThresholdAtReasonablePlace
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax(System.Int32,System.Double)
+  name: GainAndThreshold_ThresholdsWithinUminAndUmax(Int32, Double)
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_ThresholdsWithinUminAndUmax_System_Int32_System_Double_
+  commentId: M:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax(System.Int32,System.Double)
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax(System.Int32, System.Double)
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax(Int32, Double)
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax*
+  name: GainAndThreshold_ThresholdsWithinUminAndUmax
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_ThresholdsWithinUminAndUmax_
+  commentId: Overload:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_ThresholdsWithinUminAndUmax
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk(System.Double,System.Double)
+  name: GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk(Double, Double)
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk(System.Double, System.Double)
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk(Double, Double)
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk*
+  name: GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk_
+  commentId: Overload:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk
+  nameWithType: GainSchedIdentifyTests.GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned(System.Int32,System.Int32)
+  name: GainEstOnly_CorrectGainsReturned(Int32, Int32)
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainEstOnly_CorrectGainsReturned_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned(System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned(System.Int32, System.Int32)
+  nameWithType: GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned(Int32, Int32)
+- uid: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned*
+  name: GainEstOnly_CorrectGainsReturned
+  href: api/TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.html#TimeSeriesAnalysis_Test_SysID_GainSchedIdentifyTests_GainEstOnly_CorrectGainsReturned_
+  commentId: Overload:TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Test.SysID.GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned
+  nameWithType: GainSchedIdentifyTests.GainEstOnly_CorrectGainsReturned
 - uid: TimeSeriesAnalysis.TimeSeries
   name: TimeSeries
   href: api/TimeSeriesAnalysis.TimeSeries.html
@@ -5785,12 +7361,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.TimeSeriesDataSet.CreateTimestamps
   nameWithType: TimeSeriesDataSet.CreateTimestamps
-- uid: TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix
-  name: GetAsMatrix()
-  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_GetAsMatrix
-  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix
-  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix()
-  nameWithType: TimeSeriesDataSet.GetAsMatrix()
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix(System.Collections.Generic.List{System.Int32})
+  name: GetAsMatrix(List<Int32>)
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_GetAsMatrix_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix(System.Collections.Generic.List{System.Int32})
+  name.vb: GetAsMatrix(List(Of Int32))
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix(System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix(System.Collections.Generic.List(Of System.Int32))
+  nameWithType: TimeSeriesDataSet.GetAsMatrix(List<Int32>)
+  nameWithType.vb: TimeSeriesDataSet.GetAsMatrix(List(Of Int32))
 - uid: TimeSeriesAnalysis.TimeSeriesDataSet.GetAsMatrix*
   name: GetAsMatrix
   href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_GetAsMatrix_
@@ -5959,6 +7538,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.TimeSeriesDataSet.Remove
   nameWithType: TimeSeriesDataSet.Remove
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.SetIndicesToIgnore(System.Collections.Generic.List{System.Int32})
+  name: SetIndicesToIgnore(List<Int32>)
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_SetIndicesToIgnore_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.SetIndicesToIgnore(System.Collections.Generic.List{System.Int32})
+  name.vb: SetIndicesToIgnore(List(Of Int32))
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.SetIndicesToIgnore(System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.TimeSeriesDataSet.SetIndicesToIgnore(System.Collections.Generic.List(Of System.Int32))
+  nameWithType: TimeSeriesDataSet.SetIndicesToIgnore(List<Int32>)
+  nameWithType.vb: TimeSeriesDataSet.SetIndicesToIgnore(List(Of Int32))
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.SetIndicesToIgnore*
+  name: SetIndicesToIgnore
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_SetIndicesToIgnore_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeriesDataSet.SetIndicesToIgnore
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.SetIndicesToIgnore
+  nameWithType: TimeSeriesDataSet.SetIndicesToIgnore
 - uid: TimeSeriesAnalysis.TimeSeriesDataSet.SetTimeStamps(System.Collections.Generic.List{System.DateTime})
   name: SetTimeStamps(List<DateTime>)
   href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_SetTimeStamps_System_Collections_Generic_List_System_DateTime__
@@ -6001,6 +7596,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.TimeSeriesDataSet.ToCsvText
   nameWithType: TimeSeriesDataSet.ToCsvText
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.ToDict
+  name: ToDict()
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_ToDict
+  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.ToDict
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.ToDict()
+  nameWithType: TimeSeriesDataSet.ToDict()
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.ToDict*
+  name: ToDict
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_ToDict_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeriesDataSet.ToDict
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.ToDict
+  nameWithType: TimeSeriesDataSet.ToDict
 - uid: TimeSeriesAnalysis.Utility
   name: TimeSeriesAnalysis.Utility
   href: api/TimeSeriesAnalysis.Utility.html
@@ -7154,15 +8762,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Deserialize
   nameWithType: Vec.Deserialize
-- uid: TimeSeriesAnalysis.Vec.Diff(System.Double[])
-  name: Diff(Double[])
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Diff_System_Double___
-  commentId: M:TimeSeriesAnalysis.Vec.Diff(System.Double[])
-  name.vb: Diff(Double())
-  fullName: TimeSeriesAnalysis.Vec.Diff(System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Vec.Diff(System.Double())
-  nameWithType: Vec.Diff(Double[])
-  nameWithType.vb: Vec.Diff(Double())
+- uid: TimeSeriesAnalysis.Vec.Diff(System.Double[],System.Collections.Generic.List{System.Int32})
+  name: Diff(Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Diff_System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Diff(System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: Diff(Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.Diff(System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.Diff(System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.Diff(Double[], List<Int32>)
+  nameWithType.vb: Vec.Diff(Double(), List(Of Int32))
 - uid: TimeSeriesAnalysis.Vec.Diff*
   name: Diff
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Diff_
@@ -7195,15 +8803,15 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.Div
   nameWithType: Vec.Div
-- uid: TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)
-  name: FindValues(Double[], Double, VectorFindValueType)
-  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_
-  commentId: M:TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)
-  name.vb: FindValues(Double(), Double, VectorFindValueType)
-  fullName: TimeSeriesAnalysis.Vec.FindValues(System.Double[], System.Double, TimeSeriesAnalysis.VectorFindValueType)
-  fullName.vb: TimeSeriesAnalysis.Vec.FindValues(System.Double(), System.Double, TimeSeriesAnalysis.VectorFindValueType)
-  nameWithType: Vec.FindValues(Double[], Double, VectorFindValueType)
-  nameWithType.vb: Vec.FindValues(Double(), Double, VectorFindValueType)
+- uid: TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType,System.Collections.Generic.List{System.Int32})
+  name: FindValues(Double[], Double, VectorFindValueType, List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType,System.Collections.Generic.List{System.Int32})
+  name.vb: FindValues(Double(), Double, VectorFindValueType, List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.FindValues(System.Double[], System.Double, TimeSeriesAnalysis.VectorFindValueType, System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.FindValues(System.Double(), System.Double, TimeSeriesAnalysis.VectorFindValueType, System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.FindValues(Double[], Double, VectorFindValueType, List<Int32>)
+  nameWithType.vb: Vec.FindValues(Double(), Double, VectorFindValueType, List(Of Int32))
 - uid: TimeSeriesAnalysis.Vec.FindValues*
   name: FindValues
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_FindValues_
@@ -7227,6 +8835,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Vec.GetGradient
   nameWithType: Vec.GetGradient
+- uid: TimeSeriesAnalysis.Vec.GetValues(System.Double[],System.Collections.Generic.List{System.Int32})
+  name: GetValues(Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_GetValues_System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.GetValues(System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: GetValues(Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.GetValues(System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.GetValues(System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.GetValues(Double[], List<Int32>)
+  nameWithType.vb: Vec.GetValues(Double(), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec.GetValues*
+  name: GetValues
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_GetValues_
+  commentId: Overload:TimeSeriesAnalysis.Vec.GetValues
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec.GetValues
+  nameWithType: Vec.GetValues
 - uid: TimeSeriesAnalysis.Vec.IsAllNaN(System.Double[])
   name: IsAllNaN(Double[])
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_IsAllNaN_System_Double___
@@ -7268,6 +8892,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double())
   nameWithType: Vec.Max(Double[])
   nameWithType.vb: Vec.Max(Double())
+- uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Collections.Generic.List{System.Int32})
+  name: Max(Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Max(System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: Max(Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.Max(System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.Max(System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.Max(Double[], List<Int32>)
+  nameWithType.vb: Vec.Max(Double(), List(Of Int32))
 - uid: TimeSeriesAnalysis.Vec.Max(System.Double[],System.Double)
   name: Max(Double[], Double)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Max_System_Double___System_Double_
@@ -7327,6 +8960,15 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec.Min(System.Double())
   nameWithType: Vec.Min(Double[])
   nameWithType.vb: Vec.Min(Double())
+- uid: TimeSeriesAnalysis.Vec.Min(System.Double[],System.Collections.Generic.List{System.Int32})
+  name: Min(Double[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Min_System_Double___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec.Min(System.Double[],System.Collections.Generic.List{System.Int32})
+  name.vb: Min(Double(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec.Min(System.Double[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec.Min(System.Double(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec.Min(Double[], List<Int32>)
+  nameWithType.vb: Vec.Min(Double(), List(Of Int32))
 - uid: TimeSeriesAnalysis.Vec.Min(System.Double[],System.Double)
   name: Min(Double[], Double)
   href: api/TimeSeriesAnalysis.Vec.html#TimeSeriesAnalysis_Vec_Min_System_Double___System_Double_
@@ -7865,6 +9507,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetValuesAtIndices
   nameWithType: Vec<T>.GetValuesAtIndices
   nameWithType.vb: Vec(Of T).GetValuesAtIndices
+- uid: TimeSeriesAnalysis.Vec`1.GetValuesExcludingIndices(`0[],System.Collections.Generic.List{System.Int32})
+  name: GetValuesExcludingIndices(T[], List<Int32>)
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_GetValuesExcludingIndices__0___System_Collections_Generic_List_System_Int32__
+  commentId: M:TimeSeriesAnalysis.Vec`1.GetValuesExcludingIndices(`0[],System.Collections.Generic.List{System.Int32})
+  name.vb: GetValuesExcludingIndices(T(), List(Of Int32))
+  fullName: TimeSeriesAnalysis.Vec<T>.GetValuesExcludingIndices(T[], System.Collections.Generic.List<System.Int32>)
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetValuesExcludingIndices(T(), System.Collections.Generic.List(Of System.Int32))
+  nameWithType: Vec<T>.GetValuesExcludingIndices(T[], List<Int32>)
+  nameWithType.vb: Vec(Of T).GetValuesExcludingIndices(T(), List(Of Int32))
+- uid: TimeSeriesAnalysis.Vec`1.GetValuesExcludingIndices*
+  name: GetValuesExcludingIndices
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_GetValuesExcludingIndices_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.GetValuesExcludingIndices
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.GetValuesExcludingIndices
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).GetValuesExcludingIndices
+  nameWithType: Vec<T>.GetValuesExcludingIndices
+  nameWithType.vb: Vec(Of T).GetValuesExcludingIndices
 - uid: TimeSeriesAnalysis.Vec`1.Intersect(System.Collections.Generic.List{`0},System.Collections.Generic.List{`0})
   name: Intersect(List<T>, List<T>)
   href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_Intersect_System_Collections_Generic_List__0__System_Collections_Generic_List__0__
@@ -7892,6 +9552,24 @@ references:
   fullName.vb: TimeSeriesAnalysis.Vec(Of T).Intersect
   nameWithType: Vec<T>.Intersect
   nameWithType.vb: Vec(Of T).Intersect
+- uid: TimeSeriesAnalysis.Vec`1.IsConstant(`0[])
+  name: IsConstant(T[])
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_IsConstant__0___
+  commentId: M:TimeSeriesAnalysis.Vec`1.IsConstant(`0[])
+  name.vb: IsConstant(T())
+  fullName: TimeSeriesAnalysis.Vec<T>.IsConstant(T[])
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).IsConstant(T())
+  nameWithType: Vec<T>.IsConstant(T[])
+  nameWithType.vb: Vec(Of T).IsConstant(T())
+- uid: TimeSeriesAnalysis.Vec`1.IsConstant*
+  name: IsConstant
+  href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_IsConstant_
+  commentId: Overload:TimeSeriesAnalysis.Vec`1.IsConstant
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Vec<T>.IsConstant
+  fullName.vb: TimeSeriesAnalysis.Vec(Of T).IsConstant
+  nameWithType: Vec<T>.IsConstant
+  nameWithType.vb: Vec(Of T).IsConstant
 - uid: TimeSeriesAnalysis.Vec`1.ReplaceIndWithValuesPrior(System.Double[],System.Collections.Generic.List{System.Int32})
   name: ReplaceIndWithValuesPrior(Double[], List<Int32>)
   href: api/TimeSeriesAnalysis.Vec-1.html#TimeSeriesAnalysis_Vec_1_ReplaceIndWithValuesPrior_System_Double___System_Collections_Generic_List_System_Int32__
@@ -8055,6 +9733,12 @@ references:
   commentId: F:TimeSeriesAnalysis.VectorFindValueType.NaN
   fullName: TimeSeriesAnalysis.VectorFindValueType.NaN
   nameWithType: VectorFindValueType.NaN
+- uid: TimeSeriesAnalysis.VectorFindValueType.NotEqual
+  name: NotEqual
+  href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_NotEqual
+  commentId: F:TimeSeriesAnalysis.VectorFindValueType.NotEqual
+  fullName: TimeSeriesAnalysis.VectorFindValueType.NotEqual
+  nameWithType: VectorFindValueType.NotEqual
 - uid: TimeSeriesAnalysis.VectorFindValueType.NotNaN
   name: NotNaN
   href: api/TimeSeriesAnalysis.VectorFindValueType.html#TimeSeriesAnalysis_VectorFindValueType_NotNaN

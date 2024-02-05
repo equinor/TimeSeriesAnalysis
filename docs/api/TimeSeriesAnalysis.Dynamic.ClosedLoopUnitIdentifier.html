@@ -90,7 +90,7 @@ counter-acted by closed-loop (feedback)control, such as with PID-control.</p>
 information in the manipulated variable(determined by active control)
 that is inputted into the process</p>
 <p>In order to accomplish this estimation, the process model and the disturbance signal
-are estimted together.</p>
+are estimated together.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -201,7 +201,7 @@ are estimted together.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int inputIdx = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,12 +222,13 @@ are estimted together.</p>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></td>
         <td><span class="parametername">pidParams</span></td>
-        <td></td>
+        <td><p>if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">inputIdx</span></td>
-        <td><p>the index of the input</p>
+        <td><span class="parametername">pidInputIdx</span></td>
+        <td><p>the index of the PID-input to the unit model</p>
 </td>
       </tr>
     </tbody>

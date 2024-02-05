@@ -414,13 +414,13 @@ see Matrix.cs</p>
   
   
   <a id="TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_" data-uid="TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList*"></a>
-  <h4 id="TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_System_Collections_Generic_List__0____" data-uid="TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]})">CreateJaggedFromList(List&lt;T[]&gt;)</h4>
+  <h4 id="TimeSeriesAnalysis_Array2D_1_CreateJaggedFromList_System_Collections_Generic_List__0____System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Array2D`1.CreateJaggedFromList(System.Collections.Generic.List{`0[]},System.Collections.Generic.List{System.Int32})">CreateJaggedFromList(List&lt;T[]&gt;, List&lt;Int32&gt;)</h4>
   <div class="markdown level1 summary"><p>Convert a list of 1D arrays to a jagged array</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T[][] CreateJaggedFromList(List&lt;T[]&gt; listOfArrays)</code></pre>
+    <pre><code class="lang-csharp hljs">public static T[][] CreateJaggedFromList(List&lt;T[]&gt; listOfArrays, List&lt;int&gt; indicesToIgnore = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -436,6 +436,12 @@ see Matrix.cs</p>
         <td><span class="xref">System.Collections.Generic.List</span>&lt;T[]&gt;</td>
         <td><span class="parametername">listOfArrays</span></td>
         <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
+        <td><p>optionally, indices in each variable to ignore</p>
+</td>
       </tr>
     </tbody>
   </table>

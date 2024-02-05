@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class DisturbanceIdentifier
+    <title>Class FitScore
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class DisturbanceIdentifier
+    <meta name="title" content="Class FitScore
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.59.4.0">
     
@@ -78,19 +78,17 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.FitScore">
   
   
-  <h1 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier" class="text-break">Class DisturbanceIdentifier
+  <h1 id="TimeSeriesAnalysis_FitScore" data-uid="TimeSeriesAnalysis.FitScore" class="text-break">Class FitScore
   </h1>
-  <div class="markdown level0 summary"><p>An algorithm that attempts to re-create the additive output disturbance acting on
-a signal Y while PID-control attempts to counter-act the disturbance by adjusting its manipulated output u.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DisturbanceIdentifier</span></div>
+    <div class="level1"><span class="xref">FitScore</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -116,24 +114,24 @@ a signal Y while PID-control attempts to counter-act the disturbance by adjustin
       <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.html">TimeSeriesAnalysis</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_FitScore_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DisturbanceIdentifier</code></pre>
+    <pre><code class="lang-csharp hljs">public class FitScore</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_EstDisturbanceBasedOnProcessModel_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_EstDisturbanceBasedOnProcessModel_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstDisturbanceBasedOnProcessModel(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,System.Int32)">EstDisturbanceBasedOnProcessModel(UnitDataSet, UnitModel, Int32)</h4>
-  <div class="markdown level1 summary"><p>Only uses Y_meas and U in unitDataSet, i.e. does not consider feedback</p>
+  <a id="TimeSeriesAnalysis_FitScore_Calc_" data-uid="TimeSeriesAnalysis.FitScore.Calc*"></a>
+  <h4 id="TimeSeriesAnalysis_FitScore_Calc_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.FitScore.Calc(System.Double[],System.Double[])">Calc(Double[], Double[])</h4>
+  <div class="markdown level1 summary"><p>Calculate a &quot;fit score&quot; between two signals.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static DisturbanceIdResult EstDisturbanceBasedOnProcessModel(UnitDataSet unitDataSet, UnitModel unitModel, int inputIdx = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public static double Calc(double[] meas, double[] sim)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,18 +144,13 @@ a signal Y while PID-control attempts to counter-act the disturbance by adjustin
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
-        <td><span class="parametername">unitDataSet</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">meas</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
-        <td><span class="parametername">unitModel</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">inputIdx</span></td>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">sim</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -172,57 +165,47 @@ a signal Y while PID-control attempts to counter-act the disturbance by adjustin
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html">DisturbanceIdResult</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_EstimateDisturbance_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_DisturbanceIdentifier_EstimateDisturbance_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitModel_System_Int32_TimeSeriesAnalysis_Dynamic_PidParameters_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.DisturbanceIdentifier.EstimateDisturbance(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitModel,System.Int32,TimeSeriesAnalysis.Dynamic.PidParameters,System.Boolean)">EstimateDisturbance(UnitDataSet, UnitModel, Int32, PidParameters, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Estimates the disturbance time-series over a given unit data set
-given an estimate of the unit model (reference unit model) for a closed loop system.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet_raw, UnitModel unitModel, int pidInputIdx = 0, PidParameters pidParams = null, bool doDebugPlot = false)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
-        <td><span class="parametername">unitDataSet_raw</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
-        <td><span class="parametername">unitModel</span></td>
-        <td><p>the estimate of the unit</p>
+        <td><span class="xref">System.Double</span></td>
+        <td><p>a fit score that is maximum 100 percent, but can also go negative if fit is poor</p>
 </td>
       </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_FitScore_GetPlantWideSimulated_" data-uid="TimeSeriesAnalysis.FitScore.GetPlantWideSimulated*"></a>
+  <h4 id="TimeSeriesAnalysis_FitScore_GetPlantWideSimulated_TimeSeriesAnalysis_Dynamic_PlantSimulator_TimeSeriesAnalysis_TimeSeriesDataSet_TimeSeriesAnalysis_TimeSeriesDataSet_" data-uid="TimeSeriesAnalysis.FitScore.GetPlantWideSimulated(TimeSeriesAnalysis.Dynamic.PlantSimulator,TimeSeriesAnalysis.TimeSeriesDataSet,TimeSeriesAnalysis.TimeSeriesDataSet)">GetPlantWideSimulated(PlantSimulator, TimeSeriesDataSet, TimeSeriesDataSet)</h4>
+  <div class="markdown level1 summary"><p>Determines a score for how well a simulation fits with inputData. This can
+be compared over time to see any signs of degredation of the plant over time</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double GetPlantWideSimulated(PlantSimulator plantSimObj, TimeSeriesDataSet inputData, TimeSeriesDataSet simData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">pidInputIdx</span></td>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.html">PlantSimulator</a></td>
+        <td><span class="parametername">plantSimObj</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></td>
-        <td><span class="parametername">pidParams</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">inputData</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">doDebugPlot</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td><span class="parametername">simData</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -237,7 +220,51 @@ given an estimate of the unit model (reference unit model) for a closed loop sys
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceIdResult.html">DisturbanceIdResult</a></td>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_FitScore_GetPlantWideStored_" data-uid="TimeSeriesAnalysis.FitScore.GetPlantWideStored*"></a>
+  <h4 id="TimeSeriesAnalysis_FitScore_GetPlantWideStored_TimeSeriesAnalysis_Dynamic_PlantSimulator_" data-uid="TimeSeriesAnalysis.FitScore.GetPlantWideStored(TimeSeriesAnalysis.Dynamic.PlantSimulator)">GetPlantWideStored(PlantSimulator)</h4>
+  <div class="markdown level1 summary"><p>Get the average stored fit-scores in the &quot;paramters.Fitting&quot; object,
+indicating how well the plant on average described/aligned with the dataset when it was fitted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double GetPlantWideStored(PlantSimulator plantSimObj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.html">PlantSimulator</a></td>
+        <td><span class="parametername">plantSimObj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>

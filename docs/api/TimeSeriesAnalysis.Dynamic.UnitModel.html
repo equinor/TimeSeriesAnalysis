@@ -137,7 +137,22 @@ See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_outputID">ModelBaseClass.outputID</a>
     </div>
     <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_outputIdentID">ModelBaseClass.outputIdentID</a>
+    </div>
+    <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_processModelType">ModelBaseClass.processModelType</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_comment">ModelBaseClass.comment</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_x">ModelBaseClass.x</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_y">ModelBaseClass.y</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_color">ModelBaseClass.color</a>
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetID">ModelBaseClass.GetID()</a>
@@ -171,6 +186,9 @@ See also: <a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">
     </div>
     <div>
       <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputID">ModelBaseClass.GetOutputID()</a>
+    </div>
+    <div>
+      <a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelBaseClass.html#TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputIdentID">ModelBaseClass.GetOutputIdentID()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -238,13 +256,13 @@ public UnitModel(UnitParameters modelParameters, string ID = &quot;not_named&quo
   
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitModel__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.#ctor*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel__ctor_TimeSeriesAnalysis_Dynamic_UnitParameters_TimeSeriesAnalysis_Dynamic_UnitDataSet_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet)">UnitModel(UnitParameters, UnitDataSet)</h4>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitModel__ctor_TimeSeriesAnalysis_Dynamic_UnitParameters_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.UnitModel.#ctor(TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.UnitDataSet,System.String)">UnitModel(UnitParameters, UnitDataSet, String)</h4>
   <div class="markdown level1 summary"><p>Initalizer of model that for the given dataSet also creates the resulting y_sim</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet, string ID = &quot;not_named&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -265,6 +283,12 @@ public UnitModel(UnitParameters modelParameters, string ID = &quot;not_named&quo
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
         <td><span class="parametername">dataSet</span></td>
         <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">ID</span></td>
+        <td><p>a unique string that identifies this model in larger process models</p>
+</td>
       </tr>
     </tbody>
   </table>

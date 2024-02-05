@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class CorrelationCalculator
+    <title>Class GainSchedSimulator
    | TimeSeriesAnalysis reference documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class CorrelationCalculator
+    <meta name="title" content="Class GainSchedSimulator
    | TimeSeriesAnalysis reference documentation ">
     <meta name="generator" content="docfx 2.59.4.0">
     
@@ -78,17 +78,18 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.CorrelationCalculator">
+            <article class="content wrap" id="_content" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator">
   
   
-  <h1 id="TimeSeriesAnalysis_CorrelationCalculator" data-uid="TimeSeriesAnalysis.CorrelationCalculator" class="text-break">Class CorrelationCalculator
+  <h1 id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator" class="text-break">Class GainSchedSimulator
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Stand-alone simulation of any ISimulatableModel model.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">CorrelationCalculator</span></div>
+    <div class="level1"><span class="xref">GainSchedSimulator</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -114,195 +115,53 @@
       <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.html">TimeSeriesAnalysis</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
-  <h5 id="TimeSeriesAnalysis_CorrelationCalculator_syntax">Syntax</h5>
+  <h5 id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CorrelationCalculator</code></pre>
+    <pre><code class="lang-csharp hljs">public class GainSchedSimulator</code></pre>
   </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator__ctor_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.#ctor*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator__ctor_TimeSeriesAnalysis_Dynamic_GainSchedModel_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.#ctor(TimeSeriesAnalysis.Dynamic.GainSchedModel)">GainSchedSimulator(GainSchedModel)</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GainSchedSimulator(GainSchedModel model)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedModel.html">GainSchedModel</a></td>
+        <td><span class="parametername">model</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_CorrelationCalculator_Calculate_" data-uid="TimeSeriesAnalysis.CorrelationCalculator.Calculate*"></a>
-  <h4 id="TimeSeriesAnalysis_CorrelationCalculator_Calculate_System_Double___System_Double___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})">Calculate(Double[], Double[], List&lt;Int32&gt;)</h4>
-  <div class="markdown level1 summary"><p>Calculate the correlation factor between signal1 and signal 2.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double Calculate(double[] signal1, double[] signal2, List&lt;int&gt; indicesToIgnore = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">signal1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">signal2</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">indicesToIgnore</span></td>
-        <td><p>Optionally ignore indices in this list from signal1 and signal2</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_CorrelationCalculator_Calculate_" data-uid="TimeSeriesAnalysis.CorrelationCalculator.Calculate*"></a>
-  <h4 id="TimeSeriesAnalysis_CorrelationCalculator_Calculate_System_String_TimeSeriesAnalysis_TimeSeriesDataSet_System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.CorrelationCalculator.Calculate(System.String,TimeSeriesAnalysis.TimeSeriesDataSet,System.Collections.Generic.List{System.Int32})">Calculate(String, TimeSeriesDataSet, List&lt;Int32&gt;)</h4>
-  <div class="markdown level1 summary"><p>Calculates correlation factors [-1,1] for a signal against all other signals in the dataset
-(this corresponds to one row or one column of the covariance matrix)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Dictionary&lt;string, double&gt; Calculate(string signalName, TimeSeriesDataSet dataSet, List&lt;int&gt; indicesToIgnore = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">signalName</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
-        <td><span class="parametername">dataSet</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">indicesToIgnore</span></td>
-        <td><p>these indices are ignored in the calculation (pre-filtered bad or out of range values)</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Double</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_CorrelationCalculator_CalculateAndOrder_" data-uid="TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder*"></a>
-  <h4 id="TimeSeriesAnalysis_CorrelationCalculator_CalculateAndOrder_System_String_TimeSeriesAnalysis_TimeSeriesDataSet_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.CorrelationCalculator.CalculateAndOrder(System.String,TimeSeriesAnalysis.TimeSeriesDataSet,System.Double,System.Double)">CalculateAndOrder(String, TimeSeriesDataSet, Double, Double)</h4>
-  <div class="markdown level1 summary"><p>Calculates correlation factors [-1,1] for a signal against all other signals in the dataset
-returning the results in a list from highest to lowest score <em>absolute</em> correlation factor</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static List&lt;CorrelationObject&gt; CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet, double minimumCorrCoeffToDoTimeshiftCalc = 0.4, double minimumRsqAbs = 10)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">mainSignalName</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
-        <td><span class="parametername">dataSet</span></td>
-        <td><p>the dataset, which must have a correctly set timestamps in order to estimate time constants</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">minimumCorrCoeffToDoTimeshiftCalc</span></td>
-        <td><p>calculate time-shift for every corr coeff that is above this threshold(0.0-1.0)</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">minimumRsqAbs</span></td>
-        <td><p>for a time-shift to be valid, the resulting model nees to have Rsq over this threshold</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="TimeSeriesAnalysis.CorrelationObject.html">CorrelationObject</a>&gt;</td>
-        <td><p>a</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="TimeSeriesAnalysis_CorrelationCalculator_CorrelateTwoVectors_" data-uid="TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors*"></a>
-  <h4 id="TimeSeriesAnalysis_CorrelationCalculator_CorrelateTwoVectors_System_Double___System_Double___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.CorrelationCalculator.CorrelateTwoVectors(System.Double[],System.Double[],System.Collections.Generic.List{System.Int32})">CorrelateTwoVectors(Double[], Double[], List&lt;Int32&gt;)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator_CoSimulate_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator_CoSimulate_TimeSeriesAnalysis_Dynamic_PidModel_TimeSeriesAnalysis_Dynamic_GainSchedDataSet__System_Boolean_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.CoSimulate(TimeSeriesAnalysis.Dynamic.PidModel,TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Boolean,System.Boolean)">CoSimulate(PidModel, ref GainSchedDataSet, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static double CorrelateTwoVectors(double[] v1, double[] v2, List&lt;int&gt; indicesToIgnore)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool CoSimulate(PidModel pid, ref GainSchedDataSet processDataSet, bool pidActsOnPastStep = true, bool writeResultToYmeasInsteadOfYsim = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -315,18 +174,23 @@ returning the results in a list from highest to lowest score <em>absolute</em> c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">v1</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a></td>
+        <td><span class="parametername">pid</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">v2</span></td>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html">GainSchedDataSet</a></td>
+        <td><span class="parametername">processDataSet</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><span class="parametername">indicesToIgnore</span></td>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">pidActsOnPastStep</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeResultToYmeasInsteadOfYsim</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -341,8 +205,102 @@ returning the results in a list from highest to lowest score <em>absolute</em> c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator_Simulate_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator_Simulate_TimeSeriesAnalysis_Dynamic_GainSchedDataSet__System_Boolean_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.Simulate(TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Boolean,System.Boolean)">Simulate(ref GainSchedDataSet, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Simulates the output of the model based on the processDataSet.U provided, by default the output is
+written back to <code>processDataSet.Y_sim</code> or <code>processDataSet.Y_meas</code>
+By default this method adds to <code>Y_sim</code> o <code>Y_meas</code> if they already contain values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] Simulate(ref GainSchedDataSet processDataSet, bool writeResultToYmeasInsteadOfYsim = false, bool doOverwriteY = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html">GainSchedDataSet</a></td>
+        <td><span class="parametername">processDataSet</span></td>
+        <td><p>dataset containing the inputs <code>U</code> to be simulated</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">writeResultToYmeasInsteadOfYsim</span></td>
+        <td><p>if <code>true</code>, output is written to <code>processDataSet.ymeas</code> instead of <code>processDataSet.ysim</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">doOverwriteY</span></td>
+        <td><p>(default is false)if <code>true</code>, output overwrites any data in <code>processDataSet.ymeas</code> or <code>processDataSet.ysim</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><p>Returns  the simulate y if able to simulate,otherwise null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator_SimulateYmeas_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_GainSchedSimulator_SimulateYmeas_TimeSeriesAnalysis_Dynamic_GainSchedDataSet__System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.GainSchedSimulator.SimulateYmeas(TimeSeriesAnalysis.Dynamic.GainSchedDataSet@,System.Double)">SimulateYmeas(ref GainSchedDataSet, Double)</h4>
+  <div class="markdown level1 summary"><p>Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for<br>
+testing/test driven development.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SimulateYmeas(ref GainSchedDataSet processDataSet, double noiseAmplitude = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html">GainSchedDataSet</a></td>
+        <td><span class="parametername">processDataSet</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">noiseAmplitude</span></td>
+        <td><p>optionally adds noise to the &quot;measured&quot; y (for testing purposes)</p>
+</td>
       </tr>
     </tbody>
   </table>

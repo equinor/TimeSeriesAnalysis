@@ -114,8 +114,7 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
         Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_meas, u1, u2 },
             new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s,&quot;ex4_data&quot;);
 
-        var modelId = new UnitIdentifier();
-        var identifiedModel = modelId.Identify(ref dataSet);
+        var identifiedModel = UnitIdentifier.Identify(ref dataSet);
 
         Plot.FromList(new List&lt;double[]&gt; { identifiedModel.GetFittedDataSet().Y_meas, 
             identifiedModel.GetFittedDataSet().Y_sim },

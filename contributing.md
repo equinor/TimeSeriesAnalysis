@@ -94,3 +94,9 @@ To do so, you should replicate how the ``DefaultProcessModel`` has been implemen
 In general, this class library is intended to be applied to industrial data where excitation may be less-than-ideal. For that reason the focus should be on parametric identification, **not** non-parametric
 models like Finite-Impulse Repsonse(FIR) models.
 
+
+## Coding convention
+
+All code should follow conventional C# naming convetions, including using camelCase. 
+
+

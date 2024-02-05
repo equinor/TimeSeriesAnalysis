@@ -83,7 +83,11 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_FittingInfo" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo" class="text-break">Class FittingInfo
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>FittingInfo</p>
+<p>Be careful as the objective function is different for the static estimation that considers the absolute values,
+while dynamic estimation considers &quot;diffs&quot;- for this reason it is best to use RsqDiff and RsqAbs
+when comparing different model runs which can be a combination fo static and dynamic</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -144,6 +148,34 @@
     <tbody>
       <tr>
         <td><span class="xref">System.DateTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_FitScorePrc_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_FitScorePrc" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.FitScorePrc">FitScorePrc</h4>
+  <div class="markdown level1 summary"><p>A score that is 100% if model describes all variations
+and 0% if model is no better at describing variation than the flat average line.
+Negative if the model is worse than a flat average line.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double FitScorePrc { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -390,6 +422,42 @@ This is the R-squared of the &quot;differences&quot; sum(ymeas[k]-ymeas[k-1] -(y
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_FittingInfo_CalcCommonFitMetricsFromDataset_" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_FittingInfo_CalcCommonFitMetricsFromDataset_TimeSeriesAnalysis_Dynamic_UnitDataSet_System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Dynamic.FittingInfo.CalcCommonFitMetricsFromDataset(TimeSeriesAnalysis.Dynamic.UnitDataSet,System.Collections.Generic.List{System.Int32})">CalcCommonFitMetricsFromDataset(UnitDataSet, List&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.
+It may be preferable to use the output of the regression, as this avoids duplicating logic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CalcCommonFitMetricsFromDataset(UnitDataSet dataSet, List&lt;int&gt; yIndicesToIgnore)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td><span class="parametername">dataSet</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">yIndicesToIgnore</span></td>
         <td></td>
       </tr>
     </tbody>

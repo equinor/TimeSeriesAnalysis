@@ -91,6 +91,8 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ModelBaseClass</span></div>
+      <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.Divide.html">Divide</a></div>
+      <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedModel.html">GainSchedModel</a></div>
       <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a></div>
       <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a></div>
       <div class="level2"><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></div>
@@ -130,7 +132,8 @@
   
   
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_additiveInputIDs" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.additiveInputIDs">additiveInputIDs</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unique signal IDs that are added to the output of the model(typically a disturbance)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -147,6 +150,56 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_color" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.color">color</h4>
+  <div class="markdown level1 summary"><p>Optional color string when model is displayed as a graph</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string color</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_comment" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.comment">comment</h4>
+  <div class="markdown level1 summary"><p>Optional comment</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string comment</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -179,11 +232,38 @@
   
   
   <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_outputID" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputID">outputID</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unique signal ID that defines the name of output signal of the model</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string outputID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_outputIdentID" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.outputIdentID">outputIdentID</h4>
+  <div class="markdown level1 summary"><p>Optional unique optional signal ID to be used for fitting/identification, if this is different from outputID.
+This tag is mainly for modeling estimated disturbance signals.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string outputIdentID</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -220,6 +300,56 @@
     <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.ModelType.html">ModelType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_x" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.x">x</h4>
+  <div class="markdown level1 summary"><p>Optional visual position of model when displayed as graph: x-axis position(origo is top left)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? x</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_y" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.y">y</h4>
+  <div class="markdown level1 summary"><p>Optional visual position of model when displayed as graph: y-axis position(origo is top left)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double? y</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -424,6 +554,33 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public virtual string GetOutputID()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>may return <code>null</code> if output is not set</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputIdentID_" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ModelBaseClass_GetOutputIdentID" data-uid="TimeSeriesAnalysis.Dynamic.ModelBaseClass.GetOutputIdentID">GetOutputIdentID()</h4>
+  <div class="markdown level1 summary"><p>returns the ID of the signal the output is identified against</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string GetOutputIdentID()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

@@ -169,14 +169,58 @@ public List&lt;(string, string)&gt; connections</code></pre>
   </h3>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModelIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetDownstreamModelIDs_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetDownstreamModelIDs(System.String)">GetDownstreamModelIDs(String)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ConnectionParser_FindComputationalLoops_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ConnectionParser_FindComputationalLoops_System_Collections_Generic_Dictionary_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel__" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.FindComputationalLoops(System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})">FindComputationalLoops(Dictionary&lt;String, ISimulatableModel&gt;)</h4>
+  <div class="markdown level1 summary"><p>Parses models and determines if there are co-dependent models</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, List&lt;string&gt;&gt; FindComputationalLoops(Dictionary&lt;string, ISimulatableModel&gt; modelDict)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a>&gt;</td>
+        <td><span class="parametername">modelDict</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+        <td><p>a dictionary with an ID and a list of all involved modelIDs</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllDownstreamModelIDs_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllDownstreamModelIDs_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllDownstreamModelIDs(System.String)">GetAllDownstreamModelIDs(String)</h4>
   <div class="markdown level1 summary"><p>Get all the models which are connected to a given model one level directly downstream of it</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;string&gt; GetDownstreamModelIDs(string modelID)</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; GetAllDownstreamModelIDs(string modelID)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -212,14 +256,14 @@ public List&lt;(string, string)&gt; connections</code></pre>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamModels_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUpstreamModels_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUpstreamModels(System.String)">GetUpstreamModels(String)</h4>
+  <a id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllUpstreamModels_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetAllUpstreamModels_System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetAllUpstreamModels(System.String)">GetAllUpstreamModels(String)</h4>
   <div class="markdown level1 summary"><p>Get all the models which are connected to a given model one level directly upstream of it</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;string&gt; GetUpstreamModels(string modelID)</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; GetAllUpstreamModels(string modelID)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -250,6 +294,55 @@ public List&lt;(string, string)&gt; connections</code></pre>
       <tr>
         <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUnitModelControlledByPID_" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_ConnectionParser_GetUnitModelControlledByPID_System_String_System_Collections_Generic_Dictionary_System_String_TimeSeriesAnalysis_Dynamic_ISimulatableModel__" data-uid="TimeSeriesAnalysis.Dynamic.ConnectionParser.GetUnitModelControlledByPID(System.String,System.Collections.Generic.Dictionary{System.String,TimeSeriesAnalysis.Dynamic.ISimulatableModel})">GetUnitModelControlledByPID(String, Dictionary&lt;String, ISimulatableModel&gt;)</h4>
+  <div class="markdown level1 summary"><p>Get unit model controlled by PDI</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetUnitModelControlledByPID(string pidModelID, Dictionary&lt;string, ISimulatableModel&gt; modelDict)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">pidModelID</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="TimeSeriesAnalysis.Dynamic.ISimulatableModel.html">ISimulatableModel</a>&gt;</td>
+        <td><span class="parametername">modelDict</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>returns null if no model is found</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -358,7 +451,7 @@ public List&lt;(string, string)&gt; connections</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;string&gt; InitAndDetermineCalculationOrderOfModels(Dictionary&lt;string, ISimulatableModel&gt; modelDict)</code></pre>
+    <pre><code class="lang-csharp hljs">public (List&lt;string&gt;, Dictionary&lt;string, List&lt;string&gt;&gt;) InitAndDetermineCalculationOrderOfModels(Dictionary&lt;string, ISimulatableModel&gt; modelDict)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -387,8 +480,10 @@ public List&lt;(string, string)&gt; connections</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
-        <td><p>returns the string of sorted model IDs, the order in which modelDict models are to be run</p>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;, <span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;&gt;&gt;</td>
+        <td><p>returns the <span class="xref">langword_csharp_string</span> of sorted model IDs, the order in which modelDict models are to be run.
+If the plant contains computational loops, the IDs of the computational loops are also in these lists instead of
+the indivudal models.</p>
 </td>
       </tr>
     </tbody>

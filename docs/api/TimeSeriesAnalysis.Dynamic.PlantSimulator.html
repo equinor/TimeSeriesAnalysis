@@ -284,6 +284,32 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   </h3>
   
   
+  <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_date_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.date*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_date" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.date">date</h4>
+  <div class="markdown level1 summary"><p>The date of when the model was last saved</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime date { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_plantDescription_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.plantDescription*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_plantDescription" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.plantDescription">plantDescription</h4>
   <div class="markdown level1 summary"><p>A short user-friendly description of what the plant is and does</p>
@@ -690,7 +716,9 @@ The building blocks of plant models are <code>PIDModel</code>, <code>DefaultProc
   
   <a id="TimeSeriesAnalysis_Dynamic_PlantSimulator_GetUnitDataSetForPID_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.GetUnitDataSetForPID*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_PlantSimulator_GetUnitDataSetForPID_TimeSeriesAnalysis_TimeSeriesDataSet_TimeSeriesAnalysis_Dynamic_PidModel_" data-uid="TimeSeriesAnalysis.Dynamic.PlantSimulator.GetUnitDataSetForPID(TimeSeriesAnalysis.TimeSeriesDataSet,TimeSeriesAnalysis.Dynamic.PidModel)">GetUnitDataSetForPID(TimeSeriesDataSet, PidModel)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns a &quot;unitDataSet&quot; for the given pidModel in the plant.
+This function only works when the unit model connected to the pidModel only has a single input.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

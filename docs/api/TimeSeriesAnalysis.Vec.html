@@ -445,13 +445,14 @@ and are excluded from all calculations</p>
   
   
   <a id="TimeSeriesAnalysis_Vec_Diff_" data-uid="TimeSeriesAnalysis.Vec.Diff*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_Diff_System_Double___" data-uid="TimeSeriesAnalysis.Vec.Diff(System.Double[])">Diff(Double[])</h4>
-  <div class="markdown level1 summary"><p>returns an array of the difference between every neighbhoring item in array</p>
+  <h4 id="TimeSeriesAnalysis_Vec_Diff_System_Double___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.Diff(System.Double[],System.Collections.Generic.List{System.Int32})">Diff(Double[], List&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Return an array of the differences between the neighboring items in array
+but ignores indices in the array that are in &quot;indicesToIgnore&quot;</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double[] Diff(double[] array)</code></pre>
+    <pre><code class="lang-csharp hljs">public double[] Diff(double[] vec, List&lt;int&gt; indicesToIgnore = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -465,7 +466,12 @@ and are excluded from all calculations</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">array</span></td>
+        <td><span class="parametername">vec</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -588,14 +594,14 @@ In case of NaN inputs or divide-by-zero NaN elements are returned</p>
   
   
   <a id="TimeSeriesAnalysis_Vec_FindValues_" data-uid="TimeSeriesAnalysis.Vec.FindValues*"></a>
-  <h4 id="TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_" data-uid="TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType)">FindValues(Double[], Double, VectorFindValueType)</h4>
+  <h4 id="TimeSeriesAnalysis_Vec_FindValues_System_Double___System_Double_TimeSeriesAnalysis_VectorFindValueType_System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.FindValues(System.Double[],System.Double,TimeSeriesAnalysis.VectorFindValueType,System.Collections.Generic.List{System.Int32})">FindValues(Double[], Double, VectorFindValueType, List&lt;Int32&gt;)</h4>
   <div class="markdown level1 summary"><p>return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
 Also capable of finding NaN values</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;int&gt; FindValues(double[] vec, double value, VectorFindValueType type)</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;int&gt; FindValues(double[] vec, double value, VectorFindValueType type, List&lt;int&gt; indicesToIgnore = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -621,6 +627,12 @@ Also capable of finding NaN values</p>
         <td><a class="xref" href="TimeSeriesAnalysis.VectorFindValueType.html">VectorFindValueType</a></td>
         <td><span class="parametername">type</span></td>
         <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
+        <td><p>if given, these indices are ignored when doing the operation</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -702,6 +714,54 @@ Works by running a regression with time as the &quot;X&quot; variable
         <td><a class="xref" href="TimeSeriesAnalysis.RegressionResults.html">RegressionResults</a></td>
         <td><p>the gradient will be the &quot;Gain&quot; of the returned object (in units per second by default)</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_GetValues_" data-uid="TimeSeriesAnalysis.Vec.GetValues*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_GetValues_System_Double___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.GetValues(System.Double[],System.Collections.Generic.List{System.Int32})">GetValues(Double[], List&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns all the values of vec, except for those corresponding with indices in indicesToIngore</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] GetValues(double[] vec, List&lt;int&gt; indicesToIgnore)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">vec</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -820,6 +880,54 @@ Works by running a regression with time as the &quot;X&quot; variable
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_Max_" data-uid="TimeSeriesAnalysis.Vec.Max*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Max_System_Double___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.Max(System.Double[],System.Collections.Generic.List{System.Int32})">Max(Double[], List&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns maximum value of array, ignoring the given indices</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Max(double[] array, List&lt;int&gt; indicesToIgnore)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1050,6 +1158,54 @@ Works by running a regression with time as the &quot;X&quot; variable
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Vec_Min_" data-uid="TimeSeriesAnalysis.Vec.Min*"></a>
+  <h4 id="TimeSeriesAnalysis_Vec_Min_System_Double___System_Collections_Generic_List_System_Int32__" data-uid="TimeSeriesAnalysis.Vec.Min(System.Double[],System.Collections.Generic.List{System.Int32})">Min(Double[], List&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns minimum value of array, ignoring certain indices</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Min(double[] array, List&lt;int&gt; indicesToIgnore)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span>[]</td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">indicesToIgnore</span></td>
         <td></td>
       </tr>
     </tbody>
