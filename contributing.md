@@ -70,7 +70,8 @@ appreciated.
 - All code should follow conventional C# naming conventions, please refer to https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines, 
 	- this includes using camelCase or PascalCase as appropriate for varibale names, and
    	- names of variables and classes should prioritize readability over brevity, and not include abbreviations or underscores
-   	- name new classes and variables in ways that are consistent with the names already used. 
+   	- name new classes and variables in ways that are consistent with the names already used.
+   	- all unit tests should follow the naming convention ``MethodName_StateUnderTest_ExpectedBehavior`` or for simple classes ``StateUnderTest_ExpectedBehavior``
 - Organize code so that others can easily undertand, maintain and extend it:
  	- Favor smaller classes and methods that have a single specific purpose, clearly expressed in the name. 
 - Use unit test framework during development, and keep tests in project as part of documentation and as a "fail-safe" mechanism for other developers
