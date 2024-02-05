@@ -116,21 +116,18 @@ namespace TimeSeriesAnalysis.Dynamic
             GainSchedParameters ret = new GainSchedParameters();
             ret.GainSchedParameterIndex = gsFittingSpecs.uGainScheduledInputIndex;
             ret.LinearGainThresholds = gsFittingSpecs.uGainThresholds;
-
             // for this to work roubustly, the training set for fitting each model may need to require adding in a "span" of neighboring models. 
-            const double tuningSetSpanOutsideThreshold_prc = 0; // if zero, the tuning only considers data inside the training set.
-
             int number_of_inputs = dataSet.U.GetLength(1);
             double gsVarMinU, gsVarMaxU;
             var linearGains = new List<double[]>();
             var allIdsOk = true;
             var dataSetCopy = new UnitDataSet(dataSet);
+            // estimate each of the gains one by one
             for (int curGainIdx = 0; curGainIdx < ret.LinearGainThresholds.Count()+1; curGainIdx++)
             {
                 double[] uMinFit = new double[number_of_inputs];
                 double[] uMaxFit = new double[number_of_inputs];
                 double? u0 = 0;
-
                 if (curGainIdx == 0)
                 {
                     gsVarMinU = vec.Min(Array2D<double>.GetColumn(dataSetCopy.U, ret.GainSchedParameterIndex));
@@ -147,10 +144,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     gsVarMaxU = ret.LinearGainThresholds[curGainIdx];
                 }
-                var range = gsVarMaxU - gsVarMinU;
-                gsVarMinU = gsVarMinU - range * tuningSetSpanOutsideThreshold_prc / 100;
-                gsVarMaxU = gsVarMaxU + range * tuningSetSpanOutsideThreshold_prc / 100;
-
                 for (int idx = 0; idx < number_of_inputs; idx++)
                 {
                     if (idx == ret.GainSchedParameterIndex)
@@ -164,15 +157,11 @@ namespace TimeSeriesAnalysis.Dynamic
                         uMaxFit[idx] = double.NaN;
                     }
                 }
-
-                var idResults = IdentifySingleLinearGainForGivenThresholds(ref dataSetCopy, uMinFit, uMaxFit, ret.GainSchedParameterIndex,u0);//
-
-                var uInsideUMinUMax = Vec<double>.GetValuesAtIndices(dataSetCopy.U.GetColumn(ret.GainSchedParameterIndex), Index.InverseIndices(dataSetCopy.GetNumDataPoints(),dataSetCopy.IndicesToIgnore));
-
+                var idResults = IdentifySingleLinearGainForGivenThresholds(ref dataSetCopy, uMinFit, uMaxFit, ret.GainSchedParameterIndex,u0);
+                var uInsideUMinUMax = Vec<double>.GetValuesAtIndices(dataSetCopy.U.GetColumn(ret.GainSchedParameterIndex), 
+                    Index.InverseIndices(dataSetCopy.GetNumDataPoints(),dataSetCopy.IndicesToIgnore));
                 var uMaxObserved = (new Vec()).Max(uInsideUMinUMax);
                 var uMinObserved = (new Vec()).Min(uInsideUMinUMax);
-
-
                 if (idResults.Item1 == null)
                 {
                     allIdsOk = false;
@@ -187,10 +176,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // final gain:above the highest threshold
             ret.LinearGains = linearGains;
-            // 
             ret.Fitting = new FittingInfo();
             ret.Fitting.WasAbleToIdentify = allIdsOk;
-            // 
             return ret;
         }
 
@@ -282,74 +269,67 @@ namespace TimeSeriesAnalysis.Dynamic
         /// 
         /// </summary>
         /// <param name="dataSet"></param>
-        /// <param name="uMinFit"></param>
-        /// <param name="uMaxFit"></param>
+        /// <param name="uLowerThreshold"></param>
+        /// <param name="uHigherThreshold"></param>
         /// <param name="u0"></param>
         /// <returns>return a tuple, the first linear gains is null if unable to identify </returns>
-        private static (double[], double) IdentifySingleLinearGainForGivenThresholds(ref UnitDataSet dataSet,double[] uMinFit, double[] uMaxFit, int gainSchedVarIndex, double? u0= null )
+        private static (double[], double) IdentifySingleLinearGainForGivenThresholds(ref UnitDataSet dataSet,double[] uLowerThreshold, double[] uHigherThreshold, int gainSchedVarIndex, double? u0= null )
         {
+               const double MAX_tuningSetSpanOutsideThreshold_prc = 81;
+               const double STEP_tuningSetSpanOutsideThreshold_prc = 20;
 
-            const double MAX_tuningSetSpanOutsideThreshold_prc = 81;
-            const double STEP_tuningSetSpanOutsideThreshold_prc = 20;
-            
-            double MIN_uRangeInChosenDataset = 0.5*(uMaxFit[gainSchedVarIndex] - uMinFit[gainSchedVarIndex]);
+            double MIN_uRangeInChosenDataset = 0.5*(uHigherThreshold[gainSchedVarIndex] - uLowerThreshold[gainSchedVarIndex]);
             var fittingSpecs = new FittingSpecs();
 
             double tuningSetSpanOutsideThreshold_prc = 0;
             double uRangeInChosenDataset = -1;
-            double fitRange = (uMaxFit[gainSchedVarIndex] - uMinFit[gainSchedVarIndex]);
+            double fitRange = (uHigherThreshold[gainSchedVarIndex] - uLowerThreshold[gainSchedVarIndex]);
+
+            // if there is close to as many thresholds as there are steps in data, then there may not actually be enough data in the dataset to 
+            // this while loop looks at the range betwen uMin and uMax for the data found between the upper and lower thresold. If the range 
+            // is low, then the range of u to fit against is attempted increased to capture information as u steps between thresholds. 
             while (uRangeInChosenDataset < MIN_uRangeInChosenDataset && tuningSetSpanOutsideThreshold_prc < MAX_tuningSetSpanOutsideThreshold_prc)
             {
-                fittingSpecs.U_min_fit = uMinFit;
-                fittingSpecs.U_max_fit = uMaxFit;
-                fittingSpecs.U_min_fit[gainSchedVarIndex] = uMinFit[gainSchedVarIndex] - fitRange * tuningSetSpanOutsideThreshold_prc/100;
-                fittingSpecs.U_max_fit[gainSchedVarIndex] = uMaxFit[gainSchedVarIndex] + fitRange * tuningSetSpanOutsideThreshold_prc/100;
+                dataSet.IndicesToIgnore = null;// TODO: store any incoming?
+                fittingSpecs.U_min_fit = uLowerThreshold;
+                fittingSpecs.U_max_fit = uHigherThreshold;
+                fittingSpecs.U_min_fit[gainSchedVarIndex] = uLowerThreshold[gainSchedVarIndex] - fitRange * tuningSetSpanOutsideThreshold_prc/100;
+                fittingSpecs.U_max_fit[gainSchedVarIndex] = uHigherThreshold[gainSchedVarIndex] + fitRange * tuningSetSpanOutsideThreshold_prc/100;
 
                 if (!u0.HasValue)
-                    fittingSpecs.u0 = new double[] { uMinFit[gainSchedVarIndex] + (uMaxFit[gainSchedVarIndex] - uMinFit[gainSchedVarIndex]) / 2 };
+                    fittingSpecs.u0 = new double[] { uLowerThreshold[gainSchedVarIndex] + (uHigherThreshold[gainSchedVarIndex] - uLowerThreshold[gainSchedVarIndex]) / 2 };
                 else
                     fittingSpecs.u0 = new double[] { u0.Value };
 
                 dataSet.DetermineIndicesToIgnore(fittingSpecs);
-                var indices = Index.InverseIndices(dataSet.GetNumDataPoints(), dataSet.IndicesToIgnore);
-                var uChosen = Vec<double>.GetValuesAtIndices(dataSet.U.GetColumn(gainSchedVarIndex), indices);
+                var indicesLocal = Index.InverseIndices(dataSet.GetNumDataPoints(), dataSet.IndicesToIgnore);
+                var uChosen = Vec<double>.GetValuesAtIndices(dataSet.U.GetColumn(gainSchedVarIndex), indicesLocal);
                 var uMaxInDataSet = (new Vec()).Max(uChosen);
                 var uMinInDataSet = (new Vec()).Min(uChosen);
                 uRangeInChosenDataset = uMaxInDataSet - uMinInDataSet;
                 if (tuningSetSpanOutsideThreshold_prc>0)
                     Console.WriteLine("uRangeInChosenDataset:" + uRangeInChosenDataset + " tuningSetSpanOutsideThreshold_prc:" + tuningSetSpanOutsideThreshold_prc);
                 tuningSetSpanOutsideThreshold_prc += STEP_tuningSetSpanOutsideThreshold_prc;
-                dataSet.IndicesToIgnore = null;// TODO: store any incoming?
+
             }
 
-            //fittingSpecs.u0 = new double[] { 0};
             // NB! save a lot of comutational time by not doing time delay estimation here!
             var unitModel = UnitIdentifier.IdentifyLinear(ref dataSet, fittingSpecs, false); ;
-           // var unitModel = UnitIdentifier.IdentifyLinearAndStatic(ref dataSet, fittingSpecs, false); ;
+            // var unitModel = UnitIdentifier.IdentifyLinearAndStatic(ref dataSet, fittingSpecs, false); ;
 
-            
-          /*  Shared.EnablePlots();
-            var indices = Index.InverseIndices(dataSet.GetNumDataPoints(),dataSet.IndicesToIgnore);
+            // debugging plot, comment out when not debugging.
+           var indices = Index.InverseIndices(dataSet.GetNumDataPoints(), dataSet.IndicesToIgnore);
+            Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
-                                    //Vec<double>.GetValuesAtIndices(dataSet.Y_sim,indices),
-                                    Vec<double>.GetValuesAtIndices(dataSet.Y_meas,indices),
-                                    Vec<double>.GetValuesAtIndices(dataSet.U.GetColumn(0),indices)
-                                    },
-                                       new List<string> {  "y1=y_ref", "y3=u1" },
-                                    Vec<DateTime>.GetValuesAtIndices(dataSet.Times,indices),
-                                      "IdentifySingleLinearGainForGivenThresholds");
+                Vec<double>.GetValuesAtIndices(dataSet.Y_sim,indices),
+                Vec<double>.GetValuesAtIndices(dataSet.Y_meas,indices),
+                Vec<double>.GetValuesAtIndices(dataSet.U.GetColumn(0),indices)
+                },
+                    new List<string> { "y1=y_sim", "y1=y_ref", "y3=u1" },
+                Vec<DateTime>.GetValuesAtIndices(dataSet.Times,indices),
+                    "IdentifySingleLinearGainForGivenThresholds");
             Shared.DisablePlots();
-            */
-       /*     Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
-                                        dataSet.Y_meas,
-                                    dataSet.U.GetColumn(0),
-                                    },
-                                       new List<string> { "y1=y_ref", "y3=u1" },
-                                   dataSet.Times,
-                                      "IdentifySingleLinearGainForGivenThresholds_allData");
-            Shared.DisablePlots();*/
-
+            
 
             var unitParams = unitModel.GetModelParameters();
             if (!unitModel.modelParameters.Fitting.WasAbleToIdentify)

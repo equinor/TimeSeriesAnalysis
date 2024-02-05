@@ -160,9 +160,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 0;
         }
 
+        /// <summary>
         /// Tags indices to be removed if either of the output is outside the range defined by 
         /// [Y_min,Y_max], an input is outside [u_min, umax] or if any data matches badDataId
         /// 
+        /// Results are stored in "IndicesToIgnore", not outputted.
+        /// </summary>
+        /// <param name="fittingSpecs"></param>
         public void DetermineIndicesToIgnore(FittingSpecs fittingSpecs)
         {
             if (fittingSpecs == null)

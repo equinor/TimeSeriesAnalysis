@@ -16,43 +16,72 @@ namespace TimeSeriesAnalysis.Test.SysID
         const double TimeConstantAllowedDev_s = 3.5;
 
         [TestCase(1,Description ="Two steps for every threshold(five thresholds)")]
-        [TestCase(2, Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, for this case all the gains seem to be about twice as big as they should be... 
-
+        [TestCase(2, Description = "Two steps for every threshold(five thresholds), ref model is constant gain")]
+        [TestCase(11, Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, for this case all the gains seem to be about twice as big as they should be... 
+        [TestCase(12, Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
         public void GainEstOnly_CorrectGainsReturned(int ver)
         {
             const double gainTolerancePrc = 10;
-
-            int N = 100;//todo: reduce as much as possible when working
-
+            int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
+            // below: 5 gains
             if (ver == 1)
             {
                 refParams = new GainSchedParameters
                 {
                     TimeConstant_s = null,
                     TimeConstantThresholds = null,
-                    LinearGains = new List<double[]> { new double[] { 0 }, new double[] { 1 }, new double[] { 2 }, new double[] { 3 }, new double[] { 4 }, new double[] { 5 } },
+                    LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 2 }, new double[] { 3 }, new double[] { 1 }, new double[] { 2 }, new double[] { 3 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    Bias = -5,
+                    Bias = 0,
                     GainSchedParameterIndex = 0
                 };
             }
             else if (ver == 2)
             {
-                 //N = 600;//todo: reduce as much as possible when working
+                refParams = new GainSchedParameters // let all gains be the same, and check that estimation does not falsely suggest a gain-scheduled model
+                {
+                    TimeConstant_s = null,
+                    TimeConstantThresholds = null,
+                    LinearGains = new List<double[]> { new double[] { 2 }, new double[] { 2 }, new double[] { 2}, new double[] { 2 }, new double[] { 2 }, new double[] { 2 } },
+                    LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
+                    TimeDelay_s = 0,
+                    Bias = 5,
+                    GainSchedParameterIndex = 0
+                };
+            }
+            // below: 10 gains
+            else if (ver == 11)
+            {
                 refParams = new GainSchedParameters
                  {
                      TimeConstant_s = null,
                      TimeConstantThresholds = null,
-                     LinearGains = new List<double[]> { new double[] { 0 }, new double[] { 1 }, new double[] { 2 }, new double[] { 3 }, new double[] { 4 }, new double[] { 5 },
-                         new double[] { 6 }, new double[] { 7 }, new double[] { 8 }, new double[] { 9 }, new double[] { 10 } },
+                     LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 2 }, new double[] { 2.0 }, new double[] { 2.0 }, new double[] { 3 }, new double[] { 3.5 },
+                         new double[] { 4 }, new double[] { 4.5 }, new double[] { 5.0 }, new double[] { 5.5 }, new double[] { 6 } },
                      LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
                      TimeDelay_s = 0,
                      Bias = 0,
                      GainSchedParameterIndex = 0
                  };
-            }// TODO: version with timeconstants
+            }
+            else if (ver == 12)
+            {
+                refParams = new GainSchedParameters // let all gains be the same
+                {
+                    TimeConstant_s = null,
+                    TimeConstantThresholds = null,
+                    LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 },
+                         new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 } },
+                    LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
+                    TimeDelay_s = 0,
+                    Bias = 5,
+                    GainSchedParameterIndex = 0
+                };
+            }
+
+            // TODO: version with timeconstants
 
             var refModel = new GainSchedModel(refParams);
             var gsFittingSpecs= new GainSchedFittingSpecs();
@@ -60,11 +89,11 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             var plantSim = new PlantSimulator(new List<ISimulatableModel> { refModel });
             var inputData = new TimeSeriesDataSet();
-            var input = (TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 0, 1, 2, 3).
-                 Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 4, 5, 6, 7)).
-                 Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 8, 9, 10, 11)).
-                 Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 12, 13, 14, 15))
-                .ToArray());
+            var input = (TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N,  0,  1,  2,  3).
+                  Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N,  4,  5,  6,  7)).
+                  Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N,  8,  9, 10, 11)).
+                  Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 12, 13, 14, 15))
+                 .ToArray());
             inputData.Add(plantSim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), input);
             inputData.CreateTimestamps(timeBase_s);
 
@@ -77,12 +106,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.Times = inputData.GetTimeStamps();
             var results = GainSchedIdentifier.IdentifyGainsForGivenThresholds(dataSet, gsFittingSpecs);
             Assert.IsTrue(results.Fitting.WasAbleToIdentify);
-
             for (int i = 0; i < refParams.LinearGains.Count; i++)
             {
                 DiffLessThan(refParams.LinearGains[i][0], results.LinearGains[i][0], gainTolerancePrc,i);
             }
-
         }
 
         private void DiffLessThan(double trueVal, double testVal, double tolerancePrc,int index)
