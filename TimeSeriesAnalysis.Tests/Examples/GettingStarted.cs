@@ -197,9 +197,7 @@ namespace TimeSeriesAnalysis._Examples
         #region ex_6
         public void Ex6_process_simulation()
         {
-            double timeBase_s = 1;
-            int N = 500;
-
+            // define two unit-model and a "PlantSimulator" where the two are connected
             UnitParameters modelParameters = new UnitParameters
             {
                 TimeConstant_s = 10,
@@ -209,7 +207,6 @@ namespace TimeSeriesAnalysis._Examples
             };
             UnitModel processModel 
                 = new UnitModel(modelParameters, "SubProcess1");
-            
             var pidParameters = new PidParameters()
             {
                 Kp = 0.5,
@@ -217,9 +214,12 @@ namespace TimeSeriesAnalysis._Examples
             };
             var pidModel = new PidModel(pidParameters, "PID1");
             var sim = new PlantSimulator (
-                new List<ISimulatableModel> { pidModel, processModel  });
+                new List<ISimulatableModel> { processModel,pidModel   });
             sim.ConnectModels(processModel,pidModel);
             sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
+            // create synthetic input data (normally you would get this data from the real-world)
+            double timeBase_s = 1;
+            int N = 500;
             var inputData = new TimeSeriesDataSet();
             inputData.Add(sim.AddExternalSignal(processModel,SignalType.Disturbance_D),
                 TimeSeriesCreator.Step(N/4,N,0,1));
@@ -228,16 +228,26 @@ namespace TimeSeriesAnalysis._Examples
             inputData.Add(sim.AddExternalSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
                 TimeSeriesCreator.Step(N/2,N,0,1));
             inputData.CreateTimestamps(timeBase_s);
+            // simulate model over the 
             var isOk = sim.Simulate(inputData,out var simData);
 
+
+            // plot result
+            Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel.GetID(),SignalType.Output_Y),
-                simData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
+                inputData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
                 inputData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
                 simData.GetValues(pidModel.GetID(),SignalType.PID_U)
                 },
                 new List<string> { "y1=y_sim", "y2=disturbance", "y2=u_external","y3=u_pid"  },
                 timeBase_s, "ex6_results");
+            Shared.DisablePlots();
+
+            // optional: serialize
+            //sim.Serialize("example6");
+            //inputData.ToCsv("example6.csv");
+
         }
         #endregion
 
