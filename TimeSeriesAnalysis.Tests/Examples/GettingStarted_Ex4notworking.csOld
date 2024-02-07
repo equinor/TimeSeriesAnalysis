@@ -23,11 +23,11 @@ namespace TimeSeriesAnalysis._Examples
     [TestFixture]
     class _GettingStarted
     {
-        [SetUp]
+       /* [SetUp]
         public void SetUp()
         {
             Shared.GetParserObj().EnableDebugOutput();
-        }
+        }*/
 
         [Test, Explicit]
     
