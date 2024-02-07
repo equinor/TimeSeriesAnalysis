@@ -5590,6 +5590,12 @@ references:
   commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DynamicModelEstimationFailed
   fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.DynamicModelEstimationFailed
   nameWithType: UnitdentWarnings.DynamicModelEstimationFailed
+- uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NonCausalNegativeTimeConstant
+  name: NonCausalNegativeTimeConstant
+  href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_NonCausalNegativeTimeConstant
+  commentId: F:TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NonCausalNegativeTimeConstant
+  fullName: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.NonCausalNegativeTimeConstant
+  nameWithType: UnitdentWarnings.NonCausalNegativeTimeConstant
 - uid: TimeSeriesAnalysis.Dynamic.UnitdentWarnings.Nothing
   name: Nothing
   href: api/TimeSeriesAnalysis.Dynamic.UnitdentWarnings.html#TimeSeriesAnalysis_Dynamic_UnitdentWarnings_Nothing

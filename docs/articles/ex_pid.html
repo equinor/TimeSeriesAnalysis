@@ -82,32 +82,48 @@
 <p>In this example, a step disturbance influences a linear subprocess that is controlled by a PID-controller toward a constant setpoint of <code>y=50</code>, like depicted in the below figure:</p>
 <p><img src="images/fig_pidprocess.png" alt="Example 5 result"></p>
 <p><code>SubProcessSimulator.CoSimulateProcessAndPID</code> co-simulates a single PID-controller/processes combination such as this.</p>
-<pre><code class="lang-csharp" name="Examples">double timeBase_s = 1;
-int N = 500;
-var modelParameters = new UnitParameters
+<pre><code class="lang-csharp" name="Examples">UnitParameters modelParameters = new UnitParameters
 {
     TimeConstant_s = 10,
-    LinearGains = new double[] { 1 },
+    LinearGains = new double[] { 1, 2 },
     TimeDelay_s = 0,
     Bias = 5
 };
-var processModel = new UnitModel(modelParameters);
+UnitModel processModel
+    = new UnitModel(modelParameters, &quot;SubProcess1&quot;);
 var pidParameters = new PidParameters()
 {
     Kp = 0.5,
     Ti_s = 20
 };
-var pid = new PidModel(pidParameters,&quot;PID1&quot;);
-var dataSet = new UnitDataSet();
-dataSet.D = TimeSeriesCreator.Step(N / 4, N, 0, 1);
-dataSet.Y_setpoint = TimeSeriesCreator.Constant(50,N);
-dataSet.CreateTimeStamps(timeBase_s);
-var simulator = new UnitSimulator(processModel);
-simulator.CoSimulate( pid, ref dataSet);
+var pidModel = new PidModel(pidParameters, &quot;PID1&quot;);
+var sim = new PlantSimulator(
+    new List&lt;ISimulatableModel&gt; { processModel, pidModel });
+sim.ConnectModels(processModel, pidModel);
+sim.ConnectModels(pidModel, processModel, (int)INDEX.FIRST);
+// create synthetic input data (normally you would get this data from the real-world)
+double timeBase_s = 1;
+int N = 500;
+var inputData = new TimeSeriesDataSet();
+inputData.Add(sim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
+    TimeSeriesCreator.Constant(50, N));
+inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.SECOND),
+    TimeSeriesCreator.Step(N / 2, N, 0, 1));
+inputData.CreateTimestamps(timeBase_s);
+// simulate model over the 
+var isOk = sim.Simulate(inputData, out var simData);
 
-Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_sim, dataSet.U_sim.GetColumn(0), dataSet.D },
-    new List&lt;string&gt; { &quot;y1=y_sim&quot;, &quot;y3=u_pid&quot;,&quot;y2=disturbance&quot; }, 
+
+// plot result
+Shared.EnablePlots();
+Plot.FromList(new List&lt;double[]&gt; {
+    simData.GetValues(processModel.GetID(),SignalType.Output_Y),
+    inputData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+    simData.GetValues(pidModel.GetID(),SignalType.PID_U)
+    },
+    new List&lt;string&gt; { &quot;y1=y_sim&quot;,  &quot;y2=u_external&quot;, &quot;y3=u_pid&quot; },
     timeBase_s, &quot;ex5_results&quot;);
+Shared.DisablePlots();
 </code></pre>
 <p>The resulting dynamic simulation:
 <img src="images/ex5_results.png" alt="Example 5 result"></p>

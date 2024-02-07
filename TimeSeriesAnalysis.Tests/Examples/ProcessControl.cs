@@ -26,7 +26,7 @@ namespace TimeSeriesAnalysis._Examples
 
         public void CascadeControl_Ex()
         {
-            CascadeControl_Ex();
+            CascadeControl();
         }
 
         public TimeSeriesDataSet CascadeControl()
@@ -91,6 +91,7 @@ namespace TimeSeriesAnalysis._Examples
 
             var isOK = sim.Simulate(inputData,out var simResult);
 
+           // Shared.EnablePlots();
             Plot.FromList(new List<double[]>
                 {
                 simResult.GetValues(process1.GetID(),SignalType.Output_Y),
@@ -101,6 +102,7 @@ namespace TimeSeriesAnalysis._Examples
                 },
                 new List<string> { "y1=y1", "y2=y2[right]","y2=y2_set[right]", "y3=u1", "y4=u2[right]" },
                 timeBase_s, "CascadeEx");
+           // Shared.DisablePlots();
             #endregion
 
             SerializeHelper.Serialize("CascadeControl", sim, inputData, simResult);

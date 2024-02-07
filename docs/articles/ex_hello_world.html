@@ -89,9 +89,11 @@ double[] input = TimeSeriesCreator.Step(11, 60, 0, 1);
 LowPass lp = new LowPass(timeBase_s);
 var output = lp.Filter(input, filterTc_s);
 
+Shared.EnablePlots();
 Plot.FromList(new List&lt;double[]&gt; { input, output},
     new List&lt;string&gt; { &quot;y1=V1_input&quot;,&quot;y1=V2_output&quot;}, timeBase_s, &quot;ex1_hello_world&quot;,
     new DateTime(2020, 1, 1, 0, 0, 0));
+Shared.DisablePlots();
 </code></pre>
 <p>Which when run should creates the following plot.</p>
 <p><img src="images/ex1_hello_world.png" alt="Example 1:hello world"></p>

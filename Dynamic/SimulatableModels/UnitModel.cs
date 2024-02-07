@@ -474,7 +474,11 @@ namespace TimeSeriesAnalysis.Dynamic
             double x_static = CalculateStaticStateWithoutAdditive(inputs,badValueIndicator);
 
             // nb! if first iteration, start model at steady-state
-            double x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
+            double x_dynamic = x_static;
+            if (modelParameters.TimeConstant_s >= 0)
+            {
+                x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
+            }
             isFirstIteration = false;
             double y = 0;
             if (modelParameters.TimeDelay_s <= 0)

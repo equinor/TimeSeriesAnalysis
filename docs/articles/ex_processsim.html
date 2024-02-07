@@ -126,11 +126,9 @@ For example the simulated output of <code>processModel</code> can be extracted f
 <p>Notice how <code>AddSignal</code> applies a <code>SignalType</code> to each signal, this is then used internally in <code>Simulate</code>, but is also used to make it easier to extract and interpret signals
 after the simulation.</p>
 <p>The entire code:</p>
-<pre><code class="lang-csharp" name="Examples">public void Ex6_process_simulation()
+<pre><code class="lang-csharp" name="Examples">public void Ex6_feedback_loop_setpoint_and_disturbance_change()
 {
-    double timeBase_s = 1;
-    int N = 500;
-
+    // define two unit-model and a &quot;PlantSimulator&quot; where the two are connected
     UnitParameters modelParameters = new UnitParameters
     {
         TimeConstant_s = 10,
@@ -140,7 +138,6 @@ after the simulation.</p>
     };
     UnitModel processModel 
         = new UnitModel(modelParameters, &quot;SubProcess1&quot;);
-    
     var pidParameters = new PidParameters()
     {
         Kp = 0.5,
@@ -148,9 +145,12 @@ after the simulation.</p>
     };
     var pidModel = new PidModel(pidParameters, &quot;PID1&quot;);
     var sim = new PlantSimulator (
-        new List&lt;ISimulatableModel&gt; { pidModel, processModel  });
+        new List&lt;ISimulatableModel&gt; { processModel,pidModel   });
     sim.ConnectModels(processModel,pidModel);
     sim.ConnectModels(pidModel,processModel,(int)INDEX.FIRST);
+    // create synthetic input data (normally you would get this data from the real-world)
+    double timeBase_s = 1;
+    int N = 500;
     var inputData = new TimeSeriesDataSet();
     inputData.Add(sim.AddExternalSignal(processModel,SignalType.Disturbance_D),
         TimeSeriesCreator.Step(N/4,N,0,1));
@@ -159,16 +159,26 @@ after the simulation.</p>
     inputData.Add(sim.AddExternalSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
         TimeSeriesCreator.Step(N/2,N,0,1));
     inputData.CreateTimestamps(timeBase_s);
+    // simulate model over the 
     var isOk = sim.Simulate(inputData,out var simData);
 
+
+    // plot result
+    Shared.EnablePlots();
     Plot.FromList(new List&lt;double[]&gt; {
         simData.GetValues(processModel.GetID(),SignalType.Output_Y),
-        simData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
+        inputData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
         inputData.GetValues(processModel.GetID(),SignalType.External_U,(int)INDEX.SECOND),
         simData.GetValues(pidModel.GetID(),SignalType.PID_U)
         },
         new List&lt;string&gt; { &quot;y1=y_sim&quot;, &quot;y2=disturbance&quot;, &quot;y2=u_external&quot;,&quot;y3=u_pid&quot;  },
         timeBase_s, &quot;ex6_results&quot;);
+    Shared.DisablePlots();
+
+    // optional: serialize
+    //sim.Serialize(&quot;example6&quot;);
+    //inputData.ToCsv(&quot;example6.csv&quot;);
+
 }
 </code></pre>
 <p>The resulting dynamic simulation:

@@ -145,6 +145,7 @@ the simulation in <code>D2</code>, and the aim is for the cascade controllers to
 
    var isOK = sim.Simulate(inputData,out var simResult);
 
+  // Shared.EnablePlots();
    Plot.FromList(new List&lt;double[]&gt;
        {
        simResult.GetValues(process1.GetID(),SignalType.Output_Y),
@@ -155,6 +156,7 @@ the simulation in <code>D2</code>, and the aim is for the cascade controllers to
        },
        new List&lt;string&gt; { &quot;y1=y1&quot;, &quot;y2=y2[right]&quot;,&quot;y2=y2_set[right]&quot;, &quot;y3=u1&quot;, &quot;y4=u2[right]&quot; },
        timeBase_s, &quot;CascadeEx&quot;);
+  // Shared.DisablePlots();
 </code></pre>
 <p>The resulting results.</p>
 <p><img src="images/ex_cascade_results.png" alt="Cascade system"></p>

@@ -91,45 +91,60 @@ In this case the &quot;true&quot; <em>time-delay</em> of <code>5</code> seconds,
 <code>{1,2}</code> are chosen.</p>
 <p><em>The aim of this example is to see how closely the <code>DefaultProcessModelIdentifier</code> is able to estimate these values.</em></p>
 <p>The code to create the dataset, do the identification and create the plots is shown below:</p>
-<pre><code class="lang-csharp" name="Examples">        int timeBase_s = 1;
-        double noiseAmplitude = 0.05;
-        var parameters = new UnitParameters
-        {
-            TimeConstant_s = 15,
-            LinearGains = new double[] {1,2},
-            TimeDelay_s = 5,
-            Bias = 5
-        };
-        var model = new UnitModel(parameters);
+<pre><code class="lang-csharp" name="Examples">      Shared.EnablePlots();
 
-        double[] u1 = TimeSeriesCreator.Step(40,200, 0, 1);
-        double[] u2 = TimeSeriesCreator.Step(105,200, 2, 1);
-        double[,] U = Array2D&lt;double&gt;.CreateFromList(new List&lt;double[]&gt;{u1 ,u2});
+      // create unit model and plant simulator           
+      var parameters = new UnitParameters
+      {
+          TimeConstant_s = 5,
+          LinearGains = new double[] {1,2},
+          TimeDelay_s = 2,
+          Bias = 5
+      };
+      var processModel = new UnitModel(parameters,&quot;processModel&quot;);
+      var sim = new PlantSimulator(new List&lt;ISimulatableModel&gt; { processModel });
+      // create &quot;synthetic&quot; dataset and add the synthetic signals to plant simulator
+      int timeBase_s = 1;
+      double[] u1 = TimeSeriesCreator.Step(3, 100, 1, 2);
+      double[] u2 = TimeSeriesCreator.Step(30, 100, 2, 1);
+      //
+      var inputData = new TimeSeriesDataSet();
+      inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.FIRST), u1);
+      inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.SECOND), u2);
+      inputData.CreateTimestamps(timeBase_s);
+      // simulate the plant
+      var isOK =  sim.Simulate(inputData, out var simData);
+       Assert.IsTrue(isOK);
 
-        var dataSet = new UnitDataSet();
-        dataSet.U = U;
-        var simulator = new UnitSimulator(model);
-        simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
 
-        Plot.FromList(new List&lt;double[]&gt; { dataSet.Y_meas, u1, u2 },
-            new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s,&quot;ex4_data&quot;);
+      // create a &quot;unit data set&quot; and try to estimate the paramters of processModel from the data alone
+      var unitDataSet = new UnitDataSet();
+      unitDataSet.U = Array2D&lt;double&gt;.CreateFromList(new List&lt;double[]&gt; { u1, u2 });
+      unitDataSet.CreateTimeStamps(timeBase_s);
+      unitDataSet.Y_meas = simData.GetValues(processModel.GetID(), SignalType.Output_Y);
+      // plot results of simulation
+   //   Plot.FromList(new List&lt;double[]&gt; { simData.GetValues(processModel.GetID(), SignalType.Output_Y), u1, u2 },
+    //     new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y3=u1&quot;, &quot;y3=u2&quot; }, timeBase_s, &quot;ex4_data&quot;);
 
-        var identifiedModel = UnitIdentifier.Identify(ref dataSet);
+      var identifiedModel = UnitIdentifier.Identify(ref unitDataSet, new FittingSpecs());
+    
+      // compare measured y and y from the identifiedModel.
+       Plot.FromList(new List&lt;double[]&gt; { identifiedModel.GetFittedDataSet().Y_meas, 
+           identifiedModel.GetFittedDataSet().Y_sim },
+           new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_sim&quot;}, timeBase_s, &quot;ex4_results&quot;);
 
-        Plot.FromList(new List&lt;double[]&gt; { identifiedModel.GetFittedDataSet().Y_meas, 
-            identifiedModel.GetFittedDataSet().Y_sim },
-            new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_sim&quot;}, timeBase_s, &quot;ex4_results&quot;);
+      Console.WriteLine(identifiedModel.ToString());
 
-        Console.WriteLine(identifiedModel.ToString());
+      // compare dynamic to static identification
+      var regResults = (new Vec()).Regress(unitDataSet.Y_meas, unitDataSet.U);
 
-        // compare dynamic to static identification
-        var regResults = (new Vec()).Regress(dataSet.Y_meas, U);
-        Plot.FromList(new List&lt;double[]&gt; { identifiedModel.GetFittedDataSet().Y_meas,
-            identifiedModel.GetFittedDataSet().Y_sim,regResults.Y_modelled },
-            new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_dynamic&quot;,&quot;y1=y_static&quot; }, timeBase_s,
-             &quot;ex4_static_vs_dynamic&quot;);
+      Plot.FromList(new List&lt;double[]&gt; { identifiedModel.GetFittedDataSet().Y_meas,
+          identifiedModel.GetFittedDataSet().Y_sim,regResults.Y_modelled },
+          new List&lt;string&gt; { &quot;y1=y_meas&quot;, &quot;y1=y_dynamic&quot;,&quot;y1=y_static&quot; }, timeBase_s,
+           &quot;ex4_static_vs_dynamic&quot;);
+      Shared.DisablePlots();
 
-        Console.WriteLine(&quot;static model gains:&quot; + Vec.ToString(regResults.Gains,3));
+      Console.WriteLine(&quot;static model gains:&quot; + Vec.ToString(regResults.Gains,3));
 </code></pre>
 <p>The first plot shows the dataset, showing inputs<code>u1</code>, <code>u2</code> and output <code>y</code>:</p>
 <p><img src="images/ex4_dataset.png" alt="Example 4:dataset"></p>

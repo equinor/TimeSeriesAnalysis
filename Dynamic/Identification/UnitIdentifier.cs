@@ -936,6 +936,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.BiasUnc = SignificantDigits.Format(parameters.BiasUnc.Value, nDigits);
                 if(parameters.TimeConstantUnc_s.HasValue)
                     parameters.TimeConstantUnc_s = SignificantDigits.Format(parameters.TimeConstantUnc_s.Value, nDigits);
+
+                if (parameters.TimeConstant_s < 0)
+                {
+                    parameters.AddWarning(UnitdentWarnings.NonCausalNegativeTimeConstant);
+                }
+
                 return parameters;
             }
         }

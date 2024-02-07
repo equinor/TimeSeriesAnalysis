@@ -93,7 +93,13 @@
         /// UnitIdentify was able to solve the given estimation problem for the linear/static case, but when adding dynamics, the estimation failed for some reason.
         /// </summary>
         /// 
-       DynamicModelEstimationFailed = 16
+       DynamicModelEstimationFailed = 16,
+        /// <summary>
+        /// A negative time constant was returned, this is "non-causal", and could be due to a time-shift between u and y in the dataset.
+        /// </summary>
+       NonCausalNegativeTimeConstant = 17
+
+
 
 
     }

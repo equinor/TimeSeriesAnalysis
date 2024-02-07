@@ -129,52 +129,42 @@ namespace TimeSeriesAnalysis._Examples
             // create unit model and plant simulator           
             var parameters = new UnitParameters
             {
-                TimeConstant_s = 15,
+                TimeConstant_s = 5,
                 LinearGains = new double[] {1,2},
-                TimeDelay_s = 0,
+                TimeDelay_s = 2,
                 Bias = 5
             };
             var processModel = new UnitModel(parameters,"processModel");
-         //   var sim = new PlantSimulator(new List<ISimulatableModel> { processModel });
+            var sim = new PlantSimulator(new List<ISimulatableModel> { processModel });
             // create "synthetic" dataset and add the synthetic signals to plant simulator
             int timeBase_s = 1;
-            double[] u1 = TimeSeriesCreator.Step(40, 200, 0, 1);
-            double[] u2 = TimeSeriesCreator.Step(105, 200, 2, 1);
-            /* var inputData = new TimeSeriesDataSet();
-              inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.FIRST), u1);
-              inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.SECOND), u2);
-              inputData.CreateTimestamps(timeBase_s);
-            */
+            double[] u1 = TimeSeriesCreator.Step(3, 100, 1, 2);
+            double[] u2 = TimeSeriesCreator.Step(30, 100, 2, 1);
+            //
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.FIRST), u1);
+            inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.SECOND), u2);
+            inputData.CreateTimestamps(timeBase_s);
             // simulate the plant
-            //    var isOK =  sim.Simulate(inputData, out var simData);
-            //       Assert.IsTrue(isOK);
+            var isOK =  sim.Simulate(inputData, out var simData);
+             Assert.IsTrue(isOK);
 
 
             // create a "unit data set" and try to estimate the paramters of processModel from the data alone
             var unitDataSet = new UnitDataSet();
             unitDataSet.U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
-
-            // v1: for comparison, old "unitsimulator"
-            var simulator = new UnitSimulator(processModel);
-            simulator.SimulateYmeas(ref unitDataSet,0.05);
-            Plot.FromList(new List<double[]> { unitDataSet.Y_meas, u1, u2 },
-                new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s, "ex4_data");
-
-            // v2: using plantSimulator
-            //unitDataSet.Y_meas = simData.GetValues(processModel.GetID(), SignalType.Output_Y);
+            unitDataSet.CreateTimeStamps(timeBase_s);
+            unitDataSet.Y_meas = simData.GetValues(processModel.GetID(), SignalType.Output_Y);
             // plot results of simulation
-            //Plot.FromList(new List<double[]> { simData.GetValues(processModel.GetID(), SignalType.Output_Y), u1, u2 },
-            //    new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s, "ex4_data");
+         //   Plot.FromList(new List<double[]> { simData.GetValues(processModel.GetID(), SignalType.Output_Y), u1, u2 },
+          //     new List<string> { "y1=y_meas", "y3=u1", "y3=u2" }, timeBase_s, "ex4_data");
 
-            var identifiedModel = UnitIdentifier.Identify(ref unitDataSet);
-
+            var identifiedModel = UnitIdentifier.Identify(ref unitDataSet, new FittingSpecs());
+          
             // compare measured y and y from the identifiedModel.
-            /* Plot.FromList(new List<double[]> { identifiedModel.GetFittedDataSet().Y_meas, 
+             Plot.FromList(new List<double[]> { identifiedModel.GetFittedDataSet().Y_meas, 
                  identifiedModel.GetFittedDataSet().Y_sim },
                  new List<string> { "y1=y_meas", "y1=y_sim"}, timeBase_s, "ex4_results");
-            */
-            Plot.FromList(new List<double[]> { unitDataSet.Y_meas, unitDataSet.Y_sim },
-                 new List<string> { "y1=y_meas", "y1=y_sim" }, timeBase_s, "ex4_results");
 
             Console.WriteLine(identifiedModel.ToString());
 

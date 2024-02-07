@@ -103,8 +103,10 @@ thus motivating a filter time-constant of about <code>~3</code> seconds.</p>
      var hpFilter = new HighPass(timeBase_s);
      var hpFiltered = hpFilter.Filter(y_sim, 3,1);
 
+     Shared.EnablePlots();
      Plot.FromList(new List&lt;double[]&gt; { y_sim, lpFiltered, hpFiltered },
          new List&lt;string&gt; { &quot;y1=y&quot;,&quot;y3=y_lowpass&quot;,&quot;y3=y_highpass&quot; }, timeBase_s);
+     Shared.DisablePlots();
 </code></pre>
 <p>Running the above code results in the below plot.</p>
 <p>In the top plot <code>y</code> that is two sinusoids overlayed.</p>

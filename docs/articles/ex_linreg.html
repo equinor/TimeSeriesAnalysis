@@ -112,8 +112,10 @@ var results = (new Vec()).RegressUnRegularized(y, U);
 TestContext.WriteLine(Vec.ToString(results.Param, 3));
 TestContext.WriteLine(SignificantDigits.Format(results.Rsq, 3));
 
+Shared.EnablePlots();
 Plot.FromList(new List&lt;double[]&gt;() { y, results.Y_modelled },
     new List&lt;string&gt;() { &quot;y1=y_meas&quot;, &quot;y1=y_mod&quot; }, 1);
+Shared.DisablePlots();
 </code></pre>
 <p>The dataset :</p>
 <p><img src="images/ex2_linreg_data.png" alt="Example 2 dataset"></p>
