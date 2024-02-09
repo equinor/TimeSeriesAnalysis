@@ -20,13 +20,13 @@ jobs:
             - name: Restore NuGet Packages
               run: nuget restore TimeSeriesAnalysis.sln
             - name: Build 
-              run: dotnet build TimeSeriesAnalysis.sln -c Debug
+              run: dotnet build TimeSeriesAnalysis.sln -c Release
             - name: Pack
-              run: dotnet pack TimeSeriesAnalysis.sln -c Debug --include-symbols --include-source
+              run: dotnet pack TimeSeriesAnalysis.sln -c Release --include-symbols --include-source
             - name: Nuget Set API key
               run: nuget setapikey ${{secrets.NUGET_API_KEY}} -source https://nuget.pkg.github.com/equinor/
             - name: Nuget publish 
-              run: nuget push bin\Debug\*.nupkg -source https://nuget.pkg.github.com/equinor/ -SkipDuplicate
+              run: nuget push bin\Release\*.nupkg -source https://nuget.pkg.github.com/equinor/ -SkipDuplicate
             #- name: Publish
             #  uses: rohith/publish-nuget@v2
             #  with:
