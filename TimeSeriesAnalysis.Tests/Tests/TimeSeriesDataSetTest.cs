@@ -76,4 +76,38 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
         }
 
     }
+
+    [TestFixture]
+    class BasicMethods
+    {
+        [TestCase(0, 50)]
+        [TestCase(50,51)]
+
+        public void Subset_DividesDataCorectly(double startPrc, double endPrc)
+        {
+            int N = 100;
+            int timeBase_s = 1;
+
+            var data = new TimeSeriesDataSet();
+            data.Add("test1",TimeSeriesCreator.Sinus(1, 10, timeBase_s,N));
+            data.Add("test2", TimeSeriesCreator.Step(N/2, N, 1, 2));
+            data.AddConstant("const1",5);
+            data.CreateTimestamps(timeBase_s);
+
+            var copy = data.Subset(startPrc, endPrc);
+
+            Assert.IsTrue(copy.ContainsSignal("test1"));
+            Assert.IsTrue(copy.ContainsSignal("test2"));
+            Assert.IsTrue(copy.ContainsSignal("const1"));
+          
+            Assert.IsTrue(copy.GetValues("test1").Length == endPrc-startPrc+1);
+            Assert.IsTrue(copy.GetValues("test2").Length == endPrc - startPrc+1);
+            Assert.IsTrue(copy.GetTimeStamps().Length == endPrc - startPrc+1);
+
+        }
+
+
+    }
+
+
 }

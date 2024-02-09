@@ -103,7 +103,7 @@ namespace TimeSeriesAnalysis
         /// Add a constant value to the time-series to the dataset
         /// </summary>
         /// <param name="signalName"></param>
-        /// <param name="values"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         public bool AddConstant(string signalName, double value)
         {
@@ -194,7 +194,12 @@ namespace TimeSeriesAnalysis
         {
             if (signalID == null)
                 return false;
-            return dataset.ContainsKey(signalID);
+            if (dataset.ContainsKey(signalID))
+                return true;
+            else if (dataset_constants.ContainsKey(signalID))
+                return true;
+            else 
+                return false;
         }
 
         /// <summary>
@@ -282,15 +287,20 @@ namespace TimeSeriesAnalysis
             {
                 return double.NaN;
             }
-            if (!dataset.ContainsKey(signalName))
+            if (dataset.ContainsKey(signalName))
             {
-                return null;
+                if (timeIdx > dataset[signalName].Count() - 1)
+                {
+                    return null;
+                }
+                else
+                    return dataset[signalName][timeIdx];
             }
-            else if (timeIdx > dataset[signalName].Count() - 1)
+            if (dataset_constants.ContainsKey(signalName))
             {
-                return null;
+                return dataset_constants[signalName];
             }
-            return dataset[signalName][timeIdx];
+            return null;
         }
 
 
@@ -426,6 +436,8 @@ namespace TimeSeriesAnalysis
                 return null;
             if (dataset.ContainsKey(signalName))
                 return dataset[signalName];
+            else if (dataset_constants.ContainsKey(signalName))
+                return Vec<double>.Fill(dataset_constants[signalName],N.Value);   
             else
             {
                 Shared.GetParserObj().AddError("TimeSeriesData.GetValues() did not find signal:" + signalName);
@@ -578,6 +590,73 @@ namespace TimeSeriesAnalysis
         {
             timeStamps = times;
         }
+        /// <summary>
+        /// Create a copy of the data set that is a "subset", given using start
+        /// and end percentages of the original data span.
+        /// </summary>
+        /// <param name="startPrc"></param>
+        /// <param name="endPrc"></param>
+        /// <returns></returns>
+        public TimeSeriesDataSet Subset(double startPrc, double endPrc)
+
+        {
+            if (startPrc > 100)
+                startPrc = 100;
+            if (endPrc > 100)
+                endPrc = 100;
+            if (startPrc < 0)
+                startPrc = 0;
+            if (endPrc < 0)
+                endPrc = 0;
+
+
+            int startInd = (int)Math.Floor(startPrc / 100 * N.Value);
+            int endInd = (int)Math.Floor(endPrc / 100 * N.Value);
+            return Subset(startInd, endInd);
+        }
+
+        /// <summary>
+        /// Create a copy of the data set that is a "subset", given using start
+        /// and end indices of the original data span.
+        /// </summary>
+        /// <param name="startInd"></param>
+        /// <param name="endInd"></param>
+        /// <returns></returns>
+        public TimeSeriesDataSet Subset(int startInd, int endInd)
+        {
+            if (!N.HasValue)
+                return null;
+            if (endInd > N-1)
+                endInd = N.Value - 1;
+            if (startInd < 0)
+                startInd = 0;
+
+            TimeSeriesDataSet retDataSet = new TimeSeriesDataSet();
+            foreach (var constant in dataset_constants)
+            {
+                retDataSet.AddConstant(constant.Key, constant.Value);
+            }
+            foreach (var signalName in GetSignalNames())
+            {
+                // do not add constants as "regular signals"
+                if (retDataSet.ContainsSignal(signalName))
+                    continue;
+                var values = GetValues(signalName);
+                if (values != null)
+                {
+                    var copy = values.SubArray(startInd, endInd);
+                    retDataSet.Add(signalName, copy);
+                }
+            }
+
+            if (timeStamps != null)
+            {
+                DateTime[] timeStampsArray = (DateTime[])timeStamps.ToArray<DateTime>();
+                retDataSet.SetTimeStamps((Vec<DateTime>.SubArray(timeStampsArray, startInd, endInd)).ToList());
+            }
+            return retDataSet;
+        }
+
 
 
         /// <summary>

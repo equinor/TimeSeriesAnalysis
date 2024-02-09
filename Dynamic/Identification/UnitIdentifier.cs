@@ -68,9 +68,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
         /// <param name="fittingSpecs">optional fitting specs object for  tuning data</param>
-        /// <param name="doEstimateTimeDelay">(default:true) if set to false, time delay estimation is disabled (can drastically speeed up identification)
-        /// 
-        /// 
+        /// <param name="doEstimateTimeDelay">(default:true) if set to false, time delay estimation is disabled (can drastically speeed up identification)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel Identify(ref UnitDataSet dataSet,
             FittingSpecs fittingSpecs= null, bool doEstimateTimeDelay=true)
@@ -83,10 +81,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">The dataset containing the <c>ymeas</c> and <c>U</c> that is to be fitted against, 
         /// a new element <c>y_sim</c> is also added to this dataset</param>
-        /// <param name="u0">Optionally sets the local working point for the inputs
-        /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
-        /// <returns> the identified model parameters and some information about the fit</returns>
+        /// <param name="fittingSpecs"></param>
+         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel IdentifyStatic(ref UnitDataSet dataSet, FittingSpecs fittingSpecs = null)
         {
             return Identify_Internal(ref dataSet, fittingSpecs,false);
@@ -963,7 +959,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double varA = regResults.VarCovarMatrix[0][0];
             double sqrtN = Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints);
             /////////////////////////////////////////////////////
-            /// linear gain unceratinty
+            // linear gain unceratinty
             var LinearGainUnc = new List<double>();
             for (int inputIdx = 0; inputIdx < parameters.GetNumInputs(); inputIdx++)
             {
@@ -976,8 +972,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             parameters.LinearGainUnc = LinearGainUnc.ToArray();
             /////////////////////////////////////////////////
-            /// curvature unceratinty
-            /// 
+            // curvature unceratinty
+            // 
             var CurvatureUnc = new List<double>();
             if (parameters.Curvatures != null)
             {
@@ -1031,7 +1027,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double sqrtN = Math.Sqrt(regResults.NfittingTotalDataPoints - regResults.NfittingBadDataPoints);
 
             /////////////////////////////////////////////////////
-            /// linear gain unceratinty
+            // linear gain unceratinty
             
             var LinearGainUnc = new List<double>();
             for (int inputIdx= 0; inputIdx< parameters.GetNumInputs(); inputIdx++)
@@ -1076,8 +1072,8 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.LinearGainUnc = LinearGainUnc.ToArray();
 
             /////////////////////////////////////////////////
-            /// curvature unceratinty
-            /// 
+            // curvature unceratinty
+            // 
             var CurvatureUnc = new List<double>();
             if (parameters.Curvatures != null)
             {

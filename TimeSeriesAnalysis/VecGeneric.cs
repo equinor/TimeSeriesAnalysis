@@ -81,8 +81,8 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Get the indice of value <c>val</c> values that are present in <c>vec</c>
         /// </summary>
-        /// <param name="vec1">The results are related to the positions in this vector</param>
-        /// <param name="vec2"><c>vec1</c> is compared to this vector</param>
+        /// <param name="val">The results are related to the positions in this vector</param>
+        /// <param name="vec"><c>vec1</c> is compared to this vector</param>
         /// <returns></returns>
         public static List<int> GetIndicesOfValue(T val, List<T> vec)
         {

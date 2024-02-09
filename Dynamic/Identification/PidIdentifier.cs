@@ -537,7 +537,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (b[1] == 0)
                 {
                     // this seems to happen in for instance entire Y is constant, for instance in case 
-                    /// of input saturation, or if the controller is in manual the entire time or is the wrong signal
+                    // of input saturation, or if the controller is in manual the entire time or is the wrong signal
                     pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY);
                     Tiest[curEstidx] = badValueIndicatingValue;
                     continue;

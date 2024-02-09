@@ -107,9 +107,8 @@ namespace TimeSeriesAnalysis.Utility
         /// </summary>
         /// <param name="csvString"></param>
         /// <param name="separator"></param>
-        /// <param name="doubleData"></param>
-        /// <param name="variableNames"></param>
-        /// <param name="stringData"></param>
+        /// <param name="dateTimes"></param>
+        /// <param name="variables"></param>
         /// <param name="dateTimeFormat"></param>
         /// <returns></returns>
         public static bool LoadDataFromCsvContentAsTimeSeries(CsvContent csvString, char separator, out DateTime[] dateTimes,

@@ -34,7 +34,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int rowIdx = 0; rowIdx < N; rowIdx++)
                 {
                     //  First value is < c > y_process_abs </ c >,  second value is < c > y_set_abs </ c >, optional third value is
-                    /// <c>uTrackSignal</c>, optional fourth value is <c>gainSchedulingVariable</c>
+                    // <c>uTrackSignal</c>, optional fourth value is <c>gainSchedulingVariable</c>
                     List<double> input = new List<double>();
 
                     input.Add(processDataSet.Y_meas[rowIdx]);

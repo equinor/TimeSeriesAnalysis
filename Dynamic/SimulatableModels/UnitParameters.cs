@@ -10,10 +10,6 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class UnitParameters : ModelParametersBaseClass
     {
-        /// <summary>
-        /// Fitting object
-        /// </summary>
-       // public FittingInfo Fitting { get; internal set; }
 
         /// <summary>
         /// The minimum allowed output value(if set to NaN, no minimum is applied)

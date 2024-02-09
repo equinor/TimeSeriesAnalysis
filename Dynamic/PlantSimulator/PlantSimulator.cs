@@ -732,7 +732,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (!fileName.EndsWith(".json"))
                 fileName += ".json";
 
-            /// var options = new JsonSerializerOptions { WriteIndented = true };
+            // var options = new JsonSerializerOptions { WriteIndented = true };
             //  var serializedTxt =  JsonSerializer.Serialize(this,options);
 
             var serializedTxt = SerializeTxt();

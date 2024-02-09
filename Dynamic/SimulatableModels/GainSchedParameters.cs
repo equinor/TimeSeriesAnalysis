@@ -11,11 +11,6 @@ namespace TimeSeriesAnalysis.Dynamic
     public class GainSchedParameters : ModelParametersBaseClass
     {
         /// <summary>
-        /// Fitting object
-        /// </summary>
-       // public FittingInfo Fitting { get; internal set; }
-
-        /// <summary>
         /// The minimum allowed output value(if set to NaN, no minimum is applied)
         /// </summary>
         public double Y_min = double.NaN;
@@ -185,43 +180,6 @@ namespace TimeSeriesAnalysis.Dynamic
               return LinearGainUnc[inputIdx];*/
             return 0;
         }
-
-        /// <summary>
-        /// Get all process gains (including both linear and any nonlinear terms)
-        /// </summary>
-        /// <returns>may return null if no process gains given</returns>
-      /*  public double[] GetProcessGains()
-        {
-            var list = new List<double>();
-
-            if (LinearGains == null)
-            {
-                return null;
-            }
-
-            var nInputs = LinearGains.Length;
-
-            for (int inputIdx = 0; inputIdx < nInputs; inputIdx++)
-            {
-                list.Add(GetTotalCombinedProcessGain(inputIdx));
-            }
-            return list.ToArray();
-        }*/
-
-        /// <summary>
-        /// Get all the process gain uncertainties
-        /// </summary>
-        /// <returns></returns>
-    /*    public double[] GetProcessGainUncertainties()
-        {
-            var list = new List<double>();
-            for (int inputIdx = 0; inputIdx < U0.Length; inputIdx++)
-            {
-                list.Add(GetTotalCombinedProcessGainUncertainty(inputIdx));
-            }
-            return list.ToArray();
-        }
-    */
 
         /// <summary>
         /// Adds a identifiation warning to the object

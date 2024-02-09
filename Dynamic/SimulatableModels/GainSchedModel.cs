@@ -517,16 +517,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return new double[] { y };
          }
 
-        /// <summary>
-        /// Is the model static or dynamic?
-        /// </summary>
-        /// <returns>Returns true if the model is static(no time constant or time delay terms),otherwise false.</returns>
-    /*    public bool IsModelStatic()
-        {
-           return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
-        }
-    */
-
 
 
         /// <summary>

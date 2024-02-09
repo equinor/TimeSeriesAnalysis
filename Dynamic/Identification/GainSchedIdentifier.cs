@@ -96,7 +96,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // double GSp1_rsqdiff_points = UMp1.Fitting.RsqDiff;
             }
             ////////////////////////////////////////////////////
-            ///
+            //
             var allGainSchedParams = new List<GainSchedParameters> { GSp_noGainSchedReference };
 
             ////////////////////////////////////////////////////

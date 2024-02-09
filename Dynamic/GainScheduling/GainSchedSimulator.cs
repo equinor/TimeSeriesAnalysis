@@ -58,8 +58,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="processDataSet">the process will read the <c>.Y_set</c> and <c>.Times</c> and 
         /// possibly <c>.D</c>c>, 
         /// and write simulated inputs to <c>U_sim</c> and <c>Y_sim</c></param>
-        /// <param name="pidActsOnPastStep">pid-controller looks at e[k-1] if true, otherwise e[k]</c> 
-        /// <param name="writeResultToYmeasInsteadOfYsim">write data to <c>processDataSet.Y_meas</c> 
+        /// <param name="pidActsOnPastStep">pid-controller looks at e[k-1] if true, otherwise e[k]</param>
+        /// <param name="writeResultToYmeasInsteadOfYsim">write data to <c>processDataSet.Y_meas</param>
         /// instead of <c>processDataSet.Y_sim</c></param>
         /// <returns>Returns true if able to simulate, otherwise false (simulation is written into processDataSet )</returns>
         public bool CoSimulate
