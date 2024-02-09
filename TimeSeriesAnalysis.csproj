@@ -1,28 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="14.0"> 
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    	<TargetFramework>netstandard2.0</TargetFramework>
+    	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	<DefineConstants>$(DefineConstants);WithDocs</DefineConstants>
-    <Description>Time-series modeling and simulation, based on system identification. Supports transients/dynamic and static models, filters and PID-control. </Description>
-    <Copyright>Equinor 2022</Copyright>
-    <PackageProjectUrl>https://equinor.github.io/TimeSeriesAnalysis</PackageProjectUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>data-mining; time-series; dynamic-simulations; pid-control; multivariate-statistics; advanced-analytics;mpc-control;digital-twins</PackageTags>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
-    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-    <RepositoryUrl>https://github.com/equinor/timeseriesanalysis</RepositoryUrl>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <Version>1.3.02</Version>
-    <Company>Equinor</Company>
-    <Authors>Equinor</Authors>
-	<IncludeSymbols>true</IncludeSymbols>
+    	<Description>Time-series modeling and simulation, based on system identification. Supports transients/dynamic and static models, filters and PID-control. </Description>
+    	<Copyright>Equinor 2022</Copyright>
+    	<PackageProjectUrl>https://equinor.github.io/TimeSeriesAnalysis</PackageProjectUrl>
+    	<RepositoryType>git</RepositoryType>
+    	<PackageTags>data-mining; time-series; dynamic-simulations; pid-control; multivariate-statistics; advanced-analytics;mpc-control;digital-twins</PackageTags>
+    	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+    	<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+	<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+    	<RepositoryUrl>https://github.com/equinor/timeseriesanalysis</RepositoryUrl>
+    	<PackageReadmeFile>readme.md</PackageReadmeFile>
+    	<Version>1.3.03</Version>
+    	<Company>Equinor</Company>
+    	<Authors>Equinor</Authors>
+    	<IncludeSymbols>true</IncludeSymbols>
 	<DebugType>embedded</DebugType>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
-
 
   <ItemGroup>
     <Compile Remove="api\**" />
@@ -67,7 +68,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" >
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
