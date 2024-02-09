@@ -7399,6 +7399,19 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.TimeSeriesDataSet.GetData
   nameWithType: TimeSeriesDataSet.GetData
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.GetIndicesToIgnore
+  name: GetIndicesToIgnore()
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_GetIndicesToIgnore
+  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.GetIndicesToIgnore
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.GetIndicesToIgnore()
+  nameWithType: TimeSeriesDataSet.GetIndicesToIgnore()
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.GetIndicesToIgnore*
+  name: GetIndicesToIgnore
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_GetIndicesToIgnore_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeriesDataSet.GetIndicesToIgnore
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.GetIndicesToIgnore
+  nameWithType: TimeSeriesDataSet.GetIndicesToIgnore
 - uid: TimeSeriesAnalysis.TimeSeriesDataSet.GetLength
   name: GetLength()
   href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_GetLength
@@ -9693,6 +9706,22 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.VecExtensionMethods.Sub
   nameWithType: VecExtensionMethods.Sub
+- uid: TimeSeriesAnalysis.VecExtensionMethods.SubArray(System.Double[],System.Int32,System.Int32)
+  name: SubArray(Double[], Int32, Int32)
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_SubArray_System_Double___System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.VecExtensionMethods.SubArray(System.Double[],System.Int32,System.Int32)
+  name.vb: SubArray(Double(), Int32, Int32)
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.SubArray(System.Double[], System.Int32, System.Int32)
+  fullName.vb: TimeSeriesAnalysis.VecExtensionMethods.SubArray(System.Double(), System.Int32, System.Int32)
+  nameWithType: VecExtensionMethods.SubArray(Double[], Int32, Int32)
+  nameWithType.vb: VecExtensionMethods.SubArray(Double(), Int32, Int32)
+- uid: TimeSeriesAnalysis.VecExtensionMethods.SubArray*
+  name: SubArray
+  href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_SubArray_
+  commentId: Overload:TimeSeriesAnalysis.VecExtensionMethods.SubArray
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.VecExtensionMethods.SubArray
+  nameWithType: VecExtensionMethods.SubArray
 - uid: TimeSeriesAnalysis.VecExtensionMethods.ToString(System.Double[],System.Int32,System.String)
   name: ToString(Double[], Int32, String)
   href: api/TimeSeriesAnalysis.VecExtensionMethods.html#TimeSeriesAnalysis_VecExtensionMethods_ToString_System_Double___System_Int32_System_String_

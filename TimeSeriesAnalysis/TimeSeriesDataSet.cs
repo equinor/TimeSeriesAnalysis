@@ -220,6 +220,11 @@ namespace TimeSeriesAnalysis
         }
 
 
+        /// <summary>
+        /// Fills a dataset with variables, values and dates 
+        /// </summary>
+        /// <param name="dateTimes"></param>
+        /// <param name="variableDict"></param>
         private void Fill(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
         {
             if (variableDict.ContainsKey("Time"))
@@ -239,6 +244,10 @@ namespace TimeSeriesAnalysis
         }
 
 
+        /// <summary>
+        /// Get the timebase, the time between two samples in the dataset
+        /// </summary>
+        /// <returns>The timebase in seconds</returns>
         public double GetTimeBase()
         {
             if (timeStamps.Count > 2)
@@ -424,16 +433,16 @@ namespace TimeSeriesAnalysis
             }
         }
 
-        internal List<int> GetIndicesToIgnore()
+        /// <summary>
+        /// Get a list of the indices in the dataset that are flagged to be ignored in identification
+        /// </summary>
+        /// <returns></returns>
+        public List<int> GetIndicesToIgnore()
         {
             if (indicesToIgnore == null)
                 return new List<int>();
-            // 
             return indicesToIgnore;
         }
-
-
-
 
         /// <summary>
         /// Define a new signal, specifying only its inital value
@@ -570,16 +579,6 @@ namespace TimeSeriesAnalysis
             timeStamps = times;
         }
 
-
-        /// <summary>
-        /// Set the timestamp of the start of the dataset,from which other time stamps can be found using timebase_s
-        /// </summary>
-        /// <param name="t0"></param>
-       /* public void SetT0(DateTime t0)
-        {
-            this.t0 = t0;
-        }
-        */
 
         /// <summary>
         /// Create a comma-separated-variable(CSV) string of the dataset

@@ -930,7 +930,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.TimeSeriesDataSet.html",
-          "hash": "e3lEkPjOA/EgThIdtkwCDUwAp2upKG9eQE5W6o9Gg+E="
+          "hash": "ZXpYuhliwSN8hZybkRDhLOKdFpH4CvVPqCOU+XWOXb4="
         }
       },
       "is_incremental": false,
@@ -1158,7 +1158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/TimeSeriesAnalysis.VecExtensionMethods.html",
-          "hash": "YiJLbXaeV62f9dGTlPC5rEuKZi3vsi4mY2b2tDKiPKc="
+          "hash": "bpORaH0C0wrk1DmbQsrHSPsdJW8VVOMv+3NVhL90CrI="
         }
       },
       "is_incremental": false,
@@ -2285,13 +2285,13 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 51,
-          "skipped_file_count": 41
+          "skipped_file_count": 51
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 98,
-          "skipped_file_count": 94
+          "skipped_file_count": 98
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
