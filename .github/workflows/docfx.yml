@@ -2,7 +2,7 @@ name: docfx
 on: [push]
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     name: Generate and publish the docs
     steps:
     - uses: actions/checkout@v1
