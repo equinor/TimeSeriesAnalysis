@@ -39,6 +39,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class Select : ModelBaseClass, ISimulatableModel 
     {
+        /// <summary>
+        /// The type of select block
+        /// </summary>
         public SelectType type;
 
         /// <summary>
@@ -53,6 +56,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
         }
 
+        /// <summary>
+        /// Answers if the model is simulatable with the given input
+        /// </summary>
+        /// <param name="explain"></param>
+        /// <returns></returns>
         public bool IsModelSimulatable(out string explain)
         {
             explain= "";

@@ -14,6 +14,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     abstract public class ModelParametersBaseClass
     {
+        /// <summary>
+        /// The fitting information of the model, set during identification
+        /// </summary>
         [JsonInclude]
         [JsonProperty("Fitting")]
         public FittingInfo Fitting { get  ; internal set; }

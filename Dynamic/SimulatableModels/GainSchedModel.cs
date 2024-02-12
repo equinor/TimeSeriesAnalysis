@@ -36,6 +36,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class GainSchedModel : ModelBaseClass, ISimulatableModel 
     {
+        /// <summary>
+        /// Model parameters
+        /// </summary>
         public  GainSchedParameters modelParameters;
 
         private LowPass lowPass;
@@ -72,6 +75,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
             InitSim(modelParameters);
         }
+        /// <summary>
+        /// Answers if model is simulatable, i.e. has given inputs that are sensible.
+        /// </summary>
+        /// <param name="explainStr"></param>
+        /// <returns></returns>
         public bool IsModelSimulatable(out string explainStr)
         {
             explainStr = "";
@@ -142,9 +150,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Initalize the process model with a sampling time
+        /// Initalize the process model 
         /// </summary>
-        /// <param name="timeBase_s">the timebase in seconds>0, the length of time between calls to Iterate(data sampling time interval)</param>
         /// <param name="modelParameters">model paramters object</param>
         private void InitSim(GainSchedParameters modelParameters)
         {
@@ -172,11 +179,19 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
+        /// <summary>
+        /// Sets the fitted dataset
+        /// </summary>
+        /// <param name="dataset"></param>
         public void SetFittedDataSet(GainSchedDataSet dataset)
         {
             FittedDataSet = dataset;
         }
 
+        /// <summary>
+        /// Returns the fitted dataset
+        /// </summary>
+        /// <returns></returns>
         public GainSchedDataSet GetFittedDataSet()
         {
             return FittedDataSet;
@@ -366,15 +381,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Determine the curvature term contribution(c*(u-u0)^2/unorm) to the output from a particular input for a particular value
         /// </summary>
-        /// <param name="inputIndex">the index of the input</param>
-        /// <param name="u">the value of the input</param>
+        /// <param name="inputs">the "u" vector</param>
+        /// <param name="badValueIndicator">a value indicating a bad value</param>
         /// <returns></returns>
         private double CalculateStaticStateWithoutAdditive(double[] inputs, double badValueIndicator=-9999)
         {
             double x_static = modelParameters.Bias;
 
             // inputs U may include a disturbance as the last entry
-            double gainSched = inputs[modelParameters.GainSchedParameterIndex]; // TODO: make sure GainSchedParIndx is updated
+            double gainSched = inputs[modelParameters.GainSchedParameterIndex]; 
 
             for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
@@ -437,6 +452,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Iterates the process model state one time step, based on the inputs given
         /// </summary>
         /// <param name="inputs">vector of inputs U. Optionally the output disturbance D can be added as the last value.</param>
+        /// <param name = "timeBase_s" > vector of inputs U.Optionally the output disturbance D can be added as the last value.</param>
         /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
         /// <returns>the updated process model state(x) - the output without any output noise or disturbance.
         ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.

@@ -15,6 +15,9 @@ namespace TimeSeriesAnalysis.Dynamic
     {
 
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public DivideParameters()
         {
         }

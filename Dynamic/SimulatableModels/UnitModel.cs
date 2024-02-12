@@ -44,6 +44,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class UnitModel : ModelBaseClass, ISimulatableModel 
     {
+        /// <summary>
+        /// The paramters of the UnitModel
+        /// </summary>
         public  UnitParameters modelParameters;
 
         private LowPass lowPass;
@@ -80,6 +83,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
             InitSim(modelParameters);
         }
+        /// <summary>
+        /// Answers if the model can be simulated with the inputs provided
+        /// </summary>
+        /// <param name="explainStr">a string that explains why the model cannot be simulated if that is the case</param>
+        /// <returns></returns>
         public bool IsModelSimulatable(out string explainStr)
         {
             explainStr = "";
@@ -119,7 +127,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Initalize the process model with a sampling time
         /// </summary>
-        /// <param name="timeBase_s">the timebase in seconds>0, the length of time between calls to Iterate(data sampling time interval)</param>
         /// <param name="modelParameters">model paramters object</param>
         private void InitSim(UnitParameters modelParameters)
         {
@@ -148,11 +155,19 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Store the fitted dataset
+        /// </summary>
+        /// <param name="dataset"></param>
         public void SetFittedDataSet(UnitDataSet dataset)
         {
             FittedDataSet = dataset;
         }
 
+        /// <summary>
+        /// Returns a copy of the dataset against which the model was fitted.
+        /// </summary>
+        /// <returns></returns>
         public UnitDataSet GetFittedDataSet()
         {
             return FittedDataSet;
@@ -437,6 +452,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Iterates the process model state one time step, based on the inputs given
         /// </summary>
         /// <param name="inputs">vector of inputs U. Optionally the output disturbance D can be added as the last value.</param>
+        /// <param name="timeBase_s">the time in seconds between samples</param>
         /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
         /// <returns>the updated process model state(x) - the output without any output noise or disturbance.
         ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.

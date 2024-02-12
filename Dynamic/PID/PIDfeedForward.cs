@@ -7,7 +7,10 @@
     /// </summary>
     public class PidFeedForward
     {
-        // default constructor that defaults to a disabled feedforward
+
+        /// <summary>
+        /// Deafault constructor
+        /// </summary>
         public PidFeedForward()
         {
             isFFActive = false; 

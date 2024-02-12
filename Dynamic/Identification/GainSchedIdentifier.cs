@@ -19,21 +19,23 @@ using System.Security.Cryptography;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    class GainSchedSubModelResults
-    {
-        public double[] LinearGains = null;
-        public double TimeConstant_s =0;
-        public bool NotEnoughExitationBetweenAllThresholds = false;
-        public bool WasAbleToIdentfiy = false;
-    }
 
+    /// <summary>
+    /// Attempts to identify a gain-scheduled model, a model that uses multiple local linear models to approximate a nonlinearity.
+    /// Should not be confused with gain-scheduling in terms of PID-control.
+    /// </summary>
     static public class GainSchedIdentifier
     {
-
         const int THRESHOLD_GLOBALSEARCH_MAX_IT = 40; // TODO: magic number
         const double GAIN_THRESHOLD_MAGIC_FACTOR = 0.02;// TODO: Magic number
         const double GAIN_THRESHOLD_MAGIC_FACTOR_2 = 0.09;//TODO magic number
 
+        /// <summary>
+        /// Identify a gain scheduled model for the given dataset.
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="gsFittingSpecs"></param>
+        /// <returns></returns>
         static public GainSchedParameters Identify(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs = null)
         {
             int gainSchedInputIndex = 0;
@@ -285,11 +287,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// 
         /// </summary>
         /// <param name="dataSet"></param>
-        /// <param name="uLowerThreshold"></param>
-        /// <param name="uHigherThreshold"></param>
+        /// <param name="uLowerThreshold">the lower threshold of the gain-scheduled input</param>
+        /// <param name="uHigherThreshold">the upper threshold of the gain-scheduled input</param>
+        /// <param name="gainSchedVarIndex">index of the variable in the model that is gain-scheduled. by the fault 0</param>
         /// <param name="u0"> if set to null, the u between uLowerThreshold and uHigherThreshold is used </param>
         /// <returns>return a tuple, the first linear gains is null if unable to identify </returns>
-        private static GainSchedSubModelResults IdentifySingleLinearGainForGivenThresholds(ref UnitDataSet dataSet,double[] uLowerThreshold, double[] uHigherThreshold, int gainSchedVarIndex, double? u0= null )
+        private static GainSchedSubModelResults IdentifySingleLinearGainForGivenThresholds(ref UnitDataSet dataSet,double[] uLowerThreshold, double[] uHigherThreshold, 
+            int gainSchedVarIndex, double? u0= null )
         {
             var results = new GainSchedSubModelResults();
 

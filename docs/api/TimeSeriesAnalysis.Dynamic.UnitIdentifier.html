@@ -161,7 +161,8 @@ Since the aim is to identify transients/dynamics, the regression is done on mode
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_Identify_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.Identify(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)">Identify(ref UnitDataSet, FittingSpecs, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model that best fits the dataSet given</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -180,17 +181,21 @@ Since the aim is to identify transients/dynamics, the regression is done on mode
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
         <td><span class="parametername">dataSet</span></td>
-        <td></td>
+        <td><p>The dataset containing the ymeas and U that is to be fitted against,
+a new y_sim is also added</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
         <td><span class="parametername">fittingSpecs</span></td>
-        <td></td>
+        <td><p>optional fitting specs object for  tuning data</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">doEstimateTimeDelay</span></td>
-        <td></td>
+        <td><p>(default:true) if set to false, time delay estimation is disabled (can drastically speeed up identification)</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -205,7 +210,8 @@ Since the aim is to identify transients/dynamics, the regression is done on mode
     <tbody>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitModel.html">UnitModel</a></td>
-        <td></td>
+        <td><p>the identified model parameters and some information about the fit</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -240,7 +246,8 @@ a new y_sim is also added</p>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
         <td><span class="parametername">fittingSpecs</span></td>
-        <td></td>
+        <td><p>optionally set constraints on the identification</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
@@ -297,12 +304,13 @@ a new y_sim is also added</p>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
         <td><span class="parametername">fittingSpecs</span></td>
-        <td></td>
+        <td><p>object of specifications for</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">doEstimateTimeDelay</span></td>
-        <td><p>if set to false, modeling does not identify time-delays</p>
+        <td><p>set to false to disable time delay estimation (this speeds up identification manyfold)</p>
 </td>
       </tr>
     </tbody>
@@ -354,7 +362,8 @@ a new y_sim is also added</p>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
         <td><span class="parametername">fittingSpecs</span></td>
-        <td></td>
+        <td><p>Optionally sets the local working point, constraints etc. for id.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
@@ -452,7 +461,7 @@ This is useful if doing a &quot;global search&quot; where varying a single gain.
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearDiff_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_IdentifyLinearDiff_TimeSeriesAnalysis_Dynamic_UnitDataSet__TimeSeriesAnalysis_Dynamic_FittingSpecs_System_Boolean_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.IdentifyLinearDiff(TimeSeriesAnalysis.Dynamic.UnitDataSet@,TimeSeriesAnalysis.Dynamic.FittingSpecs,System.Boolean)">IdentifyLinearDiff(ref UnitDataSet, FittingSpecs, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Identifies the &quot;Default&quot; process model based on differences y[k]-y[k-1] that best fits the dataSet given, but disables curvatures</p>
+  <div class="markdown level1 summary"><p>Identifies the process model based on differences y[k]-y[k-1] that best fits the dataSet given, but disables curvatures</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -479,12 +488,13 @@ a new y_sim is also added</p>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></td>
         <td><span class="parametername">fittingSpecs</span></td>
-        <td></td>
+        <td><p>optionally set constraints on the identification</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">doEstimateTimeDelay</span></td>
-        <td><p>if set to false, estimation of time delays are disabled</p>
+        <td><p>if set to false, estimation of time delays are disabled(default is true)</p>
 </td>
       </tr>
     </tbody>
@@ -560,7 +570,9 @@ a new element <code>y_sim</code> is also added to this dataset</p>
   
   <a id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_SimulateAndReEstimateBias_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_UnitIdentifier_SimulateAndReEstimateBias_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitParameters_" data-uid="TimeSeriesAnalysis.Dynamic.UnitIdentifier.SimulateAndReEstimateBias(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters)">SimulateAndReEstimateBias(UnitDataSet, UnitParameters)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>For a given set of paramters and a dataset, find the bias which gives the lowest mean offset
+(this can be espescially useful when identification uses the &quot;difference&quot; formulation)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

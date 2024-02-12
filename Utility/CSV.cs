@@ -16,7 +16,14 @@ namespace TimeSeriesAnalysis.Utility
     /// </summary>
     public class CsvContent
     {
+        /// <summary>
+        /// A string containting the text that is inside a csv
+        /// </summary>
         public string CsvTxt { get; }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="csvTxt"></param>
         public CsvContent(string csvTxt)
         {
             this.CsvTxt = csvTxt;

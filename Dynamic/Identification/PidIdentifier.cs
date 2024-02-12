@@ -30,6 +30,13 @@ namespace TimeSeriesAnalysis.Dynamic
         private Vec vec;
         private double timeBase_s;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="pidScaling"></param>
+        /// <param name="maxExpectedTc_s"></param>
+        /// <param name="badValueIndicatingValue"></param>
+        /// <param name="type"></param>
         public PidIdentifier(PidScaling pidScaling=null, double maxExpectedTc_s=0, double badValueIndicatingValue=-9999,
             PidControllerType type = PidControllerType.Unset)
         {
@@ -129,12 +136,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
-        /// <param name="isPIDoutputDelayOneSample">specify if the pid-controller is acting on the e[k-1] if true, or e[k] if false</param>
         /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
             const bool doOnlyWithDelay = false;//should be false unless debugging something
-
 
             // 1. try identification with delay of one sample but without filtering
             (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true);
@@ -322,7 +327,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">dataset to filter over</param>
         /// <param name="isPIDoutputDelayOneSample"></param>
-        /// <param name="pidFilter">optional filter to apply to y</param>
+        /// <param name="pidFilterParams">optional filter to apply to y</param>
+        /// <param name="doFilterUmeas"> if set to true, the measurement of the manipulated variable will be filtered</param>
+        /// 
         /// <returns></returns>
         private (PidParameters, double[,]) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
             PidFilterParams pidFilterParams = null, bool doFilterUmeas=false)
@@ -587,7 +594,7 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
-            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScore.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0)), nDigits);
+            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0)), nDigits);
             
             pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), U_sim.GetColumn(0), 0);
             pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), null, 0) * 100;
@@ -600,8 +607,14 @@ namespace TimeSeriesAnalysis.Dynamic
             return (pidParam,U_sim);
         }
 
-        // todo: this code should be replaced after porting code into TimeSeriesAnalysis. Re-use common simulation rather than re-doing it.
 
+        /// <summary>
+        /// Returns the simulated time series of the manipulated varialbe u as given by the PID-controller.
+        /// </summary>
+        /// <param name="pidParams"></param>
+        /// <param name="dataset"></param>
+        /// <param name="isPIDoutputDelayOneSample"></param>
+        /// <returns></returns>
         public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample)
         {
             int firstGoodDataPointToStartSimIdx = 0;

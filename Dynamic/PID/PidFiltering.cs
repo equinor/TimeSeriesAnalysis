@@ -25,6 +25,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public bool IsEnabled;
 
+        /// <summary>
+        /// Default contstructor
+        /// </summary>
+        /// <param name="IsEnabled"></param>
+        /// <param name="FilterOrder"></param>
+        /// <param name="TimeConstant_s"></param>
         public PidFilterParams(bool IsEnabled = false, int FilterOrder = 0, double TimeConstant_s = 0)
         {
             this.IsEnabled = IsEnabled;
@@ -43,6 +49,11 @@ namespace TimeSeriesAnalysis.Dynamic
         private PidFilterParams fParams;
         private double timebase_s;
         LowPass yFilt1,yFilt2;
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="filterParams"></param>
+        /// <param name="timebase_s"></param>
         public PidFilter(PidFilterParams filterParams, double timebase_s)
         {
             this.fParams = filterParams;
@@ -51,6 +62,10 @@ namespace TimeSeriesAnalysis.Dynamic
             this.yFilt2 = new LowPass(timebase_s);
         }
 
+        /// <summary>
+        /// Returns the filter paramter object
+        /// </summary>
+        /// <returns></returns>
         public PidFilterParams GetParams()
         {
             return fParams;

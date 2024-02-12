@@ -46,7 +46,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </list>
         /// </para>
         /// </summary>
+        /// 
+        /// <param name="inputData">non-simulated time-series external inputs</param>
         /// <param name="simData">simulation dataset containing only the external signals. The new simulated variables are added to this variable with initial values.</param>
+        /// <param name="compLoopDict">dictionary of all computational loops</param>
+
         public bool ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
             Dictionary<string,List<string>> compLoopDict)
         {
@@ -240,6 +244,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputData">note that for closed loop systems u and y signals are removed(these are used to estimate disturbance, removing them triggers code in PlantSimulator to re-estimate them)</param>
         /// <param name="simData"></param>
+        /// <param name="signalValuesAtT0"></param>
         /// <returns>true if everything went ok, otherwise false</returns>
         private bool EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,ref Dictionary<string, double> signalValuesAtT0)
         {
@@ -593,6 +598,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <para>
         /// Which controller is active inside select loops depends on the value of the disturbance on the output of the modelled process
         /// </para>
+        /// <param name="timeBase_s"></param> 
         /// <param name="simSignalValueDict"></param>
         /// <param name="uninitalizedPID_IDs"></param>
         /// <returns></returns>

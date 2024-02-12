@@ -8,13 +8,35 @@ using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis
 {
+    /// <summary>
+    /// Holds the result of a correlation calcultion between two vectors
+    /// </summary>
     public class CorrelationObject
     {
+        /// <summary>
+        /// Name of the signal
+        /// </summary>
         public string signalName;
+        /// <summary>
+        /// a correlation factor betweeen -1 and 1 indicating the degree of correlation
+        /// </summary>
         public double correlationFactor;
+        /// <summary>
+        /// Time constant (1. order) between the two vectors
+        /// </summary>
         public double? timeConstant_s;
+        /// <summary>
+        /// Time delay in seconds between the two vectors
+        /// </summary>
         public double? timeDelay_s;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="timeConstant_s"></param>
+        /// <param name="timeDelay_s"></param>
         public CorrelationObject(string name,double value, double? timeConstant_s = null, double? timeDelay_s=null)
         {
             signalName = name;
@@ -24,8 +46,18 @@ namespace TimeSeriesAnalysis
         }
     }
 
+    /// <summary>
+    /// Class that performns correlations between vectors
+    /// </summary>
     public class CorrelationCalculator
     {
+        /// <summary>
+        /// Determine the correlation betweeen vectors v1 and v2
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <param name="indicesToIgnore"></param>
+        /// <returns></returns>
         public static double CorrelateTwoVectors(double[] v1, double[] v2, List<int> indicesToIgnore)
         {
 

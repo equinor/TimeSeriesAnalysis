@@ -7,26 +7,12 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace TimeSeriesAnalysis.Dynamic
-{/*
-    public class KnownTypesBinder : ISerializationBinder
-    {
-        public IList<Type> KnownTypes { get; set; }
-
-        public Type BindToType(string assemblyName, string typeName)
-        {
-            return KnownTypes.SingleOrDefault(t => t.Name == typeName);
-        }
-
-        public void BindToName(Type serializedType, out string assemblyName, out string typeName)
-        {
-            assemblyName = null;
-            typeName = serializedType.Name;
-        }
-    }
-    */
+{ 
 
 
-
+    /// <summary>
+    /// Deals with loading a PlantSimulator from file
+    /// </summary>
     public class PlantSimulatorSerializer
     {
         private static JsonSerializerSettings SerializationSettings()
@@ -34,8 +20,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var settings = new JsonSerializerSettings();
             settings.TypeNameHandling = TypeNameHandling.All;
             settings.NullValueHandling = NullValueHandling.Include;
-            //settings.TypeNameHandling = TypeNameHandling.Objects;
-            //settings.SerializationBinder = plantSimulatorSerializationBinder;
             return settings;
         }
 
@@ -78,7 +62,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Re-construct a PlantSimulator object from the json-code created by this class' .Serialize()
         /// </summary>
-        /// <param name="serializedPlantSimulatorJson">the read object, or null if unable to read file</param>
+        /// <param name="fileName">the read object, or null if unable to read file</param>
         static public PlantSimulator LoadFromJsonFile(string fileName)
         {
             try

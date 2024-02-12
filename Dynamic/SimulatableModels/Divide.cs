@@ -17,11 +17,15 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class Divide : ModelBaseClass, ISimulatableModel 
     {
+        /// <summary>
+        /// Paramters that define the Divide model
+        /// </summary>
         public DivideParameters divideParameters;
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="divideParameters"></param>
         /// <param name="ID"></param>
         public Divide(DivideParameters divideParameters, string ID)
         {
@@ -30,6 +34,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
         }
 
+        /// <summary>
+        /// Required model which answers if model will be able to simulate given current input
+        /// </summary>
+        /// <param name="explain">a string explaining reason for a false return, if applicable</param>
+        /// <returns></returns>
         public bool IsModelSimulatable(out string explain)
         {
             if (divideParameters == null)

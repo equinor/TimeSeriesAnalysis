@@ -9,10 +9,12 @@ using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis
 {
-    public class FitScore
+    /// <summary>
+    /// Calculates a percentage score of maximum 100% that indicates the match between measurement and simulation for a plant that 
+    /// may consist of several unit models and several siginals to be matched, and may include closed-loops.
+    /// </summary>
+    public class FitScoreCalculator
     {
-
-
         /// <summary>
         /// Calculate a "fit score" between two signals. 
         /// </summary>
@@ -108,7 +110,7 @@ namespace TimeSeriesAnalysis
 
                 if (measY != null && simY != null)
                 {
-                    var curFitScore = FitScore.Calc(measY, simY);
+                    var curFitScore = FitScoreCalculator.Calc(measY, simY);
 
                     if (curFitScore != double.NaN)
                     {

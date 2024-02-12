@@ -95,33 +95,6 @@ namespace TimeSeriesAnalysis.Test.UnitSim
             Assert.IsTrue(unitData.U_sim.GetColumn(0)[1] == unitData.U_sim.GetColumn(0)[0]);
         }
 
-        [TestCase]
-        public void PidSimulator_MatchesCosim()
-        {
-            UnitDataSet unitData = new UnitDataSet("test");
-            unitData.Y_setpoint = TimeSeriesCreator.Constant(Ysetpoint, N);
-            unitData.Times = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), timeBase_s, N);
-
-            var sim = new UnitSimulator(processModel1);
-            sim.CoSimulate(pidModel1, ref unitData);
-
-            /*   Plot.FromList(new List<double[]> { unitData.Y_sim,
-                       unitData.U_sim.GetColumn(0) }, 
-                new List<string> { "y1=y_sim", "y3=u_sim", }, unitData.GetTimeBase(), 
-                   "UnitTestCoSimulate");*/
-
-            var pidsim = new PidSimulator(pidModel1);
-
-
-
-
-
-            /*
-            Assert.IsTrue(unitData.Y_sim[1] == unitData.Y_sim[0]);
-            Assert.IsTrue(unitData.Y_sim[2] == unitData.Y_sim[1]);
-            Assert.IsTrue(unitData.U_sim.GetColumn(0)[1] == unitData.U_sim.GetColumn(0)[0]);
-            Assert.IsTrue(unitData.U_sim.GetColumn(0)[2] == unitData.U_sim.GetColumn(0)[1]);*/
-        }
 
 
 

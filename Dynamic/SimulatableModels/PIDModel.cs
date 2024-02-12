@@ -34,6 +34,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class PidModel : ModelBaseClass, ISimulatableModel
     {
+        /// <summary>
+        /// The paramters which define the behavior of the PidModel
+        /// </summary>
         public PidParameters pidParameters;
         private PidController pid;
 
@@ -45,7 +48,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Constructor
         /// </summary>
         /// <param name="pidParameters">object containing the paramters of the controller</param>
-        /// <param name="timeBase_s">sampling time, a steady time between each call to Iterate</param>
         /// <param name="ID">Each controller shoudl be given a unique ID</param>
         public PidModel(PidParameters pidParameters, string ID = "not_named")
         {
@@ -55,6 +57,11 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// Answers if the model with the curret paramters makes sense to simulate
+        /// </summary>
+        /// <param name="explainStr"></param>
+        /// <returns></returns>
         public bool IsModelSimulatable(out string explainStr)
         {
             explainStr = "";
@@ -145,6 +152,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// First value is<c>y_process_abs</c>,  second value is <c>y_set_abs</c>, optional third value is
         /// <c>uTrackSignal</c>, optional fourth value is <c>gainSchedulingVariable</c>
         /// </param>
+        /// <param name="timeBase_s">time base in seconds</param>
         /// <param name="badDataID">value of inputs that is to be treated as <c>NaN</c></param>
         /// <returns>the output <c>u</c> of the pid-controller. If not enough inputs, it returns <c>NaN</c></returns>
         public double[] Iterate(double[] inputs, double timeBase_s,double badDataID = -9999)

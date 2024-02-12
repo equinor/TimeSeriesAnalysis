@@ -83,7 +83,8 @@
   
   <h1 id="TimeSeriesAnalysis_Dynamic_PidIdentWarning" data-uid="TimeSeriesAnalysis.Dynamic.PidIdentWarning" class="text-break">Enum PidIdentWarning
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Warnings that arise during identification of PidModels</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="TimeSeriesAnalysis.Dynamic.html">TimeSeriesAnalysis.Dynamic</a></h6>
   <h6><strong>Assembly</strong>: TimeSeriesAnalysis.dll</h6>
@@ -103,55 +104,63 @@
     <tbody>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_DataSetVeryShortComparedtoTMax">DataSetVeryShortComparedtoTMax</td>
-        <td></td>
+        <td><p>The dataset needs to be sufficiently long compared to the longest time constatnt to be estimated</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_InputSaturation_UcloseToUmax">InputSaturation_UcloseToUmax</td>
-        <td></td>
+        <td><p>The input u remains saturated at its maximum</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_InputSaturation_UcloseToUmin">InputSaturation_UcloseToUmin</td>
-        <td></td>
+        <td><p>The input u remains saturated at its minimum</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_NegativeEstimatedTi">NegativeEstimatedTi</td>
-        <td></td>
+        <td><p>Negative time constant. A non-causal model is an inidication of data error usually.</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_Nothing">Nothing</td>
-        <td></td>
+        <td><p>No warnings</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_NotPossibleToIdentifyPIDcontroller_BadInputData">NotPossibleToIdentifyPIDcontroller_BadInputData</td>
-        <td></td>
+        <td><p>The input data was tagged &quot;bad&quot; and could not be used for id</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY">NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY</td>
-        <td></td>
+        <td><p>u and y are uncorrelated</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_NotPossibleToIdentifyPIDcontroller_YsetIsBad">NotPossibleToIdentifyPIDcontroller_YsetIsBad</td>
-        <td></td>
+        <td><p>The setpoint data provided was tagged &quot;bad&quot;</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_PIDControllerDoesNotAppearToBeInAuto">PIDControllerDoesNotAppearToBeInAuto</td>
-        <td></td>
+        <td><p>The PID controller does not appear to move to changes in ymeas-yset, is it in manual?</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_PIDControllerIsInCascadeModeWithFrequentSetpointChanges">PIDControllerIsInCascadeModeWithFrequentSetpointChanges</td>
-        <td></td>
+        <td><p>The pid controller is in cascade or is otherwise repsonding to extremely frequent setpoint changes that makes id very challenging.</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_PIDControllerPossiblyInTracking">PIDControllerPossiblyInTracking</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_PoorModelFit">PoorModelFit</td>
-        <td></td>
+        <td><p>u changes, but pid model has extremely low rSquared, so it does not appear to be in control</p>
+</td>
       </tr>
       <tr>
         <td id="TimeSeriesAnalysis_Dynamic_PidIdentWarning_RegressionProblemFailedToYieldSolution">RegressionProblemFailedToYieldSolution</td>
-        <td></td>
+        <td><p>Regression returned an error</p>
+</td>
       </tr>
     </tbody>
   </thead></thead></table>

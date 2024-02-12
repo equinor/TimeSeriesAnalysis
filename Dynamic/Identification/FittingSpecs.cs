@@ -3,15 +3,17 @@
 
 
     /// <summary>
-    /// variables that are set prior to fitting. 
+    /// Class that contains variables that are specified prior to fitting, such as working point, minima and maxima. 
     /// </summary>
     public class FittingSpecs
     {
-        public FittingSpecs()
-        { 
-        
-        }
-        public FittingSpecs(double[] u0, double[] uNorm)
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="u0">an optional working point, a vector of u around which to localile</param>
+        /// <param name="uNorm">an optional vector of values with which to normalize inputs</param>
+        public FittingSpecs(double[] u0=null, double[] uNorm=null)
         { 
             this.u0 = u0;
             this.uNorm = uNorm; 

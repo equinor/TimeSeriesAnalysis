@@ -15,21 +15,41 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
 
     public class PidScaling
-    {
-        // init with default values
+    { 
 
-        // Note that different PID-implementation implement scaling differently
-        // AIM "PIDcon": does _not_ scale KP and TI
-        // AIM "PIDx" : _DOES_ scale KP and TI
-
+        /// <summary>
+        /// Determines if the SAS scales Kp according to the scaling information in this object or not.
+        /// Set this to match the reality in the SAS you are studying.
+        /// For example: 
+        ///  AIM "PIDcon": does _not_ scale KP and TI
+        ///  AIM "PIDx" : _DOES_ scale KP and TI
+        /// </summary>
         public bool doesSasPidScaleKp = false;
 
+        /// <summary>
+        /// the minimum pid input(process-) value
+        /// </summary>
         public double y_min;
+        /// <summary>
+        /// The maximum pid input(process-) value
+        /// </summary>
         public double y_max;
+        /// <summary>
+        /// The minimum pid output(manipulated-) value
+        /// </summary>
         public double u_min;
+        /// <summary>
+        /// The maximum pid output(mainipulatd-) value
+        /// </summary>
         public double u_max;
+        /// <summary>
+        /// If true, then all min/max are at their default value
+        /// </summary>
         public bool isDefault;
-        public bool isEstimated; // if no scaling info is given, in some cases we may guess/estimate umin/umax if constraint is active
+        /// <summary>
+        /// If true then these parameters have been guessed automatically from data
+        /// </summary>
+        public bool isEstimated; 
 
         /// <summary>
         /// Constructor
@@ -61,10 +81,6 @@ namespace TimeSeriesAnalysis.Dynamic
             isEstimated = false;
             isDefault = true;
             doesSasPidScaleKp = false;
-            /* ySP_min = 0;
-             ySP_max = 100;
-             yMeas_min = 0;
-             yMeas_max = 100;*/
             y_min = 0;
             y_max = 100;
             u_min = 0;

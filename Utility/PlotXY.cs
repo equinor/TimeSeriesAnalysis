@@ -6,8 +6,19 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Utility
 {
+    /// <summary>
+    /// Programatically calls plotly to create an in-browser xy-plot of given input data. A utility class mainly intended for debugging. 
+    /// </summary>
     public class PlotXY
     {
+        /// <summary>
+        /// Make an xy-plot from an XYtable entry
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="caseName"></param>
+        /// <param name="comment"></param>
+        /// <param name="doStartChrome"></param>
+        /// <returns></returns>
         public static string FromTable(XYTable table,  string caseName, string comment = null,
             bool doStartChrome = true)
         {
@@ -45,6 +56,14 @@ namespace TimeSeriesAnalysis.Utility
         }
 
 
+        /// <summary>
+        /// Make an xy-plot from a list of XYTable entries
+        /// </summary>
+        /// <param name="tables"></param>
+        /// <param name="caseName"></param>
+        /// <param name="comment"></param>
+        /// <param name="doStartChrome"></param>
+        /// <returns></returns>
         public static string FromTables(List<XYTable> tables, string caseName, string comment = null,
             bool doStartChrome = true)
         {

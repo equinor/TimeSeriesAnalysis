@@ -5,11 +5,26 @@
     /// </summary>
     public enum PidModelInputsIdx
     { 
+        /// <summary>
+        /// The index of the measured process variable input signal to the PID-controller
+        /// </summary>
         Y_meas =0,
-        Y_setpoint=1,
-        Tracking=2,
-        GainScheduling=3,
-        FeedForward=4
+        /// <summary>
+        /// The index of the required setpoint input signal to the PID-controller
+        /// </summary>
+        Y_setpoint = 1,
+        /// <summary>
+        /// The input index of an optional tracking input signal to the PID-controller
+        /// </summary>
+        Tracking = 2,
+        /// <summary>
+        /// The input index of an optional gain-scheduling input variable to the PID-controller
+        /// </summary>
+        GainScheduling = 3,
+        /// <summary>
+        /// The input index of an optional a feed-forward input signal to the PID-controller
+        /// </summary>
+        FeedForward = 4
     }
 
 }

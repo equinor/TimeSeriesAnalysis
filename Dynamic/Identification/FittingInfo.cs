@@ -152,7 +152,7 @@ namespace TimeSeriesAnalysis.Dynamic
            this.NFittingBadDataPoints = yIndicesToIgnore.Count;
 
 
-            var fitScore = FitScore.Calc(ymeas_vals, ysim_vals);
+            var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals);
             this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);
 
         }

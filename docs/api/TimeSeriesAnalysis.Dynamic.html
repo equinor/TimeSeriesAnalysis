@@ -98,7 +98,8 @@ that is inputted into the process</p>
 are estimated together.</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.Comment.html">Comment</a></h4>
-      <section></section>
+      <section><p>Class that holds comments added to models</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.ConnectionParser.html">ConnectionParser</a></h4>
       <section><p>Class that tracks which model is connected to which in a set of models.</p>
 <p>
@@ -128,7 +129,7 @@ while dynamic estimation considers &quot;diffs&quot;- for this reason it is best
 when comparing different model runs which can be a combination fo static and dynamic</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.FittingSpecs.html">FittingSpecs</a></h4>
-      <section><p>variables that are set prior to fitting.</p>
+      <section><p>Class that contains variables that are specified prior to fitting, such as working point, minima and maxima.</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedDataSet.html">GainSchedDataSet</a></h4>
       <section><p>The data for a porition of a process, containg only one output and one or multiple inputs that influence it</p>
@@ -137,7 +138,9 @@ when comparing different model runs which can be a combination fo static and dyn
       <section><p>variables that are set prior to fitting.</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedIdentifier.html">GainSchedIdentifier</a></h4>
-      <section></section>
+      <section><p>Attempts to identify a gain-scheduled model, a model that uses multiple local linear models to approximate a nonlinearity.
+Should not be confused with gain-scheduling in terms of PID-control.</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedModel.html">GainSchedModel</a></h4>
       <section><p>Simulatable gain-scheduled model.
 <remarks><p>
@@ -248,9 +251,6 @@ data-classes, linked below:
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
 <a class="xref" href="TimeSeriesAnalysis.Dynamic.PidController.html">PidController</a></p>
 </section>
-      <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidSimulator.html">PidSimulator</a></h4>
-      <section><p>Simulate a PIDmodel PID for a given set of inputs timeseries</p>
-</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidTuning.html">PidTuning</a></h4>
       <section><p>Parameters describing PID-controller tuning (Kp,Ti,Td)</p>
 <p><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModel.html">PidModel</a>
@@ -287,7 +287,8 @@ using mathematical programming/matrix solvers.
 </p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulatorSerializer.html">PlantSimulatorSerializer</a></h4>
-      <section></section>
+      <section><p>Deals with loading a PlantSimulator from file</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.Select.html">Select</a></h4>
       <section><p>Simulatable select block</p>
 <p>
@@ -297,7 +298,8 @@ for simulating &quot;min select&quot; or &quot;max selct&quot; pid-control by co
 </p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SerializeHelper.html">SerializeHelper</a></h4>
-      <section></section>
+      <section><p>Quickly serialie both plantSim and data associated with it.</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.SignalNamer.html">SignalNamer</a></h4>
       <section><p>Handles naming of individual signals in a process simulation</p>
 </section>
@@ -393,7 +395,8 @@ simulated by <a class="xref" href="TimeSeriesAnalysis.Dynamic.PlantSimulator.htm
     <h3 id="enums">Enums
   </h3>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.DisturbanceSetToZeroReason.html">DisturbanceSetToZeroReason</a></h4>
-      <section></section>
+      <section><p>Enum describing reasons that a disturbance may be set by logic to exactly zero</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.GainSchedIdentWarnings.html">GainSchedIdentWarnings</a></h4>
       <section><p>Enum of recognized warning or error states during identification of process model</p>
 </section>
@@ -410,9 +413,11 @@ This type is used to set the unit model unique identifier and is also used
 in internal logic in the large-scale dynamic simulations</p>
 </section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidControllerType.html">PidControllerType</a></h4>
-      <section></section>
+      <section><p>The type of PID-controller.</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidIdentWarning.html">PidIdentWarning</a></h4>
-      <section></section>
+      <section><p>Warnings that arise during identification of PidModels</p>
+</section>
       <h4><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidModelInputsIdx.html">PidModelInputsIdx</a></h4>
       <section><p>This determines the position in the U-vector given to Iterate for the class <code>PIDModel</code></p>
 </section>

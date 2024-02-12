@@ -131,7 +131,8 @@ specifying a vector of timestamps.
   
   <a id="TimeSeriesAnalysis_TimeSeriesDataSet__ctor_" data-uid="TimeSeriesAnalysis.TimeSeriesDataSet.#ctor*"></a>
   <h4 id="TimeSeriesAnalysis_TimeSeriesDataSet__ctor" data-uid="TimeSeriesAnalysis.TimeSeriesDataSet.#ctor">TimeSeriesDataSet()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Default constructor</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1250,6 +1251,104 @@ If times is null, then the method creates timestamps based on timeBase_s and t0.
       <tr>
         <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
         <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_TimeSeriesDataSet_Subset_" data-uid="TimeSeriesAnalysis.TimeSeriesDataSet.Subset*"></a>
+  <h4 id="TimeSeriesAnalysis_TimeSeriesDataSet_Subset_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Double,System.Double)">Subset(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Create a copy of the data set that is a &quot;subset&quot;, given using start
+and end percentages of the original data span.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet Subset(double startPrc, double endPrc)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">startPrc</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">endPrc</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_TimeSeriesDataSet_Subset_" data-uid="TimeSeriesAnalysis.TimeSeriesDataSet.Subset*"></a>
+  <h4 id="TimeSeriesAnalysis_TimeSeriesDataSet_Subset_System_Int32_System_Int32_" data-uid="TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Int32,System.Int32)">Subset(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Create a copy of the data set that is a &quot;subset&quot;, given using start
+and end indices of the original data span.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSeriesDataSet Subset(int startInd, int endInd)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">startInd</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">endInd</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.TimeSeriesDataSet.html">TimeSeriesDataSet</a></td>
         <td></td>
       </tr>
     </tbody>

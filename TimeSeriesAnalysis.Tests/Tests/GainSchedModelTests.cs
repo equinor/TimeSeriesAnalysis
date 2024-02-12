@@ -120,7 +120,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         public void TenThresholds_DifferentGainsAboveEachThreshold()
         {
-            var tolerance = 0.2;
+        //    var tolerance = 0.2;
             // Arrange
             GainSchedModel refModel = gainSched4_tenThresholds_singleInput;
             int N = 40;

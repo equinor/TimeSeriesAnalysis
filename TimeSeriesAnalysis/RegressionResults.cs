@@ -6,11 +6,23 @@ using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis
 {
+    /// <summary>
+    /// Warnings related to regression
+    /// </summary>
     public enum RegressionWarnings
-    { 
-        NONE =0,
-        InputMatrixIsRankDeficient =1,
-        InputMatrixHasConstantInput =2 // also a type of rank deficiency
+    {
+        /// <summary>
+        /// No warnings
+        /// </summary>
+        NONE = 0,
+        /// <summary>
+        /// Input matrix is rank deficient
+        /// </summary>
+        InputMatrixIsRankDeficient = 1,
+        /// <summary>
+        /// Input matrix has a constant input, a type of rank deficiency
+        /// </summary>
+        InputMatrixHasConstantInput =2 
     }
 
 

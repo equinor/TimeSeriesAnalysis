@@ -146,6 +146,10 @@ namespace TimeSeriesAnalysis.Dynamic
             this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor); 
         }
 
+        /// <summary>
+        /// Returns the number of datapoints in the dataset
+        /// </summary>
+        /// <returns></returns>
         public int GetNumDataPoints ()
         {
             if (U != null)
@@ -316,6 +320,11 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return 0;
         }
+        /// <summary>
+        /// If data is already given to object, this method will fill out the timstamps member
+        /// </summary>
+        /// <param name="timeBase_s">the time in seconds bewteen time samples</param>
+        /// <param name="t0">the date of the first datapoint in the dataset</param>
         public void CreateTimeStamps(double timeBase_s, DateTime? t0 = null)
         {
             if (t0 == null)

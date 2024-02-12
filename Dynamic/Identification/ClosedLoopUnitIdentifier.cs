@@ -49,7 +49,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </para>
         /// </remarks>
         /// <param name = "dataSet">the unit data set, containing both the input to the unit and the output</param>
-        /// <param name = "plantSim">an optional PidModel that is used to co-simulate the model and disturbance, improving identification</param>
         /// <param name = "pidParams">if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</param>
         /// <param name = "pidInputIdx">the index of the PID-input to the unit model</param>
         /// 
@@ -317,27 +316,12 @@ namespace TimeSeriesAnalysis.Dynamic
             UnitModel unitModel_run1, double pidProcessInputInitalGainEstimate, double minPidProcessGain,
             double maxPidProcessGain, FittingSpecs fittingSpecs, int numberOfGlobalSearchIterations = 40)
         {
-             // bool isOK;
             var range = maxPidProcessGain - minPidProcessGain;
             var searchResults = new ClosedLoopGainGlobalSearchResults();
             var gainUnc = range / numberOfGlobalSearchIterations;
             int nGains = unitModel_run1.modelParameters.GetProcessGains().Length;
             Vec vec = new Vec();
             bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint, dataSet.IndicesToIgnore) == vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
-      /*      bool doesExternalUChange = false;
-            if (dataSet.U.GetNColumns() > 1)
-            {
-                for (int inputIdx = 0; inputIdx < dataSet.U.GetNColumns(); inputIdx++)
-                {
-                    if (inputIdx == pidInputIdx)
-                        continue;
-                    bool doesThisVarChange = !(vec.Max(dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore) == vec.Min(dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore));
-                    if (doesThisVarChange)
-                        doesExternalUChange = true;
-                }
-            }*/
-
-
 
             var isOK = true;
             double[] d_prev = null;
@@ -604,11 +588,22 @@ namespace TimeSeriesAnalysis.Dynamic
 
         }
 
-        // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
-        // 
+   
+
+        /// <summary>
+        /// Closed-loop simulation of a unit model and pid model, for a given unit data set
+        /// </summary>
+        /// <param name="unitData">unit dataset for simulation</param>
+        /// <param name="modelParams">paramters or UnitModel</param>
+        /// <param name="pidParams">parameters of PidModel</param>
+        /// <param name="disturbance">disturbance vector</param>
+        /// <param name="name">optional name used for plotting</param>
+        /// <returns></returns>
         public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
-            double[] disturbance,string name)
+            double[] disturbance,string name="")
         {
+            // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
+
             if (pidParams == null)
             {
                 return false;

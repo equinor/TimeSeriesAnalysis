@@ -22,6 +22,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private string computationalLoopPrefix = "CompLoop_";
 
+        /// <summary>
+        /// List of connections
+        /// </summary>
         [JsonInclude]
         public List<(string, string)> connections;
 
@@ -494,6 +497,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Query if the model has an upstream PID-model.
         /// </summary>
         /// <param name="modelID"></param>
+        /// <param name="modelDict"></param>
         /// <returns></returns>
         public bool HasUpstreamPID(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
@@ -513,6 +517,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the ID of the PID-controller that is upstream a given modelID
         /// </summary>
         /// <param name="modelID"></param>
+        /// <param name="modelDict"></param>
         /// <returns></returns>
         public string[] GetUpstreamPIDIds(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {

@@ -134,6 +134,10 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ffObj = feedForwardObj;
         }
 
+        /// <summary>
+        /// Set the object that defines input filtering for the pid-controller
+        /// </summary>
+        /// <param name="pidFiltering"></param>
         public void SetPidFiltering(PidFilterParams pidFiltering)
         {
             this.pidFilterParams = pidFiltering;

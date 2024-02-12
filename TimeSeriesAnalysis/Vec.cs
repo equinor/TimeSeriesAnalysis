@@ -812,12 +812,11 @@ namespace TimeSeriesAnalysis
         /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
         /// <param name="XindicesToRegularize">(optional) only the indices in this list are to be regularized to zero</param>
+        /// <param name="doNormalizationToZero">(optional) adds a minor "regularization" term to objective that will pull values toward zero if corresponding input is not excited </param>
         /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
         private RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null, bool doNormalizationToZero = true)
         {
-           // const bool doNormalizationToZero = true;
-
             RegressionResults results = new RegressionResults();
             var vec = new Vec();
 
@@ -1118,8 +1117,10 @@ namespace TimeSeriesAnalysis
         /// <param name="vector1">first vector</param>
         /// <param name="vector2">second vector</param>
         /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
+        /// <param name="ymodOffset">set the offset beteen vector1 and vector2 (for difference equations, ymod is offset by -1 from ymeas).-1 is default.</param>
         /// <returns>R2 squared, a value between <c>-1</c> and <c>1</c>. If an error occured, 
         /// <c>Double.PositiveInfinity</c> is returned </returns>
+        /// 
         public double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt = null, int ymodOffset = -1)
         {
             if (vector1 == null || vector2 == null)

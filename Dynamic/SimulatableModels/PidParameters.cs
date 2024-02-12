@@ -17,6 +17,9 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         private List<PidIdentWarning> warnings;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public PidParameters()
         {
             warnings = new List<PidIdentWarning>();
@@ -75,16 +78,28 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public PidAntiSurgeParams AntiSurgeParams { get; set; } = null;
 
+        /// <summary>
+        /// Store a warning that arouse during identification
+        /// </summary>
+        /// <param name="warning"></param>
         public void AddWarning(PidIdentWarning warning)
         {
             warnings.Add(warning);
         }
 
+        /// <summary>
+        /// Gives any warnings that occured during identification
+        /// </summary>
+        /// <returns></returns>
         public PidIdentWarning[] GetWarnings()
         { 
             return warnings.ToArray();
         }
 
+        /// <summary>
+        /// Creates a string summarizing the content of the paramters(useful for unit testing and debugging)
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             int sDigits = 3;

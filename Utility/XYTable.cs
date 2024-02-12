@@ -9,13 +9,28 @@ using System.Globalization;
 
 namespace TimeSeriesAnalysis.Utility
 {
+    /// <summary>
+    /// When plotting an x/y plot, this enum determines if plot is to use markers or line for data points
+    /// </summary>
     public enum XYlineType
     {
+        /// <summary>
+        /// only makers, no lines, for each x-y point
+        /// </summary>
         withMarkers=0,
+        /// <summary>
+        /// markers or lines should not be drawn,
+        /// </summary>
         noMarkers=1,
+        /// <summary>
+        /// xy-plot should draw line between points
+        /// </summary>
         line=2
     }
 
+    /// <summary>
+    /// Holds a "table" of x-y value pairs 
+    /// </summary>
     public class XYTable
     {
         List<string> names;
@@ -28,6 +43,12 @@ namespace TimeSeriesAnalysis.Utility
 
         const int nSignificantDigits = 5;
 
+        /// <summary>
+        /// Constructor for XYTable
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="columnNames"></param>
+        /// <param name="type"></param>
         public XYTable(string tableName, List<string> columnNames, XYlineType type = XYlineType.withMarkers)
         {
             this.type = type;
@@ -38,16 +59,29 @@ namespace TimeSeriesAnalysis.Utility
             values = new List<double[]>();
         }
 
+        /// <summary>
+        /// Get the name of the table
+        /// </summary>
+        /// <returns></returns>
         public string GetName()
         {
             return tableName;
         }
 
+        /// <summary>
+        /// Returns the type of the line
+        /// </summary>
+        /// <returns></returns>
         public XYlineType GetLineType()
         {
             return type;
         }
 
+        /// <summary>
+        /// Add a row to the table
+        /// </summary>
+        /// <param name="rowValues"></param>
+        /// <param name="rowName"></param>
         public void AddRow(double[] rowValues, string rowName="")
         {
             names.Add(rowName);
@@ -55,6 +89,11 @@ namespace TimeSeriesAnalysis.Utility
         }
 
         //for this to be parsed by plotly, use comma as csv-separator
+        /// <summary>
+        /// Write table to a csv-file
+        /// </summary>
+        /// <param name="fileName">csv file name</param>
+        /// <param name="CSVseparator">optioanlly choose the seprator of the csv-file</param>
         public void ToCSV(string fileName, string CSVseparator = ",")
         {
             StringBuilder sb = new StringBuilder();

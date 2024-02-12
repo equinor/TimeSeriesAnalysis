@@ -20,6 +20,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double Y_max = double.NaN;
 
+        /// <summary>
+        /// The defined constraints on fitting, and defines an operating point if applicable.
+        /// </summary>
         public FittingSpecs FittingSpecs = new FittingSpecs();
 
         /// <summary>
@@ -89,7 +92,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         private List<GainSchedIdentWarnings> errorsAndWarningMessages;
-        internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
 
         /// <summary>
         /// Default constructor
@@ -111,29 +113,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return LinearGains.First().Length;
             else
                 return 0;
-        }
-
-        public GainSchedParameters CreateCopy()
-        {
-            // arrays are reference types, so by default only the reference is copied, use
-            // .clone here to make an actual new object with a new reference
-            GainSchedParameters newP = new GainSchedParameters();
-            newP.Y_min = Y_min;
-            newP.Y_max = Y_max;
-            newP.TimeConstant_s = TimeConstant_s;
-            newP.TimeDelay_s = TimeDelay_s;
-            newP.LinearGains = new List<double[]> (LinearGains);
-        /*    if (LinearGainUnc == null)
-                newP.LinearGainUnc = null;
-            else
-                newP.LinearGainUnc = new List<double[]>(LinearGains);*/
-            newP.U0 = U0;
-            newP.UNorm = UNorm;
-            newP.Bias = Bias;
-            newP.BiasUnc = BiasUnc;
-            newP.errorsAndWarningMessages = errorsAndWarningMessages;
-            newP.TimeDelayEstimationWarnings = TimeDelayEstimationWarnings;
-            return newP;
         }
 
         /// <summary>

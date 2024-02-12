@@ -17,11 +17,19 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    /// <summary>
+    /// Enum describing reasons that a disturbance may be set by logic to exactly zero
+    /// </summary>
     public enum DisturbanceSetToZeroReason
     { 
+        /// <summary>
+        /// default, when disturbance estimation has not run yet
+        /// </summary>
         NotRunYet=0,
-        SetpointWasDetected=1,
-        UnitSimulatorUnableToRun =2,
+        /// <summary>
+        /// Set disturbance to zero beacause simulator did not run
+        /// </summary>
+        UnitSimulatorUnableToRun =1,
     }
 
 
@@ -35,28 +43,53 @@ namespace TimeSeriesAnalysis.Dynamic
     public class DisturbanceIdResult
     {
 
+        /// <summary>
+        /// Number of datapoints
+        /// </summary>
         public int N = 0;
+        /// <summary>
+        /// Boolean which is true if all disturbances are zero
+        /// </summary>
         public bool isAllZero = true;
+        /// <summary>
+        /// The reason for setting the disturbance to zero
+        /// </summary>
         public DisturbanceSetToZeroReason zeroReason;
+        /// <summary>
+        /// 
+        /// </summary>
         public UnitDataSet adjustedUnitDataSet;
 
-
+        /// <summary>
+        /// The estimated disturbance vector
+        /// </summary>
         public double[] d_est;
+        /// <summary>
+        /// (For debugging:) an estimated process gain
+        /// </summary>
         public double estPidProcessGain;
-        public double[] d_HF, d_LF;
+        /// <summary>
+        /// (for debugging) the high-frequency component of the disturbance that is determined by observing changes in process variable y
+        /// </summary>
+        public double[] d_HF;
+        /// <summary>
+        /// (for debugging) the low-frequency component of the disturbance that is determined by observing changes in manipulated variable u
+        /// </summary>
+        public double[] d_LF;
         
+        /// <summary>
+        /// Constuctor
+        /// </summary>
+        /// <param name="dataSet"></param>
         public DisturbanceIdResult(UnitDataSet dataSet)
         {
             N = dataSet.GetNumDataPoints();
             SetToZero();
         }
 
-        public DisturbanceIdResult(int N)
-        {
-            this.N = N;
-            SetToZero();
-        }
-
+        /// <summary>
+        /// Sets the disturbance to zero (used in case of identification failure)
+        /// </summary>
         public void SetToZero()
         {
             d_est = Vec<double>.Fill(0, N);
@@ -68,18 +101,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         }
 
-        public DisturbanceIdResult Copy()
-        {
-            DisturbanceIdResult returnCopy = new DisturbanceIdResult(N);
 
-            returnCopy.d_HF = d_HF;
-            returnCopy.d_LF = d_LF;
-            returnCopy.d_est = d_est;
-            returnCopy.estPidProcessGain = estPidProcessGain;
-            returnCopy.adjustedUnitDataSet = adjustedUnitDataSet;
-
-            return returnCopy;
-        }
     }
 
     /// <summary>
@@ -389,12 +411,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Estimates the disturbance time-series over a given unit data set 
         /// given an estimate of the unit model (reference unit model) for a closed loop system.
         /// </summary>
-        /// <param name="unitDataSet">the dataset descrbing the unit, over which the disturbance is to be found, datset must specify Y_setpoint,Y_meas and U</param>
+        /// <param name="unitDataSet_raw">the dataset descrbing the unit, over which the disturbance is to be found, datset must specify Y_setpoint,Y_meas and U</param>
         /// <param name="unitModel">the estimate of the unit</param>
+        /// <param name="pidInputIdx">the index of the pid-input in the unitModel</param>
+        /// <param name="pidParams">the parameters if known of the pid-controller in the closed loop</param>
         /// <returns></returns>
         public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet_raw,  
-            UnitModel unitModel, int pidInputIdx =0, PidParameters pidParams = null,
-            bool doDebugPlot = false)
+            UnitModel unitModel, int pidInputIdx =0, PidParameters pidParams = null)
         {
             const bool tryToModelDisturbanceIfSetpointChangesInDataset = true;
             var vec = new Vec();
@@ -564,7 +587,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // d = d_HF+d_LF 
             double[] d_est = vec.Add(d_HF, d_LF);
 
-            doDebugPlot = false;
+            bool doDebugPlot = false;
 
             if (doDebugPlot)
             {

@@ -7,6 +7,9 @@
     /// </summary>
     public class GainSchedFittingSpecs: FittingSpecs
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public GainSchedFittingSpecs()
         { 
         }

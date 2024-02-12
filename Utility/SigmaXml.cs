@@ -12,6 +12,9 @@ using TimeSeriesAnalysis;
 
 namespace TimeSeriesAnalysis.Utility
 {
+    /// <summary>
+    /// Class that concerns reading the "cache.js" file that Sigma generates, that contains time-series data. 
+    /// </summary>
     public class SigmaXml
     {
         /// <summary>
@@ -87,7 +90,7 @@ namespace TimeSeriesAnalysis.Utility
                                 }
                             }
                         }
-                        catch (Exception e)
+                        catch 
                         {
                             nErrors++;
                         }

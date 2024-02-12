@@ -39,7 +39,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public string outputIdentID = null;
 
-
+        /// <summary>
+        /// The type of the model
+        /// </summary>
         public ModelType processModelType = ModelType.UnTyped;
 
         /// <summary>

@@ -21,8 +21,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double Y_max = double.NaN;
 
+        /// <summary>
+        /// User-specified inputs to model fitting process such as minima,maxima and working point
+        /// </summary>
         public FittingSpecs FittingSpecs = new FittingSpecs();
-
 
         /// <summary>
         /// A time constant in seconds, the time a 1. order linear system requires to do 63% of a step response.
@@ -112,6 +114,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 0;
         }
 
+        /// <summary>
+        /// Creates a deep-copy of the object
+        /// </summary>
+        /// <returns></returns>
         public UnitParameters CreateCopy()
         {
             // arrays are reference types, so by default only the reference is copied, use

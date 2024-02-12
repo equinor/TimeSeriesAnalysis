@@ -31,6 +31,9 @@ namespace TimeSeriesAnalysis
         List<int> indicesToIgnore;
         int? N;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         [JsonConstructor]
         public TimeSeriesDataSet()
         {

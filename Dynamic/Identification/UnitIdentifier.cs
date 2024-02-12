@@ -93,6 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
+        /// <param name="fittingSpecs">optionally set constraints on the identification </param>
         /// <param name="doEstimateTimeDelay">if set to false, estimation of time delays are disabled</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel IdentifyLinear(ref UnitDataSet dataSet, FittingSpecs fittingSpecs,bool doEstimateTimeDelay = true  )
@@ -101,14 +102,13 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Identifies the "Default" process model based on differences y[k]-y[k-1] that best fits the dataSet given, but disables curvatures
+        /// Identifies the process model based on differences y[k]-y[k-1] that best fits the dataSet given, but disables curvatures
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
-        /// <param name="doEstimateTimeDelay">if set to false, estimation of time delays are disabled</param>
-        /// <param name="u0">Optionally sets the local working point for the inputs
-        /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
+        /// <param name="fittingSpecs">optionally set constraints on the identification </param>
+        /// <param name="doEstimateTimeDelay">if set to false, estimation of time delays are disabled(default is true)</param>
+
         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel IdentifyLinearDiff(ref UnitDataSet dataSet, FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)
         {
@@ -132,10 +132,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
-        /// <param name="doEstimateTimeDelay">if set to false, modeling does not identify time-delays</param>
-        /// <param name="u0">Optionally sets the local working point for the inputs
-        /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
+        /// <param name="fittingSpecs">object of specifications for </param>
+        /// <param name="doEstimateTimeDelay">set to false to disable time delay estimation (this speeds up identification manyfold) </param>
         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel IdentifyLinearAndStatic(ref UnitDataSet dataSet, FittingSpecs fittingSpecs,bool doEstimateTimeDelay=true)
         {
@@ -148,9 +146,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
         /// <param name="doEstimateTimeDelay">if set to false, modeling does not identify time-delays</param>
-        /// <param name="u0">Optionally sets the local working point for the inputs
-        /// around which the model is to be designed(can be set to <c>null</c>)</param>
-        /// <param name="uNorm">normalizing paramter for u-u0 (its range)</param>
+        /// <param name="fittingSpecs">Optionally sets the local working point, constraints etc. for id.</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel IdentifyLinearAndStaticDiff(ref UnitDataSet dataSet,FittingSpecs fittingSpecs, bool doEstimateTimeDelay = true)
         {
@@ -173,13 +169,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        /// <summary>
-        /// Identifies the "Default" process model that best fits the dataSet given
-        /// </summary>
-        /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
-        /// a new y_sim is also added</param>
-
-        /// <returns> the identified model parameters and some information about the fit</returns>
         private static UnitModel Identify_Internal(ref UnitDataSet dataSet, FittingSpecs fittingSpecs,
             bool doUseDynamicModel=true, bool doEstimateCurvature = true, bool doEstimateTimeDelay = true)
         {
@@ -949,7 +938,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Provided that regResults is the result of fitting a statix equation x[k] = B*U}
         /// </summary>
         /// <param name="regResults">regression results, where first paramter is the "a" forgetting term</param>
-        /// <param name="timeBase_s"></param>
         /// <param name="parameters"></param>
         private static void CalculateStaticUncertainty(RegressionResults regResults, ref UnitParameters parameters)
         {
@@ -1123,10 +1111,13 @@ namespace TimeSeriesAnalysis.Dynamic
              parameters.BiasUnc = regResults.VarCovarMatrix[biasInd][biasInd] /sqrtN * 1.96;
         }
 
-        // 
-        // bias is not always accurate for dynamic model identification 
-        // as it is as "difference equation" that matches the changes in the 
-        //
+        /// <summary>
+        /// For a given set of paramters and a dataset, find the bias which gives the lowest mean offset
+        /// (this can be espescially useful when identification uses the "difference" formulation)
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         static public (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
         {
             UnitDataSet internalData = new UnitDataSet(dataSet);
@@ -1166,6 +1157,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         /// <param name="inputIdxToFix">the index of the value to freeze</param>
         /// <param name="inputProcessGainValueToFix">the linear gain to freeze the at</param>
+        /// <param name="u0_fixedInput"></param>
+        /// <param name="uNorm_fixedInput"></param>
         /// <returns>identified model, to check if identification suceeded, check 
         /// .modelParameters.Fitting.WasAbleToIdentify</returns>
         public static UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, 

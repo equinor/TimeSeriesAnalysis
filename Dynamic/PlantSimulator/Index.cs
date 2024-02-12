@@ -11,10 +11,25 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public enum INDEX // this is just here to improve readability
     {
+        /// <summary>
+        /// First index(0)
+        /// </summary>
         FIRST = 0,
+        /// <summary>
+        ///  Second index(1)
+        /// </summary>
         SECOND = 1,
+        /// <summary>
+        ///  Third index(2)
+        /// </summary>
         THIRD = 2,
+        /// <summary>
+        ///  Fourth index(3)
+        /// </summary>
         FOURTH = 3,
+        /// <summary>
+        ///  Fifth index(4)
+        /// </summary>
         FIFTH = 4
     }
 

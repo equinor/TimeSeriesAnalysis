@@ -5,23 +5,27 @@ using TimeSeriesAnalysis;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    /// <summary>
+    /// Quickly serialie both plantSim and data associated with it.
+    /// </summary>
     public  static class SerializeHelper
     {
-        const bool writeTestDataToDisk = true;
-
-
+        /// <summary>
+        /// Writes plantSim, inputData and simData to disk
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="plantSim"></param>
+        /// <param name="inputData"></param>
+        /// <param name="simData"></param>
         static public void  Serialize(string name,PlantSimulator plantSim,
             TimeSeriesDataSet inputData, TimeSeriesDataSet simData)
         {
             string namePrefix = "_";
-            if (writeTestDataToDisk)
-            {
-                name = namePrefix + name;
+            name = namePrefix + name;
+            plantSim.Serialize(name);
+            var combinedData = inputData.Combine(simData);
+            combinedData.ToCsv(name);
 
-                plantSim.Serialize(name);
-                var combinedData = inputData.Combine(simData);
-                combinedData.ToCsv(name);
-            }
         }
 
     }

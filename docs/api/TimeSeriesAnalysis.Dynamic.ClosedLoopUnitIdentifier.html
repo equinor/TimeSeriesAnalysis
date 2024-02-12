@@ -134,11 +134,12 @@ are estimated together.</p>
   
   <a id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim*"></a>
   <h4 id="TimeSeriesAnalysis_Dynamic_ClosedLoopUnitIdentifier_ClosedLoopSim_TimeSeriesAnalysis_Dynamic_UnitDataSet_TimeSeriesAnalysis_Dynamic_UnitParameters_TimeSeriesAnalysis_Dynamic_PidParameters_System_Double___System_String_" data-uid="TimeSeriesAnalysis.Dynamic.ClosedLoopUnitIdentifier.ClosedLoopSim(TimeSeriesAnalysis.Dynamic.UnitDataSet,TimeSeriesAnalysis.Dynamic.UnitParameters,TimeSeriesAnalysis.Dynamic.PidParameters,System.Double[],System.String)">ClosedLoopSim(UnitDataSet, UnitParameters, PidParameters, Double[], String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Closed-loop simulation of a unit model and pid model, for a given unit data set</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams, double[] disturbance, string name)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams, double[] disturbance, string name = &quot;&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,27 +154,32 @@ are estimated together.</p>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
         <td><span class="parametername">unitData</span></td>
-        <td></td>
+        <td><p>unit dataset for simulation</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitParameters.html">UnitParameters</a></td>
         <td><span class="parametername">modelParams</span></td>
-        <td></td>
+        <td><p>paramters or UnitModel</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.PidParameters.html">PidParameters</a></td>
         <td><span class="parametername">pidParams</span></td>
-        <td></td>
+        <td><p>parameters of PidModel</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Double</span>[]</td>
         <td><span class="parametername">disturbance</span></td>
-        <td></td>
+        <td><p>disturbance vector</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>optional name used for plotting</p>
+</td>
       </tr>
     </tbody>
   </table>
