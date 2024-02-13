@@ -94,7 +94,7 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
             data.AddConstant("const1",5);
             data.CreateTimestamps(timeBase_s);
 
-            var copy = data.Subset(startPrc, endPrc);
+            var copy = data.SubSetPrc(startPrc, endPrc);
 
             Assert.IsTrue(copy.ContainsSignal("test1"));
             Assert.IsTrue(copy.ContainsSignal("test2"));

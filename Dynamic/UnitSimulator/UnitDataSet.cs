@@ -349,7 +349,64 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return averages.ToArray();
         }
+
         /// <summary>
+        /// Create a subset of the dataset that is defined in terms of percentages
+        /// </summary>
+        /// <param name="startPrc">A value 0-100%. Should be a value smaller than endPrc </param>
+        /// <param name="endPrc">A value 0-100%. Should be a value bigger than startPrc</param>
+        /// <returns></returns>
+        public UnitDataSet SubsetPrc(double startPrc, double endPrc)
+        {
+            if (startPrc > 100)
+                startPrc = 100;
+            if (endPrc > 100)
+                endPrc = 100;
+            if (startPrc < 0)
+                startPrc = 0;
+            if (endPrc < 0)
+                endPrc = 0;
+
+            int N = GetNumDataPoints();
+            if (N == 0)
+                return new UnitDataSet();
+
+            int startInd = (int)Math.Floor(startPrc / 100 * N);
+            int endInd = (int)Math.Floor(endPrc / 100 * N);
+            return SubsetInd(startInd, endInd);
+        }
+
+        /// <summary>
+        /// Create a copy of the data set that is a subset with given start/end indices
+        /// </summary>
+        /// <param name="startInd"></param>
+        /// <param name="endInd"></param>
+        /// <returns></returns>
+        public UnitDataSet SubsetInd(int startInd, int endInd)
+        {
+            int N = GetNumDataPoints();
+            if (endInd > N - 1)
+                endInd = N - 1;
+            if (startInd < 0)
+                startInd = 0;
+
+            var returnData = new UnitDataSet();
+            returnData.BadDataID = BadDataID;
+            returnData.Times = Vec<DateTime>.SubArray(Times,startInd,endInd);
+            var uList = new List<double[]>();
+            for (int idx = 0; idx < U.GetNColumns(); idx++)
+            {
+                var vec = Array2D<double>.GetColumn(U,idx);
+                uList.Add(Vec<double>.SubArray(vec, startInd, endInd));
+            }
+            returnData.U = Array2D<double>.CreateFromList(uList);
+            returnData.Y_meas = Vec<double>.SubArray(Y_meas, startInd, endInd);
+            returnData.Y_sim = Vec<double>.SubArray(Y_sim, startInd, endInd);
+            returnData.D = Vec<double>.SubArray(D, startInd, endInd);
+            return returnData;
+        }
+
+     /*   /// <summary>
         /// Tags indices to be removed if either of the inputs are outside the range defined by 
         /// [uMinFit,uMaxFit].
         /// 
@@ -403,7 +460,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             IndicesToIgnore = newIndToExclude;
-        }
+        }*/
 
 
 

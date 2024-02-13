@@ -147,7 +147,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Assert.AreEqual( gainSchedP4_nineThresholds_singleInput.LinearGains[stepIdx].First(), observedGain , "step idx:"+stepIdx);
             }
 
-      /*      Shared.EnablePlots();
+           /* Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                 simY1,
                 inputData.GetValues(refModel.GetID(),SignalType.External_U,0),

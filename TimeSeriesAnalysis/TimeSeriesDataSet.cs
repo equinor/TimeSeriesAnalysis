@@ -600,8 +600,7 @@ namespace TimeSeriesAnalysis
         /// <param name="startPrc"></param>
         /// <param name="endPrc"></param>
         /// <returns></returns>
-        public TimeSeriesDataSet Subset(double startPrc, double endPrc)
-
+        public TimeSeriesDataSet SubSetPrc(double startPrc, double endPrc)
         {
             if (startPrc > 100)
                 startPrc = 100;
@@ -612,10 +611,9 @@ namespace TimeSeriesAnalysis
             if (endPrc < 0)
                 endPrc = 0;
 
-
             int startInd = (int)Math.Floor(startPrc / 100 * N.Value);
             int endInd = (int)Math.Floor(endPrc / 100 * N.Value);
-            return Subset(startInd, endInd);
+            return SubsetInd(startInd, endInd);
         }
 
         /// <summary>
@@ -625,7 +623,7 @@ namespace TimeSeriesAnalysis
         /// <param name="startInd"></param>
         /// <param name="endInd"></param>
         /// <returns></returns>
-        public TimeSeriesDataSet Subset(int startInd, int endInd)
+        public TimeSeriesDataSet SubsetInd(int startInd, int endInd)
         {
             if (!N.HasValue)
                 return null;

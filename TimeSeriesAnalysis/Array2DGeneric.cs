@@ -252,13 +252,16 @@ namespace TimeSeriesAnalysis
         ///<summary>
         /// returns all the columns correspoding to columnNumbers in a 2d-array
         ///</summary>
-        static public T[,] GetColumns(T[,] matrix, int[] columnNumbers)
+        static public T[,] GetColumns(T[,] matrix, int[] columnNumbers=null)
         {
             if (matrix == null)
                 return null;
 
+            if (columnNumbers == null)
+            {
+                columnNumbers = Index.MakeIndexArray(0,matrix.GetLength(0));    
+            }
             List<T[]> retList = new List<T[]>();
-
             for (int i = 0; i < columnNumbers.Length; i++)
             {
                 int columnNumber = columnNumbers[i];
