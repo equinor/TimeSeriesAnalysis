@@ -6,6 +6,7 @@
     <Nullable>disable</Nullable>
     <IsPublishable>False</IsPublishable>
 	 <ImplicitUsings>enable</ImplicitUsings>
+	 <Configurations>Debug;Release;DocFx</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

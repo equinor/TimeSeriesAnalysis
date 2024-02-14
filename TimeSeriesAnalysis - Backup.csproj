@@ -63,7 +63,7 @@
     <PackageReference Include="Accord" Version="3.8.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0" />
     <PackageReference Include="Accord.Statistics" Version="3.8.0" />
-    <PackageReference Include="docfx.console" Version="2.59.4" Condition="'$(Configuration)'=='DocFX'">
+    <PackageReference Include="docfx.console" Version="2.59.4" Condition="'$(Configuration)'=='DocFx'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
