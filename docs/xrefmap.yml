@@ -5346,22 +5346,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.ProcessName
   nameWithType: UnitDataSet.ProcessName
-- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double[],System.Double[])
-  name: SetInputUFitMaxAndMin(Double[], Double[])
-  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SetInputUFitMaxAndMin_System_Double___System_Double___
-  commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double[],System.Double[])
-  name.vb: SetInputUFitMaxAndMin(Double(), Double())
-  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double[], System.Double[])
-  fullName.vb: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double(), System.Double())
-  nameWithType: UnitDataSet.SetInputUFitMaxAndMin(Double[], Double[])
-  nameWithType.vb: UnitDataSet.SetInputUFitMaxAndMin(Double(), Double())
-- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin*
-  name: SetInputUFitMaxAndMin
-  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SetInputUFitMaxAndMin_
-  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd(System.Int32,System.Int32)
+  name: SubsetInd(Int32, Int32)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetInd_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd(System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd(System.Int32, System.Int32)
+  nameWithType: UnitDataSet.SubsetInd(Int32, Int32)
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd*
+  name: SubsetInd
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetInd_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin
-  nameWithType: UnitDataSet.SetInputUFitMaxAndMin
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd
+  nameWithType: UnitDataSet.SubsetInd
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc(System.Double,System.Double)
+  name: SubsetPrc(Double, Double)
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetPrc_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc(System.Double, System.Double)
+  nameWithType: UnitDataSet.SubsetPrc(Double, Double)
+- uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc*
+  name: SubsetPrc
+  href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetPrc_
+  commentId: Overload:TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc
+  nameWithType: UnitDataSet.SubsetPrc
 - uid: TimeSeriesAnalysis.Dynamic.UnitDataSet.Times
   name: Times
   href: api/TimeSeriesAnalysis.Dynamic.UnitDataSet.html#TimeSeriesAnalysis_Dynamic_UnitDataSet_Times
@@ -7488,25 +7498,32 @@ references:
   isSpec: "True"
   fullName: TimeSeriesAnalysis.TimeSeriesDataSet.SetTimeStamps
   nameWithType: TimeSeriesDataSet.SetTimeStamps
-- uid: TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Double,System.Double)
-  name: Subset(Double, Double)
-  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_Subset_System_Double_System_Double_
-  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Double,System.Double)
-  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Double, System.Double)
-  nameWithType: TimeSeriesDataSet.Subset(Double, Double)
-- uid: TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Int32,System.Int32)
-  name: Subset(Int32, Int32)
-  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_Subset_System_Int32_System_Int32_
-  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Int32,System.Int32)
-  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.Subset(System.Int32, System.Int32)
-  nameWithType: TimeSeriesDataSet.Subset(Int32, Int32)
-- uid: TimeSeriesAnalysis.TimeSeriesDataSet.Subset*
-  name: Subset
-  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_Subset_
-  commentId: Overload:TimeSeriesAnalysis.TimeSeriesDataSet.Subset
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.SubsetInd(System.Int32,System.Int32)
+  name: SubsetInd(Int32, Int32)
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_SubsetInd_System_Int32_System_Int32_
+  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.SubsetInd(System.Int32,System.Int32)
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.SubsetInd(System.Int32, System.Int32)
+  nameWithType: TimeSeriesDataSet.SubsetInd(Int32, Int32)
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.SubsetInd*
+  name: SubsetInd
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_SubsetInd_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeriesDataSet.SubsetInd
   isSpec: "True"
-  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.Subset
-  nameWithType: TimeSeriesDataSet.Subset
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.SubsetInd
+  nameWithType: TimeSeriesDataSet.SubsetInd
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.SubSetPrc(System.Double,System.Double)
+  name: SubSetPrc(Double, Double)
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_SubSetPrc_System_Double_System_Double_
+  commentId: M:TimeSeriesAnalysis.TimeSeriesDataSet.SubSetPrc(System.Double,System.Double)
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.SubSetPrc(System.Double, System.Double)
+  nameWithType: TimeSeriesDataSet.SubSetPrc(Double, Double)
+- uid: TimeSeriesAnalysis.TimeSeriesDataSet.SubSetPrc*
+  name: SubSetPrc
+  href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_SubSetPrc_
+  commentId: Overload:TimeSeriesAnalysis.TimeSeriesDataSet.SubSetPrc
+  isSpec: "True"
+  fullName: TimeSeriesAnalysis.TimeSeriesDataSet.SubSetPrc
+  nameWithType: TimeSeriesDataSet.SubSetPrc
 - uid: TimeSeriesAnalysis.TimeSeriesDataSet.ToCsv(System.String,System.String,System.Int32)
   name: ToCsv(String, String, Int32)
   href: api/TimeSeriesAnalysis.TimeSeriesDataSet.html#TimeSeriesAnalysis_TimeSeriesDataSet_ToCsv_System_String_System_String_System_Int32_

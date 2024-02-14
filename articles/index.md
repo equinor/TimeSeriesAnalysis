@@ -52,9 +52,9 @@ in industrial control.
 > to time-series data (like black-box models), but at the same time each parameter has an
 > intuitive phyiscal interpretation (like a white-box model).
 
-Grey-box models are a "best of both worlds" compromise 
+Grey-box models attempt a "best of both worlds" compromise 
 between "white box" models (where paramters are set using prior knowlege)
-and "black-box" models (where parameters are determiend by fitting and have no direct physical interpretation.)
+and "black-box" models (where parameters are determined by fitting and have no direct physical interpretation.)
 
 The aim is to make models that can represent large and complex plants, yet where the meaning of 
 each parameter in each unit models is still intuitive, 
@@ -63,20 +63,13 @@ Grey-box models have two very interesting properties:
 - parameters of automatically identified models can be *inspected* by users to *gain insight*, and also
 - users can *add insight* by *changing* parameters where needed. 
 
-Grey-box modeling will have an advantage in cases where it is 
-fitted to real-world data that has some information but perhaps has some 
-information missing because some inputs do not vary enough independelty. 
-This situation is the norm when attempting to use real-world time-series data sets rather
-than using data of designed experiments. 
- 
-Since parameters have a phyiscal interpretation, it is possible to fill in gaps in the model
-using a priori knowledge.
-
+Grey-box modeling may have an advantage when fitting to data that has some, but less than 
+the ideal amount of information, which is a typical scenario for "as-is" real-world industrial 
+process data. In such a scenario, it is possible to fill in gaps in the model
+using a priori knowledge since parameters have a phyiscal interpretation. 
 
 
 ### Advanced analytics
-
-The above concepts are related to the term "advanced analytics".
 
 Advanced analytics is [defined](https://www.gartner.com/en/information-technology/glossary/advanced-analytics) as :
 

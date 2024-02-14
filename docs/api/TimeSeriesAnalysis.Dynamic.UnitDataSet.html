@@ -724,16 +724,14 @@ Returns null if it was not possible to calculate averages</p>
   </table>
   
   
-  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_SetInputUFitMaxAndMin_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin*"></a>
-  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_SetInputUFitMaxAndMin_System_Double___System_Double___" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.SetInputUFitMaxAndMin(System.Double[],System.Double[])">SetInputUFitMaxAndMin(Double[], Double[])</h4>
-  <div class="markdown level1 summary"><p>Tags indices to be removed if either of the inputs are outside the range defined by
-[uMinFit,uMaxFit].</p>
-<p>uMinFit,uMaxFit may include NaN or BadDataID for values if no max/min applies to the specific input</p>
+  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetInd_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetInd_System_Int32_System_Int32_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetInd(System.Int32,System.Int32)">SubsetInd(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Create a copy of the data set that is a subset with given start/end indices</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetInputUFitMaxAndMin(double[] uMinFit, double[] uMaxFit)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnitDataSet SubsetInd(int startInd, int endInd)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -746,16 +744,79 @@ Returns null if it was not possible to calculate averages</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">uMinFit</span></td>
-        <td><p>vector of minimum values for each element in U</p>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">startInd</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">endInd</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetPrc_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc*"></a>
+  <h4 id="TimeSeriesAnalysis_Dynamic_UnitDataSet_SubsetPrc_System_Double_System_Double_" data-uid="TimeSeriesAnalysis.Dynamic.UnitDataSet.SubsetPrc(System.Double,System.Double)">SubsetPrc(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Create a subset of the dataset that is defined in terms of percentages</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnitDataSet SubsetPrc(double startPrc, double endPrc)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">startPrc</span></td>
+        <td><p>A value 0-100%. Should be a value smaller than endPrc</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Double</span>[]</td>
-        <td><span class="parametername">uMaxFit</span></td>
-        <td><p>vector of maximum values for each element in U</p>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">endPrc</span></td>
+        <td><p>A value 0-100%. Should be a value bigger than startPrc</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="TimeSeriesAnalysis.Dynamic.UnitDataSet.html">UnitDataSet</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

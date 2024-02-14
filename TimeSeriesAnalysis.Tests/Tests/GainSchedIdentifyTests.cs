@@ -9,7 +9,6 @@ using Accord.Math;
 
 namespace TimeSeriesAnalysis.Test.SysID
 {
-    [TestFixture]
     public class GainSchedIdentifyTests
     {
         int timeBase_s = 1;
