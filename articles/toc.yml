@@ -110,10 +110,8 @@
         - name: Plot.ly 
           href: plotly.md
 
-
 - name: Contributing 
   href: ../contributing.md
-
 
 - name: License 
   href: license.md
