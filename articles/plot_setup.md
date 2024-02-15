@@ -40,7 +40,7 @@ If running IIS,
 
 The "physical path" is where you need to link in the "plotly" folder. 
 
-![IIS](images/IIS_setup.png)
+![IIS](./../images/IIS_setup.png)
 
 
 

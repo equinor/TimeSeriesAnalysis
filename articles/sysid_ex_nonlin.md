@@ -12,7 +12,7 @@ simulated and plotted for comparison purposes. The significant difference betwee
 
 The resulting figure, containing the dataset, the fitted model and the reference linear model. 
 
-![Example](images/sysid_ex_nonlin1.png)
+![Example](./../images/sysid_ex_nonlin1.png)
 
 The output of ``idModel.ToString()`` gives details on the model:
 ```
