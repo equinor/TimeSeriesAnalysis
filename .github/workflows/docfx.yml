@@ -65,8 +65,8 @@ jobs:
 
           # paths must be relative from .docfx folder.
           # note that url works but only in top page. see sample website for detail.
-          site_logo:    '<logo>.svg'
-          site_favicon: '<favicon>.svg'
+          site_logo:    '../images/equinor-logo-primary.svg'
+          site_favicon: '../images/equinor-logo-primary.svg'
 
           # advanced options
           # --> https://dotnet.github.io/docfx/docs/template.html?tabs=modern#custom-template
