@@ -74,7 +74,7 @@ jobs:
           # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
           main_js: |
             export default {
-                defaultTheme: 'dark'
+                defaultTheme: 'default'
             }
 
           # main.css
