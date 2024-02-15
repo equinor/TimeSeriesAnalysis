@@ -39,8 +39,7 @@ jobs:
 #        uses: actions/deploy-pages@v4 
 #        with: 
 #          artifact_name: ${{needs.build.outputs.output1}}
-     - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/upload-pages-artifact@v2  
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v3  
         with: 
           name: github-pages
