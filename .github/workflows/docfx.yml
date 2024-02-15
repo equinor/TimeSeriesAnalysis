@@ -54,9 +54,9 @@ jobs:
 
           # required options
           # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
-          app_name:    'Deploy Test'
-          site_title:  'Deploy Test using sator-imaging/docfx-pages'
-          site_footer: '<big>&times; Is HTML accepted?</big>'
+          app_name:    'TimeSeriesAnalysis'
+          site_title:  'TimeSeriesAnalysis documentation and API reference'
+          site_footer: ''
 
           # optional
           class_members: 'separatePages'  # 'separatePages' or 'samePage'
@@ -72,18 +72,18 @@ jobs:
           # --> https://dotnet.github.io/docfx/docs/template.html?tabs=modern#custom-template
           # main.js
           # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
-          #main_js: |
-          #  export default {
-          #      defaultTheme: 'light',
-          #      showLightbox: (img) => true,
-          #      iconLinks: [
-          #          {
-          #              icon: 'github',
-          #              href: 'https://github.com/sator-imaging',
-          #              title: 'GitHub'
-          #          },
-          #      ],
-          #  }
+          main_js: |
+            export default {
+                defaultTheme: 'dark',
+                showLightbox: (img) => true,
+                iconLinks: [
+                    {
+                        icon: 'github',
+                        href: 'https://github.com/sator-imaging',
+                        title: 'GitHub'
+                    },
+                ],
+            }
 
           # main.css
           # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
