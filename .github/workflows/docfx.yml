@@ -74,15 +74,7 @@ jobs:
           # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
           main_js: |
             export default {
-                defaultTheme: 'dark',
-                showLightbox: (img) => true,
-                iconLinks: [
-                    {
-                        icon: 'github',
-                        href: 'https://github.com/sator-imaging',
-                        title: 'GitHub'
-                    },
-                ],
+                defaultTheme: 'dark'
             }
 
           # main.css
