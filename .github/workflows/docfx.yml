@@ -1,5 +1,6 @@
 name: docfx
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,6 +41,8 @@ jobs:
 #        with: 
 #          artifact_name: ${{needs.build.outputs.output1}}
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/upload-pages-artifact@v3  
         with: 
           name: github-pages
+          path: docs
