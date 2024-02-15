@@ -34,10 +34,13 @@ jobs:
 
     runs-on:  ubuntu-latest
     steps:
-   #   - env:
-   #       OUTPUT1: ${{needs.build.outputs.output1}}
-      - name: Deploy to GitHub Pages
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v4 
+#        with: 
+#          artifact_name: ${{needs.build.outputs.output1}}
+     - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+        uses: actions/upload-pages-artifact@v2  
         with: 
-          artifact_name: ${{needs.build.outputs.output1}}
+          name: github-pages
