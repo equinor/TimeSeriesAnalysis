@@ -72,18 +72,18 @@ jobs:
           # --> https://dotnet.github.io/docfx/docs/template.html?tabs=modern#custom-template
           # main.js
           # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
-          main_js: |
-            export default {
-                defaultTheme: 'light',
-                showLightbox: (img) => true,
-                iconLinks: [
-                    {
-                        icon: 'github',
-                        href: 'https://github.com/sator-imaging',
-                        title: 'GitHub'
-                    },
-                ],
-            }
+          #main_js: |
+          #  export default {
+          #      defaultTheme: 'light',
+          #      showLightbox: (img) => true,
+          #      iconLinks: [
+          #          {
+          #              icon: 'github',
+          #              href: 'https://github.com/sator-imaging',
+          #              title: 'GitHub'
+          #          },
+          #      ],
+          #  }
 
           # main.css
           # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
