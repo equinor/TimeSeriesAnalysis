@@ -23,3 +23,5 @@ InternalTrace.11860.log
 InternalTrace*
 TestResult.xml
 profiler/
+docs/_site/
+docs/api/
