@@ -1,82 +1,46 @@
-name: docfx for GitHub Pages
-
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches:
-      - 'master'
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
+name: docfx
+on: [push]
 jobs:
-  # Single deploy job since we're just deploying
+  build:
+    runs-on: ubuntu-latest
+    name: Generate and publish the docs
+    outputs:
+      output1: ${{ steps.artifact-upload-step.outputs.artifact-id }}
+    steps:
+    - uses: actions/checkout@v1
+      name: Checkout code
+    - uses: nunit/docfx-action@v2.4.0
+      name: Build Documentation
+      with:
+        args: docfx.json
+    - uses: actions/upload-artifact@v4
+      with: 
+        name: github-pages
+        path: docs
   deploy:
+    # Add a dependency to the build job
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      actions: read     # to read the artifact made by build
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
 
-
-    #########################################
-    ######  sator-imaging/docfx-pages  ######
-    #########################################
+    runs-on:  ubuntu-latest
     steps:
-
-      # for extensibility, docfx-pages does NOT checkout your repository.
-      # so you need to checkout manually prior to sator-imaging/docfx-pages.
-      - name: Checkout
-        uses: actions/checkout@v3
-
-
-      # after checkout, you can checkout another repo, copy logo image or
-      # other assets into '.docfx' folder to setup own docfx environment.
-      # note that images must be copied into '.docfx/images', 'images' or '.images'.
-
-
-      ######  main  ######
-
-      - uses: sator-imaging/docfx-pages@v1
-        id: deployment   # required to show url in actions result page.
-        with:
-
-          # required options
-          # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
-          app_name:    'TimeSeriesAnalysis'
-          site_title:  'TimeSeriesAnalysis documentation and API reference'
-          site_footer: ''
-
-          # optional
-          class_members: 'separatePages'  # 'separatePages' or 'samePage'
-          google_analytics: ''  # empty to disable
-          define_symbols: ''  # additional preprocessor symbols separated by ';'
-
-          # paths must be relative from .docfx folder.
-          # note that url works but only in top page. see sample website for detail.
-          site_logo:    '../images/equinor-logo-primary.svg'
-          site_favicon: '../images/equinor-logo-primary.svg'
-
-          # advanced options
-          # --> https://dotnet.github.io/docfx/docs/template.html?tabs=modern#custom-template
-          # main.js
-          # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
-          main_js: |
-            export default {
-                defaultTheme: 'default'
-            }
-
-          # main.css
-          # NOTE: double-quote (") cannot be used, backquote (`) must be escaped (\`).
-          main_css: |
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v4 
+#        with: 
+#          artifact_name: ${{needs.build.outputs.output1}}
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/upload-pages-artifact@v3  
+        with: 
+          name: github-pages.zip
