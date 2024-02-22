@@ -20,6 +20,6 @@ The two controllers in this kind of configuration have different *setpoints*, di
 The output ``Y`` could for instance be the level in the tank, and the input ``U`` could be the opening of the gas outlet, one strategy to avoid liquid carryover could be to have this valve close more if a slug arrives.
 
 
-![pid-tracking](./../images/ex_minselect.png). 
+![pid-tracking](/images/ex_minselect.png). 
 
 [!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=MinSelect)]

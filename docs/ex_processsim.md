@@ -9,7 +9,7 @@ subprocess-models interacting. Simulation of these kinds of systems is done usin
 To keep things familiar this example extends on the previous. The subprocess-model is extended to *two inputs*, one external input signal is added in 
 addition to the pid-signal input as shown below:
 
-![Example 6](./../images/fig_ex6.png)
+![Example 6](/images/fig_ex6.png)
 
 The second output is given a gain of ``2`` by adding a second process 
 gain to ``modelParamters``:
@@ -68,7 +68,7 @@ The entire code:
 [!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_6)]
 
 The resulting dynamic simulation:
-![Example 6 result](./../images/ex6_results.png)
+![Example 6 result](/images/ex6_results.png)
 
 The effect of the disturbance step entering 1/4th of the way through the dataset and then being rejected is seen, and is in fact exactly like 
 in the previous example, but now a step change in the input is also seen half-way through the dataset.
