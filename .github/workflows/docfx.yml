@@ -16,7 +16,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with: 
         name: github-pages
-        path: docs
+        path: docs # describes what to upload
   deploy:
     # Add a dependency to the build job
     needs: build

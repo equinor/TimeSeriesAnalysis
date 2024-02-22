@@ -12,7 +12,7 @@ offset in ``y``, it falls to about ``y=46.5`` at its lowest.
 
 [!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=Feedforward_Part1)]
 
-![Example 5 result](images/ex_feedforward_part1.png)
+![Example 5 result](./../images/ex_feedforward_part1.png)
 
 
 
@@ -29,4 +29,4 @@ with ``y`` falling to just `` y=50.4`` at its lowest, but at the expense of a sl
 
 [!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=Feedforward_Part2)]
 
-![Example 5 result](images/ex_feedforward_part2.png)
+![Example 5 result](./../images/ex_feedforward_part2.png)

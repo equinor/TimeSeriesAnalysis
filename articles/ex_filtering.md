@@ -25,7 +25,7 @@ In the top plot ``y`` that is two sinusoids overlayed.
 The below plot shows the high pass- and low pass-filtered versions of ``y`` and by the naked eye you can see that
 the filters have approximately managed to capture and separate out  the two components. 
 
-![Example 3](images/ex3_filters.png)
+![Example 3](./../images/ex3_filters.png)
 
 
 > [!Note]
