@@ -1,0 +1,117 @@
+
+- name: Introduction
+  href: index.md
+- name: Getting Started
+  href: getting_started.md
+  items:
+        - name: Plotting capabilities
+          href: plotting.md
+        - name: Calling this library from Python 
+          href: python.md      
+        - name: Calling this library from Matlab 
+          href: matlab.md 
+        - name: Rebuilding the library in C# 
+          href: c_sharp.md 
+        - name: Setting up built-in plotting (mainly for C#)
+          href: plot_setup.md
+
+        - name: Introductory code examples(C#)
+          href: examples.md
+          items:
+                - name: 1. A "hello world" example
+                  href: ex_hello_world.md
+                - name: 2. Linear regression example
+                  href: ex_linreg.md
+                - name: 3. Filtering
+                  href: ex_filtering.md
+                - name: 4. Fitting a dynamic model to transient data example
+                  href: ex_sysid.md
+                - name: 5. Simulating a single PID-controller
+                  href: ex_pid.md
+                - name: 6. Larger-scale dynamic process simulation 
+                  href: ex_processsim.md
+          
+        - name: Introductory code examples(Python)
+          items:
+                - name: 1. A "hello world" example
+                  href: ex_hello_world_python.md
+                - name: 2. Linear regression example
+                  href: ex_linreg_python.md
+                - name: 3. Filtering
+                  href: ex_filtering_python.md
+                - name: 4. Fitting a dynamic model to transient data example
+                  href: ex_sysid_python.md
+                - name: 5. Simulating a single PID-controller
+                  href: ex_pid_python.md
+                - name: 6. Larger-scale dynamic process simulation 
+                  href: ex_processsim_python.md
+          
+
+- name: System identification
+  href: sysid.md
+  items:
+  
+        - name: System identification tricks-of-the-trade
+          href: sysid_tricks_of_the_trade.md
+
+        - name: Design choices
+          href: principles.md
+
+        - name: The "Unit Model"
+          href: sysid_defaultmodel.md
+
+        - name: Unit Model identification
+          href: unitidentifier.md
+
+        - name: Closed-loop disturbance estimation
+          href: sysid_disturbance.md
+
+        - name: System identification code examples
+          items:
+            - name: Nonlinear unit model identification
+              href: sysid_ex_nonlin.md 
+            - name: PID model identification
+              href: sysid_ex_pid.md              
+
+ 
+ 
+
+- name: Dynamic simulation
+  href: dynsim.md
+  items:
+        - name: PlantSimulator
+          href: processsimulator.md
+
+        - name: PID control code examples
+          href: pidcontrol.md
+          items:
+            - name: Cascade control
+              href: pid_cascade.md 
+            - name: Feedforward control
+              href: pid_feedforward.md
+            - name: Gain-scheduling
+              href: pid_gainscheduling.md
+            - name: Select control and tracking
+              href: pid_select.md
+
+
+- name: List of known limitations 
+  href: limitations.md
+
+- name: Glossary 
+  href: glossary.md
+
+- name: Dependencies
+  href: dependencies.md
+  items:
+        - name: Accord.NET 
+          href: accord.md
+
+        - name: Plot.ly 
+          href: plotly.md
+
+- name: Contributing 
+  href: contributing.md
+
+- name: License 
+  href: license.md

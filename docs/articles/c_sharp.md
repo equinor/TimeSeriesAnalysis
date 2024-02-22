@@ -11,7 +11,7 @@ all tests to turn ``green``.
 In some cases, it may be that the tests appear grayed or or with a blue exclamation point beside them. That indicate an issue with the installation of the ``Nunit3TestAdapter`` 
 package through NuGet, which is required for integration NUnit with Visual Studio. 
 
-![Test Explorer](images/unit_test.png)
+![Test Explorer](./images/unit_test.png)
 
 
 > [!Note]

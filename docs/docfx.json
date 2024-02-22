@@ -23,15 +23,18 @@
       {
         "files": [
           "articles/**.md",
-          "articles/**/toc.yml",
-          "*.md"
+ 	  "articles/index.md",
+          "articles/toc.yml",
+ 	  "toc.yml",
+          "../*.md"
         ]
       }
     ],
     "resource": [
       {
         "files": [
-          "images/**"
+          "images/**",
+	  "index.html"
         ]
       }
     ],
@@ -42,7 +45,7 @@
         ],
         "exclude": [
           "obj/**",
-		  "lib/plotly/**",
+          "lib/plotly/**",
           "_site/**"
         ]
       }

@@ -4,7 +4,7 @@
 to find a dynamic model to describe a measured time-series depending on multiple inputs.**
 
 This example considers an "open-loop" subprocess as shown below:
-![Example 5 result](images/fig_nonpidprocess.png).
+![Example 5 result](./images/fig_nonpidprocess.png).
 
 A synthetic dataset with two inputs ``u1`` and ``u2`` is created using ``ProcessSimulator``
 and the ``DefaultProcessModel`` (the output ``y_meas`` depends linearly on the two inputs), and noise
@@ -17,17 +17,17 @@ In this case the "true" *time-delay* of ``5`` seconds, *time-constant* of ``15``
 
 The code to create the dataset, do the identification and create the plots is shown below:
 
-[!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_4)]
+[!code-csharp[Examples](../../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_4)]
 
 The first plot shows the dataset, showing inputs``u1``, ``u2`` and output ``y``:
 
-![Example 4:dataset](/images/ex4_dataset.png)
+![Example 4:dataset](./images/ex4_dataset.png)
 
 **Notice of the time-delay and time-constant are clearly visible in this dataset**. 
 The resulting fit between model and dataset is shown below. The two time-series are virtually identical, except that
 the modeled output does not have any noise.
 
-![Example 4:output](/images/ex4_results.png)
+![Example 4:output](./images/ex4_results.png)
 
 The resulting console output gives more detail on the parameters found:
 
@@ -76,7 +76,7 @@ Console.WriteLine("static model gains:" + Vec.ToString(regResults.Gains,3));
 ```	
 The resulting plot, which compares the dynamic and static models is shown below:
 
-![Example 4:output](/images/ex4_statvsdyn.png)
+![Example 4:output](./images/ex4_statvsdyn.png)
 
 The model gains of the static model is ``[0.69;1.29]``, which is not quite as close as 
 the estimate ``[0.958;1.96]`` of the dynamic identification to the true values: ``[1;2]``.

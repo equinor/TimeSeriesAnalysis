@@ -5,17 +5,17 @@ and a slower outer loop(``process2`` and ``pid2``), both being subjected to simu
 (In a real-world case, the inner loop of a cascade is often a (rapid) valve flow-rate controller, 
 while the outer loop could for instance be a level that depends on the flow rate.) 
 
-![Cascade system](/images/ex_cascade.png)
+![Cascade system](./images/ex_cascade.png)
 
 A sinusoidal disturbance ``D1`` is introduced on process1, wheras a step disturbance is introduced halfway through 
 the simulation in ``D2``, and the aim is for the cascade controllers to reject both disturbances as well as possible. 
 
 The code to implement the controllers:
-[!code-csharp[Example](../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=CascadeControl)]
+[!code-csharp[Example](../../TimeSeriesAnalysis.Tests/Examples/ProcessControl.cs?name=CascadeControl)]
 
 The resulting results.
 
-![Cascade system](/images/ex_cascade_results.png)
+![Cascade system](./images/ex_cascade_results.png)
 
 
 To observe the open-loop behavior of the system for the same disturbances but with both controllers in **manual mode**, 
@@ -30,7 +30,7 @@ comment in the code lines:
 ```
 
 The resulting open-loop simulation results:
-![Cascade system](/images/ex_cascade_open_loop_results.png)
+![Cascade system](./images/ex_cascade_open_loop_results.png)
 
 These simualtions show the benefits of the cascade control over open-loop:
 - transients in ``y2`` of ``+/-0.5``, are reduced to approximiately ``+/-0.1``, and

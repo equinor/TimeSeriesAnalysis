@@ -40,7 +40,7 @@ If running IIS,
 
 The "physical path" is where you need to link in the "plotly" folder. 
 
-![IIS](/images/IIS_setup.png)
+![IIS](./images/IIS_setup.png)
 
 
 ### Serving up the "plotly" folder
@@ -64,7 +64,7 @@ and you can swap the given file for other versions if needed.
 If the paths described above for whatever reason conflict with the setup of your computer, you can change these paths 
 by editing the file ``TimeSeriesAnalysis.dll.config``, which by default has the following content:
 
-[!code-csharp[Example](../App.Config)]
+[!code-csharp[Example](../../App.Config)]
 
 #### Disabling all plots
 

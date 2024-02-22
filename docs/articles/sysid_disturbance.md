@@ -7,19 +7,19 @@ Counter-acting disturbances are the very reason that feedback controllers are us
 observe the deviation between setpoint and measurement of the plant output, and change 
 one-or more inputs to counter-act the disturbance. 
 
- ![System definitions](/images/sysid_disturbance_system.png)
+ ![System definitions](./images/sysid_disturbance_system.png)
 
 ### Example: step disturbance
 
 Consider a step disturbance acting on a system without feedback
 
- ![ex1](/images/sysid_disturbance_ex1.png)
+ ![ex1](./images/sysid_disturbance_ex1.png)
 
 The feedback is directly fed through to the output, while the input is constant. 
 
 Now consider and compare the same step disturbance, but this time a PID-controller counter-acts the disturbance
 
- ![ex1](/images/sysid_disturbance_ex2.png)
+ ![ex1](./images/sysid_disturbance_ex2.png)
 
 The disturbance initally appears on the system output, then is slowly counter-acted by change of the manipulated 
 variable ``u`` by feedback control, thus moving the effect of the disturbance from the output ``y`` to the 
@@ -29,7 +29,7 @@ Observing the offset between setpoint and measurement gives a *"high-frequency"*
 first, while the change in ``u`` is gradual and *"low-frequency"* ``d_LF`` and the approach
 will attempt to combine the two as shown below
 
-![ex3](/images/sysid_disturbance_ex3.png)
+![ex3](./images/sysid_disturbance_ex3.png)
 
 *The aim of this section is to develop an algorithm to estimate the the un-meausred disturbance ``d``
 indirectly based on the measured ``u`` and ``e``*

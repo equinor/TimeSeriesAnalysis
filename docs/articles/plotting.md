@@ -42,7 +42,7 @@ public void SubplotPositionWorksOk()
 
 The above code generates the following interactive plot in a Chrome-window(this window pops up automatically):
 
-![Example plot](images/example_plotting.png)
+![Example plot](./images/example_plotting.png)
 
 This plot has two *subplots*(one top, one bottom). Each subplot has both a left and a right axis: 
 the top subplot has axes ``y1`` and ``y2`` and the bottom subplot has axes ``y3`` and ``y4``. 

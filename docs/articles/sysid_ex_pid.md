@@ -4,12 +4,12 @@ paramters of a PID-controllers giving only the time-series.
 The dataset generated is simulated using ``PlantSimulator``, the 
 code of this example:
 
-[!code-csharp[ExamplePidID](../TimeSeriesAnalysis.Tests/Examples/SystemIdent.cs?name=ex_PID_ID)]
+[!code-csharp[ExamplePidID](../../TimeSeriesAnalysis.Tests/Examples/SystemIdent.cs?name=ex_PID_ID)]
 
 The code generates the following figure, showing that the estimated 
 paramters fit the actual PID-output ``u`` very well:
 
-![Example](images/sysid_ex_pid1.png)
+![Example](./images/sysid_ex_pid1.png)
 
 The output of ``idResult.ToString()`` gives details on the model:
 ```

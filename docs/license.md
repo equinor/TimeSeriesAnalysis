@@ -1,1 +1,0 @@
-[!include[License](../LICENSE)]

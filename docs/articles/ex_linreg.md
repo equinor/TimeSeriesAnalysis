@@ -6,11 +6,11 @@ best describe the relationship between inputs ``u1,u2,u3`` and output ``y``.
 ``Vec.Rand`` is used to add noise to the dataset, ``Vec.Mult`` is used to multiply vector and scalars
 
 The code:
-[!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_2)]
+[!code-csharp[Examples](../../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_2)]
 
 The dataset :
 
-![Example 2 dataset](/images/ex2_linreg_data.png)
+![Example 2 dataset](./images/ex2_linreg_data.png)
 
 > [!Note]
 > The above is an example of how to plot time-series on multiple y-axes, which is extremely useful to visualize 
@@ -18,7 +18,7 @@ The dataset :
 
 The resulting modeled ``y_modelled`` compared to ``y``:
 
-![Example 2 y](/images/ex2_linreg_y.png)
+![Example 2 y](./images/ex2_linreg_y.png)
 
 The estimated parameters (rounded to three significant digits) returned are:
 ```

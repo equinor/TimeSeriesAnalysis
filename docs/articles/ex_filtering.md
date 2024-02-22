@@ -16,7 +16,7 @@ By a similar logic,as ``sinus2`` has a period of ``25`` seconds will go from max
 thus motivating a filter time-constant of about ``~3`` seconds.
 
 The example code(runnable through the ``Test Explorer``):
-[!code-csharp[Examples](../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_3)]
+[!code-csharp[Examples](../../TimeSeriesAnalysis.Tests/Examples/GettingStarted.cs?name=ex_3)]
 
 Running the above code results in the below plot. 
 
@@ -25,7 +25,7 @@ In the top plot ``y`` that is two sinusoids overlayed.
 The below plot shows the high pass- and low pass-filtered versions of ``y`` and by the naked eye you can see that
 the filters have approximately managed to capture and separate out  the two components. 
 
-![Example 3](/images/ex3_filters.png)
+![Example 3](./images/ex3_filters.png)
 
 
 > [!Note]
