@@ -13,6 +13,9 @@
 
 ## At a glance
 
+![TimeSeriesAnalysis mindmap](./images/tsa_mindmap.png)
+
+
 **An open-source library of methods to identify,simulate and control industrial process plants, 
 built on .NET Standard 2.0.**
 
