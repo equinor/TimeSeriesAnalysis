@@ -33,7 +33,7 @@
     "resource": [
       {
         "files": [
-          "images/**",
+          "articles/images/**",
 	  "index.html"
         ]
       }
