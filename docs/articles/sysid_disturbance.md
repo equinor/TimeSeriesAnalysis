@@ -23,7 +23,7 @@ Now consider and compare the same step disturbance, but this time a PID-controll
 
 The disturbance initally appears on the system output, then is slowly counter-acted by change of the manipulated 
 variable ``u`` by feedback control, thus moving the effect of the disturbance from the output ``y`` to the 
-manipualted ``u``.
+manipulated ``u``.
 
 Observing the offset between setpoint and measurement gives a *"high-frequency"* ``d_HF`` response and is seen 
 first, while the change in ``u`` is gradual and *"low-frequency"* ``d_LF`` and the approach
@@ -31,7 +31,7 @@ will attempt to combine the two as shown below
 
 ![ex3](./images/sysid_disturbance_ex3.png)
 
-*The aim of this section is to develop an algorithm to estimate the the un-meausred disturbance ``d``
+*The aim of this section is to develop an algorithm to estimate the the un-measured disturbance ``d``
 indirectly based on the measured ``u`` and ``e``*
 
 ## Why is distrubance signal estimation important?
@@ -85,26 +85,25 @@ d = d_HF+d_LF = d_HF(e)+ d_LF(u)
 ### Guessing the sign of the process gain
 
 Methods for open-loop estimation when applied naively to closed loop
-time-series often estimte process gain with the incorrect sign. 
+time-series often estimate process gain with incorrect sign. 
 
-The reason for this is that cause-and-effect relatinships are different 
+The reason for this is that cause-and-effect relationships are different 
 in closed- and open loop. 
-
-As an example, if inputs ``u`` and output ``y`` *increase* in unison,
-you would in the open-loop case assume that the process gain is *positive*.
-In the closed-loop case, the same relation between input and output change
-is often indicative of a *negative process gain*. 
-In the closed loop, a disturbance enteres the output ``y``, is counter-acted
-by the controller output ``u``, so an increasing ``u`` in response to 
-an increasing ``y`` would be because the sign is negative. The inverse
-is also true, what appear to be negative process gains at first sight may in
-closed-loop be positive process gains.
 
 It is thus important to use an identification algorithm that is intended
 for closed loop signals, and to also include information about the setpoint ``yset``
 to the algorithm, so that the algorith can infer about the control error ``e``.
 
-
+> [!Note]
+> As an example, if inputs ``u`` and output ``y`` *increase* in unison,
+> you would in the open-loop case assume that the process gain is *positive*.
+> In the closed-loop case, the same relation between input and output change
+> is often indicative of a *negative process gain*. 
+> In the closed loop, a disturbance enteres the output ``y``, is counter-acted
+> by the controller output ``u``, so an increasing ``u`` in response to 
+> an increasing ``y`` would be because the sign is negative. The inverse
+> is also true, what appear to be negative process gains at first sight may in
+> closed-loop be positive process gains.
 
 ### First, model-free estimate
 
@@ -121,6 +120,13 @@ is found by the approximation
 ```
 G = max(e)/(max(u)-min(u)) 
 ```
+### Pid gain global search
+
+TODO
+
+### Time constant search algorithm
+
+TODO
 
 ### Separating the state of the system from the output
 
@@ -136,8 +142,6 @@ x = y-d
 
 ### Determing the dynamic parameters of the process 
 
-*This is currently a work in progress.*
-
 If the process is actually dynamic yet is modeled as static, then the above methodology will 
 result into un-modeled transients bleeding into the estimated disturbance, where they will appear as 
 "overshoots" 2.order dynamics in the estimated disturbance.
@@ -148,25 +152,23 @@ then this is usually preferable.
 
 These un-modeled transients may also cause process gains and disturbance estimates to be skewed slightly too large.
 
-In the final step, the ClosedLoopEstimator tries to modify the static models identifier previously by adding larger and larger
+In the final step, the *ClosedLoopEstimator* tries to modify the static models identifier previously by adding larger and larger
 time constants to the identified model, and observing if this reduces the *absolute, sample-over-sample variance in the disturbance".
 
 
 ### Algorithm
-```
+
 (In the case of no setpoint changes in the data set)
-- Guess the process gain, as shown above
-- Disturbance("run1"):Estimate the disturbance for the linear static process gain
-- Model("run1"):Subtract the above disturbance signal from y, and run UnitIdentifier.IdentifyLinearAndStatic to estimate
-- Disturbance("run2"):Estimate the disturbance using the above process model 
-- Model("run2"): Subtract the above disturbance signal from y, and run UnitIdentifier.Linear
-- Disturbance("run3"):Estimate the disturbance using the above process model 
-- Model("run3"): Subtract the above disturbance signal from y, and run UnitIdentifier.Linear
-- Disturbance("run4"):Estimate the disturbance when different time-constants are added to the model of run3, choose
-the model which gives the disturbance with the least absolute sample-over-sample variance
-```
-
-
+- parse data and remove bad data points 
+- "step 1":
+	- estimate the disturbance (preferably with a pre-specified *PidModel*)
+	- estimate the model for the given disturbance (*UnitIdentifier.IdentifyLinearAndStatic*)
+- "step 2": 
+	- global search for linear gain, first pass (using gain from step 1 as inital guess)
+	- global search for linear gain, second pass (finer grid size around result from above)
+- "step 3":
+	- estimate the disturbance using the model from step 2
+	- while loop: increase time constant ``T_c'' as long as the deviation of the disturbance *decreases*.
 
 
 

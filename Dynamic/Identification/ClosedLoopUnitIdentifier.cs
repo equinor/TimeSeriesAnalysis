@@ -123,6 +123,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // dynamic "overshoots" will enter into the estimated disturbance, try to fix this by doing 
             // "refinement" runs afterwards.
             { 
+
+                /////////////////
+                // step1: 
                 DisturbanceIdResult distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
                     (dataSet1, null, pidInputIdx, pidParams);
 
@@ -133,7 +136,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 idUnitModelsList.Add(unitModel_run1);
                 isOK = ClosedLoopSim(dataSet1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
 
-                //  "step1" global search" for linear pid-gainsgains
+                //  "step2" global search" for linear pid-gainsgains
                 if(unitModel_run1.modelParameters.GetProcessGains()!= null)
                 {
                     wasGainGlobalSearchDone = true;
@@ -180,7 +183,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-            bool doRun2 = true;
+            bool doStep3 = true;
 
             // ----------------
 
@@ -192,7 +195,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // run2: do a run where it is no longer assumed that x[k-1] = y[k], 
             // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
-            if (doRun2 && idUnitModelsList.Last() != null)
+            if (doStep3 && idUnitModelsList.Last() != null)
             {
                 var model = idUnitModelsList.Last();
 
