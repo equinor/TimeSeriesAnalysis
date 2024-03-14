@@ -27,6 +27,12 @@ namespace TimeSeriesAnalysis._Examples
             PidModelId();
         }
 
+        [TestCase, Explicit]
+        public void ClosedLoop_Ex()
+        {
+            ClosedLoopId();
+        }
+
 
         #region ex_NONLINEAR_UNIT_MODEL
         public void NonlinearUnitModel()
@@ -140,7 +146,70 @@ namespace TimeSeriesAnalysis._Examples
                 Array2D<double>.GetColumn(pidDataSet.U_sim,(int)INDEX.FIRST) },
                 new List<string>{ "y1=y_sim", "y1=y_set","y3=u_pid","y3=u_pid(id)" },timeBase_s); 
         }
-        #endregion 
+        #endregion
 
+        //adopted from Dynamic_DistStep_EstiamtesOk(5,5) unit test
+        #region ex_CLOSED_LOOP
+        void ClosedLoopId()
+        {
+            PidParameters pidParameters1 = new PidParameters()
+            {
+                Kp = 0.2,
+                Ti_s = 20
+            };
+            UnitParameters trueModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 10,
+                LinearGains = new double[] { 1.5 },
+                TimeDelay_s = 5,
+                Bias = 5
+            };
+
+            double stepAmplitude = 5;
+            int timeBase_s = 1;
+            int N = 300;
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+
+            var trueProcessModel = new UnitModel(trueModelParameters, "TrueProcessModel");
+
+            // create synthetic dataset
+            var pidModel1 = new PidModel(pidParameters1, "PID1");
+
+            var processSim = new PlantSimulator(
+             new List<ISimulatableModel> { pidModel1, trueProcessModel });
+            processSim.ConnectModels(trueProcessModel, pidModel1);
+            processSim.ConnectModels(pidModel1, trueProcessModel);
+            var inputData = new TimeSeriesDataSet();
+
+            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+
+            inputData.Add(processSim.AddExternalSignal(trueProcessModel, SignalType.Disturbance_D), trueDisturbance);
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+
+            var modelId = new ClosedLoopUnitIdentifier();
+            (var identifiedModel, var estDisturbance) = modelId.Identify(pidDataSet, pidModel1.GetModelParameters());
+
+            Console.WriteLine(identifiedModel.ToString());
+
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
+                pidDataSet.U.GetColumn(0),  trueDisturbance },
+                new List<string> { "y1=y meas", "y1=y set", "y2=u(right)", "y3=true disturbance" },
+                pidDataSet.GetTimeBase(), "ClosedLoopId_dataset");
+            Plot.FromList(new List<double[]>{ estDisturbance,  trueDisturbance },
+                new List<string> { "y1=est disturbance", "y1=true disturbance" },
+                pidDataSet.GetTimeBase(), "ClosedLoopId_disturbances");
+            Plot.FromList(new List<double[]> { pidDataSet.Y_meas, pidDataSet.Y_sim },
+                 new List<string> { "y1=y_meas", "y1=y_sim" },
+                 pidDataSet.GetTimeBase(), "ClosedLoopId_ysim");
+            Plot.FromList(new List<double[]> { pidDataSet.U.GetColumn(0), pidDataSet.U_sim.GetColumn(0) },
+                 new List<string> { "y1=u_meas", "y1=u_sim" },
+                 pidDataSet.GetTimeBase(), "ClosedLoopId_usim");
+            Shared.DisablePlots();
+        }
+        #endregion
     }
 }

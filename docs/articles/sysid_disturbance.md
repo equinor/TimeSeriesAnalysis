@@ -106,9 +106,8 @@ to the algorithm, so that the algorith can infer about the control error ``e``.
 > closed-loop be positive process gains.
 
 ### First, model-free estimate
-
-In order to initialize the sequential estimation, a model-free estimate of the disturbance
-is require initially. 
+A model-free estimate of the disturbance is required to initialize
+subsequent sequential estimation. 
 
 For the first iteration, all process dynamics and nonlinearities are neglected, 
 a linear static model essentially boils down to estimating the process gain. 

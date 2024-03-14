@@ -71,7 +71,9 @@
             - name: Nonlinear unit model identification
               href: sysid_ex_nonlin.md 
             - name: PID model identification
-              href: sysid_ex_pid.md              
+              href: sysid_ex_pid.md       
+            - name: Closed-loop identification (disturbances)
+              href: sysid_ex_closedloop.md          
 
  
  

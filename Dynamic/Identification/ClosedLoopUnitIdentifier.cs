@@ -312,6 +312,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
             }
+            // closed-loop simulation, adds U_sim and Y_sim to "dataset"
+            {
+                ClosedLoopSim(dataSet, identUnitModel.modelParameters, pidParams, disturbance);
+            }
             return (identUnitModel,disturbance);
         }
 
