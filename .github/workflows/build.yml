@@ -23,9 +23,9 @@ jobs:
               run: dotnet build TimeSeriesAnalysis.sln -c Release
             - name: Pack
               run: dotnet pack TimeSeriesAnalysis.sln -c Release --include-symbols --include-source
-            - name: Nuget on Github Set API key
+            - name: Nuget Set API key
               run: nuget setapikey ${{secrets.NUGET_API_KEY}} -source https://nuget.pkg.github.com/equinor/
-            - name: Nuget on Github publish 
+            - name: Nuget publish 
               run: nuget push bin\Release\*.nupkg -source https://nuget.pkg.github.com/equinor/ -SkipDuplicate
             - name: Nuget on Github Set API key
               run: nuget setapikey ${{secrets.NUGET_ORG_API_KEY}} -source https://api.nuget.org/v3/index.json
