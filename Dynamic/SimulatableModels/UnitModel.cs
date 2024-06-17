@@ -425,7 +425,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="u">vector of input values</param>
         /// <param name="badDataID"></param>
         /// <returns></returns>
-        public double? GetSteadyStateOutput(double[] u, double badDataID)
+        public double? GetSteadyStateOutput(double[] u, double badDataID=-9999)
         {
             if (modelParameters.LinearGains == null)
                 return 0;

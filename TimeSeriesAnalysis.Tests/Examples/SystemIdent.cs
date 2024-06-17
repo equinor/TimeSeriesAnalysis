@@ -18,19 +18,25 @@ namespace TimeSeriesAnalysis._Examples
         [TestCase,Explicit]
         public void NonlinearUnitModel_Ex()
         {
+            Shared.EnablePlots();
             NonlinearUnitModel();
+            Shared.DisablePlots();
         }
 
         [TestCase, Explicit]
         public void PidIdent_Ex()
         {
+            Shared.EnablePlots();
             PidModelId();
+            Shared.DisablePlots();
         }
 
         [TestCase, Explicit]
         public void ClosedLoop_Ex()
         {
+            Shared.EnablePlots();
             ClosedLoopId();
+            Shared.DisablePlots();
         }
 
 
@@ -92,6 +98,8 @@ namespace TimeSeriesAnalysis._Examples
                 u1, u2 },
                  new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1", "y3=u2" },
                  (int)timeBase_s, "NonlinearUnitModelEx", default);
+
+            PlotGain.Plot(idModel, trueModel);
 
             Console.WriteLine(idModel.ToString());
         }

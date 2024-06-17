@@ -866,6 +866,17 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.Fitting.NFittingTotalDataPoints = regResults.NfittingTotalDataPoints;
             parameters.Fitting.NFittingBadDataPoints = regResults.NfittingBadDataPoints;
 
+            var uMaxList = new List<double>();
+            var uMinList = new List<double>();
+
+            for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+            {
+                uMaxList.Add(vec.Max(dataSet.U.GetColumn(i)));
+                uMinList.Add(vec.Min(dataSet.U.GetColumn(i)));
+            }
+            parameters.Fitting.Umax = uMaxList.ToArray();
+            parameters.Fitting.Umin = uMinList.ToArray();
+
             if (regResults.Param == null || !regResults.AbleToIdentify)
             {
                 parameters.Fitting.WasAbleToIdentify = false;

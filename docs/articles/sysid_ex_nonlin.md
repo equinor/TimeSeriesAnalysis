@@ -59,3 +59,8 @@ The user did *not* need to *specify* if the model should be linear or nonlinear,
 *Thus ``UnitIdentifier`` is not be able to take a general ``TimeSeriesDataSet`` that contain 
 any number of un-ordered time-series and produce a general ``PlantSimulator``. 
 This more challenging task will be a topic for later examples.* 
+
+The gain-curves are plotted by the example code, plots shown below comparing true and estimted models:
+![Nonlinear gain-curve1](./images/sysid_ex_nonlin2.png)
+![Nonlinear gain-curve2](./images/sysid_ex_nonlin3.png)
+

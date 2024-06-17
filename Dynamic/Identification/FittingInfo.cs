@@ -94,6 +94,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public DateTime EndTime { get; set; }
 
+        /// <summary>
+        /// The maximum value of u seen in the data set
+        /// </summary>
+        public double[] Umax;
+
+        /// <summary>
+        /// The minimum value of u seen in the data set
+        /// </summary>
+        public double[] Umin;
 
         /// <summary>
         /// NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.
