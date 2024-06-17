@@ -27,10 +27,6 @@ jobs:
               run: nuget setapikey ${{secrets.NUGET_API_KEY}} -source https://nuget.pkg.github.com/equinor/
             - name: Nuget on Github publish 
               run: nuget push bin\Release\*.nupkg -source https://nuget.pkg.github.com/equinor/ -SkipDuplicate
-            - name: Nuget on Github Set API key
-              run: nuget setapikey ${{secrets.NUGET_ORG_API_KEY}} -source https://api.nuget.org/v3/index.json
-            - name: Nuget on Github publish 
-              run: nuget push bin\Release\*.nupkg -source https://api.nuget.org/v3/index.json -SkipDuplicate
             #- name: Publish
             #  uses: rohith/publish-nuget@v2
             #  with:
