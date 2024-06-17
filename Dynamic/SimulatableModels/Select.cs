@@ -114,10 +114,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the steady state value of the model output
         /// </summary>
         /// <param name="u0">vector of inputs for which the steady state is to be calculated</param>
+        /// <param name="badDataID">special value that indicates "NaN"</param>
         /// <returns>the steady-state value, if it is not possible to calculate, a <c>null</c> is returned</returns>
-        public  double? GetSteadyStateOutput(double[] u0)
+        public double? GetSteadyStateOutput(double[] u0, double badDataID)
         {
-            return Iterate(u0,1).First();
+            return Iterate(u0,1, badDataID).First();
         }
 
         /// <summary>

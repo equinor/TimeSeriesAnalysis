@@ -11,7 +11,6 @@ namespace TimeSeriesAnalysis.Utility
     /// </summary>
     static public class TimeSeriesCreator
     {
-
         /// <summary>
         /// Creates a vector of a constant value
         /// </summary>

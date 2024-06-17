@@ -258,8 +258,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// NOT IMPLEMENTED/NOT APPLICABLE
         /// </summary>
         /// <param name="u0"></param>
+        /// <param name="badDataID">optional special value that indicates "Nan"</param>
         /// <returns></returns>
-        public double? GetSteadyStateOutput(double[] u0)
+        public double? GetSteadyStateOutput(double[] u0, double badDataID)
         {
             return null;
         }

@@ -418,13 +418,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Get the steady state output y for a given input(including additive terms)
         /// </summary>
         /// <param name="u0"></param>
+        /// <param name="badDataID">optional special value that indicates "Nan"</param>
         /// <returns></returns>
-        public double? GetSteadyStateOutput(double[] u0)
+        public double? GetSteadyStateOutput(double[] u0, double badDataID)
         {
             if (modelParameters.LinearGains == null)
                 return 0;
 
-            double? ret = CalculateStaticStateWithoutAdditive(u0);
+            double? ret = CalculateStaticStateWithoutAdditive(u0,badDataID);
             if (ret.HasValue)
             {
                 // additve output values

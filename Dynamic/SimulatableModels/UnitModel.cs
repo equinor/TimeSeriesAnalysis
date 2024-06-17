@@ -221,7 +221,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Calcuate the steady-state input if the output and all-but-one input are known
         /// </summary>
         /// <para>
-        /// This method has no concept of disturbances, so a nonzero disturbane at time zero may throw it off.
+        /// This method has no concept of disturbances, so a nonzero disturbance at time zero may throw it off.
         /// </para>
         /// <param name="x0">If no additive inputs y=x, otherwise subtract additive inputs from y to get x</param>
         /// <param name="inputIdx"></param>
@@ -260,7 +260,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         if (i < GetModelInputIDs().Length)//model inputs
                         {
                             x_otherInputs += CalculateLinearProcessGainTerm(i, givenInputs[i]);
-                            x_otherInputs += CalcuateCurvatureProcessGainTerm(i, givenInputs[i]);
+                            x_otherInputs += CalculateCurvatureProcessGainTerm(i, givenInputs[i]);
                         }
                         else // additive inputs
                         {
@@ -349,7 +349,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
         /// <returns></returns>
-        private double CalcuateCurvatureProcessGainTerm(int inputIndex, double u)
+        private double CalculateCurvatureProcessGainTerm(int inputIndex, double u)
         {
             double curvatureTerm = 0;
 
@@ -385,10 +385,15 @@ namespace TimeSeriesAnalysis.Dynamic
             return curvatureTerm;
         }
 
-        private double CalculateStaticStateWithoutAdditive(double[] inputs, double badValueIndicator=-9999)
+        /// <summary>
+        /// Calculates the state x_ss excluding transients (y_ss = x_ss+bias)
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <param name="badValueIndicator"></param>
+        /// <returns></returns>
+        private double CalculateSteadyStateWithoutAdditive(double[] inputs, double badValueIndicator=-9999)
         {
-            double x_static = modelParameters.Bias;
-
+            double x_ss = modelParameters.Bias;
             // inputs U may include a disturbance as the last entry
             for (int curInput = 0; curInput < Math.Min(inputs.Length, GetLengthOfInputVector()); curInput++)
             {
@@ -407,30 +412,31 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         lastGoodValuesOfInputs[curInput] = inputs[curInput];
                     }
-                    x_static += CalculateLinearProcessGainTerm(curInput, curUvalue);
-                    x_static += CalcuateCurvatureProcessGainTerm(curInput, curUvalue);
+                    x_ss += CalculateLinearProcessGainTerm(curInput, curUvalue);
+                    x_ss += CalculateCurvatureProcessGainTerm(curInput, curUvalue);
                 }
             }
-            return x_static;
+            return x_ss;
         }
 
         /// <summary>
         /// Get the steady state output y for a given input(including additive terms)
         /// </summary>
-        /// <param name="u0"></param>
+        /// <param name="u">vector of input values</param>
+        /// <param name="badDataID"></param>
         /// <returns></returns>
-        public double? GetSteadyStateOutput(double[] u0)
+        public double? GetSteadyStateOutput(double[] u, double badDataID)
         {
             if (modelParameters.LinearGains == null)
                 return 0;
 
-            double? ret = CalculateStaticStateWithoutAdditive(u0);
+            double? ret = CalculateSteadyStateWithoutAdditive(u, badDataID);
             if (ret.HasValue)
             {
-                // additve output values
-                for (int i = GetModelInputIDs().Length; i < u0.Length; i++)
+                // additive output values
+                for (int i = GetModelInputIDs().Length; i < u.Length; i++)
                 {
-                    ret += u0[i];
+                    ret += u[i];
                 }
             }
             return ret;
@@ -483,17 +489,17 @@ namespace TimeSeriesAnalysis.Dynamic
                 return new double[] { 0 }; 
             }
 
-            // notice! the model does not use the paramters [a,b,c,unorm,td.u0] to simulate the process model
+            // notice! the model does not use the parameters [a,b,c,unorm,td.u0] to simulate the process model
             // instead it calculates the steady-state and then filters the steady-state with LowPass to get the appropriate time constant
-            //  - so it uses the parmaters [linearGain, curvatureGain, Timeconstant,td]
+            //  - so it uses the parameters [linearGain, curvatureGain, Timeconstant,td]
 
-            double x_static = CalculateStaticStateWithoutAdditive(inputs,badValueIndicator);
+            double x_ss = CalculateSteadyStateWithoutAdditive(inputs,badValueIndicator);
 
             // nb! if first iteration, start model at steady-state
-            double x_dynamic = x_static;
+            double x_dynamic = x_ss;
             if (modelParameters.TimeConstant_s >= 0)
             {
-                x_dynamic = lowPass.Filter(x_static, modelParameters.TimeConstant_s, 1, isFirstIteration);
+                x_dynamic = lowPass.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration);
             }
             isFirstIteration = false;
             double y = 0;
