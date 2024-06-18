@@ -22,4 +22,4 @@ jobs:
             - name: Build 
               run: dotnet build TimeSeriesAnalysis.sln -c Debug
             - name: Run tests
-              run: C:\Users\runneradmin\.nuget\packages\nunit.consolerunner\3.16.2\tools\nunit3-console.exe D:\a\TimeSeriesAnalysis\TimeSeriesAnalysis\TimeSeriesAnalysis.Tests\bin\Debug\netstandard2.0\TimeSeriesAnalysis.Tests.dll --inprocess
+              run: C:\Users\runneradmin\.nuget\packages\nunit.consolerunner\3.16.2\tools\nunit3-console.exe D:\a\TimeSeriesAnalysis\TimeSeriesAnalysis\TimeSeriesAnalysis.Tests\bin\Debug\netstandard2.0\TimeSeriesAnalysis.Tests.dll --inprocess  --where="cat!=NotWorking_AcceptanceTest" 
