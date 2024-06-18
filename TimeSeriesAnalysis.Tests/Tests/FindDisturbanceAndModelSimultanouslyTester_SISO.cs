@@ -194,7 +194,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // these tests seem to run well when run individuall, but when "run all" they seem to fail
         // this is likely related to a test architecture issue, not to anything wiht the actual algorithm.
    
-        [TestCase(5, 1.0), Explicit]// most difficult
+        [TestCase(5, 1.0),Explicit,NonParallelizable]// most difficult
         [TestCase(1, 1.0)] //difficult
         [TestCase(1, 5.0)]//easist
         public void Static_StepDistANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude)
@@ -236,7 +236,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         // this works as long as only static identifiation is used in the closed-looop identifier,
        // issue! this hangs for some reason
-        [Test, Explicit]
+        [Test, Explicit,NonParallelizable]
         public void FlatData_DoesNotCrash()
         {
             double stepAmplitude = 0;
@@ -246,7 +246,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueDisturbance,false,false);
         }
         // for some reason, this test also does not work with "run all", but works fine when run individually?
-        [Test,Explicit]
+        [Test,Explicit,NonParallelizable]
         public void StepAtStartOfDataset_IsExcludedFromAnalysis()
         {
             double stepAmplitude = 1;
