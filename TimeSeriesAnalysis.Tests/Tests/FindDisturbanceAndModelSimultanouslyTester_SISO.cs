@@ -170,9 +170,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc);
         }
 
-        [TestCase(5, 1.0), NonParallelizable, Category("NotWorking_AcceptanceTest")]
-        [TestCase(1, 1.0) ]
-        [TestCase(1, 5.0), Category("NotWorking_AcceptanceTest")]
+        [TestCase(5, 1.0, Category="NotWorking_AcceptanceTest"), NonParallelizable]
+        [TestCase(1, 1.0, Category = "NotWorking_AcceptanceTest") ]
+        [TestCase(1, 5.0)]
         public void Static_SinusDistANDSetpointStep(double distSinusAmplitude,
             double ysetStepAmplitude)
         {
