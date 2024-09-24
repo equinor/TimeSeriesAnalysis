@@ -6,6 +6,8 @@ using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Test.PlantSimulations;
 using Accord;
 using Accord.Math;
+using System.Diagnostics;
+using System;
 
 namespace TimeSeriesAnalysis.Test.SysID
 {
@@ -20,6 +22,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
         public void GainEstOnly_CorrectGainsReturned(int ver, int expectedNumWarnings)
         {
+            const double noiseAmplitude = 0.0;
             const double gainTolerancePrc = 10;
             int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
@@ -30,7 +33,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 {
                     TimeConstant_s = null,
                     TimeConstantThresholds = null,
-                    LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 2 }, new double[] { 3 }, new double[] { 1 }, new double[] { 2 }, new double[] { 3 } },
+                    LinearGains = new List<double[]> { new double[] { 0.5 }, new double[] { 1 }, new double[] { 3 }, new double[] { 4.5 }, new double[] { 6 }, new double[] { 9 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
                     Bias = 0,
@@ -82,7 +85,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // TODO: version with timeconstants
 
-            var refModel = new GainSchedModel(refParams);
+            var refModel = new GainSchedModel(refParams,"ref_model");
             var gsFittingSpecs= new GainSchedFittingSpecs();
             gsFittingSpecs.uGainThresholds = refModel.GetModelParameters().LinearGainThresholds;
 
@@ -98,21 +101,56 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // Act
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            simData.AddNoiseToSignal(SignalNamer.GetSignalName(refModel.ID, SignalType.Output_Y, 0),noiseAmplitude);
+
             Assert.IsTrue(isSimulatable);
             var dataSet = new UnitDataSet();
             dataSet.Y_meas = simData.GetValues(refModel.ID, SignalType.Output_Y);
             dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { inputData.GetValues(refModel.ID,SignalType.External_U)});
             dataSet.Times = inputData.GetTimeStamps();
-            var results = GainSchedIdentifier.IdentifyGainsForGivenThresholds(dataSet, gsFittingSpecs);
-            Assert.IsTrue(results.Fitting.WasAbleToIdentify);
+            var gsParams = GainSchedIdentifier.IdentifyGainsForGivenThresholds(dataSet, gsFittingSpecs);
+            Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
+            Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
 
-            Assert.AreEqual(expectedNumWarnings, results.GetWarningList().Count());
 
+            // simulate the gains-scheduled model:(TODO: this shoudl be done automatically )
+            var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
+            var inputDataIdent = new TimeSeriesDataSet();
+            inputDataIdent.Add(plantSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), input);
+            inputDataIdent.CreateTimestamps(timeBase_s);
+
+            var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
+            var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
+            Assert.IsTrue(isOk);
+
+            // Plotting gains
+            bool doPlots = true;
+            if (doPlots)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                dataSet.Y_meas,
+                identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y),
+                dataSet.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_ident", "y3=u1" },
+                    timeBase_s,
+                    "GainEstOnly_CorrectGainsReturned");
+
+                GainSchedModel gsModel = new GainSchedModel(gsParams,"ident_model");
+                GainSchedModel referenceModel = new GainSchedModel(refParams,"ref_model");
+                PlotGain.Plot(gsModel);
+
+
+                //PlotGain.Plot(gsModel, referenceModel);
+                Shared.DisablePlots();
+            }
 
             for (int i = 0; i < refParams.LinearGains.Count; i++)
             {
-                DiffLessThan(refParams.LinearGains[i][0], results.LinearGains[i][0], gainTolerancePrc,i);
+                DiffLessThan(refParams.LinearGains[i][0], gsParams.LinearGains[i][0], gainTolerancePrc,i);
             }
+
+
         }
 
         private void DiffLessThan(double trueVal, double testVal, double tolerancePrc,int index)
@@ -259,8 +297,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Assert.That(Math.Pow(best_params.LinearGainThresholds[k] - correct_gain_sched_parameters.LinearGainThresholds[k], 2), Is.LessThanOrEqualTo(0.5),
                 "There are too large differences in the linear gain threshold " + k.ToString());
             }
-
-        /*    Shared.EnablePlots();
+            /*
+            Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
                     simY1,
                     simY2,
