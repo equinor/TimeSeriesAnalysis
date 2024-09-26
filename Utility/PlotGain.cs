@@ -138,9 +138,13 @@ namespace TimeSeriesAnalysis.Utility
                 }
                 List<XYTable> tables_m1 = new List<XYTable>();
 
-                var uMin = model1.modelParameters.Fitting.Umin;
-                var uMax = model1.modelParameters.Fitting.Umax;
-
+                double[] uMin = null;
+                double[] uMax = null;
+                if (model1.modelParameters.Fitting != null)
+                {
+                    uMin = model1.modelParameters.Fitting.Umin;
+                    uMax = model1.modelParameters.Fitting.Umax;
+                }
                 tables_m1 = CreateXYTablesFromGainSchedModel(model1, model1Name, inputIdx, uMin, uMax);
 
 
@@ -246,8 +250,8 @@ namespace TimeSeriesAnalysis.Utility
                 }
                 else
                     x = model.modelParameters.LinearGainThresholds.ElementAt(thresholdIdx);
-                // xyTableGain.AddRow(new double[] { x,gain.ElementAt(inputIdx) } );
-                xyTableGain.AddRow(new double[] { gain.ElementAt(inputIdx),x });
+                 xyTableGain.AddRow(new double[] { x,gain.ElementAt(inputIdx) } );
+                //xyTableGain.AddRow(new double[] { gain.ElementAt(inputIdx),x });
                 thresholdIdx++;
             }
             

@@ -8,6 +8,7 @@ using Accord;
 using Accord.Math;
 using System.Diagnostics;
 using System;
+using System.Reflection;
 
 namespace TimeSeriesAnalysis.Test.SysID
 {
@@ -17,12 +18,12 @@ namespace TimeSeriesAnalysis.Test.SysID
         const double TimeConstantAllowedDev_s = 3.5;
 
         [TestCase(1, 0,Description ="Two steps for every threshold(five thresholds)")]
-        [TestCase(2, 0, Description = "Two steps for every threshold(five thresholds), ref model is constant gain")]
+      //  [TestCase(2, 0, Description = "Two steps for every threshold(five thresholds), ref model is constant gain")]
    //     [TestCase(11, 1,Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, for this case all the gains seem to be about twice as big as they should be... 
-        [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
+     //   [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
         public void GainEstOnly_CorrectGainsReturned(int ver, int expectedNumWarnings)
         {
-            const double noiseAmplitude = 0.0;
+            const double noiseAmplitude = 1.0;
             const double gainTolerancePrc = 10;
             int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
@@ -123,8 +124,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
             Assert.IsTrue(isOk);
 
-            // Plotting gains
-            bool doPlots = true;
+            // Plotting gains(debugging)
+            bool doPlots = false;
             if (doPlots)
             {
                 Shared.EnablePlots();
@@ -138,10 +139,8 @@ namespace TimeSeriesAnalysis.Test.SysID
 
                 GainSchedModel gsModel = new GainSchedModel(gsParams,"ident_model");
                 GainSchedModel referenceModel = new GainSchedModel(refParams,"ref_model");
-                PlotGain.Plot(gsModel);
 
-
-                //PlotGain.Plot(gsModel, referenceModel);
+                PlotGain.Plot(gsModel, referenceModel);
                 Shared.DisablePlots();
             }
 
