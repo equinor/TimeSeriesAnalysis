@@ -189,10 +189,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 dataSetCopy.IndicesToIgnore = null;
             }
 
-
-
-
-
             // final gain:above the highest threshold
             ret.LinearGains = linearGains;
             ret.Fitting = new FittingInfo();
@@ -202,22 +198,26 @@ namespace TimeSeriesAnalysis.Dynamic
             if(warningNotEnoughExitationBetweenAllThresholds)
                 ret.AddWarning(GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains);
 
-
             // simulate the model and determine the optimal bias term:
             {
                 var gsIdentModel = new GainSchedModel(ret, "ident_model");
                 var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
-               
                 var inputDataIdent = new TimeSeriesDataSet();
                 inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(0));// todo row 0 is not general
                 inputDataIdent.CreateTimestamps(dataSet.GetTimeBase());
                 var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
-
                 var simY_nobias = identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y);
                 var measY = dataSet.Y_meas;
                 var estBias = vec.Mean(vec.Subtract(measY, simY_nobias));
                 if (estBias.HasValue)
+                {
                     ret.Bias = estBias.Value;
+                    dataSet.Y_sim = vec.Add(simY_nobias, ret.Bias);
+                }
+                else
+                {
+                    dataSet.Y_sim = simY_nobias;
+                }
             }
             return ret;
         }

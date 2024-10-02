@@ -113,7 +113,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
             Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
 
-
             // simulate the gains-scheduled model:(TODO: this shoudl be done automatically )
             var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
             var inputDataIdent = new TimeSeriesDataSet();
@@ -131,14 +130,18 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
                 dataSet.Y_meas,
-                identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y),
+                dataSet.Y_sim, //  identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y),
                 dataSet.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_ident", "y3=u1" },
                     timeBase_s,
                     "GainEstOnly_CorrectGainsReturned");
 
                 GainSchedModel gsModel = new GainSchedModel(gsParams,"ident_model");
+                gsModel.SetOutputID("y_meas");
+                gsModel.SetInputIDs((new List<string> { "u_1" }).ToArray());
                 GainSchedModel referenceModel = new GainSchedModel(refParams,"ref_model");
+                referenceModel.SetInputIDs(gsModel.GetModelInputIDs());
+                referenceModel.SetOutputID(gsModel.GetOutputID());
 
                 PlotGain.Plot(gsModel, referenceModel);
                 Shared.DisablePlots();
@@ -148,8 +151,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 DiffLessThan(refParams.LinearGains[i][0], gsParams.LinearGains[i][0], gainTolerancePrc,i);
             }
-
-
         }
 
         private void DiffLessThan(double trueVal, double testVal, double tolerancePrc,int index)
