@@ -206,17 +206,20 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(0));// todo row 0 is not general
                 inputDataIdent.CreateTimestamps(dataSet.GetTimeBase());
                 var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
-                var simY_nobias = identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y);
-                var measY = dataSet.Y_meas;
-                var estBias = vec.Mean(vec.Subtract(measY, simY_nobias));
-                if (estBias.HasValue)
+                if (isOk)
                 {
-                    ret.Bias = estBias.Value;
-                    dataSet.Y_sim = vec.Add(simY_nobias, ret.Bias);
-                }
-                else
-                {
-                    dataSet.Y_sim = simY_nobias;
+                    var simY_nobias = identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y);
+                    var measY = dataSet.Y_meas;
+                    var estBias = vec.Mean(vec.Subtract(measY, simY_nobias));
+                    if (estBias.HasValue)
+                    {
+                        ret.Bias = estBias.Value;
+                        dataSet.Y_sim = vec.Add(simY_nobias, ret.Bias);
+                    }
+                    else
+                    {
+                        dataSet.Y_sim = simY_nobias;
+                    }
                 }
             }
             return ret;

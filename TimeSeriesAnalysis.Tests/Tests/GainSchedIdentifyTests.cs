@@ -113,7 +113,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
             Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
 
-            // simulate the gains-scheduled model:(TODO: this shoudl be done automatically )
+            // simulate the gains-scheduled model:(TODO: this should be done automatically )
             var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
             var inputDataIdent = new TimeSeriesDataSet();
             inputDataIdent.Add(plantSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), input);
