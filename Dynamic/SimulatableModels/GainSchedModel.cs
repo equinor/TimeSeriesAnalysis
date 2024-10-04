@@ -300,7 +300,7 @@ namespace TimeSeriesAnalysis.Dynamic
             //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
             return u0;
         }
-
+        /*
         public double CalculateLinearProcessGainTerm(int inputIndex, double u, double u_GainSched) 
         {
           
@@ -330,10 +330,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 curve += modelParameters.LinearGains.ElementAt(activeGainSchedModelIdx)[inputIndex] * u;
             return curve;
         }
+        */
 
 
-
-        /*
+        
         /// <summary>
         /// Determine the process-gain(linear) contribution to the output of a particular index for a particular value
         /// </summary>
@@ -367,7 +367,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 processGainTerm = modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * u;
             }
             return processGainTerm;
-        }*/
+        }
 
         /// <summary>
         /// Determine the time constant for a particular sceduling input
