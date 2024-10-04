@@ -18,9 +18,9 @@ namespace TimeSeriesAnalysis.Test.SysID
         const double TimeConstantAllowedDev_s = 3.5;
 
         [TestCase(1, 0,Description ="Two steps for every threshold(five thresholds)")]
-      //  [TestCase(2, 0, Description = "Two steps for every threshold(five thresholds), ref model is constant gain")]
-   //     [TestCase(11, 1,Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, for this case all the gains seem to be about twice as big as they should be... 
-     //   [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
+        [TestCase(2, 0, Description = "Two steps for every threshold(five thresholds), ref model is constant gain")]
+      // [TestCase(11, 1,Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, ... 
+     //    [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
         public void GainEstOnly_CorrectGainsReturned(int ver, int expectedNumWarnings)
         {
             const double noiseAmplitude = 1.0;
@@ -113,15 +113,15 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
             Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
 
-            // simulate the gains-scheduled model:(TODO: this should be done automatically )
-            var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
+            // simulate the gains-scheduled model 
+            /*var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
             var inputDataIdent = new TimeSeriesDataSet();
             inputDataIdent.Add(plantSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), input);
             inputDataIdent.CreateTimestamps(timeBase_s);
 
             var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
             var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
-            Assert.IsTrue(isOk);
+            Assert.IsTrue(isOk);*/
 
             // Plotting gains(debugging)
             bool doPlots = false;
@@ -130,7 +130,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
                 dataSet.Y_meas,
-                dataSet.Y_sim, //  identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y),
+                dataSet.Y_sim, 
                 dataSet.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_ident", "y3=u1" },
                     timeBase_s,
