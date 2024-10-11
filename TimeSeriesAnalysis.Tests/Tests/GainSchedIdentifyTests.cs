@@ -14,18 +14,26 @@ namespace TimeSeriesAnalysis.Test.SysID
 {
     public class GainSchedIdentifyTests
     {
-        int timeBase_s = 1;
+        const int timeBase_s = 1;
         const double TimeConstantAllowedDev_s = 3.5;
 
-        [TestCase(1, 0,Description ="Two steps for every threshold(five thresholds)")]
-        [TestCase(2, 0, Description = "Two steps for every threshold(five thresholds), ref model is constant gain")]
-      // [TestCase(11, 1,Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, ... 
-     //    [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
-        public void GainEstOnly_CorrectGainsReturned(int ver, int expectedNumWarnings)
+
+
+        // note that the tolerance seems to be linear with the noise in the data
+        // five varying gains
+        [TestCase(1, 0, 1, 0.0, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 10, 1.0, Description ="Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 20, 2.0, Description = "Two steps for every threshold(five thresholds)")]
+        // five gains that are the same (note that the tolerance can be much lower in this case)
+        [TestCase(2, 0, 1, 0.0, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(2, 0, 5, 1.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
+        [TestCase(2, 0, 10, 2.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
+
+        //  [TestCase(11, 1,30, Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, ... 
+        //    [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
+        public void GainEstOnly_CorrectGainsReturned(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
         {
-            const double noiseAmplitude = 1.0;
-            const double gainTolerancePrc = 10;
-            int N = 100;//Note, that the actual dataset is four times this value.
+            const int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
             // below: 5 gains
             if (ver == 1)
@@ -55,7 +63,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 };
             }
             // below: 10 gains
-            else if (ver == 11)
+         /*   else if (ver == 11)
             {
                 refParams = new GainSchedParameters
                  {
@@ -68,21 +76,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                      Bias = 0,
                      GainSchedParameterIndex = 0
                  };
-            }
-            else if (ver == 12)
-            {
-                refParams = new GainSchedParameters // let all gains be the same
-                {
-                    TimeConstant_s = null,
-                    TimeConstantThresholds = null,
-                    LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 },
-                         new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 }, new double[] { 1 } },
-                    LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
-                    TimeDelay_s = 0,
-                    Bias = 5,
-                    GainSchedParameterIndex = 0
-                };
-            }
+            }*/
+
 
             // TODO: version with timeconstants
 
