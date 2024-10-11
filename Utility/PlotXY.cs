@@ -59,10 +59,10 @@ namespace TimeSeriesAnalysis.Utility
         /// <summary>
         /// Make an xy-plot from a list of XYTable entries
         /// </summary>
-        /// <param name="tables"></param>
-        /// <param name="caseName"></param>
-        /// <param name="comment"></param>
-        /// <param name="doStartChrome"></param>
+        /// <param name="tables">List of XYtables containing the data to be plotted</param>
+        /// <param name="caseName">a unique string that is used to keep the data separate from all other simultanously created plots</param>
+        /// <param name="comment">a string that is added to the top of the plot (often, a user-friendly name of the output)</param>
+        /// <param name="doStartChrome">if true then a chrome window will be opened (by default this is true)</param>
         /// <returns></returns>
         public static string FromTables(List<XYTable> tables, string caseName, string comment = null,
             bool doStartChrome = true)
@@ -83,11 +83,17 @@ namespace TimeSeriesAnalysis.Utility
             {
                 plotURL += "casename:" + caseName;
             }
+            if (comment != null)
+            {
+                if (!plotURL.EndsWith(";"))
+                    plotURL += ";";
+
+                plotURL += "comment:" + comment;
+            }
             if (doStartChrome)
             {
                 Plot.Start(chromePath, command + plotURL, out bool returnVal);
             }
-
             return plotURL;
         }
 

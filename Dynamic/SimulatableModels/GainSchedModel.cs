@@ -28,7 +28,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Remember that with more thresholds defined, the higher the requirement for information content in data will be if the model is to be identified from it. 
     /// </para>
     /// <para>
-    /// This should not be confuesed with "gain-scheduled" PID-control, which is a similar concept but applied to PID-control parameters.
+    /// This should not be confused with "gain-scheduled" PID-control, which is a similar concept but applied to PID-control parameters.
     /// </para>
     /// 
     /// </remarks>
@@ -300,7 +300,40 @@ namespace TimeSeriesAnalysis.Dynamic
             //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
             return u0;
         }
+        /*
+        public double CalculateLinearProcessGainTerm(int inputIndex, double u, double u_GainSched) 
+        {
+          
+            int activeGainSchedModelIdx = 0;
+            for (int idx = 0; idx<modelParameters.LinearGainThresholds.Length; idx++)
+            {
+                if (u_GainSched<modelParameters.LinearGainThresholds[idx])
+                {
+                    activeGainSchedModelIdx = idx;
+                    break;
+                }
+                else if (idx == modelParameters.LinearGainThresholds.Length - 1)
+                {
+                    activeGainSchedModelIdx = idx + 1;
+                }
+            }
 
+            double curve = 0;
+           // curve += modelParameters.LinearGains.ElementAt(i)[inputIndex] * modelParameters.LinearGainThresholds[i];
+            for (int curGainSchedModel = 1; curGainSchedModel < activeGainSchedModelIdx; curGainSchedModel++)
+            {
+                curve += modelParameters.LinearGains.ElementAt(curGainSchedModel)[inputIndex] * modelParameters.LinearGainThresholds[curGainSchedModel-1];
+            }
+            if (activeGainSchedModelIdx>0)
+                curve += modelParameters.LinearGains.ElementAt(activeGainSchedModelIdx)[inputIndex] *(u-modelParameters.LinearGainThresholds.ElementAt(activeGainSchedModelIdx-1));
+            else
+                curve += modelParameters.LinearGains.ElementAt(activeGainSchedModelIdx)[inputIndex] * u;
+            return curve;
+        }
+        */
+
+
+        
         /// <summary>
         /// Determine the process-gain(linear) contribution to the output of a particular index for a particular value
         /// </summary>
@@ -533,39 +566,6 @@ namespace TimeSeriesAnalysis.Dynamic
             else
                 return new double[] { y };
          }
-
-
-
-        /// <summary>
-        /// Sovel quadratic equation "a x^2 + b*x +c =0" (second order of polynomial  equation in a single variable x)
-        /// x = [ -b +/- sqrt(b^2 - 4ac) ] / 2a
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
-        private static double[] SolveQuadratic(double a, double b, double c)
-        {
-            double sqrtpart = b * b - 4 * a * c;
-            double x, x1, x2, img;
-            if (sqrtpart > 0)// two real solutions
-            {
-                x1 = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
-                x2 = (-b - System.Math.Sqrt(sqrtpart)) / (2 * a);
-                return new double[] { x1, x2 };
-            }
-            else if (sqrtpart < 0)// two imaginary solutions
-            {
-                sqrtpart = -sqrtpart;
-                x = -b / (2 * a);
-                img = System.Math.Sqrt(sqrtpart) / (2 * a);
-                return new double[] { x };// in this case, the answer is of course slightly wrong
-            }
-            else// one real solution
-            {
-                x = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
-                return new double[] { x };
-            }
-        }
 
 
         /// <summary>

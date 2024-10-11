@@ -109,7 +109,7 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="model2">optional seond model to be compared in the plots</param>
         /// <param name="uMin">optional umin array over which to plot gain plots</param>
         /// <param name="uMax">optional umax aray  over which to plot gain plots</param>
-        public static void Plot(GainSchedModel model1, GainSchedModel model2 = null)
+        public static void Plot(GainSchedModel model1, GainSchedModel model2 = null, string comment= null)
         {
             // TODO: could also plot the uminfit/umaxfit if applicable
             //double[] uMinFit = model.modelParameters.FittingSpecs.U_min_fit;
@@ -147,7 +147,6 @@ namespace TimeSeriesAnalysis.Utility
                 }
                 tables_m1 = CreateXYTablesFromGainSchedModel(model1, model1Name, inputIdx, uMin, uMax);
 
-
                 /*if (uMin != null && uMax != null)
                 {
                     tables_m1 = CreateXYTablesFromModel(model1, model1Name, inputIdx, uMin, uMax);
@@ -170,7 +169,7 @@ namespace TimeSeriesAnalysis.Utility
 
                 if (model2 == null)
                 {
-                    PlotXY.FromTables(tables_m1, outputId + "_" + inputSignalID + "_gains");
+                    PlotXY.FromTables(tables_m1, outputId + "_" + inputSignalID + "_gains", comment);
                     return;
                 }
                 //////////////////////////////////
@@ -200,7 +199,7 @@ namespace TimeSeriesAnalysis.Utility
                 var plotTables = new List<XYTable>();
                 plotTables.AddRange(tables_m1);
                 plotTables.AddRange(tables_m2);
-                PlotXY.FromTables(plotTables, outputId + "_" + inputSignalID + "_gains");
+                PlotXY.FromTables(plotTables, outputId + "_" + inputSignalID + "_gains", comment);
             }
         }
 
