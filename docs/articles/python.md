@@ -3,18 +3,18 @@
 Loading and using the TimeSeriesAnalysis .NET class library in Python is possible by utilizing the [Python.NET](https://github.com/pythonnet/pythonnet) package. ``pythonnet`` enables calling .NET code in Python, and allows Python code to interact with the .NET Common Language Runtime (CLR).
 
 > [!Note]
-> The current version of Python&#46;NET is supported for Python 2.7 and for versions <= 3.8.
+> Make sure that you use a python version compatible with a recent release of Python&#46;NET.
 
 ### Python setup
 
 In order to set up a working configuration in Windows, follow the steps below:
 
-1. Install a compatible version of [Python](https://www.python.org/downloads/windows/) (>= 3.5, <= 3.8).
-2. In your project directory (e.g. "C:\Appl\myProject"), create a new virtual environment and specify the desired Python version (e.g. 3.8):
+1. Install a compatible version of [Python](https://www.python.org/downloads/windows/).
+2. In your project directory (e.g. "C:\Appl\myProject"), create a new virtual environment and specify the desired Python version (e.g. 3.12):
 
 ```console
 # In project directory "C:\Appl\myProject"
-> python3.8 -m venv venv
+> python3.12 -m venv venv
 ```
 
 3. Activate the virtual environment:

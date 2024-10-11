@@ -20,16 +20,16 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Class that holds comments added to models
+    /// Class that holds comments added to models.
     /// </summary>
     public class Comment
     {
         /// <summary>
-        /// Author of comment
+        /// Author of comment.
         /// </summary>
         public string author;
         /// <summary>
-        /// Date of comment
+        /// Date of comment.
         /// </summary>
         public DateTime date;
         /// <summary>
@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double plantScore;
 
         /// <summary>
-        /// Comment constructor
+        /// Comment constructor.
         /// </summary>
         /// <param name="author"></param>
         /// <param name="date"></param>
@@ -58,19 +58,19 @@ namespace TimeSeriesAnalysis.Dynamic
      }
 
     /// <summary>
-    /// Simulates larger "plant-models" that is built up connected sub-models, 
-    /// that each implement <c>ISimulatableModel</c>
+    /// Simulates larger "plant-models" that is built up of connected sub-models
+    /// that each implement <c>ISimulatableModel</c>.
     /// <para>
     /// To set up a simulation, first connect models, and then add external input signals.
-    /// This class handles information about which model is connected to which, and handles callig sub-models in the
+    /// This class handles information about which model is connected to which, and handles calling sub-models in the
     /// correct order with the correct input signals.
     /// </para>
     /// <para>
-    /// By default, the model attempts to start in steady-state, intalization handled by <c>ProcessSimulatorInitalizer</c>
-    /// (this requires no user interaction)
+    /// By default, the model attempts to start in steady-state, intalization handled by <c>ProcessSimulatorInitializer</c>
+    /// (this requires no user interaction).
     /// </para>
     /// <para>
-    /// The building blocks of plant models are <c>PIDModel</c>, <c>DefaultProcessModel</c> and <c>Select</c>
+    /// The building blocks of plant models are <c>UnitModel</c>, <c>PidModel</c> and <c>Select</c>
     /// </para>
     /// <seealso cref="UnitModel"/>
     /// <seealso cref="PidModel"/>
@@ -80,41 +80,41 @@ namespace TimeSeriesAnalysis.Dynamic
     public class PlantSimulator
     {
         /// <summary>
-        /// User-friendly name that may include white spaces
+        /// User-friendly name that may include white spaces.
         /// </summary>
         public String plantName { get; set; }
 
         /// <summary>
-        /// A short user-friendly description of what the plant is and does
+        /// A short user-friendly description of what the plant is and does.
         /// </summary>
         public String plantDescription { get; set; }
 
         /// <summary>
-        /// A list of comments that user may have added to track changes made over time
+        /// A list of comments that the user may have added to track changes made over time.
         /// </summary>
         public List<Comment> comments;
 
         /// <summary>
-        /// The date of when the model was last saved
+        /// The date of when the model was last saved.
         /// </summary>
         public DateTime date { get; set; }
 
 
         /// <summary>
-        /// Dictionary of all unit models in the plant simulator (must implement ISimlatableModel)
+        /// Dictionary of all unit models in the plant simulator (must implement ISimulatableModel).
         /// </summary>
         public Dictionary<string, ISimulatableModel> modelDict;
         /// <summary>
-        /// List of all external signal IDs
+        /// List of all external signal IDs.
         /// </summary>
         public List<string> externalInputSignalIDs;
         /// <summary>
-        /// The connection parser object
+        /// The connection parser object.
         /// </summary>
         public ConnectionParser connections;
 
         /// <summary>
-        /// Returns a unit data set for a given unitModel.
+        /// Returns a unit data set for a given UnitModel.
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="unitModel"></param>
@@ -139,7 +139,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Returns a "unitDataSet" for the given pidModel in the plant. 
+        /// Returns a "unitDataSet" for the given pidModel in the plant.
         /// This function only works when the unit model connected to the pidModel only has a single input. 
         /// </summary>
         /// <param name="inputData"></param>
@@ -231,13 +231,13 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Add an external signal. Preferred implementation, as signal can have any ID without naming convention.
+        /// Add an external signal. Preferred implementation, as the signal can have any ID without naming convention.
         /// </summary>
         /// <param name="model"></param>
         /// <param name="signalID"></param>
         /// <param name="type"></param>
         /// <param name="index"></param>
-        /// <returns>returns signalID or null if something went wrong</returns>
+        /// <returns>signalID or <c>null</c> if something went wrong</returns>
         public string AddAndConnectExternalSignal(ISimulatableModel model,string signalID, SignalType type, int index = 0)
         {
             ModelType modelType = model.GetProcessModelType();
@@ -292,8 +292,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Informs the PlantSimulator that a specific sub-model has a specifc signal at its input, 
-        /// (use for unit testing only, using a naming convention to name signal)
+        /// Informs the PlantSimulator that a specific sub-model has a specific signal at its input
+        /// (use for unit testing only, using a naming convention to name signal).
         /// </summary>
         /// <param name="model"></param>
         /// <param name="type"></param>
@@ -306,7 +306,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Connect an existing signal with a given signalID to a new model
+        /// Connect an existing signal with a given signalID to a new model.
         /// </summary>
         /// <param name="signalID"></param>
         /// <param name="model"></param>
@@ -319,7 +319,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Add a disturbance model to the output a given <c>model</c>
+        /// Add a disturbance model to the output a given <c>model</c>.
         /// </summary>
         /// <param name="disturbanceModel"></param>
         /// <param name="model"></param>
@@ -331,12 +331,12 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Connect the output of the upstream model to the input of the downstream model
+        /// Connect the output of the upstream model to the input of the downstream model.
         /// </summary>
         /// <param name="upstreamModel">the upstream model, meaning the model whose output will be connected</param>
         /// <param name="downstreamModel">the downstream model, meaning the model whose input will be connected</param>
         /// <param name="inputIndex">input index of the downstream model to connect to (default is first input)</param>
-        /// <returns>returns the signal id if all is ok, otherwise null.</returns>
+        /// <returns>returns the signal id if all is ok, otherwise <c>null</c>.</returns>
         public string ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex=null)
         {
             ModelType upstreamType = upstreamModel.GetProcessModelType();
@@ -391,7 +391,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get a TimeSeriesDataSet of all external signals of model
+        /// Get a TimeSeriesDataSet of all external signals of model.
         /// </summary>
         /// <returns></returns>
         public string[] GetExternalSignalIDs()
@@ -400,7 +400,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get ConnenectionParser object
+        /// Get ConnenectionParser object.
         /// </summary>
         /// <returns></returns>
         public ConnectionParser GetConnections()
@@ -409,7 +409,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get dictionary of all models 
+        /// Get a dictionary of all models.
         /// </summary>
         /// <returns></returns>
         public Dictionary<string,ISimulatableModel> GetModels()
@@ -421,7 +421,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Simulate single model to get the internal "x" unmeasured output that excludes any additive outputs(like disturbances)
+        /// Simulate a single model to get the internal "x" unmeasured output that excludes any additive outputs (like disturbances).
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="singleModelName"></param>
@@ -433,7 +433,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Simualte single model to get the output including any additive inputs
+        /// Simualate a single model to get the output including any additive inputs.
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="singleModelName"></param>
@@ -445,7 +445,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Simulate a single model(any ISimulatable model), using inputData as inputs, 
+        /// Simulate a single model (any ISimulatableModel), using inputData as inputs, 
         ///
         ///  If the model is a unitModel and the inputData inludes both the measured y and measured u, the
         ///  simData will include an estimate of the additive disturbance.
@@ -556,7 +556,7 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
         /// <summary>
-        /// Perform a dynamic simulation of the model provided, given the specified connections and external signals 
+        /// Perform a dynamic simulation of the model provided, given the specified connections and external signals. 
         /// </summary>
         /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
@@ -722,7 +722,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Creates a JSON text string serialization of this object
+        /// Creates a JSON text string serialization of this object.
         /// </summary>
         /// <returns></returns>
         public string SerializeTxt()
@@ -744,9 +744,9 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Creates a file JSON representation of this object
+        /// Creates a JSON file representation of this object.
         /// </summary>
-        /// <param name="newPlantName">the desired file name and plant name(can be null, in which case the filename should be given in the path argument)</param>
+        /// <param name="newPlantName">the desired file name and plant name (can be null, in which case the filename should be given in the path argument)</param>
         /// <param name="path">create file in the given path</param>
         public bool Serialize(string newPlantName = null, string path= null)
         {

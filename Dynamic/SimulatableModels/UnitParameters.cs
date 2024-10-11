@@ -6,23 +6,23 @@ using TimeSeriesAnalysis.Dynamic;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Parameters data class of the <seealso cref="UnitModel"/>
+    /// Parameters data class of the <seealso cref="UnitModel"/>.
     /// </summary>
     public class UnitParameters : ModelParametersBaseClass
     {
 
         /// <summary>
-        /// The minimum allowed output value(if set to NaN, no minimum is applied)
+        /// The minimum allowed output value (if set to NaN, no minimum is applied).
         /// </summary>
         public double Y_min = double.NaN;
 
         /// <summary>
-        /// the maximum allowed output value(if set to NaN, no maximum is applied)
+        /// the maximum allowed output value (if set to NaN, no maximum is applied).
         /// </summary>
         public double Y_max = double.NaN;
 
         /// <summary>
-        /// User-specified inputs to model fitting process such as minima,maxima and working point
+        /// User-specified inputs to model fitting process such as minima, maxima and working point.
         /// </summary>
         public FittingSpecs FittingSpecs = new FittingSpecs();
 
@@ -34,47 +34,47 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// The uncertinty of the time constant estimate
+        /// The uncertainty of the time constant estimate.
         /// </summary>
         public double? TimeConstantUnc_s { get; set; } = null;
 
         /// <summary>
-        /// The time delay in seconds.This number needs to be a multiple of the sampling rate.
+        /// The time delay in seconds. This number needs to be a multiple of the sampling rate.
         /// Set to zero to turn of time delay in model.
         /// </summary>
         public double TimeDelay_s { get; set; } = 0;
         /// <summary>
-        /// An array of gains that determine how much in the steady state each input change affects the output(multiplied with (u-u0))
+        /// An array of gains that determine how much in the steady state each input change affects the output (multiplied with (u-u0)).
         /// </summary>
         public double[] LinearGains { get; set; } = null;
 
         /// <summary>
-        /// An array of 95%  uncertatinty in the linear gains  (u-u0))
+        /// An array of 95% uncertatinty in the linear gains (u-u0).
         /// </summary>
         public double[] LinearGainUnc { get; set; } = null;
 
 
         /// <summary>
-        /// The nonlinear curvature of the process gain, this paramter is multiplied + Curvatures*((u-u0)/Unorm)^2.
-        /// If value is <c>null</c>c> then no curvatures are added to the model
+        /// The nonlinear curvature of the process gain, this parameter is multiplied + Curvatures*((u-u0)/Unorm)^2.
+        /// If value is <c>null</c>c> then no curvatures are added to the model.
         /// </summary>
         public double[] Curvatures { get; set; } = null;
 
         /// <summary>
-        /// The unceratainties of the curvature term of the process gains 
+        /// The unceratainties of the curvature term of the process gains.
         /// </summary>
         public double[] CurvatureUnc { get; set; } = null;
 
 
         /// <summary>
         /// The working point of the model, the value of each U around which the model is localized.
-        /// If value is <c>null</c>c> then no U0 is used in the model
+        /// If value is <c>null</c>c> then no U0 is used in the model.
         /// </summary>
         public double[] U0 { get; set; } = null;
 
         /// <summary>
         /// A "normal range" of U that is used in the nonlinear curvature term ((u-u0)/Unorm)^2.
-        /// If value is <c>null</c>c> then no Unorm is used in the model
+        /// If value is <c>null</c>c> then no UNorm is used in the model.
         /// </summary>
         public double[] UNorm { get; set; } = null;
 
@@ -84,7 +84,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public  double Bias { get; set; } = 0;
 
         /// <summary>
-        /// The 95% uncertainty of the bias
+        /// The 95% uncertainty of the bias.
         /// </summary>
         public double? BiasUnc { get; set; } = null;
 
@@ -93,7 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
         internal List<ProcessTimeDelayIdentWarnings> TimeDelayEstimationWarnings;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public UnitParameters()
         {
@@ -115,7 +115,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Creates a deep-copy of the object
+        /// Creates a deep-copy of the object.
         /// </summary>
         /// <returns></returns>
         public UnitParameters CreateCopy()
@@ -153,7 +153,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Return the "total combined" process gain for a given index at u=u0, a combination of lineargain and curvature gain
+        /// Return the "total combined" process gain for a given index at u=u0, a combination of linear gain and curvature gain.
         /// <para>
         /// Note that for nonlinear processes, the process gain is given by a combination of 
         /// the linear and curvature terms of the model : dy/du(u=u0)
@@ -198,7 +198,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Return the process gain uncertatinty for a given input index at u=u0
+        /// Return the process gain uncertatinty for a given input index at u=u0.
         /// <para>
         /// Note that for nonlinear processes, the process gain is given by a combination of 
         /// the linear and curvature terms of the model : dy/du(u=u0)
@@ -234,9 +234,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Get all process gains (including both linear and any nonlinear terms)
+        /// Get all process gains (including both linear and any nonlinear terms).
         /// </summary>
-        /// <returns>may return null if no process gains given</returns>
+        /// <returns>may return null if no process gains given.</returns>
         public double[] GetProcessGains()
         {
             var list = new List<double>();
@@ -256,7 +256,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get all the process gain uncertainties
+        /// Get all the process gain uncertainties.
         /// </summary>
         /// <returns></returns>
         public double[] GetProcessGainUncertainties()
@@ -271,7 +271,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Adds a identifiation warning to the object
+        /// Adds an identification warning to the object.
         /// </summary>
         /// <param name="warning"></param>
         public void AddWarning(UnitdentWarnings warning)
@@ -281,7 +281,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the list of all warnings given during identification of the model
+        /// Get the list of all warnings given during identification of the model.
         /// </summary>
         /// <returns></returns>
         public List<UnitdentWarnings> GetWarningList()
