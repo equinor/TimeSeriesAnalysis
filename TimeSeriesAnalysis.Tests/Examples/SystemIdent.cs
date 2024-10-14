@@ -68,6 +68,7 @@ namespace TimeSeriesAnalysis._Examples
             var refSim  = new UnitSimulator(refModel);
             var refData = new UnitDataSet();
             refData.U = U;
+            refData.CreateTimeStamps(timeBase_s);
             refSim.Simulate(ref refData);
 
             // simulate the nonlinear model 
@@ -88,7 +89,7 @@ namespace TimeSeriesAnalysis._Examples
             idDataSet.CreateTimeStamps(timeBase_s);
             sim.SimulateYmeas(ref idDataSet, noiseAmplitude);
 
-            // do identification
+            // do identification of unit model
             FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);
             UnitModel idModel = UnitIdentifier.Identify(ref idDataSet, fittingSpecs);
 

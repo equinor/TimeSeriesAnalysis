@@ -244,16 +244,19 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(Math.Abs(simY1[N/3-2] - step1Out) < 0.2, "first step should have a gain of " + step1Out.ToString()+" was:"+ simY1[N / 3 - 2].ToString());
             Assert.IsTrue(Math.Abs(simY1.Last() - step3Out) < 0.01, "value after third step should be " + step3Out.ToString() + " was:" + simY1.Last().ToString());
 
-            //Shared.EnablePlots();
-            //Plot.FromList(new List<double[]> {
-            //    simY1,
-            //    inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
-            //    inputData.GetValues(gainSched.GetID(),SignalType.External_U,1),
-            //    inputData.GetValues(gainSched.GetID(),SignalType.External_U,2)},
-            //    new List<string> { "y1=y_sim" + ver.ToString(), "y3=u1", "y3=u2", "y3=u3"},
-            //    timeBase_s, "GainSched_Multiple");
-            //Shared.DisablePlots();
-
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                    simY1,
+                    inputData.GetValues(gainSched.GetID(),SignalType.External_U,0),
+                    inputData.GetValues(gainSched.GetID(),SignalType.External_U,1),
+                    inputData.GetValues(gainSched.GetID(),SignalType.External_U,2)},
+                    new List<string> { "y1=y_sim" + ver.ToString(), "y3=u1", "y3=u2", "y3=u3"},
+                    timeBase_s, "GainSched_Multiple");
+                Shared.DisablePlots();
+            }
         }
 
 

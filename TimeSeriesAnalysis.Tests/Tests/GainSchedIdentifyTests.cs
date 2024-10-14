@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         //  [TestCase(11, 1,30, Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, ... 
         //    [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
-        public void GainEstOnly_CorrectGainsReturned(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
+        public void GainEst_LinearOrCurvedTrueModel_CorrectGainsReturned(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
         {
             const int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
@@ -45,7 +45,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     LinearGains = new List<double[]> { new double[] { 0.5 }, new double[] { 1 }, new double[] { 3 }, new double[] { 4.5 }, new double[] { 6 }, new double[] { 9 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    Bias = 0,
+                    Bias = 4,
                     GainSchedParameterIndex = 0
                 };
             }
@@ -62,25 +62,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                     GainSchedParameterIndex = 0
                 };
             }
-            // below: 10 gains
-         /*   else if (ver == 11)
-            {
-                refParams = new GainSchedParameters
-                 {
-                     TimeConstant_s = null,
-                     TimeConstantThresholds = null,
-                     LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 2 }, new double[] { 2.0 }, new double[] { 2.0 }, new double[] { 3 }, new double[] { 3.5 },
-                         new double[] { 4 }, new double[] { 4.5 }, new double[] { 5.0 }, new double[] { 5.5 }, new double[] { 6 } },
-                     LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
-                     TimeDelay_s = 0,
-                     Bias = 0,
-                     GainSchedParameterIndex = 0
-                 };
-            }*/
-
-
-            // TODO: version with timeconstants
-
             var refModel = new GainSchedModel(refParams,"ref_model");
             var gsFittingSpecs= new GainSchedFittingSpecs();
             gsFittingSpecs.uGainThresholds = refModel.GetModelParameters().LinearGainThresholds;
@@ -108,16 +89,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
             Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
 
-            // simulate the gains-scheduled model 
-            /*var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
-            var inputDataIdent = new TimeSeriesDataSet();
-            inputDataIdent.Add(plantSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), input);
-            inputDataIdent.CreateTimestamps(timeBase_s);
-
-            var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
-            var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
-            Assert.IsTrue(isOk);*/
-
             // Plotting gains(debugging)
             bool doPlots = false;
             if (doPlots)
@@ -141,7 +112,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 PlotGain.Plot(gsModel, referenceModel);
                 Shared.DisablePlots();
             }
-
+            // asserts
             for (int i = 0; i < refParams.LinearGains.Count; i++)
             {
                 DiffLessThan(refParams.LinearGains[i][0], gsParams.LinearGains[i][0], gainTolerancePrc,i);
@@ -440,15 +411,19 @@ namespace TimeSeriesAnalysis.Test.SysID
                     "Linear gain threshold above upper bound (umax) " + ver.ToString());
             }
 
-          /*  Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
                     simY1,
                     simY2,
                     unitData.U.GetColumn(0) },
-                new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
-                timeBase_s,
-                "GainSched - Threshold within bounds - " + ver.ToString());
-            Shared.DisablePlots();*/
+                    new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
+                    timeBase_s,
+                    "GainSched - Threshold within bounds - " + ver.ToString());
+                Shared.DisablePlots();
+            }
         }
 /*
         [TestCase(1, -0.5)]
