@@ -8,6 +8,10 @@ using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.Utility
 {
+    /// <summary>
+    /// Make debug plots of the gain of one or more model, especially useful for gain-scheduled or other
+    /// nonlinear models.
+    /// </summary>
     public class PlotGain
     {
         const int numberOfPlotPoints = 30;
@@ -107,8 +111,8 @@ namespace TimeSeriesAnalysis.Utility
         /// </summary>
         /// <param name="model1">model of gains to be plotted</param>
         /// <param name="model2">optional seond model to be compared in the plots</param>
-        /// <param name="uMin">optional umin array over which to plot gain plots</param>
-        /// <param name="uMax">optional umax aray  over which to plot gain plots</param>
+        /// <param name="comment">comment to be added to figure</param>
+
         public static void Plot(GainSchedModel model1, GainSchedModel model2 = null, string comment= null)
         {
             // TODO: could also plot the uminfit/umaxfit if applicable
