@@ -116,7 +116,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         }
 
-        [Test]//,Ignore("work in progress")
+        [Test]
 
         public void TenThresholds_DifferentGainsAboveEachThreshold()
         {
@@ -147,15 +147,61 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Assert.AreEqual( gainSchedP4_nineThresholds_singleInput.LinearGains[stepIdx].First(), observedGain , "step idx:"+stepIdx);
             }
 
-           /* Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
-                simY1,
-                inputData.GetValues(refModel.GetID(),SignalType.External_U,0),
-                },
-                new List<string> { "y1=y_sim", "y3=u1" },
-                timeBase_s, TestContext.CurrentContext.Test.Name);
-            Shared.DisablePlots();*/
+            bool doPlot = false;
+            if (doPlot)
+            {
+                 Shared.EnablePlots();
+                 Plot.FromList(new List<double[]> {
+                     simY1,
+                     inputData.GetValues(refModel.GetID(),SignalType.External_U,0),
+                     },
+                     new List<string> { "y1=y_sim", "y3=u1" },
+                     timeBase_s, TestContext.CurrentContext.Test.Name);
+                 Shared.DisablePlots();
+            }
         }
+
+        [Test]
+
+        public void ContinousGradualRampUp_ModelOutputShouldIncreaseGradually()
+        {
+            //    var tolerance = 0.2;
+            // Arrange
+            GainSchedModel refModel = gainSched4_tenThresholds_singleInput;
+            int N = 100;
+            var plantSim = new PlantSimulator(new List<ISimulatableModel> { refModel });
+            var inputData = new TimeSeriesDataSet();
+            var input = TimeSeriesCreator.Ramp(N, 1, 11, 0, 10); // model is defined from 1.5 to 10.5
+            inputData.Add(plantSim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), input);
+            inputData.CreateTimestamps(timeBase_s);
+
+            // Act
+            var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            double[] simY1 = simData.GetValues(refModel.GetID(), SignalType.Output_Y);
+
+            bool doPlot = true;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                     simY1,
+                     inputData.GetValues(refModel.GetID(),SignalType.External_U,0),
+                     },
+                    new List<string> { "y1=y_sim", "y3=u1" },
+                    timeBase_s, TestContext.CurrentContext.Test.Name);
+                Shared.DisablePlots();
+            }
+
+            // assert that step increase is gradual, even at the boundaries between different 
+            double maxIncrease = (11 * 10) / N;
+            for (int stepIdx = 1; stepIdx < N; stepIdx++)
+            {
+                double observedIncrease = simY1[stepIdx] - simY1[stepIdx - 1];
+                Assert.IsTrue(observedIncrease < maxIncrease, "step idx:" + stepIdx);
+            }
+        }
+
 
 
         [TestCase(1, 5, 30)]
@@ -254,7 +300,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                     inputData.GetValues(gainSched.GetID(),SignalType.External_U,1),
                     inputData.GetValues(gainSched.GetID(),SignalType.External_U,2)},
                     new List<string> { "y1=y_sim" + ver.ToString(), "y3=u1", "y3=u2", "y3=u3"},
-                    timeBase_s, "GainSched_Multiple");
+                    timeBase_s, "SingleThreshold_ThreeInputs");
                 Shared.DisablePlots();
             }
         }

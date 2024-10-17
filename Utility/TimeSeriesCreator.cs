@@ -64,6 +64,49 @@ namespace TimeSeriesAnalysis.Utility
         }
 
         /// <summary>
+        /// Create a ramp that starts at startVal and ends at endVal over N
+        /// </summary>
+        /// <param name="nRamp">the length in samples of the ramp(first value is startVal and lastVal is endVal)</param>
+        /// <param name="startVal"></param>
+        /// <param name="endVal"></param>
+        /// <param name="nPadBegin">the number of samples to pad the signal at the beginning with startVal</param>
+        /// <param name="nPadEnd">the number of samples to pad the signal at the end with endVal</param>
+        /// <returns></returns>
+        static public double[] Ramp(int nRamp, double startVal, double endVal, int nPadBegin=0, int nPadEnd=0)
+        {
+            List<double> list = new List<double>();
+
+            if (nPadBegin > 0)
+            {
+                for (int i = 0; i < nPadBegin; i++)
+                    list.Add(startVal);
+            }
+
+            if (nRamp > 1)
+            {
+                double perSampleChange = (endVal - startVal) / (nRamp-1);
+                double val = startVal;
+                for (int i = 0; i < nRamp; i++)
+                {
+                    list.Add(val);
+                    val += perSampleChange;
+                }
+            }
+
+            if (nPadEnd > 0)
+            {
+                for (int i = 0; i < nPadEnd; i++)
+                    list.Add(endVal);
+            }
+
+            return list.ToArray();
+        }
+
+
+
+
+
+        /// <summary>
         /// Create a white-noise random time-series
         /// </summary>
         /// <param name="N"></param>
