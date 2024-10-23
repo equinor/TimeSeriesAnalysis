@@ -199,7 +199,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 ret.AddWarning(GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains);
 
             // simulate the model and determine the optimal bias term:
-            {
+           /* {
                 var gsIdentModel = new GainSchedModel(ret, "ident_model");
                 var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
                 var inputDataIdent = new TimeSeriesDataSet();
@@ -221,9 +221,24 @@ namespace TimeSeriesAnalysis.Dynamic
                         dataSet.Y_sim = simY_nobias;
                     }
                 }
-            }
+            }*/
             return ret;
         }
+
+        /// <summary>
+        /// Updates the gain-scheduled model so that for inptu value u0, it output passes through y0. 
+        /// </summary>
+        /// <param name="gsModel"></param>
+        /// <param name="u0"></param>
+        /// <param name="y0"></param>
+        public static void SetModelOperatingPoint(ref GainSchedParameters gsModel, double u0, double y0)
+        { 
+            
+        
+        
+        }
+
+
 
 
         private static List<GainSchedParameters> IdentifyGainScheduledGainsAndThresholds(UnitDataSet dataSet, 

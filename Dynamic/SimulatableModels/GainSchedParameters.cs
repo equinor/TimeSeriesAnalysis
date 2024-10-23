@@ -66,30 +66,24 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// An array of 95%  uncertatinty in the linear gains  (u-u0))
         /// </summary>
-        public double[] LinearGainUnc { get; set; } = null;
+        public List<double[]> LinearGainUnc { get; set; } = null;
 
         /// <summary>
         /// The working point of the model, the value of each U around which the model is localized.
         /// If value is <c>null</c>c> then no U0 is used in the model
         /// </summary>
-        public double[] U0 { get; set; } = null;
+   //     public double[] U0 { get; set; } = null; // TODO: consider removing for gain-scheduled model...
+
 
         /// <summary>
-        /// A "normal range" of U that is used in the nonlinear curvature term ((u-u0)/Unorm)^2.
-        /// If value is <c>null</c>c> then no Unorm is used in the model
+        /// Note that for gain-scheduled models this is a private paramter that is calcualted 
         /// </summary>
-        public double[] UNorm { get; set; } = null;
+        private double Bias = 0;
 
         /// <summary>
-        /// The constant bias that is added so that models and dataset match on average, this value will depend on U0 and other parameters.
+        /// The "operating point" specifies the value y that the model should have for the gain scheduled input u. 
         /// </summary>
-        public  double Bias { get; set; } = 0;
-
-        /// <summary>
-        /// The 95% uncertainty of the bias
-        /// </summary>
-        public double? BiasUnc { get; set; } = null;
-
+        public double OperatingPoint_U=0, OperatingPoint_Y=0;
 
         private List<GainSchedIdentWarnings> errorsAndWarningMessages;
 
@@ -102,6 +96,19 @@ namespace TimeSeriesAnalysis.Dynamic
             errorsAndWarningMessages = new List<GainSchedIdentWarnings>();
         }
 
+        /// <summary>
+        /// Returns the bias calculated from OperatingPoint_U, OperatingPoint_Y;
+        /// </summary>
+        /// <returns></returns>
+        public double GetBias()
+        {
+            if (OperatingPoint_U == 0)
+                return OperatingPoint_Y;
+            else
+            {
+                return 0;//todo
+            }
+        }
 
         /// <summary>
         /// Get the number of inputs U to the model.
@@ -115,50 +122,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 0;
         }
 
-        /// <summary>
-        /// Return the "total combined" process gain for a given index at u=u0, a combination of lineargain and curvature gain
-        /// <para>
-        /// Note that for nonlinear processes, the process gain is given by a combination of 
-        /// the linear and curvature terms of the model : dy/du(u=u0)
-        /// </para>
-        /// </summary>
-        /// <param name="inputIdx"></param>
-        /// <returns></returns>
-        public double GetTotalCombinedProcessGain(int inputIdx)
-        {
-            /* if (LinearGains == null)
-             {
-                 return double.NaN;
-             }
-             if (inputIdx > LinearGains.Length-1)
-             {
-                 return double.NaN;
-             }
-             return LinearGains[inputIdx];*/
-            return 0;
-        }
-
-        /// <summary>
-        /// Return the process gain uncertatinty for a given input index at u=u0
-        /// <para>
-        /// Note that for nonlinear processes, the process gain is given by a combination of 
-        /// the linear and curvature terms of the model : dy/du(u=u0)
-        /// </para>
-        /// </summary>
-        /// <param name="inputIdx"></param>
-        /// <returns></returns>
-        public double GetTotalCombinedProcessGainUncertainty(int inputIdx)
-        {
-            /*  if (LinearGainUnc == null)
-                  return double.NaN;
-
-              if (inputIdx > LinearGainUnc.Length - 1)
-              {
-                  return double.NaN;
-              }
-              return LinearGainUnc[inputIdx];*/
-            return 0;
-        }
 
         /// <summary>
         /// Adds a identifiation warning to the object

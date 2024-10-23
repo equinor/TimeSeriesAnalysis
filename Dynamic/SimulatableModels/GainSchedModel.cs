@@ -76,7 +76,7 @@ namespace TimeSeriesAnalysis.Dynamic
             InitSim(modelParameters);
         }
         /// <summary>
-        /// Answers if model is simulatable, i.e. has given inputs that are sensible.
+        /// Answers if model is simulatable, i.e. has given inputs that are sensible and sufficent. 
         /// </summary>
         /// <param name="explainStr"></param>
         /// <returns></returns>
@@ -247,7 +247,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// This method has no concept of disturbances, so a nonzero disturbane at time zero may throw it off.
         /// </para>
         /// <param name="x0">If no additive inputs y=x, otherwise subtract additive inputs from y to get x</param>
-        /// <param name="inputIdx"></param>
+        /// <param name="inputIdx">the index of the input</param>
         /// <param name="givenInputs"></param>
         /// <returns></returns>
         public double? GetSteadyStateInput(double x0, int inputIdx=0, double[] givenInputs=null)
@@ -271,7 +271,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return u0;
                 }
                 else*/
-            double x_otherInputs = modelParameters.Bias;
+            double x_otherInputs = modelParameters.GetBias();
             double gainSched = givenInputs[modelParameters.GainSchedParameterIndex]; 
             //nb! input may include a disturbance!
             if (givenInputs != null)
@@ -292,10 +292,10 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             double y_contributionFromInput = x0 - x_otherInputs;
             u0 = 0;
-            if (modelParameters.U0 != null)
+           /* if (modelParameters.U0 != null)
             {
                 u0 += modelParameters.U0[inputIdx]; 
-            }
+            }*/
             //TODO
             //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
             return u0;
@@ -336,6 +336,7 @@ namespace TimeSeriesAnalysis.Dynamic
         
         /// <summary>
         /// Determine the process-gain(linear) contribution to the output of a particular index for a particular value
+        /// "Process gain term" refers to the actual gain times(x) the value of the input (G x u) 
         /// </summary>
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
@@ -344,29 +345,100 @@ namespace TimeSeriesAnalysis.Dynamic
         private double CalculateLinearProcessGainTerm(int inputIndex, double u, double u_GainSched)
         {
             double processGainTerm = 0;
-            int gainSchedModelIdx = 0;
+            processGainTerm = modelParameters.OperatingPoint_Y;
+            processGainTerm += IntegrateGains(modelParameters.OperatingPoint_U, u, inputIndex);
+
+            // processGainTerm = modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * u;
+            return processGainTerm;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uGainSched_Start"></param>
+        /// <param name="uGainSched_End"></param>
+        /// <param name="inputIndex"></param>
+        /// <returns></returns>
+        private double IntegrateGains(double uGainSched_Start, double uGainSched_End, int inputIndex)
+        {
+            if (uGainSched_Start == uGainSched_End)
+                return 0;
+            double gainsToReturn = 0;
+            int gainSchedStartModelIdx = 0;
             for (int idx = 0; idx < modelParameters.LinearGainThresholds.Length; idx++)
             {
-                if (u_GainSched < modelParameters.LinearGainThresholds[idx])
+                if (uGainSched_Start < modelParameters.LinearGainThresholds[idx])
                 {
-                    gainSchedModelIdx = idx;
+                    gainSchedStartModelIdx = idx;
                     break;
                 }
                 else if (idx == modelParameters.LinearGainThresholds.Length - 1)
                 {
-                    gainSchedModelIdx = idx + 1;
+                    gainSchedStartModelIdx = idx + 1;
                 }
             }
- 
-            if (modelParameters.U0 != null) // For curvature only
+            int gainSchedEndModelIdx = 0;
+            for (int idx = 0; idx < modelParameters.LinearGainThresholds.Length; idx++)
             {
-                processGainTerm = modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * (u- modelParameters.U0[inputIndex]);
+                if (uGainSched_End < modelParameters.LinearGainThresholds[idx])
+                {
+                    gainSchedEndModelIdx = idx;
+                    break;
+                }
+                else if (idx == modelParameters.LinearGainThresholds.Length - 1)
+                {
+                    gainSchedEndModelIdx = idx + 1;
+                }
+            }
+
+            // integrate
+            if (uGainSched_Start < uGainSched_End)
+            {
+                if (gainSchedStartModelIdx == gainSchedEndModelIdx)
+                {
+                    double deltaU = uGainSched_End  - uGainSched_Start;
+                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                }
+                else
+                {
+                    // first portion (might be from a u between two tresholds to a threshold)
+                    double deltaU = (modelParameters.LinearGainThresholds[gainSchedStartModelIdx] - uGainSched_Start);
+                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    // middle entire portions 
+                    for (int curGainSchedModIdx = gainSchedStartModelIdx + 1; curGainSchedModIdx < gainSchedEndModelIdx; curGainSchedModIdx++)
+                    {
+                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx] - modelParameters.LinearGainThresholds[curGainSchedModIdx - 1]);
+                        gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
+                    }
+                    // last portions (might be a treshold to inbetween two tresholds)
+                    deltaU = uGainSched_End - modelParameters.LinearGainThresholds[gainSchedEndModelIdx-1];
+                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
+                }
             }
             else
             {
-                processGainTerm = modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * u;
+                if (gainSchedStartModelIdx == gainSchedEndModelIdx)
+                {
+                    double deltaU = uGainSched_End - uGainSched_Start;
+                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(inputIndex)[gainSchedStartModelIdx];
+                }
+                else
+                {
+                    // first portion (might be from a u between two tresholds to a threshold)
+                    double deltaU = (modelParameters.LinearGainThresholds[gainSchedStartModelIdx] - uGainSched_Start);
+                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    // middle entire portions 
+                    for (int curGainSchedModIdx = gainSchedStartModelIdx + 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
+                    {
+                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx] - modelParameters.LinearGainThresholds[curGainSchedModIdx - 1]);
+                        gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
+                    }
+                    // last portions (might be a treshold to inbetween two tresholds)
+                    deltaU = uGainSched_End - modelParameters.LinearGainThresholds[gainSchedEndModelIdx];
+                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
+                }
             }
-            return processGainTerm;
+            return gainsToReturn;
         }
 
         /// <summary>
@@ -419,7 +491,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         private double CalculateStaticStateWithoutAdditive(double[] inputs, double badValueIndicator=-9999)
         {
-            double x_static = modelParameters.Bias;
+            double x_static = modelParameters.GetBias();
 
             // inputs U may include a disturbance as the last entry
             double gainSched = inputs[modelParameters.GainSchedParameterIndex]; 

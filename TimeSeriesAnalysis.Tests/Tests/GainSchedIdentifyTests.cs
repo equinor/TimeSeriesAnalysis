@@ -45,7 +45,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                     LinearGains = new List<double[]> { new double[] { 0.5 }, new double[] { 1 }, new double[] { 3 }, new double[] { 4.5 }, new double[] { 6 }, new double[] { 9 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    Bias = 4,
+                    OperatingPoint_U = 5,
+                    OperatingPoint_Y = 4,
                     GainSchedParameterIndex = 0
                 };
             }
@@ -58,7 +59,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                     LinearGains = new List<double[]> { new double[] { 2 }, new double[] { 2 }, new double[] { 2}, new double[] { 2 }, new double[] { 2 }, new double[] { 2 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    Bias = 5,
+                    OperatingPoint_U = 5,
+                    OperatingPoint_Y = 4,
                     GainSchedParameterIndex = 0
                 };
             }
@@ -155,7 +157,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 6 } },
                 LinearGainThresholds = new double[] { 3.1 },
                 TimeDelay_s = 0,
-                Bias = 0
             };
             GainSchedModel correct_model = new GainSchedModel(correct_gain_sched_parameters, "Correct gain sched model");
             var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { correct_model });
@@ -234,7 +235,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
                 LinearGainThresholds = new double[] { gain_sched_threshold },
                 TimeDelay_s = 0,
-                Bias = 0
             };
             GainSchedModel correct_model = new GainSchedModel(correct_gain_sched_parameters, "Correct gain sched model");
             var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { correct_model });
@@ -303,7 +303,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
                 LinearGainThresholds = new double[] { 1.1 },
                 TimeDelay_s = 0,
-                Bias = 0
             };
             GainSchedModel correct_model = new GainSchedModel(correct_gain_sched_parameters, "Correct gain sched model");
             var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { correct_model });
@@ -377,7 +376,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGains = new List<double[]> { new double[] { 1 }, new double[] { 3 } },
                 LinearGainThresholds = new double[] { gain_sched_threshold },
                 TimeDelay_s = 0,
-                Bias = 0
             };
             GainSchedModel correct_model = new GainSchedModel(correct_gain_sched_parameters, "Correct gain sched model");
             var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { correct_model });
