@@ -28,10 +28,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(2, 0, 1, 0.0, Description = "Two steps for every threshold(five thresholds)")]
         [TestCase(2, 0, 5, 1.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
         [TestCase(2, 0, 10, 2.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
-
-        //  [TestCase(11, 1,30, Description = "One steps between every threshold(ten thresholds, harder)")] // does not pass, ... 
-        //    [TestCase(12, 1,Description = "One steps between every threshold(ten thresholds, harder), ref model is constant gain")]
-        public void GainEst_LinearOrCurvedTrueModel_CorrectGainsReturned(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
+        public void GainEst_FiveGains_CorrectGainsReturned(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
         {
             const int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
@@ -87,7 +84,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.Y_meas = simData.GetValues(refModel.ID, SignalType.Output_Y);
             dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { inputData.GetValues(refModel.ID,SignalType.External_U)});
             dataSet.Times = inputData.GetTimeStamps();
-            var gsParams = GainSchedIdentifier.IdentifyGainsForGivenThresholds(dataSet, gsFittingSpecs);
+            var gsParams = GainSchedIdentifier.IdentifyForGivenThresholds(dataSet, gsFittingSpecs);
             Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
             Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
 
@@ -142,14 +139,14 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // Arrange
             var unitData = new UnitDataSet("test"); /* Create an instance of TimeSeries with test data */
-            double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3);
-            double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
-            double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
+            double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, 0, 1, 2, 3);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(3 * N / 5, 2 * N / 3, 4 * N / 5, N, 0, 1, 2, 3);
+            double[] u = u1.Zip(u2, (x, y) => x + y).ToArray();
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
             unitData.U = U;
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
- 
+
             var correct_gain_sched_parameters = new GainSchedParameters
             {
                 TimeConstant_s = new double[] { 10 },
@@ -174,7 +171,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double largest_gain_amplitude = 0;
             for (int k = 0; k < best_params.LinearGains.Count; k++)
             {
-                current_abs_value = Math.Sqrt(best_params.LinearGains[k][0] *best_params.LinearGains[k][0]);
+                current_abs_value = Math.Sqrt(best_params.LinearGains[k][0] * best_params.LinearGains[k][0]);
                 if (current_abs_value > largest_gain_amplitude)
                 {
                     largest_gain_amplitude = current_abs_value;
@@ -191,15 +188,19 @@ namespace TimeSeriesAnalysis.Test.SysID
                 }
             }
 
-        /*    Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
-                simY1,
-                unitData.U.GetColumn(0) },
-                new List<string> { "y1=correct_model", "y3=u1" },
-                timeBase_s,
-                "GainSched - Max Threshold");
-            Shared.DisablePlots();*/
 
+            bool doPlot = true;
+            if (doPlot)
+            { 
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                    simY1,
+                    unitData.U.GetColumn(0) },
+                    new List<string> { "y1=correct_model", "y3=u1" },
+                    timeBase_s,
+                    "GainSched - Max Threshold");
+                Shared.DisablePlots();
+            }
             // Assert
             Assert.That(largest_gain_amplitude, Is.LessThanOrEqualTo(largest_correct_gain_amplitude),
                 "The largest gain in the best fitting model cannot exceed the largest gain amplitude of the correct model");
@@ -275,16 +276,16 @@ namespace TimeSeriesAnalysis.Test.SysID
             Shared.DisablePlots();*/
         }
 
-        [TestCase(3, 10)]
-    /*    [TestCase(3, 15)]
-        [TestCase(15, 10)]
-        [TestCase(20, 30)]
-        [TestCase(1, 35)]
-        [TestCase(38, 40)]
-        [TestCase(40, 20)]*/
-        public void GainAndThreshold_TwoGains_TimeConstantsAndThresholdFoundOk(double TimeConstant1_s, double TimeConstant2_s)
+        [TestCase(3, 10, 0, Description= "identify gain and time constants, zero bias, thresholds are GIVEN")]
+        [TestCase(3, 10, 1, Description = "same as ver1, except non-zero bias")]
+        [TestCase(3, 10, 2, Description = "identify gain and time constants AND THRESHOLDS, zero bias, ")]
+        [TestCase(3, 10, 3, Description = "same as ver2, except non-zero bias")]
+
+        public void TimeConstant_TwoGains_TCAndThresholdFoundOk(double TimeConstant1_s, 
+            double TimeConstant2_s, int ver)
         {
             int N = 300;
+            var threshold_tol = 0.11;
 
             // Arrange
             var unitData = new UnitDataSet("test"); 
@@ -296,7 +297,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
 
-            GainSchedParameters correct_gain_sched_parameters = new GainSchedParameters
+            GainSchedParameters trueGainSchedParameters = new GainSchedParameters
             {
                 TimeConstant_s = new double[] { TimeConstant1_s, TimeConstant2_s },
                 TimeConstantThresholds = new double[] { 1.1 },
@@ -304,48 +305,71 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGainThresholds = new double[] { 1.1 },
                 TimeDelay_s = 0,
             };
-            GainSchedModel correct_model = new GainSchedModel(correct_gain_sched_parameters, "Correct gain sched model");
-            var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { correct_model });
+
+            if (ver == 1 || ver == 3)
+            {
+                trueGainSchedParameters.OperatingPoint_Y = 1;
+            }
+
+            GainSchedModel true_model = new GainSchedModel(trueGainSchedParameters, "Correct gain sched model");
+            var truePlantSim = new PlantSimulator(new List<ISimulatableModel> { true_model });
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(correct_plantSim.AddExternalSignal(correct_model, SignalType.External_U, (int)INDEX.FIRST), u);
+            inputData.Add(truePlantSim.AddExternalSignal(true_model, SignalType.External_U, (int)INDEX.FIRST), u);
             inputData.CreateTimestamps(timeBase_s);
-            var CorrectisSimulatable = correct_plantSim.Simulate(inputData, out TimeSeriesDataSet CorrectsimData);
-            SISOTests.CommonAsserts(inputData, CorrectsimData, correct_plantSim);
-            double[] simY1 = CorrectsimData.GetValues(correct_model.GetID(), SignalType.Output_Y);
-            unitData.Y_meas = simY1;
+            var trueModelIsSimulatable = truePlantSim.Simulate(inputData, out TimeSeriesDataSet trueSimData);
+            SISOTests.CommonAsserts(inputData, trueSimData, truePlantSim);
+            double[] y_meas = trueSimData.GetValues(true_model.GetID(), SignalType.Output_Y);
+            unitData.Y_meas = y_meas;
 
             // Act
-            GainSchedParameters best_params = GainSchedIdentifier.Identify(unitData);
-            GainSchedModel best_model = new GainSchedModel(best_params, "Best fitting model");
-            var best_plantSim = new PlantSimulator(new List<ISimulatableModel> { best_model });
-            inputData.Add(best_plantSim.AddExternalSignal(best_model, SignalType.External_U, (int)INDEX.FIRST), u);
+            GainSchedParameters est_params = new GainSchedParameters();
+            if (ver == 2 || ver == 3)
+            {
+                est_params = GainSchedIdentifier.Identify(unitData);
+            }
+            else if (ver == 0 || ver == 1)
+            {
+                var gsFittingSpecs = new GainSchedFittingSpecs();
+                gsFittingSpecs.uGainThresholds = trueGainSchedParameters.LinearGainThresholds;
+                gsFittingSpecs.uTimeConstantThresholds = trueGainSchedParameters.TimeConstantThresholds;
+                est_params = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
+            }
+            GainSchedModel est_model = new GainSchedModel(est_params, "fitted model");
+            var estPlantSim = new PlantSimulator(new List<ISimulatableModel> { est_model });
+            inputData.Add(estPlantSim.AddExternalSignal(est_model, SignalType.External_U, (int)INDEX.FIRST), u);
 
-            var IdentifiedisSimulatable = best_plantSim.Simulate(inputData, out TimeSeriesDataSet IdentifiedsimData);
-            SISOTests.CommonAsserts(inputData, IdentifiedsimData, best_plantSim);
-            double[] simY2 = IdentifiedsimData.GetValues(best_model.GetID(), SignalType.Output_Y);
-            // Number of inputs can be determined from the TimeSeries object, assuming it provides a way to determine this
-            int numberOfInputs = unitData.U.GetNColumns(); // Example property, replace with actual implementation
+            var IdentifiedisSimulatable = estPlantSim.Simulate(inputData, out TimeSeriesDataSet IdentifiedsimData);
+            Assert.IsTrue(Math.Abs(est_params.LinearGainThresholds.First() - trueGainSchedParameters.LinearGainThresholds.First())<threshold_tol);
+            SISOTests.CommonAsserts(inputData, IdentifiedsimData, estPlantSim);
+            double[] simY2 = IdentifiedsimData.GetValues(est_model.GetID(), SignalType.Output_Y);
+            // plot
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                    y_meas,
+                    simY2,
+                    unitData.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_sim(est_model)", "y3=u1" },
+                    timeBase_s,
+                    "GainSchedTest ver_"+ver);
+                Shared.DisablePlots();
+            }
 
             // Assert
-            int min_number_of_time_constants = Math.Min(best_params.TimeConstant_s.Length, correct_gain_sched_parameters.TimeConstant_s.Length);
+            int min_number_of_time_constants = Math.Min(est_params.TimeConstant_s.Length, trueGainSchedParameters.TimeConstant_s.Length);
             for (int k = 0; k < min_number_of_time_constants; k++)
             {
-                Assert.That(best_params.TimeConstant_s[k].IsGreaterThanOrEqual(Math.Max(0,Math.Min(TimeConstant1_s,TimeConstant2_s) - TimeConstantAllowedDev_s)),
+                Assert.That(est_params.TimeConstant_s[k].IsGreaterThanOrEqual(Math.Max(0,Math.Min(TimeConstant1_s,TimeConstant2_s) - TimeConstantAllowedDev_s)),
                 "Too low time constant " + k.ToString());
-                Assert.That(best_params.TimeConstant_s[k].IsLessThanOrEqual(Math.Max(TimeConstant1_s, TimeConstant2_s) + TimeConstantAllowedDev_s),
+                Assert.That(est_params.TimeConstant_s[k].IsLessThanOrEqual(Math.Max(TimeConstant1_s, TimeConstant2_s) + TimeConstantAllowedDev_s),
                 "Too high time constant " + k.ToString());
             }
 
-
-/*            Shared.EnablePlots();
-            Plot.FromList(new List<double[]> {
-                    simY1,
-                    simY2,
-                    unitData.U.GetColumn(0) },
-                new List<string> { "y1=correct_model", "y1=best_model", "y3=u1" },
-                timeBase_s,
-                "GainSched - Threshold at reasonable place - " + ver.ToString());
-            Shared.DisablePlots();*/
+            Console.Write("Est timeconstant 1:" + TimeConstant1_s + "Est timeconstant 2:" + TimeConstant2_s +"\r\n");
+            Console.Write("Est gain 1:" + est_params.LinearGains.ElementAt(0).ElementAt(0) 
+                + "Est gain 2:" + est_params.LinearGains.ElementAt(1).ElementAt(0) + "\r\n");
         }
 
         [TestCase(1, 1.5)]

@@ -345,10 +345,8 @@ namespace TimeSeriesAnalysis.Dynamic
         private double CalculateLinearProcessGainTerm(int inputIndex, double u, double u_GainSched)
         {
             double processGainTerm = 0;
-            processGainTerm = modelParameters.OperatingPoint_Y;
+            processGainTerm = 0;// modelParameters.OperatingPoint_Y;
             processGainTerm += IntegrateGains(modelParameters.OperatingPoint_U, u, inputIndex);
-
-            // processGainTerm = modelParameters.LinearGains.ElementAt(gainSchedModelIdx)[inputIndex] * u;
             return processGainTerm;
         }
 

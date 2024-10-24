@@ -115,11 +115,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Identify a model when a given set of thresholds is already given in the supplied gsFittingSpecs
+        /// 
+        /// Since specifying the thresholds simplifies estimation significantly, it is reccommended to use this
+        /// method over Identify() if possible.
         /// </summary>
-        /// <param name="dataSet"></param>
-        /// <param name="gsFittingSpecs"></param>
+        /// <param name="dataSet">tuning data set</param>
+        /// <param name="gsFittingSpecs">the object in which the thresholds to be used are given</param>
         /// <returns></returns>
-        public static GainSchedParameters IdentifyGainsForGivenThresholds(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs)
+        public static GainSchedParameters IdentifyForGivenThresholds(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs)
         {
             var vec = new Vec();
             GainSchedParameters ret = new GainSchedParameters();
@@ -129,6 +132,7 @@ namespace TimeSeriesAnalysis.Dynamic
             int numberOfInputs = dataSet.U.GetLength(1);
             double gsVarMinU, gsVarMaxU;
             var linearGains = new List<double[]>();
+            var timeConstants = new List<double>();
             var allIdsOk = true;
             var warningNotEnoughExitationBetweenAllThresholds = false;
             var dataSetCopy = new UnitDataSet(dataSet);
@@ -169,7 +173,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         uMaxFit[idx] = double.NaN;
                     }
                 }
-                var idResults = IdentifySingleLinearGainForGivenThresholds(ref dataSetCopy, uMinFit, uMaxFit, ret.GainSchedParameterIndex,u0);
+                var idResults = IdentifySingleLinearModelForGivenThresholds(ref dataSetCopy, uMinFit, uMaxFit, ret.GainSchedParameterIndex,u0);
                 if (idResults.NotEnoughExitationBetweenAllThresholds)
                     warningNotEnoughExitationBetweenAllThresholds = true;
                 var uInsideUMinUMax = Vec<double>.GetValuesAtIndices(dataSetCopy.U.GetColumn(ret.GainSchedParameterIndex), 
@@ -186,11 +190,27 @@ namespace TimeSeriesAnalysis.Dynamic
                    // Console.WriteLine("min" + gsVarMinU + " max:" + gsVarMaxU + " gain:" + idResults.Item1[0] + " umin:"+ uMinObserved + " umax:"+ uMaxObserved);//todo:comment out when working
                 }
                 linearGains.Add(idResults.LinearGains);
+                timeConstants.Add(idResults.TimeConstant_s);
                 dataSetCopy.IndicesToIgnore = null;
             }
 
+            
+
             // final gain:above the highest threshold
             ret.LinearGains = linearGains;
+            if (gsFittingSpecs.uTimeConstantThresholds == null)
+            {
+                ret.TimeConstant_s = new double[] { vec.Mean(timeConstants.ToArray()).Value };
+            }
+            else if (Vec.Equal(gsFittingSpecs.uTimeConstantThresholds,gsFittingSpecs.uGainThresholds))
+            {
+                ret.TimeConstant_s = timeConstants.ToArray();
+                ret.TimeConstantThresholds = gsFittingSpecs.uTimeConstantThresholds;
+            }
+            else
+            {
+                ret.TimeConstant_s = null;//TODO: currently not supported to find timeconstants separately from gain thresholds. 
+            }
             ret.Fitting = new FittingInfo();
             ret.Fitting.WasAbleToIdentify = allIdsOk;
             if (!allIdsOk)
@@ -199,29 +219,39 @@ namespace TimeSeriesAnalysis.Dynamic
                 ret.AddWarning(GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains);
 
             // simulate the model and determine the optimal bias term:
-           /* {
+            {
                 var gsIdentModel = new GainSchedModel(ret, "ident_model");
                 var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
                 var inputDataIdent = new TimeSeriesDataSet();
-                inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(0));// todo row 0 is not general
+
+
+                //inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(0));// todo row 0 is not general
+
+                int index = 0;
+                foreach (var id in gsIdentModel.GetModelInputIDs())
+                {
+                    inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, index), dataSet.U.GetColumn(index));
+                    index++;
+                }
+
                 inputDataIdent.CreateTimestamps(dataSet.GetTimeBase());
                 var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
                 if (isOk)
                 {
                     var simY_nobias = identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y);
-                    var measY = dataSet.Y_meas;
-                    var estBias = vec.Mean(vec.Subtract(measY, simY_nobias));
-                    if (estBias.HasValue)
-                    {
-                        ret.Bias = estBias.Value;
-                        dataSet.Y_sim = vec.Add(simY_nobias, ret.Bias);
-                    }
-                    else
-                    {
+                    //var measY = dataSet.Y_meas;
+                    //var estBias = vec.Mean(vec.Subtract(measY, simY_nobias));
+                    //if (estBias.HasValue)
+                   // {
+                   //     ret.Bias = estBias.Value;
+                   //     dataSet.Y_sim = vec.Add(simY_nobias, ret.Bias);
+                   // }
+                   // else
+                   // {
                         dataSet.Y_sim = simY_nobias;
-                    }
+                   // }
                 }
-            }*/
+            }
             return ret;
         }
 
@@ -286,7 +316,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             uMaxFit[idx] = double.NaN;
                         }
                     }
-                    var ret = IdentifySingleLinearGainForGivenThresholds(ref DS2, uMinFit, uMaxFit, gainSchedInputIndex);
+                    var ret = IdentifySingleLinearModelForGivenThresholds(ref DS2, uMinFit, uMaxFit, gainSchedInputIndex);
                     GS_LinearGains2.Add(ret.LinearGains);
                     GS_TimeConstants_s2[0] = ret.TimeConstant_s;
                 }
@@ -308,7 +338,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             uMaxFit[idx] = double.NaN;
                         }
                     }
-                    var ret = IdentifySingleLinearGainForGivenThresholds(ref DS3, uMinFit, uMaxFit, gainSchedInputIndex);
+                    var ret = IdentifySingleLinearModelForGivenThresholds(ref DS3, uMinFit, uMaxFit, gainSchedInputIndex);
                     GS_LinearGains2.Add(ret.LinearGains);
                     GSp2.LinearGains = GS_LinearGains2;
                     GS_TimeConstants_s2[1] = ret.TimeConstant_s; 
@@ -333,7 +363,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="gainSchedVarIndex">index of the variable in the model that is gain-scheduled. by the fault 0</param>
         /// <param name="u0"> if set to null, the u between uLowerThreshold and uHigherThreshold is used </param>
         /// <returns>return a tuple, the first linear gains is null if unable to identify </returns>
-        private static GainSchedSubModelResults IdentifySingleLinearGainForGivenThresholds(ref UnitDataSet dataSet,double[] uLowerThreshold, double[] uHigherThreshold, 
+        private static GainSchedSubModelResults IdentifySingleLinearModelForGivenThresholds(ref UnitDataSet dataSet,double[] uLowerThreshold, double[] uHigherThreshold, 
             int gainSchedVarIndex, double? u0= null )
         {
             var results = new GainSchedSubModelResults();

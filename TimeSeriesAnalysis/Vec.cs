@@ -252,6 +252,28 @@ namespace TimeSeriesAnalysis
             return outArray;
         }
 
+
+
+        /// <summary>
+        /// Returns true if the two vectors are equal
+        /// </summary>
+        /// <param name="arr1"></param>
+        /// <param name="arr2"></param>
+        /// <returns></returns>
+        public static bool Equal(double[] arr1, double[] arr2)
+        {
+            if (arr1.Length != arr2.Length)
+                return false;
+
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                if (arr1[i] != arr2[i])
+                    return false;
+            }
+            return true;
+        }
+
+
         /// <summary>
         /// Returns all the values of vec, except for those corresponding with indices in indicesToIngore
         /// </summary>
