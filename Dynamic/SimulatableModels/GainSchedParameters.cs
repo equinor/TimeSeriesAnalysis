@@ -78,7 +78,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Note that for gain-scheduled models this is a private paramter that is calcualted 
         /// </summary>
-        private double Bias = 0;
+       // private double Bias = 0;
 
         /// <summary>
         /// The "operating point" specifies the value y that the model should have for the gain scheduled input u. 
