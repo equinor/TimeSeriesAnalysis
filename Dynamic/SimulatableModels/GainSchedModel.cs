@@ -390,6 +390,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             // integrate
+            // if from left -> right
             if (uGainSched_Start < uGainSched_End)
             {
                 if (gainSchedStartModelIdx == gainSchedEndModelIdx)
@@ -413,22 +414,32 @@ namespace TimeSeriesAnalysis.Dynamic
                     gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
                 }
             }
-            else
+            else // integrate from left<-right
             {
                 if (gainSchedStartModelIdx == gainSchedEndModelIdx)
                 {
                     double deltaU = uGainSched_End - uGainSched_Start;
-                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(inputIndex)[gainSchedStartModelIdx];
+                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
                 }
                 else
                 {
+                    double deltaU = 0;
                     // first portion (might be from a u between two tresholds to a threshold)
-                    double deltaU = (modelParameters.LinearGainThresholds[gainSchedStartModelIdx] - uGainSched_Start);
-                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
-                    // middle entire portions 
-                    for (int curGainSchedModIdx = gainSchedStartModelIdx + 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
+                   // if (modelParameters.LinearGainThresholds.Length - 1 >= gainSchedStartModelIdx)
                     {
-                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx] - modelParameters.LinearGainThresholds[curGainSchedModIdx - 1]);
+                        // rememebr if there are N gains, there are N-1 gain tresholds 
+                        deltaU = (modelParameters.LinearGainThresholds[gainSchedStartModelIdx-1] - uGainSched_Start);
+                        gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    }
+               //     else
+               //     {
+                //        Console.WriteLine("wtf");
+                 //   }
+                    // middle entire portions 
+                    for (int curGainSchedModIdx = gainSchedStartModelIdx - 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
+                    {
+                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx-1] -
+                            modelParameters.LinearGainThresholds[curGainSchedModIdx - 2]);
                         gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
                     }
                     // last portions (might be a treshold to inbetween two tresholds)
