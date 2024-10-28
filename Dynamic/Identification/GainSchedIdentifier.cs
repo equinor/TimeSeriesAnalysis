@@ -102,9 +102,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 allGainSchedParams.Add(GSp_noGainSchedReference);
             }
             ////////////////////////////////////////////////////
+            ///
             // note that this is a fairly computationally heavy call
+            // higher values means higher accuracy but at the cost of more computations.. 
+            const int globalSearchIterationsPass1 = 40;//should be above a threshold, but above that more is not better. 
+            const int globalSearchIterationsPass2 = 20;//should be above a threshold, but above that more is not better. 
+
             (List<GainSchedParameters> potentialGainschedParametersList, List<double[]> potentialYsimList) =
-                IdentifyGainScheduledGainsAndSingleThreshold(dataSet, gainSchedInputIndex);
+                IdentifyGainScheduledGainsAndSingleThreshold(dataSet, gainSchedInputIndex,true, globalSearchIterationsPass1);
             // TODO: extend the method to consider multiple thresholds by calling the above method recursively?
 
             ////////////////////////////////////////////////////
@@ -112,19 +117,19 @@ namespace TimeSeriesAnalysis.Dynamic
             allGainSchedParams.AddRange(potentialGainschedParametersList);
             allYSimList.AddRange(potentialYsimList);
 
-            (var bestModel_pass1, var bestModelIdx_pass1) =  ChooseBestGainScheduledModel(allGainSchedParams, allYSimList, dataSet);
+            (var bestModel_pass1, var bestModelIdx_pass1) =  ChooseBestGainScheduledModel(allGainSchedParams, allYSimList, ref dataSet);
 
             // pass 2:
             const bool DO_PASS2 = true;
-            const int pass2Width = 1;//0,1 or 2, design parameter about how wide to do pass 2 aroudn pass 1 result.
+            const int pass2Width = 0;//0,1 or 2, design parameter about how wide to do pass 2 aroudn pass 1 result.(higher number is at the expense of accuracy)
             if (bestModelIdx_pass1 > 1 + pass2Width && bestModelIdx_pass1 < allGainSchedParams.Count() - pass2Width && DO_PASS2) 
             {
-                double? gsSearchMin_pass2 = allGainSchedParams.ElementAt(bestModelIdx_pass1-1- pass2Width).LinearGainThresholds.First();
-                double? gsSearchMax_pass2 = allGainSchedParams.ElementAt(bestModelIdx_pass1+1+ pass2Width).LinearGainThresholds.First();
+                double? gsSearchMin_pass2 = allGainSchedParams.ElementAt(Math.Max(bestModelIdx_pass1 - 1- pass2Width,0)).LinearGainThresholds.First();
+                double? gsSearchMax_pass2 = allGainSchedParams.ElementAt(Math.Min(bestModelIdx_pass1 + 1+ pass2Width, allGainSchedParams.Count()-1)).LinearGainThresholds.First();
                 (List<GainSchedParameters> potentialGainschedParametersList_pass2, List<double[]> potentialYsimList_pass2) =
-                    IdentifyGainScheduledGainsAndSingleThreshold(dataSet, gainSchedInputIndex, true, gsSearchMin_pass2, gsSearchMax_pass2);
+                    IdentifyGainScheduledGainsAndSingleThreshold(dataSet, gainSchedInputIndex, true, globalSearchIterationsPass2,gsSearchMin_pass2, gsSearchMax_pass2);
                 (var bestModel_pass2, var bestModelIdx_pass2) = ChooseBestGainScheduledModel(potentialGainschedParametersList_pass2, 
-                    potentialYsimList_pass2, dataSet);
+                    potentialYsimList_pass2, ref dataSet);
                 return bestModel_pass2;
             }
             else
@@ -308,14 +313,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// but note that these models do not include operating point, and
         /// b) the simulated output of each of the gain-scheduled paramters in the first list.</returns>
         private static (List<GainSchedParameters>, List<double[]>) IdentifyGainScheduledGainsAndSingleThreshold(UnitDataSet dataSet, 
-            int gainSchedInputIndex, bool estimateOperatingPoint=true, double? gsSearchMin=null, double? gsSearchMax= null )
+            int gainSchedInputIndex, bool estimateOperatingPoint=true, int globalSearchIterations = 40, double? gsSearchMin=null, double? gsSearchMax= null )
         {
 
             // TODO: since there are magic number below, this method may in some cases not work as intended, ideally there
             // should be no magic numbers. 
 
             // the number of thresholds to try between the minium and maximum 
-            const int THRESHOLD_GLOBALSEARCH_MAX_IT = 40;
+          //  const int globalSearchIterations = 40;
             // how big a span of the range of u in the dataset to span with trehsolds (should be <= 1.00 and >0.)
             // usually it is pointless to search for thresholds at the edge of the dataset, so should be <1
             const double GS_RANGE_SEARCH_FRAC = 0.70;
@@ -335,24 +340,24 @@ namespace TimeSeriesAnalysis.Dynamic
             List<double[]> potentialYSimList = new List<double[]>();
 
             // begin setting up global search
-            double[] potential_gainthresholds = new double[THRESHOLD_GLOBALSEARCH_MAX_IT];
+            double[] potential_gainthresholds = new double[globalSearchIterations];
             // default global search based on the range of values in the given dataset
             if (!gsSearchMin.HasValue || !gsSearchMax.HasValue)
             {
                 double gsRange = gsVarMaxU - gsVarMinU;
                 double gsSearchRange = gsRange * GS_RANGE_SEARCH_FRAC;
-                for (int k = 0; k < THRESHOLD_GLOBALSEARCH_MAX_IT; k++)
+                for (int k = 0; k < globalSearchIterations; k++)
                 {
-                     potential_gainthresholds[k] = gsVarMinU + (1-GS_RANGE_SEARCH_FRAC) * gsRange / 2 + gsSearchRange * ((double)k / THRESHOLD_GLOBALSEARCH_MAX_IT);
+                     potential_gainthresholds[k] = gsVarMinU + (1-GS_RANGE_SEARCH_FRAC) * gsRange / 2 + gsSearchRange * ((double)k / globalSearchIterations);
                 }
             }
             else // search based on the given min and max (used for second or third passes to improve accuracy)
             {
                 double gsRange = gsSearchMax.Value - gsSearchMin.Value;
                 double gsSearchRange = gsRange ;
-                for (int k = 0; k < THRESHOLD_GLOBALSEARCH_MAX_IT; k++)
+                for (int k = 0; k < globalSearchIterations; k++)
                 {
-                    potential_gainthresholds[k] = gsSearchMin.Value +  gsSearchRange * ((double)k / THRESHOLD_GLOBALSEARCH_MAX_IT);
+                    potential_gainthresholds[k] = gsSearchMin.Value +  gsSearchRange * ((double)k / globalSearchIterations);
                 }
             }
 
@@ -523,10 +528,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="allGainSchedParams"> all candidate gain-scheduled parameters</param>
         /// <param name="allYsimList"> list of all the simulated y corresponding to each parameter set in the first input</param>
-        /// <param name="dataSet"></param>
+        /// <param name="dataSet">the dataset to be returned, where y_sim is to be set based on the best model.</param>
         /// <returns>a tuple with the paramters of the "best" model and the index of this model among the list provided </returns>
         static private (GainSchedParameters, int) ChooseBestGainScheduledModel(List<GainSchedParameters> allGainSchedParams,
-            List<double[]> allYsimList, UnitDataSet dataSet)
+            List<double[]> allYsimList, ref UnitDataSet dataSet)
         {
             var vec = new Vec();
             GainSchedParameters BestGainSchedParams = null;
@@ -539,7 +544,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 var curGainSchedParams = allGainSchedParams[curModelIdx];
                 {
                     var curSimY = allYsimList.ElementAt(curModelIdx);
-                  //  var simY1 = simData.GetValues(GSM.GetID(), SignalType.Output_Y);
                     var diff = vec.Subtract(curSimY, dataSet.Y_meas);
                     double rms = 0;
                     for (int j = 0; j < curSimY.Length; j++)
@@ -565,7 +569,6 @@ namespace TimeSeriesAnalysis.Dynamic
                             "GainSched split idx" + curModelIdx.ToString() + " gains" + str_linear_gains 
                             + "threshold "+string.Concat(curGainSchedParams.LinearGainThresholds.Select(x => x.ToString("F2", CultureInfo.InvariantCulture))));
                         Shared.DisablePlots();
-                        // todo: add pause?
                         Thread.Sleep(1000);
                     }
                     if (rms < lowest_rms)
@@ -576,8 +579,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
+            dataSet.Y_sim = allYsimList.ElementAt(bestModelIdx);
             return (BestGainSchedParams, bestModelIdx);
-
         }
 
 

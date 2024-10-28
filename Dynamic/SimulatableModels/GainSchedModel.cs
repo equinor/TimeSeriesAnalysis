@@ -427,19 +427,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     // first portion (might be from a u between two tresholds to a threshold)
                    // if (modelParameters.LinearGainThresholds.Length - 1 >= gainSchedStartModelIdx)
                     {
-                        // rememebr if there are N gains, there are N-1 gain tresholds 
+                        // remember if there are N gains, there are N-1 gain tresholds 
                         deltaU = (modelParameters.LinearGainThresholds[gainSchedStartModelIdx-1] - uGainSched_Start);
                         gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
                     }
-               //     else
-               //     {
-                //        Console.WriteLine("wtf");
-                 //   }
                     // middle entire portions 
                     for (int curGainSchedModIdx = gainSchedStartModelIdx - 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
                     {
-                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx-1] -
-                            modelParameters.LinearGainThresholds[curGainSchedModIdx - 2]);
+                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx] -
+                            modelParameters.LinearGainThresholds[curGainSchedModIdx - 1]);
                         gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
                     }
                     // last portions (might be a treshold to inbetween two tresholds)
