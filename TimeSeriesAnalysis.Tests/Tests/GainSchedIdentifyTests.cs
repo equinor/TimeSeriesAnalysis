@@ -11,6 +11,8 @@ using System;
 using System.Reflection;
 using Accord.Math.Transforms;
 
+using System.Globalization;
+
 namespace TimeSeriesAnalysis.Test.SysID
 {
     public class GainSchedIdentifyTests
@@ -18,7 +20,29 @@ namespace TimeSeriesAnalysis.Test.SysID
         const int timeBase_s = 1;
         const double TimeConstantAllowedDev_s = 3.5;
 
+        private void ConoleOutResult(GainSchedParameters trueParams, GainSchedParameters estParams)
+        {
+            string delimTxt = " vs true value: ";
+            string accuracy = "F2";
 
+            for (int i = 0; i < estParams.TimeConstant_s.Length; i++)
+            {
+                Console.Write("Est timeconstant "+(i+1)+":" + estParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) 
+                    + delimTxt + trueParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+            }
+            for (int i = 0; i < estParams.LinearGains.Count; i++)
+            {
+                Console.Write("Est gain " + (i + 1) + ":" + estParams.LinearGains.ElementAt(i).ElementAt(0).ToString(accuracy, CultureInfo.InvariantCulture) 
+                    + delimTxt + estParams.LinearGains.ElementAt(i).ElementAt(0).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+            }
+
+            Console.Write("Op point Y:" + estParams.OperatingPoint_Y.ToString(accuracy, CultureInfo.InvariantCulture)
+                + delimTxt + trueParams.OperatingPoint_Y.ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+            Console.Write("threshold :" + estParams.LinearGainThresholds.First().ToString(accuracy)
+                + delimTxt + trueParams.LinearGainThresholds.First().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+            Console.Write("time-delay :" + estParams.TimeDelay_s.ToString(accuracy, CultureInfo.InvariantCulture)
+                + delimTxt  + trueParams.TimeDelay_s.ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+        }
 
         // note that the tolerance seems to be linear with the noise in the data
         // five varying gains
@@ -43,7 +67,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     LinearGains = new List<double[]> { new double[] { 0.5 }, new double[] { 1 }, new double[] { 3 }, new double[] { 4.5 }, new double[] { 6 }, new double[] { 9 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    OperatingPoint_U = 5,
+                    OperatingPoint_U = 0,
                     OperatingPoint_Y = 4,
                     GainSchedParameterIndex = 0
                 };
@@ -57,7 +81,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     LinearGains = new List<double[]> { new double[] { 2 }, new double[] { 2 }, new double[] { 2}, new double[] { 2 }, new double[] { 2 }, new double[] { 2 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    OperatingPoint_U = 5,
+                    OperatingPoint_U = 0,
                     OperatingPoint_Y = 4,
                     GainSchedParameterIndex = 0
                 };
@@ -78,7 +102,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // Act
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
-            simData.AddNoiseToSignal(SignalNamer.GetSignalName(refModel.ID, SignalType.Output_Y, 0),noiseAmplitude);
+            simData.AddNoiseToSignal(SignalNamer.GetSignalName(refModel.ID, SignalType.Output_Y, 0),noiseAmplitude,123);
 
             Assert.IsTrue(isSimulatable);
             var dataSet = new UnitDataSet();
@@ -133,6 +157,79 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
         }
 
+        [TestCase(3)]
+        [TestCase(5)]
+        [TestCase(7)]
+
+        public void TimeDelay_TDEstOk(int timeDelaySamples)
+        {
+            double noiseAmp = 0.25;
+            int N = 300;
+            // Arrange
+            var unitData = new UnitDataSet("test");
+            double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, -2, -1, 0, 1);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(3 * N / 5, 2 * N / 3, 4 * N / 5, N, 0, 1, 2, 3);
+            double[] u = u1.Zip(u2, (x, y) => x + y).ToArray();
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
+            unitData.U = U;
+            unitData.Times = TimeSeriesCreator.CreateDateStampArray(
+                new DateTime(2000, 1, 1), timeBase_s, N);
+
+            double threshold =2;
+
+            //reference model
+            GainSchedParameters trueGSparams = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 3, 10 },
+                TimeConstantThresholds = new double[] { threshold },
+                LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
+                LinearGainThresholds = new double[] { threshold },
+                TimeDelay_s = timeBase_s* timeDelaySamples,
+            };
+            trueGSparams.OperatingPoint_Y = -1.34;
+
+            GainSchedModel trueModel = new GainSchedModel(trueGSparams, "Correct gain sched model");
+            var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(correct_plantSim.AddExternalSignal(trueModel, SignalType.External_U, (int)INDEX.FIRST), u);
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = correct_plantSim.Simulate(inputData, out TimeSeriesDataSet refSimData);
+            SISOTests.CommonAsserts(inputData, refSimData, correct_plantSim);
+            double[] simY1 = refSimData.GetValues(trueModel.GetID(), SignalType.Output_Y);
+            unitData.Y_meas = (new Vec()).Add(Vec.Rand(simY1.Length, -noiseAmp, noiseAmp, 454), simY1);
+
+            // Act
+            GainSchedParameters idParams = GainSchedIdentifier.Identify(unitData);
+
+            // plot
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                        unitData.Y_meas ,
+                        unitData.Y_sim,
+                        unitData.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_ident", "y3=u1" },
+                    timeBase_s,
+                    "GainSched - timeconstant - ");
+                Shared.DisablePlots();
+            }
+
+            ConoleOutResult(trueGSparams, idParams);
+
+            // Assert
+       /*     int min_number_of_gains = Math.Min(idParams.LinearGainThresholds.Length, trueGSparams.LinearGainThresholds.Length);
+            for (int k = 0; k < min_number_of_gains; k++)
+            {
+                Console.WriteLine("identified threshold: " + idParams.LinearGainThresholds[k].ToString("F3") + "true threshold: " + trueGSparams.LinearGainThresholds[k].ToString("F3"));
+                Assert.That(Math.Abs(idParams.LinearGainThresholds[k] - trueGSparams.LinearGainThresholds[k]), Is.LessThanOrEqualTo(linearGainTresholdTol),
+                "There are too large differences in the linear gain threshold " + k.ToString());
+            }*/
+        }
+
+
+
 
         // note that the input varies from -2 to 4 here, so threshold beyond that are not identifiable, and at the edges they are also hard to identify.
         [TestCase(-0.5, 0.055)]
@@ -167,6 +264,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGainThresholds = new double[] { gain_sched_threshold },
                 TimeDelay_s = 0,
             };
+            trueGSparams.OperatingPoint_Y = -1.34;
+
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "Correct gain sched model");
             var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
             var inputData = new TimeSeriesDataSet();

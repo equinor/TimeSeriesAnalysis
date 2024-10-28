@@ -68,17 +68,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public List<double[]> LinearGainUnc { get; set; } = null;
 
-        /// <summary>
-        /// The working point of the model, the value of each U around which the model is localized.
-        /// If value is <c>null</c>c> then no U0 is used in the model
-        /// </summary>
-   //     public double[] U0 { get; set; } = null; // TODO: consider removing for gain-scheduled model...
-
-
-        /// <summary>
-        /// Note that for gain-scheduled models this is a private paramter that is calcualted 
-        /// </summary>
-       // private double Bias = 0;
 
         /// <summary>
         /// The "operating point" specifies the value y that the model should have for the gain scheduled input u. 
@@ -95,6 +84,28 @@ namespace TimeSeriesAnalysis.Dynamic
             Fitting = null;
             errorsAndWarningMessages = new List<GainSchedIdentWarnings>();
         }
+
+        public GainSchedParameters(GainSchedParameters existingModel)
+        {
+            Y_min = existingModel.Y_min;
+            Y_max = existingModel.Y_max;
+            TimeConstantThresholds = existingModel.TimeConstantThresholds;
+            TimeConstant_s = existingModel.TimeConstant_s;
+            TimeConstantUnc_s = existingModel.TimeConstantUnc_s;
+            LinearGains = existingModel.LinearGains;
+            LinearGainUnc = existingModel.LinearGainUnc;
+            LinearGainThresholds = existingModel.LinearGainThresholds;
+            Fitting = existingModel.Fitting;
+            errorsAndWarningMessages = existingModel.errorsAndWarningMessages;
+            OperatingPoint_U = existingModel.OperatingPoint_U; 
+            OperatingPoint_Y = existingModel.OperatingPoint_Y;
+            GainSchedParameterIndex = existingModel.GainSchedParameterIndex;
+            TimeDelay_s = existingModel.TimeDelay_s;
+            FittingSpecs = existingModel.FittingSpecs;  
+
+
+        }
+
 
         /// <summary>
         /// Returns the bias calculated from OperatingPoint_U, OperatingPoint_Y;
