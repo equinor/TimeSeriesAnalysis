@@ -71,6 +71,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// The "operating point" specifies the value y that the model should have for the gain scheduled input u. 
+        /// so y = OperatingPoint_Y when u = OperatingPoint_U
         /// </summary>
         public double OperatingPoint_U=0, OperatingPoint_Y=0;
 
@@ -85,6 +86,10 @@ namespace TimeSeriesAnalysis.Dynamic
             errorsAndWarningMessages = new List<GainSchedIdentWarnings>();
         }
 
+        /// <summary>
+        /// Creates a new object that copies properties from an existing model. 
+        /// </summary>
+        /// <param name="existingModel">the model to be copied</param>
         public GainSchedParameters(GainSchedParameters existingModel)
         {
             Y_min = existingModel.Y_min;
@@ -102,8 +107,6 @@ namespace TimeSeriesAnalysis.Dynamic
             GainSchedParameterIndex = existingModel.GainSchedParameterIndex;
             TimeDelay_s = existingModel.TimeDelay_s;
             FittingSpecs = existingModel.FittingSpecs;  
-
-
         }
 
 
@@ -117,7 +120,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 return OperatingPoint_Y;
             else
             {
-                return 0;//todo
+                //todo
+                return OperatingPoint_Y;
             }
         }
 

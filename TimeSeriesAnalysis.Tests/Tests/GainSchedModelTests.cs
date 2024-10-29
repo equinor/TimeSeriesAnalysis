@@ -274,6 +274,64 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(Math.Abs(simY1.Last() - step3Out) < tolerance, "third step should have a gain of " + step3Out.ToString() + "was:" + simY1.Last());
         }
 
+        [TestCase(20, 70)]
+        [TestCase(50, 120)]
+
+        public void NonzeroOperatingPoint_SimulationStartsInOpPointOk(double uOperatingPoint, double yOperatingPoint)
+        {
+            double noiseAmp = 0.0;
+            int N = 400;
+            double gainSchedThreshold = uOperatingPoint+5;//note: the threshold will not match the operating point.
+            // Arrange
+            var unitData = new UnitDataSet();
+            double[] u1 = TimeSeriesCreator.ThreeSteps((int)(N*0.1), (int)(N*0.3), (int)(N*0.5), (int)(N*0.7), uOperatingPoint, uOperatingPoint + 10, uOperatingPoint, uOperatingPoint - 10);
+            double[] u = u1; 
+            unitData.U = Array2D<double>.CreateFromList(new List<double[]> { u });
+            unitData.Times = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), timeBase_s, N);
+
+            //reference model
+            GainSchedParameters trueGSparams = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 10, 2 },
+                TimeConstantThresholds = new double[] { gainSchedThreshold },
+                LinearGains = new List<double[]> { new double[] { 2 }, new double[] { 4 } },
+                LinearGainThresholds = new double[] { gainSchedThreshold },
+                TimeDelay_s = 0,
+            };
+            trueGSparams.OperatingPoint_Y = yOperatingPoint;
+            trueGSparams.OperatingPoint_U = uOperatingPoint;
+
+            GainSchedModel trueModel = new GainSchedModel(trueGSparams, "True  model");
+            var truePlantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(truePlantSim.AddExternalSignal(trueModel, SignalType.External_U, (int)INDEX.FIRST), u);
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = truePlantSim.Simulate(inputData, out TimeSeriesDataSet refSimData);
+  
+            double[] simY1 = refSimData.GetValues(trueModel.GetID(), SignalType.Output_Y);
+            unitData.Y_meas = (new Vec()).Add(Vec.Rand(simY1.Length, -noiseAmp, noiseAmp, (int)Math.Ceiling(2 * gainSchedThreshold + 45)), simY1);
+
+            // plot
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                        unitData.Y_meas ,
+                        unitData.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y3=u1" },
+                    timeBase_s,
+                    "NonzeroOpPointSimulationU="+ uOperatingPoint);
+                Shared.DisablePlots();
+            }
+
+            SISOTests.CommonAsserts(inputData, refSimData, truePlantSim);
+            Assert.That(unitData.Y_meas.First() == yOperatingPoint, "since time series starts in uOperatingPoint, simulation should start in yOperatingPoint");
+
+        }
+
+
+
         [TestCase(8, 0, 1,3,6, Description = "steps below the threshold")]
         [TestCase(8, 1, 3, 9, 18, Description = "steps above the treshold")]
         [TestCase(9, 0, 2, 4, 7,Description = "nonzero bias of one, also time-delay added, steps below the trehoshold")]

@@ -29,8 +29,6 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     static public class GainSchedIdentifier
     {
-
-
         /// <summary>
         /// Identify a gain scheduled model for the given dataset.
         /// </summary>
@@ -107,8 +105,8 @@ namespace TimeSeriesAnalysis.Dynamic
             ////////////////////////////////////////////////////
             // note that this is a fairly computationally heavy call
             // higher values means higher accuracy but at the cost of more computations.. 
-            const int globalSearchIterationsPass1 = 40;//should be above a threshold, but above that more is not better. 
-            const int globalSearchIterationsPass2 = 20;//should be above a threshold, but above that more is not better. 
+            const int globalSearchIterationsPass1 = 40;//should be big enough, but then more is not better. 
+            const int globalSearchIterationsPass2 = 20;//should be big enough, but then more is not better. 
 
             (List<GainSchedParameters> potentialGainschedParametersList, List<double[]> potentialYsimList) =
                 IdentifyGainScheduledGainsAndSingleThreshold(dataSet, gainSchedInputIndex,true, globalSearchIterationsPass1);
@@ -124,6 +122,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // pass 2:
             const bool DO_PASS2 = true;
             const int pass2Width = 0;//0,1 or 2, design parameter about how wide to do pass 2 aroudn pass 1 result.(higher number is at the expense of accuracy)
+            GainSchedParameters modelToReturn = new GainSchedParameters();
             if (bestModelIdx_pass1 > 1 + pass2Width && bestModelIdx_pass1 < allGainSchedParams.Count() - pass2Width && DO_PASS2)
             {
                 double? gsSearchMin_pass2 = allGainSchedParams.ElementAt(Math.Max(bestModelIdx_pass1 - 1 - pass2Width, 0)).LinearGainThresholds.First();
@@ -132,14 +131,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     IdentifyGainScheduledGainsAndSingleThreshold(dataSet, gainSchedInputIndex, true, globalSearchIterationsPass2, gsSearchMin_pass2, gsSearchMax_pass2);
                 (var bestModel_pass2, var bestModelIdx_pass2) = ChooseBestGainScheduledModel(potentialGainschedParametersList_pass2,
                     potentialYsimList_pass2, ref dataSet);
-                EstimateTimeDelay(ref bestModel_pass2, ref dataSet);
-                return bestModel_pass2;
+                modelToReturn = bestModel_pass2;
             }
             else
             {
-                EstimateTimeDelay(ref bestModel_pass1, ref dataSet);
-                return bestModel_pass1;
-            }
+                modelToReturn = bestModel_pass1;
+              }
+            EstimateTimeDelay(ref modelToReturn, ref dataSet);
+            return modelToReturn;
         }
 
         /// <summary>
@@ -151,6 +150,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         private static void EstimateTimeDelay(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
         {
+            if (dataSet.Y_sim == null || dataSet.Y_meas == null)
+                return;
             var minTc = (new Vec()).Min(gsParams.TimeConstant_s);
             var maxTc = (new Vec()).Max(gsParams.TimeConstant_s);
             var timeBase_s = dataSet.GetTimeBase();
@@ -331,11 +332,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var vec = new Vec();
 
-            int index = 0;
-            foreach (var id in gsIdentModel.GetModelInputIDs())
+            for  (var index =0; index< dataSet.U.GetNColumns(); index++)
             {
                 inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, index), dataSet.U.GetColumn(index));
-                index++;
             }
 
             inputDataIdent.CreateTimestamps(dataSet.GetTimeBase());
@@ -348,7 +347,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (estBias.HasValue)
                 {
                     gsParams.OperatingPoint_Y = estBias.Value;
-                    gsParams.OperatingPoint_U = 0;// todo: this is perhaps not always sensible?
+                     gsParams.OperatingPoint_U = 0;
+                   // gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
                     dataSet.Y_sim = vec.Add(simY_nobias, gsParams.OperatingPoint_Y);
                     return true;
                 }

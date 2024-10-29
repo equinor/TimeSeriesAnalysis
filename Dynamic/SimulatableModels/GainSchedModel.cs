@@ -63,18 +63,7 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
             InitSim(modelParameters);
         }
-        /// <summary>
-        /// Initalizer of model that for the given dataSet also creates the resulting y_sim
-        /// </summary>
-        /// <param name="modelParameters"></param>
-        /// <param name="dataSet"></param>
-        /// <param name="ID">a unique string that identifies this model in larger process models</param>
-        public GainSchedModel(GainSchedParameters modelParameters, GainSchedDataSet dataSet,string ID = "not_named")
-        {
-            processModelType = ModelType.SubProcess;
-            this.ID = ID;
-            InitSim(modelParameters);
-        }
+
         /// <summary>
         /// Answers if model is simulatable, i.e. has given inputs that are sensible and sufficent. 
         /// </summary>
@@ -258,22 +247,9 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return u0;
             }
-            // x = G*(u-u0)+bias ==>
-            // y (approx) x
-            // u =  (y-bias)/G+ u0 
-            /*    if (givenInputs == null)
-                {
-                    u0 = (y0 - modelParameters.Bias) / modelParameters.LinearGains[inputIdx];
-                    if (modelParameters.U0 != null)
-                    {
-                        u0 += modelParameters.U0[inputIdx];
-                    }
-                    return u0;
-                }
-                else*/
             double x_otherInputs = modelParameters.GetBias();
             double gainSched = givenInputs[modelParameters.GainSchedParameterIndex]; 
-            //nb! input may include a disturbance!
+
             if (givenInputs != null)
             {
                 for (int i = 0; i < givenInputs.Length; i++)
@@ -292,45 +268,9 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             double y_contributionFromInput = x0 - x_otherInputs;
             u0 = 0;
-           /* if (modelParameters.U0 != null)
-            {
-                u0 += modelParameters.U0[inputIdx]; 
-            }*/
-            //TODO
-            //u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
             return u0;
         }
-        /*
-        public double CalculateLinearProcessGainTerm(int inputIndex, double u, double u_GainSched) 
-        {
-          
-            int activeGainSchedModelIdx = 0;
-            for (int idx = 0; idx<modelParameters.LinearGainThresholds.Length; idx++)
-            {
-                if (u_GainSched<modelParameters.LinearGainThresholds[idx])
-                {
-                    activeGainSchedModelIdx = idx;
-                    break;
-                }
-                else if (idx == modelParameters.LinearGainThresholds.Length - 1)
-                {
-                    activeGainSchedModelIdx = idx + 1;
-                }
-            }
 
-            double curve = 0;
-           // curve += modelParameters.LinearGains.ElementAt(i)[inputIndex] * modelParameters.LinearGainThresholds[i];
-            for (int curGainSchedModel = 1; curGainSchedModel < activeGainSchedModelIdx; curGainSchedModel++)
-            {
-                curve += modelParameters.LinearGains.ElementAt(curGainSchedModel)[inputIndex] * modelParameters.LinearGainThresholds[curGainSchedModel-1];
-            }
-            if (activeGainSchedModelIdx>0)
-                curve += modelParameters.LinearGains.ElementAt(activeGainSchedModelIdx)[inputIndex] *(u-modelParameters.LinearGainThresholds.ElementAt(activeGainSchedModelIdx-1));
-            else
-                curve += modelParameters.LinearGains.ElementAt(activeGainSchedModelIdx)[inputIndex] * u;
-            return curve;
-        }
-        */
 
 
         
@@ -345,7 +285,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private double CalculateLinearProcessGainTerm(int inputIndex, double u, double u_GainSched)
         {
             double processGainTerm = 0;
-            processGainTerm = 0;// modelParameters.OperatingPoint_Y;
+            processGainTerm = 0;
             processGainTerm += IntegrateGains(modelParameters.OperatingPoint_U, u, inputIndex);
             return processGainTerm;
         }
@@ -555,9 +495,6 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return SignalType.Output_Y;
         }
-
-
-
 
         /// <summary>
         /// Iterates the process model state one time step, based on the inputs given

@@ -22,25 +22,46 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         private void ConoleOutResult(GainSchedParameters trueParams, GainSchedParameters estParams)
         {
-            string delimTxt = " vs true value: ";
+            string delimTxt = " vs ";
             string accuracy = "F2";
+
+            Console.Write("[estimate]" + delimTxt + "[true]");
 
             for (int i = 0; i < estParams.TimeConstant_s.Length; i++)
             {
-                Console.Write("Est timeconstant "+(i+1)+":" + estParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) 
-                    + delimTxt + trueParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                if (trueParams.TimeConstant_s != null)
+                {
+                    Console.Write("Tc " + (i + 1) + ": " + estParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture)
+                        + delimTxt + trueParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                }
+                else
+                {
+                    Console.Write("Tc " + (i + 1) + ": " + estParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture)
+                    + delimTxt + "[null]" + "\r\n");
+                }
             }
             for (int i = 0; i < estParams.LinearGains.Count; i++)
             {
-                Console.Write("Est gain " + (i + 1) + ":" + estParams.LinearGains.ElementAt(i).ElementAt(0).ToString(accuracy, CultureInfo.InvariantCulture) 
-                    + delimTxt + estParams.LinearGains.ElementAt(i).ElementAt(0).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                Console.Write("gain " + (i + 1) + ": " + estParams.LinearGains.ElementAt(i).ElementAt(0).ToString(accuracy, CultureInfo.InvariantCulture) 
+                    + delimTxt + trueParams.LinearGains.ElementAt(i).ElementAt(0).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
             }
 
-            Console.Write("Op point Y:" + estParams.OperatingPoint_Y.ToString(accuracy, CultureInfo.InvariantCulture)
+            Console.Write("op point Y: " + estParams.OperatingPoint_Y.ToString(accuracy, CultureInfo.InvariantCulture)
                 + delimTxt + trueParams.OperatingPoint_Y.ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
-            Console.Write("threshold :" + estParams.LinearGainThresholds.First().ToString(accuracy)
-                + delimTxt + trueParams.LinearGainThresholds.First().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
-            Console.Write("time-delay :" + estParams.TimeDelay_s.ToString(accuracy, CultureInfo.InvariantCulture)
+
+            Console.Write("op point U: " + estParams.OperatingPoint_U.ToString(accuracy, CultureInfo.InvariantCulture)
+                 + delimTxt + trueParams.OperatingPoint_U.ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+
+            if (estParams.LinearGainThresholds.Count() > 0)
+            {
+                Console.Write("threshold : " + estParams.LinearGainThresholds.First().ToString(accuracy,CultureInfo.InvariantCulture)
+                   + delimTxt + trueParams.LinearGainThresholds.First().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+            }
+            else
+            {
+                Console.Write("threshold : " +"[none!]"  + delimTxt + trueParams.LinearGainThresholds.First().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+            }
+            Console.Write("time-delay : " + estParams.TimeDelay_s.ToString(accuracy, CultureInfo.InvariantCulture)
                 + delimTxt  + trueParams.TimeDelay_s.ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
         }
 
@@ -110,8 +131,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { inputData.GetValues(refModel.ID,SignalType.External_U)});
             dataSet.Times = inputData.GetTimeStamps();
             var gsParams = GainSchedIdentifier.IdentifyForGivenThresholds(dataSet, gsFittingSpecs);
-            Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
-            Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
+
+            // console out
+
+            ConoleOutResult(refParams, gsParams);
 
             // Plotting gains(debugging)
             bool doPlots = false;
@@ -137,6 +160,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.DisablePlots();
             }
             // asserts
+            Assert.IsTrue(gsParams.Fitting.WasAbleToIdentify);
+            Assert.AreEqual(expectedNumWarnings, gsParams.GetWarningList().Count());
+
             for (int i = 0; i < refParams.LinearGains.Count; i++)
             {
                 DiffLessThan(refParams.LinearGains[i][0], gsParams.LinearGains[i][0], gainTolerancePrc,i);
@@ -163,6 +189,8 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         public void TimeDelay_TDEstOk(int timeDelaySamples)
         {
+            double td_tol = 0.04;
+
             double noiseAmp = 0.25;
             int N = 300;
             // Arrange
@@ -208,25 +236,92 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
                         unitData.Y_meas ,
-                        unitData.Y_sim,
+                     //   unitData.Y_sim,
                         unitData.U.GetColumn(0) },
-                    new List<string> { "y1=y_meas", "y1=y_ident", "y3=u1" },
+                    new List<string> { "y1=y_meas", "y3=u1" },
                     timeBase_s,
-                    "GainSched - timeconstant - ");
+                    "GainSched - TimeDelay - ");
                 Shared.DisablePlots();
             }
 
             ConoleOutResult(trueGSparams, idParams);
-
-            // Assert
-       /*     int min_number_of_gains = Math.Min(idParams.LinearGainThresholds.Length, trueGSparams.LinearGainThresholds.Length);
-            for (int k = 0; k < min_number_of_gains; k++)
-            {
-                Console.WriteLine("identified threshold: " + idParams.LinearGainThresholds[k].ToString("F3") + "true threshold: " + trueGSparams.LinearGainThresholds[k].ToString("F3"));
-                Assert.That(Math.Abs(idParams.LinearGainThresholds[k] - trueGSparams.LinearGainThresholds[k]), Is.LessThanOrEqualTo(linearGainTresholdTol),
-                "There are too large differences in the linear gain threshold " + k.ToString());
-            }*/
+           Assert.That(Math.Abs(idParams.TimeDelay_s - trueGSparams.TimeDelay_s)<td_tol );
         }
+
+
+        // note that the input varies from -2 to 4 here, so threshold beyond that are not identifiable, and at the edges they are also hard to identify.
+        [TestCase(20, 60,true)]
+        [TestCase(20, 60,false)]
+
+
+        public void NonzeroOperatingPointU_EstimatesStillOk(double uOperatingPoint, double yOperatingPoint,bool estimateThresholds)
+        {
+            double noiseAmp = 0.0;
+            int N = 50;
+            double gainSchedThreshold = uOperatingPoint;
+
+            // Arrange
+            var unitData = new UnitDataSet();
+            //   double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, 30, 40, 50, 10);
+            //  double[] u2 = TimeSeriesCreator.ThreeSteps(3 * N / 5, 2 * N / 3, 4 * N / 5, N, 10, 20, 30, 40);
+            // double[] u = u1.Zip(u2, (x, y) => x + y).ToArray();
+              double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, uOperatingPoint, uOperatingPoint + 10, uOperatingPoint, uOperatingPoint - 10);
+            double[] u = u1; //u1.Zip(u2, (x, y) => x + y).ToArray();
+            //double[] u = TimeSeriesCreator.Constant(u_operating_point,N);
+            unitData.U = Array2D<double>.CreateFromList(new List<double[]> { u });
+            unitData.Times = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), timeBase_s, N);
+
+            //reference model
+            GainSchedParameters trueGSparams = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 0, 0 },
+                TimeConstantThresholds = new double[] { gainSchedThreshold },
+                LinearGains = new List<double[]> { new double[] { 2}, new double[] { 4 } },
+                LinearGainThresholds = new double[] { gainSchedThreshold },
+                TimeDelay_s = 0,
+            };
+            trueGSparams.OperatingPoint_Y = yOperatingPoint;
+            trueGSparams.OperatingPoint_U = uOperatingPoint;
+
+            GainSchedModel trueModel = new GainSchedModel(trueGSparams, "True  model");
+            var truePlantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(truePlantSim.AddExternalSignal(trueModel, SignalType.External_U, (int)INDEX.FIRST), u);
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = truePlantSim.Simulate(inputData, out TimeSeriesDataSet refSimData);
+            double[] simY1 = refSimData.GetValues(trueModel.GetID(), SignalType.Output_Y);
+            unitData.Y_meas = (new Vec()).Add(Vec.Rand(simY1.Length, -noiseAmp, noiseAmp, (int)Math.Ceiling(2 * gainSchedThreshold + 45)), simY1);
+
+            // Act
+            GainSchedParameters idParams = new GainSchedParameters();
+            if (estimateThresholds)
+            {
+                idParams = GainSchedIdentifier.Identify(unitData);
+            }
+            else
+            {
+                GainSchedFittingSpecs gsFittingSpecs = new GainSchedFittingSpecs { uGainThresholds = new double[] { gainSchedThreshold } };
+                idParams = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
+            }
+            // TODO: refactor identify methods above to set operatingpoint_u and operatingpoint_y, not just the latter. 
+
+            // plot
+            bool doPlot = true;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                        unitData.Y_meas ,
+                        unitData.Y_sim,
+                        unitData.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
+                    timeBase_s,
+                    "NonzeroOpPointIdent_U="+ uOperatingPoint);
+                Shared.DisablePlots();
+            }
+            ConoleOutResult(trueGSparams, idParams);
+        }
+
 
 
 
@@ -241,7 +336,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(2.5, 0.015)]
         [TestCase(3.0, 0.015) ]
 
-        public void TwoGainsVaryingTreshold_ThresholdEstOk(double gain_sched_threshold, double linearGainTresholdTol )
+        public void TwoGains_ThresholdEstOk(double gain_sched_threshold, double linearGainTresholdTol )
         {
             double noiseAmp = 0.25;
             int N = 300;
@@ -293,12 +388,11 @@ namespace TimeSeriesAnalysis.Test.SysID
                     "GainSched - Threshold - " + gain_sched_threshold.ToString("F2"));
                 Shared.DisablePlots();
             }
-
+            ConoleOutResult(trueGSparams, idParams);
             // Assert
             int min_number_of_gains = Math.Min(idParams.LinearGainThresholds.Length, trueGSparams.LinearGainThresholds.Length);
             for (int k = 0; k < min_number_of_gains; k++)
             {
-                Console.WriteLine("identified threshold: " + idParams.LinearGainThresholds[k].ToString("F3") + "true threshold: " + trueGSparams.LinearGainThresholds[k].ToString("F3"));
                 Assert.That(Math.Abs(idParams.LinearGainThresholds[k] - trueGSparams.LinearGainThresholds[k]), Is.LessThanOrEqualTo(linearGainTresholdTol),
                 "There are too large differences in the linear gain threshold " + k.ToString());
             }
@@ -384,13 +478,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                     "GainSchedTest ver_"+ver);
                 Shared.DisablePlots();
             }
-            Console.Write("Est timeconstant 1:" + TimeConstant1_s + " | 2:" + TimeConstant2_s + "\r\n");
-            Console.Write("Est gain 1:" + est_params.LinearGains.ElementAt(0).ElementAt(0)
-                + " | 2:" + est_params.LinearGains.ElementAt(1).ElementAt(0) + "\r\n");
-            Console.Write("Op point 1:" + est_params.OperatingPoint_Y.ToString("F2")
-                + " vs true value: " + trueParams.OperatingPoint_Y + "\r\n");
-            Console.Write("threshold :" + est_params.LinearGainThresholds.First().ToString("F2")
-                + " vs true value: " + trueParams.LinearGainThresholds.First() + "\r\n");
+
+            ConoleOutResult(trueParams, est_params);
 
             // Asserts
             Assert.IsTrue(Math.Abs(est_params.LinearGainThresholds.First() - trueParams.LinearGainThresholds.First()) < threshold_tol);
