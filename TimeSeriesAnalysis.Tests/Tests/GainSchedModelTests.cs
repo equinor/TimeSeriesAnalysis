@@ -152,12 +152,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 double observedGain = (simY1[idxAfter]- simY1[idxBefore]) ; // all steps are exactly 1.
                 
                 Assert.IsTrue( observedGain >prevGain, "step idx:"+stepIdx);
-
                 prevGain = observedGain;
-
             }
-
-
         }
 
         [TestCase(1, "up", Description = "static, two gains, no timedelay, no bias")]

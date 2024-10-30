@@ -506,7 +506,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 uNames.Add(uName);
             }
             modelCopy.SetInputIDs(uNames.ToArray());
-            //modelCopy.SetOutputID("output");
+            if (modelCopy.GetOutputID() == null)
+                modelCopy.SetOutputID("output");
 
             PlantSimulator sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
           //  var simData = new TimeSeriesDataSet();
@@ -633,7 +634,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
             }
-            simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
+            if (inputData.GetTimeStamps() != null)
+                simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
+            else
+            { 
+            //?
+            }
             // disturbance estimation
             if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess && doEstimateDisturbance)
             {
