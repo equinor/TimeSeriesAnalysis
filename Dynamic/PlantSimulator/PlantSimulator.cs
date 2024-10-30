@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -433,7 +434,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Simualte single model to get the output including any additive inputs
+        /// Simulate single model to get the output including any additive inputs
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="singleModelName"></param>
@@ -443,6 +444,72 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return SimulateSingle(inputData, singleModelName, false, out simData);
         }
+
+        /// <summary>
+        /// Simulate single model based on a unit data set
+        /// </summary>
+        /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
+        /// <param name="model">model to simulate</param>
+        /// <param name="writeToYmeas">if set to true, the simulated result is written to unitData.Y_meas instead of Y_sim</param>
+        /// <param name="noiseAmplitude">if writing to Ymeas, it is possible to add noise of the given amplitude to signal</param>
+        /// <param name="addSimToUnitData">if true, the Y_sim of unitData has the simulation result written two i</param>
+        /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series</returns>
+        static public (bool, double[]) SimulateSingle(UnitDataSet unitData, UnitModel model,bool writeToYmeas= false, double noiseAmplitude=0,
+            bool addSimToUnitData=false)
+        {
+            var inputData = new TimeSeriesDataSet();
+            var singleModelName = "SimulateSingle";
+            var modelCopy = new UnitModel(model.GetModelParameters(), singleModelName);
+
+            if (unitData.Times != null)
+                inputData.SetTimeStamps(unitData.Times.ToList());
+            else
+            {
+                inputData.CreateTimestamps(unitData.GetTimeBase());
+            }
+
+            var uNames = new List<string>();
+            for (int colIdx = 0; colIdx< unitData.U.GetNColumns(); colIdx++)
+            {
+                var uName = "U" + colIdx;
+                inputData.Add(uName, unitData.U.GetColumn(colIdx));
+                uNames.Add(uName);
+            }
+            modelCopy.SetInputIDs(uNames.ToArray());
+
+            PlantSimulator sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
+
+            var simData = new TimeSeriesDataSet();
+     
+            var isOk = sim.SimulateSingle(inputData, singleModelName, false, out simData);
+
+            double[] y_sim = simData.GetValues(singleModelName, SignalType.Output_Y);
+            if (noiseAmplitude > 0)
+            {
+                // use a specific seed here, to avoid potential issues with "random unit tests" and not-repeatable
+                // errors.
+                Random rand = new Random(1232);
+
+                for (int k = 0; k < y_sim.Count(); k++)
+                {
+                    y_sim[k] += (rand.NextDouble() - 0.5) * 2 * noiseAmplitude;
+                }
+            }
+
+            if (addSimToUnitData)
+            {
+                if (writeToYmeas)
+                {
+                    unitData.Y_meas = y_sim;
+                }
+                else
+                {
+                    unitData.Y_sim = y_sim;
+                }
+            }
+            return (isOk, y_sim);
+        }
+
 
         /// <summary>
         /// Simulate a single model(any ISimulatable model), using inputData as inputs, 
@@ -472,6 +539,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             simData = new TimeSeriesDataSet();
             int? N = inputData.GetLength();
+            if (N.Value == 0)
+                return false;
             int timeIdx = 0;
             var model = modelDict[singleModelName];
             string[] additiveInputIDs = model.GetAdditiveInputIDs();

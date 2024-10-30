@@ -268,12 +268,16 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.GetTimeBase(), "doDebuggingPlot_disturbanceHLandLF");
                 dataSet.D = null;
 
-                var sim1 = new UnitSimulator(idUnitModelsList[0]);
-                var sim1results = sim1.Simulate(ref dataSet,false,true);
-                var sim2 = new UnitSimulator(idUnitModelsList[1]);
-                var sim2results = sim2.Simulate(ref dataSet, false, true);
-                var sim3 = new UnitSimulator(idUnitModelsList[2]);
-                var sim3results = sim3.Simulate(ref dataSet, false, true);
+                /*  var sim1 = new UnitSimulator(idUnitModelsList[0]);
+                  var sim1results = sim1.Simulate(ref dataSet,false,true);
+                  var sim2 = new UnitSimulator(idUnitModelsList[1]);
+                  var sim2results = sim2.Simulate(ref dataSet, false, true);
+                  var sim3 = new UnitSimulator(idUnitModelsList[2]);
+                  var sim3results = sim3.Simulate(ref dataSet, false, true);
+                */
+                (var isOk1,var sim1results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[0], false, 0, false);
+                (var isOk2, var sim2results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[1], false, 0, false);
+                (var isOk3, var sim3results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[2], false, 0, false);
 
                 Plot.FromList(
                     new List<double[]> {
@@ -609,18 +613,21 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             double[] disturbance,string name="")
         {
-            // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
-
             if (pidParams == null)
             {
                 return false;
             }
-            var sim = new UnitSimulator(new UnitModel(modelParams));
+
             unitData.D = disturbance;
+            var pidModel = new PidModel(pidParams);
+            var unitModel = new UnitModel(modelParams);
+            // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
+            //var ps = new PlantSimulator(new List<ISimulatableModel> { unitModel,pidModel });
+            //var inputData = new TimeSeriesDataSet();// TODO: need to map signal names here.
+            //ps.Simulate(inputData, out var simData);
 
-            var pid = new PidModel(pidParams);
-
-            bool isOk = sim.CoSimulate(pid, ref unitData);
+            var sim = new UnitSimulator(unitModel);
+            bool isOk = sim.CoSimulate(pidModel, ref unitData);
             if (doDebuggingPlot)
             {
                 Plot.FromList(new List<double[]> { unitData.Y_sim,unitData.Y_meas, 

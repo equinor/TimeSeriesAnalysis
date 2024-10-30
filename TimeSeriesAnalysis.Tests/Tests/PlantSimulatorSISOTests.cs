@@ -138,14 +138,31 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             // now test that "simulateSingle" produces the same result!
             var isOk2 = plantSim.SimulateSingle(inputData, processModel1.ID, out TimeSeriesDataSet simData2);
-            /*
-            Plot.FromList(new List<double[]> {
+
+
+            //plots 
+
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
                 simData2.GetValues(processModel1.GetID(),SignalType.Output_Y),
                 inputData.GetValues(processModel1.GetID(),SignalType.External_U)},
-            new List<string> { "y1=y_sim1", "y1=y_sim1(v2)", "y3=u" },
-            timeBase_s, "UnitTest_SingleSISO");
-            */
+                new List<string> { "y1=y_sim1", "y1=y_sim1(v2)", "y3=u" },
+                timeBase_s, "UnitTest_SingleSISO");
+                Shared.DisablePlots();
+            }
+
+
+            // asserts
+
+            Assert.IsTrue(isOk2);
+
+            Assert.AreEqual(simData.GetValues(processModel1.GetID(), SignalType.Output_Y),
+                simData2.GetValues(processModel1.GetID(), SignalType.Output_Y));
+
         }
 
 

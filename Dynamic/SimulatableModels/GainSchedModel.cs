@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 using TimeSeriesAnalysis.Utility;
 using System.Reflection;
+using Accord.Math;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -62,6 +63,14 @@ namespace TimeSeriesAnalysis.Dynamic
             processModelType = ModelType.SubProcess;
             this.ID = ID;
             InitSim(modelParameters);
+        }
+
+        /// <summary>
+        /// Empty constructor
+        /// </summary>
+        public GainSchedModel()
+        { 
+        
         }
 
         /// <summary>
@@ -470,7 +479,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="u0"></param>
         /// <param name="badDataID">optional special value that indicates "Nan"</param>
         /// <returns></returns>
-        public double? GetSteadyStateOutput(double[] u0, double badDataID)
+        public double? GetSteadyStateOutput(double[] u0, double badDataID= -9999)
         {
             if (modelParameters.LinearGains == null)
                 return 0;
@@ -589,10 +598,135 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         override public string ToString()
         {
-           return "";
+            var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
+            var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
+            numberFormat.NumberDecimalSeparator = ".";
+
+            int sDigits = 3;
+            int sDigitsUnc = 2;
+
+            int cutOffForUsingDays_s = 86400;
+            int cutOffForUsingHours_s = 3600;
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(this.GetType().ToString());
+            sb.AppendLine("-------------------------");
+            if (modelParameters.Fitting == null)
+            {
+                sb.AppendLine("a priori model");
+            }
+            else
+            {
+                if (modelParameters.Fitting.WasAbleToIdentify)
+                {
+                    sb.AppendLine("ABLE to identify");
+                }
+                else
+                {
+                    sb.AppendLine("---NOT able to identify---");
+                }
+            }
+
+            sb.AppendLine("Gain-scheduling parameter index:" + modelParameters.GainSchedParameterIndex);
+
+            sb.AppendLine("Operating point U:" + SignificantDigits.Format(modelParameters.OperatingPoint_U, sDigits).ToString(writeCulture) );
+            sb.AppendLine("Operating point Y:" + SignificantDigits.Format(modelParameters.OperatingPoint_Y, sDigits).ToString(writeCulture) );
+
+            ////////////////////////////////
+            // time constant
+            string timeConstantString = "TimeConstant : ";
+        
+            for (int i = 0; i < modelParameters.TimeConstant_s.Count(); i++)
+            {
+                if (modelParameters.TimeConstant_s[i] < cutOffForUsingHours_s)
+                {
+                    timeConstantString +=
+                        SignificantDigits.Format(modelParameters.TimeConstant_s[i], sDigits).ToString(writeCulture) + " sec";
+                }
+                else if (modelParameters.TimeConstant_s[i] < cutOffForUsingDays_s)
+                {
+                    timeConstantString +=
+                        SignificantDigits.Format(modelParameters.TimeConstant_s[i] / 3600, sDigits).ToString(writeCulture) + " hours";
+                }
+                else // use days
+                {
+                    timeConstantString +=
+                        SignificantDigits.Format(modelParameters.TimeConstant_s[i] / 86400, sDigits).ToString(writeCulture) + " days";
+                }
+            }
+            sb.AppendLine(timeConstantString);
+            ////////////////////////////////
+   
+            if (modelParameters.TimeConstantThresholds == null)
+                sb.AppendLine("Time constant thresholds : [null]");
+            else
+            {
+                sb.AppendLine("Time constant thresholds : ");
+                for (int inputIdx = 0; inputIdx < modelParameters.TimeConstantThresholds.Count(); inputIdx++)
+                {
+                    sb.AppendLine(
+                        "\t" + SignificantDigits.Format(modelParameters.TimeConstantThresholds[inputIdx], sDigits).ToString(writeCulture)
+                        );
+                }
+            }
+            ////////////////////////////////
+            // time delay
+            if (modelParameters.TimeDelay_s < cutOffForUsingHours_s)
+            {
+                sb.AppendLine("TimeDelay : " + modelParameters.TimeDelay_s.ToString(writeCulture) + " sec");
+            }
+            else if (modelParameters.TimeDelay_s < cutOffForUsingDays_s)
+            {
+                sb.AppendLine("TimeDelay : " + (modelParameters.TimeDelay_s / 3600).ToString(writeCulture) + " sec");
+            }
+            else
+            {
+                sb.AppendLine("TimeDelay : " + (modelParameters.TimeDelay_s / 86400).ToString(writeCulture) + " days");
+            }
+
+            ////////////////////////////////
+            sb.AppendLine("Linear gains : ");
+            for (int inputIdx = 0; inputIdx < modelParameters.LinearGains.Count; inputIdx++)
+            {
+                for (int gsVarIdx = 0; gsVarIdx < modelParameters.LinearGains[inputIdx].Count(); gsVarIdx++)
+                {
+                    sb.AppendLine(
+                        "\t" + SignificantDigits.Format(modelParameters.LinearGains[inputIdx][gsVarIdx], sDigits).ToString(writeCulture)
+                        );
+                }
+            }
+
+            ////////////////////////////////
+            sb.AppendLine("Linear gains thresholds : ");
+            for (int inputIdx = 0; inputIdx < modelParameters.LinearGainThresholds.Count(); inputIdx++)
+            {
+                sb.AppendLine(
+                    "\t" + SignificantDigits.Format(modelParameters.LinearGainThresholds[inputIdx], sDigits).ToString(writeCulture)
+                    );
+            }
+            ////////////////////////////////
+            sb.AppendLine("-------------------------");
+            if (modelParameters.Fitting != null)
+            {
+           /*     sb.AppendLine("Fit score(%): " + modelParameters.Fitting.FitScorePrc.ToString(writeCulture));
+
+                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValDiff, 4).ToString(writeCulture));
+                sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqDiff, 4).ToString(writeCulture));
+                sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqAbs, 4).ToString(writeCulture));
+           */
+                sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were excluded");
+                foreach (var warning in modelParameters.GetWarningList())
+                    sb.AppendLine("model fit warning :" + warning.ToString());
+                if (modelParameters.GetWarningList().Count == 0)
+                {
+                    sb.AppendLine("model fit : no error or warnings");
+                }
+             
+                sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
+            }
+            return sb.ToString();
         }
-
-
+ 
         /// <summary>
         /// Warm-starting
         /// </summary>

@@ -36,13 +36,21 @@ namespace TimeSeriesAnalysis.Test.SysID
             UnitDataSet dataSet = new UnitDataSet();
             dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
             dataSet.CreateTimeStamps(timeBase_s);
-            var simulator = new UnitSimulator(model);
-            var ret  = simulator.Simulate(ref dataSet);
 
-            //   Plot.FromList(new List<double[]>{ dataSet.Y_sim,u1},new List<string>{"y1=ymeas ","y3=u1"}, timeBase_s);
-            Assert.IsNotNull(ret);
-            Assert.IsTrue(dataSet.Y_sim[30+ timeDelay_s] == 0,"step should not arrive at y_sim too early");
-            Assert.IsTrue(dataSet.Y_sim[31+ timeDelay_s] == 1, "steps should be delayed exactly timeDelay_s later  ");
+            (var isOk,var y_sim) = PlantSimulator.SimulateSingle(dataSet, model);
+            // plot
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> { y_sim, u1 }, new List<string> { "y1=ymeas ", "y3=u1" }, timeBase_s);
+                Shared.DisablePlots();
+            }
+            //assert
+            //  Assert.IsNotNull(retSim);
+            Assert.IsTrue(isOk);
+            Assert.IsTrue(y_sim[30+ timeDelay_s] == 0,"step should not arrive at y_sim too early");
+            Assert.IsTrue(y_sim[31+ timeDelay_s] == 1, "steps should be delayed exactly timeDelay_s later  ");
         }
 
     }
@@ -70,10 +78,11 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.U = U;
             dataSet.BadDataID = badValueId;
             dataSet.CreateTimeStamps(timeBase_s);
-            var simulator = new UnitSimulator(model);
+        //    var simulator = new UnitSimulator(model);
             if (doNonWhiteNoise)
             {
-                simulator.SimulateYmeas(ref dataSet, 0);
+                PlantSimulator.SimulateSingle(dataSet, model, true, 0,true);
+              //  simulator.SimulateYmeas(ref dataSet, 0);
                 double rand = 0;
                 var randObj = new Random(45466545);
                 for (int i = 0; i < dataSet.Y_meas.Length; i++)
@@ -84,7 +93,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             else
             {
-                simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
+                PlantSimulator.SimulateSingle(dataSet, model, true, noiseAmplitude,true);
+               // simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
             }
 
             if (addInBadDataToYmeasAndU)
@@ -634,6 +644,68 @@ namespace TimeSeriesAnalysis.Test.SysID
             DefaultAsserts(model, designParameters);
         }
 
+        /*
+        [TestCase(0.10, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
+
+        
+        public void I1_NonLinear_RampDown(double curvature, double timeConstant_s, int timeDelay_s)
+        {
+            double bias = 1;
+            double noiseAmplitude = 0.01;
+
+            double[] u1 = TimeSeriesCreator.Ramp(60,80,20,20,20);
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
+
+            UnitParameters designParameters = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = new double[] { 3 },
+                Curvatures = new double[] { curvature },
+                UNorm = new double[] { 1.1 },
+                U0 = new double[] { 50 },
+                Bias = bias
+            };
+
+            UnitParameters paramtersNoCurvature = new UnitParameters
+            {
+                TimeConstant_s = timeConstant_s,
+                TimeDelay_s = timeDelay_s,
+                LinearGains = designParameters.LinearGains,
+                UNorm = designParameters.UNorm,
+                U0 = designParameters.U0,
+                Bias = bias
+            };
+            var fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);
+            var refModel = new UnitModel(paramtersNoCurvature, "reference");
+
+            var sim = new PlantSimulator(new List<ISimulatableModel> { refModel });
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(sim.AddExternalSignal(refModel, SignalType.External_U), u1);
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = sim.Simulate(inputData, out TimeSeriesDataSet refData);
+
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, fittingSpecs, noiseAmplitude);
+            model.ID = "fitted";
+            string caseId = TestContext.CurrentContext.Test.Name;
+           
+            //TODO: disable plotting,when done1!!!
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
+                model.GetFittedDataSet().Y_meas,
+                refData.GetValues(refModel.GetID(),SignalType.Output_Y),
+                u1 },
+                 new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1" }, (int)timeBase_s, caseId, default,
+                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
+
+            PlotGain.Plot(model, new UnitModel(designParameters,"Design"), "RampDownUnitTest");
+
+            Shared.DisablePlots();
+
+            DefaultAsserts(model, designParameters);
+        }
+        */
+
 
         [TestCase(0.4, 0, 0, Category = "Nonlinear")]
         [TestCase(0.2, 0, 0, Category = "Nonlinear")]
@@ -656,7 +728,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(-0.2, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
         [TestCase(-0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
 
-        public void I1_NonLinear(double curvature, double timeConstant_s, int timeDelay_s)
+        public void I1_NonLinear_Threesteps(double curvature, double timeConstant_s, int timeDelay_s)
         {
             double bias = 1;
             double noiseAmplitude = 0.01;
@@ -710,7 +782,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(-0.4, 5, 0, Category = "Nonlinear,Dynamic")]
         [TestCase(0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
         [TestCase(0.2, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
-        public void I2_OneNonlinearInput(double curvature, double timeConstant_s, int timeDelay_s)
+        public void I2_OneNonlinearInput_SixSteps(double curvature, double timeConstant_s, int timeDelay_s)
         {
             var model = I2_Internal(curvature,timeConstant_s,timeDelay_s,false);
 
@@ -727,7 +799,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
         [TestCase(-0.4, 5, 5, Category = "Nonlinear,Delayed,Dynamic")]
 
-        public void I2_NonLinear(double curvature, double timeConstant_s, int timeDelay_s,bool curvatureOnBothInputs=true)
+        public void I2_NonLinear_SixSteps(double curvature, double timeConstant_s, int timeDelay_s,bool curvatureOnBothInputs=true)
         {
             I2_Internal(curvature, timeConstant_s, timeDelay_s, curvatureOnBothInputs);
         }
@@ -801,7 +873,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(1,15,0, Category ="Dynamic")]
         [TestCase(1, 0, 2, Category = "Delayed")]
 
-        public void I2_Linear(double bias, double timeConstant_s, int timeDelay_s)
+        public void I2_Linear_Twosteps(double bias, double timeConstant_s, int timeDelay_s)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(50, 100, 0, 1);
@@ -923,7 +995,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(1, 0, Category = "Static")]
         [TestCase(0, 20, Category = "Dynamic")]
         [TestCase(1, 20, Category = "Dynamic")]
-        public void I3_Linear_singlesteps(double bias, double timeConstant_s)
+        public void I3_Linear_OneStep(double bias, double timeConstant_s)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(50, 100 ,0,1) ;
