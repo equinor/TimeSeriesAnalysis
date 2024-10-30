@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Accord.IO;
 using Accord.Statistics;
 
 //using System.Text.Json;
@@ -446,6 +447,34 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Simualates a single model for a unit dataset and adds the output to unitData.Y_meas of the unitData, optionally with noise
+        /// </summary>
+        /// <param name="unitData"></param>
+        /// <param name="model"></param>
+        /// <param name="noiseAmplitude"></param>
+        /// <param name="noiseSeed"></param>
+        /// <returns></returns>
+        public static (bool, double[]) SimulateSingleToYmeas(UnitDataSet unitData, ISimulatableModel model, double noiseAmplitude = 0,
+             int noiseSeed= 123)
+        {
+
+            return SimulateSingle(unitData, model, true, noiseAmplitude, true, noiseSeed);
+        }
+
+        /// <summary>
+        /// Simulates a single model given a unit data set, optionally writing the simulation to unitData.Y_sim
+        /// </summary>
+        /// <param name="unitData"></param>
+        /// <param name="model"></param>
+        /// <param name="addSimToUnitData"></param>
+        /// <returns></returns>
+        public static  (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, bool addSimToUnitData)
+        {
+
+            return SimulateSingle(unitData, model, false, 0, addSimToUnitData, 0);
+        }
+
+        /// <summary>
         /// Simulate single model based on a unit data set
         /// </summary>
         /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
@@ -454,12 +483,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="noiseAmplitude">if writing to Ymeas, it is possible to add noise of the given amplitude to signal</param>
         /// <param name="addSimToUnitData">if true, the Y_sim of unitData has the simulation result written two i</param>
         /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series</returns>
-        static public (bool, double[]) SimulateSingle(UnitDataSet unitData, UnitModel model,bool writeToYmeas= false, double noiseAmplitude=0,
-            bool addSimToUnitData=false)
+        static private (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model,bool writeToYmeas= false, 
+            double noiseAmplitude=0,
+            bool addSimToUnitData=false, int seedNr=123)
         {
             var inputData = new TimeSeriesDataSet();
             var singleModelName = "SimulateSingle";
-            var modelCopy = new UnitModel(model.GetModelParameters(), singleModelName);
+            var modelCopy = model.Clone(singleModelName);
 
             if (unitData.Times != null)
                 inputData.SetTimeStamps(unitData.Times.ToList());
@@ -476,20 +506,19 @@ namespace TimeSeriesAnalysis.Dynamic
                 uNames.Add(uName);
             }
             modelCopy.SetInputIDs(uNames.ToArray());
+            //modelCopy.SetOutputID("output");
 
             PlantSimulator sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
-
-            var simData = new TimeSeriesDataSet();
-     
-            var isOk = sim.SimulateSingle(inputData, singleModelName, false, out simData);
-
+          //  var simData = new TimeSeriesDataSet();
+            var isOk = sim.SimulateSingle(inputData, singleModelName, false, out var simData);
+            if(!isOk)
+                return (false, null);
             double[] y_sim = simData.GetValues(singleModelName, SignalType.Output_Y);
             if (noiseAmplitude > 0)
             {
                 // use a specific seed here, to avoid potential issues with "random unit tests" and not-repeatable
                 // errors.
-                Random rand = new Random(1232);
-
+                Random rand = new Random(seedNr);
                 for (int k = 0; k < y_sim.Count(); k++)
                 {
                     y_sim[k] += (rand.NextDouble() - 0.5) * 2 * noiseAmplitude;

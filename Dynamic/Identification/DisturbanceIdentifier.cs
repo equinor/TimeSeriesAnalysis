@@ -424,7 +424,7 @@ namespace TimeSeriesAnalysis.Dynamic
            // var sim = new UnitSimulator(unitModel);
             unitDataSet_adjusted.D = null;
             // double[] y_sim = sim.Simulate(ref unitDataSet_adjusted);
-            (var isOk, var y_sim) = PlantSimulator.SimulateSingle(unitDataSet_adjusted, unitModel, false, 0, false);
+            (bool isOk, double[] y_sim) = PlantSimulator.SimulateSingle(unitDataSet_adjusted, unitModel, false);
 
             if (y_sim == null)
             {

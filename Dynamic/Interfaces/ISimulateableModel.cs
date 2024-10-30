@@ -138,6 +138,12 @@ namespace TimeSeriesAnalysis.Dynamic
         bool IsModelSimulatable(out string explanationStr);
 
 
+        /// <summary>
+        /// Create a deep copy of itself
+        /// </summary>
+        /// <returns></returns>
+        ISimulatableModel Clone(string ID) ;
+
 
     }
 }

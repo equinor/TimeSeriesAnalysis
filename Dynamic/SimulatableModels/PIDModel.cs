@@ -301,6 +301,20 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return pidParameters.ToString();
         }
+
+        /// <summary>
+        /// Create deep copy/clone
+        /// </summary>
+        /// <returns></returns>
+        public ISimulatableModel Clone(string ID = null)
+        {
+            string IDinternal = ID + "clone";
+            if (ID != null)
+                IDinternal = ID;
+            return new PidModel(pidParameters, IDinternal);
+        }
+
+
     }
 
 }

@@ -129,5 +129,18 @@ namespace TimeSeriesAnalysis.Dynamic
         { 
             return SignalType.SelectorOut; 
         }
+
+        /// <summary>
+        /// Create a deep copy of itself
+        /// </summary>
+        /// <returns>deep copy</returns>
+        public ISimulatableModel Clone(string ID= null)
+        {
+            string IDinternal = ID + "clone";
+            if (ID != null)
+                IDinternal = ID;
+            return new Select(type, IDinternal);
+        }
+
     }
 }

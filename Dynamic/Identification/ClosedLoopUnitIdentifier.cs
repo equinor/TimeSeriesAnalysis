@@ -275,9 +275,9 @@ namespace TimeSeriesAnalysis.Dynamic
                   var sim3 = new UnitSimulator(idUnitModelsList[2]);
                   var sim3results = sim3.Simulate(ref dataSet, false, true);
                 */
-                (var isOk1,var sim1results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[0], false, 0, false);
-                (var isOk2, var sim2results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[1], false, 0, false);
-                (var isOk3, var sim3results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[2], false, 0, false);
+                (var isOk1,var sim1results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[0], false);
+                (var isOk2, var sim2results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[1], false);
+                (var isOk3, var sim3results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[2], false);
 
                 Plot.FromList(
                     new List<double[]> {

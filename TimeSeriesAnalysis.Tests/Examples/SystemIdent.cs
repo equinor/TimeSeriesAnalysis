@@ -68,7 +68,7 @@ namespace TimeSeriesAnalysis._Examples
             var refData = new UnitDataSet();
             refData.U = U;
             refData.CreateTimeStamps(timeBase_s);
-            PlantSimulator.SimulateSingle(refData, refModel);
+            PlantSimulator.SimulateSingle(refData, refModel,true);
 
             // simulate the nonlinear model 
             UnitParameters designParameters = new UnitParameters
@@ -85,7 +85,7 @@ namespace TimeSeriesAnalysis._Examples
             var idDataSet = new UnitDataSet();
             idDataSet.U = U;
             idDataSet.CreateTimeStamps(timeBase_s);
-            PlantSimulator.SimulateSingle(idDataSet, trueModel,true, noiseAmplitude);
+            PlantSimulator.SimulateSingleToYmeas(idDataSet, trueModel,noiseAmplitude);
 
             // do identification of unit model
             FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);

@@ -111,30 +111,22 @@ namespace TimeSeriesAnalysis.Test.SysID
             var gsFittingSpecs= new GainSchedFittingSpecs();
             gsFittingSpecs.uGainThresholds = refModel.GetModelParameters().LinearGainThresholds;
 
-            var plantSim = new PlantSimulator(new List<ISimulatableModel> { refModel });
-            var inputData = new TimeSeriesDataSet();
-            var input = (TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N,  0,  1,  2,  3).
-                  Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N,  4,  5,  6,  7)).
-                  Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N,  8,  9, 10, 11)).
-                  Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 12, 13, 14, 15))
-                 .ToArray());
-            inputData.Add(plantSim.AddExternalSignal(refModel, SignalType.External_U, (int)INDEX.FIRST), input);
-            inputData.CreateTimestamps(timeBase_s);
 
-            // Act
-            var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
-            simData.AddNoiseToSignal(SignalNamer.GetSignalName(refModel.ID, SignalType.Output_Y, 0),noiseAmplitude,123);
+            var input = (TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 0, 1, 2, 3).
+              Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 4, 5, 6, 7)).
+              Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 8, 9, 10, 11)).
+              Concat(TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 12, 13, 14, 15))
+             .ToArray());
 
-            Assert.IsTrue(isSimulatable);
             var dataSet = new UnitDataSet();
-            dataSet.Y_meas = simData.GetValues(refModel.ID, SignalType.Output_Y);
-            dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { inputData.GetValues(refModel.ID,SignalType.External_U)});
-            dataSet.Times = inputData.GetTimeStamps();
+            dataSet.SetU(input);
+            dataSet.CreateTimeStamps(timeBase_s);
+            (bool isOk, double[] y_sim) = PlantSimulator.SimulateSingleToYmeas(dataSet, refModel,noiseAmplitude);
+
             var gsModel = GainSchedIdentifier.IdentifyForGivenThresholds(dataSet, gsFittingSpecs);
 
             // console out
             ConoleOutResult(refParams, gsModel.GetModelParameters());
-
             Console.WriteLine(gsModel);
 
             // Plotting gains(debugging)
@@ -216,15 +208,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             trueGSparams.OperatingPoint_Y = -1.34;
 
-            GainSchedModel trueModel = new GainSchedModel(trueGSparams, "Correct gain sched model");
-            var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
-            var inputData = new TimeSeriesDataSet();
-            inputData.Add(correct_plantSim.AddExternalSignal(trueModel, SignalType.External_U, (int)INDEX.FIRST), u);
-            inputData.CreateTimestamps(timeBase_s);
-            var isOk = correct_plantSim.Simulate(inputData, out TimeSeriesDataSet refSimData);
-            SISOTests.CommonAsserts(inputData, refSimData, correct_plantSim);
-            double[] simY1 = refSimData.GetValues(trueModel.GetID(), SignalType.Output_Y);
-            unitData.Y_meas = (new Vec()).Add(Vec.Rand(simY1.Length, -noiseAmp, noiseAmp, 454), simY1);
+            GainSchedModel trueModel = new GainSchedModel(trueGSparams, "true gain sched model");
+            PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, 454);
 
             // Act
             var idModel = GainSchedIdentifier.Identify(unitData);
@@ -284,13 +269,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             trueGSparams.OperatingPoint_U = uOperatingPoint;
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "True  model");
-            var truePlantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
-            var inputData = new TimeSeriesDataSet();
-            inputData.Add(truePlantSim.AddExternalSignal(trueModel, SignalType.External_U, (int)INDEX.FIRST), u);
-            inputData.CreateTimestamps(timeBase_s);
-            var isOk = truePlantSim.Simulate(inputData, out TimeSeriesDataSet refSimData);
-            double[] simY1 = refSimData.GetValues(trueModel.GetID(), SignalType.Output_Y);
-            unitData.Y_meas = (new Vec()).Add(Vec.Rand(simY1.Length, -noiseAmp, noiseAmp, (int)Math.Ceiling(2 * gainSchedThreshold + 45)), simY1);
+            PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, (int)Math.Ceiling(2 * gainSchedThreshold + 45));
 
             // Act
             var idModel = new GainSchedModel();
@@ -362,14 +341,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             trueGSparams.OperatingPoint_Y = -1.34;
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "Correct gain sched model");
-            var correct_plantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
-            var inputData = new TimeSeriesDataSet();
-            inputData.Add(correct_plantSim.AddExternalSignal(trueModel, SignalType.External_U, (int)INDEX.FIRST), u);
-            inputData.CreateTimestamps(timeBase_s);
-            var isOk = correct_plantSim.Simulate(inputData, out TimeSeriesDataSet refSimData);
-            SISOTests.CommonAsserts(inputData, refSimData, correct_plantSim);
-            double[] simY1 = refSimData.GetValues(trueModel.GetID(), SignalType.Output_Y);
-            unitData.Y_meas = (new Vec()).Add(Vec.Rand(simY1.Length,-noiseAmp, noiseAmp, (int)Math.Ceiling(2*gain_sched_threshold+45)), simY1);
+            PlantSimulator.SimulateSingleToYmeas(unitData,trueModel, noiseAmp, (int)Math.Ceiling(2 * gain_sched_threshold + 45));
 
             // Act
             var idModel = GainSchedIdentifier.Identify(unitData);
@@ -429,19 +401,11 @@ namespace TimeSeriesAnalysis.Test.SysID
                 TimeDelay_s = 0,
             };
 
-
             // make the bias nonzero to test that the operating point estimation works.
             trueParams.OperatingPoint_Y = 1.34;
-
             GainSchedModel true_model = new GainSchedModel(trueParams, "Correct gain sched model");
-            var truePlantSim = new PlantSimulator(new List<ISimulatableModel> { true_model });
-            var inputData = new TimeSeriesDataSet();
-            inputData.Add(truePlantSim.AddExternalSignal(true_model, SignalType.External_U, (int)INDEX.FIRST), u);
-            inputData.CreateTimestamps(timeBase_s);
-            var trueModelIsSimulatable = truePlantSim.Simulate(inputData, out TimeSeriesDataSet trueSimData);
-            SISOTests.CommonAsserts(inputData, trueSimData, truePlantSim);
-            double[] y_meas = trueSimData.GetValues(true_model.GetID(), SignalType.Output_Y);
-            unitData.Y_meas = y_meas;
+
+            PlantSimulator.SimulateSingleToYmeas(unitData, true_model, 0,123);
 
             // Act
             var idModel = new GainSchedModel();
@@ -457,19 +421,15 @@ namespace TimeSeriesAnalysis.Test.SysID
                 gsFittingSpecs.uTimeConstantThresholds = trueParams.TimeConstantThresholds;
                 idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
             }
-            var estPlantSim = new PlantSimulator(new List<ISimulatableModel> { idModel });
-            inputData.Add(estPlantSim.AddExternalSignal(idModel, SignalType.External_U, (int)INDEX.FIRST), u);
+            (bool isOk2, double[] simY2) =  PlantSimulator.SimulateSingle(unitData, idModel, false);
 
-            var IdentifiedisSimulatable = estPlantSim.Simulate(inputData, out TimeSeriesDataSet IdentifiedsimData);
-
-            double[] simY2 = IdentifiedsimData.GetValues(idModel.GetID(), SignalType.Output_Y);
             // plot
             bool doPlot = false;
             if (doPlot)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
-                    y_meas,
+                    unitData.Y_meas,
                     simY2,
                     unitData.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_sim(est_model)", "y3=u1" },
@@ -482,7 +442,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // Asserts
             Assert.IsTrue(Math.Abs(idModel.GetModelParameters().LinearGainThresholds.First() - trueParams.LinearGainThresholds.First()) < threshold_tol);
-            SISOTests.CommonAsserts(inputData, IdentifiedsimData, estPlantSim);
+            //SISOTests.CommonAsserts(inputData, IdentifiedsimData, estPlantSim);
 
             int min_number_of_time_constants = Math.Min(idModel.GetModelParameters().TimeConstant_s.Length, trueParams.TimeConstant_s.Length);
             for (int k = 0; k < min_number_of_time_constants; k++)

@@ -139,11 +139,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ProcessName = originalDataSet.ProcessName + "downsampledFactor" + downsampleFactor;
 
             this.Y_meas = Vec<double>.Downsample(originalDataSet.Y_meas, downsampleFactor);
-            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor); 
-            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor); 
+            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor);
+            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor);
             this.U = Array2D<double>.Downsample(originalDataSet.U, downsampleFactor);
-            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor); 
-            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor); 
+            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor);
+            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns the number of datapoints in the dataset
         /// </summary>
         /// <returns></returns>
-        public int GetNumDataPoints ()
+        public int GetNumDataPoints()
         {
             if (U != null)
                 return U.GetNRows();
@@ -179,10 +179,42 @@ namespace TimeSeriesAnalysis.Dynamic
                 return Times.Length;
             else if (Y_meas != null)
                 return Y_meas.Length;
-            else if (Y_setpoint!= null)
+            else if (Y_setpoint != null)
                 return Y_setpoint.Length;
             else
                 return 0;
+        }
+
+        /// <summary>
+        /// Helper to set column of U to uValues. 
+        /// </summary>
+        /// <param name="uValues1">first input array</param>
+        /// <param name="uValues2">second input array(can be null)</param>
+        /// <param name="uValues3">third input array(can be null)</param>
+        /// <param name="uValues4">third input array(can be null)</param>
+        /// <param name="uValues5">third input array(can be null)</param>
+        /// <param name="uValues6">third input array(can be null)</param>
+        /// <returns>true if succesful, otherwise false</returns>
+        public bool SetU(double[] uValues1, double[] uValues2 = null, double[] uValues3 = null, double[] uValues4 = null, 
+            double[] uValues5 = null, double[] uValues6 = null)
+        {
+            var listOfUs = new List<double[]>();
+            if (uValues1 == null)
+                return false;
+
+            listOfUs.Add(uValues1);
+            if (uValues2 != null)
+                listOfUs.Add(uValues2);
+            if (uValues3 != null)
+                listOfUs.Add(uValues3);
+            if (uValues4 != null)
+                listOfUs.Add(uValues4);
+            if (uValues5 != null)
+                listOfUs.Add(uValues5);
+            if (uValues6 != null)
+                listOfUs.Add(uValues6);
+            U = Array2D<double>.CreateFromList(listOfUs);
+            return true;
         }
 
 

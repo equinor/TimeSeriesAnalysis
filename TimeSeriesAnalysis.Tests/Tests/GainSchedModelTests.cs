@@ -252,6 +252,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             // Act
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+                        
             SISOTests.CommonAsserts(inputData, simData, plantSim);
             double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y); // TODO: Change .GetID() with input ID from parameterlist?
 

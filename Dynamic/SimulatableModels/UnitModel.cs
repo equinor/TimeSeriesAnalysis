@@ -783,5 +783,18 @@ namespace TimeSeriesAnalysis.Dynamic
             this.delayObj = null;
         }
 
+        /// <summary>
+        /// Create a deep copy of itself
+        /// </summary>
+        /// <returns>deep copy</returns>
+        public ISimulatableModel Clone(string IDexternal = null)
+        {
+            string IDinternal = ID + "clone";
+            if (IDexternal != null)
+                IDinternal = IDexternal;
+            return new UnitModel(modelParameters,IDinternal);
+        }
+
+
     }
 }
