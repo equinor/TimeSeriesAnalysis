@@ -29,8 +29,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             };
         GainSchedParameters gainSchedP2_singleThreshold_singleInput = new GainSchedParameters
         {
-            TimeConstant_s = new double[] { 5, 10 },
-            TimeConstantThresholds = new double[] { 2 },
+            TimeConstant_s = new double[] { 0,50 }, //nb! large jump that can create "bump" in model output
+            TimeConstantThresholds = new double[] { 2.5 },
             LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
             LinearGainThresholds = new double[] { 2.5 },
             TimeDelay_s = 0,
@@ -160,16 +160,24 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase(5, "up", Description = "nine gains")]
         [TestCase(1, "down", Description = "static, two gains, no timedelay, no bias")]
         [TestCase(5, "down", Description = "nine gains")]
+     //   [TestCase(2, "down", Description = "two gains, two time-constants very different, creates bump in simulated y")]
+
+
         public void ContinousGradualRamp_BumplessModelOutput(int ver, string upOrDown)
         {
             int padBeginIdx = 10;
-            int padEndIdx = 10; 
+            int padEndIdx = 40; 
             //    var tolerance = 0.2;
             // Arrange
             GainSchedParameters gsParams = new GainSchedParameters();
             if (ver == 1)
             {
                 gsParams = gainSchedP1_singleThreshold_singleInput_static;
+            }
+            if (ver == 2) // in this case the time constant is large enough that the transient in the one model is 
+                // so large that thre it can create a bump when the model transitions.
+            {
+                gsParams = gainSchedP2_singleThreshold_singleInput;
             }
             if (ver == 5)
             {
@@ -191,7 +199,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             double[] simY1 = simData.GetValues(refModel.GetID(), SignalType.Output_Y);
 
-            bool doPlot = false;// should be false unless debugging
+            bool doPlot = true;// should be false unless debugging
             if (doPlot)
             {
                 Shared.EnablePlots();
@@ -252,7 +260,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             SISOTests.CommonAsserts(inputData, simData, plantSim);
             double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y); // TODO: Change .GetID() with input ID from parameterlist?
 
-             bool doPlot = false;// should be false unless debugging.
+             bool doPlot = true;// should be false unless debugging.
             if (doPlot)
             {
                 Shared.EnablePlots();

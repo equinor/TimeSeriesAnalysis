@@ -649,43 +649,6 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("Operating point Y:" + SignificantDigits.Format(modelParameters.OperatingPoint_Y, sDigits).ToString(writeCulture) );
 
             ////////////////////////////////
-            // time constant
-            string timeConstantString = "TimeConstant : ";
-        
-            for (int i = 0; i < modelParameters.TimeConstant_s.Count(); i++)
-            {
-                if (modelParameters.TimeConstant_s[i] < cutOffForUsingHours_s)
-                {
-                    timeConstantString +=
-                        SignificantDigits.Format(modelParameters.TimeConstant_s[i], sDigits).ToString(writeCulture) + " sec";
-                }
-                else if (modelParameters.TimeConstant_s[i] < cutOffForUsingDays_s)
-                {
-                    timeConstantString +=
-                        SignificantDigits.Format(modelParameters.TimeConstant_s[i] / 3600, sDigits).ToString(writeCulture) + " hours";
-                }
-                else // use days
-                {
-                    timeConstantString +=
-                        SignificantDigits.Format(modelParameters.TimeConstant_s[i] / 86400, sDigits).ToString(writeCulture) + " days";
-                }
-            }
-            sb.AppendLine(timeConstantString);
-            ////////////////////////////////
-   
-            if (modelParameters.TimeConstantThresholds == null)
-                sb.AppendLine("Time constant thresholds : [null]");
-            else
-            {
-                sb.AppendLine("Time constant thresholds : ");
-                for (int inputIdx = 0; inputIdx < modelParameters.TimeConstantThresholds.Count(); inputIdx++)
-                {
-                    sb.AppendLine(
-                        "\t" + SignificantDigits.Format(modelParameters.TimeConstantThresholds[inputIdx], sDigits).ToString(writeCulture)
-                        );
-                }
-            }
-            ////////////////////////////////
             // time delay
             if (modelParameters.TimeDelay_s < cutOffForUsingHours_s)
             {
@@ -701,25 +664,71 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             ////////////////////////////////
+            // time constant
+
+            sb.AppendLine("TimeConstant :");
+            string timeConstantString = "";
+            for (int i = 0; i < modelParameters.TimeConstant_s.Count(); i++)
+            {
+                if (modelParameters.TimeConstant_s[i] < cutOffForUsingHours_s)
+                {
+                    timeConstantString +=
+                      "\t" +  SignificantDigits.Format(modelParameters.TimeConstant_s[i], sDigits).ToString(writeCulture) + " sec";
+                }
+                else if (modelParameters.TimeConstant_s[i] < cutOffForUsingDays_s)
+                {
+                    timeConstantString +=
+                    "\t" + SignificantDigits.Format(modelParameters.TimeConstant_s[i] / 3600, sDigits).ToString(writeCulture) + " hours";
+                }
+                else // use days
+                {
+                    timeConstantString +=
+                     "\t" + SignificantDigits.Format(modelParameters.TimeConstant_s[i] / 86400, sDigits).ToString(writeCulture) + " days";
+                }
+             }
+            sb.AppendLine(timeConstantString);
+            ////////////////////////////////
+
+            if (modelParameters.TimeConstantThresholds == null)
+                sb.AppendLine("Time constant thresholds : [null]");
+            else
+            {
+                sb.AppendLine("Time constant thresholds : ");
+                string tcThresholds = "";
+                for (int inputIdx = 0; inputIdx < modelParameters.TimeConstantThresholds.Count(); inputIdx++)
+                {
+                    tcThresholds +=
+                        "\t" + SignificantDigits.Format(modelParameters.TimeConstantThresholds[inputIdx], sDigits).ToString(writeCulture)
+                        ;
+                }
+                sb.AppendLine(tcThresholds);
+            }
+
+
+            ////////////////////////////////
             sb.AppendLine("Linear gains : ");
+            string lineargainsstr = "";
             for (int inputIdx = 0; inputIdx < modelParameters.LinearGains.Count; inputIdx++)
             {
                 for (int gsVarIdx = 0; gsVarIdx < modelParameters.LinearGains[inputIdx].Count(); gsVarIdx++)
                 {
-                    sb.AppendLine(
+                    lineargainsstr += 
                         "\t" + SignificantDigits.Format(modelParameters.LinearGains[inputIdx][gsVarIdx], sDigits).ToString(writeCulture)
-                        );
+                        ;
                 }
             }
+            sb.AppendLine(lineargainsstr);
 
-            ////////////////////////////////
-            sb.AppendLine("Linear gains thresholds : ");
+           ////////////////////////////////
+           sb.AppendLine("Linear gains thresholds : ");
+            string lgThresholds = "";
             for (int inputIdx = 0; inputIdx < modelParameters.LinearGainThresholds.Count(); inputIdx++)
             {
-                sb.AppendLine(
+                lgThresholds+=
                     "\t" + SignificantDigits.Format(modelParameters.LinearGainThresholds[inputIdx], sDigits).ToString(writeCulture)
-                    );
+                    ;
             }
+            sb.AppendLine(lgThresholds);
             ////////////////////////////////
             sb.AppendLine("-------------------------");
             if (modelParameters.Fitting != null)

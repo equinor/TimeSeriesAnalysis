@@ -12,6 +12,7 @@ using System.Reflection;
 using Accord.Math.Transforms;
 
 using System.Globalization;
+using System.Runtime.ConstrainedExecution;
 
 namespace TimeSeriesAnalysis.Test.SysID
 {
@@ -74,7 +75,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(2, 0, 1, 0.0, Description = "Two steps for every threshold(five thresholds)")]
         [TestCase(2, 0, 5, 1.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
         [TestCase(2, 0, 10, 2.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
-        public void FiveGains_CorrectGainsReturned(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
+        public void FiveGains_StepChange_CorrectGainsReturned(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
         {
             const int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
@@ -179,7 +180,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(5)]
         [TestCase(7)]
 
-        public void TimeDelay_TDEstOk(int timeDelaySamples)
+        public void TimeDelay_StepChange_TDEstOk(int timeDelaySamples)
         {
             double td_tol = 0.04;
 
@@ -247,12 +248,8 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // Arrange
             var unitData = new UnitDataSet();
-            //   double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, 30, 40, 50, 10);
-            //  double[] u2 = TimeSeriesCreator.ThreeSteps(3 * N / 5, 2 * N / 3, 4 * N / 5, N, 10, 20, 30, 40);
-            // double[] u = u1.Zip(u2, (x, y) => x + y).ToArray();
-              double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, uOperatingPoint, uOperatingPoint + 10, uOperatingPoint, uOperatingPoint - 10);
+            double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, uOperatingPoint, uOperatingPoint + 10, uOperatingPoint, uOperatingPoint - 10);
             double[] u = u1; //u1.Zip(u2, (x, y) => x + y).ToArray();
-            //double[] u = TimeSeriesCreator.Constant(u_operating_point,N);
             unitData.U = Array2D<double>.CreateFromList(new List<double[]> { u });
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), timeBase_s, N);
 
@@ -304,6 +301,73 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
         }
+        [TestCase(true, Explicit = true,Description="work in progress")]
+        [TestCase(false, Explicit = true, Description = "work in progress")]
+        public void TwoGains_RampChange(bool useIdentify)
+        {
+
+            //    var tolerance = 0.2;
+            // Arrange
+            GainSchedParameters trueGSparams = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 40 },
+                TimeConstantThresholds = new double[] {  },
+                LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
+                LinearGainThresholds = new double[] { 30 },
+                TimeDelay_s = 0,
+            };
+            int N = 300;
+            int padBeginIdx = 10;
+            int padEndIdx = 40;
+            double[]  input = TimeSeriesCreator.Ramp(N, 100, 0, padBeginIdx, padEndIdx);
+
+            GainSchedModel trueModel = new GainSchedModel(trueGSparams);
+        
+            var unitData = new UnitDataSet();
+            unitData.SetU(input);
+            unitData.CreateTimeStamps(timeBase_s);
+            (bool isOk, double[] y_meas)= PlantSimulator.SimulateSingleToYmeas(unitData,trueModel,0);
+
+            GainSchedModel idModel = new GainSchedModel();
+            if (useIdentify)
+            {
+                idModel = GainSchedIdentifier.Identify(unitData);
+            }
+            else
+            {
+                var gsFittingSpecs = new GainSchedFittingSpecs()
+                {
+                    uGainThresholds = new double[] { 30 }
+                };
+                idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
+            }
+            Console.WriteLine(idModel);
+
+            bool doPlot = true;// should be false unless debugging
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                     y_meas,
+                     unitData.Y_sim,
+                     unitData.U.GetColumn(0),
+                     },
+                    new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
+                    timeBase_s, "TwoGains_RampChange");
+                //   TestContext.CurrentContext.Test.Name.Replace(',', '_').Replace('(','_').Replace(')','_'));// TestContext.CurrentContext.Test.Name
+                Shared.DisablePlots();
+            }
+
+
+
+
+
+
+
+
+
+        }
+
 
 
 
@@ -319,7 +383,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(2.5, 0.015)]
         [TestCase(3.0, 0.015) ]
 
-        public void TwoGains_ThresholdEstOk(double gain_sched_threshold, double linearGainTresholdTol )
+        public void TwoGains_StepChange_ThresholdEstOk(double gain_sched_threshold, double linearGainTresholdTol )
         {
             double noiseAmp = 0.25;
             int N = 300;
@@ -434,7 +498,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(3, 10, 2, Description = "identify gain and time constants AND THRESHOLDS, zero bias, ")]
         [TestCase(3, 10, 3, Description = "same as ver2, except non-zero bias")]
 
-        public void TwoGains_TCAndThresholdFoundOk(double TimeConstant1_s, 
+        public void TwoGains_StepChange_TCAndThresholdFoundOk(double TimeConstant1_s, 
             double TimeConstant2_s, int ver)
         {
             int N = 300;

@@ -253,7 +253,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
                 Assert.AreEqual(signal.Count(), simData.GetLength(),"all signals should be same length as N");
                 Assert.IsTrue(firstTwoValuesDiff < 0.01, "system should start up in steady-state");
-                Assert.IsTrue(lastTwoValuesDiff < 0.01, "system should end up in stedy-state");
+                Assert.IsTrue(lastTwoValuesDiff < 0.01, "system should end up in steady-state");
             }
 
 

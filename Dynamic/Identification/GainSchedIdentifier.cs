@@ -335,40 +335,37 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
         {
-            const bool doMeanU = true;
+            // if set to true, then the operating point is set to the average U in the dataset, otherwise it is set to equal the start
+
+            const bool doMeanU = false; // can be true or false, makes little difference?
+            const bool fitOperatingPointYtoReduceOverallMisfit = true;//needs to be true, otherwise many unit tests fail.
 
             var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
 
             //V1: set the operating point to equal the first data point in the tuning set
-            gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+            gsParams.OperatingPoint_U = 30;// dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
             //V2: set the operating point to equal the first data point in the tuning set
             var val = (new Vec(dataSet.BadDataID)).Mean(dataSet.U.GetColumn(gsParams.GainSchedParameterIndex));
             if (val.HasValue && doMeanU)
-                gsParams.OperatingPoint_U = val.Value;
-            else
-                gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
-            var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
-            var inputDataIdent = new TimeSeriesDataSet();
-
-            var vec = new Vec();
-
-            for  (var index =0; index< dataSet.U.GetNColumns(); index++)
             {
-                inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, index), dataSet.U.GetColumn(index));
+                gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
             }
+            gsParams.OperatingPoint_U = val.Value;
+            
+            (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel,false);
 
-            inputDataIdent.CreateTimestamps(dataSet.GetTimeBase());
-            var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
             if (isOk)
             {
-                var simY_nobias = identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y);
+                var vec = new Vec();
+                var simY_nobias = y_sim;
                 var measY = dataSet.Y_meas;
                 var estBias = vec.Mean(vec.Subtract(measY, simY_nobias));
                 if (estBias.HasValue)
                 {
-                    gsParams.OperatingPoint_Y = estBias.Value;
-
-                    
+                    if (fitOperatingPointYtoReduceOverallMisfit)
+                        gsParams.OperatingPoint_Y = estBias.Value;
+                    else
+                        gsParams.OperatingPoint_Y = dataSet.Y_meas.First(); 
                     dataSet.Y_sim = vec.Add(simY_nobias, gsParams.OperatingPoint_Y);
                     return true;
                 }
@@ -377,11 +374,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.Y_sim = simY_nobias;
                     return false;
                 }
+                return false;
             }
             else
             {
                 return false;
             }
+         
+           
         }
 
 
