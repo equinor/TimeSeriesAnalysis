@@ -21,15 +21,23 @@ jobs:
               run: nuget restore TimeSeriesAnalysis.sln
             - name: Build 
               run: dotnet build TimeSeriesAnalysis.sln -c Release
-            - name: dotnet pack to create *.nupkg file build artifact
+            - name: Pack
               run: dotnet pack TimeSeriesAnalysis.sln -c Release --include-symbols -p:SymbolPackageFormat=snupkg --include-source
-            - name: nuget.pkg.github.com  set API key
+            - name: Nuget Set API key
               run: nuget setapikey ${{secrets.NUGET_API_KEY}} -source https://nuget.pkg.github.com/equinor/
-            - name: nuget.pkg.github.com publish 
+            - name: Nuget publish 
               run: nuget push bin\Release\*.nupkg -source https://nuget.pkg.github.com/equinor/ -SkipDuplicate
-            - name: api.nuget.org set API key
+            - name: Nuget on Github Set API key
               run: nuget setapikey ${{secrets.NUGET_ORG_API_KEY}} -source https://api.nuget.org/v3/index.json
-            - name: api.nuget.org publish 
+            - name: Nuget on Github publish 
               run: nuget push bin\Release\*.nupkg -source https://api.nuget.org/v3/index.json -SkipDuplicate
               
+            #- name: Publish
+            #  uses: rohith/publish-nuget@v2
+            #  with:
+            #    PROJECT_FILE_PATH: TimeSeriesAnalysis.csproj
+            #    TAG_COMMIT: true
+            #    TAG_FORMAT: v*
+            #    NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+            #    NUGET_SOURCE: https://nuget.pkg.github.com/equinor/
                 
