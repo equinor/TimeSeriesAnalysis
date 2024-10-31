@@ -14,160 +14,81 @@ namespace TimeSeriesAnalysis.Utility
     /// </summary>
     public class PlotGain
     {
-        const int numberOfPlotPoints = 30;
-
-        private static string ReplaceCommentIllegalStrings(string comment)
-        {
-            if (comment == null)
-                return null;
-            return comment.Replace(" ","_").Replace(";","");
-        }
-
         /// <summary>
-        /// Plots an "x-y" plot of the steady-state gains of one or two models.
-        /// </summary>
-        /// <param name="model1">model of gains to be plotted</param>
-        /// <param name="model2">optional seond model to be compared in the plots</param>
-        /// <param name="comment">comment to be added to figure</param>
-        /// <param name="uMin">optional umin array over which to plot gain plots</param>
-        /// <param name="uMax">optional umax aray  over which to plot gain plots</param>
-        public static void PlotSteadyState(UnitModel model1, UnitModel model2 = null, string comment = null,double[] uMin=null, double[] uMax=null)
-        {
-            string outputId = model1.outputID;
-            if (outputId == null)
-            {
-                outputId = "output";
-            }
-
-            var model1Name = "model1";
-            var model2Name = "model2";
-
-            if (model1.ID != null && model1.ID != "not_named")
-            {
-                model1Name = model1.ID;
-            }
-
-            for (var inputIdx = 0; inputIdx < model1.ModelInputIDs.Count(); inputIdx++)
-            {
-                var inputSignalID = model1.ModelInputIDs[inputIdx];
-                if (inputSignalID == null)
-                {
-                    inputSignalID = "input" + inputIdx;
-                }
-                List<XYTable> tables_m1 = new List<XYTable>();
-                if (uMin != null && uMax != null)
-                {
-                    tables_m1 = CreateSteadyStateXYTablesFromUnitModel(model1, model1Name, inputIdx, uMin, uMax);
-                }
-                else if (model1.modelParameters.Fitting == null)
-                {
-                    if (model2 != null)
-                    {
-                        if (model2.modelParameters.Fitting != null)
-                            tables_m1 = CreateSteadyStateXYTablesFromUnitModel(model1, model1Name, inputIdx, 
-                                model2.modelParameters.Fitting.Umin, model2.modelParameters.Fitting.Umax);
-                        else
-                            throw new Exception("Unable to plot, no FittingInfo in model(s),specify Umin/Umax and rerun.");
-                    }
-                }
-                else
-                {
-                    tables_m1 = CreateSteadyStateXYTablesFromUnitModel(model1, model1Name, inputIdx);
-                }
-
-                if (model2 == null)
-                {
-                    PlotXY.FromTables(tables_m1, outputId + "_" + inputSignalID + "_gains");
-                    return;
-                }
-                //////////////////////////////////
-                // if model2 is not null, then plot it as well 
-                if (model2.ID != null && model2.ID != "not_named")
-                {
-                    model2Name = model2.ID;
-                }
-                List<XYTable> tables_m2 = new List<XYTable>();
-                if (uMin != null && uMax != null)
-                {
-                    tables_m2 = CreateSteadyStateXYTablesFromUnitModel(model2, model2Name, inputIdx, uMin, uMax);
-                }
-                else if (model2.modelParameters.Fitting == null)
-                {
-                    if (model1.modelParameters.Fitting != null)
-                        tables_m2 = CreateSteadyStateXYTablesFromUnitModel(model2, model1Name, inputIdx, 
-                            model1.modelParameters.Fitting.Umin, model1.modelParameters.Fitting.Umax);
-                    else
-                        throw new Exception("Unable to plot, no FittingInfo in model(s),specify Umin/Umax and rerun.");
-
-                }
-                else
-                    tables_m2 = CreateSteadyStateXYTablesFromUnitModel(model2, model2Name, inputIdx);
-
-                var plotTables = new List<XYTable>();
-                plotTables.AddRange(tables_m1);
-                plotTables.AddRange(tables_m2);
-                PlotXY.FromTables(plotTables, outputId + "_" + inputSignalID + "_gains", comment);
-            }
-        }
-
-
-        /// <summary>
-        /// Plots an "x-y" plot of the steady-state of one or two gain-scheduled models.
+        /// Plots an "x-y" plot of the steady-state of one or two models.
+        /// 
+        /// Currently supported are either UnitModels or GainSchedModels
+        /// 
         /// </summary>
         /// <param name="model1">model of gains to be plotted</param>
         /// <param name="model2">optional seond model to be compared in the plots</param>
         /// <param name="comment">comment to be added to figure</param>
         /// <param name="uMin">optional umin array over which to plot gain plots</param>
         /// <param name="uMax">optional umax array over which to plot gain plots</param>
+        /// <param name="numberOfPlotPoints">the number of points along the axis that are to be calculated to produce lines</param>
 
-        public static void PlotSteadyState(GainSchedModel model1, GainSchedModel model2 = null, string comment = null,
-            double[] uMin = null, double[] uMax = null)
+        public static void PlotSteadyState(ISimulatableModel model1, ISimulatableModel model2 = null, string comment = null,
+            double[] uMin = null, double[] uMax = null,int numberOfPlotPoints = 100)
         {
-            comment = ReplaceCommentIllegalStrings(comment);
-
-
-            string outputId = model1.outputID;
+            string outputId = model1.GetOutputID();
             if (outputId == null)
             {
                 outputId = "output";
             }
-
             var model1Name = "model1";
             var model2Name = "model2";
-
-            if (model1.ID != null && model1.ID != "not_named")
+            if (model1.GetID() != null && model1.GetID() != "not_named")
             {
-                model1Name = model1.ID;
+                model1Name = model1.GetID();
             }
-
-            for (var inputIdx = 0; inputIdx < model1.ModelInputIDs.Count(); inputIdx++)
+            for (var inputIdx = 0; inputIdx < model1.GetModelInputIDs().Count(); inputIdx++)
             {
-                var inputSignalID = model1.ModelInputIDs[inputIdx];
+                var inputSignalID = model1.GetModelInputIDs()[inputIdx];
                 if (inputSignalID == null)
                 {
                     inputSignalID = "input" + inputIdx;
                 }
                 List<XYTable> tables_m1 = new List<XYTable>();
-
-                if (model1.modelParameters.Fitting != null && uMin == null && uMax == null)
+  
+                if (model1.GetType() == typeof(GainSchedModel))
                 {
-                     uMin = model1.modelParameters.Fitting.Umin;
-                     uMax = model1.modelParameters.Fitting.Umax;
+                    tables_m1 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model1, model1Name, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
-                tables_m1 = CreateSteadyStateXYTablesFromGainSchedModel(model1, model1Name, inputIdx,uMin,uMax);
+                else if (model1.GetType() == typeof(UnitModel))
+                {
+                    if (( (UnitModel)model1).modelParameters.Fitting != null && uMin == null && uMax == null)
+                    {
+                        uMin = ((UnitModel)model1).modelParameters.Fitting.Umin;
+                        uMax = ((UnitModel)model1).modelParameters.Fitting.Umax;
+                    }
+                    tables_m1 = CreateSteadyStateXYTablesFromUnitModel((UnitModel)model1, model1Name, inputIdx, numberOfPlotPoints, uMin, uMax);
+                }
 
                 if (model2 == null)
                 {
-                    PlotXY.FromTables(tables_m1, "ss" +outputId + "_" + inputSignalID + "_gains", comment);
+                    PlotXY.FromTables(tables_m1, "ss" + outputId + "_" + inputSignalID + "_gains", comment);
                     return;
                 }
                 //////////////////////////////////
                 // if model2 is not null, then plot it as well 
-                if (model2.ID != null && model2.ID != "not_named")
+                if (model2.GetID() != null && model2.GetID() != "not_named")
                 {
-                    model2Name = model2.ID;
+                    model2Name = model2.GetID();
                 }
-                List<XYTable> tables_m2 = CreateSteadyStateXYTablesFromGainSchedModel(model2, model2Name, inputIdx,uMin,uMax);
+                List<XYTable> tables_m2 = new List<XYTable>();
+                if (model2.GetType() == typeof(GainSchedModel))
+                {
+                    tables_m2 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model2, model2Name, inputIdx, numberOfPlotPoints, uMin, uMax);
+                }
+                else if (model2.GetType() == typeof(UnitModel))
+                {
+                    if (((UnitModel)model2).modelParameters.Fitting != null && uMin == null && uMax == null)
+                    {
+                        uMin = ((UnitModel)model2).modelParameters.Fitting.Umin;
+                        uMax = ((UnitModel)model2).modelParameters.Fitting.Umax;
+                    }
+                    tables_m2 = CreateSteadyStateXYTablesFromUnitModel((UnitModel)model2, model2Name, inputIdx, numberOfPlotPoints, uMin, uMax);
+                }
 
                 var plotTables = new List<XYTable>();
                 plotTables.AddRange(tables_m1);
@@ -191,7 +112,7 @@ namespace TimeSeriesAnalysis.Utility
 
         public static void PlotGainSched(GainSchedModel model1, GainSchedModel model2 = null, string comment= null)
         {
-            comment = ReplaceCommentIllegalStrings(comment);
+            comment = comment;
 
             string outputId = model1.outputID;
             if (outputId == null)
@@ -251,8 +172,10 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="inputIdx"></param>
         /// <param name="uMinExt"></param>
         /// <param name="uMaxExt"></param>
+        /// <param name="numberOfPlotPoints"></param>
         /// <returns></returns>
-        static private List<XYTable> CreateSteadyStateXYTablesFromGainSchedModel(GainSchedModel model, string modelName, int inputIdx,
+        static private List<XYTable> CreateSteadyStateXYTablesFromGainSchedModel(GainSchedModel model, 
+            string modelName, int inputIdx, int numberOfPlotPoints,
             double[] uMinExt = null, double[] uMaxExt = null)
         {
 
@@ -306,8 +229,8 @@ namespace TimeSeriesAnalysis.Utility
 
       
 
-        static private List<XYTable> CreateSteadyStateXYTablesFromUnitModel(UnitModel model, string modelName, int inputIdx, 
-            double[] uMinExt=null, double[] uMaxExt=null)
+        static private List<XYTable> CreateSteadyStateXYTablesFromUnitModel(UnitModel model, string modelName, int inputIdx,
+            int numberOfPlotPoints,double[] uMinExt=null, double[] uMaxExt=null )
         {
             string outputId = model.outputID;
             if (outputId == null)

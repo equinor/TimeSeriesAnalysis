@@ -94,8 +94,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // set "indicestoignore" to exclude values outside ymin/ymax_fit and umin_fit,u_max_fit
 
-
-
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
             // estimate of the disturbance improves along with it.
@@ -108,13 +106,9 @@ namespace TimeSeriesAnalysis.Dynamic
             bool isOK;
             var dataSet1 = new UnitDataSet(dataSet);
             var dataSet2 = new UnitDataSet(dataSet);
-
-
             FittingSpecs fittingSpecs = new FittingSpecs();
             fittingSpecs.u0 = u0;
 
-
-            //int nGains=1;
             // ----------------
             // run1: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give afirst estimate of the disturbance
@@ -268,13 +262,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.GetTimeBase(), "doDebuggingPlot_disturbanceHLandLF");
                 dataSet.D = null;
 
-                /*  var sim1 = new UnitSimulator(idUnitModelsList[0]);
-                  var sim1results = sim1.Simulate(ref dataSet,false,true);
-                  var sim2 = new UnitSimulator(idUnitModelsList[1]);
-                  var sim2results = sim2.Simulate(ref dataSet, false, true);
-                  var sim3 = new UnitSimulator(idUnitModelsList[2]);
-                  var sim3results = sim3.Simulate(ref dataSet, false, true);
-                */
                 (var isOk1,var sim1results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[0], false);
                 (var isOk2, var sim2results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[1], false);
                 (var isOk3, var sim3results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[2], false);

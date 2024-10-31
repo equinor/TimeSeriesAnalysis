@@ -30,7 +30,12 @@ namespace TimeSeriesAnalysis.Dynamic
     static public class GainSchedIdentifier
     {
         /// <summary>
-        /// Identify a gain scheduled model for the given dataset.
+        /// Identify a gain scheduled model for the given dataset. 
+        /// 
+        /// This method will also identify thresholds, but with limits on how many thresholds the method can find.
+        /// 
+        /// See also <c>IdentifyForGivenThresholds</c> for when the thresholds are given, 
+        /// this makes identification a much simpler and faster process. 
         /// </summary>
         /// <param name="dataSet"></param>
         /// <param name="gsFittingSpecs"></param>
@@ -321,7 +326,8 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Determines the operating point(bias) of the gain-scheduled model that gives the smalles bias over the data
+        /// Determines the operating point, by selecting U, calculating a Y that causes the smalles offset of the dataset
+        /// 
         /// The resulting simulated y is stored in dataset.Ysim
         /// </summary>
         /// <param name="gsParams">the gain-scheduled parameters that are to be updated with an operating point.</param>
@@ -330,6 +336,12 @@ namespace TimeSeriesAnalysis.Dynamic
         private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
         {
             var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
+
+            //V1: just set the operating U to zero
+            //  gsParams.OperatingPoint_U = 0;
+            //V2: set the operating point to equal the first data point in the tuning set
+            gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+
             var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
             var inputDataIdent = new TimeSeriesDataSet();
 
@@ -350,8 +362,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (estBias.HasValue)
                 {
                     gsParams.OperatingPoint_Y = estBias.Value;
-                     gsParams.OperatingPoint_U = 0;
-                   // gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+
+                    
                     dataSet.Y_sim = vec.Add(simY_nobias, gsParams.OperatingPoint_Y);
                     return true;
                 }
