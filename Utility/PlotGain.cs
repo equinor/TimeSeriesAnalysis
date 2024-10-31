@@ -112,8 +112,6 @@ namespace TimeSeriesAnalysis.Utility
 
         public static void PlotGainSched(GainSchedModel model1, GainSchedModel model2 = null, string comment= null)
         {
-            comment = comment;
-
             string outputId = model1.outputID;
             if (outputId == null)
             {

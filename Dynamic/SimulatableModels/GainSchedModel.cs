@@ -49,7 +49,6 @@ namespace TimeSeriesAnalysis.Dynamic
         private double[] lastGoodValuesOfInputs;
 
         private GainSchedDataSet FittedDataSet=null;
-
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
         /// <summary>
@@ -146,6 +145,23 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
 
+        /// <summary>
+        /// Adjusts the model so operating point
+        /// 
+        /// OperatingPoint_Y is calculate dased on the given input.
+        /// 
+        /// </summary>
+        /// <param name="newOperatingPointU">the new desired operating point</param>
+        public void SetOperatingPoint(double newOperatingPointU)
+        {
+            var oldOpPointU = modelParameters.OperatingPoint_U;
+            var oldOpPointY = modelParameters.OperatingPoint_Y;
+            modelParameters.OperatingPoint_U = newOperatingPointU;
+
+            var deltaGain = IntegrateGains(oldOpPointU, newOperatingPointU, modelParameters.GainSchedParameterIndex);
+
+            modelParameters.OperatingPoint_Y = oldOpPointY+ deltaGain;
+        }
 
         /// <summary>
         /// Initalize the process model 
@@ -749,7 +765,8 @@ namespace TimeSeriesAnalysis.Dynamic
             string IDinternal = ID + "clone";
             if (IDexternal != null)
                 IDinternal = IDexternal;
-            return new GainSchedModel(modelParameters, IDinternal);
+            var newModelParams = new GainSchedParameters(modelParameters);
+            return new GainSchedModel(newModelParams, IDinternal);
         }
 
 

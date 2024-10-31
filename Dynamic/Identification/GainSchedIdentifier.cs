@@ -335,13 +335,18 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
         {
+            const bool doMeanU = true;
+
             var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
 
-            //V1: just set the operating U to zero
-            //  gsParams.OperatingPoint_U = 0;
-            //V2: set the operating point to equal the first data point in the tuning set
+            //V1: set the operating point to equal the first data point in the tuning set
             gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
-
+            //V2: set the operating point to equal the first data point in the tuning set
+            var val = (new Vec(dataSet.BadDataID)).Mean(dataSet.U.GetColumn(gsParams.GainSchedParameterIndex));
+            if (val.HasValue && doMeanU)
+                gsParams.OperatingPoint_U = val.Value;
+            else
+                gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
             var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
             var inputDataIdent = new TimeSeriesDataSet();
 

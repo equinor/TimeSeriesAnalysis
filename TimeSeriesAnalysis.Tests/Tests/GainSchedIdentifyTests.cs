@@ -373,6 +373,61 @@ namespace TimeSeriesAnalysis.Test.SysID
                 "There are too large differences in the linear gain threshold " + k.ToString());
             }
         }
+        [Test]
+        public void ChangeOperatingPoint_YsimUnchanged()
+        {
+            double y_tol = 0.01;
+
+            int N = 50;
+            var unitData = new UnitDataSet("test"); 
+            double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
+            double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
+            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
+            unitData.U = U;
+            unitData.Times = TimeSeriesCreator.CreateDateStampArray(
+                new DateTime(2000, 1, 1), timeBase_s, N);
+
+            GainSchedParameters trueParams = new GainSchedParameters
+            {
+                TimeConstant_s = new double[] { 4, 12 },
+                TimeConstantThresholds = new double[] { 1.035 },
+                LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
+                LinearGainThresholds = new double[] { 1.035 },
+                TimeDelay_s = 0,
+            };
+
+            // make the bias nonzero to test that the operating point estimation works.
+            trueParams.OperatingPoint_Y = 1.34;
+            GainSchedModel trueModel = new GainSchedModel(trueParams, "Correct gain sched model");
+            PlantSimulator.SimulateSingle(unitData, trueModel,true);
+
+            var alteredIdModel = (GainSchedModel)trueModel.Clone("altered");
+            alteredIdModel.SetOperatingPoint(3);
+            (bool isOk3, double[] simY2) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
+
+            // plot
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                    unitData.Y_sim,
+                    simY2,
+                    unitData.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas",  "y1=y_altered", "y3=u1" },
+                    timeBase_s,
+                    "GainSchedTest ver_");
+
+                PlotGain.PlotSteadyState(trueModel, alteredIdModel, "ChangeOperatingPoint_YsimUnchanged" , 
+                    new double[] { (new Vec()).Min(u) }, new double[] { (new Vec()).Max(u) });
+                Shared.DisablePlots();
+            }
+            ConoleOutResult(trueParams, alteredIdModel.GetModelParameters());
+            // Asserts
+            Assert.IsTrue((new Vec()).Max((new Vec()).Subtract(unitData.Y_sim, simY2))<y_tol);
+        }
+
 
         [TestCase(3, 10, 0, Description= "identify gain and time constants, zero bias, thresholds are GIVEN")]
         [TestCase(3, 10, 1, Description = "same as ver1, except non-zero bias")]
@@ -427,6 +482,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             (bool isOk2, double[] simY2) =  PlantSimulator.SimulateSingle(unitData, idModel, false);
 
+            var alteredIdModel = (GainSchedModel)idModel.Clone("altered");
+            alteredIdModel.SetOperatingPoint(3);
+            (bool isOk3, double[] simY3) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
+
             // plot
             bool doPlot = false;
             if (doPlot)
@@ -435,12 +494,13 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Plot.FromList(new List<double[]> {
                     unitData.Y_meas,
                     simY2,
+                    simY3,
                     unitData.U.GetColumn(0) },
-                    new List<string> { "y1=y_meas", "y1=y_sim(est_model)", "y3=u1" },
+                    new List<string> { "y1=y_meas", "y1=y_sim(est_model)", "y1=y_altered", "y3=u1" },
                     timeBase_s,
                     "GainSchedTest ver_"+ver);
 
-                PlotGain.PlotSteadyState(idModel, trueModel,"twogains"+ver, 
+                PlotGain.PlotSteadyState(idModel, alteredIdModel, "twogains"+ver, 
                     new double[] { (new Vec()).Min(u) }, new double[] { (new Vec()).Max(u) });
 
                 Shared.DisablePlots();
