@@ -792,7 +792,9 @@ namespace TimeSeriesAnalysis.Dynamic
             string IDinternal = ID + "clone";
             if (IDexternal != null)
                 IDinternal = IDexternal;
-            return new UnitModel(modelParameters,IDinternal);
+
+            var newModelParams = modelParameters.CreateCopy();
+            return new UnitModel(newModelParams, IDinternal);
         }
 
 

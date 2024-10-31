@@ -30,6 +30,29 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Constructor that copies an existing paramter set into a new object
+        /// </summary>
+        /// <param name="existingParam"></param>
+        public PidParameters(PidParameters existingParam)
+        {
+            Kp = existingParam.Kp;
+            Ti_s = existingParam.Ti_s;
+            Td_s = existingParam.Td_s;
+            GainScheduling = existingParam.GainScheduling;
+            FeedForward = existingParam.FeedForward;
+            Filtering = existingParam.Filtering;
+            warnings = existingParam.warnings;
+            u0 = existingParam.u0;
+            NanValue = existingParam.NanValue;
+            Scaling = existingParam.Scaling;    
+            Filtering   = existingParam?.Filtering;
+            AntiSurgeParams = existingParam.AntiSurgeParams;
+        
+        }
+
+
+
+        /// <summary>
         /// Proportional gain of controller
         /// </summary>
         public double Kp { get; set; } = 0;

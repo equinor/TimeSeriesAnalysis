@@ -311,7 +311,9 @@ namespace TimeSeriesAnalysis.Dynamic
             string IDinternal = ID + "clone";
             if (ID != null)
                 IDinternal = ID;
-            return new PidModel(pidParameters, IDinternal);
+
+            var newPidParameters = new PidParameters(pidParameters); 
+            return new PidModel(newPidParameters, IDinternal);
         }
 
 
