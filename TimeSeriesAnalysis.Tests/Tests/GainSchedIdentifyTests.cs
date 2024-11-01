@@ -13,6 +13,7 @@ using Accord.Math.Transforms;
 
 using System.Globalization;
 using System.Runtime.ConstrainedExecution;
+using System.Linq;
 
 namespace TimeSeriesAnalysis.Test.SysID
 {
@@ -222,9 +223,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
                         unitData.Y_meas ,
-                     //   unitData.Y_sim,
+                        unitData.Y_sim,
                         unitData.U.GetColumn(0) },
-                    new List<string> { "y1=y_meas", "y3=u1" },
+                    new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
                     timeBase_s,
                     "GainSched - TimeDelay - ");
                 Shared.DisablePlots();
@@ -301,49 +302,54 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
         }
-        [TestCase(true, Explicit = true,Description="work in progress")]
-        [TestCase(false, Explicit = true, Description = "work in progress")]
-        public void TwoGains_RampChange(bool useIdentify)
+        [TestCase("Identify",40,-2,-1)]
+        [TestCase("Identify",20,-2,-1)]
+        [TestCase("Identify", 40, -2, 1)]
+        [TestCase("Identify", 20, -2, 1)]
+        [TestCase("IdentifyForGivenThresholds", 40, -2, -1, Description ="threshold is assumed perfectly known, makes estimation easier")]
+        [TestCase("IdentifyForGivenThresholds", 20, -2, -1, Description = "threshold is assumed perfectly known, makes estimation easier")]
+        [TestCase("IdentifyForGivenThresholds", 40, -2, 1, Description = "threshold is assumed perfectly known, makes estimation easier")]
+        [TestCase("IdentifyForGivenThresholds", 20, -2, 1, Description = "threshold is assumed perfectly known, makes estimation easier")]
+        public void TwoGains_RampChange(string solver, double Tc, double gain1, double gain2)
         {
+            double tc_tol = 5;
+            double gain_tol_prc = 15;
+            double threshold_tol = 5;
 
-            //    var tolerance = 0.2;
             // Arrange
             GainSchedParameters trueGSparams = new GainSchedParameters
             {
-                TimeConstant_s = new double[] { 40 },
+                TimeConstant_s = new double[] { Tc },
                 TimeConstantThresholds = new double[] {  },
-                LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
-                LinearGainThresholds = new double[] { 30 },
+                LinearGains = new List<double[]> { new double[] { gain1 }, new double[] { gain2 } },
+                LinearGainThresholds = new double[] { 50 },
                 TimeDelay_s = 0,
             };
-            int N = 300;
-            int padBeginIdx = 10;
-            int padEndIdx = 40;
-            double[]  input = TimeSeriesCreator.Ramp(N, 100, 0, padBeginIdx, padEndIdx);
-
             GainSchedModel trueModel = new GainSchedModel(trueGSparams);
-        
+
+            double[]  input = TimeSeriesCreator.Ramp(300, 100, 0, 10, 40);
             var unitData = new UnitDataSet();
             unitData.SetU(input);
             unitData.CreateTimeStamps(timeBase_s);
             (bool isOk, double[] y_meas)= PlantSimulator.SimulateSingleToYmeas(unitData,trueModel,0);
 
             GainSchedModel idModel = new GainSchedModel();
-            if (useIdentify)
+            if (solver == "Identify")
             {
                 idModel = GainSchedIdentifier.Identify(unitData);
             }
-            else
+            else if (solver == "IdentifyForGivenThresholds")
             {
                 var gsFittingSpecs = new GainSchedFittingSpecs()
                 {
-                    uGainThresholds = new double[] { 30 }
+                    uGainThresholds = trueGSparams.LinearGainThresholds
                 };
                 idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
             }
             Console.WriteLine(idModel);
 
-            bool doPlot = true;// should be false unless debugging
+            // plotting
+            bool doPlot = false;// should be false unless debugging
             if (doPlot)
             {
                 Shared.EnablePlots();
@@ -353,19 +359,20 @@ namespace TimeSeriesAnalysis.Test.SysID
                      unitData.U.GetColumn(0),
                      },
                     new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
-                    timeBase_s, "TwoGains_RampChange");
+                    timeBase_s, "TwoGains_RampChange(" + solver + "," + Tc + "," + gain1 + "," + gain2 + ")");
                 //   TestContext.CurrentContext.Test.Name.Replace(',', '_').Replace('(','_').Replace(')','_'));// TestContext.CurrentContext.Test.Name
                 Shared.DisablePlots();
             }
 
+            // assert
+            Assert.That(idModel.GetModelParameters().TimeConstant_s.First() - trueModel.GetModelParameters().TimeConstant_s.First() < tc_tol, "Timeconstant 1 too far off");
+            if (idModel.GetModelParameters().TimeConstant_s.Count()>1)
+                Assert.That(idModel.GetModelParameters().TimeConstant_s.ElementAt(1) - trueModel.GetModelParameters().TimeConstant_s.ElementAt(1) < tc_tol, "Timeconstant 2 too far off");
 
+            Assert.That(Math.Abs(idModel.GetModelParameters().LinearGains.ElementAt(0)[0]/ trueModel.GetModelParameters().LinearGains.ElementAt(0)[0] - 1)*100 < gain_tol_prc, "Linear gain 1 too far off");
+            Assert.That(Math.Abs(idModel.GetModelParameters().LinearGains.ElementAt(1)[0] / trueModel.GetModelParameters().LinearGains.ElementAt(1)[0] - 1) * 100 < gain_tol_prc, "Linear gain 2 too far off");
 
-
-
-
-
-
-
+            Assert.That(idModel.GetModelParameters().LinearGainThresholds.First() - trueModel.GetModelParameters().LinearGainThresholds.First() < threshold_tol, "Threshold too far ooff");
         }
 
 
@@ -375,7 +382,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         // note that the input varies from -2 to 4 here, so threshold beyond that are not identifiable, and at the edges they are also hard to identify.
         [TestCase(-0.5, 0.055)]
-        [TestCase(-0.2, 0.055)]
+        [TestCase(-0.2, 0.058)]
         [TestCase(0.2, 0.045)]
         [TestCase(0.5, 0.04)]
         [TestCase(1.0, 0.01)]

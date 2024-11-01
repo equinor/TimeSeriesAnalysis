@@ -162,7 +162,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase(5, "down", Description = "nine gains")]
      //   [TestCase(2, "down", Description = "two gains, two time-constants very different, creates bump in simulated y")]
 
-
         public void ContinousGradualRamp_BumplessModelOutput(int ver, string upOrDown)
         {
             int padBeginIdx = 10;
@@ -199,7 +198,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             double[] simY1 = simData.GetValues(refModel.GetID(), SignalType.Output_Y);
 
-            bool doPlot = true;// should be false unless debugging
+            bool doPlot = false;// should be false unless debugging
             if (doPlot)
             {
                 Shared.EnablePlots();
@@ -260,7 +259,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             SISOTests.CommonAsserts(inputData, simData, plantSim);
             double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y); // TODO: Change .GetID() with input ID from parameterlist?
 
-             bool doPlot = true;// should be false unless debugging.
+            bool doPlot = false;// should be false unless debugging.
             if (doPlot)
             {
                 Shared.EnablePlots();
