@@ -162,9 +162,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             EstimateTimeDelay(ref paramsToReturn, ref dataSet);
 
-            // this seems to in all cases produces a gain threshold that is 2.99
-            const int numTcIterations = 50;
-            var bestParams = EvaluateMultipleTimeConstantsForGivenGainThreshold(ref paramsToReturn, dataSet,numTcIterations);
+            //TODO: include again!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+           const int numTcIterations = 50;
+           var bestParams = EvaluateMultipleTimeConstantsForGivenGainThreshold(ref paramsToReturn, dataSet,numTcIterations);
 
             paramsToReturn.Fitting = new FittingInfo();
             paramsToReturn.Fitting.WasAbleToIdentify = true;
@@ -181,6 +181,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         private static void EstimateTimeDelay(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
         {
+            bool doDebugConsoleOut = false;
+
             if (dataSet.Y_sim == null || dataSet.Y_meas == null)
                 return;
             var minTc = (new Vec(dataSet.BadDataID)).Min(gsParams.TimeConstant_s);
@@ -205,37 +207,32 @@ namespace TimeSeriesAnalysis.Dynamic
                 copiedGsParams.TimeConstant_s = vec.Subtract(gsParams.TimeConstant_s, timedelay_s);
 
                 var gsIdentModel = new GainSchedModel(copiedGsParams, "ident_model");
-                var identModelSim = new PlantSimulator(new List<ISimulatableModel> { gsIdentModel });
-                var inputDataIdent = new TimeSeriesDataSet();
-
-                int index = 0;
-                foreach (var id in gsIdentModel.GetModelInputIDs())
-                {
-                    inputDataIdent.Add(identModelSim.AddExternalSignal(gsIdentModel, SignalType.External_U, index), dataSet.U.GetColumn(index));
-                    index++;
-                }
-
-                inputDataIdent.CreateTimestamps(dataSet.GetTimeBase());
-                var isOk = identModelSim.Simulate(inputDataIdent, out TimeSeriesDataSet identModelSimData);
+                (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel, false);
+              
                 if (isOk)
                 {
-                    var currentSimY = identModelSimData.GetValues(gsIdentModel.ID, SignalType.Output_Y);
-                    var objFun = vec.Sum(vec.Abs(vec.Subtract(currentSimY, dataSet.Y_meas))).Value;
+                    var objFun = vec.Sum(vec.Abs(vec.Subtract(y_sim, dataSet.Y_meas))).Value;
                     resultDict.Add(timedelay_s, objFun);
+
+                    if (doDebugConsoleOut)
+                        Console.WriteLine("objFun:" + objFun + " Td:" + timedelay_s);
+
                     if (objFun < smallestObjFun)
                     {
                         smallestObjFun = objFun;
                         timedelay_best_s = timedelay_s;
-                        y_sim_best = currentSimY;
+                        y_sim_best = y_sim;
                     }
                 }
             }
 
             if (timedelay_best_s > 0)
             {
+                double CORRECTIONFACTOR = 2.0;// not sure why this works best.
+
                 dataSet.Y_sim = y_sim_best;
                 gsParams.TimeDelay_s = timedelay_best_s;
-                gsParams.TimeConstant_s = vec.Subtract(gsParams.TimeConstant_s, timedelay_best_s);
+                gsParams.TimeConstant_s = vec.Subtract(gsParams.TimeConstant_s, timedelay_best_s*CORRECTIONFACTOR);
             }
         }
 

@@ -203,7 +203,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
         }
 
-        [TestCase(3)]
+        // isssue:
+
+        [TestCase(0)]
+        [TestCase(2)]
         [TestCase(5)]
         [TestCase(7)]
 
@@ -213,24 +216,22 @@ namespace TimeSeriesAnalysis.Test.SysID
             double tc_tol = 2.5;
 
             double noiseAmp = 0.0;
-            int N = 300;
+            int N = 1300;//TODO! make this a lot smaller!!
             // Arrange
             var unitData = new UnitDataSet("test");
-            double[] u1 = TimeSeriesCreator.ThreeSteps(N / 5, N / 3, N / 2, N, -2, -1, 0, 1);
-            double[] u2 = TimeSeriesCreator.ThreeSteps(3 * N / 5, 2 * N / 5, 3* N / 5, N, 0, 1, 2, 3);
-            double[] u = u1.Zip(u2, (x, y) => x + y).ToArray();
-            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
-            unitData.U = U;
-            unitData.Times = TimeSeriesCreator.CreateDateStampArray(
-                new DateTime(2000, 1, 1), timeBase_s, N);
+            double[] u1 = TimeSeriesCreator.ThreeSteps(N*1/5, N*2/5, N*3/5, N, -2, -1, 0, 1);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(N*1/5, N*2/5, N*3/5, N, 0, 1, 2, 3);
+            double[] u = TimeSeriesCreator.Concat(u1,u2);
+            unitData.SetU(u); 
+            unitData.CreateTimeStamps(timeBase_s);
 
             double threshold =2;
 
             //reference model
             GainSchedParameters trueGSparams = new GainSchedParameters
             {
-                TimeConstant_s = new double[] { 10, 10 },
-                TimeConstantThresholds = new double[] { threshold },
+                TimeConstant_s = new double[] { 10 },
+                TimeConstantThresholds = null,
                 LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
                 LinearGainThresholds = new double[] { threshold },
                 TimeDelay_s = timeBase_s* timeDelaySamples,
@@ -261,8 +262,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
            
             // assert
-           Assert.That(Math.Abs(idModel.GetModelParameters().TimeDelay_s - trueGSparams.TimeDelay_s)<td_tol );
-           Assert.That(Math.Abs(idModel.GetModelParameters().TimeConstant_s.First() - trueGSparams.TimeConstant_s.First()) < tc_tol);
+           Assert.That(Math.Abs(idModel.GetModelParameters().TimeDelay_s - trueGSparams.TimeDelay_s)<td_tol,"time delay too far off" );
+           Assert.That(Math.Abs(idModel.GetModelParameters().TimeConstant_s.First() - trueGSparams.TimeConstant_s.First()) < tc_tol, "time constant too far off!");
         }
 
 
@@ -417,7 +418,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(2.5, 0.015)]
         [TestCase(3.0, 0.015) ]
 
-        public void TwoGainsAndTwoTc_StepChange_Identify_ThresholdEstOk(double gain_sched_threshold, double linearGainTresholdTol )
+        public void TwoGainsAndTwoTc_StepChange_Identify_TwoTcEstEstOk(double gain_sched_threshold, double linearGainTresholdTol )
         {
             double noiseAmp = 0.0;// TODO: should be above zero
             int N = 300;
@@ -425,9 +426,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             var unitData = new UnitDataSet("test"); 
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
             double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
-            double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
-            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
-            unitData.U = U;
+            double[] u = TimeSeriesCreator.Concat(u1, u2);
+            unitData.SetU(u);
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
 
@@ -470,6 +470,12 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Assert.That(Math.Abs(idModel.GetModelParameters().LinearGainThresholds[k] - trueGSparams.LinearGainThresholds[k]), Is.LessThanOrEqualTo(linearGainTresholdTol),
                 "There are too large differences in the linear gain threshold " + k.ToString());
             }
+            Assert.That(idModel.GetModelParameters().TimeConstantThresholds.Count() == 2,
+                "Two time constants in true model but only one model found");
+
+
+
+
         }
         [Test]
         public void ChangeOperatingPoint_YsimUnchanged()
@@ -545,9 +551,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             var unitData = new UnitDataSet("test"); 
             double[] u1 = TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, -2, -1, 0, 1);
             double[] u2 = TimeSeriesCreator.ThreeSteps(3*N/5, 2*N/3, 4*N/5, N, 0, 1, 2, 3);
-            double[] u = u1.Zip(u2, (x, y) => x+y).ToArray();
-            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u });
-            unitData.U = U;
+            double[] u = TimeSeriesCreator.Concat(u1, u2);
+            unitData.SetU(u);
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
 

@@ -24,6 +24,23 @@ namespace TimeSeriesAnalysis.Utility
         }
 
         /// <summary>
+        /// Combine to signals  of length N1 and N2 into a new signal of length N1+N2
+        /// </summary>
+        /// <param name="u1"></param>
+        /// <param name="u2"></param>
+        /// <returns></returns>
+        public static double[] Concat(double[] u1, double[] u2)
+        {
+            var v1 = new List<double>(u1);
+            v1.AddRange(u2);
+            return v1.ToArray();
+        }
+
+
+
+
+
+        /// <summary>
         /// Create an array of DateTimes starting at <c>t0</c> of length N and with sampling interval <c>dT_s</c>
         /// </summary>
         /// <param name="t0">first datetime in the array to be created</param>
