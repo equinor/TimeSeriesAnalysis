@@ -94,18 +94,28 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             Y_min = existingModel.Y_min;
             Y_max = existingModel.Y_max;
-            TimeConstantThresholds = existingModel.TimeConstantThresholds;
-            TimeConstant_s = existingModel.TimeConstant_s;
-            TimeConstantUnc_s = existingModel.TimeConstantUnc_s;
-            LinearGains = existingModel.LinearGains;
-            LinearGainUnc = existingModel.LinearGainUnc;
-            LinearGainThresholds = existingModel.LinearGainThresholds;
-            Fitting = existingModel.Fitting;
-            errorsAndWarningMessages = existingModel.errorsAndWarningMessages;
-            OperatingPoint_U = existingModel.OperatingPoint_U; 
+            OperatingPoint_U = existingModel.OperatingPoint_U;
             OperatingPoint_Y = existingModel.OperatingPoint_Y;
             GainSchedParameterIndex = existingModel.GainSchedParameterIndex;
             TimeDelay_s = existingModel.TimeDelay_s;
+
+            // arrays are reference types, so by default only the reference is copied, use
+            // .clone here to make an actual new object with a new reference
+            if (existingModel.TimeConstant_s != null)
+                TimeConstant_s = (double[])existingModel.TimeConstant_s.Clone();
+            if (existingModel.TimeConstantThresholds != null)
+                TimeConstantThresholds = (double[])existingModel.TimeConstantThresholds.Clone();
+            if (existingModel.TimeConstantUnc_s != null)
+                TimeConstantUnc_s = (double[])existingModel.TimeConstantUnc_s.Clone();
+            LinearGains = new List<double[]>(existingModel.LinearGains);
+            if (existingModel.LinearGainUnc!= null)
+                LinearGainUnc = new List<double[]>(existingModel.LinearGainUnc);
+            if (existingModel.LinearGainThresholds != null)
+                LinearGainThresholds = (double[])existingModel.LinearGainThresholds;
+
+            //todo: these are not cloned properly
+            errorsAndWarningMessages = existingModel.errorsAndWarningMessages;
+            Fitting = existingModel.Fitting;
             FittingSpecs = existingModel.FittingSpecs;  
         }
 
