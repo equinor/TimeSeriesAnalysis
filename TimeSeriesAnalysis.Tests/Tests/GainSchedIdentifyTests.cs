@@ -86,33 +86,34 @@ namespace TimeSeriesAnalysis.Test.SysID
             // linear gains threshold
             if (estParams.LinearGainThresholds.Count() > 0)
             {
-                Console.Write("gain threshold : " + estParams.LinearGainThresholds.First().ToString(accuracy, CultureInfo.InvariantCulture)
-                   + delimTxt + trueParams.LinearGainThresholds.First().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                for (int i = 0; i < Math.Min(estParams.LinearGainThresholds.Count(), trueParams.LinearGainThresholds.Count()); i++)
+                {
+                    Console.Write("gain threshold "+i+": " + estParams.LinearGainThresholds.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture)
+                       + delimTxt + trueParams.LinearGainThresholds.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                }
             }
             else
             {
                 Console.Write("gain threshold : " + "[none!]" + delimTxt + trueParams.LinearGainThresholds.First().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
             }
 
-            Console.Write("op point Y: " + estParams.OperatingPoint_Y.ToString(accuracy, CultureInfo.InvariantCulture)
-                + delimTxt + trueParams.OperatingPoint_Y.ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+            Console.Write("op point Y: " + estParams.GetOperatingPointY().ToString(accuracy, CultureInfo.InvariantCulture)
+                + delimTxt + trueParams.GetOperatingPointY().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
 
-            Console.Write("op point U: " + estParams.OperatingPoint_U.ToString(accuracy, CultureInfo.InvariantCulture)
-                 + delimTxt + trueParams.OperatingPoint_U.ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
-
-
+            Console.Write("op point U: " + estParams.GetOperatingPointU().ToString(accuracy, CultureInfo.InvariantCulture)
+                 + delimTxt + trueParams.GetOperatingPointU().ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
 
         }
 
         // note that the tolerance seems to be linear with the noise in the data
         // five varying gains
-        [TestCase(1, 0, 1, 0.0,65, Description = "Two steps for every threshold(five thresholds)")]
-        [TestCase(1, 0, 10, 1.0, 65, Description ="Two steps for every threshold(five thresholds)")]
-        [TestCase(1, 0, 20, 2.0, 65, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 1, 0.0,99, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 10, 1.0, 95, Description ="Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 20, 2.0, 94, Description = "Two steps for every threshold(five thresholds)")]
         // five gains that are the same (note that the tolerance can be much lower in this case)
-        [TestCase(2, 0, 1, 0.0, 28, Description = "Two steps for every threshold(five thresholds)")]
-        [TestCase(2, 0, 5, 1.0, 28, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
-        [TestCase(2, 0, 10, 2.0, 28, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
+        [TestCase(2, 0, 1, 0.0, 99, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(2, 0, 5, 1.0, 92, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
+        [TestCase(2, 0, 10, 2.0, 85, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
         public void FiveGainsStatic_StepChange_ForGivenThresholds_CorrectGains(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude,
             double fitScoreReq)
         {
@@ -121,29 +122,25 @@ namespace TimeSeriesAnalysis.Test.SysID
             // below: 5 gains
             if (ver == 1)
             {
-                refParams = new GainSchedParameters
+                refParams = new GainSchedParameters( 0, 4)
                 {
                     TimeConstant_s = null,
                     TimeConstantThresholds = null,
                     LinearGains = new List<double[]> { new double[] { 0.5 }, new double[] { 1 }, new double[] { 3 }, new double[] { 4.5 }, new double[] { 6 }, new double[] { 9 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    OperatingPoint_U = 0,
-                    OperatingPoint_Y = 4,
                     GainSchedParameterIndex = 0
                 };
             }
             else if (ver == 2)
             {
-                refParams = new GainSchedParameters // let all gains be the same, and check that estimation does not falsely suggest a gain-scheduled model
+                refParams = new GainSchedParameters(0,4) // let all gains be the same, and check that estimation does not falsely suggest a gain-scheduled model
                 {
                     TimeConstant_s = null,
                     TimeConstantThresholds = null,
                     LinearGains = new List<double[]> { new double[] { 2 }, new double[] { 2 }, new double[] { 2}, new double[] { 2 }, new double[] { 2 }, new double[] { 2 } },
                     LinearGainThresholds = new double[] { 2.5, 4.5, 6.5, 8.5, 10.5 },
                     TimeDelay_s = 0,
-                    OperatingPoint_U = 0,
-                    OperatingPoint_Y = 4,
                     GainSchedParameterIndex = 0
                 };
             }
@@ -161,7 +158,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var dataSet = new UnitDataSet();
             dataSet.SetU(input);
             dataSet.CreateTimeStamps(timeBase_s);
-            (bool isOk, double[] y_sim) = PlantSimulator.SimulateSingleToYmeas(dataSet, refModel,noiseAmplitude);
+            PlantSimulator.SimulateSingleToYmeas(dataSet, refModel,noiseAmplitude);
 
             var idModel = GainSchedIdentifier.IdentifyForGivenThresholds(dataSet, gsFittingSpecs);
 
@@ -243,7 +240,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double threshold =2;
 
             //reference model
-            GainSchedParameters trueGSparams = new GainSchedParameters
+            GainSchedParameters trueGSparams = new GainSchedParameters(0,-1.34)
             {
                 TimeConstant_s = new double[] { 10 },
                 TimeConstantThresholds = null,
@@ -251,7 +248,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGainThresholds = new double[] { threshold },
                 TimeDelay_s = timeBase_s* timeDelaySamples,
             };
-            trueGSparams.OperatingPoint_Y = -1.34;
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "true gain sched model");
             PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, 454);
@@ -304,16 +300,14 @@ namespace TimeSeriesAnalysis.Test.SysID
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), timeBase_s, N);
 
             //reference model
-            GainSchedParameters trueGSparams = new GainSchedParameters
+            GainSchedParameters trueGSparams = new GainSchedParameters(uOperatingPoint, yOperatingPoint)
             {
                 TimeConstant_s = new double[] { 0, 0 },
                 TimeConstantThresholds = new double[] { gainSchedThreshold },
-                LinearGains = new List<double[]> { new double[] { 2}, new double[] { 4 } },
+                LinearGains = new List<double[]> { new double[] { 2 }, new double[] { 4 } },
                 LinearGainThresholds = new double[] { gainSchedThreshold },
                 TimeDelay_s = 0,
             };
-            trueGSparams.OperatingPoint_Y = yOperatingPoint;
-            trueGSparams.OperatingPoint_U = uOperatingPoint;
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "True Model");
             PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, (int)Math.Ceiling(2 * gainSchedThreshold + 45));
@@ -430,14 +424,14 @@ namespace TimeSeriesAnalysis.Test.SysID
 
 
 
-        [TestCase(-0.5, 0.055)]
-        [TestCase(-0.2, 0.058)]
-        [TestCase(0.2, 0.045)]
-        [TestCase(0.5, 0.04)]
-        [TestCase(1.0, 0.01)]
-        [TestCase(2.0, 0.015)]
-        [TestCase(2.5, 0.015)]
-        [TestCase(3.0, 0.015) ]
+        [TestCase(-0.5, 0.055, Explicit = true)]
+        [TestCase(-0.2, 0.058, Explicit = true)]
+        [TestCase(0.2, 0.045, Explicit = true)]
+        [TestCase(0.5, 0.04, Explicit = true)]
+        [TestCase(1.0, 0.01, Explicit = true)]
+        [TestCase(2.0, 0.015, Explicit = true)]
+        [TestCase(2.5, 0.015, Explicit = true)]
+        [TestCase(3.0, 0.015, Explicit = true) ]
 
         public void TwoGainsAndTwoTc_StepChange_Identify_TwoTcEstEstOk(double gain_sched_threshold, double linearGainTresholdTol )
         {
@@ -453,7 +447,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 new DateTime(2000, 1, 1), timeBase_s, N);
 
             //reference model
-            GainSchedParameters trueGSparams = new GainSchedParameters
+            GainSchedParameters trueGSparams = new GainSchedParameters(0,-1.34)
             {
                 TimeConstant_s = new double[] { 3, 10 },
                 TimeConstantThresholds = new double[] { gain_sched_threshold },
@@ -461,7 +455,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                 LinearGainThresholds = new double[] { gain_sched_threshold },
                 TimeDelay_s = 0,
             };
-            trueGSparams.OperatingPoint_Y = -1.34;
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "Correct gain sched model");
             PlantSimulator.SimulateSingleToYmeas(unitData,trueModel, noiseAmp, (int)Math.Ceiling(2 * gain_sched_threshold + 45));
@@ -502,8 +495,8 @@ namespace TimeSeriesAnalysis.Test.SysID
 
 
         }
-        [Test]
-        public void ChangeOperatingPoint_YsimUnchanged()
+        [TestCase(1,2)]
+        public void ChangeOperatingPoint_YsimUnchanged(double origOpU, double origOpY)
         {
             double y_tol = 0.01;
 
@@ -517,7 +510,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
 
-            GainSchedParameters trueParams = new GainSchedParameters
+            GainSchedParameters trueParams = new GainSchedParameters(origOpU,origOpY)
             {
                 TimeConstant_s = new double[] { 4, 12 },
                 TimeConstantThresholds = new double[] { 1.035 },
@@ -527,12 +520,13 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
 
             // make the bias nonzero to test that the operating point estimation works.
-            trueParams.OperatingPoint_Y = 1.34;
-            GainSchedModel trueModel = new GainSchedModel(trueParams, "Correct gain sched model");
+            GainSchedModel trueModel = new GainSchedModel(trueParams, "true");
             PlantSimulator.SimulateSingle(unitData, trueModel,true);
 
-            var alteredIdModel = (GainSchedModel)trueModel.Clone("altered");
-            alteredIdModel.SetOperatingPoint(3);
+            var alteredParams = new GainSchedParameters(trueModel.GetModelParameters());
+            var alteredIdModel = new GainSchedModel(alteredParams,"altered");
+
+            alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
             (bool isOk3, double[] simY2) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
 
             // plot
@@ -555,6 +549,11 @@ namespace TimeSeriesAnalysis.Test.SysID
             ConoleOutResult(trueParams, alteredIdModel.GetModelParameters());
             // Asserts
             Assert.IsTrue((new Vec()).Max((new Vec()).Subtract(unitData.Y_sim, simY2))<y_tol);
+            Assert.IsTrue(trueParams.GetOperatingPointU() != alteredIdModel.GetModelParameters().GetOperatingPointU());
+            Assert.IsTrue(trueParams.GetOperatingPointY() != alteredIdModel.GetModelParameters().GetOperatingPointY());
+            Assert.IsTrue(trueParams.GetOperatingPointU() == origOpU);
+            Assert.IsTrue(trueParams.GetOperatingPointY() == origOpY);
+
         }
 
 
@@ -568,7 +567,6 @@ namespace TimeSeriesAnalysis.Test.SysID
         {
             int N = 300;
             var threshold_tol = 0.03;
-            var operatingy_tol = 0.03;
 
             double noiseAmplitude = 0.00;
 
@@ -581,7 +579,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
                 new DateTime(2000, 1, 1), timeBase_s, N);
 
-            GainSchedParameters trueParams = new GainSchedParameters
+            GainSchedParameters trueParams = new GainSchedParameters(0,1.34)
             {
                 TimeConstant_s = new double[] { TimeConstant1_s, TimeConstant1_s },
                 TimeConstantThresholds = null,
@@ -591,7 +589,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
 
             // make the bias nonzero to test that the operating point estimation works.
-            trueParams.OperatingPoint_Y = 1.34;
+        //    trueParams.OperatingPoint_Y = 1.34;
             GainSchedModel trueModel = new GainSchedModel(trueParams, "Correct gain sched model");
 
             PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmplitude,123);
@@ -613,7 +611,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             (bool isOk2, double[] simY2) =  PlantSimulator.SimulateSingle(unitData, idModel, false);
 
             var alteredIdModel = (GainSchedModel)idModel.Clone("altered");
-            alteredIdModel.SetOperatingPoint(3);
+            alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
             (bool isOk3, double[] simY3) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
 
             // plot

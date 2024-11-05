@@ -43,7 +43,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         static public GainSchedModel Identify(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs = null)
         {
-            const bool doV2 = true;
+            const bool doIdentifyV2 = true; 
+            const bool chooseModelV2 = false;// this for some reason causes worse performance, better if "false"
 
             int gainSchedInputIndex = 0;
             if (gsFittingSpecs != null)
@@ -72,7 +73,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(k));
                     }
                     inputData.CreateTimestamps(timeBase_s);
-                    var CorrectisSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+                    var trueIsSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
                     double[] unitModelSim = simData.GetValues(unitModel.GetID(), SignalType.Output_Y);
                     // Plot here!
                     Shared.EnablePlots();
@@ -102,8 +103,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 GSp_noGainSchedReference.TimeConstantThresholds = GS_TimeConstantThreshold1;
                 GSp_noGainSchedReference.Fitting = unitParams.Fitting;
                 // 
-                GSp_noGainSchedReference.OperatingPoint_U = 0;
-                GSp_noGainSchedReference.OperatingPoint_Y = unitParams.Bias;
+                GSp_noGainSchedReference.SetOperatingPoint(0, unitParams.Bias);
                 //////
                 allYSimList.Add(dataSetNoGainSched.Y_sim);
                 allGainSchedParams.Add(GSp_noGainSchedReference);
@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var potentialGainschedParametersList = new List<GainSchedParameters>();
             var potentialYsimList = new List<double[]>();
-            if (doV2)
+            if (doIdentifyV2)
                 (potentialGainschedParametersList, potentialYsimList) =
                     IdentifyGainScheduledGainsAndSingleThresholdV2(dataSet, gainSchedInputIndex, true, globalSearchIterationsPass1);
             else
@@ -130,12 +130,17 @@ namespace TimeSeriesAnalysis.Dynamic
             allGainSchedParams.AddRange(potentialGainschedParametersList);
             allYSimList.AddRange(potentialYsimList);
 
-            (var bestModel_pass1, var bestModelIdx_pass1) =  ChooseBestModelFromSimulationList(allGainSchedParams, allYSimList, ref dataSet);
-
+            GainSchedParameters bestModel_pass1 ;
+            int bestModelIdx_pass1;
+            if (chooseModelV2)
+                (bestModel_pass1, bestModelIdx_pass1) = ChooseBestModelFromFittingInfo(allGainSchedParams, ref dataSet);
+            else
+                (bestModel_pass1, bestModelIdx_pass1) =  ChooseBestModelFromSimulationList(allGainSchedParams, allYSimList, ref dataSet);
+           //  (var bestModel_pass1, var bestModelIdx_pass1) = ChooseBestModelFromSimulationList(allGainSchedParams, ref dataSet);
             // pass 2:
             const bool DO_PASS2 = true;
             int pass2Width = 0;//0,1 or 2, design parameter about how wide to do pass 2 aroudn pass 1 result.(higher number is at the expense of accuracy)
-            if (doV2)
+            if (doIdentifyV2)
                 pass2Width = 0;
 
             GainSchedParameters paramsToReturn = new GainSchedParameters();
@@ -145,14 +150,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 double? gsSearchMax_pass2 = allGainSchedParams.ElementAt(Math.Min(bestModelIdx_pass1 + 1 + pass2Width, allGainSchedParams.Count() - 1)).LinearGainThresholds.First();
                 var potentialGainschedParametersList_pass2 = new List<GainSchedParameters>();
                 var potentialYsimList_pass2 = new List<double[]>();
-                if (doV2)
+                if (doIdentifyV2)
                     (potentialGainschedParametersList_pass2, potentialYsimList_pass2) =
                          IdentifyGainScheduledGainsAndSingleThresholdV2(dataSet, gainSchedInputIndex, true, globalSearchIterationsPass2, gsSearchMin_pass2, gsSearchMax_pass2);
                 else
                     (potentialGainschedParametersList_pass2,potentialYsimList_pass2) =
                          IdentifyGainScheduledGainsAndSingleThresholdV1(dataSet, gainSchedInputIndex, true, globalSearchIterationsPass2, gsSearchMin_pass2, gsSearchMax_pass2);
-                (var bestModel_pass2, var bestModelIdx_pass2) = ChooseBestModelFromSimulationList(potentialGainschedParametersList_pass2,
-                    potentialYsimList_pass2, ref dataSet);
+                GainSchedParameters bestModel_pass2;
+                int bestModelIdx_pass2;
+
+                if (chooseModelV2)
+                    (bestModel_pass2, bestModelIdx_pass2) = ChooseBestModelFromFittingInfo(potentialGainschedParametersList_pass2,ref dataSet);
+                else
+
+                    (bestModel_pass2,  bestModelIdx_pass2) = ChooseBestModelFromSimulationList(potentialGainschedParametersList_pass2,
+                         potentialYsimList_pass2, ref dataSet);
                 paramsToReturn = bestModel_pass2;
             }
             else
@@ -180,6 +192,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// 
         /// Identify a model when a given set of thresholds is already given in the supplied gsFittingSpecs
         /// 
         /// </summary>
@@ -249,6 +262,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     allIdsOk = false;
                 }
+      
                 linearGains.Add(idResults.LinearGains);
                 timeConstants.Add(idResults.TimeConstant_s);
                 dataSetCopy.IndicesToIgnore = null;
@@ -305,8 +319,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="candidateGainSchedParams"> all candidate gain-scheduled parameters</param>
         /// <param name="dataSet">the dataset to be returned, where y_sim is to be set based on the best model.</param>
+        /// <param name="simulateAndAddToYsimInDataSet"></param>
+        /// <param name="doDebugOutput"></param>
         /// <returns>a tuple with the paramters of the "best" model and array of objectives </returns>
-        static private (GainSchedParameters, int) ChooseBestModelFromSimulationList(
+        static private (GainSchedParameters, int) ChooseBestModelFromFittingInfo(
             List<GainSchedParameters> candidateGainSchedParams, ref UnitDataSet dataSet, bool simulateAndAddToYsimInDataSet=true, bool doDebugOutput=false)
         {
             var vec = new Vec(dataSet.BadDataID);
@@ -357,6 +373,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="candidateGainSchedParams"> all candidate gain-scheduled parameters</param>
         /// <param name="candidateYsim"> list of all the simulated y corresponding to each parameter set in the first input</param>
         /// <param name="dataSet">the dataset to be returned, where y_sim is to be set based on the best model.</param>
+        /// <param name="doDebugOutput">give debug output to console</param>
         /// <returns>a tuple with the paramters of the "best" model and array of objectives </returns>
         static private (GainSchedParameters, int) ChooseBestModelFromSimulationList(List<GainSchedParameters> candidateGainSchedParams,
             List<double[]> candidateYsim, ref UnitDataSet dataSet, bool doDebugOutput = false)
@@ -364,7 +381,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var vec = new Vec(dataSet.BadDataID);
             GainSchedParameters BestGainSchedParams = null;
             double lowestObj = double.MaxValue;
-            double lowestSumDiffs = double.MaxValue;
             int numInputs = dataSet.U.GetNColumns();
 
             int bestModelIdx = 0;
@@ -441,13 +457,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return (BestGainSchedParams, bestModelIdx);
         }
 
-
-
-
-
-
-
-
         /// <summary>
         /// Determines the operating point, by selecting U, calculating a Y that causes the smalles offset of the dataset
         /// 
@@ -459,42 +468,41 @@ namespace TimeSeriesAnalysis.Dynamic
         private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
         {
             // if set to true, then the operating point is set to the average U in the dataset, otherwise it is set to equal the start
-
             const bool doMeanU = false; // can be true or false, makes little difference?
-            const bool fitOperatingPointYtoReduceOverallMisfit = true;//needs to be true, otherwise many unit tests fail.
 
             var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
+            var vec = new Vec(dataSet.BadDataID);
 
             //V1: set the operating point to equal the first data point in the tuning set
-            gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+            var desiredOpU = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
             //V2: set the operating point to equal the first data point in the tuning set
-            var val = (new Vec(dataSet.BadDataID)).Mean(dataSet.U.GetColumn(gsParams.GainSchedParameterIndex));
+            var val = vec.Mean(vec.GetValues(dataSet.U.GetColumn(gsParams.GainSchedParameterIndex), dataSet.IndicesToIgnore));
             if (val.HasValue && doMeanU)
             {
-                gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+                desiredOpU = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
             }
-            gsParams.OperatingPoint_U = val.Value;
+            gsParams.MoveOperatingPointUWithoutChangingModel(desiredOpU);
             
             (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel,false);
 
             if (isOk)
             {
-                var vec = new Vec(dataSet.BadDataID);
                 var simY_nobias = y_sim;
+                var estBias = vec.Mean(vec.Subtract(vec.GetValues(dataSet.Y_meas, dataSet.IndicesToIgnore),
+                    vec.GetValues(simY_nobias, dataSet.IndicesToIgnore)));
 
-                var estBias = vec.Mean(vec.Subtract(dataSet.Y_meas, simY_nobias));
                 if (estBias.HasValue)
                 {
-                    if (fitOperatingPointYtoReduceOverallMisfit)
-                        gsParams.OperatingPoint_Y = estBias.Value;
-                    else
-                        gsParams.OperatingPoint_Y = dataSet.Y_meas.First(); 
-                    dataSet.Y_sim = vec.Add(simY_nobias, gsParams.OperatingPoint_Y);
-
+                    gsParams.IncreaseOperatingPointY(estBias.Value);
+                    (var isOk2, var y_sim2) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel, false);
+                    dataSet.Y_sim = y_sim2;
                     if (gsParams.Fitting == null)
                         gsParams.Fitting = new FittingInfo();
                     gsParams.Fitting.FitScorePrc = FitScoreCalculator.Calc(dataSet.Y_meas,dataSet.Y_sim);
                     gsParams.Fitting.WasAbleToIdentify = true;
+                    gsParams.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
+                    if  (dataSet.IndicesToIgnore != null)
+                        gsParams.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
                     return true;
                 }
                 else
@@ -769,13 +777,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     Shared.DisablePlots();
                     Task.Delay(100);
                 }
-                (var bestModelStep2, var indexOfBestModel) = ChooseBestModelFromSimulationList(candModelsStep2, ref DSa, false);
+                (var bestModelStep2, var indexOfBestModel) = ChooseBestModelFromFittingInfo(candModelsStep2, ref DSa, false);
                 candGainschedParameters.Add(bestModelStep2);
                 //  candYSimList.Add((double[])DSa.Y_sim.Clone());
             }
 
 
-            (var bestGSParams, int bestIdx) = ChooseBestModelFromSimulationList(candGainschedParameters, ref dataSet,true, doConsoleDebug);
+            (var bestGSParams, int bestIdx) = ChooseBestModelFromFittingInfo(candGainschedParameters, ref dataSet,true, doConsoleDebug);
             gsParams = bestGSParams;
             return bestGSParams;
         }
@@ -815,9 +823,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
             UnitDataSet internalDS = new UnitDataSet(dataSet);
 
+            var vec = new Vec(dataSet.BadDataID);
+
             int number_of_inputs = dataSet.U.GetNColumns();
-            double gsVarMinU = dataSet.U.GetColumn(gainSchedInputIndex).Min();
-            double gsVarMaxU = dataSet.U.GetColumn(gainSchedInputIndex).Max();
+            double gsVarMinU = vec.GetValues(dataSet.U.GetColumn(gainSchedInputIndex), dataSet.IndicesToIgnore).Min();
+            double gsVarMaxU = vec.GetValues(dataSet.U.GetColumn(gainSchedInputIndex), dataSet.IndicesToIgnore).Max();
 
             // the two returned elements to be populated
             List<GainSchedParameters> candGainschedParameters = new List<GainSchedParameters>();
@@ -887,6 +897,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
+        /// (Deprecated??????)
         /// Perform a global search ("try-and-evaluate")
         /// for the threshold or thresholds that result in the gain-scheduling model with the best 
         /// fit
@@ -926,10 +937,11 @@ namespace TimeSeriesAnalysis.Dynamic
             UnitDataSet DS_commonTc2 = new UnitDataSet(dataSet);
             UnitDataSet DS_separateTc = new UnitDataSet(dataSet);
 
+            var vec = new Vec(dataSet.BadDataID);
 
             int number_of_inputs = dataSet.U.GetNColumns();
-            double gsVarMinU = dataSet.U.GetColumn(gainSchedInputIndex).Min();
-            double gsVarMaxU = dataSet.U.GetColumn(gainSchedInputIndex).Max();
+            double gsVarMinU = vec.GetValues(dataSet.U.GetColumn(gainSchedInputIndex),dataSet.IndicesToIgnore).Min();
+            double gsVarMaxU = vec.GetValues(dataSet.U.GetColumn(gainSchedInputIndex),dataSet.IndicesToIgnore).Max();
 
             // the two returned elements to be populated
             List<GainSchedParameters> candGainschedParameters = new List<GainSchedParameters>();
@@ -1066,7 +1078,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// When a upper/lower threshold is given, estimate gain for a dataset.
+        /// When a upper/lower threshold is given, estimate local linear model for a dataset.
         /// 
         /// Note that if there is no variation in dataSet between uMinFit and uMaxFit, then this method may actually expand these variables out internally.
         /// 
@@ -1162,7 +1174,10 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 results.LinearGains = unitParams.LinearGains;
-                results.TimeConstant_s = unitParams.TimeConstant_s;
+                if (unitParams.TimeConstant_s>dataSet.GetTimeBase())
+                    results.TimeConstant_s = unitParams.TimeConstant_s;
+                else
+                    results.TimeConstant_s = 0;
                 results.WasAbleToIdentfiy = true;
             }
             return results;

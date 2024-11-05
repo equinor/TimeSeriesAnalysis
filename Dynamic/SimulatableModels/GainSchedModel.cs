@@ -145,23 +145,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
 
-        /// <summary>
-        /// Adjusts the model so operating point
-        /// 
-        /// OperatingPoint_Y is calculate dased on the given input.
-        /// 
-        /// </summary>
-        /// <param name="newOperatingPointU">the new desired operating point</param>
-        public void SetOperatingPoint(double newOperatingPointU)
-        {
-            var oldOpPointU = modelParameters.OperatingPoint_U;
-            var oldOpPointY = modelParameters.OperatingPoint_Y;
-            modelParameters.OperatingPoint_U = newOperatingPointU;
-
-            var deltaGain = IntegrateGains(oldOpPointU, newOperatingPointU, modelParameters.GainSchedParameterIndex);
-
-            modelParameters.OperatingPoint_Y = oldOpPointY+ deltaGain;
-        }
 
         /// <summary>
         /// Initalize the process model 
@@ -311,105 +294,10 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             double processGainTerm = 0;
             processGainTerm = 0;
-            processGainTerm += IntegrateGains(modelParameters.OperatingPoint_U, u, inputIndex);
+            processGainTerm += modelParameters.IntegrateGains(modelParameters.GetOperatingPointU(), u, inputIndex);
             return processGainTerm;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="uGainSched_Start"></param>
-        /// <param name="uGainSched_End"></param>
-        /// <param name="inputIndex"></param>
-        /// <returns></returns>
-        private double IntegrateGains(double uGainSched_Start, double uGainSched_End, int inputIndex)
-        {
-            if (uGainSched_Start == uGainSched_End)
-                return 0;
-            double gainsToReturn = 0;
-            int gainSchedStartModelIdx = 0;
-            for (int idx = 0; idx < modelParameters.LinearGainThresholds.Length; idx++)
-            {
-                if (uGainSched_Start < modelParameters.LinearGainThresholds[idx])
-                {
-                    gainSchedStartModelIdx = idx;
-                    break;
-                }
-                else if (idx == modelParameters.LinearGainThresholds.Length - 1)
-                {
-                    gainSchedStartModelIdx = idx + 1;
-                }
-            }
-            int gainSchedEndModelIdx = 0;
-            for (int idx = 0; idx < modelParameters.LinearGainThresholds.Length; idx++)
-            {
-                if (uGainSched_End < modelParameters.LinearGainThresholds[idx])
-                {
-                    gainSchedEndModelIdx = idx;
-                    break;
-                }
-                else if (idx == modelParameters.LinearGainThresholds.Length - 1)
-                {
-                    gainSchedEndModelIdx = idx + 1;
-                }
-            }
-
-            // integrate
-            // if from left -> right
-            if (uGainSched_Start < uGainSched_End)
-            {
-                if (gainSchedStartModelIdx == gainSchedEndModelIdx)
-                {
-                    double deltaU = uGainSched_End  - uGainSched_Start;
-                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
-                }
-                else
-                {
-                    // first portion (might be from a u between two tresholds to a threshold)
-                    double deltaU = (modelParameters.LinearGainThresholds[gainSchedStartModelIdx] - uGainSched_Start);
-                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
-                    // middle entire portions 
-                    for (int curGainSchedModIdx = gainSchedStartModelIdx + 1; curGainSchedModIdx < gainSchedEndModelIdx; curGainSchedModIdx++)
-                    {
-                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx] - modelParameters.LinearGainThresholds[curGainSchedModIdx - 1]);
-                        gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
-                    }
-                    // last portions (might be a treshold to inbetween two tresholds)
-                    deltaU = uGainSched_End - modelParameters.LinearGainThresholds[gainSchedEndModelIdx-1];
-                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
-                }
-            }
-            else // integrate from left<-right
-            {
-                if (gainSchedStartModelIdx == gainSchedEndModelIdx)
-                {
-                    double deltaU = uGainSched_End - uGainSched_Start;
-                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
-                }
-                else
-                {
-                    double deltaU = 0;
-                    // first portion (might be from a u between two tresholds to a threshold)
-                   // if (modelParameters.LinearGainThresholds.Length - 1 >= gainSchedStartModelIdx)
-                    {
-                        // remember if there are N gains, there are N-1 gain tresholds 
-                        deltaU = (modelParameters.LinearGainThresholds[gainSchedStartModelIdx-1] - uGainSched_Start);
-                        gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
-                    }
-                    // middle entire portions 
-                    for (int curGainSchedModIdx = gainSchedStartModelIdx - 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
-                    {
-                        deltaU = (modelParameters.LinearGainThresholds[curGainSchedModIdx] -
-                            modelParameters.LinearGainThresholds[curGainSchedModIdx - 1]);
-                        gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
-                    }
-                    // last portions (might be a treshold to inbetween two tresholds)
-                    deltaU = uGainSched_End - modelParameters.LinearGainThresholds[gainSchedEndModelIdx];
-                    gainsToReturn += deltaU * modelParameters.LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
-                }
-            }
-            return gainsToReturn;
-        }
 
         /// <summary>
         /// Determine the time constant for a particular sceduling input
@@ -619,7 +507,6 @@ namespace TimeSeriesAnalysis.Dynamic
             numberFormat.NumberDecimalSeparator = ".";
 
             int sDigits = 3;
-            int sDigitsUnc = 2;
 
             int cutOffForUsingDays_s = 86400;
             int cutOffForUsingHours_s = 3600;
@@ -645,8 +532,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             sb.AppendLine("Gain-scheduling parameter index:" + modelParameters.GainSchedParameterIndex);
 
-            sb.AppendLine("Operating point U:" + SignificantDigits.Format(modelParameters.OperatingPoint_U, sDigits).ToString(writeCulture) );
-            sb.AppendLine("Operating point Y:" + SignificantDigits.Format(modelParameters.OperatingPoint_Y, sDigits).ToString(writeCulture) );
+            sb.AppendLine("Operating point U:" + SignificantDigits.Format(modelParameters.GetOperatingPointU(), sDigits).ToString(writeCulture) );
+            sb.AppendLine("Operating point Y:" + SignificantDigits.Format(modelParameters.GetOperatingPointY(), sDigits).ToString(writeCulture) );
 
             ////////////////////////////////
             // time delay
@@ -741,7 +628,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqDiff, 4).ToString(writeCulture));
                 sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqAbs, 4).ToString(writeCulture));
            */
-                sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were excluded");
+                sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints 
+                    + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were ignored");
                 foreach (var warning in modelParameters.GetWarningList())
                     sb.AppendLine("model fit warning :" + warning.ToString());
                 if (modelParameters.GetWarningList().Count == 0)

@@ -201,7 +201,7 @@ namespace TimeSeriesAnalysis.Utility
 
             XYTable xyTableGain = new XYTable("ssgain_" + modelName + "_fit", new List<string> { inputSignalID, outputId }, XYlineType.line);
             XYTable xyTableU0 = new XYTable("op_" + modelName, new List<string> { inputSignalID, outputId }, XYlineType.withMarkers);
-            xyTableU0.AddRow(new double[] { model.GetModelParameters().OperatingPoint_U, model.GetModelParameters().OperatingPoint_Y });
+            xyTableU0.AddRow(new double[] { model.GetModelParameters().GetOperatingPointU(), model.GetModelParameters().GetOperatingPointY() });
 
 
             double uMin = 0, uMax = 100;
@@ -211,7 +211,7 @@ namespace TimeSeriesAnalysis.Utility
                 uMax = uMaxExt[inputIdx];
 
             // TODO: this is not completely general, if gain-sched model has more than one input
-            var u0 = model.modelParameters.OperatingPoint_U;
+            var u0 = model.modelParameters.GetOperatingPointU();
           //  double[] u_vec = new double[u0.Length];
             double[] u_vec = new double[1];
 //            Array.Copy(u0, u_vec, u0.Length);
@@ -287,10 +287,6 @@ namespace TimeSeriesAnalysis.Utility
             }
             return new List<XYTable> { xyTableGain, xyTableU0 };
         }
-
-        ///////////////////////////////////////
-        ///
-        //// "gain" table
 
         /// <summary>
         /// This method creates a table from the LinearGains contained in model

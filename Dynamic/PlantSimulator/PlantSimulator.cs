@@ -481,6 +481,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="writeToYmeas">if set to true, the simulated result is written to unitData.Y_meas instead of Y_sim</param>
         /// <param name="noiseAmplitude">if writing to Ymeas, it is possible to add noise of the given amplitude to signal</param>
         /// <param name="addSimToUnitData">if true, the Y_sim of unitData has the simulation result written two i</param>
+        /// <param name="seedNr">the seed value of the noise to be added</param>
         /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series</returns>
         static private (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model,bool writeToYmeas= false, 
             double noiseAmplitude=0,

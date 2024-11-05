@@ -16,53 +16,45 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         int timeBase_s = 1;
         int N = 480;
 
-        GainSchedParameters gainSchedP1_singleThreshold_singleInput_static = new GainSchedParameters
+        GainSchedParameters gainSchedP1_singleThreshold_singleInput_static = new GainSchedParameters(0,0)
           {
                 TimeConstant_s = null,
                 TimeConstantThresholds = null,
                 LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
                 LinearGainThresholds = new double[] { 2.5 },
                 TimeDelay_s = 0,
-                OperatingPoint_U = 0,
-                OperatingPoint_Y = 0,
                 GainSchedParameterIndex = 0
             };
-        GainSchedParameters gainSchedP2_singleThreshold_singleInput = new GainSchedParameters
+        GainSchedParameters gainSchedP2_singleThreshold_singleInput = new GainSchedParameters(0,0)
         {
             TimeConstant_s = new double[] { 0,50 }, //nb! large jump that can create "bump" in model output
             TimeConstantThresholds = new double[] { 2.5 },
             LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
             LinearGainThresholds = new double[] { 2.5 },
             TimeDelay_s = 0,
-            OperatingPoint_U = 0,
-            OperatingPoint_Y = 0,
             GainSchedParameterIndex = 0
         };
-        GainSchedParameters gainSchedP3_singleThreshold_singleInput_bias = new GainSchedParameters
+        GainSchedParameters gainSchedP3_singleThreshold_singleInput_bias = new GainSchedParameters(0,-15)
         {
             TimeConstant_s = new double[] { 5, 10 },
             TimeConstantThresholds = new double[] { 2 },
             LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
             LinearGainThresholds = new double[] { 2.5 },
             TimeDelay_s = 1,
-            OperatingPoint_U = 0,
-            OperatingPoint_Y = -15,
             GainSchedParameterIndex = 0
         };
-        GainSchedParameters gainSchedP4_singleThreshold_singleInput_bias_and_timedelay= new GainSchedParameters
+        GainSchedParameters gainSchedP4_singleThreshold_singleInput_bias_and_timedelay= new GainSchedParameters(0,-15)
         {
             TimeConstant_s = new double[] { 10, 20 },
             TimeConstantThresholds = new double[] { 2 },
             LinearGains = new List<double[]> { new double[] { -20 }, new double[] { -15 } },
             LinearGainThresholds = new double[] { 1.5 },
             TimeDelay_s =  2,
-            OperatingPoint_U = 0,
-            OperatingPoint_Y = -15,
             GainSchedParameterIndex = 0
         };
 
 
-        GainSchedParameters gainSchedP5_nineThresholds_singleInput= new GainSchedParameters
+        GainSchedParameters gainSchedP5_nineThresholds_singleInput= new GainSchedParameters(0,5)
             {
                 TimeConstant_s = null,
                 TimeConstantThresholds = null,
@@ -70,33 +62,39 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                     new double[] { 6 }, new double[] { 7 }, new double[] { 8 }, new double[] { 9 }, new double[] { 10 } },
                 LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
                 TimeDelay_s = 0,
-                OperatingPoint_U = 0,
-                OperatingPoint_Y = 5,
                 GainSchedParameterIndex = 0
-            }; 
+           };
 
-        GainSchedParameters gainSchedP8_singleThreshold_threeInputs = new GainSchedParameters
+        // similar to P1 except for operating point.
+        GainSchedParameters gainSchedP6_singleThreshold_singleInput_static_nonzeroOperatingPointU = new GainSchedParameters(2,2)
+        {
+            TimeConstant_s = null,
+            TimeConstantThresholds = null,
+            LinearGains = new List<double[]> { new double[] { 5 }, new double[] { 10 } },
+            LinearGainThresholds = new double[] { 2.5 },
+            TimeDelay_s = 0,
+            GainSchedParameterIndex = 0
+        };
+
+
+        GainSchedParameters gainSchedP8_singleThreshold_threeInputs = new GainSchedParameters(0,0)
         {
             TimeConstant_s = new double[] { 10, 20 },
             TimeConstantThresholds = null,
             LinearGains = new List<double[]> { new double[] { 1, 2, 3 }, new double[] { 3, 6, 9 } },
             LinearGainThresholds = new double[] { 1.5 },
             TimeDelay_s = 0,
-            OperatingPoint_U = 0,
-            OperatingPoint_Y = 0,
             GainSchedParameterIndex = 0
         };
 
         GainSchedParameters gainSchedP9_singleThreshold_threeInputs_bias_and_time_delay =
-            new GainSchedParameters
+            new GainSchedParameters(0,1)
             {
                 TimeConstant_s = new double[] { 10, 20 },
                 TimeConstantThresholds = new double[] { 2 },
                 LinearGains = new List<double[]> { new double[] { 1, 2, 3 }, new double[] { 3, 6, 9 } },
                 LinearGainThresholds = new double[] { 1.5 },
                 TimeDelay_s = 2,
-                OperatingPoint_U = 0,
-                OperatingPoint_Y = 1,
                 GainSchedParameterIndex = 0
             };
 
@@ -160,7 +158,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase(5, "up", Description = "nine gains")]
         [TestCase(1, "down", Description = "static, two gains, no timedelay, no bias")]
         [TestCase(5, "down", Description = "nine gains")]
-     //   [TestCase(2, "down", Description = "two gains, two time-constants very different, creates bump in simulated y")]
+   //     [TestCase(2, "down", Description = "two gains, two time-constants very different, creates bump in simulated y")]
 
         public void ContinousGradualRamp_BumplessModelOutput(int ver, string upOrDown)
         {
@@ -207,8 +205,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                      inputData.GetValues(refModel.GetID(),SignalType.External_U,0),
                      },
                     new List<string> { "y1=y_sim", "y3=u1" },
-                    timeBase_s, "test"); 
-                 //   TestContext.CurrentContext.Test.Name.Replace(',', '_').Replace('(','_').Replace(')','_'));// TestContext.CurrentContext.Test.Name
+                    timeBase_s, "ContinousGradualRamp_BumplessModelOutput" + ver + upOrDown); 
                 Shared.DisablePlots();
             }
             SISOTests.CommonAsserts(inputData, simData, plantSim);
@@ -249,15 +246,16 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched });
             var inputData = new TimeSeriesDataSet();
+            var U0 = gainSched.GetModelParameters().GetOperatingPointU();
             inputData.Add(plantSim.AddExternalSignal(gainSched, SignalType.External_U, (int)INDEX.FIRST),
-                TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, 0, 1, 2, 3));
+                TimeSeriesCreator.ThreeSteps(N/5, N/3, N/2, N, U0, U0+1, U0+2, U0+3));
             inputData.CreateTimestamps(timeBase_s);
 
             // Act
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
                         
             SISOTests.CommonAsserts(inputData, simData, plantSim);
-            double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y); // TODO: Change .GetID() with input ID from parameterlist?
+            double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y); 
 
             bool doPlot = false;// should be false unless debugging.
             if (doPlot)
@@ -273,7 +271,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             }
             // Assert
             Assert.IsTrue(isSimulatable);
-            Assert.AreEqual(gainSched.modelParameters.OperatingPoint_Y, simY1[0], "at time zero the u is zero and the model output should match the operating point.");
+            Assert.AreEqual(gainSched.modelParameters.GetOperatingPointY(), simY1[0], "at time zero the u is zero and the model output should match the operating point.");
             Assert.IsTrue(Math.Abs(simY1[N/3-2] - step1Out) < tolerance, "first step should have a gain of " + step1Out.ToString() + "was:" + simY1[N / 3 - 2]);
             Assert.IsTrue(Math.Abs(simY1.Last() - step3Out) < tolerance, "third step should have a gain of " + step3Out.ToString() + "was:" + simY1.Last());
         }
@@ -294,7 +292,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(new DateTime(2000, 1, 1), timeBase_s, N);
 
             //reference model
-            GainSchedParameters trueGSparams = new GainSchedParameters
+            GainSchedParameters trueGSparams = new GainSchedParameters(uOperatingPoint, yOperatingPoint)
             {
                 TimeConstant_s = new double[] { 10, 2 },
                 TimeConstantThresholds = new double[] { gainSchedThreshold },
@@ -302,8 +300,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 LinearGainThresholds = new double[] { gainSchedThreshold },
                 TimeDelay_s = 0,
             };
-            trueGSparams.OperatingPoint_Y = yOperatingPoint;
-            trueGSparams.OperatingPoint_U = uOperatingPoint;
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "True  model");
             var truePlantSim = new PlantSimulator(new List<ISimulatableModel> { trueModel });
@@ -407,7 +403,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var simStep2 = simY1[N*3/ 4-2];
             var simStep3 = simY1[N-2];
 
-            Assert.IsTrue(Math.Abs(simBeforeStep - gainSched.modelParameters.OperatingPoint_Y) < tolerance, "before step");
+            Assert.IsTrue(Math.Abs(simBeforeStep - gainSched.modelParameters.GetOperatingPointY()) < tolerance, "before step");
             Assert.IsTrue(Math.Abs(simStep1 - exp_ystep1) < tolerance, "step1 was:"+ simStep1);
             Assert.IsTrue(Math.Abs(simStep2 - exp_ystep2) < tolerance, "step2 was:" + simStep2);
             Assert.IsTrue(Math.Abs(simStep3 - exp_ystep3) < tolerance, "step3 was:" + simStep3);
