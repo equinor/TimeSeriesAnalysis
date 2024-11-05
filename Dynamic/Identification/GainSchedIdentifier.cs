@@ -160,16 +160,357 @@ namespace TimeSeriesAnalysis.Dynamic
                 paramsToReturn = bestModel_pass1;
             }
 
+
+            //////////////////////////////
             EstimateTimeDelay(ref paramsToReturn, ref dataSet);
 
-            //TODO: include again!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-           const int numTcIterations = 50;
-           var bestParams = EvaluateMultipleTimeConstantsForGivenGainThreshold(ref paramsToReturn, dataSet,numTcIterations);
+            //////////////////////////////
+            //// EXPERIMENTAL: determining two time-constants. 
+           // const int numTcIterations = 50;
+          //  var bestParams = EvaluateMultipleTimeConstantsForGivenGainThreshold(ref paramsToReturn, dataSet,numTcIterations);
 
-            paramsToReturn.Fitting = new FittingInfo();
-            paramsToReturn.Fitting.WasAbleToIdentify = true;
+
+            ////////////////////////////////////
+            if (paramsToReturn.Fitting == null)
+            {
+                paramsToReturn.Fitting = new FittingInfo();
+            }
             paramsToReturn.Fitting.SolverID = "Identify(thresholds estimated)";
             return new GainSchedModel(paramsToReturn,"identified");
+        }
+
+        /// <summary>
+        /// Identify a model when a given set of thresholds is already given in the supplied gsFittingSpecs
+        /// 
+        /// </summary>
+        /// <param name="dataSet">tuning data set</param>
+        /// <param name="gsFittingSpecs">the object in which the thresholds to be used are given</param>
+        /// <param name="doTimeDelayEstimation">set to false to disable estimation of time delays, default is true</param>
+        /// <returns></returns>
+        public static GainSchedModel IdentifyForGivenThresholds(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs, bool doTimeDelayEstimation = true)
+        {
+            var vec = new Vec(dataSet.BadDataID);
+            GainSchedParameters idParams = new GainSchedParameters();
+            idParams.GainSchedParameterIndex = gsFittingSpecs.uGainScheduledInputIndex;
+            idParams.LinearGainThresholds = gsFittingSpecs.uGainThresholds;
+            // for this to work roubustly, the training set for fitting each model may need to require adding in a "span" of neighboring models. 
+            int numberOfInputs = dataSet.U.GetLength(1);
+            double gsVarMinU, gsVarMaxU;
+            var linearGains = new List<double[]>();
+            var timeConstants = new List<double>();
+            var allIdsOk = true;
+            var warningNotEnoughExitationBetweenAllThresholds = false;
+            var dataSetCopy = new UnitDataSet(dataSet);
+            // estimate each of the gains one by one
+            for (int curGainIdx = 0; curGainIdx < idParams.LinearGainThresholds.Count() + 1; curGainIdx++)
+            {
+                double[] uMinFit = new double[numberOfInputs];
+                double[] uMaxFit = new double[numberOfInputs];
+                // double? u0 = 0;
+                double? u0 = null;
+
+                if (curGainIdx == 0)
+                {
+                    gsVarMinU = vec.Min(Array2D<double>.GetColumn(dataSetCopy.U, idParams.GainSchedParameterIndex));
+                }
+                else
+                {
+                    gsVarMinU = idParams.LinearGainThresholds[curGainIdx - 1];
+                }
+                if (curGainIdx == idParams.LinearGainThresholds.Count())
+                {
+                    gsVarMaxU = vec.Max(Array2D<double>.GetColumn(dataSetCopy.U, idParams.GainSchedParameterIndex));
+                }
+                else
+                {
+                    gsVarMaxU = idParams.LinearGainThresholds[curGainIdx];
+                }
+                for (int idx = 0; idx < numberOfInputs; idx++)
+                {
+                    if (idx == idParams.GainSchedParameterIndex)
+                    {
+                        uMinFit[idx] = gsVarMinU;
+                        uMaxFit[idx] = gsVarMaxU;
+                    }
+                    else
+                    {
+                        uMinFit[idx] = double.NaN;
+                        uMaxFit[idx] = double.NaN;
+                    }
+                }
+                var idResults = IdentifySingleLinearModelForGivenThresholds(ref dataSetCopy, uMinFit, uMaxFit, idParams.GainSchedParameterIndex, u0, false);
+                if (idResults.NotEnoughExitationBetweenAllThresholds)
+                    warningNotEnoughExitationBetweenAllThresholds = true;
+                var uInsideUMinUMax = Vec<double>.GetValuesAtIndices(dataSetCopy.U.GetColumn(idParams.GainSchedParameterIndex),
+                    Index.InverseIndices(dataSetCopy.GetNumDataPoints(), dataSetCopy.IndicesToIgnore));
+                var uMaxObserved = (new Vec(dataSet.BadDataID)).Max(uInsideUMinUMax);
+                var uMinObserved = (new Vec(dataSet.BadDataID)).Min(uInsideUMinUMax);
+                if (idResults.LinearGains == null)
+                {
+                    allIdsOk = false;
+                }
+                linearGains.Add(idResults.LinearGains);
+                timeConstants.Add(idResults.TimeConstant_s);
+                dataSetCopy.IndicesToIgnore = null;
+            }
+
+            // final gain:above the highest threshold
+            idParams.LinearGains = linearGains;
+            // time constant
+
+            if (gsFittingSpecs.uTimeConstantThresholds == null)
+            {
+                var averageTimeConstants = vec.Mean(timeConstants.ToArray()).Value;
+                idParams.TimeConstant_s = new double[] { averageTimeConstants };
+            }
+            else if (Vec.Equal(gsFittingSpecs.uTimeConstantThresholds, gsFittingSpecs.uGainThresholds))
+            {
+                idParams.TimeConstant_s = timeConstants.ToArray();
+                idParams.TimeConstantThresholds = gsFittingSpecs.uTimeConstantThresholds;
+            }
+            else
+            {
+                idParams.TimeConstant_s = null;//TODO: currently not supported to find timeconstants separately from gain thresholds. 
+            }
+            if (idParams.Fitting == null)
+            {
+                idParams.Fitting = new FittingInfo();
+            }
+            idParams.Fitting.SolverID = "IdentifyForGivenThresholds";
+            idParams.Fitting.WasAbleToIdentify = allIdsOk;
+            if (!allIdsOk)
+                idParams.AddWarning(GainSchedIdentWarnings.UnableToIdentifySomeSubmodels);
+            if (warningNotEnoughExitationBetweenAllThresholds)
+                idParams.AddWarning(GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains);
+
+            // post-processing : improving the dynamic model terms by analysis after setting the static model
+
+            // simulate the model and determine the optimal bias term:
+            DetermineOperatingPointAndSimulate(ref idParams, ref dataSet);
+
+            if (doTimeDelayEstimation)
+                EstimateTimeDelay(ref idParams, ref dataSet);
+
+            return new GainSchedModel(idParams, "identified");
+        }
+
+        // -----------------------------------------------------------------------
+        //
+        // PRIVATE METHODS BELOW
+        // 
+        //
+
+        /// <summary>
+        /// Chooses the best parameter in list,based on the .Fitting information in each model.
+        /// </summary>
+        /// <param name="candidateGainSchedParams"> all candidate gain-scheduled parameters</param>
+        /// <param name="dataSet">the dataset to be returned, where y_sim is to be set based on the best model.</param>
+        /// <returns>a tuple with the paramters of the "best" model and array of objectives </returns>
+        static private (GainSchedParameters, int) ChooseBestModelFromSimulationList(
+            List<GainSchedParameters> candidateGainSchedParams, ref UnitDataSet dataSet, bool simulateAndAddToYsimInDataSet=true, bool doDebugOutput=false)
+        {
+            var vec = new Vec(dataSet.BadDataID);
+            GainSchedParameters BestGainSchedParams = null;
+            double lowestObj = double.MaxValue;
+            int numInputs = dataSet.U.GetNColumns();
+
+            int bestModelIdx = 0;
+            for (int curModelIdx = 0; curModelIdx < candidateGainSchedParams.Count; curModelIdx++)
+            {
+                var curGainSchedParams = candidateGainSchedParams[curModelIdx];
+                {
+                    var objFun = curGainSchedParams.Fitting.FitScorePrc;
+                    if (doDebugOutput)
+                    {
+                        string str = "Tc1:";
+                        str += curGainSchedParams.TimeConstant_s.First() + " ";
+                        if (curGainSchedParams.TimeConstant_s.Length > 1)
+                        {
+                            str += "Tc2:" +curGainSchedParams.TimeConstant_s.ElementAt(1) + " ";
+                            str += "thr:"+ curGainSchedParams.TimeConstantThresholds.ElementAt(0) + " ";
+                        }
+                        Console.WriteLine("model idx:" + curModelIdx + " FitScore:" + objFun + " " + str);
+                    }
+                        // 
+                    if (objFun < lowestObj)
+                    {
+                        BestGainSchedParams = curGainSchedParams;
+                        lowestObj = objFun;
+                        bestModelIdx = curModelIdx;
+                    }
+                }
+            }
+            if (simulateAndAddToYsimInDataSet)
+            {
+                var bestModel = new GainSchedModel(BestGainSchedParams);
+                PlantSimulator.SimulateSingle(dataSet, bestModel, true);
+            }
+            return (BestGainSchedParams, bestModelIdx);
+        }
+
+
+
+
+        /// <summary>
+        /// Chooses the best parameter in list, given a list of the simulation results of all of the candidates
+        /// </summary>
+        /// <param name="candidateGainSchedParams"> all candidate gain-scheduled parameters</param>
+        /// <param name="candidateYsim"> list of all the simulated y corresponding to each parameter set in the first input</param>
+        /// <param name="dataSet">the dataset to be returned, where y_sim is to be set based on the best model.</param>
+        /// <returns>a tuple with the paramters of the "best" model and array of objectives </returns>
+        static private (GainSchedParameters, int) ChooseBestModelFromSimulationList(List<GainSchedParameters> candidateGainSchedParams,
+            List<double[]> candidateYsim, ref UnitDataSet dataSet, bool doDebugOutput = false)
+        {
+            var vec = new Vec(dataSet.BadDataID);
+            GainSchedParameters BestGainSchedParams = null;
+            double lowestObj = double.MaxValue;
+            double lowestSumDiffs = double.MaxValue;
+            int numInputs = dataSet.U.GetNColumns();
+
+            int bestModelIdx = 0;
+            for (int curModelIdx = 0; curModelIdx < candidateGainSchedParams.Count; curModelIdx++)
+            {
+                var curGainSchedParams = candidateGainSchedParams[curModelIdx];
+                {
+                    var curSimY = candidateYsim.ElementAt(curModelIdx);
+                    var residuals = vec.Abs(vec.Subtract(curSimY, dataSet.Y_meas));
+
+                    //V1: rms-based selection.                    
+                    /* double rms = 0;
+                     for (int j = 0; j < curSimY.Length; j++)
+                     {
+                         rms = rms + Math.Pow(residuals.ElementAt(j), 2);
+                     }
+                     if (rms < lowestRms)
+                     {
+                         BestGainSchedParams = curGainSchedParams;
+                         lowestRms = rms;
+                         bestModelIdx = curModelIdx;
+                     }*/
+
+                    //V2: abs value of residuals : slightly better in gain-scheduled ramp tests.
+                    {
+                        var objFun = vec.Sum(residuals).Value;
+                        // 
+                        if (objFun < lowestObj)
+                        {
+                            BestGainSchedParams = curGainSchedParams;
+                            lowestObj = objFun;
+                            bestModelIdx = curModelIdx;
+                        }
+                        /*      if (doDebugOutput)
+                              {
+                                  string str = "";
+                                  if (curGainSchedParams.TimeConstant_s.Count() == 2)
+                                      str += "Tc1:" + curGainSchedParams.TimeConstant_s[0] + " Tc1:" + curGainSchedParams.TimeConstant_s[1];
+                                  else if (curGainSchedParams.TimeConstant_s.Count() == 1)
+                                      str += "Tc1:" + curGainSchedParams.TimeConstant_s[0];
+                                  else if (curGainSchedParams.TimeConstant_s.Count() == 1)
+                                      str += "no Tc";
+                                  if (curGainSchedParams.TimeConstantThresholds!=null)
+                                      str += " threshold:" + curGainSchedParams.TimeConstantThresholds[0];
+                                  Console.WriteLine("idx:" + curModelIdx + " objFun:" + objFun.ToString("F5") + "("+ str + ")");
+                              }*/
+                    }
+
+                    // debug plot
+                    bool doDebugPlot = false;// should be false unless debugging.
+                    if (doDebugPlot)
+                    {
+                        string str_linear_gains = "";
+                        for (int j = 0; j < curGainSchedParams.LinearGains.Count; j++)
+                        {
+                            str_linear_gains = str_linear_gains + string.Concat(curGainSchedParams.LinearGains[j].Select(x => x.ToString("F2", CultureInfo.InvariantCulture))) + " ";
+                        }
+                        Shared.EnablePlots();
+                        Plot.FromList(new List<double[]> {
+                                    curSimY,
+                                    dataSet.Y_meas,
+                                    dataSet.U.GetColumn(0) },
+                            new List<string> { "y1=simY1", "y1=y_ref", "y3=u1" },
+                        dataSet.GetTimeBase(),
+                            "GainSched split idx" + curModelIdx.ToString() + " gains" + str_linear_gains
+                            + "threshold " + string.Concat(curGainSchedParams.LinearGainThresholds.Select(x => x.ToString("F2", CultureInfo.InvariantCulture))));
+                        Shared.DisablePlots();
+                        Thread.Sleep(1000);
+                    }
+
+                }
+            }
+            dataSet.Y_sim = candidateYsim.ElementAt(bestModelIdx);
+            return (BestGainSchedParams, bestModelIdx);
+        }
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Determines the operating point, by selecting U, calculating a Y that causes the smalles offset of the dataset
+        /// 
+        /// The resulting simulated y is stored in dataset.Ysim
+        /// </summary>
+        /// <param name="gsParams">the gain-scheduled parameters that are to be updated with an operating point.</param>
+        /// <param name="dataSet">tuning dataset to be updated with Y_sim </param>
+        /// <returns>true if able to estiamte bias, otherwise false</returns>
+        private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
+        {
+            // if set to true, then the operating point is set to the average U in the dataset, otherwise it is set to equal the start
+
+            const bool doMeanU = false; // can be true or false, makes little difference?
+            const bool fitOperatingPointYtoReduceOverallMisfit = true;//needs to be true, otherwise many unit tests fail.
+
+            var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
+
+            //V1: set the operating point to equal the first data point in the tuning set
+            gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+            //V2: set the operating point to equal the first data point in the tuning set
+            var val = (new Vec(dataSet.BadDataID)).Mean(dataSet.U.GetColumn(gsParams.GainSchedParameterIndex));
+            if (val.HasValue && doMeanU)
+            {
+                gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+            }
+            gsParams.OperatingPoint_U = val.Value;
+            
+            (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel,false);
+
+            if (isOk)
+            {
+                var vec = new Vec(dataSet.BadDataID);
+                var simY_nobias = y_sim;
+
+                var estBias = vec.Mean(vec.Subtract(dataSet.Y_meas, simY_nobias));
+                if (estBias.HasValue)
+                {
+                    if (fitOperatingPointYtoReduceOverallMisfit)
+                        gsParams.OperatingPoint_Y = estBias.Value;
+                    else
+                        gsParams.OperatingPoint_Y = dataSet.Y_meas.First(); 
+                    dataSet.Y_sim = vec.Add(simY_nobias, gsParams.OperatingPoint_Y);
+
+                    if (gsParams.Fitting == null)
+                        gsParams.Fitting = new FittingInfo();
+                    gsParams.Fitting.FitScorePrc = FitScoreCalculator.Calc(dataSet.Y_meas,dataSet.Y_sim);
+                    gsParams.Fitting.WasAbleToIdentify = true;
+                    return true;
+                }
+                else
+                {
+                    if (gsParams.Fitting == null)
+                        gsParams.Fitting = new FittingInfo();
+                    gsParams.Fitting.WasAbleToIdentify = false;
+                    dataSet.Y_sim = simY_nobias;
+                    return false;
+                }
+                return false;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -208,7 +549,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 var gsIdentModel = new GainSchedModel(copiedGsParams, "ident_model");
                 (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel, false);
-              
+
                 if (isOk)
                 {
                     var objFun = vec.Sum(vec.Abs(vec.Subtract(y_sim, dataSet.Y_meas))).Value;
@@ -232,181 +573,215 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 dataSet.Y_sim = y_sim_best;
                 gsParams.TimeDelay_s = timedelay_best_s;
-                gsParams.TimeConstant_s = vec.Subtract(gsParams.TimeConstant_s, timedelay_best_s*CORRECTIONFACTOR);
+                gsParams.TimeConstant_s = vec.Subtract(gsParams.TimeConstant_s, timedelay_best_s * CORRECTIONFACTOR);
             }
-        }
-
-
-        /// <summary>
-        /// Identify a model when a given set of thresholds is already given in the supplied gsFittingSpecs
-        /// 
-        /// </summary>
-        /// <param name="dataSet">tuning data set</param>
-        /// <param name="gsFittingSpecs">the object in which the thresholds to be used are given</param>
-        /// <param name="doTimeDelayEstimation">set to false to disable estimation of time delays, default is true</param>
-        /// <returns></returns>
-        public static GainSchedModel IdentifyForGivenThresholds(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs, bool doTimeDelayEstimation = true)
-        {
-            var vec = new Vec(dataSet.BadDataID);
-            GainSchedParameters idParams = new GainSchedParameters();
-            idParams.GainSchedParameterIndex = gsFittingSpecs.uGainScheduledInputIndex;
-            idParams.LinearGainThresholds = gsFittingSpecs.uGainThresholds;
-            // for this to work roubustly, the training set for fitting each model may need to require adding in a "span" of neighboring models. 
-            int numberOfInputs = dataSet.U.GetLength(1);
-            double gsVarMinU, gsVarMaxU;
-            var linearGains = new List<double[]>();
-            var timeConstants = new List<double>();
-            var allIdsOk = true;
-            var warningNotEnoughExitationBetweenAllThresholds = false;
-            var dataSetCopy = new UnitDataSet(dataSet);
-            // estimate each of the gains one by one
-            for (int curGainIdx = 0; curGainIdx < idParams.LinearGainThresholds.Count()+1; curGainIdx++)
-            {
-                double[] uMinFit = new double[numberOfInputs];
-                double[] uMaxFit = new double[numberOfInputs];
-                // double? u0 = 0;
-                double? u0 = null;
-
-                if (curGainIdx == 0)
-                {
-                    gsVarMinU = vec.Min(Array2D<double>.GetColumn(dataSetCopy.U, idParams.GainSchedParameterIndex));
-                }
-                else
-                {
-                    gsVarMinU = idParams.LinearGainThresholds[curGainIdx-1];
-                }
-                if (curGainIdx == idParams.LinearGainThresholds.Count())
-                {
-                    gsVarMaxU = vec.Max(Array2D<double>.GetColumn(dataSetCopy.U, idParams.GainSchedParameterIndex));
-                }
-                else
-                {
-                    gsVarMaxU = idParams.LinearGainThresholds[curGainIdx];
-                }
-                for (int idx = 0; idx < numberOfInputs; idx++)
-                {
-                    if (idx == idParams.GainSchedParameterIndex)
-                    {
-                        uMinFit[idx] = gsVarMinU;
-                        uMaxFit[idx] = gsVarMaxU;
-                    }
-                    else
-                    {
-                        uMinFit[idx] = double.NaN;
-                        uMaxFit[idx] = double.NaN;
-                    }
-                }
-                var idResults = IdentifySingleLinearModelForGivenThresholds(ref dataSetCopy, uMinFit, uMaxFit, idParams.GainSchedParameterIndex,u0,false);
-                if (idResults.NotEnoughExitationBetweenAllThresholds)
-                    warningNotEnoughExitationBetweenAllThresholds = true;
-                var uInsideUMinUMax = Vec<double>.GetValuesAtIndices(dataSetCopy.U.GetColumn(idParams.GainSchedParameterIndex), 
-                    Index.InverseIndices(dataSetCopy.GetNumDataPoints(),dataSetCopy.IndicesToIgnore));
-                var uMaxObserved = (new Vec(dataSet.BadDataID)).Max(uInsideUMinUMax);
-                var uMinObserved = (new Vec(dataSet.BadDataID)).Min(uInsideUMinUMax);
-                if (idResults.LinearGains == null)
-                {
-                    allIdsOk = false;
-                }
-                linearGains.Add(idResults.LinearGains);
-                timeConstants.Add(idResults.TimeConstant_s);
-                dataSetCopy.IndicesToIgnore = null;
-            }
-
-            // final gain:above the highest threshold
-            idParams.LinearGains = linearGains;
-            // time constant
-
-            if (gsFittingSpecs.uTimeConstantThresholds == null)
-            {
-                var averageTimeConstants = vec.Mean(timeConstants.ToArray()).Value;
-                idParams.TimeConstant_s = new double[] { averageTimeConstants };
-            }
-            else if (Vec.Equal(gsFittingSpecs.uTimeConstantThresholds,gsFittingSpecs.uGainThresholds))
-            {
-                idParams.TimeConstant_s = timeConstants.ToArray();
-                idParams.TimeConstantThresholds = gsFittingSpecs.uTimeConstantThresholds;
-            }
-            else
-            {
-                idParams.TimeConstant_s = null;//TODO: currently not supported to find timeconstants separately from gain thresholds. 
-            }
-            idParams.Fitting = new FittingInfo();
-            idParams.Fitting.SolverID = "IdentifyForGivenThresholds";
-            idParams.Fitting.WasAbleToIdentify = allIdsOk;
-            if (!allIdsOk)
-                idParams.AddWarning(GainSchedIdentWarnings.UnableToIdentifySomeSubmodels);
-            if(warningNotEnoughExitationBetweenAllThresholds)
-                idParams.AddWarning(GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains);
-
-            // post-processing : improving the dynamic model terms by analysis after setting the static model
-
-            // simulate the model and determine the optimal bias term:
-            DetermineOperatingPointAndSimulate(ref idParams, ref dataSet);
-
-            if (doTimeDelayEstimation)
-                EstimateTimeDelay(ref idParams, ref dataSet);
-
-            return new GainSchedModel(idParams,"identified");
         }
 
         /// <summary>
-        /// Determines the operating point, by selecting U, calculating a Y that causes the smalles offset of the dataset
+        /// Takes as an input a model that already has a threshold for the linear gains that has been determined 
+        /// by other means, and then evalutes if model match improves if using two -2-  different time-constants. 
         /// 
-        /// The resulting simulated y is stored in dataset.Ysim
+        /// This method will only have a chance of finding time-constants if the given gsParams has a reaonable LinearGainThreshold and LinearGains
+        /// 
         /// </summary>
-        /// <param name="gsParams">the gain-scheduled parameters that are to be updated with an operating point.</param>
-        /// <param name="dataSet">tuning dataset to be updated with Y_sim </param>
-        /// <returns></returns>
-        private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
+        /// <param name="gsParams"></param>
+        /// <param name="dataSet"></param>
+        /// <param name="globalSearchIterations"></param>
+        /// <param name="gsSearchMin"></param>
+        /// <param name="gsSearchMax"></param>
+        private static GainSchedParameters EvaluateMultipleTimeConstantsForGivenGainThreshold(ref GainSchedParameters gsParams, UnitDataSet dataSet,
+            int globalSearchIterations = 40, double? gsSearchMin = null, double? gsSearchMax = null)
         {
-            // if set to true, then the operating point is set to the average U in the dataset, otherwise it is set to equal the start
+            bool doConsoleDebug = true;
+            double smallestMeaningfullTc_s = dataSet.GetTimeBase()/4;
 
-            const bool doMeanU = false; // can be true or false, makes little difference?
-            const bool fitOperatingPointYtoReduceOverallMisfit = true;//needs to be true, otherwise many unit tests fail.
+            // this method should not return multiple time-constant unless this is superior to a single time-constants
+            // this methods should not have a time-constant threshold different from the gain-threshold unless this is clearly superior
 
-            var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
+            // how big a span of the range of u in the dataset to span with trehsolds (should be <= 1.00 and >0.)
+            // usually it is pointless to search for thresholds at the edge of the dataset, so should be <1, but always much larger than 0.
+            const double GS_RANGE_SEARCH_FRAC = 0.70;
 
-            //V1: set the operating point to equal the first data point in the tuning set
-            gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
-            //V2: set the operating point to equal the first data point in the tuning set
-            var val = (new Vec(dataSet.BadDataID)).Mean(dataSet.U.GetColumn(gsParams.GainSchedParameterIndex));
-            if (val.HasValue && doMeanU)
+            // when didving the dataset into "a" and "b" above and below the threshold, how many percentage overlap 
+            // should these two datasets have 
+            const double GAIN_THRESHOLD_A_B_OVERLAP_FACTOR = 0.02;
+
+            UnitDataSet DSa = new UnitDataSet(dataSet);
+            UnitDataSet DSb = new UnitDataSet(dataSet);
+            UnitDataSet DS_commonTc1 = new UnitDataSet(dataSet);
+            UnitDataSet DS_commonTc2 = new UnitDataSet(dataSet);
+            UnitDataSet DS_separateTc = new UnitDataSet(dataSet);
+
+
+            int number_of_inputs = dataSet.U.GetNColumns();
+            double gsVarMinU = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).Min();
+            double gsVarMaxU = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).Max();
+
+            // the two returned elements to be populated
+            List<GainSchedParameters> candGainschedParameters = new List<GainSchedParameters>();
+            List<double[]> candYSimList = new List<double[]>();
+            candGainschedParameters.Add(gsParams);
+            candYSimList.Add(dataSet.Y_sim);
+
+            if (doConsoleDebug)
             {
-                gsParams.OperatingPoint_U = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+                Console.WriteLine("given model:");
+                Console.WriteLine(new GainSchedModel(gsParams));
             }
-            gsParams.OperatingPoint_U = val.Value;
-            
-            (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel,false);
 
-            if (isOk)
+            // begin setting up global search
+            double[] candidateTcThresholds = new double[globalSearchIterations];
+            // default global search based on the range of values in the given dataset
+            if (!gsSearchMin.HasValue || !gsSearchMax.HasValue)
             {
-                var vec = new Vec(dataSet.BadDataID);
-                var simY_nobias = y_sim;
-                var measY = dataSet.Y_meas;
-                var estBias = vec.Mean(vec.Subtract(measY, simY_nobias));
-                if (estBias.HasValue)
+                double gsRange = gsVarMaxU - gsVarMinU;
+                double gsSearchRange = gsRange * GS_RANGE_SEARCH_FRAC;
+                for (int k = 0; k < globalSearchIterations; k++)
                 {
-                    if (fitOperatingPointYtoReduceOverallMisfit)
-                        gsParams.OperatingPoint_Y = estBias.Value;
-                    else
-                        gsParams.OperatingPoint_Y = dataSet.Y_meas.First(); 
-                    dataSet.Y_sim = vec.Add(simY_nobias, gsParams.OperatingPoint_Y);
-                    return true;
+                    candidateTcThresholds[k] = gsVarMinU + (1 - GS_RANGE_SEARCH_FRAC) * gsRange / 2 + gsSearchRange * ((double)k / globalSearchIterations);
+                }
+            }
+            else if (gsSearchMin.Value == gsSearchMax.Value)
+            {
+                candidateTcThresholds = new double[] { gsSearchMin.Value };
+            }
+            else // search based on the given min and max (used for second or third passes to improve accuracy)
+            {
+                double gsRange = gsSearchMax.Value - gsSearchMin.Value;
+                double gsSearchRange = gsRange;
+                for (int k = 0; k < globalSearchIterations; k++)
+                {
+                    candidateTcThresholds[k] = gsSearchMin.Value + gsSearchRange * ((double)k / globalSearchIterations);
+                }
+            }
+
+            // determine the time constants and gains for each for the a/b split of the dataset along the 
+            // candidate threshold.
+            for (int i = 0; i < candidateTcThresholds.Length; i++)
+            {
+                GainSchedParameters curGainSchedParams_separateTc = new GainSchedParameters(gsParams);
+                // Linear gain thresholds
+                double[] GS_candTcThreshold = new double[] { candidateTcThresholds[i] };
+                curGainSchedParams_separateTc.TimeConstantThresholds = GS_candTcThreshold;
+
+                List<double[]> curLinearGains = new List<double[]>();
+                double[] curTimeConstants = new double[2];
+                // a) identiy from the minimum value of gain-sched variable(u) to the candidate threshold
+                {
+                    double[] uMinFit = new double[number_of_inputs];
+                    double[] uMaxFit = new double[number_of_inputs];
+                    for (int idx = 0; idx < number_of_inputs; idx++)
+                    {
+                        if (idx == gsParams.GainSchedParameterIndex)
+                        {
+                            uMinFit[idx] = gsVarMinU;
+                            uMaxFit[idx] = candidateTcThresholds[i] + (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_A_B_OVERLAP_FACTOR;
+                        }
+                        else
+                        {
+                            uMinFit[idx] = double.NaN;
+                            uMaxFit[idx] = double.NaN;
+                        }
+                    }
+                    var ret = IdentifySingleLinearModelForGivenThresholds(ref DSa, uMinFit, uMaxFit, gsParams.GainSchedParameterIndex);
+                    curLinearGains.Add(ret.LinearGains);
+                    curTimeConstants[0] = ret.TimeConstant_s;
+                }
+                // b)identify using data from the maximum value of gain-sched variable(u) to the candidate threshold
+                {
+                    double[] uMinFit = new double[number_of_inputs];
+                    double[] uMaxFit = new double[number_of_inputs];
+                    for (int idx = 0; idx < number_of_inputs; idx++)
+                    {
+                        if (idx == gsParams.GainSchedParameterIndex)
+                        {
+                            uMinFit[idx] = candidateTcThresholds[i] - (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_A_B_OVERLAP_FACTOR;
+                            uMaxFit[idx] = gsVarMaxU;
+                        }
+                        else
+                        {
+                            uMinFit[idx] = double.NaN;
+                            uMaxFit[idx] = double.NaN;
+                        }
+                    }
+                    var ret = IdentifySingleLinearModelForGivenThresholds(ref DSb, uMinFit, uMaxFit, gsParams.GainSchedParameterIndex);
+                    curLinearGains.Add(ret.LinearGains);
+                    curGainSchedParams_separateTc.LinearGains = curLinearGains;
+                    curTimeConstants[1] = ret.TimeConstant_s;
+                }
+                if(doConsoleDebug)
+                    Console.WriteLine("Tc1:" + curTimeConstants[0]+ " Tc2:" + curTimeConstants[1] + " threshold:" + candidateTcThresholds[i]);
+
+                // ---------------------------------
+                // step2 :
+                // compare using 
+                // separate time-constants
+                // using the time-constant found in the first half
+                // using the time-constant found in the second half.
+                // (in principle you could also try to identify the time-constant that work best across the dataset given frozen steady states)
+
+                var candModelsStep2 = new List<GainSchedParameters>();
+                var candYsimStep2 = new List<double[]>();
+                // add the given model to the canidate set
+
+                if (Math.Abs(curTimeConstants[0] - curTimeConstants[1]) > smallestMeaningfullTc_s)
+                {
+                    curGainSchedParams_separateTc.TimeConstant_s = curTimeConstants;
+                    curGainSchedParams_separateTc.TimeConstantThresholds = new double[] { candidateTcThresholds[i] };
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_separateTc, ref DS_separateTc);
+                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_separateTc));
+                    //   candYsimStep2.Add((double[])DS_separateTc.Y_sim.Clone());
                 }
                 else
                 {
-                    dataSet.Y_sim = simY_nobias;
-                    return false;
+                    curGainSchedParams_separateTc.TimeConstant_s = new double[] { curTimeConstants.First() };
+                    curGainSchedParams_separateTc.TimeConstantThresholds = null;
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_separateTc, ref DS_separateTc);
+                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_separateTc));
                 }
-                return false;
+/*
+                {
+                    var curGainSchedParams_commonTc1 = new GainSchedParameters(curGainSchedParams_separateTc);
+                    curGainSchedParams_commonTc1.TimeConstant_s = new double[] { curTimeConstants[0] };
+                    curGainSchedParams_commonTc1.TimeConstantThresholds = null;
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_commonTc1, ref DS_commonTc1);
+                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_commonTc1));
+                    // candYsimStep2.Add((double[])DS_commonTc1.Y_sim.Clone());
+                }
+                {
+                    var curGainSchedParams_commonTc2 = new GainSchedParameters(curGainSchedParams_separateTc);
+                    curGainSchedParams_commonTc2.TimeConstant_s = new double[] { curTimeConstants[1] };
+                    curGainSchedParams_commonTc2.TimeConstantThresholds = null;
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_commonTc2, ref DS_commonTc2);
+                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_commonTc2));
+                    // candYsimStep2.Add((double[])DS_commonTc2.Y_sim.Clone());
+                }
+*/
+
+                bool doDebugPlot = false;
+                if (doDebugPlot)
+                {
+                    Shared.EnablePlots();
+                    candYsimStep2.Add(DS_commonTc1.Y_meas);
+                    Plot.FromList(candYsimStep2,
+                        new List<string> { "y1=y_separateTc", "y1=y_commonTc1", "y1=y_commonTc2 ", "y1=y_meas", }, DS_commonTc1.Times,
+                        "DEBUGthreshold" + candidateTcThresholds[i].ToString("F1"));
+                    Shared.DisablePlots();
+                    Task.Delay(100);
+                }
+                (var bestModelStep2, var indexOfBestModel) = ChooseBestModelFromSimulationList(candModelsStep2, ref DSa, false);
+                candGainschedParameters.Add(bestModelStep2);
+                //  candYSimList.Add((double[])DSa.Y_sim.Clone());
             }
-            else
-            {
-                return false;
-            }
-         
-           
+
+
+            (var bestGSParams, int bestIdx) = ChooseBestModelFromSimulationList(candGainschedParameters, ref dataSet,true, doConsoleDebug);
+            gsParams = bestGSParams;
+            return bestGSParams;
         }
+
+
+
 
         /// <summary>
         /// Perform a global search ("try-and-evaluate")
@@ -503,190 +878,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return (candGainschedParameters, candYSimList);
         }
 
-        /// <summary>
-        /// Takes as an input a model that already has a threshold for the linear gains that has been determined 
-        /// by other means, and then evalutes if model match improves if using different time-constants. 
-        /// </summary>
-        /// <param name="gsParams"></param>
-        /// <param name="dataSet"></param>
-        private static GainSchedParameters EvaluateMultipleTimeConstantsForGivenGainThreshold(ref GainSchedParameters gsParams, UnitDataSet dataSet,
-            int globalSearchIterations = 40, double? gsSearchMin = null, double? gsSearchMax = null)
-        {
-            bool doConsoleDebug = true;
-
-            double smallestMeaningfullTc_s = dataSet.GetTimeBase();
-
-
-            // this method should not return multiple time-constant unless this is superior to a single time-constants
-            // this methods should not have a time-constant threshold different from the gain-threshold unless this is clearly superior
-
-
-            // how big a span of the range of u in the dataset to span with trehsolds (should be <= 1.00 and >0.)
-            // usually it is pointless to search for thresholds at the edge of the dataset, so should be <1, but always much larger than 0.
-            const double GS_RANGE_SEARCH_FRAC = 0.70;
-
-            // when didving the dataset into "a" and "b" above and below the threshold, how many percentage overlap 
-            // should these two datasets have 
-            const double GAIN_THRESHOLD_A_B_OVERLAP_FACTOR = 0.02;
-
-            UnitDataSet DSa = new UnitDataSet(dataSet);
-            UnitDataSet DSb = new UnitDataSet(dataSet);
-            UnitDataSet DS_commonTc1 = new UnitDataSet(dataSet);
-            UnitDataSet DS_commonTc2 = new UnitDataSet(dataSet);
-            UnitDataSet DS_separateTc = new UnitDataSet(dataSet);
-
-
-
-            int number_of_inputs = dataSet.U.GetNColumns();
-            double gsVarMinU = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).Min();
-            double gsVarMaxU = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).Max();
-
-            // the two returned elements to be populated
-            List<GainSchedParameters> candGainschedParameters = new List<GainSchedParameters>();
-            List<double[]> candYSimList = new List<double[]>();
-            candGainschedParameters.Add(gsParams);
-            candYSimList.Add(dataSet.Y_sim);
-
-            // begin setting up global search
-            double[] candidateTcThresholds = new double[globalSearchIterations];
-            // default global search based on the range of values in the given dataset
-            if (!gsSearchMin.HasValue || !gsSearchMax.HasValue)
-            {
-                double gsRange = gsVarMaxU - gsVarMinU;
-                double gsSearchRange = gsRange * GS_RANGE_SEARCH_FRAC;
-                for (int k = 0; k < globalSearchIterations; k++)
-                {
-                    candidateTcThresholds[k] = gsVarMinU + (1 - GS_RANGE_SEARCH_FRAC) * gsRange / 2 + gsSearchRange * ((double)k / globalSearchIterations);
-                }
-            }
-            else if (gsSearchMin.Value == gsSearchMax.Value)
-            {
-                candidateTcThresholds = new double[] { gsSearchMin.Value };
-            }
-            else // search based on the given min and max (used for second or third passes to improve accuracy)
-            {
-                double gsRange = gsSearchMax.Value - gsSearchMin.Value;
-                double gsSearchRange = gsRange;
-                for (int k = 0; k < globalSearchIterations; k++)
-                {
-                    candidateTcThresholds[k] = gsSearchMin.Value + gsSearchRange * ((double)k / globalSearchIterations);
-                }
-            }
-
-            // determine the time constants and gains for each for the a/b split of the dataset along the 
-            // candidate threshold.
-            for (int i = 0; i < candidateTcThresholds.Length; i++)
-            {
-                GainSchedParameters curGainSchedParams_separateTc = new GainSchedParameters(gsParams);
-                // Linear gain thresholds
-                double[] GS_candTcThreshold = new double[] { candidateTcThresholds[i] };
-                curGainSchedParams_separateTc.TimeConstantThresholds = GS_candTcThreshold;
-
-                List<double[]> curLinearGains = new List<double[]>();
-                double[] curTimeConstants = new double[2];
-                // a) identiy from the minimum value of gain-sched variable(u) to the candidate threshold
-                {
-                    double[] uMinFit = new double[number_of_inputs];
-                    double[] uMaxFit = new double[number_of_inputs];
-                    for (int idx = 0; idx < number_of_inputs; idx++)
-                    {
-                        if (idx == gsParams.GainSchedParameterIndex)
-                        {
-                            uMinFit[idx] = gsVarMinU;
-                            uMaxFit[idx] = candidateTcThresholds[i] + (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_A_B_OVERLAP_FACTOR;
-                        }
-                        else
-                        {
-                            uMinFit[idx] = double.NaN;
-                            uMaxFit[idx] = double.NaN;
-                        }
-                    }
-                    var ret = IdentifySingleLinearModelForGivenThresholds(ref DSa, uMinFit, uMaxFit, gsParams.GainSchedParameterIndex);
-                    curLinearGains.Add(ret.LinearGains);
-                    curTimeConstants[0] = ret.TimeConstant_s;
-                }
-                // b)identify using data from the maximum value of gain-sched variable(u) to the candidate threshold
-                {
-                    double[] uMinFit = new double[number_of_inputs];
-                    double[] uMaxFit = new double[number_of_inputs];
-                    for (int idx = 0; idx < number_of_inputs; idx++)
-                    {
-                        if (idx == gsParams.GainSchedParameterIndex)
-                        {
-                            uMinFit[idx] = candidateTcThresholds[i] - (gsVarMaxU - gsVarMinU) * GAIN_THRESHOLD_A_B_OVERLAP_FACTOR;
-                            uMaxFit[idx] = gsVarMaxU;
-                        }
-                        else
-                        {
-                            uMinFit[idx] = double.NaN;
-                            uMaxFit[idx] = double.NaN;
-                        }
-                    }
-                    var ret = IdentifySingleLinearModelForGivenThresholds(ref DSb, uMinFit, uMaxFit, gsParams.GainSchedParameterIndex);
-                    curLinearGains.Add(ret.LinearGains);
-                    curGainSchedParams_separateTc.LinearGains = curLinearGains;
-                    curTimeConstants[1] = ret.TimeConstant_s;
-                }
-
-                // ---------------------------------
-                // step2 :
-                // compare using 
-                // separate time-constants
-                // using the time-constant found in the first half
-                // using the time-constant found in the second half.
-                // (in principle you could also try to identify the time-constant that work best across the dataset given frozen steady states)
-
-                var candModelsStep2 = new List<GainSchedParameters>();
-                var candYsimStep2 = new List<double[]>();
-                // add the given model to the canidate set
-
-                if (Math.Abs(curTimeConstants[0] - curTimeConstants[1]) > smallestMeaningfullTc_s)
-                {
-                    curGainSchedParams_separateTc.TimeConstant_s = curTimeConstants;
-                    curGainSchedParams_separateTc.TimeConstantThresholds = new double[] { candidateTcThresholds[i] };
-                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_separateTc, ref DS_separateTc);
-                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_separateTc));
-                    candYsimStep2.Add((double[])DS_separateTc.Y_sim.Clone());
-                }
-                {
-                    var curGainSchedParams_commonTc1 = new GainSchedParameters(curGainSchedParams_separateTc);
-                    curGainSchedParams_commonTc1.TimeConstant_s = new double[] { curTimeConstants[0] };
-                    curGainSchedParams_commonTc1.TimeConstantThresholds = null;
-                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_commonTc1, ref DS_commonTc1);
-                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_commonTc1));
-                    candYsimStep2.Add((double[])DS_commonTc1.Y_sim.Clone());
-                }
-                {
-                    var curGainSchedParams_commonTc2 = new GainSchedParameters(curGainSchedParams_separateTc);
-                    curGainSchedParams_commonTc2.TimeConstant_s = new double[] { curTimeConstants[1] };
-                    curGainSchedParams_commonTc2.TimeConstantThresholds = null;
-                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_commonTc2, ref DS_commonTc2);
-                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_commonTc2));
-                    candYsimStep2.Add((double[])DS_commonTc2.Y_sim.Clone());
-                }
-          
-
-                bool doDebugPlot = false;
-                if (doDebugPlot)
-                {
-                    Shared.EnablePlots();
-                    candYsimStep2.Add(DS_commonTc1.Y_meas);
-                    Plot.FromList(candYsimStep2,
-                        new List<string> { "y1=y_separateTc", "y1=y_commonTc1", "y1=y_commonTc2 ", "y1=y_meas", }, DS_commonTc1.Times,
-                        "DEBUGthreshold" + candidateTcThresholds[i].ToString("F1"));
-                    Shared.DisablePlots();
-                    Task.Delay(100);
-                }
-                (var bestModelStep2, var indexOfBestModel) = ChooseBestModelFromSimulationList(candModelsStep2, candYsimStep2, ref DSa);
-
-                candGainschedParameters.Add(bestModelStep2);
-                candYSimList.Add((double[])DSa.Y_sim.Clone());
-            }
-
-            (var bestGSParams, int bestIdx) = ChooseBestModelFromSimulationList(candGainschedParameters, candYSimList, ref dataSet, doConsoleDebug);
-            gsParams = bestGSParams;
-            return bestGSParams;
-        }
 
 
 
@@ -975,95 +1166,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 results.WasAbleToIdentfiy = true;
             }
             return results;
-        }
-
-        /// <summary>
-        /// Chooses the best parameter in list, given a list of the simulation results of all of the candidates
-        /// </summary>
-        /// <param name="candidateGainSchedParams"> all candidate gain-scheduled parameters</param>
-        /// <param name="candidateYsim"> list of all the simulated y corresponding to each parameter set in the first input</param>
-        /// <param name="dataSet">the dataset to be returned, where y_sim is to be set based on the best model.</param>
-        /// <returns>a tuple with the paramters of the "best" model and array of objectives </returns>
-        static private (GainSchedParameters, int) ChooseBestModelFromSimulationList(List<GainSchedParameters> candidateGainSchedParams,
-            List<double[]> candidateYsim, ref UnitDataSet dataSet, bool doDebugOutput=false)
-        {
-            var vec = new Vec(dataSet.BadDataID);
-            GainSchedParameters BestGainSchedParams = null;
-            double lowestObj = double.MaxValue;
-            double lowestSumDiffs = double.MaxValue;
-            int numInputs = dataSet.U.GetNColumns();
-
-            int bestModelIdx = 0;
-            for (int curModelIdx = 0; curModelIdx < candidateGainSchedParams.Count; curModelIdx++)
-            {
-                var curGainSchedParams = candidateGainSchedParams[curModelIdx];
-                {
-                    var curSimY = candidateYsim.ElementAt(curModelIdx);
-                    var residuals = vec.Abs(vec.Subtract(curSimY, dataSet.Y_meas));
-
-                    //V1: rms-based selection.                    
-                   /* double rms = 0;
-                    for (int j = 0; j < curSimY.Length; j++)
-                    {
-                        rms = rms + Math.Pow(residuals.ElementAt(j), 2);
-                    }
-                    if (rms < lowestRms)
-                    {
-                        BestGainSchedParams = curGainSchedParams;
-                        lowestRms = rms;
-                        bestModelIdx = curModelIdx;
-                    }*/
-
-                    //V2: abs value of residuals : slightly better in gain-scheduled ramp tests.
-                    {
-                        var objFun = vec.Sum(residuals).Value;
-                        if (objFun < lowestObj)
-                        {
-                            BestGainSchedParams = curGainSchedParams;
-                            lowestObj = objFun;
-                            bestModelIdx = curModelIdx;
-                        }
-                  /*      if (doDebugOutput)
-                        {
-                            string str = "";
-                            if (curGainSchedParams.TimeConstant_s.Count() == 2)
-                                str += "Tc1:" + curGainSchedParams.TimeConstant_s[0] + " Tc1:" + curGainSchedParams.TimeConstant_s[1];
-                            else if (curGainSchedParams.TimeConstant_s.Count() == 1)
-                                str += "Tc1:" + curGainSchedParams.TimeConstant_s[0];
-                            else if (curGainSchedParams.TimeConstant_s.Count() == 1)
-                                str += "no Tc";
-                            if (curGainSchedParams.TimeConstantThresholds!=null)
-                                str += " threshold:" + curGainSchedParams.TimeConstantThresholds[0];
-                            Console.WriteLine("idx:" + curModelIdx + " objFun:" + objFun.ToString("F5") + "("+ str + ")");
-                        }*/
-                    }
-
-                    // debug plot
-                    bool doDebugPlot = false;// should be false unless debugging.
-                    if (doDebugPlot)
-                    {
-                        string str_linear_gains = "";
-                        for (int j = 0; j < curGainSchedParams.LinearGains.Count; j++)
-                        {
-                            str_linear_gains = str_linear_gains + string.Concat(curGainSchedParams.LinearGains[j].Select(x => x.ToString("F2", CultureInfo.InvariantCulture))) + " ";
-                        }
-                        Shared.EnablePlots();
-                        Plot.FromList(new List<double[]> {
-                                    curSimY,
-                                    dataSet.Y_meas,
-                                    dataSet.U.GetColumn(0) },
-                            new List<string> { "y1=simY1", "y1=y_ref", "y3=u1" },
-                        dataSet.GetTimeBase(),
-                            "GainSched split idx" + curModelIdx.ToString() + " gains" + str_linear_gains
-                            + "threshold " + string.Concat(curGainSchedParams.LinearGainThresholds.Select(x => x.ToString("F2", CultureInfo.InvariantCulture))));
-                        Shared.DisablePlots();
-                        Thread.Sleep(1000);
-                    }
-
-                }
-            }
-            dataSet.Y_sim = candidateYsim.ElementAt(bestModelIdx);
-            return (BestGainSchedParams, bestModelIdx);
         }
 
 

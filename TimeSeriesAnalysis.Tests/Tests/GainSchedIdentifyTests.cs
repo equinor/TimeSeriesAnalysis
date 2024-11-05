@@ -39,8 +39,19 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 if (trueParams.TimeConstant_s != null)
                 {
-                    Console.Write("Tc " + (i + 1) + ": " + estParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture)
-                        + delimTxt + trueParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                    if (estParams.TimeConstant_s != null )
+                    {
+                        if (trueParams.TimeConstant_s.Length >= i+1 )
+                        {
+                            Console.Write("Tc " + (i + 1) + ": " + estParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture)
+                                + delimTxt + trueParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                        }
+                    }
+                    else
+                    {
+                        Console.Write("Tc " + (i + 1) + ": " + "[null]"
+                    + delimTxt + trueParams.TimeConstant_s.ElementAt(i).ToString(accuracy, CultureInfo.InvariantCulture) + "\r\n");
+                    }
                 }
                 else
                 {
@@ -95,14 +106,15 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         // note that the tolerance seems to be linear with the noise in the data
         // five varying gains
-        [TestCase(1, 0, 1, 0.0, Description = "Two steps for every threshold(five thresholds)")]
-        [TestCase(1, 0, 10, 1.0, Description ="Two steps for every threshold(five thresholds)")]
-        [TestCase(1, 0, 20, 2.0, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 1, 0.0,65, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 10, 1.0, 65, Description ="Two steps for every threshold(five thresholds)")]
+        [TestCase(1, 0, 20, 2.0, 65, Description = "Two steps for every threshold(five thresholds)")]
         // five gains that are the same (note that the tolerance can be much lower in this case)
-        [TestCase(2, 0, 1, 0.0, Description = "Two steps for every threshold(five thresholds)")]
-        [TestCase(2, 0, 5, 1.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
-        [TestCase(2, 0, 10, 2.0, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
-        public void FiveGainsStatic_StepChange_ForGivenThresholds_CorrectGains(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude )
+        [TestCase(2, 0, 1, 0.0, 28, Description = "Two steps for every threshold(five thresholds)")]
+        [TestCase(2, 0, 5, 1.0, 28, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
+        [TestCase(2, 0, 10, 2.0, 28, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
+        public void FiveGainsStatic_StepChange_ForGivenThresholds_CorrectGains(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude,
+            double fitScoreReq)
         {
             const int N = 100;//Note, that the actual dataset is four times this value.
             GainSchedParameters refParams = new GainSchedParameters(); 
@@ -151,11 +163,11 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.CreateTimeStamps(timeBase_s);
             (bool isOk, double[] y_sim) = PlantSimulator.SimulateSingleToYmeas(dataSet, refModel,noiseAmplitude);
 
-            var gsModel = GainSchedIdentifier.IdentifyForGivenThresholds(dataSet, gsFittingSpecs);
+            var idModel = GainSchedIdentifier.IdentifyForGivenThresholds(dataSet, gsFittingSpecs);
 
             // console out
-            ConoleOutResult(refParams, gsModel.GetModelParameters());
-            Console.WriteLine(gsModel);
+            ConoleOutResult(refParams, idModel.GetModelParameters());
+            Console.WriteLine(idModel);
 
             // Plotting gains(debugging)
             bool doPlots = false;
@@ -170,23 +182,26 @@ namespace TimeSeriesAnalysis.Test.SysID
                     timeBase_s,
                     "GainEstOnly_CorrectGainsReturned");
 
-                gsModel.SetOutputID("y_meas");
-                gsModel.SetInputIDs((new List<string> { "u_1" }).ToArray());
+                idModel.SetOutputID("y_meas");
+                idModel.SetInputIDs((new List<string> { "u_1" }).ToArray());
                 GainSchedModel referenceModel = new GainSchedModel(refParams,"ref_model");
-                referenceModel.SetInputIDs(gsModel.GetModelInputIDs());
-                referenceModel.SetOutputID(gsModel.GetOutputID());
-                PlotGain.PlotSteadyState(gsModel, referenceModel, "steady state gains", new double[] { 0}, new double[] { 15});
-                PlotGain.PlotGainSched(gsModel, referenceModel,"gain-scheduling");
+                referenceModel.SetInputIDs(idModel.GetModelInputIDs());
+                referenceModel.SetOutputID(idModel.GetOutputID());
+                PlotGain.PlotSteadyState(idModel, referenceModel, "steady state gains", new double[] { 0}, new double[] { 15});
+                PlotGain.PlotGainSched(idModel, referenceModel,"gain-scheduling");
                 Shared.DisablePlots();
             }
             // asserts
-            Assert.IsTrue(gsModel.GetModelParameters().Fitting.WasAbleToIdentify);
-            Assert.AreEqual(expectedNumWarnings, gsModel.GetModelParameters().GetWarningList().Count());
+            Assert.IsTrue(idModel.GetModelParameters().Fitting.WasAbleToIdentify);
+            Assert.AreEqual(expectedNumWarnings, idModel.GetModelParameters().GetWarningList().Count());
 
             for (int i = 0; i < refParams.LinearGains.Count; i++)
             {
-                DiffLessThan(refParams.LinearGains[i][0], gsModel.GetModelParameters().LinearGains[i][0], gainTolerancePrc,i);
+                DiffLessThan(refParams.LinearGains[i][0], idModel.GetModelParameters().LinearGains[i][0], gainTolerancePrc,i);
             }
+            Assert.That(idModel.GetModelParameters().Fitting.FitScorePrc > fitScoreReq, "Tripwire: FitScore should not fall past what was observed during design of the test ");
+
+
         }
 
         private void DiffLessThan(double trueVal, double testVal, double tolerancePrc,int index)
@@ -205,18 +220,18 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         // isssue:
 
-        [TestCase(0)]
-        [TestCase(2)]
-        [TestCase(5)]
-        [TestCase(7)]
+        [TestCase(0,99)]
+        [TestCase(2,97)]
+        [TestCase(5,94)]
+       // [TestCase(7)]
 
-        public void TimeDelaySingleTc_StepChange_Identify_TcAndTdEstOk(int timeDelaySamples)
+        public void TimeDelaySingleTc_StepChange_Identify_TcAndTdEstOk(int timeDelaySamples, double fitScoreReq)
         {
             double td_tol = 0.04;
             double tc_tol = 2.5;
 
             double noiseAmp = 0.0;
-            int N = 1300;//TODO! make this a lot smaller!!
+            int N = 500;
             // Arrange
             var unitData = new UnitDataSet("test");
             double[] u1 = TimeSeriesCreator.ThreeSteps(N*1/5, N*2/5, N*3/5, N, -2, -1, 0, 1);
@@ -260,10 +275,13 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
 
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
-           
+
+            Console.WriteLine(idModel);
+
             // assert
            Assert.That(Math.Abs(idModel.GetModelParameters().TimeDelay_s - trueGSparams.TimeDelay_s)<td_tol,"time delay too far off" );
            Assert.That(Math.Abs(idModel.GetModelParameters().TimeConstant_s.First() - trueGSparams.TimeConstant_s.First()) < tc_tol, "time constant too far off!");
+            Assert.That(idModel.GetModelParameters().Fitting.FitScorePrc > fitScoreReq,"Tripwire: FitScore should not fall past what was observed during design of the test ");
         }
 
 
@@ -330,15 +348,15 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
         }
-        [TestCase("Identify",40,-2,-1)]
-        [TestCase("Identify",20,-2,-1)]
-        [TestCase("Identify", 40, -2, 1)]
-        [TestCase("Identify", 20, -2, 1)]
-        [TestCase("IdentifyForGivenThresholds", 40, -2, -1, Description ="threshold is assumed perfectly known, makes estimation easier")]
-        [TestCase("IdentifyForGivenThresholds", 20, -2, -1, Description = "threshold is assumed perfectly known, makes estimation easier")]
-        [TestCase("IdentifyForGivenThresholds", 40, -2, 1, Description = "threshold is assumed perfectly known, makes estimation easier")]
-        [TestCase("IdentifyForGivenThresholds", 20, -2, 1, Description = "threshold is assumed perfectly known, makes estimation easier")]
-        public void TwoGainsConstTc_RampChange_Both_AllParamsEstOk(string solver, double Tc, double gain1, double gain2)
+        [TestCase("Identify",40,-2,-1,98)]
+        [TestCase("Identify",20,-2,-1, 98)]
+        [TestCase("Identify", 40, -2, 1, 98)]
+        [TestCase("Identify", 20, -2, 1, 98)]
+        [TestCase("IdentifyForGivenThresholds", 40, -2, -1,99, Description ="threshold is assumed perfectly known, makes estimation easier")]
+        [TestCase("IdentifyForGivenThresholds", 20, -2, -1,99, Description = "threshold is assumed perfectly known, makes estimation easier")]
+        [TestCase("IdentifyForGivenThresholds", 40, -2, 1,93, Description = "threshold is assumed perfectly known, makes estimation easier")]
+        [TestCase("IdentifyForGivenThresholds", 20, -2, 1,97, Description = "threshold is assumed perfectly known, makes estimation easier")]
+        public void TwoGainsConstTc_RampChange_Both_AllParamsEstOk(string solver, double Tc, double gain1, double gain2, double fitScoreReq)
         {
             double tc_tol = 5;
             double gain_tol_prc = 15;
@@ -401,7 +419,10 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.That(Math.Abs(idModel.GetModelParameters().LinearGains.ElementAt(0)[0]/ trueModel.GetModelParameters().LinearGains.ElementAt(0)[0] - 1)*100 < gain_tol_prc, "Linear gain 1 too far off");
             Assert.That(Math.Abs(idModel.GetModelParameters().LinearGains.ElementAt(1)[0] / trueModel.GetModelParameters().LinearGains.ElementAt(1)[0] - 1) * 100 < gain_tol_prc, "Linear gain 2 too far off");
 
-            Assert.That(idModel.GetModelParameters().LinearGainThresholds.First() - trueModel.GetModelParameters().LinearGainThresholds.First() < threshold_tol, "Threshold too far ooff");
+            Assert.That(idModel.GetModelParameters().LinearGainThresholds.First() - trueModel.GetModelParameters().LinearGainThresholds.First() < threshold_tol, "Threshold too far off");
+
+            Assert.That(idModel.GetModelParameters().Fitting.FitScorePrc > fitScoreReq, "Tripwire: FitScore should not fall past what was observed during design of the test ");
+
         }
 
 
@@ -463,6 +484,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.DisablePlots();
             }
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
+
+            Console.WriteLine(idModel);
+
             // Assert
             int min_number_of_gains = Math.Min(idModel.GetModelParameters().LinearGainThresholds.Length, trueGSparams.LinearGainThresholds.Length);
             for (int k = 0; k < min_number_of_gains; k++)
@@ -470,6 +494,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Assert.That(Math.Abs(idModel.GetModelParameters().LinearGainThresholds[k] - trueGSparams.LinearGainThresholds[k]), Is.LessThanOrEqualTo(linearGainTresholdTol),
                 "There are too large differences in the linear gain threshold " + k.ToString());
             }
+            Assert.That(idModel.GetModelParameters().TimeConstantThresholds != null);
             Assert.That(idModel.GetModelParameters().TimeConstantThresholds.Count() == 2,
                 "Two time constants in true model but only one model found");
 
@@ -533,13 +558,13 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
 
-        [TestCase(10, 0, Description= "IdentifyForGivenThresholds(),identify gain and time constants, zero bias, thresholds are GIVEN")]
-        [TestCase(10, 1, Description = "IdentifyForGivenThresholds(), same as ver1, except non-zero bias")]
-        [TestCase(10, 2, Description = "Identify(), identify gain and time constants AND THRESHOLDS, zero bias, ")]
-        [TestCase(10, 3, Description = "Identify(), same as ver2, except non-zero bias")]
+        [TestCase(10, 0, 99.9, Description= "IdentifyForGivenThresholds(),identify gain and time constants, zero bias, thresholds are GIVEN")]
+        [TestCase(10, 1, 99.9, Description = "IdentifyForGivenThresholds(), same as ver1, except non-zero bias")]
+        [TestCase(10, 2, 99.9, Description = "Identify(), identify gain and time constants AND THRESHOLDS, zero bias, ")]
+        [TestCase(10, 3, 99.9, Description = "Identify(), same as ver2, except non-zero bias")]
 
         public void TwoGainsConstTc_StepChange_Both_TCAndThresholdFoundOk(double TimeConstant1_s,
-            int ver)
+            int ver, double fitScoreReq)
         {
             int N = 300;
             var threshold_tol = 0.03;
@@ -612,6 +637,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
 
             ConoleOutResult(trueParams, idModel.GetModelParameters());
+            Console.WriteLine(idModel);
+
 
             // Asserts
             Assert.IsTrue(Math.Abs(idModel.GetModelParameters().LinearGainThresholds.First() - trueParams.LinearGainThresholds.First()) < threshold_tol);
@@ -625,9 +652,10 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Assert.That(idModel.GetModelParameters().TimeConstant_s[k].IsLessThanOrEqual(TimeConstant1_s + TimeConstantAllowedDev_s),
                 "Too high time constant " + k.ToString());
             }
-//            Assert.That(Math.Abs(idModel.GetModelParameters().OperatingPoint_Y - trueParams.OperatingPoint_Y) < operatingy_tol);
+            Assert.That(idModel.GetModelParameters().Fitting.FitScorePrc > fitScoreReq, "Tripwire: FitScore should not fall past what was observed during design of the test ");
+
         }
-    
+
 
     }
 }

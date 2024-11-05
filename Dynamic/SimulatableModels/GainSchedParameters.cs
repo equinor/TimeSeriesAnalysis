@@ -1,4 +1,5 @@
-﻿using Accord.Math;
+﻿using Accord.IO;
+using Accord.Math;
 using System.Collections.Generic;
 using System.Linq;
 using TimeSeriesAnalysis.Dynamic;
@@ -92,6 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="existingModel">the model to be copied</param>
         public GainSchedParameters(GainSchedParameters existingModel)
         {
+
             Y_min = existingModel.Y_min;
             Y_max = existingModel.Y_max;
             OperatingPoint_U = existingModel.OperatingPoint_U;
@@ -114,9 +116,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 LinearGainThresholds = (double[])existingModel.LinearGainThresholds;
 
             //todo: these are not cloned properly
+             if (existingModel.errorsAndWarningMessages != null) 
+                errorsAndWarningMessages = new List<GainSchedIdentWarnings>(existingModel.errorsAndWarningMessages);
+             if (existingModel.Fitting != null)
+                 Fitting = new FittingInfo();
+
             errorsAndWarningMessages = existingModel.errorsAndWarningMessages;
             Fitting = existingModel.Fitting;
-            FittingSpecs = existingModel.FittingSpecs;  
+            FittingSpecs = existingModel.FittingSpecs;
+
         }
 
 

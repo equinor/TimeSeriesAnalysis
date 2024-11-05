@@ -733,8 +733,10 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("-------------------------");
             if (modelParameters.Fitting != null)
             {
-           /*     sb.AppendLine("Fit score(%): " + modelParameters.Fitting.FitScorePrc.ToString(writeCulture));
+                int nSignificantDigits = 4;
 
+                sb.AppendLine("Fit score(%): " + SignificantDigits.Format(modelParameters.Fitting.FitScorePrc, nSignificantDigits).ToString(writeCulture));
+                /*
                 sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValDiff, 4).ToString(writeCulture));
                 sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqDiff, 4).ToString(writeCulture));
                 sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqAbs, 4).ToString(writeCulture));
