@@ -52,6 +52,7 @@ namespace TimeSeriesAnalysis.Utility
   
                 if (model1.GetType() == typeof(GainSchedModel))
                 {
+
                     tables_m1 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model1, model1Name, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
                 else if (model1.GetType() == typeof(UnitModel))
@@ -61,6 +62,7 @@ namespace TimeSeriesAnalysis.Utility
                         uMin = ((UnitModel)model1).modelParameters.Fitting.Umin;
                         uMax = ((UnitModel)model1).modelParameters.Fitting.Umax;
                     }
+
                     tables_m1 = CreateSteadyStateXYTablesFromUnitModel((UnitModel)model1, model1Name, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
 
@@ -135,11 +137,6 @@ namespace TimeSeriesAnalysis.Utility
                 }
                 List<XYTable> tables_m1 = new List<XYTable>();
 
-               /* if (model1.modelParameters.Fitting != null && uMin == null && uMax == null)
-                {
-                    uMin = model1.modelParameters.Fitting.Umin;
-                    uMax = model1.modelParameters.Fitting.Umax;
-                }*/
                 tables_m1 = CreateGainXYTablesFromGainSchedModel(model1, model1Name, inputIdx);
 
                 if (model2 == null)
@@ -172,16 +169,25 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="uMaxExt"></param>
         /// <param name="numberOfPlotPoints"></param>
         /// <returns></returns>
-        static private List<XYTable> CreateSteadyStateXYTablesFromGainSchedModel(GainSchedModel model, 
+        static private List<XYTable> CreateSteadyStateXYTablesFromGainSchedModel(GainSchedModel model,
             string modelName, int inputIdx, int numberOfPlotPoints,
             double[] uMinExt = null, double[] uMaxExt = null)
         {
 
+            if (model.GetModelParameters().Fitting != null)
+            {
+                if (!model.GetModelParameters().Fitting.WasAbleToIdentify)
+                {
+                    Console.WriteLine(model.ID + "unable to identify, skipping");
+                    return null;
+                }
+            }
             if (inputIdx > 0)
             {
                 Console.WriteLine("currently only supports gain-sched variables with one input");
                 return null;
             }
+
             string outputId = model.outputID;
             if (outputId == null)
             {
@@ -230,6 +236,15 @@ namespace TimeSeriesAnalysis.Utility
         static private List<XYTable> CreateSteadyStateXYTablesFromUnitModel(UnitModel model, string modelName, int inputIdx,
             int numberOfPlotPoints,double[] uMinExt=null, double[] uMaxExt=null )
         {
+            if (model.GetModelParameters().Fitting != null)
+            {
+                if (!model.GetModelParameters().Fitting.WasAbleToIdentify)
+                {
+                    Console.WriteLine(model.ID + "unable to identify, skipping");
+                    return null;
+                } 
+            } 
+
             string outputId = model.outputID;
             if (outputId == null)
             {
@@ -297,6 +312,16 @@ namespace TimeSeriesAnalysis.Utility
         /// <returns></returns>
         static private List<XYTable> CreateGainXYTablesFromGainSchedModel(GainSchedModel model, string modelName, int inputIdx)
         {
+
+            if (model.GetModelParameters().Fitting != null)
+            {
+                if (!model.GetModelParameters().Fitting.WasAbleToIdentify)
+                {
+                    Console.WriteLine(model.ID + "unable to identify, skipping");
+                    return null;
+                }
+            }
+
             string outputId = model.outputID;
             if (outputId == null)
             {

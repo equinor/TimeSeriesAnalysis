@@ -172,16 +172,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 paramsToReturn = bestModel_pass1;
             }
 
+            if (paramsToReturn.Fitting.WasAbleToIdentify)
+            {
+                //////////////////////////////
+                EstimateTimeDelay(ref paramsToReturn, ref dataSet);
 
-            //////////////////////////////
-            EstimateTimeDelay(ref paramsToReturn, ref dataSet);
-
-            //////////////////////////////
-            //// EXPERIMENTAL: determining two time-constants. 
-           // const int numTcIterations = 50;
-          //  var bestParams = EvaluateMultipleTimeConstantsForGivenGainThreshold(ref paramsToReturn, dataSet,numTcIterations);
-
-
+                //////////////////////////////
+                //// EXPERIMENTAL: determining two time-constants. 
+                // const int numTcIterations = 50;
+                //  var bestParams = EvaluateMultipleTimeConstantsForGivenGainThreshold(ref paramsToReturn, dataSet,numTcIterations);
+            }
             ////////////////////////////////////
             if (paramsToReturn.Fitting == null)
             {
@@ -298,13 +298,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 idParams.AddWarning(GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains);
 
             // post-processing : improving the dynamic model terms by analysis after setting the static model
+            if (idParams.Fitting.WasAbleToIdentify)
+            {
+                // simulate the model and determine the optimal bias term:
+                DetermineOperatingPointAndSimulate(ref idParams, ref dataSet);
 
-            // simulate the model and determine the optimal bias term:
-            DetermineOperatingPointAndSimulate(ref idParams, ref dataSet);
-
-            if (doTimeDelayEstimation)
-                EstimateTimeDelay(ref idParams, ref dataSet);
-
+                if (doTimeDelayEstimation)
+                    EstimateTimeDelay(ref idParams, ref dataSet);
+            }
             return new GainSchedModel(idParams, "identified");
         }
 
