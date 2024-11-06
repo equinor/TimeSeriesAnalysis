@@ -122,7 +122,7 @@ namespace TimeSeriesAnalysis
         public static int[] MakeIndexArray(int startValue, int endValue)
         {
             List<int> retList = new List<int>();
-            for (int i = startValue; i < endValue; i++)
+            for (int i = startValue; i <= endValue; i++)
             {
                 retList.Add(i);
             }

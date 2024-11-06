@@ -215,12 +215,97 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
         }
 
-        // isssue:
+
+        [TestCase( 99, Explicit =true)]
+
+        public void IgnoreIndicesInMiddleOfDataset_ResultShouldStillBeGood( double fitScoreReq)
+        {
+            double noiseAmp = 0.05;
+            int N = 500;
+            double td_tol = 0.04;
+            double tc_tol = 2.5;
+
+            // use for dataset 1 and 3:
+            GainSchedParameters trueGSparams = new GainSchedParameters(0, -1.34)
+            {
+                TimeConstant_s = new double[] { 10 },
+                TimeConstantThresholds = null,
+                LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
+                LinearGainThresholds = new double[] { 2 },
+                TimeDelay_s = timeBase_s * 0,
+            };
+
+            // Dataset 1 
+            var unitData1 = new UnitDataSet("dataset1");
+            {
+                double[] u1 = TimeSeriesCreator.ThreeSteps(N * 1 / 5, N * 2 / 5, N * 3 / 5, N, -2, -1, 0, 1);
+                unitData1.SetU(u1);
+                unitData1.CreateTimeStamps(timeBase_s);
+
+                GainSchedModel trueModel = new GainSchedModel(trueGSparams, "true gain sched model");
+                PlantSimulator.SimulateSingleToYmeas(unitData1, trueModel, noiseAmp, 454);
+            }
+            // Dataset 2 
+            var unitData2 = new UnitDataSet("dataset2");
+            {
+                double[] u2 = TimeSeriesCreator.ThreeSteps(N * 1 / 5, N * 2 / 5, N * 3 / 5, N, -2, -1, 0, 1);
+                unitData2.SetU(u2);
+                unitData2.CreateTimeStamps(timeBase_s);
+                GainSchedParameters otherGsParams = new GainSchedParameters(5, -1.34)
+                {
+                    TimeConstant_s = new double[] { 35 },
+                    TimeConstantThresholds = null,
+                    LinearGains = new List<double[]> { new double[] { -1 }, new double[] { 2 } },
+                    LinearGainThresholds = new double[] { 2 },
+                    TimeDelay_s = timeBase_s * 0,
+                };
+                GainSchedModel trueModel = new GainSchedModel(otherGsParams, "true gain sched model");
+                PlantSimulator.SimulateSingleToYmeas(unitData2, trueModel, noiseAmp, 454);
+            }
+            // dataset 3
+            var unitData3 = new UnitDataSet("dataset3");
+            {
+                double[] u3 = TimeSeriesCreator.ThreeSteps(N * 1 / 5, N * 2 / 5, N * 3 / 5, N, 0, 1, 2, 3);
+                unitData3.SetU(u3);
+                unitData3.CreateTimeStamps(timeBase_s);
+                GainSchedModel trueModel = new GainSchedModel(trueGSparams, "true gain sched model");
+                PlantSimulator.SimulateSingleToYmeas(unitData3, trueModel, noiseAmp, 454);
+            }
+
+            var joinedDataSet = new UnitDataSet(unitData1);
+            joinedDataSet.Concat(unitData2);
+            joinedDataSet.Concat(unitData3);
+            joinedDataSet.IndicesToIgnore =Index.MakeIndexArray(N,N*2).ToList();
+
+            // Act
+            var idModel = GainSchedIdentifier.Identify(joinedDataSet);
+
+            // plot
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                        joinedDataSet.Y_meas ,
+                        joinedDataSet.Y_sim,
+                        joinedDataSet.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
+                    timeBase_s,
+                    "IgnoreIndicesInMiddleOfDataset_ResultShouldStillBeGood ");
+                Shared.DisablePlots();
+            }
+            ConoleOutResult(trueGSparams, idModel.GetModelParameters());
+            Console.WriteLine(idModel);
+
+            // assert
+            Assert.That(Math.Abs(idModel.GetModelParameters().TimeDelay_s - trueGSparams.TimeDelay_s) < td_tol, "time delay too far off");
+            Assert.That(Math.Abs(idModel.GetModelParameters().TimeConstant_s.First() - trueGSparams.TimeConstant_s.First()) < tc_tol, "time constant too far off!");
+            Assert.That(idModel.GetModelParameters().Fitting.FitScorePrc > fitScoreReq, "Tripwire: FitScore should not fall past what was observed during design of the test ");
+        }
 
         [TestCase(0,99)]
         [TestCase(2,97)]
         [TestCase(5,94)]
-       // [TestCase(7)]
 
         public void TimeDelaySingleTc_StepChange_Identify_TcAndTdEstOk(int timeDelaySamples, double fitScoreReq)
         {
@@ -555,6 +640,69 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(trueParams.GetOperatingPointY() == origOpY);
 
         }
+
+        [TestCase("IdentifyForGivenThresholds")]
+        [TestCase("Identify")]
+
+        public void FlatData_IdTerminatesWithoutCrashing(string solverId)
+        {
+            int N = 300;
+            double noiseAmplitude = 0.40;
+
+            // Arrange
+            var unitData = new UnitDataSet("test");
+            unitData.SetU(TimeSeriesCreator.Constant(5, N));
+            unitData.Times = TimeSeriesCreator.CreateDateStampArray(
+                new DateTime(2000, 1, 1), timeBase_s, N);
+
+            GainSchedParameters trueParams = new GainSchedParameters(0, 1.34)
+            {
+                TimeConstant_s = new double[] { 5 },
+                TimeConstantThresholds = null,
+                LinearGains = new List<double[]> { new double[] { -2 }, new double[] { 3 } },
+                LinearGainThresholds = new double[] { 1.035 },
+                TimeDelay_s = 0,
+            };
+
+            // make the bias nonzero to test that the operating point estimation works.
+            //    trueParams.OperatingPoint_Y = 1.34;
+            GainSchedModel trueModel = new GainSchedModel(trueParams, "Correct gain sched model");
+
+            PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmplitude, 123);
+
+            // Act
+            var idModel = new GainSchedModel();
+            if (solverId == "Identify")
+            {
+                // this will include determining thresholds, unlike below
+                idModel = GainSchedIdentifier.Identify(unitData);
+            }
+            else if (solverId == "IdentifyForGivenThresholds")
+            {
+                var gsFittingSpecs = new GainSchedFittingSpecs();
+                gsFittingSpecs.uGainThresholds = trueParams.LinearGainThresholds;
+                gsFittingSpecs.uTimeConstantThresholds = trueParams.TimeConstantThresholds;
+                idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
+            }
+            // plot
+            bool doPlot = false;
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                    unitData.Y_meas,
+                    unitData.Y_sim,
+                    unitData.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_sim(est_model)", "y3=u1" },
+                    timeBase_s,
+                    "GainSchedFlatData" + solverId);
+                Shared.DisablePlots();
+            }
+
+            Console.WriteLine(idModel);
+
+        }
+
 
 
         [TestCase(10, 0, 99.9, Description= "IdentifyForGivenThresholds(),identify gain and time constants, zero bias, thresholds are GIVEN")]

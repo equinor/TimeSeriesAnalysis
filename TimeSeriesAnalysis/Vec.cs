@@ -282,6 +282,10 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         public double[] GetValues(double[] vec, List<int> indicesToIgnore)
         {
+            if (indicesToIgnore == null)
+                return vec;
+            if (indicesToIgnore.Count == 0)
+                return vec;
             var goodIndices = Index.InverseIndices(vec.Length, indicesToIgnore);
             List<double> values = new List<double>();
             for (int i = 0; i <goodIndices.Count(); i++)

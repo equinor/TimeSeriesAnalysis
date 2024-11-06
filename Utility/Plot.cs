@@ -163,8 +163,13 @@ namespace TimeSeriesAnalysis.Utility
             if (!ShouldPlottingBeDone())
                 return "";
 
-            var plotlyURLinternal = GetPlotlyURL();
+            if (dataList.Count() != plotNames.Count())
+            {
+                throw new Exception("FromList: dataList and plotNames should have the same number of elements!");
+                return "";
+            }
 
+            var plotlyURLinternal = GetPlotlyURL();
 
             string command = @"-r " + plotlyURLinternal + "#";
             string plotURL = ""; ;
