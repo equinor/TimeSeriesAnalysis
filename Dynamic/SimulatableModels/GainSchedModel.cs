@@ -591,17 +591,23 @@ namespace TimeSeriesAnalysis.Dynamic
                 sb.AppendLine(tcThresholds);
             }
 
-
             ////////////////////////////////
             sb.AppendLine("Linear gains : ");
             string lineargainsstr = "";
             for (int inputIdx = 0; inputIdx < modelParameters.LinearGains.Count; inputIdx++)
             {
-                for (int gsVarIdx = 0; gsVarIdx < modelParameters.LinearGains[inputIdx].Count(); gsVarIdx++)
+                if (modelParameters.LinearGains[inputIdx] == null)
                 {
-                    lineargainsstr += 
-                        "\t" + SignificantDigits.Format(modelParameters.LinearGains[inputIdx][gsVarIdx], sDigits).ToString(writeCulture)
-                        ;
+                    lineargainsstr += "\t" + "[null]";
+                }
+                else
+                {
+                    for (int gsVarIdx = 0; gsVarIdx < modelParameters.LinearGains[inputIdx].Count(); gsVarIdx++)
+                    {
+                        lineargainsstr +=
+                            "\t" + SignificantDigits.Format(modelParameters.LinearGains[inputIdx][gsVarIdx], sDigits).ToString(writeCulture)
+                            ;
+                    }
                 }
             }
             sb.AppendLine(lineargainsstr);
