@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using Accord.Math;
 
 namespace TimeSeriesAnalysis.Utility
 {
@@ -144,7 +145,6 @@ namespace TimeSeriesAnalysis.Utility
         {
             using (sr)
             {
-                // bool isOk = true;
                 doubleData = null;
                 stringData = null;
                 variableNames = null;
@@ -152,8 +152,12 @@ namespace TimeSeriesAnalysis.Utility
                 var linesDouble = new List<double[]>();
                 var linesStr = new List<string[]>();
                 // readheader
-                variableNames = sr.ReadLine().Split(separator);
                 string currentLine = sr.ReadLine();
+                variableNames = currentLine.Split(separator);
+                // if there is a trailing comma in the header, remove this variable
+                if (variableNames.Last().Trim() == "")
+                    variableNames =  variableNames.RemoveAt(variableNames.Count() - 1);
+
                 while (currentLine != null)
                 {
                     double[] LineDouble = new double[variableNames.Length];
@@ -177,6 +181,7 @@ namespace TimeSeriesAnalysis.Utility
                     linesDouble.Add(LineDouble);
                     linesStr.Add(LineStr);
                 }
+
                 int nColumns = linesStr[0].Count();
 
                 if (linesDouble.Count() > 0)
@@ -188,7 +193,7 @@ namespace TimeSeriesAnalysis.Utility
                     stringData = new string[linesDouble.Count, nColumns];
                 }
                 for (int k = 0; k < linesDouble.Count; k++)
-                    for (int l = 0; l < linesDouble[k].Count(); l++)
+                    for (int l = 0; l < Math.Min(linesDouble[k].Count(), nColumns); l++)
                     {
                         doubleData[k, l] = linesDouble[k][l];
                     }
