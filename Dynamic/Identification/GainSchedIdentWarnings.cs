@@ -20,8 +20,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// beyond the threshold ranges. This can cause imprecise gains, and you may consider reducing the number of threshold, or
         /// obtaining a tuning data set with more information/exctiation.
         /// </summary>
-        InsufficientExcitationBetweenEachThresholdToBeCertainOfGains = 2
+        InsufficientExcitationBetweenEachThresholdToBeCertainOfGains = 2,
 
+        /// <summary>
+        /// Identification was given a y_meas that was either null or had zero values
+        /// </summary>
+        YmeasNullOrEmpty = 2,
+
+        /// <summary>
+        /// Identification was given a U that was either null or had zero values
+        /// </summary>
+        UNullOrEmpty = 3
 
     }
 }

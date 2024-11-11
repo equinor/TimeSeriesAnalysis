@@ -11,6 +11,15 @@ namespace TimeSeriesAnalysis.Utility
     /// </summary>
     public class PlotXY
     {
+
+        private static string ReplaceUrlIllegalStrings(string comment)
+        {
+            if (comment == null)
+                return null;
+            return comment.Replace(" ", "_").Replace(";", "");
+        }
+
+
         /// <summary>
         /// Make an xy-plot from an XYtable entry
         /// </summary>
@@ -24,7 +33,7 @@ namespace TimeSeriesAnalysis.Utility
         {
 
             var dataPath = Plot.GetPlotlyDataPath();
-            var fileName = dataPath + caseName +"__"+ table.GetName() + ".csv";
+            var fileName = dataPath + caseName +"__"+ ReplaceUrlIllegalStrings(table.GetName()) + ".csv";
 
             table.ToCSV(fileName);
 
@@ -32,10 +41,10 @@ namespace TimeSeriesAnalysis.Utility
             var plotlyURLinternal = Plot.GetPlotlyURL();
 
             string command = @"-r " + plotlyURLinternal + "#";
-            string plotURL = GetCodeFromType(table.GetLineType())+"="+ table.GetName();
+            string plotURL = GetCodeFromType(table.GetLineType())+"="+ ReplaceUrlIllegalStrings(table.GetName());
             if (caseName != null)
             {
-                plotURL += ";casename:" + caseName;
+                plotURL += ";casename:" + ReplaceUrlIllegalStrings(caseName);
             }
             if (doStartChrome)
             {
@@ -75,20 +84,20 @@ namespace TimeSeriesAnalysis.Utility
             string plotURL = "";
             foreach (var table in tables)
             {
-                var fileName = dataPath + caseName + "__" + table.GetName() + ".csv";
+                var fileName = dataPath + ReplaceUrlIllegalStrings(caseName) + "__" + ReplaceUrlIllegalStrings(table.GetName()) + ".csv";
                 table.ToCSV(fileName);
-                plotURL += GetCodeFromType(table.GetLineType())+"=" +table.GetName() +";";
+                plotURL += GetCodeFromType(table.GetLineType())+"=" + ReplaceUrlIllegalStrings(table.GetName()) +";";
             }
             if (caseName != null)
             {
-                plotURL += "casename:" + caseName;
+                plotURL += "casename:" + ReplaceUrlIllegalStrings(caseName);
             }
             if (comment != null)
             {
                 if (!plotURL.EndsWith(";"))
                     plotURL += ";";
 
-                plotURL += "comment:" + comment;
+                plotURL += "comment:" + ReplaceUrlIllegalStrings(comment);
             }
             if (doStartChrome)
             {

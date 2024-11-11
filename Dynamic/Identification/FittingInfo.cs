@@ -21,9 +21,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// True if identification was able to identify, otherwise false.
+        /// Note that this flag is not an indication that the model is good, i.e. that the data
+        /// had sufficient information to determine unique paramters that describe the dataset well. 
+        /// This flag only indicates that regression did not crash during identification.
         /// </summary>
         public bool WasAbleToIdentify { get; set; }
-
 
         /// <summary>
         /// A string that identifies the solver that was used to find the model

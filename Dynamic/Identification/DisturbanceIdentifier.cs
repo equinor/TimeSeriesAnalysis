@@ -113,152 +113,6 @@ namespace TimeSeriesAnalysis.Dynamic
         const double numberOfTiConstantsToWaitAfterSetpointChange = 5;
 
         /// <summary>
-        /// Only uses Y_meas and U in unitDataSet, i.e. does not consider feedback 
-        /// </summary>
-        /// <param name="unitDataSet"></param>
-        /// <param name="unitModel"></param>
-        /// <param name="inputIdx"></param>
-        /// <returns></returns>
-        public static DisturbanceIdResult EstDisturbanceBasedOnProcessModel(UnitDataSet unitDataSet,
-            UnitModel unitModel, int inputIdx = 0)
-        {
-            unitModel.WarmStart();
-            var sim = new UnitSimulator(unitModel);
-            unitDataSet.D = null;
-            double[] y_sim = sim.Simulate(ref unitDataSet);
-
-            DisturbanceIdResult result = new DisturbanceIdResult(unitDataSet);
-            result.d_est = (new Vec()).Subtract(unitDataSet.Y_meas, y_sim);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Removes the effect of setpoint and (if relevant any non-pid input) changes  from the dataset using the model of pid and unit provided 
-        /// This is the Multiple-input version of this method that is newer and more generl
-        /// </summary>
-        /// <param name="unitDataSet"></param>
-        /// <param name="unitModel"></param>
-        /// <param name="pidInputIdx"></param>
-        /// <param name="pidParams"></param>
-        /// <returns> a scrubbed copy of unitDataSet</returns>
-        private static UnitDataSet RemoveSetpointAndOtherInputChangeEffectsFromDataSet_MISO(UnitDataSet unitDataSet,
-             UnitModel unitModel, int pidInputIdx = 0, PidParameters pidParams = null)
-        {
-            if (Vec<double>.IsConstant(unitDataSet.Y_setpoint))
-            {
-                return unitDataSet;
-            }
-
-            var unitDataSet_setpointAndExternalEffectsRemoved = new UnitDataSet(unitDataSet);
-            if (unitModel != null && pidParams != null)
-            {
-                // co-simulate the unit model output 
-                // with setpoint changes and changes in any external signals, to give a
-                // "what the output would have been without disturbances"
-                // that can then be subtracted from the real y_meas to fin and "e" that goes into d_HF 
-                // in disturbance estimation.
-
-                var pidModel1 = new PidModel(pidParams, "PID1");
-                var processSim_noDist = new PlantSimulator(
-                    new List<ISimulatableModel> { unitModel,pidModel1 });
-                processSim_noDist.ConnectModels(unitModel, pidModel1);
-                processSim_noDist.ConnectModels(pidModel1, unitModel, pidInputIdx);
-
-                var inputData_noDist = new TimeSeriesDataSet();
-                var N = unitModel.GetLengthOfInputVector();
-                if (unitDataSet.U.GetNColumns() > 1)
-                {
-                    for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
-                    {
-                        if (curColIdx == pidInputIdx)
-                        {
-                            continue;// handled by simulating the pid-controller. 
-                        }
-                        else
-                        {
-                            var newConstantInput = Vec<double>.Fill(unitDataSet.U.GetColumn(curColIdx)[0], N);
-                            inputData_noDist.Add(processSim_noDist.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
-                                unitDataSet.U.GetColumn(curColIdx));
-                        }
-                    }
-                }
-   
-
-                inputData_noDist.Add(processSim_noDist.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),unitDataSet.Y_setpoint );
-                inputData_noDist.CreateTimestamps(unitDataSet.GetTimeBase());
-                inputData_noDist.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
-                var isOk = processSim_noDist.Simulate(inputData_noDist, out TimeSeriesDataSet simData_noDist);
-
-                if (isOk)
-                {
-                    int idxFirstGoodValue = 0;
-                    if (unitDataSet.IndicesToIgnore != null)
-                    {
-                        if (unitDataSet.GetNumDataPoints() > 0)
-                        {
-                            while (unitDataSet.IndicesToIgnore.Contains(idxFirstGoodValue) &&
-                                idxFirstGoodValue < unitDataSet.GetNumDataPoints() - 1)
-                            {
-                                idxFirstGoodValue++;
-                            }
-                        }
-                    }
-
-                    var vec = new Vec();
-
-                    // output Y: subtract from Y_meas the Y_meas that results from 
-                    var no_disturbance_OutputY = simData_noDist.GetValues(unitModel.GetID(), SignalType.Output_Y);
-                    unitDataSet_setpointAndExternalEffectsRemoved.Y_meas = vec.Subtract(unitDataSet.Y_meas, no_disturbance_OutputY);
-
-                    // inputs U
-                    if (unitDataSet_setpointAndExternalEffectsRemoved.U.GetNColumns() > 1) // todo:not general
-                    {
-                        for (int inputIdx = 0; inputIdx < unitDataSet_setpointAndExternalEffectsRemoved.U.GetNColumns(); inputIdx++)
-                        {
-                            var pidOutputU = unitDataSet.U.GetColumn(inputIdx);
-                            var pidDeltaU = vec.Subtract(pidOutputU, pidOutputU[idxFirstGoodValue]);
-                            var newU = vec.Subtract(unitDataSet.U.GetColumn(inputIdx), pidDeltaU);
-                            unitDataSet_setpointAndExternalEffectsRemoved.U = Matrix.ReplaceColumn(unitDataSet_setpointAndExternalEffectsRemoved.U, inputIdx, newU);
-                        }
-                    }
-                    else
-                    {
-                        var pidOutputU = simData_noDist.GetValues(pidModel1.GetID(), SignalType.PID_U);
-                        var pidDeltaU = vec.Subtract(pidOutputU, pidOutputU[idxFirstGoodValue]);
-                        var newU = vec.Subtract(unitDataSet.U.GetColumn(pidInputIdx), pidDeltaU);
-                        unitDataSet_setpointAndExternalEffectsRemoved.U = Matrix.ReplaceColumn(unitDataSet_setpointAndExternalEffectsRemoved.U, pidInputIdx, newU);
-                    }
-
-                    // Yset : setpoints(is not used by UnitSimulator anyhow)
-                    unitDataSet_setpointAndExternalEffectsRemoved.Y_setpoint = Vec<double>.Fill(unitDataSet.Y_setpoint[idxFirstGoodValue], unitDataSet.Y_setpoint.Length);
-                    unitDataSet_setpointAndExternalEffectsRemoved.IndicesToIgnore = unitDataSet.IndicesToIgnore;
-
-                   /* bool doDebugPlot = false;
-                    if (doDebugPlot)
-                    {
-
-                        Shared.EnablePlots();
-                        Plot.FromList(
-                        new List<double[]> {
-                          unitDataSet_setpointAndExternalEffectsRemoved.Y_meas,
-                          unitDataSet.Y_meas,
-                          unitDataSet_setpointAndExternalEffectsRemoved.Y_setpoint,
-                          unitDataSet.Y_setpoint,
-                          unitDataSet_setpointAndExternalEffectsRemoved.U.GetColumn(pidInputIdx),
-                          unitDataSet.U.GetColumn(pidInputIdx)
-                        },
-                        new List<string> { "y1=y_meas(new)", "y1=y_meas(old)", "y1=y_set(new)", "y1=y_set(old)", "y3=u_pid(new)", "y3=u_pid(old)" },
-                        inputData_noDist.GetTimeBase(), "distIdent_setpointTest");
-                        Shared.DisablePlots();
-                    }*/
-                }
-            }
-            return unitDataSet_setpointAndExternalEffectsRemoved;
-        }
-
-
-        /// <summary>
         /// Removes the effect of setpoint and (if relevant any non-pid input) changes  from the dataset using the model of pid and unit provided 
         /// </summary>
         /// <param name="unitDataSet"></param>
@@ -567,9 +421,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // non-disturbance related changes in the dataset producing "unitDataSet_adjusted"
             var unitDataSet_adjusted = RemoveSetpointAndOtherInputChangeEffectsFromDataSet(unitDataSet_raw, unitModel, pidInputIdx, pidParams);
             unitModel.WarmStart();
-            var sim = new UnitSimulator(unitModel);
+           // var sim = new UnitSimulator(unitModel);
             unitDataSet_adjusted.D = null;
-            double[] y_sim = sim.Simulate(ref unitDataSet_adjusted);
+            // double[] y_sim = sim.Simulate(ref unitDataSet_adjusted);
+            (bool isOk, double[] y_sim) = PlantSimulator.SimulateSingle(unitDataSet_adjusted, unitModel, false);
+
             if (y_sim == null)
             {
                 result.zeroReason = DisturbanceSetToZeroReason.UnitSimulatorUnableToRun;

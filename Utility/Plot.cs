@@ -50,6 +50,12 @@ namespace TimeSeriesAnalysis.Utility
             return true;
         }
 
+        private static string RemoveIllegalChars(string inStr)
+        { 
+            return inStr.Replace("(", "").Replace(")", "").Replace(" ", "").Replace(",",".");
+        }
+
+
         /// <summary>
         /// Plot data from a list of value-date tuples (each time-series can have unique time-vector with unique sampling)
         /// </summary>
@@ -85,7 +91,7 @@ namespace TimeSeriesAnalysis.Utility
             {
                 caseName = comment;
             }
-            caseName = caseName.Replace("(", "").Replace(")", "").Replace(" ", "");
+            caseName = RemoveIllegalChars(caseName);// Replace("(", "").Replace(")", "").Replace(" ", "");
 
             int j = 0;
             foreach (var dataDateTuple in dataDateTupleList)
@@ -157,8 +163,13 @@ namespace TimeSeriesAnalysis.Utility
             if (!ShouldPlottingBeDone())
                 return "";
 
-            var plotlyURLinternal = GetPlotlyURL();
+            if (dataList.Count() != plotNames.Count())
+            {
+                throw new Exception("FromList: dataList and plotNames should have the same number of elements!");
+                return "";
+            }
 
+            var plotlyURLinternal = GetPlotlyURL();
 
             string command = @"-r " + plotlyURLinternal + "#";
             string plotURL = ""; ;
@@ -167,7 +178,7 @@ namespace TimeSeriesAnalysis.Utility
             {
                 caseName = comment;
             }
-            caseName = caseName.Replace("(", "").Replace(")", "").Replace(" ", "");
+            caseName = RemoveIllegalChars(caseName);// = caseName.Replace("(", "").Replace(")", "").Replace(" ", "");
 
             int j = 0;
             foreach (string plotName in plotNames)

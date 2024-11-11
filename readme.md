@@ -1,5 +1,5 @@
 
-![Build Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg?branch=master)
+<!--- ![Build Status](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/build.yml/badge.svg?branch=master) -->
 [![Tests](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/tests.yml/badge.svg)](https://github.com/equinor/TimeSeriesAnalysis/actions/workflows/tests.yml)
 # TimeSeriesAnalysis : Data-driven dynamic modeling and simulation 
 

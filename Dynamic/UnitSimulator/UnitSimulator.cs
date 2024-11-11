@@ -28,31 +28,6 @@ namespace TimeSeriesAnalysis.Dynamic
             this.model = model;
         }
 
-        /// <summary>
-        /// Simulation is written to ymeas instead of ysim. This is useful when creating generic datasets for  
-        /// testing/test driven development.
-        /// </summary>
-        /// <param name="processDataSet"></param>
-        /// <param name="noiseAmplitude">optionally adds noise to the "measured" y (for testing purposes)</param>
-        public bool SimulateYmeas(ref UnitDataSet processDataSet, double noiseAmplitude=0)
-        {
-            if (processDataSet.U == null)
-                return false;
-            Simulate(ref processDataSet,true);
-            if (noiseAmplitude > 0)
-            {
-                // use a specific seed here, to avoid potential issues with "random unit tests" and not-repeatable
-                // errors.
-                Random rand = new Random(1232);
-
-                for (int k = 0; k < processDataSet.GetNumDataPoints(); k++)
-                {
-                    processDataSet.Y_meas[k] += (rand.NextDouble()-0.5)*2* noiseAmplitude;
-                }
-            }
-            return true;
-        }
-
 
         /// <summary>
         /// Co-simulate a process model and pid-controller(both Y_sim and U_sim)

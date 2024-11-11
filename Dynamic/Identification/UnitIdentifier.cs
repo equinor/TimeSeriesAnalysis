@@ -118,8 +118,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (model.modelParameters.Fitting.WasAbleToIdentify)
             {
-                var simulator = new UnitSimulator(model);
-                simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
+                PlantSimulator.SimulateSingle(dataSet, model, true);
+                //var simulator = new UnitSimulator(model);
+                //simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
                 model.SetFittedDataSet(dataSet);
             }
             return model;
@@ -254,10 +255,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 uNorm = SignificantDigits.Format(uNorm, nDigits);
             }
             
-            TimeSpan span = dataSet.GetTimeSpan();
-            double maxExpectedTc_s = span.TotalSeconds / 4;
-            UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
-                new UnitTimeDelayIdentifier(dataSet.GetTimeBase(), maxExpectedTc_s);
+
+
+
 
             // logic for all curves off an all curves on, treated as special cases
             bool[] allCurvesDisabled = new bool[u0.Count()];
@@ -275,13 +275,34 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var dataset_copy = new UnitDataSet(dataSet);   
 
+            // find a static model with no time delay or nonlinearity
             UnitParameters modelParams_StaticAndNoCurvature =
                 EstimateProcessForAGivenTimeDelay
                 (timeDelayIdx, dataSet, false, allCurvesDisabled,
                 FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
             modelList.Add(modelParams_StaticAndNoCurvature);
 
-           var warningList = new List<UnitdentWarnings>();
+            // find a dynamic model with no time delay or nonlinearity
+            // (the time constant gives an upper bound on the time delay)
+            /*    UnitParameters modelParams_DynamicAndNoCurvature =
+                    EstimateProcessForAGivenTimeDelay
+                    (timeDelayIdx, dataSet, true, allCurvesDisabled,
+                    FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
+                    modelList.Add(modelParams_DynamicAndNoCurvature);
+            //    modelList.Add(modelParams_DynamicAndNoCurvature);
+                   //   double maxExpectedTc_s = Math.Ceiling(modelParams_DynamicAndNoCurvature.TimeConstant_s/ dataSet.GetTimeBase())* dataSet.GetTimeBase() + dataSet.GetTimeBase()*3;
+
+            */
+            var warningList = new List<UnitdentWarnings>();
+
+            //nb! this is quite a high uppper bound, in the worst case this can cause
+            //  an obscene number of iterations of the below while loop. 
+            TimeSpan span = dataSet.GetTimeSpan();
+             double maxExpectedTc_s = span.TotalSeconds / 4;
+
+             UnitTimeDelayIdentifier processTimeDelayIdentifyObj =
+                new UnitTimeDelayIdentifier(dataSet.GetTimeBase(), maxExpectedTc_s);
+
 
             /////////////////////////////////////////////////////////////////
             // BEGIN WHILE loop to model process for different time delays               
@@ -422,10 +443,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 modelParameters.AddWarning(UnitdentWarnings.CorrelatedInputsU);
             }
-
             modelParameters.FittingSpecs = fittingSpecs;
-
-
             // END While loop 
             /////////////////////////////////////////////////////////////////
             var model = new UnitModel(modelParameters, dataSet);
@@ -433,8 +451,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // simulate
             if (modelParameters.Fitting.WasAbleToIdentify)
             {
-                var simulator = new UnitSimulator(model);
-                simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
+                PlantSimulator.SimulateSingle(dataSet, model, true);// overwrite any y_sim
                 model.SetFittedDataSet(dataSet);
              }
 
@@ -1124,7 +1141,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// For a given set of paramters and a dataset, find the bias which gives the lowest mean offset
-        /// (this can be espescially useful when identification uses the "difference" formulation)
+        /// (this can be especially useful when identification uses the "difference" formulation)
         /// </summary>
         /// <param name="dataSet"></param>
         /// <param name="parameters"></param>
@@ -1137,6 +1154,8 @@ namespace TimeSeriesAnalysis.Dynamic
             var model = new UnitModel(parameters);
             var simulator = new UnitSimulator(model);
             var y_sim = simulator.Simulate(ref internalData);
+           // (var isOk, var y_sim) = PlantSimulator.SimulateSingle(internalData, model,false, 0, true);
+
             var yMeas_exceptIgnoredValues = internalData.Y_meas;
             var ySim_exceptIgnoredValues = y_sim;
             if (dataSet.IndicesToIgnore != null)

@@ -6,24 +6,29 @@ using System.Threading.Tasks;
 
 using TimeSeriesAnalysis.Utility;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 
 namespace TimeSeriesAnalysis.Test
 {
     [TestFixture]
-    class Xml
+    class FileReading
     {
-       // [TestCase, Explicit]
-        public void CSV1_containsExtraValue_IsIgnored()
+        // [TestCase(@"..\..\..\TestData\test1_extraValue.csv")]
+
+        [TestCase(@"test_twoValuesAndThreeRows.csv",Description ="a flawless file, the base case")]
+        [TestCase(@"test_extraValue.csv", Description = "an extra value with no corresponding header should be ignored")]
+        [TestCase(@"test_extraCommaFirstRow.csv", Description = "an extra comma in the header should be ignored")]
+
+        public void CSV_read(string filename)
         {
-            CSV.LoadDataFromCSV(@"C:\Appl\source\TimeSeriesAnalysis\Tests\TestCSVs\test1.csv", ',',out double[,] doubleData,
+            CSV.LoadDataFromCSV(@"..\..\..\TestData\" + filename, ',',out double[,] doubleData,
                 out string[] variableNames, out string[,] stringData);
-
             Assert.AreEqual(new string[] {"variable","value1","value2"}, variableNames);
-
             Assert.AreEqual(new string[,] { { "var1", "1", "2" }, { "var2", "3", "4" }, { "var3","5", "6"} }, stringData);
             Assert.AreEqual(new double[,] { { Double.NaN, 1, 2 }, { Double.NaN, 3, 4 }, { Double.NaN, 5, 6 } }, doubleData);
-
         }
+
+
         [TestCase, Explicit]
         public void Xml_load()
         {
@@ -37,7 +42,6 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(0,nErrors);
             Assert.Greater(dataset.GetSignalNames().Length,120);
             var csv = dataset.ToCsvText();
-
         }
     }
 }

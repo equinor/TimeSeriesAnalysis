@@ -65,10 +65,10 @@ namespace TimeSeriesAnalysis._Examples
                 Bias = bias
             };
             var refModel = new UnitModel(paramtersNoCurvature, "Reference");
-            var refSim  = new UnitSimulator(refModel);
             var refData = new UnitDataSet();
             refData.U = U;
-            refSim.Simulate(ref refData);
+            refData.CreateTimeStamps(timeBase_s);
+            PlantSimulator.SimulateSingle(refData, refModel,true);
 
             // simulate the nonlinear model 
             UnitParameters designParameters = new UnitParameters
@@ -82,13 +82,12 @@ namespace TimeSeriesAnalysis._Examples
                 Bias = bias
             };
             var trueModel = new UnitModel(designParameters, "NonlinearModel1");
-            var sim = new UnitSimulator(trueModel);
             var idDataSet = new UnitDataSet();
             idDataSet.U = U;
             idDataSet.CreateTimeStamps(timeBase_s);
-            sim.SimulateYmeas(ref idDataSet, noiseAmplitude);
+            PlantSimulator.SimulateSingleToYmeas(idDataSet, trueModel,noiseAmplitude);
 
-            // do identification
+            // do identification of unit model
             FittingSpecs fittingSpecs = new FittingSpecs(designParameters.U0, designParameters.UNorm);
             UnitModel idModel = UnitIdentifier.Identify(ref idDataSet, fittingSpecs);
 
@@ -99,7 +98,7 @@ namespace TimeSeriesAnalysis._Examples
                  new List<string> { "y1=ysim", "y1=ymeas", "y1=yref(linear)", "y3=u1", "y3=u2" },
                  (int)timeBase_s, "NonlinearUnitModelEx", default);
 
-            PlotGain.Plot(idModel, trueModel);
+            PlotGain.PlotSteadyState(idModel, trueModel);
 
             Console.WriteLine(idModel.ToString());
         }

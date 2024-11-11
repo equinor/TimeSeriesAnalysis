@@ -55,7 +55,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/7, N,50,50+ySetAmplitude));
             inputData.CreateTimestamps(timeBase_s,t0);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
-            simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude);
+            simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude,0);
             Assert.IsTrue(isOk);
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
@@ -107,7 +107,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N / 7, N, 50, 50 + ySetAmplitude));
             inputData.CreateTimestamps(timeBase_s, t0);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
-            simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude);
+            simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude,0);
             Assert.IsTrue(isOk);
 
             var combinedData = inputData.Combine(simData);
@@ -162,7 +162,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Step(N/2,N,0,stepAmplitude));
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
-            simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude);
+            simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude,890978);
             Assert.IsTrue(isOk);
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
@@ -261,7 +261,7 @@ namespace TimeSeriesAnalysis.Test.PidID
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Step(N / 2, N, 0, stepAmplitude));
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
-            simData.AddNoiseToSignal("SubProcess1-Output_Y", noiseAmplitude);
+            simData.AddNoiseToSignal("SubProcess1-Output_Y", noiseAmplitude,495495);
             var combinedData = inputData.Combine(simData);
             var downsampleData = combinedData.CreateDownsampledCopy(downsampleFactor);
             // ----do not use inputData or simData below this line----

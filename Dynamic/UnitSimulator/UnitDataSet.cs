@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Accord.IO;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -139,11 +141,11 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ProcessName = originalDataSet.ProcessName + "downsampledFactor" + downsampleFactor;
 
             this.Y_meas = Vec<double>.Downsample(originalDataSet.Y_meas, downsampleFactor);
-            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor); 
-            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor); 
+            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor);
+            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor);
             this.U = Array2D<double>.Downsample(originalDataSet.U, downsampleFactor);
-            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor); 
-            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor); 
+            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor);
+            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor);
         }
 
         /// <summary>
@@ -153,8 +155,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="u">tuple of values and dates describing u</param>
         /// <param name="y_meas">tuple of values and dates describing y</param>
         /// <param name="name">name of dataset</param>
-        public UnitDataSet((double[], DateTime[]) u, (double[], DateTime[]) y_meas, string name = null/*,
-            int? timeBase_s=null*/)
+        public UnitDataSet((double[], DateTime[]) u, (double[], DateTime[]) y_meas, string name = null)
         {
             var jointTime = Vec<DateTime>.Intersect(u.Item2.ToList(), y_meas.Item2.ToList());
             var indU = Vec<DateTime>.GetIndicesOfValues(u.Item2.ToList(), jointTime);
@@ -168,22 +169,48 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Returns the number of datapoints in the dataset
+        /// Appends/concatenate another dataset to the end of this one
         /// </summary>
-        /// <returns></returns>
-        public int GetNumDataPoints ()
+        /// <param name="otherDataSet"></param>
+        public bool Concat(UnitDataSet otherDataSet)
         {
-            if (U != null)
-                return U.GetNRows();
-            else if (Times != null)
-                return Times.Length;
-            else if (Y_meas != null)
-                return Y_meas.Length;
-            else if (Y_setpoint!= null)
-                return Y_setpoint.Length;
-            else
-                return 0;
+            if (otherDataSet.U != null && U != null)
+            { 
+                if (otherDataSet.U.GetNColumns() != U.GetNColumns())
+                return false;
+            }
+            if (otherDataSet.Y_meas != null)
+                this.Y_meas = Vec<double>.Concat(this.Y_meas, otherDataSet.Y_meas);    
+            if (otherDataSet.Times != null)
+                this.Times = Vec<DateTime>.Concat(this.Times, otherDataSet.Times);
+            if (otherDataSet.Y_setpoint != null)
+                this.Y_setpoint = Vec<double>.Concat(this.Y_setpoint, otherDataSet.Y_setpoint);
+            if (otherDataSet.Y_sim != null)
+                this.Y_sim = Vec<double>.Concat(this.Y_sim, otherDataSet.Y_sim);
+            if (otherDataSet.D != null)
+                this.D = Vec<double>.Concat(this.D, otherDataSet.D);
+            if (otherDataSet.IndicesToIgnore != null)
+            {
+                if (IndicesToIgnore == null) 
+                    IndicesToIgnore = new List<int>(otherDataSet.IndicesToIgnore);
+                else
+                    IndicesToIgnore.AddRange(otherDataSet.IndicesToIgnore);
+            }
+            if (otherDataSet.U != null)
+            {
+                var uList = new List<double[]>();
+                for (int idx = 0; idx < U.GetNColumns(); idx++)
+                {
+                    var vec = Array2D<double>.GetColumn(U, idx);
+                    var vec2 = Array2D<double>.GetColumn(otherDataSet.U, idx);
+                    uList.Add(Vec<double>.Concat(vec,vec2) );
+                }
+                U = Array2D<double>.CreateFromList(uList);
+            }
+            return true;
         }
+
+
 
 
 
@@ -294,6 +321,26 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
+
+        /// <summary>
+        /// Returns the number of datapoints in the dataset
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumDataPoints()
+        {
+            if (U != null)
+                return U.GetNRows();
+            else if (Times != null)
+                return Times.Length;
+            else if (Y_meas != null)
+                return Y_meas.Length;
+            else if (Y_setpoint != null)
+                return Y_setpoint.Length;
+            else
+                return 0;
+        }
+
+
         /// <summary>
         /// Gets the time between samples in seconds, returns  zero if times are not set
         /// </summary>
@@ -351,6 +398,39 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Helper to set column of U to uValues. 
+        /// </summary>
+        /// <param name="uValues1">first input array</param>
+        /// <param name="uValues2">second input array(can be null)</param>
+        /// <param name="uValues3">third input array(can be null)</param>
+        /// <param name="uValues4">third input array(can be null)</param>
+        /// <param name="uValues5">third input array(can be null)</param>
+        /// <param name="uValues6">third input array(can be null)</param>
+        /// <returns>true if succesful, otherwise false</returns>
+        public bool SetU(double[] uValues1, double[] uValues2 = null, double[] uValues3 = null, double[] uValues4 = null,
+            double[] uValues5 = null, double[] uValues6 = null)
+        {
+            var listOfUs = new List<double[]>();
+            if (uValues1 == null)
+                return false;
+
+            listOfUs.Add(uValues1);
+            if (uValues2 != null)
+                listOfUs.Add(uValues2);
+            if (uValues3 != null)
+                listOfUs.Add(uValues3);
+            if (uValues4 != null)
+                listOfUs.Add(uValues4);
+            if (uValues5 != null)
+                listOfUs.Add(uValues5);
+            if (uValues6 != null)
+                listOfUs.Add(uValues6);
+            U = Array2D<double>.CreateFromList(listOfUs);
+            return true;
+        }
+
+
+        /// <summary>
         /// Create a subset of the dataset that is defined in terms of percentages
         /// </summary>
         /// <param name="startPrc">A value 0-100%. Should be a value smaller than endPrc </param>
@@ -405,63 +485,6 @@ namespace TimeSeriesAnalysis.Dynamic
             returnData.D = Vec<double>.SubArray(D, startInd, endInd);
             return returnData;
         }
-
-     /*   /// <summary>
-        /// Tags indices to be removed if either of the inputs are outside the range defined by 
-        /// [uMinFit,uMaxFit].
-        /// 
-        /// uMinFit,uMaxFit may include NaN or BadDataID for values if no max/min applies to the specific input
-        /// </summary>
-        /// <param name="uMinFit">vector of minimum values for each element in U</param>
-        /// <param name="uMaxFit">vector of maximum values for each element in U</param>
-        public void SetInputUFitMaxAndMin(double[] uMinFit, double[] uMaxFit)
-        {
-            if ((uMinFit == null && uMaxFit == null) || this.U == null)
-                return;
-
-            var newIndToExclude = new List<int>();
-            var vec = new Vec();
-            // find values below minimum for each input
-            if (uMinFit != null)
-            {
-                for (int idx = 0; idx < Math.Min(uMinFit.Length, U.GetNColumns()); idx++)
-                {
-                    if (Double.IsNaN(uMinFit[idx]) || uMinFit[idx] == BadDataID || Double.IsNegativeInfinity(uMinFit[idx]))
-                        continue;
-                    var indices =
-                        vec.FindValues(U.GetColumn(idx), uMinFit[idx], VectorFindValueType.SmallerThan, IndicesToIgnore);
-                    newIndToExclude.AddRange(indices);
-                }
-            }
-            if (uMaxFit != null)
-            {
-                for (int idx = 0; idx < Math.Min(uMaxFit.Length, U.GetNColumns()); idx++)
-                {
-                    if (Double.IsNaN(uMaxFit[idx]) || uMaxFit[idx] == BadDataID || Double.IsNegativeInfinity(uMaxFit[idx]))
-                        continue;
-                    var indices =
-                        vec.FindValues(U.GetColumn(idx), uMaxFit[idx], VectorFindValueType.BiggerThan, IndicesToIgnore);
-                    newIndToExclude.AddRange(indices);
-                }
-            }
-            if (newIndToExclude.Count > 0)
-            {
-                var result = Vec<int>.Sort(newIndToExclude.ToArray(), VectorSortType.Ascending);
-                newIndToExclude = result.ToList();
-                var newIndToExcludeDistinct = newIndToExclude.Distinct();
-                newIndToExclude = newIndToExcludeDistinct.ToList();
-            }
-
-            if (IndicesToIgnore != null)
-            {
-                if (newIndToExclude.Count > 0)
-                {
-                    IndicesToIgnore.AddRange(newIndToExclude);
-                }
-            }
-            IndicesToIgnore = newIndToExclude;
-        }*/
-
 
 
 

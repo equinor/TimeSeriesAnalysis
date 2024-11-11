@@ -171,19 +171,15 @@ namespace TimeSeriesAnalysis
         /// Adds noise to a given signal in the datset. 
         /// (This is mainly intended for testing identification algorithms against simulated data.)
         /// </summary>
-        /// <param name="signalName"></param>
-        /// <param name="noiseAmplitude"></param>
-        /// <param name="seed"></param>
+        /// <param name="signalName">name of signal to have noise added to it</param>
+        /// <param name="noiseAmplitude">the amplutide of noise, the noise will be [-noiseAmplitude, noiseAmplitude] </param>
+        /// <param name="seed">a integer seed number is </param>
         /// <returns></returns>
-        public bool AddNoiseToSignal(string signalName, double noiseAmplitude, int? seed = null)
+        public bool AddNoiseToSignal(string signalName, double noiseAmplitude, int seed)
         {
             if (!dataset.ContainsKey(signalName))
                 return false;
 
-            if (seed == null)
-            {
-                seed = 0;
-            }
             dataset[signalName] = new Vec().Add(dataset[signalName], Vec.Rand(N.Value, -noiseAmplitude, noiseAmplitude, seed));
             return true;
         }

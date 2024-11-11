@@ -1,4 +1,5 @@
-﻿using Accord.Math;
+﻿using Accord.IO;
+using Accord.Math;
 using System.Collections.Generic;
 using System.Linq;
 using TimeSeriesAnalysis.Dynamic;
@@ -66,42 +67,83 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// An array of 95%  uncertatinty in the linear gains  (u-u0))
         /// </summary>
-        public double[] LinearGainUnc { get; set; } = null;
+        public List<double[]> LinearGainUnc { get; set; } = null;
+
 
         /// <summary>
-        /// The working point of the model, the value of each U around which the model is localized.
-        /// If value is <c>null</c>c> then no U0 is used in the model
+        /// The "operating point" specifies the value y that the model should have for the gain scheduled input u. 
+        /// so y = OperatingPoint_Y when u = OperatingPoint_U. Change the operating point by using <c>SetOperatingPoint()</c>
         /// </summary>
-        public double[] U0 { get; set; } = null;
-
-        /// <summary>
-        /// A "normal range" of U that is used in the nonlinear curvature term ((u-u0)/Unorm)^2.
-        /// If value is <c>null</c>c> then no Unorm is used in the model
-        /// </summary>
-        public double[] UNorm { get; set; } = null;
-
-        /// <summary>
-        /// The constant bias that is added so that models and dataset match on average, this value will depend on U0 and other parameters.
-        /// </summary>
-        public  double Bias { get; set; } = 0;
-
-        /// <summary>
-        /// The 95% uncertainty of the bias
-        /// </summary>
-        public double? BiasUnc { get; set; } = null;
-
+        private double OperatingPoint_U=0, OperatingPoint_Y=0;
 
         private List<GainSchedIdentWarnings> errorsAndWarningMessages;
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public GainSchedParameters()
+        public GainSchedParameters(double OperatingPoint_U = 0, double OperatingPoint_Y = 0)
         {
             Fitting = null;
             errorsAndWarningMessages = new List<GainSchedIdentWarnings>();
+            this.OperatingPoint_U = OperatingPoint_U;
+            this.OperatingPoint_Y = OperatingPoint_Y;   
         }
 
+        /// <summary>
+        /// Creates a new object that copies properties from an existing model. 
+        /// </summary>
+        /// <param name="existingModel">the model to be copied</param>
+        public GainSchedParameters(GainSchedParameters existingModel)
+        {
+
+            Y_min = existingModel.Y_min;
+            Y_max = existingModel.Y_max;
+            OperatingPoint_U = existingModel.OperatingPoint_U;
+            OperatingPoint_Y = existingModel.OperatingPoint_Y;
+            GainSchedParameterIndex = existingModel.GainSchedParameterIndex;
+            TimeDelay_s = existingModel.TimeDelay_s;
+
+            // arrays are reference types, so by default only the reference is copied, use
+            // .clone here to make an actual new object with a new reference
+            if (existingModel.TimeConstant_s != null)
+                TimeConstant_s = (double[])existingModel.TimeConstant_s.Clone();
+            if (existingModel.TimeConstantThresholds != null)
+                TimeConstantThresholds = (double[])existingModel.TimeConstantThresholds.Clone();
+            if (existingModel.TimeConstantUnc_s != null)
+                TimeConstantUnc_s = (double[])existingModel.TimeConstantUnc_s.Clone();
+            LinearGains = new List<double[]>(existingModel.LinearGains);
+            if (existingModel.LinearGainUnc!= null)
+                LinearGainUnc = new List<double[]>(existingModel.LinearGainUnc);
+            if (existingModel.LinearGainThresholds != null)
+                LinearGainThresholds = (double[])existingModel.LinearGainThresholds;
+
+            //todo: these are not cloned properly
+             if (existingModel.errorsAndWarningMessages != null) 
+                errorsAndWarningMessages = new List<GainSchedIdentWarnings>(existingModel.errorsAndWarningMessages);
+             if (existingModel.Fitting != null)
+                 Fitting = new FittingInfo();
+
+            errorsAndWarningMessages = existingModel.errorsAndWarningMessages;
+            Fitting = existingModel.Fitting;
+            FittingSpecs = existingModel.FittingSpecs;
+
+        }
+
+
+        /// <summary>
+        /// Returns the bias calculated from OperatingPoint_U, OperatingPoint_Y;
+        /// </summary>
+        /// <returns></returns>
+        public double GetBias()
+        {
+            if (OperatingPoint_U == 0)
+                return OperatingPoint_Y;
+            else
+            {
+                //todo
+                return OperatingPoint_Y;
+            }
+        }
 
         /// <summary>
         /// Get the number of inputs U to the model.
@@ -115,50 +157,165 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 0;
         }
 
+
         /// <summary>
-        /// Return the "total combined" process gain for a given index at u=u0, a combination of lineargain and curvature gain
-        /// <para>
-        /// Note that for nonlinear processes, the process gain is given by a combination of 
-        /// the linear and curvature terms of the model : dy/du(u=u0)
-        /// </para>
+        /// Sets a new operating point U, and adjusts the operating point Y so that the model 
+        /// output will be the same as before the change
+        /// 
         /// </summary>
-        /// <param name="inputIdx"></param>
-        /// <returns></returns>
-        public double GetTotalCombinedProcessGain(int inputIdx)
+        /// <param name="newOperatingPointU">the new desired operating point</param>
+        public void MoveOperatingPointUWithoutChangingModel(double newOperatingPointU)
         {
-            /* if (LinearGains == null)
-             {
-                 return double.NaN;
-             }
-             if (inputIdx > LinearGains.Length-1)
-             {
-                 return double.NaN;
-             }
-             return LinearGains[inputIdx];*/
-            return 0;
+            var oldOpPointU = OperatingPoint_U;
+            var oldOpPointY = OperatingPoint_Y;
+            OperatingPoint_U = newOperatingPointU;
+
+            var deltaGain = IntegrateGains(oldOpPointU, newOperatingPointU, GainSchedParameterIndex);
+            OperatingPoint_Y = oldOpPointY + deltaGain;
         }
 
         /// <summary>
-        /// Return the process gain uncertatinty for a given input index at u=u0
-        /// <para>
-        /// Note that for nonlinear processes, the process gain is given by a combination of 
-        /// the linear and curvature terms of the model : dy/du(u=u0)
-        /// </para>
+        /// This set the (u,y) through which a model may pass. 
+        /// 
+        /// Careful! only use this when initalizing a new model, otherwise, you should use 
+        /// <c>MoveOperatingPointUWithoutChangingModel</c> to preserve model behavior
         /// </summary>
-        /// <param name="inputIdx"></param>
-        /// <returns></returns>
-        public double GetTotalCombinedProcessGainUncertainty(int inputIdx)
+        /// <param name="newOperatingPointU"></param>
+        /// <param name="newOperatingPointY"></param>
+        public void SetOperatingPoint(double newOperatingPointU, double newOperatingPointY)
         {
-            /*  if (LinearGainUnc == null)
-                  return double.NaN;
-
-              if (inputIdx > LinearGainUnc.Length - 1)
-              {
-                  return double.NaN;
-              }
-              return LinearGainUnc[inputIdx];*/
-            return 0;
+            OperatingPoint_Y = newOperatingPointU;
+            OperatingPoint_Y = newOperatingPointY;
         }
+
+        /// <summary>
+        /// Changes the operating point by a given delta. 
+        /// 
+        /// Give negative values to decrease the operating point. 
+        /// 
+        /// </summary>
+        /// <param name="deltaOperatingPoint_Y"></param>
+        public void IncreaseOperatingPointY(double deltaOperatingPoint_Y)
+        {
+            OperatingPoint_Y+= deltaOperatingPoint_Y;   
+        }
+
+        /// <summary>
+        /// Get the U of the operating point
+        /// </summary>
+        /// <returns></returns>
+        public double GetOperatingPointU()
+        {
+            return OperatingPoint_U;
+        }
+
+        /// <summary>
+        /// Get the Y of the operating point
+        /// </summary>
+        /// <returns></returns>
+        public double GetOperatingPointY()
+        {
+            return OperatingPoint_Y;
+        }
+
+        /// <summary>
+        /// Integrate a model from a start point to an end point
+        /// </summary>
+        /// <param name="uGainSched_Start"></param>
+        /// <param name="uGainSched_End"></param>
+        /// <param name="inputIndex"></param>
+        /// <returns></returns>
+        public double IntegrateGains(double uGainSched_Start, double uGainSched_End, int inputIndex)
+        {
+            if (uGainSched_Start == uGainSched_End)
+                return 0;
+            double gainsToReturn = 0;
+            int gainSchedStartModelIdx = 0;
+            for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
+            {
+                if (uGainSched_Start < LinearGainThresholds[idx])
+                {
+                    gainSchedStartModelIdx = idx;
+                    break;
+                }
+                else if (idx == LinearGainThresholds.Length - 1)
+                {
+                    gainSchedStartModelIdx = idx + 1;
+                }
+            }
+            int gainSchedEndModelIdx = 0;
+            for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
+            {
+                if (uGainSched_End < LinearGainThresholds[idx])
+                {
+                    gainSchedEndModelIdx = idx;
+                    break;
+                }
+                else if (idx == LinearGainThresholds.Length - 1)
+                {
+                    gainSchedEndModelIdx = idx + 1;
+                }
+            }
+
+            // integrate
+            // if from left -> right
+            if (uGainSched_Start < uGainSched_End)
+            {
+                if (gainSchedStartModelIdx == gainSchedEndModelIdx)
+                {
+                    double deltaU = uGainSched_End - uGainSched_Start;
+                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                }
+                else
+                {
+                    // first portion (might be from a u between two tresholds to a threshold)
+                    double deltaU = (LinearGainThresholds[gainSchedStartModelIdx] - uGainSched_Start);
+                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    // middle entire portions 
+                    for (int curGainSchedModIdx = gainSchedStartModelIdx + 1; curGainSchedModIdx < gainSchedEndModelIdx; curGainSchedModIdx++)
+                    {
+                        deltaU = (LinearGainThresholds[curGainSchedModIdx] - LinearGainThresholds[curGainSchedModIdx - 1]);
+                        gainsToReturn += deltaU * LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
+                    }
+                    // last portions (might be a treshold to inbetween two tresholds)
+                    deltaU = uGainSched_End - LinearGainThresholds[gainSchedEndModelIdx - 1];
+                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
+                }
+            }
+            else // integrate from left<-right
+            {
+                if (gainSchedStartModelIdx == gainSchedEndModelIdx)
+                {
+                    double deltaU = uGainSched_End - uGainSched_Start;
+                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                }
+                else
+                {
+                    double deltaU = 0;
+                    // first portion (might be from a u between two tresholds to a threshold)
+                    // if (modelParameters.LinearGainThresholds.Length - 1 >= gainSchedStartModelIdx)
+                    {
+                        // remember if there are N gains, there are N-1 gain tresholds 
+                        deltaU = (LinearGainThresholds[gainSchedStartModelIdx - 1] - uGainSched_Start);
+                        gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    }
+                    // middle entire portions 
+                    for (int curGainSchedModIdx = gainSchedStartModelIdx - 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
+                    {
+                        deltaU = (LinearGainThresholds[curGainSchedModIdx] -
+                            LinearGainThresholds[curGainSchedModIdx - 1]);
+                        gainsToReturn += deltaU * LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
+                    }
+                    // last portions (might be a treshold to inbetween two tresholds)
+                    deltaU = uGainSched_End - LinearGainThresholds[gainSchedEndModelIdx];
+                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
+                }
+            }
+            return gainsToReturn;
+        }
+
+
+
 
         /// <summary>
         /// Adds a identifiation warning to the object
