@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis
     public static class Array2DExtensionMethods
     {
         ///<summary>
-        /// overwrites the columin in matrix with the new column newColumnValues
+        /// overwrites the column in matrix with the new column newColumnValues
         ///</summary>
         static public double[,] WriteColumn(this double[,] matrix, int colIdx, double[] newColumnValues)
         {
@@ -28,7 +28,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// returns the column of a 2d-array of strings corresponding to columnIndex(starts at zero)
+        /// returns the column of a 2d-array of strings corresponding to columnIndex (starts at zero)
         ///</summary>
 
         static public string[] GetColumn(this string[,] matrix, int columnIndex)
@@ -37,7 +37,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// returns the column of a 2d-array of doubles corresponding to columnIndex(starts at zero)
+        /// returns the column of a 2d-array of doubles corresponding to columnIndex (starts at zero)
         ///</summary>
         static public double[] GetColumn(this double[,] matrix, int columnIndex)
         {
@@ -45,7 +45,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// returns the row of a 2d-array of strings corresponding to columnIndex(starts at zero)
+        /// returns the row of a 2d-array of strings corresponding to rowNumber (starts at zero)
         ///</summary>
         static public string[] GetRow(this string[,] matrix, int rowNumber)
         {
@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        /// returns the row of a 2d-array of doubles corresponding to columnIndex(starts at zero)
+        /// returns the row of a 2d-array of doubles corresponding to rowNumber (starts at zero)
         ///</summary>
 
         static public double[] GetRow(this double[,] matrix, int rowNumber)

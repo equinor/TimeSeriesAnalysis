@@ -18,39 +18,39 @@ namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
     /// Identifier of the "Default" process model - a dynamic process model with time-constant, time-delay, 
-    /// linear process gain and optional (nonlinear)curvature process gains.
+    /// linear process gain and optional (nonlinear) curvature process gains.
     /// <para>
     /// This model class is sufficent for real-world linear or weakly nonlinear dynamic systems, yet also introduces the fewest possible 
-    /// parameters to describe the system in an attempt to avoiding over-fitting/over-parametrization
+    /// parameters to describe the system in an attempt to avoid over-fitting/over-parameterization.
     /// </para>
     /// <para>
-    /// The "default" process model is identified using a linear-in-parameters paramterization(paramters a,b,c), so that it can be solved by linear regression
-    /// and identification should thus be both fast and stable. The issue with the parametriation(a,b,c) is that the meaning of each paramter is less
-    /// inutitive, for instance the time constant depends on a, but linear gain depends on both a and b, while curvature depends on a and c.
+    /// The "default" process model is identified using a linear-in-parameters parameterization (parameters a,b,c), so that it can be solved by linear regression
+    /// and identification should thus be both fast and stable. The issue with the parameterization (a,b,c) is that the meaning of each parameter is less
+    /// intuitive, for instance the time constant depends on a, but linear gain depends on both a and b, while curvature depends on a and c.
     /// Looking at the unceratinty of each parameter to determine if the model should be dynamic or static or what the uncertainty of the time constant is,
-    /// is very hard, and this observation motivates re-paramtrizing the model after identification.
+    /// is very hard, and this observation motivates re-parameterizing the model after identification.
     /// </para>
     /// <para>
-    /// When assessing and simulating the model, parmaters are converted into more intuitive paramters "time constant", "linear gains" and "curvature gain"
-    /// which are a different parametrization. The UnitIdentifier, UnitModel and UnitParamters classes handle this transition seamlessly to the user.
-    /// Uncertainty is expressed in terms of this more intuitive parametrization, to allow for a more intuitive assessment of the parameters.
+    /// When assessing and simulating the model, parameters are converted into the more intuitive parameters "time constant", "linear gains" and "curvature gain"
+    /// which are a different parameterization. The UnitIdentifier, UnitModel and UnitParameters classes handle this transition seamlessly to the user.
+    /// Uncertainty is expressed in terms of this more intuitive parameterization, to allow for a more intuitive assessment of the parameters.
     /// </para>
     /// <para>
-    /// Another advantage of the paramterization, is that the model internally separates betwen stedy-state and transient state, you can at any instance
+    /// Another advantage of the parameterization is that the model internally separates between steady-state and transient state. You can at any instance
     /// "turn off" dynamics and request the steady-state model output for the current input. This is useful if you have transient data that you want to 
-    /// analyze in the steady-state, as you can then fit the model to all available data-points without having to select what data points you beleive are at 
+    /// analyze in the steady-state, as you can then fit the model to all available data-points without having to select what data points you believe are at 
     /// steady state, then you can disable dynamic terms to do a static analysis of the dynamic model.
     /// </para>
     /// <para>
-    /// Time-delay is an integer parameter, and finding the time-delay alongside continous paramters
+    /// Time-delay is an integer parameter, and finding the time-delay alongside continuous parameters
     /// turns the identification problem into a linear mixed-integer problem. 
-    /// The time delay identification is done by splitting the time-delay estimation from continous parameter
+    /// The time delay identification is done by splitting the time-delay estimation from continuous parameter
     /// identification, turning the solver into a sequential optimization solver. 
-    /// This logic to re-run estimation for multiple time-delays and selecting the best estiamte of time delay 
-    /// is deferred to <seealso cref="UnitTimeDelayIdentifier"/>
+    /// This logic to re-run estimation for multiple time-delays and selecting the best estimate of time delay 
+    /// is deferred to <seealso cref="UnitTimeDelayIdentifier"/>.
     /// </para>
     /// <para>
-    /// Since the aim is to identify transients/dynamics, the regression is done on model differences rather than absolute values
+    /// Since the aim is to identify transients/dynamics, the regression is done on model differences rather than absolute values.
     /// </para>
     /// </summary>
 
@@ -67,7 +67,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">The dataset containing the ymeas and U that is to be fitted against, 
         /// a new y_sim is also added</param>
-        /// <param name="fittingSpecs">optional fitting specs object for  tuning data</param>
+        /// <param name="fittingSpecs">optional fitting specs object for tuning data</param>
         /// <param name="doEstimateTimeDelay">(default:true) if set to false, time delay estimation is disabled (can drastically speeed up identification)</param>
         /// <returns> the identified model parameters and some information about the fit</returns>
         public static UnitModel Identify(ref UnitDataSet dataSet,

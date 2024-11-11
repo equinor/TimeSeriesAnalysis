@@ -59,6 +59,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
+        public UnitModel(){}
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -82,6 +84,10 @@ namespace TimeSeriesAnalysis.Dynamic
             processModelType = ModelType.SubProcess;
             this.ID = ID;
             InitSim(modelParameters);
+        }
+        public string test()
+        {
+            return "test";
         }
         /// <summary>
         /// Answers if the model can be simulated with the inputs provided.
@@ -128,7 +134,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Initalize the process model with a sampling time.
         /// </summary>
         /// <param name="modelParameters">model parameters object</param>
-        private void InitSim(UnitParameters modelParameters)
+        public void InitSim(UnitParameters modelParameters)
         {
             this.isFirstIteration = true;
             this.modelParameters = modelParameters;
