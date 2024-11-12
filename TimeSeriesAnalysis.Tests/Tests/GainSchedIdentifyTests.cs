@@ -275,13 +275,13 @@ namespace TimeSeriesAnalysis.Test.SysID
             var joinedDataSet = new UnitDataSet(unitData1);
             joinedDataSet.Concat(unitData2);
             joinedDataSet.Concat(unitData3);
-            joinedDataSet.IndicesToIgnore =Index.MakeIndexArray(N-2,N*2+1).ToList();
+            //joinedDataSet.IndicesToIgnore =Index.MakeIndexArray(N-2,N*2+1).ToList();
 
             // Act
             var idModel = GainSchedIdentifier.Identify(joinedDataSet);
 
             // plot
-            bool doPlot = false;
+            bool doPlot = true;
             if (doPlot)
             {
                 Shared.EnablePlots();

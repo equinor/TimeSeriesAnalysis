@@ -48,7 +48,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool isFirstIteration;
         private double[] lastGoodValuesOfInputs;
 
-        private GainSchedDataSet FittedDataSet=null;
+        private UnitDataSet FittedDataSet=null;
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Sets the fitted dataset
         /// </summary>
         /// <param name="dataset"></param>
-        public void SetFittedDataSet(GainSchedDataSet dataset)
+        public void SetFittedDataSet(UnitDataSet dataset)
         {
             FittedDataSet = dataset;
         }
@@ -189,7 +189,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns the fitted dataset
         /// </summary>
         /// <returns></returns>
-        public GainSchedDataSet GetFittedDataSet()
+        public UnitDataSet GetFittedDataSet()
         {
             return FittedDataSet;
         }

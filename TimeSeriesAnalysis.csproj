@@ -14,7 +14,7 @@
 	<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     	<RepositoryUrl>https://github.com/equinor/TimeSeriesAnalysis.git</RepositoryUrl>
     	<PackageReadmeFile>readme.md</PackageReadmeFile>
-    	<Version>1.3.26</Version>
+    	<Version>1.3.27</Version>
     	<Company>Equinor</Company>
     	<Authors>Equinor</Authors>
     	<IncludeSymbols>true</IncludeSymbols>

@@ -153,6 +153,33 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 prevGain = observedGain;
             }
         }
+        [TestCase(Explicit=true)]
+        public void PlotGain_MultipleVersionsOfSameModel()
+        {
+            var models = new List<GainSchedModel>() { 
+                new GainSchedModel(gainSchedP9_singleThreshold_threeInputs_bias_and_time_delay, "GainSched_ID1"),
+                new GainSchedModel(gainSchedP5_nineThresholds_singleInput, "GainSched_ID2"),
+                new GainSchedModel(gainSchedP6_singleThreshold_singleInput_static_nonzeroOperatingPointU, null) // note that even in this case, the
+                // plot should be uniuqe as long as the comment provided is unique
+            };
+
+            int i = 0;
+            foreach (var model in models)
+            {
+                PlotGain.PlotSteadyState(model,null, i.ToString());
+                //this should result in unique plots if done correctly 
+                i++;
+            }
+
+
+
+        }
+
+
+
+
+
+
 
         [TestCase(1, "up", Description = "static, two gains, no timedelay, no bias")]
         [TestCase(5, "up", Description = "nine gains")]
