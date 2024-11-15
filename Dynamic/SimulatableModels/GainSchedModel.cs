@@ -134,12 +134,21 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
 
-                if (modelParameters.LinearGains.Count -1  != modelParameters.LinearGainThresholds.Count())
+                if (modelParameters.LinearGainThresholds != null)
                 {
-                    explainStr = "LinearGainThresholds size:"+ modelParameters.LinearGainThresholds.Count() 
-                        + " should be one element smaller than LinearGains size:" + modelParameters.LinearGains.Count;
+                    if (modelParameters.LinearGains.Count - 1 != modelParameters.LinearGainThresholds.Count())
+                    {
+                        explainStr = "LinearGainThresholds size:" + modelParameters.LinearGainThresholds.Count()
+                            + " should be one element smaller than LinearGains size:" + modelParameters.LinearGains.Count;
+                        return false;
+                    }
+                }
+                else if (modelParameters.LinearGains.Count != 1)
+                {
+                    explainStr = "LinearGainThresholds is null so there should be exactly one LinearGain";
                     return false;
                 }
+
 
             }
             return true;

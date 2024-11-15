@@ -231,29 +231,33 @@ namespace TimeSeriesAnalysis.Dynamic
                 return 0;
             double gainsToReturn = 0;
             int gainSchedStartModelIdx = 0;
-            for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
-            {
-                if (uGainSched_Start < LinearGainThresholds[idx])
-                {
-                    gainSchedStartModelIdx = idx;
-                    break;
-                }
-                else if (idx == LinearGainThresholds.Length - 1)
-                {
-                    gainSchedStartModelIdx = idx + 1;
-                }
-            }
             int gainSchedEndModelIdx = 0;
-            for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
+            if (LinearGainThresholds != null)
             {
-                if (uGainSched_End < LinearGainThresholds[idx])
+                for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
                 {
-                    gainSchedEndModelIdx = idx;
-                    break;
+                    if (uGainSched_Start < LinearGainThresholds[idx])
+                    {
+                        gainSchedStartModelIdx = idx;
+                        break;
+                    }
+                    else if (idx == LinearGainThresholds.Length - 1)
+                    {
+                        gainSchedStartModelIdx = idx + 1;
+                    }
                 }
-                else if (idx == LinearGainThresholds.Length - 1)
+    
+                for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
                 {
-                    gainSchedEndModelIdx = idx + 1;
+                    if (uGainSched_End < LinearGainThresholds[idx])
+                    {
+                        gainSchedEndModelIdx = idx;
+                        break;
+                    }
+                    else if (idx == LinearGainThresholds.Length - 1)
+                    {
+                        gainSchedEndModelIdx = idx + 1;
+                    }
                 }
             }
 

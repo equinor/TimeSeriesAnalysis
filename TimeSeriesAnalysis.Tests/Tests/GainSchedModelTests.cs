@@ -98,6 +98,31 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 GainSchedParameterIndex = 0
             };
 
+
+        GainSchedParameters gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay =
+            new GainSchedParameters(0, 1)
+            {
+                TimeConstant_s = new double[] { },
+                TimeConstantThresholds = new double[] {  },
+                LinearGains = new List<double[]> { new double[] { 1 } },
+                LinearGainThresholds = new double[] {  },
+                TimeDelay_s = 2,
+                GainSchedParameterIndex = 0
+            };
+
+        GainSchedParameters gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay_v2 =
+    new GainSchedParameters(0, 1)
+    {
+        TimeConstant_s = new double[] { },
+        TimeConstantThresholds = null,
+        LinearGains = new List<double[]> { new double[] { 1 } },
+        LinearGainThresholds = null,
+        TimeDelay_s = 2,
+        GainSchedParameterIndex = 0
+    };
+
+
+
         [SetUp]
         public void SetUp()
         {
@@ -354,6 +379,53 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             SISOTests.CommonAsserts(inputData, refSimData, truePlantSim);
             Assert.That(unitData.Y_meas.First() == yOperatingPoint, "since time series starts in uOperatingPoint, simulation should start in yOperatingPoint");
+
+        }
+
+        [TestCase(1, Description = "steps below the threshold")]
+        [TestCase(2, Description = "steps below the threshold")]
+        public void NoThresholds_OneInput_RunsOk(int modelVer )
+        {
+            var tolerance = 0.1;
+
+            // Arrange
+            GainSchedModel gainSched = null;
+            if (modelVer == 1)
+            {
+                gainSched = new GainSchedModel(gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay, "GainSched_NoThresholds");
+            } else if (modelVer == 2)
+            {
+                gainSched = new GainSchedModel(gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay_v2, "GainSched_NoThresholds");
+            }
+
+
+            var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched });
+            var inputData = new TimeSeriesDataSet();
+
+  
+            inputData.Add(plantSim.AddExternalSignal(gainSched, SignalType.External_U, (int)INDEX.FIRST),
+                TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 0, 1, 1, 1));
+
+            inputData.CreateTimestamps(timeBase_s);
+
+            // Act
+            var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y);
+
+            bool doPlot = false;//should be false unless debugging.
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                    simY1,
+                    inputData.GetValues(gainSched.GetID(),SignalType.External_U,0), },
+                    new List<string> { "y1=y_sim" + modelVer.ToString(), "y3=u1" },
+                    timeBase_s, "NoThreshold_OneInputs");
+                Shared.DisablePlots();
+            }
+
+            // Assert
+            Assert.IsTrue(isSimulatable);
 
         }
 
