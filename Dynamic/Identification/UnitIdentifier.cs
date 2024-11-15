@@ -935,7 +935,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     parameters.Bias = SignificantDigits.Format(regResults.Param.Last(), nDigits);
                 }
 
-                parameters.Fitting.CalcCommonFitMetricsFromDataset(dataSet, yIndicesToIgnore);
+                parameters.Fitting.CalcCommonFitMetricsFromYmeasDataset(dataSet, yIndicesToIgnore);
 
                 // add inn uncertainty
                 if (useDynamicModel)

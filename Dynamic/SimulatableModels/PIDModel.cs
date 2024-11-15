@@ -44,6 +44,9 @@ namespace TimeSeriesAnalysis.Dynamic
         private double? WarmStart_y_set;
         private double? WarmStart_u;
 
+        private TimeDelaySamples delayObj;
+
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -54,6 +57,11 @@ namespace TimeSeriesAnalysis.Dynamic
             processModelType = ModelType.PID;
             this.ID = ID;
             this.pidParameters = pidParameters;
+            if (pidParameters.DelayOutputOneSample)
+            {
+                delayObj = new TimeDelaySamples(1);
+            }
+
         }
 
 
@@ -208,7 +216,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 feedForwardVariable = inputs[(int)PidModelInputsIdx.FeedForward];
             }
 
-            return new double[] { pid.Iterate(y_process_abs, y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable) };
+            var rawOut = pid.Iterate(y_process_abs, y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable);
+
+            double u = rawOut;
+            if (pidParameters.DelayOutputOneSample)
+            {
+                u = delayObj.Delay(rawOut);
+            }
+            return new double[] { u };
         }
 
         /// <summary>

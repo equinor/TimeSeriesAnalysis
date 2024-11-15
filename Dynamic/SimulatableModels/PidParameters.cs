@@ -51,6 +51,10 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
+        /// <summary>
+        /// If true, the model will set u[k] based on the error term e[k-1], if false it will be set from e[k]
+        /// </summary>
+        public bool DelayOutputOneSample = false;
 
         /// <summary>
         /// Proportional gain of controller
@@ -144,6 +148,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     sb.AppendLine("---NOT able to identify---");
                 }
             }
+            if (DelayOutputOneSample)
+            {
+                sb.AppendLine("u[k] set from e[k-1] (delayed one sample)");
+            }
+            else
+            {
+                sb.AppendLine("u[k] set from e[k] (undelayed)");
+            }
+
             sb.AppendLine("Kp : " + SignificantDigits.Format(Kp,sDigits));
 
             string timeConstantString = "Ti : ";

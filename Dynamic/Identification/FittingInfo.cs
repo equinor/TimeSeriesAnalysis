@@ -106,6 +106,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double[] Umin;
 
+
+        /// <summary>
+        /// The time base of the fitting dataset (model can still be run on other timebases)
+        /// </summary>
+
+        public double TimeBase_s;
+
+
         /// <summary>
         /// NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.
         /// It may be preferable to use the output of the regression, as this avoids duplicating logic.
@@ -113,8 +121,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         /// <param name="yIndicesToIgnore"></param>
 
-        public void CalcCommonFitMetricsFromDataset(UnitDataSet dataSet, List<int> yIndicesToIgnore)
+        public void CalcCommonFitMetricsFromYmeasDataset(UnitDataSet dataSet, List<int> yIndicesToIgnore= null)
         {
+            if (yIndicesToIgnore == null)
+            {
+                yIndicesToIgnore = dataSet.IndicesToIgnore;
+            }
+
             Vec vec = new Vec(dataSet.BadDataID);
 
             var ymeas_diff = vec.Diff(dataSet.Y_meas, yIndicesToIgnore);
@@ -167,6 +180,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals);
             this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);
+            this.TimeBase_s = dataSet.GetTimeBase();
 
         }
     }
