@@ -160,8 +160,10 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 this.ObjFunValDiff = Double.NaN;
             }
-           this.NFittingBadDataPoints = yIndicesToIgnore.Count;
-
+            if (yIndicesToIgnore != null)
+            {
+                this.NFittingBadDataPoints = yIndicesToIgnore.Count;
+            }
 
             var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals);
             this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);

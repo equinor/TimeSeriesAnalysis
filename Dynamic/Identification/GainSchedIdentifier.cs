@@ -185,6 +185,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 paramsToReturn.Fitting = new FittingInfo();
             }
             paramsToReturn.Fitting.SolverID = "Identify(thresholds estimated)";
+           // paramsToReturn.Fitting.CalcCommonFitMetricsFromDataset(dataSet, dataSet.IndicesToIgnore);
             return new GainSchedModel(paramsToReturn,"identified");
         }
 
@@ -320,6 +321,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 idParams.AddWarning(GainSchedIdentWarnings.UnableToIdentifySomeSubmodels);
             if (warningNotEnoughExitationBetweenAllThresholds)
                 idParams.AddWarning(GainSchedIdentWarnings.InsufficientExcitationBetweenEachThresholdToBeCertainOfGains);
+            idParams.Fitting.StartTime = dataSet.Times.First();
+            idParams.Fitting.EndTime = dataSet.Times.Last();
+
 
             // post-processing : improving the dynamic model terms by analysis after setting the static model
             if (idParams.Fitting.WasAbleToIdentify)
