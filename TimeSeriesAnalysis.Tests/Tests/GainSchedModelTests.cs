@@ -279,7 +279,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             double[] simY1 = simData.GetValues(refModel.GetID(), SignalType.Output_Y);
 
-            if (true)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
