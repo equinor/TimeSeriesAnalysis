@@ -33,9 +33,11 @@ namespace TimeSeriesAnalysis.Dynamic
         public double TimeConstant_s { get; set; } = 0;
 
         /// <summary>
-        /// A time constant in seconds, the second order time constant. Leave to zero to turn off second order dynamics.
+        /// Damping (second-order) values between ~0.3-0.99 will cause step response with a single visibl overshoot. )
+        /// Set to zero to disable damping. 
+        /// As values less than 0.3 approach zero, the step response will become more and more oscillatory.  
         /// </summary>
-        public double TimeConstant2_s { get; set; } = 0;
+        public double DampingRatio { get; set; } = 0;
 
         /// <summary>
         /// The uncertinty of the time constant estimate

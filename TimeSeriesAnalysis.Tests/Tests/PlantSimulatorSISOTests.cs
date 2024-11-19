@@ -115,35 +115,49 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase,Explicit]
         public void SimulateSingle_SecondOrderSystem()
         {
-            var mp = new UnitParameters
+            string v1 = "6";
+            int N = 5000;
+            int Nstep = 50;
+
+            var modelParams2ndOrder = new UnitParameters
             {
-                TimeConstant_s = 10,
-                TimeConstant2_s = 2,
+                TimeConstant_s = 50,
+                DampingRatio = 0.1,// seems that if dampingRatio is higher than 1, it is redundant!(coudl be described )
+                LinearGains = new double[] { 1 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+            var modelParams1stOrder = new UnitParameters
+            {
+                TimeConstant_s = 50,
+                DampingRatio = 0,
                 LinearGains = new double[] { 1 },
                 TimeDelay_s = 0,
                 Bias = 5
             };
 
-            var procModel = new UnitModel(mp,"second order system");
+            var procModel = new UnitModel(modelParams2ndOrder,"second order system");
+            var procModel2 = new UnitModel(modelParams1stOrder, "first order system");
 
             var plantSim = new PlantSimulator(
-                new List<ISimulatableModel> { procModel });
+                new List<ISimulatableModel> { procModel,procModel2 });
 
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(plantSim.AddExternalSignal(procModel, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
+            inputData.Add(plantSim.AddExternalSignal(procModel, SignalType.External_U), TimeSeriesCreator.Step(Nstep, N, 50, 55));
+            inputData.Add(plantSim.AddExternalSignal(procModel2, SignalType.External_U), TimeSeriesCreator.Step(Nstep, N, 50, 55));
             inputData.CreateTimestamps(timeBase_s);
             var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
  
-
-            if (true)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
                 simData.GetValues(procModel.GetID(),SignalType.Output_Y),
+                simData.GetValues(procModel2.GetID(),SignalType.Output_Y),
                 inputData.GetValues(procModel.GetID(),SignalType.External_U)},
-                new List<string> { "y1=y_sim1",  "y3=u" },
-                timeBase_s, TestContext.CurrentContext.Test.Name);
+                new List<string> { "y1=y_secondorder", "y1=y_firstorder",  "y3=u" },
+                timeBase_s, TestContext.CurrentContext.Test.Name+ v1);
                 Shared.DisablePlots();
             }
             CommonAsserts(inputData, simData, plantSim);

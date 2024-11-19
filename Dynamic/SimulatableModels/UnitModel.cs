@@ -53,10 +53,10 @@ namespace TimeSeriesAnalysis.Dynamic
         private LowPass lowPass1order;
 
         // second order dynamics :
-        private LowPass lowPass2order1;
-        private LowPass lowPass2order2;
-        private TimeDelay delayObj2order;
+        private SecondOrder secondOrder;
 
+
+        
         // time-delay 
         private TimeDelay delayObj;
 
@@ -505,30 +505,19 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // nb! if first iteration, start model at steady-state
             double x_dynamic = x_ss;
-            if (modelParameters.TimeConstant_s >= 0)
+            if (modelParameters.TimeConstant_s >= 0 && modelParameters.DampingRatio == 0)
             {
                 x_dynamic = lowPass1order.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration);
-
-                // second order time constant(work in progress)
-               /* if (modelParameters.TimeConstant2_s > 0)
-                {
-                    if (this.lowPass2order1 == null)
-                    {
-                        this.lowPass2order1 = new LowPass(timeBase_s);
-                    }
-                    if (this.delayObj2order == null)
-                    {
-                        this.delayObj2order = new TimeDelay(timeBase_s, timeBase_s);
-                    }
-
-                    double secondOrderFilt = lowPass2order1.Filter(x_ss, modelParameters.TimeConstant2_s, 1, isFirstIteration);
-                    double delayed_secondOrderFilt = delayObj2order.Delay(secondOrderFilt);
-
-                    double x_secondOrderDyn = (secondOrderFilt- delayed_secondOrderFilt)/timeBase_s;
-                    x_dynamic -= x_secondOrderDyn;
-                }*/
-
             }
+            else if (modelParameters.TimeConstant_s >= 0 && modelParameters.DampingRatio > 0)
+            {
+                if (this.secondOrder == null)
+                {
+                    this.secondOrder = new SecondOrder(timeBase_s);
+                }
+                x_dynamic = secondOrder.Filter(x_ss, modelParameters.TimeConstant_s, modelParameters.DampingRatio, isFirstIteration);
+            }
+
             isFirstIteration = false;
             double y = 0;
             if (modelParameters.TimeDelay_s <= 0)
