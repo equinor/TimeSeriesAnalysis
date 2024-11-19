@@ -69,15 +69,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             pidModel1 = new PidModel(pidParameters1, "PID1");
         }
 
-
-
-
-
-
-        // MISO= multiple-input/single-output
-        // SISO= single-input/single-output
-
-        // this test also tests that the model is re-set properly for a second run
         [TestCase]
         public void SimulateSingle_InitsRunsAndConverges()
         {
@@ -87,29 +78,76 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var inputData = new TimeSeriesDataSet();
             inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
             inputData.CreateTimestamps(timeBase_s);
-            var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
+            var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
             CommonAsserts(inputData, simData, plantSim);
             double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
-            Assert.IsTrue(Math.Abs(simY[0]- 55)<0.01);
-            Assert.IsTrue(Math.Abs(simY.Last()- 60)<0.01);
+            Assert.IsTrue(Math.Abs(simY[0] - 55) < 0.01);
+            Assert.IsTrue(Math.Abs(simY.Last() - 60) < 0.01);
 
             // now test that "simulateSingle" produces the same result!
             var isOk2 = plantSim.SimulateSingle(inputData, processModel1.ID, out TimeSeriesDataSet simData2);
 
             if (false)
             {
+                Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
                 simData2.GetValues(processModel1.GetID(),SignalType.Output_Y),
                 inputData.GetValues(processModel1.GetID(),SignalType.External_U)},
                 new List<string> { "y1=y_sim1", "y1=y_sim1(v2)", "y3=u" },
                 timeBase_s, TestContext.CurrentContext.Test.Name);
+                Shared.DisablePlots();
             }
             double[] simY2 = simData2.GetValues(processModel1.GetID(), SignalType.Output_Y);
             Assert.IsTrue(isOk2);
             Assert.IsTrue(Math.Abs(simY2[0] - 55) < 0.01);
             Assert.IsTrue(Math.Abs(simY2.Last() - 60) < 0.01);
+        }
+
+
+
+
+        // MISO= multiple-input/single-output
+        // SISO= single-input/single-output
+
+
+        [TestCase,Explicit]
+        public void SimulateSingle_SecondOrderSystem()
+        {
+            var mp = new UnitParameters
+            {
+                TimeConstant_s = 10,
+                TimeConstant2_s = 2,
+                LinearGains = new double[] { 1 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+
+            var procModel = new UnitModel(mp,"second order system");
+
+            var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { procModel });
+
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSim.AddExternalSignal(procModel, SignalType.External_U), TimeSeriesCreator.Step(N / 4, N, 50, 55));
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+ 
+
+            if (true)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                simData.GetValues(procModel.GetID(),SignalType.Output_Y),
+                inputData.GetValues(procModel.GetID(),SignalType.External_U)},
+                new List<string> { "y1=y_sim1",  "y3=u" },
+                timeBase_s, TestContext.CurrentContext.Test.Name);
+                Shared.DisablePlots();
+            }
+            CommonAsserts(inputData, simData, plantSim);
+
         }
 
         // if linear gains are null, then the simualtion should still run but with zero output.

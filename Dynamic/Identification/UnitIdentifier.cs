@@ -631,7 +631,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (useDynamicModel)
             {
                 // Tc *xdot = x[k-1] + B*u[k-1]
-                // Tc/Ts *(x[k]-x[k-1])  = x[k-1]*B*u[k-1]
+                // Tc/Ts *(x[k]-x[k-1])  = x[k-1] + B*u[k-1]
 
                 // a first order differential equation 
                 // x[k] = a*x[k-1]+b*u[k-1]

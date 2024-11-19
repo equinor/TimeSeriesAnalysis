@@ -32,6 +32,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double TimeConstant_s { get; set; } = 0;
 
+        /// <summary>
+        /// A time constant in seconds, the second order time constant. Leave to zero to turn off second order dynamics.
+        /// </summary>
+        public double TimeConstant2_s { get; set; } = 0;
 
         /// <summary>
         /// The uncertinty of the time constant estimate

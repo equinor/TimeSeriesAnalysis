@@ -49,7 +49,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public  UnitParameters modelParameters;
 
-        private LowPass lowPass;
+        // first order dynamics :
+        private LowPass lowPass1order;
+
+        // second order dynamics :
+        private LowPass lowPass2order1;
+        private LowPass lowPass2order2;
+        private TimeDelay delayObj2order;
+
+        // time-delay 
         private TimeDelay delayObj;
 
         private bool isFirstIteration;
@@ -475,9 +483,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     return new double[] { Double.NaN };
                 }
             }
-            if (this.lowPass == null)
+            if (this.lowPass1order == null)
             {
-                this.lowPass = new LowPass(timeBase_s);
+                this.lowPass1order = new LowPass(timeBase_s);
             }
             if (this.delayObj == null)
             {
@@ -499,7 +507,27 @@ namespace TimeSeriesAnalysis.Dynamic
             double x_dynamic = x_ss;
             if (modelParameters.TimeConstant_s >= 0)
             {
-                x_dynamic = lowPass.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration);
+                x_dynamic = lowPass1order.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration);
+
+                // second order time constant(work in progress)
+               /* if (modelParameters.TimeConstant2_s > 0)
+                {
+                    if (this.lowPass2order1 == null)
+                    {
+                        this.lowPass2order1 = new LowPass(timeBase_s);
+                    }
+                    if (this.delayObj2order == null)
+                    {
+                        this.delayObj2order = new TimeDelay(timeBase_s, timeBase_s);
+                    }
+
+                    double secondOrderFilt = lowPass2order1.Filter(x_ss, modelParameters.TimeConstant2_s, 1, isFirstIteration);
+                    double delayed_secondOrderFilt = delayObj2order.Delay(secondOrderFilt);
+
+                    double x_secondOrderDyn = (secondOrderFilt- delayed_secondOrderFilt)/timeBase_s;
+                    x_dynamic -= x_secondOrderDyn;
+                }*/
+
             }
             isFirstIteration = false;
             double y = 0;
@@ -780,7 +808,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             // re-setting this variable, will cause "iterate" to start in steady-state.
             isFirstIteration = true;
-            this.lowPass = null;
+            this.lowPass1order = null;
             this.delayObj = null;
         }
 

@@ -306,8 +306,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // middle entire portions 
                     for (int curGainSchedModIdx = gainSchedStartModelIdx - 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
                     {
-                        deltaU = (LinearGainThresholds[curGainSchedModIdx] -
-                            LinearGainThresholds[curGainSchedModIdx - 1]);
+                        deltaU = LinearGainThresholds[curGainSchedModIdx - 1] - LinearGainThresholds[curGainSchedModIdx]  ;
                         gainsToReturn += deltaU * LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
                     }
                     // last portions (might be a treshold to inbetween two tresholds)
