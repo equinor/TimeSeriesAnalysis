@@ -51,7 +51,25 @@ namespace TimeSeriesAnalysis
             }
             //double a;
             double filteredSignal= signal;
-            double omega_n = 1 / FilterTc_s;//todo: is this correct?
+
+            // The "FilterTc_s is supposed to be the first-order time-constant, but this 
+            // needs to be translated to omega_n using a function that will also depend on DampingZeta
+
+
+            var factor = 1.0;
+            if (DampingZeta <= 0)
+            {
+                factor = 0;
+            }
+            else if (DampingZeta < 1)
+            {
+                factor = Math.Max(1, 1 + Math.Pow(DampingZeta - 0.5, 1 / 2));
+            }
+            else
+                factor = DampingZeta * 2;
+
+
+            double omega_n = 1 / (FilterTc_s)*factor; // 
 
             double divisor = (1 / timeBase_s + 2 * DampingZeta * omega_n / timeBase_s + Math.Pow(omega_n,2));
             if (divisor <= 0)

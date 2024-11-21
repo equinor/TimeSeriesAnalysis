@@ -115,18 +115,51 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase,Explicit]
         public void SimulateSingle_SecondOrderSystem()
         {
-            string v1 = "6";
+            string v1 = "7";
             int N = 5000;
             int Nstep = 50;
 
             var modelParams2ndOrder = new UnitParameters
             {
                 TimeConstant_s = 50,
-                DampingRatio = 0.1,// seems that if dampingRatio is higher than 1, it is redundant!(coudl be described )
+                DampingRatio = 0.1,
                 LinearGains = new double[] { 1 },
                 TimeDelay_s = 0,
                 Bias = 5
             };
+
+            // using this "raw" value, we see that at damping= 1corresponds in a 1.order system to doublng the time constant 
+            // and using the dampingzeta= 2 the time constant must be quadrupled
+            //  double timeConstantCorrection = (1 + Math.Pow(DampingZeta, 2));
+            //  double omega_n = 1 / (FilterTc_s * timeConstantCorrection);
+
+            // if dampingratio = 0.25  then timeconst of 1.order system 50 (factor=1)
+            // if dampingratio = 0.5  then timeconst of 1.order system  50(factor=1)
+            // if dampingratio = 0.625  then timeconst of 1.order system  62.5(factor=1.25)
+            // if dampingratio = 0.75  then timeconst of 1.order system  75(factor=1.5)
+            // if dampingratio = 1 - then timeconstant of 1.order system must be 100(factor=2)
+            // if dampingratio = 2  then timeconst of 1.order system must be 200(factor=4)
+            // if dampingratio = 3  then timeconst of 1.order system must be 300(factor=6)
+            // if dampingratio = 4  then timeconst of 1.order system must be 400(factor=8)
+            // if dampingratio = 5  then timeconst of 1.order system must be 600(factor=10)
+            // if dampingratio = 6  then timeconst of 1.order system must be 800(factor=12)
+
+            //         var factor = Math.Max(1, 1 + Math.Pow(modelParams2ndOrder.DampingRatio - 0.5, 1 / 2)); // works between 0-1.
+
+            var DampingZeta = modelParams2ndOrder.DampingRatio;
+
+         /*   var factor = 1.0;
+            if (DampingZeta <= 0)
+            {
+                factor = 0;
+            }
+            else if (DampingZeta < 1)
+            {
+                factor = Math.Max(1, 1 + Math.Pow(DampingZeta - 0.5, 1 / 2));
+            }
+            else
+                factor = DampingZeta * 2;*/
+
             var modelParams1stOrder = new UnitParameters
             {
                 TimeConstant_s = 50,
@@ -149,7 +182,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
  
-            if (false)
+            if (true)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
