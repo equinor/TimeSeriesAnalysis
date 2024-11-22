@@ -38,6 +38,7 @@ namespace TimeSeriesAnalysis.Dynamic
         const int firstPassNumIterations = 60;//TODO:change back to 50!
         const int secondPassNumIterations = 10;
         const double initalGuessFactor_higherbound = 2.5;// 2 is a bit low, should be a bit higher
+        const int nDigits = 5; //number of significant digits in results.
         ////////////////////////
         const bool doDebuggingPlot = false;
         /// <summary>
@@ -101,7 +102,7 @@ namespace TimeSeriesAnalysis.Dynamic
             List<UnitModel> idUnitModelsList = new List<UnitModel>();
             List<double> processGainList = new List<double>();
 
-            double[] u0 = dataSet.U.GetRow(0);
+            double[] u0 = SignificantDigits.Format(dataSet.U.GetRow(0), nDigits); 
             double y0 = dataSet.Y_meas[0];
             bool isOK;
             var dataSet1 = new UnitDataSet(dataSet);
@@ -307,6 +308,20 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 ClosedLoopSim(dataSet, identUnitModel.modelParameters, pidParams, disturbance);
             }
+            // round resulting parameters
+
+            identUnitModel.modelParameters.LinearGains = SignificantDigits.Format(identUnitModel.modelParameters.LinearGains, nDigits);
+            identUnitModel.modelParameters.LinearGainUnc = SignificantDigits.Format(identUnitModel.modelParameters.LinearGainUnc, nDigits);
+            identUnitModel.modelParameters.Bias = SignificantDigits.Format(identUnitModel.modelParameters.Bias, nDigits);
+            if (identUnitModel.modelParameters.BiasUnc.HasValue)
+                identUnitModel.modelParameters.BiasUnc = SignificantDigits.Format(identUnitModel.modelParameters.BiasUnc.Value, nDigits);
+
+            identUnitModel.modelParameters.TimeConstant_s = SignificantDigits.Format(identUnitModel.modelParameters.TimeConstant_s, nDigits);
+            if (identUnitModel.modelParameters.TimeConstantUnc_s.HasValue)
+                identUnitModel.modelParameters.TimeConstantUnc_s = SignificantDigits.Format(identUnitModel.modelParameters.TimeConstantUnc_s.Value, nDigits);
+            identUnitModel.modelParameters.UNorm = SignificantDigits.Format(identUnitModel.modelParameters.UNorm, nDigits);
+
+
             return (identUnitModel,disturbance);
         }
 
