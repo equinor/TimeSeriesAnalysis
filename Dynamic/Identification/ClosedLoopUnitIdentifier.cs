@@ -94,6 +94,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             // set "indicestoignore" to exclude values outside ymin/ymax_fit and umin_fit,u_max_fit
+             // 
+           // dataSet.DetermineIndicesToIgnore(fittingSpecs);
+
 
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
@@ -296,6 +299,19 @@ namespace TimeSeriesAnalysis.Dynamic
                 identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
                 identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
                 identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
+                identUnitModel.modelParameters.Fitting.TimeBase_s = dataSet.GetTimeBase();
+
+                var uMaxList = new List<double>();
+                var uMinList = new List<double>();
+
+                for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+                {
+                    uMaxList.Add(vec.Max(dataSet.U.GetColumn(i)));
+                    uMinList.Add(vec.Min(dataSet.U.GetColumn(i)));
+                }
+                identUnitModel.modelParameters.Fitting.Umax = uMaxList.ToArray();
+                identUnitModel.modelParameters.Fitting.Umin = uMinList.ToArray();
+
                 if (wasGainGlobalSearchDone)
                 {
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
@@ -303,6 +319,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
+                identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
+
+
             }
             // closed-loop simulation, adds U_sim and Y_sim to "dataset"
             {

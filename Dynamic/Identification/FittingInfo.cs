@@ -32,6 +32,38 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public string SolverID { get; set; }
 
+
+        /// <summary>
+        /// A score that is 100% if model describes all variations 
+        /// and 0% if model is no better at describing variation than the flat average line.
+        /// Negative if the model is worse than a flat average line.
+        /// </summary>
+
+        public double FitScorePrc { get; set; }
+
+
+        /// <summary>
+        /// Number of bad data points ignored during fitting
+        /// </summary>
+        /// 
+        public double NFittingBadDataPoints { get; set; }
+
+        /// <summary>
+        /// Number of total data points (good and bad) available for fitting
+        /// </summary>
+        public double NFittingTotalDataPoints { get; set; }
+
+        /// <summary>
+        /// Start time of fitting data set
+        /// </summary>
+        public DateTime StartTime { get; set; }
+
+        /// <summary>
+        /// End time of fitting data set
+        /// </summary>
+        public DateTime EndTime { get; set; }
+
+
         /// <summary>
         /// The value of the R2 or root mean square of fitting,higher is better (used to choose among models)
         /// <para>
@@ -65,53 +97,22 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double ObjFunValAbs { get; set; }
 
-
         /// <summary>
-        /// A score that is 100% if model describes all variations 
-        /// and 0% if model is no better at describing variation than the flat average line.
-        /// Negative if the model is worse than a flat average line.
+        /// The time base of the fitting dataset (model can still be run on other timebases)
         /// </summary>
 
-        public double FitScorePrc { get; set; }
+        public double TimeBase_s;
 
-        /// <summary>
-        /// Number of bad data points ignored during fitting
-        /// </summary>
-        /// 
-
-        public double NFittingBadDataPoints { get; set; }
-
-        /// <summary>
-        /// Number of total data points (good and bad) available for fitting
-        /// </summary>
-        public double NFittingTotalDataPoints { get; set; }
-
-        /// <summary>
-        /// Start time of fitting data set
-        /// </summary>
-        public DateTime StartTime { get; set; }
-
-        /// <summary>
-        /// End time of fitting data set
-        /// </summary>
-        public DateTime EndTime { get; set; }
-
-        /// <summary>
-        /// The maximum value of u seen in the data set
-        /// </summary>
-        public double[] Umax;
 
         /// <summary>
         /// The minimum value of u seen in the data set
         /// </summary>
         public double[] Umin;
 
-
         /// <summary>
-        /// The time base of the fitting dataset (model can still be run on other timebases)
+        /// The maximum value of u seen in the data set
         /// </summary>
-
-        public double TimeBase_s;
+        public double[] Umax;
 
 
         /// <summary>
