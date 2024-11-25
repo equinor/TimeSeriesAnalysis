@@ -30,6 +30,7 @@ namespace TimeSeriesAnalysis.Utility
         public static void PlotSteadyState(ISimulatableModel model1, ISimulatableModel model2 = null, string comment = null,
             double[] uMin = null, double[] uMax = null,int numberOfPlotPoints = 100)
         {
+
             string outputId = model1.GetOutputID();
             if (outputId == null)
             {
@@ -37,6 +38,7 @@ namespace TimeSeriesAnalysis.Utility
             }
             var model1Name = "model1";
             var model2Name = "model2";
+
             if (model1.GetID() != null && model1.GetID() != "not_named")
             {
                 model1Name = model1.GetID();
@@ -52,6 +54,15 @@ namespace TimeSeriesAnalysis.Utility
   
                 if (model1.GetType() == typeof(GainSchedModel))
                 {
+                    for (var i = 0; i < ((GainSchedModel)model1).modelParameters.LinearGains.Count(); i++)
+                    { 
+                        if(((GainSchedModel)model1).modelParameters.LinearGains.ElementAt(i) == null)
+                        {
+                            Console.WriteLine("PlotSteadyState: model1 includes null, cannot be plotted(hint: try PlotGainSched)");
+                            return;
+                        }
+                    }
+
 
                     tables_m1 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model1, model1Name,comment, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
@@ -80,6 +91,14 @@ namespace TimeSeriesAnalysis.Utility
                 List<XYTable> tables_m2 = new List<XYTable>();
                 if (model2.GetType() == typeof(GainSchedModel))
                 {
+                    for (var i = 0; i < ((GainSchedModel)model2).modelParameters.LinearGains.Count(); i++)
+                    {
+                        if (((GainSchedModel)model2).modelParameters.LinearGains.ElementAt(i) == null)
+                        {
+                            Console.WriteLine("PlotSteadyState: model1 includes null, cannot be plotted(hint: try PlotGainSched)");
+                            return;
+                        }
+                    }
                     tables_m2 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model2, model2Name, comment, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
                 else if (model2.GetType() == typeof(UnitModel))
@@ -368,7 +387,10 @@ namespace TimeSeriesAnalysis.Utility
                 }
                 else
                     x = model.modelParameters.LinearGainThresholds.ElementAt(thresholdIdx);
-                xyTableGain.AddRow(new double[] { x, gain.ElementAt(inputIdx) });
+                if (gain != null)
+                    xyTableGain.AddRow(new double[] { x, gain.ElementAt(inputIdx) });
+                else
+                    xyTableGain.AddRow(new double[] { x, Double.NaN });
                 thresholdIdx++;
             }
 

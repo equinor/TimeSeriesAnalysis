@@ -306,8 +306,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 for (int i = 0; i < dataSet.U.GetNColumns(); i++)
                 {
-                    uMaxList.Add(vec.Max(dataSet.U.GetColumn(i)));
-                    uMinList.Add(vec.Min(dataSet.U.GetColumn(i)));
+                    uMaxList.Add(SignificantDigits.Format(vec.Max(dataSet.U.GetColumn(i)), nDigits));
+                    uMinList.Add(SignificantDigits.Format(vec.Min(dataSet.U.GetColumn(i)), nDigits));
                 }
                 identUnitModel.modelParameters.Fitting.Umax = uMaxList.ToArray();
                 identUnitModel.modelParameters.Fitting.Umin = uMinList.ToArray();

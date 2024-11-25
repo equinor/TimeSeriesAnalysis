@@ -139,6 +139,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(simData.ContainsSignal(processModel.GetID()),"simulated dataset should include internal process model output (pre-disturbance)");
             var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var result = DisturbanceIdentifier.EstimateDisturbance(pidDataSet, processModel);
+
+         //   Console.WriteLine(result.);
+
             if (doAssertResult)
             {
                 CommonPlotAndAsserts(pidDataSet, result.d_est, trueDisturbance);

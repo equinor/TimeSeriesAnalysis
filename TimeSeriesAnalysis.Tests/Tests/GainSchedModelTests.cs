@@ -218,10 +218,36 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 //this should result in unique plots if done correctly 
                 i++;
             }
+        }
+
+        [TestCase(Explicit = true)]
+        public void PlotGain_PlotModelWithSomeNullGains()
+        {
 
 
+            var testParams = new GainSchedParameters(5, 5)
+            {
+                TimeConstant_s = null,
+                TimeConstantThresholds = null,
+                LinearGains = new List<double[]> { new double[] { 0 }, new double[] { 1 }, null, new double[] { 3 }, new double[] { 4 }, new double[] { 5 },
+                    new double[] { 6 }, new double[] { 7 }, new double[] { 8 }, new double[] { 9 }, new double[] { 10 } },
+                LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
+                TimeDelay_s = 0,
+                GainSchedParameterIndex = 0
+            };
+
+
+            var model = new GainSchedModel(testParams, "GainSched_ID1");
+
+            PlotGain.PlotSteadyState(model, null, TestContext.CurrentContext.Test.Name);
+            PlotGain.PlotGainSched(model, null, TestContext.CurrentContext.Test.Name);
+                //this should result in unique plots if done correctly 
 
         }
+
+
+
+
 
 
 
