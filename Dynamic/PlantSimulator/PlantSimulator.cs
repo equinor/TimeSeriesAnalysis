@@ -740,7 +740,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
 
-            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputData, ref simData, compLoopDict);
+            var inputDataMinimal = new TimeSeriesDataSet(inputData);
+
+            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict);
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
@@ -759,7 +761,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         "\" has null inputIDs.");
                     return false;
                 }
-                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputData);
+                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputDataMinimal);
 
                 string outputID = model.GetOutputID();
                 if (outputID == null)
@@ -769,17 +771,17 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
                 double[] outputVals =
-                    GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
+                    GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputDataMinimal);
                 if (outputVals != null)
                 {
                     model.WarmStart(inputVals, outputVals[0]);
                 }
             }
 
-            var idxToIgnore = inputData.GetIndicesToIgnore();
+            var idxToIgnore = inputDataMinimal.GetIndicesToIgnore();
             int lastGoodTimeIndex = 0;
             // if start of dataset is bad, then parse forward until first good time index..
-            while (idxToIgnore.Contains(lastGoodTimeIndex) && lastGoodTimeIndex < inputData.GetLength())
+            while (idxToIgnore.Contains(lastGoodTimeIndex) && lastGoodTimeIndex < inputDataMinimal.GetLength())
             {
                 lastGoodTimeIndex++;
             }
@@ -799,7 +801,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         inputDataLookBackIdx = 1;//if set to zero, model fails(requires changing model order).
                     }
-                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, lastGoodTimeIndex - inputDataLookBackIdx, simData, inputData);
+                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, lastGoodTimeIndex - inputDataLookBackIdx, simData, inputDataMinimal);
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -826,8 +828,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-            simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
-            PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData);
+            simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());
+             PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData);
             return true;
         }
 

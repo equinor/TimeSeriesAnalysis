@@ -112,11 +112,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(4,-1)]
         public void PlantSimulator_StepDisturbanceANDSetPointStep_EstimatesOk(double disturbanceStepAmplitude,double setpointAmplitude)
         {
-         //   Shared.EnablePlots();
+           // Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, disturbanceStepAmplitude);
             var setpoint = TimeSeriesCreator.Step(50, N, 50, 50+setpointAmplitude);
             DisturbanceTestUsingPlantSimulator(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance, true, setpoint);
-       //     Shared.DisablePlots();
+            //Shared.DisablePlots();
         }
 
 
