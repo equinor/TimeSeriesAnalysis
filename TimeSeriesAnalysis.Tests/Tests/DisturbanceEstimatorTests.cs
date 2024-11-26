@@ -140,7 +140,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var result = DisturbanceIdentifier.EstimateDisturbance(pidDataSet, processModel);
 
-         //   Console.WriteLine(result.);
+            Console.WriteLine(plantSim.ToString());
 
             if (doAssertResult)
             {
@@ -218,6 +218,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 //////////////////////////////////
                 Assert.IsTrue(isOK);
                 Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(distSignal));
+                // 
+                Console.WriteLine(plantSim.ToString());
+
                 if (doAssertResult)
                 {
                     var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simDataSetWithDisturbance), pidModel1);

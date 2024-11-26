@@ -55,7 +55,7 @@ namespace TimeSeriesAnalysis
         static public double GetPlantWideSimulated(PlantSimulator plantSimObj, TimeSeriesDataSet inputData, 
             TimeSeriesDataSet simData)
         {
-            const string disturbanceSignalPrefix = "_D";
+       //     const string disturbanceSignalPrefix = "_D";
             List<double> fitScores = new List<double>();
             foreach (var modelName in plantSimObj.modelDict.Keys)
             {
@@ -68,13 +68,17 @@ namespace TimeSeriesAnalysis
                 if (outputName == "" || outputName == null)
                     continue;
 
+
+                //
+                // Step 1: get the output signals of individual models in the measured dataset
+                //
+
                 if (plantSimObj.modelDict[modelName].GetProcessModelType() == ModelType.PID)
                 {
                     if (inputData.ContainsSignal(outputName))
                     {
                         measY = inputData.GetValues(outputName);
                     }
-
                 }
                 else //if (plantSimObj.modelDict[modelName].GetProcessModelType() == ModelType.SubProcess)
                 {
@@ -84,25 +88,29 @@ namespace TimeSeriesAnalysis
                         {
                             measY = inputData.GetValues(outputIdentName);
                         }
-                        else if (simData.ContainsSignal(outputIdentName))
+                       /* else if (simData.ContainsSignal(outputIdentName))
                         {
                             measY = simData.GetValues(outputIdentName);
-                        }
+                        }*/
                     }
                     // add in fit of process output, but only if "additive output signal" is not a
                     // locally identified "_D_" signal, as then output matches 100%  always (any model error is put into disturbance signal as well)
-                    else if (modelObj.GetAdditiveInputIDs() != null)
+                    /* else if (modelObj.GetAdditiveInputIDs() != null)
                     {
                         if (!modelObj.GetAdditiveInputIDs()[0].StartsWith(disturbanceSignalPrefix))
                         {
                             measY = inputData.GetValues(outputName);
                         }
-                    }
+                    }*/
                     else if (inputData.ContainsSignal(outputName))
                     {
                         measY = inputData.GetValues(outputName);
                     }
                 }
+
+                //
+                // Step 2: get the corresponding signal from the simulated dataset
+                //
                 if (simData.ContainsSignal(outputName))
                 { 
                     simY = simData.GetValues(outputName);

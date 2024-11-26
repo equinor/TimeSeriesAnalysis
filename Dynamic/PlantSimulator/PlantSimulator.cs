@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -117,92 +118,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// The fitScore of the plant the last time it was saved.
         /// </summary>
-        public double PlantFitScore;
-
-        /// <summary>
-        /// Returns a unit data set for a given unitModel.
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="unitModel"></param>
-        /// <returns></returns>
-        public UnitDataSet GetUnitDataSetForProcess(TimeSeriesDataSet inputData, UnitModel unitModel)
-        {
-            UnitDataSet dataset = new UnitDataSet();
-            dataset.U = new double[inputData.GetLength().Value, 1];
-        
-            dataset.Times = inputData.GetTimeStamps();
-            var inputIDs = unitModel.GetModelInputIDs();
-            var outputID = unitModel.GetOutputID();
-            dataset.Y_meas = inputData.GetValues(outputID);
-            for (int inputIDidx = 0; inputIDidx < inputIDs.Length; inputIDidx++)
-            {
-                var inputID = inputIDs[inputIDidx];
-                var curCol = inputData.GetValues(inputID);
-                dataset.U.WriteColumn(inputIDidx, curCol);
-            }
-            return dataset;
-        }
-
-
-        /// <summary>
-        /// Returns a "unitDataSet" for the given pidModel in the plant. 
-        /// This function only works when the unit model connected to the pidModel only has a single input. 
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="pidModel"></param>
-        /// <returns></returns>
-        public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData,PidModel pidModel)
-        {
-            var unitModID = connections.GetUnitModelControlledByPID(pidModel.GetID(),modelDict);
-            string[] modelInputIDs = null;
-            if (unitModID != null)
-            {
-                modelInputIDs = modelDict[unitModID].GetModelInputIDs();
-            }
-            UnitDataSet dataset = new UnitDataSet(); 
-
-            if (modelInputIDs != null)
-            {
-                dataset.U = new double[inputData.GetLength().Value, modelInputIDs.Length];
-                for (int modelInputIdx = 0; modelInputIdx < modelInputIDs.Length; modelInputIdx++)
-                {
-                    var inputID = modelInputIDs[modelInputIdx];
-                    dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
-                }
-            }
-            else
-            {
-                dataset.U = new double[inputData.GetLength().Value, 1];
-                dataset.U.WriteColumn(0, inputData.GetValues(pidModel.GetOutputID()));
-            }
-
-            dataset.Times = inputData.GetTimeStamps();
-            var inputIDs = pidModel.GetModelInputIDs();
-
-            for (int inputIDidx=0; inputIDidx<inputIDs.Length; inputIDidx++)
-            {
-                var inputID = inputIDs[inputIDidx];
-
-                if (inputIDidx == (int)PidModelInputsIdx.Y_setpoint)
-                {
-                    dataset.Y_setpoint = inputData.GetValues(inputID);
-                }
-                else if (inputIDidx == (int)PidModelInputsIdx.Y_meas)
-                {
-                    dataset.Y_meas = inputData.GetValues(inputID);
-                }
-                //todo: feedforward?
-                    /*else if (type == SignalType.Output_Y_sim)
-                    {
-                        dataset.U.WriteColumn(1, inputData.GetValues(inputID));
-                    }
-                    else
-                    {
-                        throw new Exception("unexepcted signal type");
-                    }*/
-            }
-            return dataset;
-        }
+        public double PlantFitScore = double.NaN;
 
         /// <summary>
         /// Constructor
@@ -210,7 +126,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
         /// <param name="plantName">optional name of plant, used when serializing</param>
         /// <param name="plantDescription">optional description of plant</param>
-        public PlantSimulator(List<ISimulatableModel> processModelList, string plantName="", string plantDescription="")
+        public PlantSimulator(List<ISimulatableModel> processModelList, string plantName = "", string plantDescription = "")
         {
             externalInputSignalIDs = new List<string>();
             this.comments = new List<Comment>();
@@ -244,7 +160,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="type"></param>
         /// <param name="index"></param>
         /// <returns>returns signalID or null if something went wrong</returns>
-        public string AddAndConnectExternalSignal(ISimulatableModel model,string signalID, SignalType type, int index = 0)
+        public string AddAndConnectExternalSignal(ISimulatableModel model, string signalID, SignalType type, int index = 0)
         {
             ModelType modelType = model.GetProcessModelType();
             externalInputSignalIDs.Add(signalID);
@@ -290,7 +206,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal '"+ signalID+"'" );
+                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal '" + signalID + "'");
                 return null;
             }
 
@@ -308,7 +224,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public string AddExternalSignal(ISimulatableModel model, SignalType type, int index = 0)
         {
             string signalID = SignalNamer.GetSignalName(model.GetID(), type, index);
-            return AddAndConnectExternalSignal(model,signalID,type,index);
+            return AddAndConnectExternalSignal(model, signalID, type, index);
         }
 
         /// <summary>
@@ -330,7 +246,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="disturbanceModel"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool ConnectModelToOutput(ISimulatableModel disturbanceModel, ISimulatableModel model )
+        public bool ConnectModelToOutput(ISimulatableModel disturbanceModel, ISimulatableModel model)
         {
             model.AddSignalToOutput(disturbanceModel.GetOutputID());
             return true;
@@ -343,14 +259,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="downstreamModel">the downstream model, meaning the model whose input will be connected</param>
         /// <param name="inputIndex">input index of the downstream model to connect to (default is first input)</param>
         /// <returns>returns the signal id if all is ok, otherwise null.</returns>
-        public string ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex=null)
+        public string ConnectModels(ISimulatableModel upstreamModel, ISimulatableModel downstreamModel, int? inputIndex = null)
         {
             ModelType upstreamType = upstreamModel.GetProcessModelType();
             ModelType downstreamType = downstreamModel.GetProcessModelType();
             string outputId = upstreamModel.GetOutputID();
 
             int nInputs = downstreamModel.GetLengthOfInputVector();
-            if (nInputs == 1 && inputIndex ==0)
+            if (nInputs == 1 && inputIndex == 0)
             {
                 downstreamModel.SetInputIDs(new string[] { outputId });
             }
@@ -383,7 +299,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
                 }*/
-                else 
+                else
                 {
                     var isOk = downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
                     if (!isOk)
@@ -397,15 +313,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get a TimeSeriesDataSet of all external signals of model
-        /// </summary>
-        /// <returns></returns>
-        public string[] GetExternalSignalIDs()
-        {
-            return externalInputSignalIDs.ToArray();
-        }
-
-        /// <summary>
         /// Get ConnenectionParser object
         /// </summary>
         /// <returns></returns>
@@ -415,15 +322,150 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Get a TimeSeriesDataSet of all external signals of model
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetExternalSignalIDs()
+        {
+            return externalInputSignalIDs.ToArray();
+        }
+
+
+        /// <summary>
         /// Get dictionary of all models 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string,ISimulatableModel> GetModels()
+        public Dictionary<string, ISimulatableModel> GetModels()
         {
             return modelDict;
         }
 
 
+        /// <summary>
+        /// Returns a unit data set for a given unitModel.
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="unitModel"></param>
+        /// <returns></returns>
+        public UnitDataSet GetUnitDataSetForProcess(TimeSeriesDataSet inputData, UnitModel unitModel)
+        {
+            UnitDataSet dataset = new UnitDataSet();
+            dataset.U = new double[inputData.GetLength().Value, 1];
+
+            dataset.Times = inputData.GetTimeStamps();
+            var inputIDs = unitModel.GetModelInputIDs();
+            var outputID = unitModel.GetOutputID();
+            dataset.Y_meas = inputData.GetValues(outputID);
+            for (int inputIDidx = 0; inputIDidx < inputIDs.Length; inputIDidx++)
+            {
+                var inputID = inputIDs[inputIDidx];
+                var curCol = inputData.GetValues(inputID);
+                dataset.U.WriteColumn(inputIDidx, curCol);
+            }
+            return dataset;
+        }
+
+
+        /// <summary>
+        /// Returns a "unitDataSet" for the given pidModel in the plant. 
+        /// This function only works when the unit model connected to the pidModel only has a single input. 
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="pidModel"></param>
+        /// <returns></returns>
+        public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData, PidModel pidModel)
+        {
+            var unitModID = connections.GetUnitModelControlledByPID(pidModel.GetID(), modelDict);
+            string[] modelInputIDs = null;
+            if (unitModID != null)
+            {
+                modelInputIDs = modelDict[unitModID].GetModelInputIDs();
+            }
+            UnitDataSet dataset = new UnitDataSet();
+
+            if (modelInputIDs != null)
+            {
+                dataset.U = new double[inputData.GetLength().Value, modelInputIDs.Length];
+                for (int modelInputIdx = 0; modelInputIdx < modelInputIDs.Length; modelInputIdx++)
+                {
+                    var inputID = modelInputIDs[modelInputIdx];
+                    dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
+                }
+            }
+            else
+            {
+                dataset.U = new double[inputData.GetLength().Value, 1];
+                dataset.U.WriteColumn(0, inputData.GetValues(pidModel.GetOutputID()));
+            }
+
+            dataset.Times = inputData.GetTimeStamps();
+            var inputIDs = pidModel.GetModelInputIDs();
+
+            for (int inputIDidx = 0; inputIDidx < inputIDs.Length; inputIDidx++)
+            {
+                var inputID = inputIDs[inputIDidx];
+
+                if (inputIDidx == (int)PidModelInputsIdx.Y_setpoint)
+                {
+                    dataset.Y_setpoint = inputData.GetValues(inputID);
+                }
+                else if (inputIDidx == (int)PidModelInputsIdx.Y_meas)
+                {
+                    dataset.Y_meas = inputData.GetValues(inputID);
+                }
+                //todo: feedforward?
+                /*else if (type == SignalType.Output_Y_sim)
+                {
+                    dataset.U.WriteColumn(1, inputData.GetValues(inputID));
+                }
+                else
+                {
+                    throw new Exception("unexepcted signal type");
+                }*/
+            }
+            return dataset;
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputIDs"></param>
+        /// <param name="timeIndex"></param>
+        /// <param name="dataSet1"></param>
+        /// <param name="dataSet2"></param>
+        /// <returns></returns>
+        private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex,
+            TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
+        {
+            double[] retVals = new double[inputIDs.Length];
+
+            int index = 0;
+            foreach (var inputId in inputIDs)
+            {
+                double? retVal = null;
+                if (dataSet1.ContainsSignal(inputId))
+                {
+                    retVal = dataSet1.GetValue(inputId, timeIndex);
+                }
+                else if (dataSet2.ContainsSignal(inputId))
+                {
+                    retVal = dataSet2.GetValue(inputId, timeIndex);
+                }
+                if (!retVal.HasValue)
+                {
+                    retVals[index] = Double.NaN;
+                }
+                else
+                {
+                    retVals[index] = retVal.Value;
+                }
+
+                index++;
+            }
+            return retVals;
+        }
 
 
         /// <summary>
@@ -435,7 +477,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool SimulateSingleInternal(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
         {
-            return SimulateSingle(inputData,singleModelName,true, out simData);
+            return SimulateSingle(inputData, singleModelName, true, out simData);
         }
 
         /// <summary>
@@ -459,7 +501,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="noiseSeed">a seed value of the randm noise(specify so that tests are repeatable)</param>
         /// <returns></returns>
         public static (bool, double[]) SimulateSingleToYmeas(UnitDataSet unitData, ISimulatableModel model, double noiseAmplitude = 0,
-             int noiseSeed= 123)
+             int noiseSeed = 123)
         {
             return SimulateSingle(unitData, model, true, noiseAmplitude, true, noiseSeed);
         }
@@ -471,7 +513,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="model"></param>
         /// <param name="addSimToUnitData"></param>
         /// <returns></returns>
-        public static  (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, bool addSimToUnitData)
+        public static (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, bool addSimToUnitData)
         {
 
             return SimulateSingle(unitData, model, false, 0, addSimToUnitData, 0);
@@ -487,9 +529,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="addSimToUnitData">if true, the Y_sim of unitData has the simulation result written two i</param>
         /// <param name="seedNr">the seed value of the noise to be added</param>
         /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series</returns>
-        static private (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model,bool writeToYmeas= false, 
-            double noiseAmplitude=0,
-            bool addSimToUnitData=false, int seedNr=123)
+        static private (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, bool writeToYmeas = false,
+            double noiseAmplitude = 0,
+            bool addSimToUnitData = false, int seedNr = 123)
         {
             var inputData = new TimeSeriesDataSet();
             var singleModelName = "SimulateSingle";
@@ -503,7 +545,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             var uNames = new List<string>();
-            for (int colIdx = 0; colIdx< unitData.U.GetNColumns(); colIdx++)
+            for (int colIdx = 0; colIdx < unitData.U.GetNColumns(); colIdx++)
             {
                 var uName = "U" + colIdx;
                 inputData.Add(uName, unitData.U.GetColumn(colIdx));
@@ -514,9 +556,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 modelCopy.SetOutputID("output");
 
             PlantSimulator sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
-          //  var simData = new TimeSeriesDataSet();
+            //  var simData = new TimeSeriesDataSet();
             var isOk = sim.SimulateSingle(inputData, singleModelName, false, out var simData);
-            if(!isOk)
+            if (!isOk)
                 return (false, null);
             double[] y_sim = simData.GetValues(singleModelName, SignalType.Output_Y);
             if (noiseAmplitude > 0)
@@ -556,7 +598,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doCalcYwithoutAdditiveTerms"></param>
         /// <param name="simData"></param>
         /// <returns></returns>
-        public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, 
+        public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName,
             bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)
         {
             if (!modelDict.ContainsKey(singleModelName))
@@ -632,7 +674,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
                 }
-                var  isOk = simData.AddDataPoint(nameOfSimulatedSignal, timeIdx, outputVal[0]);
+                var isOk = simData.AddDataPoint(nameOfSimulatedSignal, timeIdx, outputVal[0]);
                 if (!isOk)
                 {
                     return false;
@@ -641,8 +683,8 @@ namespace TimeSeriesAnalysis.Dynamic
             if (inputData.GetTimeStamps() != null)
                 simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
             else
-            { 
-            //?
+            {
+                //?
             }
             // disturbance estimation
             if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess && doEstimateDisturbance)
@@ -669,7 +711,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
         /// <returns></returns>
-        public bool Simulate (TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
+        public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
         {
             var timeBase_s = inputData.GetTimeBase(); ;
 
@@ -684,21 +726,21 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 if (!modelDict.ElementAt(i).Value.IsModelSimulatable(out string explStr))
                 {
-                    Shared.GetParserObj().AddError("PlantSimulator could not run, model "+
-                        modelDict.ElementAt(i).Key + " lacks all required inputs to be simulatable:"+ 
+                    Shared.GetParserObj().AddError("PlantSimulator could not run, model " +
+                        modelDict.ElementAt(i).Key + " lacks all required inputs to be simulatable:" +
                         explStr);
                     simData = null;
                     return false;
                 }
             }
 
-            (var orderedSimulatorIDs,var compLoopDict) = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
+            (var orderedSimulatorIDs, var compLoopDict) = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
             simData = new TimeSeriesDataSet();
 
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
 
-            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputData, ref simData, compLoopDict) ;
+            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputData, ref simData, compLoopDict);
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
@@ -713,14 +755,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 string[] inputIDs = model.GetBothKindsOfInputIDs();
                 if (inputIDs == null)
                 {
-                    Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \""+ model.GetID() +
+                    Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
                         "\" has null inputIDs.");
                     return false;
                 }
-                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx,simData,inputData);
+                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputData);
 
-                string outputID = model.GetOutputID(); 
-                if (outputID==null)
+                string outputID = model.GetOutputID();
+                if (outputID == null)
                 {
                     Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
                         "\" has null outputID.");
@@ -752,12 +794,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
                     string[] inputIDs = model.GetBothKindsOfInputIDs();
-                    int inputDataLookBackIdx = 0; 
+                    int inputDataLookBackIdx = 0;
                     if (model.GetProcessModelType() == ModelType.PID && timeIdx > 0)
                     {
                         inputDataLookBackIdx = 1;//if set to zero, model fails(requires changing model order).
                     }
-                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, lastGoodTimeIndex - inputDataLookBackIdx, simData,inputData);
+                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, lastGoodTimeIndex - inputDataLookBackIdx, simData, inputData);
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -765,18 +807,18 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
                     double[] outputVal = model.Iterate(inputVals, timeBase_s);
-                    bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal[0]);
+                    bool isOk = simData.AddDataPoint(model.GetOutputID(), timeIdx, outputVal[0]);
                     if (!isOk)
                     {
-                        Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \"" 
+                        Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \""
                             + model.GetOutputID() + "\", indicating an error in initalization. ");
                         return false;
                     }
                     if (outputVal.Length > 1)
                     {
-                        if (timeIdx ==0)
+                        if (timeIdx == 0)
                         {
-                            simData.InitNewSignal(model.GetID(), outputVal[1],N.Value);
+                            simData.InitNewSignal(model.GetID(), outputVal[1], N.Value);
                         }
                         bool isOk2 = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[1]);
                         if (!isOk2)
@@ -785,49 +827,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
+            PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData);
             return true;
         }
 
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputIDs"></param>
-        /// <param name="timeIndex"></param>
-        /// <param name="dataSet1"></param>
-        /// <param name="dataSet2"></param>
-        /// <returns></returns>
-        private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, 
-            TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
-        {
-            double[] retVals = new double[inputIDs.Length];
-
-            int index = 0;
-            foreach (var inputId in inputIDs)
-            {
-                double? retVal=null;
-                if (dataSet1.ContainsSignal(inputId))
-                {
-                    retVal = dataSet1.GetValue(inputId, timeIndex);
-                }
-                else if (dataSet2.ContainsSignal(inputId))
-                {
-                    retVal= dataSet2.GetValue(inputId, timeIndex);
-                }
-                if (!retVal.HasValue)
-                {
-                    retVals[index] = Double.NaN;
-                }
-                else
-                {
-                    retVals[index] = retVal.Value;
-                }
-
-                index++;
-            }
-            return retVals;
-        }
 
         /// <summary>
         /// Creates a JSON text string serialization of this object
@@ -836,7 +841,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public string SerializeTxt()
         {
             var settings = new JsonSerializerSettings();
-            settings.TypeNameHandling = TypeNameHandling.Auto; 
+            settings.TypeNameHandling = TypeNameHandling.Auto;
             settings.Formatting = Formatting.Indented;
 
             // models outputs that are not connected to anyting are "null"
@@ -856,16 +861,16 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="newPlantName">the desired file name and plant name(can be null, in which case the filename should be given in the path argument)</param>
         /// <param name="path">create file in the given path</param>
-        public bool Serialize(string newPlantName = null, string path= null)
+        public bool Serialize(string newPlantName = null, string path = null)
         {
             string fileName = "";
             if (path != null)
             {
                 fileName = path;
                 if (!fileName.EndsWith(@"\"))
-                        fileName +=  @"\";
+                    fileName += @"\";
             }
-            if (newPlantName!=null)
+            if (newPlantName != null)
             {
                 fileName += newPlantName;
             }
@@ -885,6 +890,57 @@ namespace TimeSeriesAnalysis.Dynamic
             fileWriter.Write(serializedTxt);
             return fileWriter.Close();
         }
+
+        /// <summary>
+        /// Writes the plant information in a human-friendly format
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var writeCulture = new CultureInfo("en-US");
+            var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
+            numberFormat.NumberDecimalSeparator = ".";
+
+            int sDigits = 3;
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(this.GetType().ToString());
+            sb.AppendLine("-------------------------");
+            sb.AppendLine("Name: " + plantName);
+            sb.AppendLine("Description: " + plantDescription);
+            sb.AppendLine("Date: " + date);
+            sb.AppendLine("");
+
+            foreach (var model in modelDict)
+            {
+                if (model.Value.GetOutputIdentID()== null)
+                    sb.AppendLine("model:" + model.Key + " with output: " + model.Value.GetOutputID());
+                else
+                    sb.AppendLine("model:" + model.Key + " with output: " + model.Value.GetOutputID() +" ident.against:" + model.Value.GetOutputIdentID());
+
+            }
+            foreach (var connection in connections.connections)
+            {
+                sb.AppendLine("connection:" + connection.Item1 + " to " + connection.Item2);
+            }
+            foreach (var signal in externalInputSignalIDs)
+            {
+                sb.AppendLine("external signals:" + signal);
+            }
+
+            sb.AppendLine("");
+
+            if (double.IsNaN(PlantFitScore))
+            {
+                sb.AppendLine("Plant Fit Score: not avaiable, most likely because inputData did not contain the measured outputs required to calculate it.");
+            }
+            else    
+                sb.AppendLine("Plant Fit Score: " + SignificantDigits.Format(PlantFitScore, sDigits));
+
+            return sb.ToString();
+
+        }
+
 
     }
     
