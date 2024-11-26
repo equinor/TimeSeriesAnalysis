@@ -2,6 +2,7 @@
 using Accord.Math;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using TimeSeriesAnalysis.Dynamic;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -220,6 +221,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Integrate a model from a start point to an end point
+        /// Note that this method currently does not work if some gains are null. 
         /// </summary>
         /// <param name="uGainSched_Start"></param>
         /// <param name="uGainSched_End"></param>
@@ -227,33 +229,55 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double IntegrateGains(double uGainSched_Start, double uGainSched_End, int inputIndex)
         {
+
+            // forces var to be between min and max, used as extra precaution to make sure that 
+            // under no circumstances(for edge cases) are indices outside the legal range used
+            // when attempting to retreive elements.
+            int Range(int var ,int min, int max)
+            {
+                if (var > max)
+                    return max;
+                else if (var < min)
+                    return min;
+                else
+                    return var;
+            }
+
             if (uGainSched_Start == uGainSched_End)
                 return 0;
             double gainsToReturn = 0;
             int gainSchedStartModelIdx = 0;
-            for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
-            {
-                if (uGainSched_Start < LinearGainThresholds[idx])
-                {
-                    gainSchedStartModelIdx = idx;
-                    break;
-                }
-                else if (idx == LinearGainThresholds.Length - 1)
-                {
-                    gainSchedStartModelIdx = idx + 1;
-                }
-            }
             int gainSchedEndModelIdx = 0;
-            for (int idx = 0; idx < LinearGainThresholds.Length; idx++)
+
+            int nThresholds = 0;
+            int nGains = LinearGains.Count;
+            if (LinearGainThresholds != null)
             {
-                if (uGainSched_End < LinearGainThresholds[idx])
+                nThresholds = LinearGainThresholds.Length;
+                for (int idx = 0; idx < nThresholds; idx++)
                 {
-                    gainSchedEndModelIdx = idx;
-                    break;
+                    if (uGainSched_Start < LinearGainThresholds[idx])
+                    {
+                        gainSchedStartModelIdx = idx;
+                        break;
+                    }
+                    else if (idx == nThresholds - 1)
+                    {
+                        gainSchedStartModelIdx = idx + 1;
+                    }
                 }
-                else if (idx == LinearGainThresholds.Length - 1)
+    
+                for (int idx = 0; idx < nThresholds; idx++)
                 {
-                    gainSchedEndModelIdx = idx + 1;
+                    if (uGainSched_End < LinearGainThresholds[idx])
+                    {
+                        gainSchedEndModelIdx = idx;
+                        break;
+                    }
+                    else if (idx == nThresholds - 1)
+                    {
+                        gainSchedEndModelIdx = idx + 1;
+                    }
                 }
             }
 
@@ -264,22 +288,24 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (gainSchedStartModelIdx == gainSchedEndModelIdx)
                 {
                     double deltaU = uGainSched_End - uGainSched_Start;
-                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    gainsToReturn += deltaU * LinearGains.ElementAt(Range(gainSchedStartModelIdx,0,nGains-1))[inputIndex];
                 }
                 else
                 {
                     // first portion (might be from a u between two tresholds to a threshold)
-                    double deltaU = (LinearGainThresholds[gainSchedStartModelIdx] - uGainSched_Start);
-                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    double deltaU = (LinearGainThresholds[Range(gainSchedStartModelIdx,0,nThresholds)] - uGainSched_Start);
+                    gainsToReturn += deltaU * LinearGains.ElementAt(Range(gainSchedStartModelIdx,0,nGains-1))[inputIndex];
                     // middle entire portions 
-                    for (int curGainSchedModIdx = gainSchedStartModelIdx + 1; curGainSchedModIdx < gainSchedEndModelIdx; curGainSchedModIdx++)
+                    for (int curGainSchedModIdx = gainSchedStartModelIdx + 1; curGainSchedModIdx < gainSchedEndModelIdx; 
+                        curGainSchedModIdx++)
                     {
-                        deltaU = (LinearGainThresholds[curGainSchedModIdx] - LinearGainThresholds[curGainSchedModIdx - 1]);
-                        gainsToReturn += deltaU * LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
+                        deltaU = (LinearGainThresholds[Range(curGainSchedModIdx,0,nThresholds-1)] - 
+                            LinearGainThresholds[Range(curGainSchedModIdx-1,0,nThresholds-1)]);
+                        gainsToReturn += deltaU * LinearGains.ElementAt(Range(curGainSchedModIdx,0,nGains-1))[inputIndex];
                     }
                     // last portions (might be a treshold to inbetween two tresholds)
-                    deltaU = uGainSched_End - LinearGainThresholds[gainSchedEndModelIdx - 1];
-                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
+                    deltaU = uGainSched_End - LinearGainThresholds[Range(gainSchedEndModelIdx - 1,0,nThresholds-1)];
+                    gainsToReturn += deltaU * LinearGains.ElementAt(Range(gainSchedEndModelIdx,0,nGains-1))[inputIndex];
                 }
             }
             else // integrate from left<-right
@@ -287,7 +313,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (gainSchedStartModelIdx == gainSchedEndModelIdx)
                 {
                     double deltaU = uGainSched_End - uGainSched_Start;
-                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
+                    gainsToReturn += deltaU * LinearGains.ElementAt(Range(gainSchedStartModelIdx,0,nGains-1))[inputIndex];
                 }
                 else
                 {
@@ -296,19 +322,19 @@ namespace TimeSeriesAnalysis.Dynamic
                     // if (modelParameters.LinearGainThresholds.Length - 1 >= gainSchedStartModelIdx)
                     {
                         // remember if there are N gains, there are N-1 gain tresholds 
-                        deltaU = (LinearGainThresholds[gainSchedStartModelIdx - 1] - uGainSched_Start);
+                        deltaU = (LinearGainThresholds[ Range(gainSchedStartModelIdx - 1,0,nThresholds-1)] - uGainSched_Start);
                         gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedStartModelIdx)[inputIndex];
                     }
                     // middle entire portions 
                     for (int curGainSchedModIdx = gainSchedStartModelIdx - 1; curGainSchedModIdx > gainSchedEndModelIdx; curGainSchedModIdx--)
                     {
-                        deltaU = (LinearGainThresholds[curGainSchedModIdx] -
-                            LinearGainThresholds[curGainSchedModIdx - 1]);
-                        gainsToReturn += deltaU * LinearGains.ElementAt(curGainSchedModIdx)[inputIndex];
+                        deltaU = LinearGainThresholds[Range(curGainSchedModIdx-1,0,nThresholds-1)] - 
+                            LinearGainThresholds[Range(curGainSchedModIdx,0,nThresholds)]  ;
+                        gainsToReturn += deltaU * LinearGains.ElementAt(Range(curGainSchedModIdx,0,nGains-1))[inputIndex];
                     }
                     // last portions (might be a treshold to inbetween two tresholds)
-                    deltaU = uGainSched_End - LinearGainThresholds[gainSchedEndModelIdx];
-                    gainsToReturn += deltaU * LinearGains.ElementAt(gainSchedEndModelIdx)[inputIndex];
+                    deltaU = uGainSched_End - LinearGainThresholds[Range(gainSchedEndModelIdx,0,nThresholds-1)];
+                    gainsToReturn += deltaU * LinearGains.ElementAt(Range(gainSchedEndModelIdx,0,nGains-1))[inputIndex];
                 }
             }
             return gainsToReturn;

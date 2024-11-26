@@ -38,6 +38,7 @@ namespace TimeSeriesAnalysis.Dynamic
         const int firstPassNumIterations = 60;//TODO:change back to 50!
         const int secondPassNumIterations = 10;
         const double initalGuessFactor_higherbound = 2.5;// 2 is a bit low, should be a bit higher
+        const int nDigits = 5; //number of significant digits in results.
         ////////////////////////
         const bool doDebuggingPlot = false;
         /// <summary>
@@ -93,6 +94,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             // set "indicestoignore" to exclude values outside ymin/ymax_fit and umin_fit,u_max_fit
+             // 
+           // dataSet.DetermineIndicesToIgnore(fittingSpecs);
+
 
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
@@ -101,7 +105,7 @@ namespace TimeSeriesAnalysis.Dynamic
             List<UnitModel> idUnitModelsList = new List<UnitModel>();
             List<double> processGainList = new List<double>();
 
-            double[] u0 = dataSet.U.GetRow(0);
+            double[] u0 = SignificantDigits.Format(dataSet.U.GetRow(0), nDigits); 
             double y0 = dataSet.Y_meas[0];
             bool isOK;
             var dataSet1 = new UnitDataSet(dataSet);
@@ -295,6 +299,19 @@ namespace TimeSeriesAnalysis.Dynamic
                 identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
                 identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
                 identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
+                identUnitModel.modelParameters.Fitting.TimeBase_s = dataSet.GetTimeBase();
+
+                var uMaxList = new List<double>();
+                var uMinList = new List<double>();
+
+                for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+                {
+                    uMaxList.Add(SignificantDigits.Format(vec.Max(dataSet.U.GetColumn(i)), nDigits));
+                    uMinList.Add(SignificantDigits.Format(vec.Min(dataSet.U.GetColumn(i)), nDigits));
+                }
+                identUnitModel.modelParameters.Fitting.Umax = uMaxList.ToArray();
+                identUnitModel.modelParameters.Fitting.Umin = uMinList.ToArray();
+
                 if (wasGainGlobalSearchDone)
                 {
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
@@ -302,11 +319,28 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
+                identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
+
+
             }
             // closed-loop simulation, adds U_sim and Y_sim to "dataset"
             {
                 ClosedLoopSim(dataSet, identUnitModel.modelParameters, pidParams, disturbance);
             }
+            // round resulting parameters
+
+            identUnitModel.modelParameters.LinearGains = SignificantDigits.Format(identUnitModel.modelParameters.LinearGains, nDigits);
+            identUnitModel.modelParameters.LinearGainUnc = SignificantDigits.Format(identUnitModel.modelParameters.LinearGainUnc, nDigits);
+            identUnitModel.modelParameters.Bias = SignificantDigits.Format(identUnitModel.modelParameters.Bias, nDigits);
+            if (identUnitModel.modelParameters.BiasUnc.HasValue)
+                identUnitModel.modelParameters.BiasUnc = SignificantDigits.Format(identUnitModel.modelParameters.BiasUnc.Value, nDigits);
+
+            identUnitModel.modelParameters.TimeConstant_s = SignificantDigits.Format(identUnitModel.modelParameters.TimeConstant_s, nDigits);
+            if (identUnitModel.modelParameters.TimeConstantUnc_s.HasValue)
+                identUnitModel.modelParameters.TimeConstantUnc_s = SignificantDigits.Format(identUnitModel.modelParameters.TimeConstantUnc_s.Value, nDigits);
+            identUnitModel.modelParameters.UNorm = SignificantDigits.Format(identUnitModel.modelParameters.UNorm, nDigits);
+
+
             return (identUnitModel,disturbance);
         }
 

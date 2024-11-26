@@ -48,80 +48,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        private void DetermineUminUmax(UnitDataSet dataSet, out double uMin, out double uMax)
-        {
-            double[] e = GetErrorTerm(dataSet, pidFilter);
-
-            // output constraints will cause multiple equal values u of next to each other.
-            uMin = 0; // default value
-            uMax = 100; //default value
-            // because real u close to a constraint often "jitters" becasuse of P-action on controller or noise
-            // on the ouput measurement, we might need to accept values very close to umin and umax as also part of 
-
-            // uTol: changes in u below this value are considered "negligable changes"
-            double uTol = 0.1;// values inside range but very close to min/max might also be considere
-
-            double[] uMinusFF = GetUMinusFF(dataSet);
-
-            double uMinObserved = vec.Min(uMinusFF);
-            double uMaxObserved = vec.Max(uMinusFF);
-
-            // logic to count 
-            int N = dataSet.GetNumDataPoints(); 
-            const int minNumberOfIndicesToConsider = 5;
-            const double minFracAtConstraintConsidered = 0.10;//0.1 = 10%
-
-            const double E_TRESHOLDFACTOR = 1.5;//"tuning factor">>1
-
-            if (uMaxObserved - uMinObserved < uTol)
-            {
-                return;
-            }
-
-            // UMIN
-            if (uMinObserved > uMin + uTol)
-            {
-                List<int> uMinInd = vec.FindValues(uMinusFF, uMinObserved + uTol, VectorFindValueType.SmallerOrEqual);
-
-                if (uMinInd.Count > minNumberOfIndicesToConsider && (double)uMinInd.Count / N > minFracAtConstraintConsidered)
-                {
-
-                    List<int> notUMinInd = Index.InverseIndices(dataSet.GetNumDataPoints(), uMinInd);
-                    double[] eAtUmin = Vec<double>.GetValuesAtIndices(e, uMinInd);
-                    double[] eAtNotUmin = Vec<double>.GetValuesAtIndices(e, notUMinInd);
-                    double eMeanAtUmin = vec.Mean(eAtUmin).Value;
-                    double eMeanAtNotUmin = vec.Mean(eAtNotUmin).Value;
-                    double eDifferenceFactor = Math.Abs(eMeanAtUmin - eMeanAtNotUmin) / Math.Abs(eMeanAtNotUmin);
-                    if (eDifferenceFactor > E_TRESHOLDFACTOR)
-                    {
-                        uMin = uMinObserved;
-                    }
-                }
-            }
-            // UMAX
-            if (uMaxObserved < uMax - uTol)
-            {
-                List<int> uMaxInd = vec.FindValues(uMinusFF, uMaxObserved - uTol, VectorFindValueType.BiggerOrEqual);
-                if (uMaxInd.Count > minNumberOfIndicesToConsider && (double)uMaxInd.Count / N > minFracAtConstraintConsidered)
-                {
-                    List<int> notUMaxInd = Index.InverseIndices(dataSet.GetNumDataPoints(), uMaxInd);
-                    double[] eAtUmax = Vec<double>.GetValuesAtIndices(e, uMaxInd);
-                    double[] eAtNotUax = Vec<double>.GetValuesAtIndices(e, notUMaxInd);
-
-                    double eMeanAtUmax = vec.Mean(eAtUmax).Value;
-                    double eMeanAtNotUmax = vec.Mean(eAtNotUax).Value;
-
-                    double eDifferenceFactor = Math.Abs(eMeanAtUmax - eMeanAtNotUmax) / Math.Abs(eMeanAtNotUmax);
-
-                    if (eDifferenceFactor > E_TRESHOLDFACTOR)
-                    {
-                        uMax = uMaxObserved;
-                    }
-                }
-            }
-
-        }
-
         private bool IsFirstModelBetterThanSecondModel(PidParameters firstModel, PidParameters secondModel)
         {
             if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
@@ -130,7 +56,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
 
         }
-
 
         /// <summary>
         /// Identifies a PID-controller from a UnitDataSet
@@ -143,6 +68,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // 1. try identification with delay of one sample but without filtering
             (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true);
+   
             if (doOnlyWithDelay)
             {
                 dataSet.U_sim = U_withDelay;
@@ -536,8 +462,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     pidParam.AddWarning(PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto);
                     pidParam.Fitting.WasAbleToIdentify = false;
-             //       Kpest[curEstidx] = badValueIndicatingValue;
-              //      Tiest[curEstidx] = badValueIndicatingValue;
                     continue;
                 }
 
@@ -586,12 +510,23 @@ namespace TimeSeriesAnalysis.Dynamic
             double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
 
             pidParam.Fitting.WasAbleToIdentify = true;
+
+            dataSet.U_sim = U_sim;
+        //    pidParam.Fitting.CalcCommonFitMetricsFromDataset(dataSet, null, true);
+
             pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigitsParams);
             pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigitsParams);
             pidParam.Td_s = SignificantDigits.Format(pidParam.Td_s, nDigitsParams);
 
+            pidParam.Fitting.TimeBase_s = dataSet.GetTimeBase();
+            pidParam.Fitting.StartTime = dataSet.Times.First();
+            pidParam.Fitting.EndTime = dataSet.Times.Last();
+            pidParam.Fitting.Umin = new double[] { vec.Min(dataSet.U.GetColumn(0)) };
+            pidParam.Fitting.Umax = new double[] { vec.Max(dataSet.U.GetColumn(0)) };
+
             pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
+      
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
             pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0)), nDigits);
@@ -603,6 +538,8 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
             pidParam.Fitting.ObjFunValDiff = SignificantDigits.Format(pidParam.Fitting.ObjFunValDiff, nDigits);
             pidParam.Fitting.ObjFunValAbs = SignificantDigits.Format(pidParam.Fitting.ObjFunValAbs, nDigits);
+
+            pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;
             // fitting abs?
             return (pidParam,U_sim);
         }

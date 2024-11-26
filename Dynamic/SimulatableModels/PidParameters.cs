@@ -52,6 +52,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
 
+
         /// <summary>
         /// Proportional gain of controller
         /// </summary>
@@ -66,25 +67,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double Td_s { get; set; } = 0;
 
-        /// <summary>
-        /// Output value when e=0, used only for P-only controllers, u = Kp*e + u0
-        /// </summary>
-        public double u0 { get; set; } = 50;
 
-        /// <summary>
-        /// If the PID-controller is to be protected from a specific value that is used to identify bad or missing data, specify here
-        /// </summary>
-        public double NanValue { get; set; } = -9999;
-
-        /// <summary>
-        /// Gain-scheduling object. This is optional, set to null gain-scheduling is not in use.
-        /// </summary>
-        public PidGainScheduling GainScheduling { get; set; } = null;
-
-        /// <summary>
-        /// Feed-forward parameters object. This is optional, set to null when feedforward is not in use.
-        /// </summary>
-        public PidFeedForward FeedForward { get; set; } = null;
 
         /// <summary>
         /// PID-scaling object. This is optional, set to null to use unscaled PID.
@@ -97,9 +80,36 @@ namespace TimeSeriesAnalysis.Dynamic
         public PidFilterParams Filtering { get; set; }
 
         /// <summary>
+        /// Gain-scheduling object. This is optional, set to null gain-scheduling is not in use.
+        /// </summary>
+        public PidGainScheduling GainScheduling { get; set; } = null;
+
+        /// <summary>
+        /// Feed-forward parameters object. This is optional, set to null when feedforward is not in use.
+        /// </summary>
+        public PidFeedForward FeedForward { get; set; } = null;
+
+
+        /// <summary>
         /// PID anti-surge parameters object. This is optional, set to null if not anti-surge PID
         /// </summary>
         public PidAntiSurgeParams AntiSurgeParams { get; set; } = null;
+
+        /// <summary>
+        /// If true, the model will set u[k] based on the error term e[k-1], if false it will be set from e[k]
+        /// </summary>
+        public bool DelayOutputOneSample = false;
+
+        /// <summary>
+        /// Output value when e=0, used only for P-only controllers, u = Kp*e + u0
+        /// </summary>
+        public double u0 { get; set; } = 50;
+
+        /// <summary>
+        /// If the PID-controller is to be protected from a specific value that is used to identify bad or missing data, specify here
+        /// </summary>
+        public double NanValue { get; set; } = -9999;
+
 
         /// <summary>
         /// Store a warning that arouse during identification
@@ -144,6 +154,15 @@ namespace TimeSeriesAnalysis.Dynamic
                     sb.AppendLine("---NOT able to identify---");
                 }
             }
+            if (DelayOutputOneSample)
+            {
+                sb.AppendLine("u[k] set from e[k-1] (delayed one sample)");
+            }
+            else
+            {
+                sb.AppendLine("u[k] set from e[k] (undelayed)");
+            }
+
             sb.AppendLine("Kp : " + SignificantDigits.Format(Kp,sDigits));
 
             string timeConstantString = "Ti : ";

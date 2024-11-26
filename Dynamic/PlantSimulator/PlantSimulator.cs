@@ -101,7 +101,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public DateTime date { get; set; }
 
-
         /// <summary>
         /// Dictionary of all unit models in the plant simulator (must implement ISimulatableModel).
         /// </summary>
@@ -114,6 +113,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// The connection parser object.
         /// </summary>
         public ConnectionParser connections;
+
+        /// <summary>
+        /// The fitScore of the plant the last time it was saved.
+        /// </summary>
+        public double PlantFitScore;
 
         /// <summary>
         /// Returns a unit data set for a given UnitModel.

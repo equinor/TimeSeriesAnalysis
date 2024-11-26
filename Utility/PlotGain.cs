@@ -30,6 +30,7 @@ namespace TimeSeriesAnalysis.Utility
         public static void PlotSteadyState(ISimulatableModel model1, ISimulatableModel model2 = null, string comment = null,
             double[] uMin = null, double[] uMax = null,int numberOfPlotPoints = 100)
         {
+
             string outputId = model1.GetOutputID();
             if (outputId == null)
             {
@@ -37,6 +38,7 @@ namespace TimeSeriesAnalysis.Utility
             }
             var model1Name = "model1";
             var model2Name = "model2";
+
             if (model1.GetID() != null && model1.GetID() != "not_named")
             {
                 model1Name = model1.GetID();
@@ -52,8 +54,17 @@ namespace TimeSeriesAnalysis.Utility
   
                 if (model1.GetType() == typeof(GainSchedModel))
                 {
+                    for (var i = 0; i < ((GainSchedModel)model1).modelParameters.LinearGains.Count(); i++)
+                    { 
+                        if(((GainSchedModel)model1).modelParameters.LinearGains.ElementAt(i) == null)
+                        {
+                            Console.WriteLine("PlotSteadyState: model1 includes null, cannot be plotted(hint: try PlotGainSched)");
+                            return;
+                        }
+                    }
 
-                    tables_m1 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model1, model1Name, inputIdx, numberOfPlotPoints, uMin, uMax);
+
+                    tables_m1 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model1, model1Name,comment, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
                 else if (model1.GetType() == typeof(UnitModel))
                 {
@@ -63,7 +74,7 @@ namespace TimeSeriesAnalysis.Utility
                         uMax = ((UnitModel)model1).modelParameters.Fitting.Umax;
                     }
 
-                    tables_m1 = CreateSteadyStateXYTablesFromUnitModel((UnitModel)model1, model1Name, inputIdx, numberOfPlotPoints, uMin, uMax);
+                    tables_m1 = CreateSteadyStateXYTablesFromUnitModel((UnitModel)model1, model1Name, comment, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
 
                 if (model2 == null)
@@ -80,7 +91,15 @@ namespace TimeSeriesAnalysis.Utility
                 List<XYTable> tables_m2 = new List<XYTable>();
                 if (model2.GetType() == typeof(GainSchedModel))
                 {
-                    tables_m2 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model2, model2Name, inputIdx, numberOfPlotPoints, uMin, uMax);
+                    for (var i = 0; i < ((GainSchedModel)model2).modelParameters.LinearGains.Count(); i++)
+                    {
+                        if (((GainSchedModel)model2).modelParameters.LinearGains.ElementAt(i) == null)
+                        {
+                            Console.WriteLine("PlotSteadyState: model1 includes null, cannot be plotted(hint: try PlotGainSched)");
+                            return;
+                        }
+                    }
+                    tables_m2 = CreateSteadyStateXYTablesFromGainSchedModel((GainSchedModel)model2, model2Name, comment, inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
                 else if (model2.GetType() == typeof(UnitModel))
                 {
@@ -89,7 +108,7 @@ namespace TimeSeriesAnalysis.Utility
                         uMin = ((UnitModel)model2).modelParameters.Fitting.Umin;
                         uMax = ((UnitModel)model2).modelParameters.Fitting.Umax;
                     }
-                    tables_m2 = CreateSteadyStateXYTablesFromUnitModel((UnitModel)model2, model2Name, inputIdx, numberOfPlotPoints, uMin, uMax);
+                    tables_m2 = CreateSteadyStateXYTablesFromUnitModel((UnitModel)model2, model2Name,comment,  inputIdx, numberOfPlotPoints, uMin, uMax);
                 }
 
                 var plotTables = new List<XYTable>();
@@ -170,7 +189,7 @@ namespace TimeSeriesAnalysis.Utility
         /// <param name="numberOfPlotPoints"></param>
         /// <returns></returns>
         static private List<XYTable> CreateSteadyStateXYTablesFromGainSchedModel(GainSchedModel model,
-            string modelName, int inputIdx, int numberOfPlotPoints,
+            string modelName, string comment, int inputIdx, int numberOfPlotPoints,
             double[] uMinExt = null, double[] uMaxExt = null)
         {
 
@@ -193,19 +212,25 @@ namespace TimeSeriesAnalysis.Utility
             {
                 outputId = "output";
             }
-
-            if (model.ID != null && model.ID != "not_named")
+            // important to have unique model name as this determines file name, and you may have issues with overwriting otherwise
+            if (modelName == null || modelName == "")
             {
-                modelName = model.ID;
+                if (model.ID != null && model.ID != "not_named")
+                {
+                    modelName = model.ID;
+                }
+                else if (comment != null && comment != "")
+                {
+                    modelName = comment;
+                }
             }
-
             var inputSignalID = model.ModelInputIDs[inputIdx];
             if (inputSignalID == null)
             {
                 inputSignalID = "input" + inputIdx;
             }
 
-            XYTable xyTableGain = new XYTable("ssgain_" + modelName + "_fit", new List<string> { inputSignalID, outputId }, XYlineType.line);
+            XYTable xyTableGain = new XYTable("ssgain_" + modelName, new List<string> { inputSignalID, outputId }, XYlineType.line);
             XYTable xyTableU0 = new XYTable("op_" + modelName, new List<string> { inputSignalID, outputId }, XYlineType.withMarkers);
             xyTableU0.AddRow(new double[] { model.GetModelParameters().GetOperatingPointU(), model.GetModelParameters().GetOperatingPointY() });
 
@@ -233,7 +258,7 @@ namespace TimeSeriesAnalysis.Utility
 
       
 
-        static private List<XYTable> CreateSteadyStateXYTablesFromUnitModel(UnitModel model, string modelName, int inputIdx,
+        static private List<XYTable> CreateSteadyStateXYTablesFromUnitModel(UnitModel model, string modelName, string comment, int inputIdx,
             int numberOfPlotPoints,double[] uMinExt=null, double[] uMaxExt=null )
         {
             if (model.GetModelParameters().Fitting != null)
@@ -362,7 +387,10 @@ namespace TimeSeriesAnalysis.Utility
                 }
                 else
                     x = model.modelParameters.LinearGainThresholds.ElementAt(thresholdIdx);
-                xyTableGain.AddRow(new double[] { x, gain.ElementAt(inputIdx) });
+                if (gain != null)
+                    xyTableGain.AddRow(new double[] { x, gain.ElementAt(inputIdx) });
+                else
+                    xyTableGain.AddRow(new double[] { x, Double.NaN });
                 thresholdIdx++;
             }
 

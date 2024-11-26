@@ -177,7 +177,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 dataSet.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_ident", "y3=u1" },
                     timeBase_s,
-                    "GainEstOnly_CorrectGainsReturned");
+                    TestContext.CurrentContext.Test.Name);
 
                 idModel.SetOutputID("y_meas");
                 idModel.SetInputIDs((new List<string> { "u_1" }).ToArray());
@@ -275,13 +275,13 @@ namespace TimeSeriesAnalysis.Test.SysID
             var joinedDataSet = new UnitDataSet(unitData1);
             joinedDataSet.Concat(unitData2);
             joinedDataSet.Concat(unitData3);
-            joinedDataSet.IndicesToIgnore =Index.MakeIndexArray(N-2,N*2+1).ToList();
+            //joinedDataSet.IndicesToIgnore =Index.MakeIndexArray(N-2,N*2+1).ToList();
 
             // Act
             var idModel = GainSchedIdentifier.Identify(joinedDataSet);
 
             // plot
-            bool doPlot = false;
+            bool doPlot = true;
             if (doPlot)
             {
                 Shared.EnablePlots();
@@ -291,7 +291,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                         joinedDataSet.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
                     timeBase_s,
-                    "IgnoreIndicesInMiddleOfDataset_ResultShouldStillBeGood ");
+                    TestContext.CurrentContext.Test.Name);
                 Shared.DisablePlots();
             }
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
@@ -351,7 +351,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                         unitData.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
                     timeBase_s,
-                    "GainSched - TimeDelay - ");
+                    TestContext.CurrentContext.Test.Name);
                 Shared.DisablePlots();
             }
 
@@ -420,7 +420,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                         unitData.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_sim", "y3=u1" },
                     timeBase_s,
-                    "NonzeroOpPointIdent_U="+ uOperatingPoint);
+                    TestContext.CurrentContext.Test.Name + uOperatingPoint);
 
                 PlotGain.PlotSteadyState(trueModel, idModel, "NonzeroOperatingPointU");
                 Shared.DisablePlots();
@@ -558,7 +558,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                         unitData.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_ident", "y3=u1" },
                     timeBase_s,
-                    "GainSched - Threshold - " + gain_sched_threshold.ToString("F2"));
+                    TestContext.CurrentContext.Test.Name + gain_sched_threshold.ToString("F2"));
                 Shared.DisablePlots();
             }
             ConoleOutResult(trueGSparams, idModel.GetModelParameters());
@@ -625,7 +625,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     unitData.U.GetColumn(0) },
                     new List<string> { "y1=y_meas",  "y1=y_altered", "y3=u1" },
                     timeBase_s,
-                    "GainSchedTest ver_");
+                    TestContext.CurrentContext.Test.Name);
 
                 PlotGain.PlotSteadyState(trueModel, alteredIdModel, "ChangeOperatingPoint_YsimUnchanged" , 
                     new double[] { (new Vec()).Min(u) }, new double[] { (new Vec()).Max(u) });
@@ -774,7 +774,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     unitData.U.GetColumn(0) },
                     new List<string> { "y1=y_meas", "y1=y_sim(est_model)", "y1=y_altered", "y3=u1" },
                     timeBase_s,
-                    "GainSchedTest ver_"+ver);
+                    TestContext.CurrentContext.Test.Name + " ver_"+ver);
 
                 PlotGain.PlotSteadyState(idModel, alteredIdModel, "twogains"+ver, 
                     new double[] { (new Vec()).Min(u) }, new double[] { (new Vec()).Max(u) });

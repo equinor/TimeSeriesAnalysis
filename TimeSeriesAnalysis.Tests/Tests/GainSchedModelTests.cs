@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             GainSchedParameterIndex = 0
         };
 
-
+       
         GainSchedParameters gainSchedP5_nineThresholds_singleInput= new GainSchedParameters(0,5)
             {
                 TimeConstant_s = null,
@@ -64,6 +64,23 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 TimeDelay_s = 0,
                 GainSchedParameterIndex = 0
            };
+
+        // same as above but operatingpoint_u is nonzero 
+        GainSchedParameters gainSchedP5_nineThresholds_singleInput_highOperatingPoint = new GainSchedParameters(5, 5)
+        {
+            TimeConstant_s = null,
+            TimeConstantThresholds = null,
+            LinearGains = new List<double[]> { new double[] { 0 }, new double[] { 1 }, new double[] { 2 }, new double[] { 3 }, new double[] { 4 }, new double[] { 5 },
+                    new double[] { 6 }, new double[] { 7 }, new double[] { 8 }, new double[] { 9 }, new double[] { 10 } },
+            LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
+            TimeDelay_s = 0,
+            GainSchedParameterIndex = 0
+        };
+
+
+        
+
+
 
         // similar to P1 except for operating point.
         GainSchedParameters gainSchedP6_singleThreshold_singleInput_static_nonzeroOperatingPointU = new GainSchedParameters(2,2)
@@ -98,18 +115,50 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 GainSchedParameterIndex = 0
             };
 
+
+        GainSchedParameters gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay =
+            new GainSchedParameters(0, 1)
+            {
+                TimeConstant_s = new double[] { },
+                TimeConstantThresholds = new double[] {  },
+                LinearGains = new List<double[]> { new double[] { 1 } },
+                LinearGainThresholds = new double[] {  },
+                TimeDelay_s = 2,
+                GainSchedParameterIndex = 0
+            };
+
+        GainSchedParameters gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay_v2 =
+    new GainSchedParameters(0, 1)
+    {
+        TimeConstant_s = new double[] { },
+        TimeConstantThresholds = null,
+        LinearGains = new List<double[]> { new double[] { 1 } },
+        LinearGainThresholds = null,
+        TimeDelay_s = 2,
+        GainSchedParameterIndex = 0
+    };
+
+
+
         [SetUp]
         public void SetUp()
         {
             Shared.GetParserObj().EnableDebugOutput();
         }
 
-        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
 
-        public void TenThresholds_DifferentGainsAboveEachThreshold()
+
+        public void TenThresholds_DifferentGainsAboveEachThreshold(bool useHighOperatingPoint)
         {
             // Arrange
-            GainSchedModel refModel = new GainSchedModel(gainSchedP5_nineThresholds_singleInput, "GainSched4"); ;
+            if (useHighOperatingPoint)
+            {
+                gainSchedP5_nineThresholds_singleInput.SetOperatingPoint(11, 55);
+            }
+            GainSchedModel refModel = new GainSchedModel(gainSchedP5_nineThresholds_singleInput, "GainSched4"); 
+
             int N = 40;
             var plantSim = new PlantSimulator(new List<ISimulatableModel> { refModel });
             var inputData = new TimeSeriesDataSet();
@@ -124,8 +173,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             SISOTests.CommonAsserts(inputData, simData, plantSim);
             double[] simY1 = simData.GetValues(refModel.GetID(), SignalType.Output_Y);
 
-            bool doPlot = false;
-            if (doPlot)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
@@ -153,12 +201,68 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 prevGain = observedGain;
             }
         }
+        [TestCase(Explicit=true)]
+        public void PlotGain_MultipleVersionsOfSameModel()
+        {
+            var models = new List<GainSchedModel>() { 
+                new GainSchedModel(gainSchedP9_singleThreshold_threeInputs_bias_and_time_delay, "GainSched_ID1"),
+                new GainSchedModel(gainSchedP5_nineThresholds_singleInput, "GainSched_ID2"),
+                new GainSchedModel(gainSchedP6_singleThreshold_singleInput_static_nonzeroOperatingPointU, null) // note that even in this case, the
+                // plot should be uniuqe as long as the comment provided is unique
+            };
+
+            int i = 0;
+            foreach (var model in models)
+            {
+                PlotGain.PlotSteadyState(model,null, i.ToString());
+                //this should result in unique plots if done correctly 
+                i++;
+            }
+        }
+
+        [TestCase(Explicit = true)]
+        public void PlotGain_PlotModelWithSomeNullGains()
+        {
+
+
+            var testParams = new GainSchedParameters(5, 5)
+            {
+                TimeConstant_s = null,
+                TimeConstantThresholds = null,
+                LinearGains = new List<double[]> { new double[] { 0 }, new double[] { 1 }, null, new double[] { 3 }, new double[] { 4 }, new double[] { 5 },
+                    new double[] { 6 }, new double[] { 7 }, new double[] { 8 }, new double[] { 9 }, new double[] { 10 } },
+                LinearGainThresholds = new double[] { 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5 },
+                TimeDelay_s = 0,
+                GainSchedParameterIndex = 0
+            };
+
+
+            var model = new GainSchedModel(testParams, "GainSched_ID1");
+
+            PlotGain.PlotSteadyState(model, null, TestContext.CurrentContext.Test.Name);
+            PlotGain.PlotGainSched(model, null, TestContext.CurrentContext.Test.Name);
+                //this should result in unique plots if done correctly 
+
+        }
+
+
+
+
+
+
+
+
+
+
 
         [TestCase(1, "up", Description = "static, two gains, no timedelay, no bias")]
         [TestCase(5, "up", Description = "nine gains")]
+        [TestCase(6, "up", Description = "nine gains,high operating point")]
         [TestCase(1, "down", Description = "static, two gains, no timedelay, no bias")]
         [TestCase(5, "down", Description = "nine gains")]
-   //     [TestCase(2, "down", Description = "two gains, two time-constants very different, creates bump in simulated y")]
+        [TestCase(6, "down", Description = "nine gains,high operating point")]
+      //  [TestCase(7, "down", Description = "nine gains,high operating point")]
+        //     [TestCase(2, "down", Description = "two gains, two time-constants very different, creates bump in simulated y")]
 
         public void ContinousGradualRamp_BumplessModelOutput(int ver, string upOrDown)
         {
@@ -180,6 +284,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             {
                 gsParams = gainSchedP5_nineThresholds_singleInput;
             }
+            if (ver == 6)
+            {
+                gsParams = gainSchedP5_nineThresholds_singleInput_highOperatingPoint;
+            }
+
 
             GainSchedModel refModel = new GainSchedModel(gsParams);
             int N = 300;
@@ -196,8 +305,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             double[] simY1 = simData.GetValues(refModel.GetID(), SignalType.Output_Y);
 
-            bool doPlot = false;// should be false unless debugging
-            if (doPlot)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
@@ -327,6 +435,53 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             SISOTests.CommonAsserts(inputData, refSimData, truePlantSim);
             Assert.That(unitData.Y_meas.First() == yOperatingPoint, "since time series starts in uOperatingPoint, simulation should start in yOperatingPoint");
+
+        }
+
+        [TestCase(1, Description = "steps below the threshold")]
+        [TestCase(2, Description = "steps below the threshold")]
+        public void NoThresholds_OneInput_RunsOk(int modelVer )
+        {
+            var tolerance = 0.1;
+
+            // Arrange
+            GainSchedModel gainSched = null;
+            if (modelVer == 1)
+            {
+                gainSched = new GainSchedModel(gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay, "GainSched_NoThresholds");
+            } else if (modelVer == 2)
+            {
+                gainSched = new GainSchedModel(gainSched_noThresholds_emptyThresholdArrays_oneInput_bias_and_time_delay_v2, "GainSched_NoThresholds");
+            }
+
+
+            var plantSim = new PlantSimulator(new List<ISimulatableModel> { gainSched });
+            var inputData = new TimeSeriesDataSet();
+
+  
+            inputData.Add(plantSim.AddExternalSignal(gainSched, SignalType.External_U, (int)INDEX.FIRST),
+                TimeSeriesCreator.ThreeSteps(N / 4, N * 2 / 4, N * 3 / 4, N, 0, 1, 1, 1));
+
+            inputData.CreateTimestamps(timeBase_s);
+
+            // Act
+            var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y);
+
+            bool doPlot = false;//should be false unless debugging.
+            if (doPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> {
+                    simY1,
+                    inputData.GetValues(gainSched.GetID(),SignalType.External_U,0), },
+                    new List<string> { "y1=y_sim" + modelVer.ToString(), "y3=u1" },
+                    timeBase_s, "NoThreshold_OneInputs");
+                Shared.DisablePlots();
+            }
+
+            // Assert
+            Assert.IsTrue(isSimulatable);
 
         }
 

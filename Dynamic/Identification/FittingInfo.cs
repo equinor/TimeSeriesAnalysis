@@ -32,6 +32,38 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public string SolverID { get; set; }
 
+
+        /// <summary>
+        /// A score that is 100% if model describes all variations 
+        /// and 0% if model is no better at describing variation than the flat average line.
+        /// Negative if the model is worse than a flat average line.
+        /// </summary>
+
+        public double FitScorePrc { get; set; }
+
+
+        /// <summary>
+        /// Number of bad data points ignored during fitting
+        /// </summary>
+        /// 
+        public double NFittingBadDataPoints { get; set; }
+
+        /// <summary>
+        /// Number of total data points (good and bad) available for fitting
+        /// </summary>
+        public double NFittingTotalDataPoints { get; set; }
+
+        /// <summary>
+        /// Start time of fitting data set
+        /// </summary>
+        public DateTime StartTime { get; set; }
+
+        /// <summary>
+        /// End time of fitting data set
+        /// </summary>
+        public DateTime EndTime { get; set; }
+
+
         /// <summary>
         /// The value of the R2 or root mean square of fitting,higher is better (used to choose among models)
         /// <para>
@@ -65,46 +97,23 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public double ObjFunValAbs { get; set; }
 
-
         /// <summary>
-        /// A score that is 100% if model describes all variations 
-        /// and 0% if model is no better at describing variation than the flat average line.
-        /// Negative if the model is worse than a flat average line.
+        /// The time base of the fitting dataset (model can still be run on other timebases)
         /// </summary>
 
-        public double FitScorePrc { get; set; }
+        public double TimeBase_s;
+
 
         /// <summary>
-        /// Number of bad data points ignored during fitting
+        /// The minimum value of u seen in the data set
         /// </summary>
-        /// 
-
-        public double NFittingBadDataPoints { get; set; }
-
-        /// <summary>
-        /// Number of total data points (good and bad) available for fitting
-        /// </summary>
-        public double NFittingTotalDataPoints { get; set; }
-
-        /// <summary>
-        /// Start time of fitting data set
-        /// </summary>
-        public DateTime StartTime { get; set; }
-
-        /// <summary>
-        /// End time of fitting data set
-        /// </summary>
-        public DateTime EndTime { get; set; }
+        public double[] Umin;
 
         /// <summary>
         /// The maximum value of u seen in the data set
         /// </summary>
         public double[] Umax;
 
-        /// <summary>
-        /// The minimum value of u seen in the data set
-        /// </summary>
-        public double[] Umin;
 
         /// <summary>
         /// NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.
@@ -113,8 +122,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet"></param>
         /// <param name="yIndicesToIgnore"></param>
 
-        public void CalcCommonFitMetricsFromDataset(UnitDataSet dataSet, List<int> yIndicesToIgnore)
+        public void CalcCommonFitMetricsFromYmeasDataset(UnitDataSet dataSet, List<int> yIndicesToIgnore= null)
         {
+            if (yIndicesToIgnore == null)
+            {
+                yIndicesToIgnore = dataSet.IndicesToIgnore;
+            }
+
             Vec vec = new Vec(dataSet.BadDataID);
 
             var ymeas_diff = vec.Diff(dataSet.Y_meas, yIndicesToIgnore);
@@ -160,11 +174,14 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 this.ObjFunValDiff = Double.NaN;
             }
-           this.NFittingBadDataPoints = yIndicesToIgnore.Count;
-
+            if (yIndicesToIgnore != null)
+            {
+                this.NFittingBadDataPoints = yIndicesToIgnore.Count;
+            }
 
             var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals);
             this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);
+            this.TimeBase_s = dataSet.GetTimeBase();
 
         }
     }

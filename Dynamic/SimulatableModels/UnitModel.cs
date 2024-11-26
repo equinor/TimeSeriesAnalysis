@@ -49,7 +49,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public  UnitParameters modelParameters;
 
-        private LowPass lowPass;
+        // first order dynamics :
+        private LowPass lowPass1order;
+
+        // second order dynamics :
+        private SecondOrder secondOrder;
+
+
+        
+        // time-delay 
         private TimeDelay delayObj;
 
         private bool isFirstIteration;
@@ -481,9 +489,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     return new double[] { Double.NaN };
                 }
             }
-            if (this.lowPass == null)
+            if (this.lowPass1order == null)
             {
-                this.lowPass = new LowPass(timeBase_s);
+                this.lowPass1order = new LowPass(timeBase_s);
             }
             if (this.delayObj == null)
             {
@@ -503,10 +511,19 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // nb! if first iteration, start model at steady-state
             double x_dynamic = x_ss;
-            if (modelParameters.TimeConstant_s >= 0)
+            if (modelParameters.TimeConstant_s >= 0 && modelParameters.DampingRatio == 0)
             {
-                x_dynamic = lowPass.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration);
+                x_dynamic = lowPass1order.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration);
             }
+            else if (modelParameters.TimeConstant_s >= 0 && modelParameters.DampingRatio > 0)
+            {
+                if (this.secondOrder == null)
+                {
+                    this.secondOrder = new SecondOrder(timeBase_s);
+                }
+                x_dynamic = secondOrder.Filter(x_ss, modelParameters.TimeConstant_s, modelParameters.DampingRatio, isFirstIteration);
+            }
+
             isFirstIteration = false;
             double y = 0;
             if (modelParameters.TimeDelay_s <= 0)
@@ -786,7 +803,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             // re-setting this variable, will cause "iterate" to start in steady-state.
             isFirstIteration = true;
-            this.lowPass = null;
+            this.lowPass1order = null;
             this.delayObj = null;
         }
 

@@ -14,7 +14,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// <seealo cref="UnitModel"/>
     /// </summary>
-    public class TimeDelay
+    public class TimeDelaySamples
     {
         private double timeBase_s;
         private double timeDelay_s;
@@ -24,27 +24,21 @@ namespace TimeSeriesAnalysis.Dynamic
         private int delaySignalCounter;
         private int nBufferSize;
 
+
         /// <summary>
-        /// Time delay set in terms of an absolute time, that is translated into a buffer lenght by observing the time base
+        /// Time delay, set in terms of number of samples
         /// </summary>
-        /// <param name="timeBase_s">the simulation time interval between each subsequent call to Delay (in seconds)</param>
-        /// <param name="timeDelay_s">the time delay to be simulated(in seconds). Note that the time delay will be rounded up to neares whole number factor of <c>timeBase_s</c></param>
-        public TimeDelay(double timeBase_s, double timeDelay_s)
+        /// <param name="samples"></param>
+        public TimeDelaySamples(int samples)
         {
-            this.timeDelay_s = timeDelay_s;
-            this.timeBase_s = timeBase_s;
-            if (timeBase_s > 0)
-            {
-                this.nBufferSize = (int)Math.Ceiling((double)(timeDelay_s / timeBase_s));
+            this.nBufferSize = samples;
+            if (samples > 0) 
+            { 
                 if (delayBuffer == null)
                 {
                     delayBuffer = new double[this.nBufferSize];
                     delayBufferPosition = 0;
                 }
-            }
-            else
-            {
-                this.nBufferSize = 0;
             }
         }
 
@@ -55,9 +49,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a version of <c>inputSignal</c> that is delayed</returns>
         public double Delay(double inputSignal)
         {
-
             // fail-to-safe
-            if (timeBase_s == 0 || timeDelay_s ==0)
+            if (nBufferSize == 0)
             {
                 return inputSignal;
             }

@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Interfaces;
+using System.Runtime.ConstrainedExecution;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
@@ -23,8 +25,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         UnitModel processModel3;
         UnitModel processModel4;
 
-        PidParameters pidParameters1;
-        PidModel pidModel1;
+        PidParameters pidParameters1, pidParametersDelay;
+        PidModel pidModel1, pidModel_delayed;
         Select minSelect1;
         Select maxSelect1;
 
@@ -73,6 +75,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Ti_s = 20
             };
             pidModel1 = new PidModel(pidParameters1, "PID1");
+            pidParametersDelay = new PidParameters()
+            {
+                Kp = 0.5,
+                Ti_s = 20,
+                DelayOutputOneSample = true
+            };
+            pidModel_delayed = new PidModel(pidParametersDelay, "PidDelay");
 
             minSelect1 = new Select(SelectType.MIN, "MINSELECT");
             maxSelect1 = new Select(SelectType.MAX, "MAXSELECT");
@@ -547,8 +556,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 timeBase_s, "UnitTest_MISO3Serial");*/
 
         }
-
-
 
 
 

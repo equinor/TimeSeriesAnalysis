@@ -519,6 +519,66 @@ namespace TimeSeriesAnalysis._Examples
         }
 
 
+        [TestCase(0.4), Explicit]
+        public void IntegralOscillations(double KP)
+        {
+            // obsevation: it does not seem possible to re-create 
+            // integral oscillations using a first order linear system and a pid-control loop
+            // unless the disturbance oscillates
+            // integral oscillations are often thought to be created by 
+
+
+            double noiseAmp = 1;
+            UnitParameters modelParameters = new UnitParameters
+            {
+                TimeConstant_s = 50,
+                LinearGains = new double[] { 2 },
+                TimeDelay_s = 0,
+                Bias =0
+            };
+            UnitModel processModel
+                = new UnitModel(modelParameters, "SubProcess1");
+            var pidParameters = new PidParameters()
+            {
+                Kp = KP,
+                Ti_s = 2
+            };
+            var pidModel = new PidModel(pidParameters, "PID1");
+            var sim = new PlantSimulator(
+                new List<ISimulatableModel> { processModel, pidModel });
+            sim.ConnectModels(processModel, pidModel);
+            sim.ConnectModels(pidModel, processModel, (int)INDEX.FIRST);
+            // create synthetic input data (normally you would get this data from the real-world)
+            double timeBase_s = 1;
+            int N = 500;
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(sim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
+                TimeSeriesCreator.Constant(50, N));
+            inputData.Add(sim.AddExternalSignal(processModel, SignalType.Disturbance_D),
+                TimeSeriesCreator.Noise(N, noiseAmp, 1));
+            inputData.CreateTimestamps(timeBase_s);
+            // simulate model over the 
+            var isOk = sim.Simulate(inputData, out var simData);
+
+
+            // plot result
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel.GetID(),SignalType.Output_Y),
+                inputData.GetValues(processModel.GetID(),SignalType.Disturbance_D),
+                simData.GetValues(pidModel.GetID(),SignalType.PID_U)
+                },
+                new List<string> { "y1=y_sim", "y2=D", "y3=u_pid" },
+                timeBase_s, TestContext.CurrentContext.Test.Name );
+            Shared.DisablePlots();
+    
+
+
+
+        }
+
+
+
 
 
 
