@@ -225,12 +225,21 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Fills a dataset with variables, values and dates 
+        /// Fills a dataset with variables, values and dates, removes "time" or "Time" from variableDict if present, and stores timestamps in internal dateTimes
         /// </summary>
         /// <param name="dateTimes"></param>
         /// <param name="variableDict"></param>
-        private void Fill(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
+        private bool Fill(DateTime[] dateTimes, Dictionary<string, double[]> variableDict)
         {
+            if (dateTimes == null)
+                return false;
+            if (variableDict == null)
+                return false;
+            if (variableDict.Keys == null)
+                return false;
+            if (variableDict.Keys.Count() == 0)
+                return false;
+
             if (variableDict.ContainsKey("Time"))
             {
                 variableDict.Remove("Time");
@@ -239,12 +248,22 @@ namespace TimeSeriesAnalysis
             {
                 variableDict.Remove("time");
             }
+            N = variableDict[variableDict.Keys.First()].Length;
+            if (N == 0)
+            {
+                return false;
+            }
+            // load actual dataset
             dataset = variableDict;
-            N = dataset[dataset.Keys.First()].Length;
             if (dateTimes.Length > 1)
             {
                 timeStamps = dateTimes.ToList();
             }
+            else
+            {
+                return false;
+            }
+            return true;
         }
 
 
@@ -481,9 +500,9 @@ namespace TimeSeriesAnalysis
                 out Dictionary<string, double[]> variableDict, dateTimeFormat);
             if (isOK)
             {
-                Fill(dateTimes, variableDict);
+                return Fill(dateTimes, variableDict);
             }
-            return isOK;
+            return false;
         }
 
 
@@ -546,9 +565,9 @@ namespace TimeSeriesAnalysis
                 out Dictionary<string, double[]> variableDict, dateTimeFormat);
             if (isOk)
             {
-                Fill(dateTimes, variableDict);
+                return Fill(dateTimes, variableDict);
             }
-            return isOk;
+            return false;
         }
 
         /// <summary>

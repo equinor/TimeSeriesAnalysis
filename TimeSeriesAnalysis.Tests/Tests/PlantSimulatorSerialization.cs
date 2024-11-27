@@ -97,7 +97,9 @@ namespace TimeSeriesAnalysis.Tests.Serialization
             var inputDataJsonTxt = new CsvContent(inputData.ToCsvText());
 
             var inputData2 = new TimeSeriesDataSet();
-            inputData2.LoadFromCsv(inputDataJsonTxt);
+            var isOkData = inputData2.LoadFromCsv(inputDataJsonTxt);
+
+            Assert.IsTrue(isOkData,"uanble to load data from csv");
 
             // 3. deserialize to a new object
             var plantSim2 = PlantSimulatorSerializer.LoadFromJsonTxt(plantsimJsonTxt);
