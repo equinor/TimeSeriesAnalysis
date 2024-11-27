@@ -28,6 +28,27 @@ namespace TimeSeriesAnalysis.Test
             Assert.AreEqual(new double[,] { { Double.NaN, 1, 2 }, { Double.NaN, 3, 4 }, { Double.NaN, 5, 6 } }, doubleData);
         }
 
+        [TestCase(@"test_edgecase_justdates.csv", Description = "")]
+        [TestCase(@"test_edgecase_justdates2.csv", Description = "")]
+        public void CsvLoadAsTimeSeries_Edgecases_DoesNotCrash(string filename)
+        {
+            var ret = CSV.LoadDataFromCsvAsTimeSeries(@"..\..\..\TestData\" + filename, ';', out var dateTimes,
+                out var variables);
+        }
+
+        [TestCase(@"test_edgecase_justdates.csv", Description = "")]
+        [TestCase(@"test_edgecase_justdates2.csv", Description = "")]
+        public void TimeSeriesDataSet_LoadFromCsv_Edgecases_DoesNotCrash(string filename)
+        {
+            var csvTxt = File.ReadAllText(@"..\..\..\TestData\"+filename);
+            var dataset = new TimeSeriesDataSet();
+            var ret = dataset.LoadFromCsv(new CsvContent(csvTxt),';');
+            Assert.IsFalse(ret);
+        }
+
+
+
+
 
         [TestCase, Explicit]
         public void Xml_load()

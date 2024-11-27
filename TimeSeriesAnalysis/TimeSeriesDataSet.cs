@@ -248,6 +248,10 @@ namespace TimeSeriesAnalysis
             {
                 variableDict.Remove("time");
             }
+            // if the file only included the "time" but no values
+            if (variableDict.Keys.Count() == 0)
+                return false;
+
             N = variableDict[variableDict.Keys.First()].Length;
             if (N == 0)
             {
