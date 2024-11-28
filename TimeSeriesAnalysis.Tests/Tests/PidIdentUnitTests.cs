@@ -73,10 +73,10 @@ namespace TimeSeriesAnalysis.Test.PidID
                 pidDataSet.GetTimeBase(), caseId);
             //Shared.DisablePlots();
 
-            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp)< pidParameters1.Kp * tolerancePrc / 100, "Kp too far off!:"+ idResult.Kp);
+            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp)< pidParameters1.Kp * tolerancePrc / 100, "Estimated Kp:"+ idResult.Kp + "True Kp:" + pidParameters1.Kp);
             if (pidParameters1.Ti_s > 0)
             {
-                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s * tolerancePrc / 100, "Ti_s too far off!:"+ idResult.Ti_s);
+                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s * tolerancePrc / 100, "Estimated Ti_s:" + idResult.Ti_s + "True Ti_s:" + pidParameters1.Ti_s);
             }
             else
             {
@@ -235,7 +235,7 @@ namespace TimeSeriesAnalysis.Test.PidID
         // when noise is added in the fully sampled, case the solver uses a low-pass filtering of ymeas as a key
         // tactic to improve estimates of Kp and Ti. In the downsampled case,it is not possible to use filtering in the same 
         // way. It may be that instead the solver should run the pid-controller at its original time sampling,
-        // maybe this will casue the noie to smoothe out
+        // maybe this will casue the noise to smoothe out
 
         [TestCase(2,0,10)]
         [TestCase(2,0.05,35)]// this is poor
@@ -279,10 +279,10 @@ namespace TimeSeriesAnalysis.Test.PidID
            // Shared.DisablePlots();
 
             // asserts
-            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, "Kp too far off!:"+ idResult.Kp);
+            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, "Kp estimate:"+ idResult.Kp + "versus true :" + pidParameters1.Kp);
             if (pidParameters1.Ti_s > 0)
             {
-                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s * tolerancePrc / 100, "Ti_s too far off!"+ idResult.Ti_s);
+                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s * tolerancePrc / 100, "Ti_s estimate"+ idResult.Ti_s + "versus true :" + pidParameters1.Ti_s);
             }
             else
             {

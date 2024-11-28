@@ -65,6 +65,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
             const bool doOnlyWithDelay = false;//should be false unless debugging something
+            const bool DoFiltering = true; //default is true(this improves performance significantly)
+            const bool returnFilterParameters = false; // even if filtering helps improve estimtes, maybe the filter should not be returned?
 
             // 1. try identification with delay of one sample but without filtering
             (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true);
@@ -75,7 +77,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return results_withDelay;
             }
 
-            // 2. try identification wihtout delay of one sample (yields better results often if dataset is downsampled)
+            // 2. try identification without delay of one sample (yields better results often if dataset is downsampled)
             //    relative to the clock that the pid algorithm ran on originally
             (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false);
 
@@ -83,7 +85,6 @@ namespace TimeSeriesAnalysis.Dynamic
             bool doDelay = true;
             PidParameters bestPidParameters= results_withoutDelay;
             double[,] bestU = U_withoutDelay;
-            //  if (results_withDelay.Fitting.ObjFunValAbs < results_withoutDelay.Fitting.ObjFunValAbs)
             if (IsFirstModelBetterThanSecondModel(results_withDelay, results_withoutDelay))
             {
                 doDelay = true;
@@ -98,40 +99,48 @@ namespace TimeSeriesAnalysis.Dynamic
                 bestU = U_withoutDelay;
             }
 
-            // 3. try filtering y_meas and see if this improves fit 
-            // if there is noise on y_meas that is not filtered, this may cause too small Kp/Ti
-            double maxFilterTime_s = 6 * timeBase_s;
-            for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
-            { 
-                var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
-                (PidParameters results_withFilter, double[,] U_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams);
-
-                if (IsFirstModelBetterThanSecondModel(results_withFilter,bestPidParameters))
-                {
-                    bestU = U_withFilter;
-                    bestPidParameters = results_withFilter;
-                }
-            }
-
-            // 4. try filtering the input u_meas
-            // this is experimental, but if downsampled, Kp/Ti seems often too low, and hypothesis is that this is because
-            // small variations in u_meas/y_meas are no longer tightly correlated, so identification should perhaps focus on fitting
-            // to only "larger" changes. 
-            bool filterUmeas = true;
-            for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
+            if (DoFiltering)
             {
-                var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
-                (PidParameters results_withFilter, double[,] U_withFilter) = 
-                    IdentifyInternal(dataSet, doDelay, pidFilterParams,filterUmeas);
-
-                if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
+                // 3. try filtering y_meas and see if this improves fit 
+                // if there is noise on y_meas that is not filtered, this may cause too small Kp/Ti
+                double maxFilterTime_s = 6 * timeBase_s;
+                for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                 {
-                    bestU = U_withFilter;
-                    bestPidParameters = results_withFilter;
+                    var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
+                    (PidParameters results_withFilter, double[,] U_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams);
+
+                    if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
+                    {
+                        bestU = U_withFilter;
+                        bestPidParameters = results_withFilter;
+                    }
+                }
+
+                // 4. try filtering the input u_meas
+                // this is experimental, but if downsampled, Kp/Ti seems often too low, and hypothesis is that this is because
+                // small variations in u_meas/y_meas are no longer tightly correlated, so identification should perhaps focus on fitting
+                // to only "larger" changes. 
+                bool filterUmeas = true;
+                for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
+                {
+                    var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
+                    (PidParameters results_withFilter, double[,] U_withFilter) =
+                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas);
+
+                    if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
+                    {
+                        bestU = U_withFilter;
+                        bestPidParameters = results_withFilter;
+                    }
                 }
             }
             // 5. finally return the "best" result
             dataSet.U_sim = bestU;
+            // consider if the the filter paramters maybe do not need to be returned
+            if (!returnFilterParameters)
+            {
+                bestPidParameters.Filtering = new PidFilterParams();
+            }
             return bestPidParameters;
         }
 
