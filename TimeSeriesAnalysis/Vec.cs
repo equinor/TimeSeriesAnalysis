@@ -16,7 +16,7 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
 namespace TimeSeriesAnalysis
 {
     /// <summary>
-    /// Utility functions and operations for treating arrays as mathetmatical vectors.
+    /// Utility functions and operations for treating arrays as mathematical vectors.
     /// <para>
     /// This class considers doubles, methods that require comparisons cannot be easily ported to generic "Vec"/>
     /// </para>
@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="nanValue">inputs values matching this value are treated as "NaN" 
         /// and are excluded from all calculations</param>
-        /// <param name="valuteToReturnElementIsNaN">value to return in elementwise calculations to indiate Nan output</param>
+        /// <param name="valuteToReturnElementIsNaN">value to return in elementwise calculations to indiate NaN output</param>
         public Vec(double nanValue = -9999, double valuteToReturnElementIsNaN = Double.NaN)
         {
             this.nanValue = nanValue;
@@ -41,9 +41,9 @@ namespace TimeSeriesAnalysis
         //  Methods should be sorted alphabetically
 
 
-        ///<summary>
-        /// returns an array where each value is the absolute value of array1
-        ///</summary>
+        /// <summary>
+        /// Returns an array where each value is the absolute value of array1.
+        /// </summary>
         public double[] Abs(double[] array1)
         {
             if (array1 == null)
@@ -60,9 +60,9 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        /// returns an array which is the elementwise addition of array1 and array2 
-        ///</summary>
+        /// <summary>
+        /// Returns an array which is the elementwise addition of array1 and array2.
+        /// </summary>
         public double[] Add(double[] array1, double[] array2)
         {
 
@@ -82,9 +82,9 @@ namespace TimeSeriesAnalysis
         }
 
 
-        ///<summary>
-        /// elementwise addition of val2 to array1
-        ///</summary>
+        /// <summary>
+        /// Elementwise addition of val2 to array1.
+        /// </summary>
         public double[] Add(double[] array1, double val2)
         {
             if (array1 == null)
@@ -102,9 +102,9 @@ namespace TimeSeriesAnalysis
 
 
 
-        ///<summary>
-        /// Returns true f array contains a "-9999" or NaN indicating missing data
-        ///</summary>
+        /// <summary>
+        /// Returns true if array contains a "-9999" or NaN indicating missing data.
+        /// </summary>
         public bool ContainsBadData(double[] x)
         {
             bool doesContainBadData = false;
@@ -118,9 +118,9 @@ namespace TimeSeriesAnalysis
             return doesContainBadData;
         }
 
-        ///<summary>
-        ///  returns the co-variance of two arrays(interpreted as "vectors")
-        ///</summary>
+        /// <summary>
+        /// Returns the co-variance of two arrays (interpreted as "vectors").
+        /// </summary>
         public double Cov(double[] array1, double[] array2, bool doNormalize = false)
         {
             double retVal = 0;
@@ -152,7 +152,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        ///  de-serializes a single vector/array (written by serialize)
+        /// De-serializes a single vector/array (written by serialize).
         /// </summary>
         static public double[] Deserialize(string fileName)
         {
@@ -180,7 +180,7 @@ namespace TimeSeriesAnalysis
 
         /// <summary>
         /// Return an array of the differences between the neighboring items in array
-        /// but ignores indices in the array that are in "indicesToIgnore"
+        /// but ignores indices in the array that are in "indicesToIgnore".
         /// </summary>
         /// <param name="vec"></param>
         /// <param name="indicesToIgnore"></param>
@@ -204,12 +204,12 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Divides an vector by a scalar value
+        /// Divides a vector by a scalar value.
         /// </summary>
         /// <param name="vector"></param>
         /// <param name="scalar"></param>
-        /// <returns>an vector of values representing the array didived by a scalar. 
-        /// In case of NaN inputs or divide-by-zero NaN elements are returned.  </returns>
+        /// <returns>a vector of values representing the array divided by a scalar. 
+        /// In case of NaN inputs or divide-by-zero, NaN elements are returned.</returns>
         public double[] Div(double[] vector, double scalar)
         {
             double[] outArray = new double[vector.Length];
@@ -228,12 +228,12 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Divides two vectors of equal length
+        /// Divides two vectors of equal length.
         /// </summary>
         /// <param name="vector1"></param>
         /// <param name="vector2"></param>
-        /// <returns>an vector of values representing the array didived by a scalar. 
-        /// In case of NaN inputs or divide-by-zero NaN elements are returned</returns>
+        /// <returns>a vector of values representing the array divided by a scalar. 
+        /// In case of NaN inputs or divide-by-zero, NaN elements are returned.</returns>
         public double[] Div(double[] vector1, double[] vector2)
         {
             int N = Math.Min(vector1.Length, vector2.Length);
@@ -275,7 +275,7 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Returns all the values of vec, except for those corresponding with indices in indicesToIngore
+        /// Returns all the values of vec, except for those corresponding with indices in "indicesToIngore".
         /// </summary>
         /// <param name="vec"></param>
         /// <param name="indicesToIgnore"></param>
@@ -296,8 +296,8 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        ///  return the indices of elements in the array that have certain relation to value given type (bigger,smaller,equal etc.)
-        /// Also capable of finding NaN values
+        /// Return the indices of elements in the array that have a certain relation to value given type (bigger, smaller, equal, etc.).
+        /// Also capable of finding NaN values.
         /// </summary>
         /// <param name="vec"></param>
         /// <param name="value"></param>
@@ -387,16 +387,16 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Gets the gradient of a time-series 
+        /// Gets the gradient of a time-series.
         /// <para>
         /// Works by running a regression with time as the "X" variable
         /// </para>
         /// </summary>
-        /// <param name="values">values for which the graident is sought</param>
-        /// <param name="dates">dates corrsponding to the values </param>
-        /// <param name="sampleTime_sec">in what unit of time (given in seconds)the gradient shall be persented </param>
+        /// <param name="values">values for which the gradient is sought</param>
+        /// <param name="dates">dates corresponding to the values</param>
+        /// <param name="sampleTime_sec">in what unit of time (given in seconds)the gradient shall be presented</param>
         /// <param name="indicesToIgnore">optional array of indices that are to be ignored during regression</param>
-        /// <returns>the gradient will be the "Gain" of the returned object (in units per second by default)</returns>
+        /// <returns>the gradient will be the "Gain" of the returned object (in units per second by default).</returns>
         public static RegressionResults GetGradient(double[] values, DateTime[] dates, int sampleTime_sec = 1,int[] indicesToIgnore=null)
         {
             var vec = new Vec();
@@ -414,9 +414,9 @@ namespace TimeSeriesAnalysis
 
 
 
-        ///<summary>
-        /// Returns true if all elements in array are the specific value
-        ///</summary>
+        /// <summary>
+        /// Returns true if all elements in the array are the specific value.
+        /// </summary>
         public static bool IsAllValue(double[] array, double value = 0)
         {
             int count = 0;
@@ -434,9 +434,9 @@ namespace TimeSeriesAnalysis
             }
         }
 
-        ///<summary>
-        /// Returns true if all elements in array are "-9999" or Double.NaN, or is null
-        ///</summary>
+        /// <summary>
+        /// Returns true if all elements in the array are "-9999" or Double.NaN, or is null.
+        /// </summary>
         public bool IsAllNaN(double[] array)
         {
             if (array == null)
@@ -459,9 +459,9 @@ namespace TimeSeriesAnalysis
         }
 
 
-        ///<summary>
-        /// All checks for NaN will test both for Double.IsNan and if value== a specific "nan" value (-9999)
-        ///</summary>
+        /// <summary>
+        /// All checks for NaN will test both for Double.IsNan and if value == {a specific "NaN" value (like "-9999")}.
+        /// </summary>
         private bool IsNaN(double value)
         {
             if (double.IsNaN(value) || value == nanValue)
@@ -470,9 +470,9 @@ namespace TimeSeriesAnalysis
                 return false;
         }
 
-        ///<summary>
-        ///  Returns maximum value of two array as new array 
-        ///</summary>
+        /// <summary>
+        /// Returns the maximum value of two arrays as a new array.
+        /// </summary>
         public double[] Max(double[] array1, double[] array2)
         {
             double[] retVal = new double[array1.Length];
@@ -487,9 +487,9 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        ///  Returns maximum value of array and index of maximum value 
-        ///</summary>
+        /// <summary>
+        /// Returns the maximum value of the array and the index of the maximum value.
+        /// </summary>
         public double Max(double[] array, out int ind)
         {
             ind = 0;
@@ -508,9 +508,9 @@ namespace TimeSeriesAnalysis
             return maxVal;
         }
 
-        ///<summary>
-        ///  Returns maximum value of array, ignoring the given indices 
-        ///</summary>
+        /// <summary>
+        /// Returns the maximum value of the array, ignoring the given indices.
+        /// </summary>
         public double Max(double[] array, List<int> indicesToIgnore)
         {
             double maxVal = double.MinValue;
@@ -530,9 +530,9 @@ namespace TimeSeriesAnalysis
             return maxVal;
         }
     
-        ///<summary>
-        ///  Returns element-wise maximum of array element and value
-        ///</summary>
+        /// <summary>
+        /// Returns the element-wise maximum of the array element and value.
+        /// </summary>
         public double[] Max(double[] array, double value)
         {
             double[] retArray = new double[array.Length];
@@ -553,16 +553,16 @@ namespace TimeSeriesAnalysis
             return retArray;
         }
 
-        ///<summary>
-        ///  Returns maximum value of array 
-        ///</summary>
+        /// <summary>
+        /// Returns the maximum value of the array.
+        /// </summary>
         public double Max(double[] array)
         {
             return Max(array, out _);
         }
 
         /// <summary>
-        /// Minimum value of array
+        /// Returns the minimum value of the array.
         /// </summary>
         /// <param name="array"></param>
         /// <returns></returns>
@@ -570,9 +570,9 @@ namespace TimeSeriesAnalysis
         {
             return Min(array, out _);
         }
-        ///<summary>
-        ///  Returns minimum value of array, ignoring certain indices
-        ///</summary>
+        /// <summary>
+        /// Returns the minimum value of the array, ignoring certain indices.
+        /// </summary>
         public double Min(double[] array, List<int> indicesToIgnore)
         {
 
@@ -593,9 +593,9 @@ namespace TimeSeriesAnalysis
             return minVal;
         }
 
-        ///<summary>
-        ///  Returns minimum value of array and index of maximum value 
-        ///</summary>
+        /// <summary>
+        /// Returns the minimum value of the array and the index of the maximum value.
+        /// </summary>
         public double Min(double[] array, out int ind)
         {
             ind = 0;
@@ -615,9 +615,9 @@ namespace TimeSeriesAnalysis
         }
 
 
-        ///<summary>
-        ///  Returns minimum value of two array as new array 
-        ///</summary>
+        /// <summary>
+        /// Returns the minimum value of the two arrays as new array.
+        /// </summary>
         static public double[] Min(double[] array1, double[] array2)
         {
             double[] retVal = new double[array1.Length];
@@ -632,9 +632,9 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        ///  Returns element-wise minimum of array element and value
-        ///</summary>
+        /// <summary>
+        /// Returns the element-wise minimum of the array elements and value.
+        /// </summary>
         public double[] Min(double[] array, double value)
         {
             double[] retArray = new double[array.Length];
@@ -656,9 +656,9 @@ namespace TimeSeriesAnalysis
         }
 
 
-        ///<summary>
-        /// elementwise multipliation of val2 to array1
-        ///</summary>
+        /// <summary>
+        /// Elementwise multiplication of val2 to array1.
+        /// </summary>
         public double[] Multiply(double[] array1, double val2)
         {
             if (array1 == null)
@@ -675,9 +675,9 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        /// elementwise  multiplication of array1 and array2, assuming they are same size
-        ///</summary>
+        /// <summary>
+        /// Elementwise multiplication of array1 and array2, assuming they are same size.
+        /// </summary>
 
         public double[] Multiply(double[] array1, double[] array2)
         {
@@ -701,9 +701,9 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        /// returns the mean value of array1
-        ///</summary>
+        /// <summary>
+        /// Returns the mean value of array1.
+        /// </summary>
         public double? Mean(double[] array1)
         {
             if (array1 == null)
@@ -724,9 +724,9 @@ namespace TimeSeriesAnalysis
 
 
 
-        ///<summary>
-        ///  Calculates the power of an array
-        ///</summary>
+        /// <summary>
+        /// Calculates the power of the array.
+        /// </summary>
         public double[] Pow(double[] array, double factor)
         {
             double[] ret = new double[array.Length];
@@ -740,9 +740,9 @@ namespace TimeSeriesAnalysis
             return ret;
         }
 
-        ///<summary>
-        ///  Returns range of an array, the difference between minimum and maximum
-        ///</summary>
+        /// <summary>
+        /// Returns the range of an array; the difference between minimum and maximum element values.
+        /// </summary>
         public double Range(double[] array)
         {
             double range = Max(array) - Min(array);
@@ -753,13 +753,13 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Create a vector of random numbers
+        /// Create a vector of random numbers.
         /// </summary>
         /// <param name="N">the number of samples of the returned array</param>
         /// <param name="minValue">lower end of random number range</param>
         /// <param name="maxValue">higher end of random number range</param>
         /// <param name="seed">optionally, give in a seed number, this makes random sequence repeatable</param>
-        /// <returns>an array of size N of random numbers between minValue and maxValue </returns>
+        /// <returns>an array of size N of random numbers between minValue and maxValue.</returns>
         public static double[] Rand(int N, double minValue = 0, double maxValue = 1,int? seed=null)
         {
             Random rand;//= null;
@@ -775,18 +775,18 @@ namespace TimeSeriesAnalysis
             double[] ret = new double[N];
             for (int i = 0; i < N; i++)
             {
-                ret[i] = rand.NextDouble() * (maxValue - minValue) + minValue; ;//NextDouble by itself return a valube btw 0 and 1
+                ret[i] = rand.NextDouble() * (maxValue - minValue) + minValue; ;//NextDouble by itself return a value btw 0 and 1
             }
             return ret;
         }
 
         /// <summary>
-        /// Robust linear regression
+        /// Robust linear regression.
         /// </summary>
-        /// <param name="Y">vector of responve variable values (to be modelled)</param>
-        /// <param name="X">2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
+        /// <param name="Y">vector of response variable values (to be modelled)</param>
+        /// <param name="X">2D matrix of manipulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
-        /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
+        /// <returns>an object of the <c>RegressionResult</c> class with the parameters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
 
         public RegressionResults Regress(double[] Y, double[,] X, int[] yIndToIgnore = null)
@@ -795,7 +795,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Regression that does not attempt to regualarize inputs toward zero
+        /// Regression that does not attempt to regualarize inputs toward zero.
         /// </summary>
         /// <param name="Y"></param>
         /// <param name="X"></param>
@@ -807,18 +807,18 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Robust linear regression, regularizd
-        /// To avoid paramters taking on exteremly high values in the case of little excitation in the inputs, 
-        /// two mitigating actions are implemented by the solver, to be "robust"
-        /// - a "robust" Signular Value Decomposition(SVD)-based solver is used
-        /// - a regularization term is added to the objective function that will bring paramters to zero if (Y,X) does not contain
-        ///  any information to force the parameter away from zero
+        /// Robust linear regression, regularized.
+        /// To avoid parameters taking on extremely high values in the case of a little excitation in the inputs, 
+        /// two mitigating actions are implemented by the solver to be "robust":
+        /// - a "robust" Singular Value Decomposition (SVD) -based solver is used.
+        /// - a regularization term is added to the objective function that will bring parameters to zero if (Y,X) does not contain
+        ///  any information to force the parameter away from zero.
         /// </summary>
-        /// <param name="Y">vector of outptu variable values to be modelled</param>
-        /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
+        /// <param name="Y">vector of output variable values to be modelled</param>
+        /// <param name="X">jagged 2D matrix of manipulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
         /// <param name="XindicesToRegularize">(optional) only the indices in this list are to be regularized to zero</param>
-        /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
+        /// <returns>an object of the <c>RegressionResult</c> class with the parameters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
         public RegressionResults RegressRegularized(double[] Y, double[][] X, int[] yIndToIgnore = null, List<int> XindicesToRegularize = null)
         {
@@ -827,19 +827,19 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Robust linear regression
-        /// To avoid paramters taking on exteremly high values in the case of little excitation in the inputs, 
-        /// two mitigating actions are implemented by the solver, to be "robust"
-        /// - a "robust" Singular Value Decomposition(SVD)-based solver is used
-        /// - a regularization term is added to the objective function that will bring paramters to zero if (Y,X) does not contain
-        ///  any information to force the parameter away from zero
+        /// Robust linear regression.
+        /// To avoid parameters taking on exteremly high values in the case of a little excitation in the inputs, 
+        /// two mitigating actions are implemented by the solver to be "robust":
+        /// - a "robust" Singular Value Decomposition (SVD) -based solver is used.
+        /// - a regularization term is added to the objective function that will bring parameters to zero if (Y,X) does not contain
+        ///  any information to force the parameter away from zero.
         /// </summary>
-        /// <param name="Y">vector of outptu variable values to be modelled</param>
-        /// <param name="X">jagged 2D matrix of of mainpulated values/independent values/regressors used to explain Y</param>
+        /// <param name="Y">vector of output variable values to be modelled</param>
+        /// <param name="X">jagged 2D matrix of manipulated values/independent values/regressors used to explain Y</param>
         /// <param name="yIndToIgnore">(optional) a list of the indices of values in Y to ignore in regression. By default it is <c>null</c></param>
         /// <param name="XindicesToRegularize">(optional) only the indices in this list are to be regularized to zero</param>
-        /// <param name="doNormalizationToZero">(optional) adds a minor "regularization" term to objective that will pull values toward zero if corresponding input is not excited </param>
-        /// <returns>an object of the <c>RegressionResult</c> class with the paramters, as well as 
+        /// <param name="doNormalizationToZero">(optional) adds a minor "regularization" term to objective that will pull values toward zero if corresponding input is not excited</param>
+        /// <returns>an object of the <c>RegressionResult</c> class with the parameters, as well as 
         /// some statistics on the fit and uncertainty thereof.</returns>
         private RegressionResults Regress(double[] Y, double[][] X, int[] yIndToIgnore=null, List<int> XindicesToRegularize=null, bool doNormalizationToZero = true)
         {
@@ -1068,10 +1068,10 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Replace certain values in an array with a new value. 
         /// </summary>
-        /// <param name="array">the array to be replaces</param>
-        /// <param name="indList">list of all the indices of all data points in array to be replaced</param>
-        /// <param name="valueToReplaceWith">the new value to use in place of old values.</param>
-        /// <returns>A copy of the original array with the values repalced as specified</returns>
+        /// <param name="array">the array to be replaced</param>
+        /// <param name="indList">list of all the indices of all data points in the array to be replaced</param>
+        /// <param name="valueToReplaceWith">the new value to use in place of old values</param>
+        /// <returns>a copy of the original array with the values replaced as specified.</returns>
         public static double[] ReplaceIndWithValue(double[] array, List<int> indList,
             double valueToReplaceWith)
         {
@@ -1093,7 +1093,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Replace values below a threshold in an array with a new value
+        /// Replace values below a certain threshold in an array with a new value.
         /// </summary>
         /// <param name="array"></param>
         /// <param name="threshold"></param>
@@ -1106,7 +1106,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Replace all values above a certain threshold in array with a new value
+        /// Replace all values above a certain threshold in array with a new value.
         /// </summary>
         /// <param name="array"></param>
         /// <param name="threshold"></param>
@@ -1119,7 +1119,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Replace values above a higher threshold or below a lower threshold with a new value
+        /// Replace values above a higher threshold or below a lower threshold with a new value.
         /// </summary>
         /// <param name="array"></param>
         /// <param name="lowerThreshold"></param>
@@ -1132,7 +1132,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// R-squared 
+        /// R-squared. 
         /// R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent 
         /// variable that's explained by an independent variable or variables in a regression model. 
         /// Whereas correlation explains the strength of the relationship between an independent and 
@@ -1142,10 +1142,10 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="vector1">first vector</param>
         /// <param name="vector2">second vector</param>
-        /// <param name="indToIgnoreExt">optionally: indices to be ignored(for instance bad values)</param>
-        /// <param name="ymodOffset">set the offset beteen vector1 and vector2 (for difference equations, ymod is offset by -1 from ymeas).-1 is default.</param>
+        /// <param name="indToIgnoreExt">optionally: indices to be ignored (for instance bad values)</param>
+        /// <param name="ymodOffset">set the offset beteen vector1 and vector2 (for difference equations, ymod is offset by -1 from ymeas). -1 is default.</param>
         /// <returns>R2 squared, a value between <c>-1</c> and <c>1</c>. If an error occured, 
-        /// <c>Double.PositiveInfinity</c> is returned </returns>
+        /// <c>Double.PositiveInfinity</c> is returned.</returns>
         /// 
         public double RSquared(double[] vector1, double[] vector2, List<int> indToIgnoreExt = null, int ymodOffset = -1)
         {
@@ -1187,10 +1187,10 @@ namespace TimeSeriesAnalysis
         }
 
 
-        ///<summary>
-        /// smooths the array without phase-shifting by using both past and future values
-        /// (i.e. so called non-causal smoothing)
-        ///</summary>
+        /// <summary>
+        /// Smooths the array without phase-shifting by using both past and future values
+        /// (i.e. so called non-causal smoothing).
+        /// </summary>
         public double[] NonCausalSmooth(double[] array1,int kernel=1)
         {
             if (array1 == null)
@@ -1229,9 +1229,9 @@ namespace TimeSeriesAnalysis
 
 
 
-        ///<summary>
-        /// elementwise  subtraction of array1 and array2, assuming they are same size
-        ///</summary>
+        /// <summary>
+        /// Elementwise subtraction of array1 and array2, assuming they are same size.
+        /// </summary>
 
         public double[] Subtract(double[] array1, double[] array2)
         {
@@ -1249,9 +1249,9 @@ namespace TimeSeriesAnalysis
             }
             return retVal;
         }
-        ///<summary>
-        /// elementwise subtraction of val2 from array1
-        ///</summary>
+        /// <summary>
+        /// Elementwise subtraction of val2 from array1.
+        /// </summary>
         public double[] Subtract(double[] array1, double val2)
         {
             if (array1 == null)
@@ -1269,9 +1269,9 @@ namespace TimeSeriesAnalysis
 
 
 
-        ///<summary>
-        /// returns the sum of array1
-        ///</summary>
+        /// <summary>
+        /// Returns the elementwise sum of array1.
+        /// </summary>
         public double? Sum(double[] array1)
         {
             if (array1 == null)
@@ -1286,9 +1286,9 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
-        ///<summary>
-        ///  The sum of absolute errors <c>(|a1-a2|)</c> between <c>array1</c> and <c>array2</c>
-        ///</summary>
+        /// <summary>
+        /// The sum of absolute errors <c>(|a1-a2|)</c> between <c>array1</c> and <c>array2</c>.
+        /// </summary>
         public double SumOfAbsErr(double[] array1, double[] array2, int indexOffset = -1)
         {
             int nGoodValues = 0;
@@ -1312,12 +1312,12 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        ///  The sum of square errors <c>(a1-a2)^2</c> between <c>array1</c> and <c>array2</c>.
+        /// The sum of square errors <c>(a1-a2)^2</c> between <c>array1</c> and <c>array2</c>.
         /// </summary>
         /// <param name="array1"></param>
         /// <param name="array2"></param>
         /// <param name="ymodOffset"></param>
-        /// <param name="divByN">if true, the result is normalized by the number of good values </param>
+        /// <param name="divByN">if true, the result is normalized by the number of good values</param>
         /// <param name="indToIgnore">optionally a list of indices of <c>array1</c> to ignore</param>
         /// <returns></returns>
         public double SumOfSquareErr(double[] array1, double[] array2, int ymodOffset = -1, 
@@ -1355,10 +1355,10 @@ namespace TimeSeriesAnalysis
                 return ret;
         }
 
-        ///<summary>
-        /// sum of square error of the vector compared to a constant. by defautl the return value is normalized by dividing by,
-        /// this normalization can be turned off
-        ///</summary>
+        /// <summary>
+        /// Sum of the square errors of the vector compared to a constant. by default the return value is normalized by dividing by the number of elements;
+        /// this normalization can be turned off.
+        /// </summary>
         public static double SumOfSquareErr(double[] vec, double constant, bool doNormalization = true)
         {
             double ret = 0;
@@ -1372,27 +1372,27 @@ namespace TimeSeriesAnalysis
                 return ret;
         }
 
-        ///<summary>
-        /// sum of square error of the vector compared to itself
-        ///</summary>
+        /// <summary>
+        /// Sum of the square errors of the vector compared to itself
+        /// </summary>
         public double SelfSumOfSquareErr(double[] vec)
         {
             return SumOfSquareErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
 
-        ///<summary>
-        /// sum of absolute error of the vector compared to itself
-        ///</summary>
+        /// <summary>
+        /// Sum of the absolute errors of the vector compared to itself.
+        /// </summary>
         public double SelfSumOfAbsErr(double[] vec)
         {
             return SumOfAbsErr(Vec<double>.SubArray(vec, 1), Vec<double>.SubArray(vec, 0, vec.Length - 2), 0);
         }
 
         /// <summary>
-        ///  serializes a single vector/array to a file for persistent storage to a human-readable text format
-        /// Vector data can then be retreived by companion method <c>Deserialize</c>
+        /// Serializes a single vector/array to a file for persistent storage to a human-readable text format.
+        /// Vector data can then be retreived by companion method <c>Deserialize</c>.
         /// </summary>
-        /// <param name="vector">vector to be written to afile</param>
+        /// <param name="vector">vector to be written to a file</param>
         /// <param name="fileName">the file name (or path) of the file to which the vector is to serialized to</param>
         /// <returns></returns>
         static public bool Serialize(double[] vector, string fileName)
@@ -1409,7 +1409,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Create a compact string of vector with a certain number of significant digits and a chosen divider
+        /// Create a compact string of vector with a certain number of significant digits and a chosen divider.
         /// </summary>
         /// <param name="array"></param>
         /// <param name="nSignificantDigits"></param>
@@ -1440,9 +1440,9 @@ namespace TimeSeriesAnalysis
             return sb.ToString();
         }
 
-        ///<summary>
-        ///  returns the variance of the array (always apositive number)
-        ///</summary>
+        /// <summary>
+        /// Returns the variance of the array (always a positive number).
+        /// </summary>
         public double Var(double[] array1, bool doNormalize = false)
         {
             double retVal = 0;

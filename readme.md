@@ -4,7 +4,7 @@
 # TimeSeriesAnalysis : Data-driven dynamic modeling and simulation 
 
 ## Overview
-This library that deals with developing *time-series models and simulators* from *time-series data*. 
+This library deals with developing *time-series models and simulators* from *time-series data*. 
 
 The methods in this library are primarily designed to describe time-series of physical, real-world systems for an industrial setting.
 

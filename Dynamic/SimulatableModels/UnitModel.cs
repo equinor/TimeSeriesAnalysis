@@ -19,25 +19,25 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <para>
     /// This is a model that can be either dynamic or static, have one or multiple inputs
     /// and can be either linear in inputs or have inputs nonlinearity described by a
-    /// second-order polynominal. Dynamics can be either 1.order time-constant, time-delay or both.
-    /// The model also supports "additive" signals added to its output(intended for modeling disturbances.)
+    /// second-order polynominal. Dynamics can be either 1. order time-constant, time-delay or both.
+    /// The model also supports "additive" signals added to its output (intended for modeling disturbances).
     /// </para>
     /// <para>
-    /// The model is designed to lend itself well to identificaiton from industrial time-series
-    /// datasets, and is supported by the accompanying identificaiton method <seealso cref="UnitIdentifier"/>.
+    /// The model is designed to lend itself well to identification from industrial time-series
+    /// datasets, and is supported by the accompanying identification method <seealso cref="UnitIdentifier"/>.
     /// </para>
     /// <para>
     /// This model is also intended to be co-simulated with <seealso cref="PidModel"/> by <seealso cref="PlantSimulator"/> to study
     /// process control feedback loops.
     /// </para>
     ///  <para>
-    /// It is assumed that for most unit processes in industrial process control systems can be described 
+    /// It is assumed that most unit processes in industrial process control systems can be described 
     /// sufficiently by this model, and thus that larger plants can be modeled by connecting unit models
     /// based on this model structure.
     /// </para>
     /// <para>
     /// It would be possible to extend this model to also describe second-order dynamics along the same principles by
-    /// the intorduction of one additional paramters in future work. 
+    /// the introduction of one additional parameter in future work. 
     /// </para>
     /// </remarks>
     /// See also: <seealso cref="UnitParameters"/>
@@ -45,7 +45,7 @@ namespace TimeSeriesAnalysis.Dynamic
     public class UnitModel : ModelBaseClass, ISimulatableModel 
     {
         /// <summary>
-        /// The paramters of the UnitModel
+        /// The parameters of the UnitModel.
         /// </summary>
         public  UnitParameters modelParameters;
 
@@ -67,10 +67,12 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
+        public UnitModel(){}
+
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="modelParameters">model paramter object</param>
+        /// <param name="modelParameters">model parameter object</param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
         [JsonConstructor]
         public UnitModel(UnitParameters modelParameters, string ID="not_named")
@@ -80,7 +82,7 @@ namespace TimeSeriesAnalysis.Dynamic
             InitSim(modelParameters);
         }
         /// <summary>
-        /// Initalizer of model that for the given dataSet also creates the resulting y_sim
+        /// Initalizer of model that for the given dataSet also creates the resulting y_sim.
         /// </summary>
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
@@ -91,8 +93,12 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
             InitSim(modelParameters);
         }
+        public string test()
+        {
+            return "test";
+        }
         /// <summary>
-        /// Answers if the model can be simulated with the inputs provided
+        /// Answers if the model can be simulated with the inputs provided.
         /// </summary>
         /// <param name="explainStr">a string that explains why the model cannot be simulated if that is the case</param>
         /// <returns></returns>
@@ -101,7 +107,7 @@ namespace TimeSeriesAnalysis.Dynamic
             explainStr = "";
             if (modelParameters == null)
             {
-                explainStr = "modelParamters is null";
+                explainStr = "modelParameters is null";
                 return false;
             }
            /* if (modelParameters.LinearGains == null)
@@ -133,10 +139,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Initalize the process model with a sampling time
+        /// Initalize the process model with a sampling time.
         /// </summary>
-        /// <param name="modelParameters">model paramters object</param>
-        private void InitSim(UnitParameters modelParameters)
+        /// <param name="modelParameters">model parameters object</param>
+        public void InitSim(UnitParameters modelParameters)
         {
             this.isFirstIteration = true;
             this.modelParameters = modelParameters;
@@ -164,7 +170,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Store the fitted dataset
+        /// Store the fitted dataset.
         /// </summary>
         /// <param name="dataset"></param>
         public void SetFittedDataSet(UnitDataSet dataset)
@@ -183,7 +189,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Returns the number of external inputs U of the model. Note that this model may have an disturbance signal
+        /// Returns the number of external inputs U of the model. Note that this model may have a disturbance signal
         /// added to the output in addition to the other signals.
         /// </summary>
         /// <returns></returns>
@@ -208,16 +214,16 @@ namespace TimeSeriesAnalysis.Dynamic
         }
  
         /// <summary>
-        /// Get the objet of model paramters contained in the model
+        /// Get the object of model parameters contained in the model.
         /// </summary>
-        /// <returns>Model paramter object</returns>
+        /// <returns>Model parameter object</returns>
         public UnitParameters GetModelParameters()
         {
             return modelParameters;
         }
 
         /// <summary>
-        /// Update the paramter object of the model
+        /// Update the parameter object of the model.
         /// </summary>
         /// <param name="parameters"></param>
         public void SetModelParameters(UnitParameters parameters)
@@ -226,7 +232,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Calcuate the steady-state input if the output and all-but-one input are known
+        /// Calcuate the steady-state input if the output and all-but-one input are known.
         /// </summary>
         /// <para>
         /// This method has no concept of disturbances, so a nonzero disturbance at time zero may throw it off.
@@ -332,11 +338,11 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Determine the process-gain(linear) contribution to the outputof a particular index for a particular value
+        /// Determine the process-gain (linear) contribution to the output of a particular index for a particular value.
         /// </summary>
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
-        /// <returns>contribution to the output y, excluding bias and curvature contributions</returns>
+        /// <returns>contribution to the output y, excluding bias and curvature contributions.</returns>
         private double CalculateLinearProcessGainTerm(int inputIndex, double u)
         {
             double processGainTerm = 0;
@@ -352,7 +358,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Determine the curvature term contribution(c*(u-u0)^2/unorm) to the output from a particular input for a particular value
+        /// Determine the curvature term contribution (c*(u-u0)^2/unorm) to the output from a particular input for a particular value.
         /// </summary>
         /// <param name="inputIndex">the index of the input</param>
         /// <param name="u">the value of the input</param>
@@ -394,7 +400,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Calculates the state x_ss excluding transients (y_ss = x_ss+bias)
+        /// Calculates the state x_ss excluding transients (y_ss = x_ss+bias).
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="badValueIndicator"></param>
@@ -428,7 +434,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the steady state output y for a given input(including additive terms)
+        /// Get the steady state output y for a given input (including additive terms).
         /// </summary>
         /// <param name="u">vector of input values</param>
         /// <param name="badDataID"></param>
@@ -451,7 +457,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the type of output signal
+        /// Get the type of output signal.
         /// </summary>
         /// <returns></returns>
         override public SignalType GetOutputSignalType()
@@ -463,14 +469,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Iterates the process model state one time step, based on the inputs given
+        /// Iterates the process model state one time step, based on the inputs given.
         /// </summary>
         /// <param name="inputs">vector of inputs U. Optionally the output disturbance D can be added as the last value.</param>
         /// <param name="timeBase_s">the time in seconds between samples</param>
         /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
-        /// <returns>the updated process model state(x) - the output without any output noise or disturbance.
-        ///  NaN is returned if model was not able to be identfied, or if no good values U values yet have been given.
-        ///  If some data points in U inputsU are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
+        /// <returns>the updated process model state (x) - the output without any output noise or disturbance.
+        ///  NaN is returned if model was not able to be identfied, or if no good U values have been given yet.
+        ///  If some data points in U inputs are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
         /// </returns>
         public double[] Iterate(double[] inputs, double timeBase_s,double badValueIndicator=-9999)
         {
@@ -568,7 +574,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Sovel quadratic equation "a x^2 + b*x +c =0" (second order of polynomial  equation in a single variable x)
+        /// Solve quadratic equation "a x^2 + b*x +c =0" (second order polynomial equation in a single variable x)
         /// x = [ -b +/- sqrt(b^2 - 4ac) ] / 2a
         /// </summary>
         /// <param name="a"></param>
@@ -789,7 +795,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Warm-starting
+        /// Warm-starting.
         /// </summary>
         /// <param name="inputs">not used, leave as null</param>
         /// <param name="output">not used, leave as null</param>

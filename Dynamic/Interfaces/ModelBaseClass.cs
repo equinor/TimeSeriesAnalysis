@@ -7,29 +7,29 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Abstract base class that contains common functionality across all models which are to implement 
+    /// Abstract base class that contains common functionality across all models which are to be implemented.
     /// <seealso cref="ISimulatableModel"/>
     /// </summary>
     public abstract class ModelBaseClass
     {
         /// <summary>
-        /// A unique ID string that is used to identify the model uniquely in a PlantSimulation
+        /// A unique ID string that is used to identify the model uniquely in a PlantSimulation.
         /// </summary>
         public string ID { get; set; } = "not_named";
 
         /// <summary>
-        /// Unique signal IDs that are mapped to the non-additive model inputs 
+        /// Unique signal IDs that are mapped to the non-additive model inputs.
         /// </summary>
         public string[] ModelInputIDs;
 
 
         /// <summary>
-        /// Unique signal IDs that are added to the output of the model(typically a disturbance) 
+        /// Unique signal IDs that are added to the output of the model (typically a disturbance).
         /// </summary>
         public List<string> additiveInputIDs;
 
         /// <summary>
-        /// Unique signal ID that defines the name of output signal of the model
+        /// Unique signal ID that defines the name of output signal of the model.
         /// </summary>
         public string outputID=null;
 
@@ -40,33 +40,33 @@ namespace TimeSeriesAnalysis.Dynamic
         public string outputIdentID = null;
 
         /// <summary>
-        /// The type of the model
+        /// The type of the model.
         /// </summary>
         public ModelType processModelType = ModelType.UnTyped;
 
         /// <summary>
-        /// Optional comment 
+        /// Optional comment.
         /// </summary>
         public string comment;
 
         /// <summary>
-        /// Optional visual position of model when displayed as graph: x-axis position(origo is top left)
+        /// Optional visual position of model when displayed as graph: x-axis position (origo is top left).
         /// </summary>
         public double? x;
 
         /// <summary>
-        /// Optional visual position of model when displayed as graph: y-axis position(origo is top left)
+        /// Optional visual position of model when displayed as graph: y-axis position (origo is top left).
         /// </summary>
         public double? y;
 
 
         /// <summary>
-        /// Optional color string when model is displayed as a graph
+        /// Optional color string when model is displayed as a graph.
         /// </summary>
         public string color;
 
         /// <summary>
-        /// Get the ID of the model
+        /// Get the ID of the model.
         /// </summary>
         /// <returns></returns>
         public string GetID()
@@ -75,7 +75,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Set ID of the model
+        /// Set the ID of the model.
         /// </summary>
         /// <param name="ID"></param>
         public void SetID(string ID)
@@ -86,7 +86,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Set the type of the process model
+        /// Set the type of the process model.
         /// </summary>
         /// <returns></returns>
         public void SetProcessModelType(ModelType newType)
@@ -95,7 +95,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the type of the process model
+        /// Get the type of the process model.
         /// </summary>
         /// <returns></returns>
         public ModelType GetProcessModelType()
@@ -104,8 +104,8 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Set the stringIDs of the one or more manipulated variables <c>U</c> that enter model.
-        /// This method may append/lengthen the inputIDs
+        /// Set the stringIDs of one or more of the manipulated variables <c>U</c> that enter model.
+        /// This method may append/lengthen the inputIDs.
         /// </summary>
         /// <param name="U_stringIDs"></param>
         /// <param name="idx">if non-null, this is the index of the element in U to set
@@ -161,7 +161,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Add an additive signal to the output 
+        /// Add an additive signal to the output.
         /// </summary>
         /// <param name="additiveInputID">ID of signal to add</param>
         public void AddSignalToOutput(string additiveInputID)
@@ -181,7 +181,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the type of the process model
+        /// Get the type of the process model.
         /// </summary>
         /// <returns></returns>
         public string[] GetModelInputIDs()
@@ -190,7 +190,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the DIs of any additive inputs that are included in model
+        /// Get the IDs of any additive inputs that are included in model.
         /// </summary>
         /// <returns>returns <c>null</c> if no additive inputs are defined.</returns>
         public string[] GetAdditiveInputIDs()
@@ -203,7 +203,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Gets IDS both of model inputs and additive model outputs
+        /// Get the IDs of both the model inputs and the additive model inputs.
         /// </summary>
         /// <returns></returns>
         public string[] GetBothKindsOfInputIDs()
@@ -222,7 +222,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Set the ID of the output
+        /// Set the ID of the output.
         /// </summary>
         /// <param name="outputID"></param>
         public void SetOutputID(string outputID)
@@ -231,9 +231,9 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// returns the output ID
+        /// Return the output ID.
         /// </summary>
-        /// <returns> may return <c>null</c> if output is not set</returns>
+        /// <returns> may return <c>null</c> if output is not set.</returns>
         public virtual string GetOutputID()
         {
              if (this.outputID == null)
@@ -244,9 +244,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// returns the ID of the signal the output is identified against
+        /// Return the ID of the signal the output is identified against.
         /// </summary>
-        /// <returns> may return <c>null</c> if output is not set</returns>
+        /// <returns> may return <c>null</c> if output is not set.</returns>
         public virtual string GetOutputIdentID()
         {
             return this.outputIdentID;
@@ -255,7 +255,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Get the length of the output vector
+        /// Get the length of the output vector.
         /// </summary>
         /// <returns></returns>
         virtual public int GetLengthOfInputVector()
@@ -265,7 +265,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get the type of the output signal 
+        /// Get the type of the output signal.
         /// </summary>
         /// <returns></returns>
         public abstract SignalType GetOutputSignalType();

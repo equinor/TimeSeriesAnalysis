@@ -16,11 +16,11 @@
 ![TimeSeriesAnalysis mindmap](./images/tsa_mindmap.png)
 
 
-**An open-source library of methods to identify,simulate and control industrial process plants, 
+**An open-source library of methods to identify, simulate and control industrial process plants, 
 built on .NET Standard 2.0.**
 
 The most significant contributions of the library are:
-1. am (open-loop) **unit model and -identification algorithm** that can describe both stationary and dynamic, linear and weakly nonlinear processes, and an algorithm to automatically choose the best model for a given input.
+1. an (open-loop) **unit model and -identification algorithm** that can describe both stationary and dynamic, linear and weakly nonlinear processes, and an algorithm to automatically choose the best model for a given input.
 2. a **closed-loop identification algorithm** that can estimate processes and disturbances from closed loop time-series.
 3. a **PID-controller identification algorithm** that can estimate gain and integral time by observing the output of a controller.,
 4. a **state-of-the-art advanced industrial PID-controller model** implemented as a *unit-model*, and 
@@ -69,7 +69,7 @@ Grey-box models have two very interesting properties:
 Grey-box modeling may have an advantage when fitting to data that has some, but less than 
 the ideal amount of information, which is a typical scenario for "as-is" real-world industrial 
 process data. In such a scenario, it is possible to fill in gaps in the model
-using a priori knowledge since parameters have a phyiscal interpretation. 
+using a priori knowledge since parameters have a physical interpretation. 
 
 
 ### Advanced analytics

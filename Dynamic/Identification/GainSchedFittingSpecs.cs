@@ -29,14 +29,5 @@
         /// Default is 0, i.e. first input is used for gain-scheduling.
         /// </summary>
         public int uGainScheduledInputIndex = 0;
-
-        /// <summary>
-        /// If set to false, the model starts in the same value as the tuning set starts in, 
-        /// if set to true, the model passes through the mean of the dataset.
-        /// </summary>
-        public bool DoSetOperatingPointToDatasetMean = false;
-
-
-
     }
 }

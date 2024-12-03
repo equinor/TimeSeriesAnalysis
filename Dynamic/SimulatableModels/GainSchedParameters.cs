@@ -185,7 +185,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="newOperatingPointY"></param>
         public void SetOperatingPoint(double newOperatingPointU, double newOperatingPointY)
         {
-            OperatingPoint_U = newOperatingPointU;
+            OperatingPoint_Y = newOperatingPointU;
             OperatingPoint_Y = newOperatingPointY;
         }
 

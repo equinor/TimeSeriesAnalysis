@@ -4,7 +4,7 @@
 > [!Note]
 > This library is written to support test-driven development(TDD) of algorithms based on time-series, 
 > and to support the TDD workflow, it supports time-series plotting. This feature is extremely useful to 
-> visualize the results of of unit tests or acceptance tests, and this helps enormously with debugging.
+> visualize the results of unit tests or acceptance tests, and this helps enormously with debugging.
 > The unit tests of this repository, give an example of how you can use these plotting capabilities for your own testing.
 
 Plotting features supported

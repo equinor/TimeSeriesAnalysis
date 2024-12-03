@@ -329,7 +329,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (idParams.Fitting.WasAbleToIdentify)
             {
                 // simulate the model and determine the optimal bias term:
-                DetermineOperatingPointAndSimulate(ref idParams, ref dataSet, gsFittingSpecs.DoSetOperatingPointToDatasetMean);
+                DetermineOperatingPointAndSimulate(ref idParams, ref dataSet);
 
                 if (doTimeDelayEstimation)
                     EstimateTimeDelay(ref idParams, ref dataSet);
@@ -493,12 +493,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="gsParams">the gain-scheduled parameters that are to be updated with an operating point.</param>
         /// <param name="dataSet">tuning dataset to be updated with Y_sim </param>
-        /// <param name="doMeanU">set the operating point to be the centre of the tuning set, if set to false models is set to match the start of the dataset</param>
-        /// 
         /// <returns>true if able to estiamte bias, otherwise false</returns>
-        private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet, bool doMeanU)
+        private static bool DetermineOperatingPointAndSimulate(ref GainSchedParameters gsParams, ref UnitDataSet dataSet)
         {
             // if set to true, then the operating point is set to the average U in the dataset, otherwise it is set to equal the start
+            const bool doMeanU = false; // can be true or false, makes little difference?
+
             var gsIdentModel = new GainSchedModel(gsParams, "ident_model");
             var vec = new Vec(dataSet.BadDataID);
 
@@ -508,7 +508,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var val = vec.Mean(vec.GetValues(dataSet.U.GetColumn(gsParams.GainSchedParameterIndex), dataSet.IndicesToIgnore));
             if (val.HasValue && doMeanU)
             {
-                desiredOpU = val.Value; //dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
+                desiredOpU = dataSet.U.GetColumn(gsParams.GainSchedParameterIndex).First();
             }
             gsParams.MoveOperatingPointUWithoutChangingModel(desiredOpU);
             
@@ -768,7 +768,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     curGainSchedParams_separateTc.TimeConstant_s = curTimeConstants;
                     curGainSchedParams_separateTc.TimeConstantThresholds = new double[] { candidateTcThresholds[i] };
-                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_separateTc, ref DS_separateTc,false);
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_separateTc, ref DS_separateTc);
                     candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_separateTc));
                     //   candYsimStep2.Add((double[])DS_separateTc.Y_sim.Clone());
                 }
@@ -776,9 +776,27 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     curGainSchedParams_separateTc.TimeConstant_s = new double[] { curTimeConstants.First() };
                     curGainSchedParams_separateTc.TimeConstantThresholds = null;
-                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_separateTc, ref DS_separateTc,false);
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_separateTc, ref DS_separateTc);
                     candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_separateTc));
                 }
+/*
+                {
+                    var curGainSchedParams_commonTc1 = new GainSchedParameters(curGainSchedParams_separateTc);
+                    curGainSchedParams_commonTc1.TimeConstant_s = new double[] { curTimeConstants[0] };
+                    curGainSchedParams_commonTc1.TimeConstantThresholds = null;
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_commonTc1, ref DS_commonTc1);
+                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_commonTc1));
+                    // candYsimStep2.Add((double[])DS_commonTc1.Y_sim.Clone());
+                }
+                {
+                    var curGainSchedParams_commonTc2 = new GainSchedParameters(curGainSchedParams_separateTc);
+                    curGainSchedParams_commonTc2.TimeConstant_s = new double[] { curTimeConstants[1] };
+                    curGainSchedParams_commonTc2.TimeConstantThresholds = null;
+                    DetermineOperatingPointAndSimulate(ref curGainSchedParams_commonTc2, ref DS_commonTc2);
+                    candModelsStep2.Add(new GainSchedParameters(curGainSchedParams_commonTc2));
+                    // candYsimStep2.Add((double[])DS_commonTc2.Y_sim.Clone());
+                }
+*/
 
                 bool doDebugPlot = false;
                 if (doDebugPlot)

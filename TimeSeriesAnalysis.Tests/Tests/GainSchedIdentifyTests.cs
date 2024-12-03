@@ -405,12 +405,13 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             else
             {
-                GainSchedFittingSpecs gsFittingSpecs = new GainSchedFittingSpecs { uGainThresholds = new double[] { gainSchedThreshold },DoSetOperatingPointToDatasetMean =false };
+                GainSchedFittingSpecs gsFittingSpecs = new GainSchedFittingSpecs { uGainThresholds = new double[] { gainSchedThreshold } };
                 idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
             }
             
             // plot
-            if (false)
+            bool doPlot = false;
+            if (doPlot)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {

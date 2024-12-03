@@ -25,3 +25,4 @@ TestResult.xml
 profiler/
 docs/_site/
 docs/api/
+TimeSeriesAnalysis.ClosedTests/

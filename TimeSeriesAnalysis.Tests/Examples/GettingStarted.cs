@@ -150,7 +150,7 @@ namespace TimeSeriesAnalysis._Examples
              Assert.IsTrue(isOK);
 
 
-            // create a "unit data set" and try to estimate the paramters of processModel from the data alone
+            // create a "unit data set" and try to estimate the parameters of processModel from the data alone
             var unitDataSet = new UnitDataSet();
             unitDataSet.U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
             unitDataSet.CreateTimeStamps(timeBase_s);
