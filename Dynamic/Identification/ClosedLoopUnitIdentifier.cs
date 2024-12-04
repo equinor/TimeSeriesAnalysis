@@ -54,7 +54,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name = "pidInputIdx">the index of the PID-input to the unit model</param>
         /// 
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
-        public (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
+        public static (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
         {
             bool wasGainGlobalSearchDone = false;
             bool doTimeDelayEstOnRun1 = false;
@@ -344,7 +344,7 @@ namespace TimeSeriesAnalysis.Dynamic
             return (identUnitModel,disturbance);
         }
 
-        private Tuple<UnitModel,double> GlobalSearchLinearPidGain(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx, 
+        private static Tuple<UnitModel,double> GlobalSearchLinearPidGain(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx, 
             UnitModel unitModel_run1, double pidProcessInputInitalGainEstimate, double minPidProcessGain,
             double maxPidProcessGain, FittingSpecs fittingSpecs, int numberOfGlobalSearchIterations = 40)
         {
@@ -581,7 +581,7 @@ namespace TimeSeriesAnalysis.Dynamic
             return new Tuple<UnitModel,double>(bestUnitModel, gainUnc);
         }
 
-        private Tuple<UnitModel, DisturbanceIdResult> EstimateSISOdisturbanceForProcGain( UnitModel referenceMISOmodel, 
+        private static Tuple<UnitModel, DisturbanceIdResult> EstimateSISOdisturbanceForProcGain( UnitModel referenceMISOmodel, 
             double pidLinProcessGain, int pidInputIdx, UnitDataSet dataSet, PidParameters pidParams)
         {
             var alternativeModel = new UnitModel(referenceMISOmodel.modelParameters.CreateCopy(), "SISO");
@@ -631,7 +631,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="disturbance">disturbance vector</param>
         /// <param name="name">optional name used for plotting</param>
         /// <returns></returns>
-        public bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
+        public static bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             double[] disturbance,string name="")
         {
             if (pidParams == null)

@@ -322,8 +322,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 pidDataSet.U[500,0] = Double.NaN;
             }
 
-            var modelId = new ClosedLoopUnitIdentifier();
-            (var identifiedModel, var estDisturbance) = modelId.Identify(pidDataSet, pidModel1.GetModelParameters(), pidInputIdx);
+            (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, pidModel1.GetModelParameters(), pidInputIdx);
 
             Console.WriteLine(identifiedModel.ToString());
             Console.WriteLine();

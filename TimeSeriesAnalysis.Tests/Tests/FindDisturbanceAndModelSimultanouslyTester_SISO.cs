@@ -314,8 +314,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
             }
 
-            var modelId = new ClosedLoopUnitIdentifier();
-            (var identifiedModel, var estDisturbance) = modelId.Identify(pidDataSet, pidModel1.GetModelParameters());
+            (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, pidModel1.GetModelParameters());
 
             Console.WriteLine(identifiedModel.ToString());
             Console.WriteLine();
