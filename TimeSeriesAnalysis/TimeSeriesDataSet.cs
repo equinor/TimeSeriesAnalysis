@@ -43,7 +43,7 @@ namespace TimeSeriesAnalysis
             //didSimulationReturnOk = false;
         }
         /// <summary>
-        /// Constructor
+        /// Constructor that copies another dataset into the returned object
         /// </summary>
         /// <param name="inputDataSet"></param>
 
@@ -59,9 +59,28 @@ namespace TimeSeriesAnalysis
             timeStamps = inputDataSet.timeStamps;
         }
 
+        /// <summary>
+        /// Constructor that builds a dataset object from a csv-file, by loading LoadFromCsv()
+        /// This version of the constructor is useful when receiving the csv-data across an API.
+        /// </summary>
+        /// <param name="csvContent">the csv data loaded into a CsvContent object</param>
+        /// <param name="separator">the separator in the csv-file</param>
+        /// <param name="dateTimeFormat">the format of date-time strings in the csv-file</param>
+        public TimeSeriesDataSet(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            LoadFromCsv(csvContent, separator, dateTimeFormat);
+        }
 
-
-
+        /// <summary>
+        /// Constructor that builds a dataset object from a csv-file, by loading LoadFromCsv()
+        /// </summary>
+        /// <param name="csvFileName">name of csv-file</param>
+        /// <param name="separator">the separator in the csv-file</param>
+        /// <param name="dateTimeFormat">the format of date-time strings in the csv-file</param>
+        public TimeSeriesDataSet(string csvFileName, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            LoadFromCsv(csvFileName, separator, dateTimeFormat);
+        }
 
         /// <summary>
         /// Add an entire time-series to the dataset
@@ -221,6 +240,50 @@ namespace TimeSeriesAnalysis
                 dataSet.SetTimeStamps(inputDataSet.GetTimeStamps().ToList());
             }
             return dataSet;
+        }
+
+
+
+
+        /// <summary>
+        /// Returns a copy of the dataset that is downsampled by the given factor
+        /// </summary>
+        /// <param name="downsampleFactor">value greater than 1 indicating that every nth value of the orignal data will be transferred</param>
+        /// <returns></returns>
+        public TimeSeriesDataSet CreateDownsampledCopy(int downsampleFactor)
+        {
+            TimeSeriesDataSet ret = new TimeSeriesDataSet();
+
+            ret.timeStamps = Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor).ToList();
+            ret.N = ret.timeStamps.Count();
+            ret.dataset_constants = dataset_constants;
+            foreach (var item in dataset)
+            {
+                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
+        /// </summary>
+        /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
+        /// <param name="t0">start time, can be null, which can be usedful for testing</param>
+        public void CreateTimestamps(double timeBase_s, DateTime? t0 = null)
+        {
+            if (t0 == null)
+            {
+                t0 = new DateTime(2010, 1, 1);//intended for testing
+            }
+
+            var times = new List<DateTime>();
+            DateTime time = t0.Value;
+            for (int i = 0; i < N; i++)
+            {
+                times.Add(time);
+                time = time.AddSeconds(timeBase_s);
+            }
+            timeStamps = times;
         }
 
 
@@ -509,50 +572,6 @@ namespace TimeSeriesAnalysis
             return false;
         }
 
-
-
-
-
-        /// <summary>
-        /// Returns a copy of the dataset that is downsampled by the given factor
-        /// </summary>
-        /// <param name="downsampleFactor">value greater than 1 indicating that every nth value of the orignal data will be transferred</param>
-        /// <returns></returns>
-        public TimeSeriesDataSet CreateDownsampledCopy(int downsampleFactor)
-        {
-            TimeSeriesDataSet ret = new TimeSeriesDataSet();
-
-            ret.timeStamps = Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor).ToList();
-            ret.N = ret.timeStamps.Count();
-            ret.dataset_constants = dataset_constants;
-            foreach (var item in dataset)
-            {
-                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor);
-            }
-            return ret;
-        }
-
-        /// <summary>
-        /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
-        /// </summary>
-        /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
-        /// <param name="t0">start time, can be null, which can be usedful for testing</param>
-        public void CreateTimestamps(double timeBase_s, DateTime? t0 = null)
-        {
-            if (t0 == null)
-            {
-                t0 = new DateTime(2010, 1, 1);//intended for testing
-            }
-
-            var times = new List<DateTime>();
-            DateTime time = t0.Value;
-            for (int i = 0; i < N; i++)
-            {
-                times.Add(time);
-                time = time.AddSeconds(timeBase_s);
-            }
-            timeStamps = times;
-        }
 
 
 

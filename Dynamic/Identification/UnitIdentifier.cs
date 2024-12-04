@@ -1192,8 +1192,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>identified model, to check if identification suceeded, check 
         /// .modelParameters.Fitting.WasAbleToIdentify</returns>
         public static UnitModel IdentifyLinearAndStaticWhileKeepingLinearGainFixed(UnitDataSet dataSet, int inputIdxToFix, 
-            double inputProcessGainValueToFix, double u0_fixedInput, double uNorm_fixedInput)
+            double inputProcessGainValueToFix, double u0_fixedInput, double uNorm_fixedInput )
         {
+
+            var fittingSpecs = new FittingSpecs();
             var internalDataset = new UnitDataSet(dataSet);
             var vec = new Vec(dataSet.BadDataID);
             var D_fixedInput = vec.Multiply(vec.Multiply(vec.Subtract(dataSet.U.GetColumn(inputIdxToFix), u0_fixedInput),uNorm_fixedInput),
@@ -1221,7 +1223,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             internalDataset.U = newU;
             
-            var idUnitModel   = IdentifyLinearAndStatic(ref internalDataset,new FittingSpecs());
+            var idUnitModel = IdentifyLinearAndStatic(ref internalDataset, fittingSpecs, false);
+
             if (!idUnitModel.modelParameters.Fitting.WasAbleToIdentify)
                 return idUnitModel;
             //trick now is to add back the paramters that are fixed to the returned model:

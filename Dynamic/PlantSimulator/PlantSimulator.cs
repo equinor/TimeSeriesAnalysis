@@ -396,6 +396,33 @@ namespace TimeSeriesAnalysis.Dynamic
             return outputId;
         }
 
+        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoop(UnitDataSet unitDataSet, PidModel pidModel, UnitModel unitModel, int pidInputIdx=0)
+        {
+            var processSim = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel, unitModel });
+            processSim.ConnectModels(unitModel, pidModel);
+            processSim.ConnectModels(pidModel, unitModel, pidInputIdx);
+
+            var inputData = new TimeSeriesDataSet();
+            if (unitDataSet.U.GetNColumns() > 1)
+            {
+                for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
+                {
+                    if (curColIdx == pidInputIdx)
+                        continue;
+                    inputData.Add(processSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
+                        unitDataSet.U.GetColumn(curColIdx));
+                }
+            }
+
+            inputData.Add(processSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
+            inputData.CreateTimestamps(unitDataSet.GetTimeBase());
+            inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
+
+            return (processSim, inputData);
+        }
+
+
         /// <summary>
         /// Get a TimeSeriesDataSet of all external signals of model.
         /// </summary>
@@ -883,9 +910,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (!fileName.EndsWith(".json"))
                 fileName += ".json";
-
-            // var options = new JsonSerializerOptions { WriteIndented = true };
-            //  var serializedTxt =  JsonSerializer.Serialize(this,options);
 
             var serializedTxt = SerializeTxt();
 
