@@ -399,6 +399,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Create a PlantSimulator and TimeSeriesDataSet from a UnitDataSet, PidModel and UnitModel to do closed-loop simulations
         /// 
+        /// The feedback loop has no disturbance signal added, but this can be added to the returned PlantSimualtor as needed.
+        /// 
         /// </summary>
         /// <param name="unitDataSet"></param>
         /// <param name="pidModel"></param>
@@ -412,9 +414,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 new List<ISimulatableModel> { pidModel, unitModel });
             var signalId1 = plantSim.ConnectModels(unitModel, pidModel);
             var signalId2 = plantSim.ConnectModels(pidModel, unitModel, pidInputIdx);
-
-            // tell the simulator that there is a disturbance 
-       //     plantSim.AddExternalSignal(unitModel, SignalType.Disturbance_D);
 
             var inputData = new TimeSeriesDataSet();
             inputData.Add(signalId1, unitDataSet.Y_meas);

@@ -149,12 +149,13 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitDataSet_adjusted = new UnitDataSet(unitDataSet);
             if (unitModel != null && pidParams != null)
             {
+                var pidModel1 = new PidModel(pidParams, "PID");
                 // BEGIN "no_dist" process simulation = 
                 // a simulation of the process that does not include any real Y_meas or u_pid, thus no effects of 
                 // disturbances are visible in this simulation
                 
-                var pidModel1 = new PidModel(pidParams, "PID");
-                var processSim_noDist = new PlantSimulator(
+               
+               var processSim_noDist = new PlantSimulator(
                     new List<ISimulatableModel> { pidModel1, unitModel });
                 processSim_noDist.ConnectModels(unitModel, pidModel1);
                 processSim_noDist.ConnectModels(pidModel1, unitModel,pidInputIdx);
@@ -174,12 +175,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData_noDist.Add(processSim_noDist.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
                 inputData_noDist.CreateTimestamps(unitDataSet.GetTimeBase());
                 inputData_noDist.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
-                
-              
+         
+
                 // rewrite:
-           //     (var processSim_noDist, var inputData_noDist) = PlantSimulator.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
+            //    (var processSim_noDist, var inputData_noDist) = PlantSimulator.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
                 var noDist_isOk = processSim_noDist.Simulate(inputData_noDist, out TimeSeriesDataSet simData_noDist);
-                noDist_isOk = false;//TODO: remove temporary
+               // noDist_isOk = false;//TODO: remove temporary
                 if (noDist_isOk)
                 {
                     int idxFirstGoodValue = 0;
