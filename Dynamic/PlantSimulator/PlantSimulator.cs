@@ -396,30 +396,46 @@ namespace TimeSeriesAnalysis.Dynamic
             return outputId;
         }
 
-        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoop(UnitDataSet unitDataSet, PidModel pidModel, UnitModel unitModel, int pidInputIdx=0)
+        /// <summary>
+        /// Create a PlantSimulator and TimeSeriesDataSet from a UnitDataSet, PidModel and UnitModel to do closed-loop simulations
+        /// 
+        /// </summary>
+        /// <param name="unitDataSet"></param>
+        /// <param name="pidModel"></param>
+        /// <param name="unitModel"></param>
+        /// <param name="pidInputIdx"></param>
+        /// <returns></returns>
+        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoop(UnitDataSet unitDataSet, PidModel pidModel, 
+            UnitModel unitModel, int pidInputIdx=0)
         {
-            var processSim = new PlantSimulator(
+            var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel, unitModel });
-            processSim.ConnectModels(unitModel, pidModel);
-            processSim.ConnectModels(pidModel, unitModel, pidInputIdx);
+            var signalId1 = plantSim.ConnectModels(unitModel, pidModel);
+            var signalId2 = plantSim.ConnectModels(pidModel, unitModel, pidInputIdx);
+
+            // tell the simulator that there is a disturbance 
+       //     plantSim.AddExternalSignal(unitModel, SignalType.Disturbance_D);
 
             var inputData = new TimeSeriesDataSet();
+            inputData.Add(signalId1, unitDataSet.Y_meas);
+            inputData.Add(signalId2, unitDataSet.U.GetColumn(pidInputIdx));
+
             if (unitDataSet.U.GetNColumns() > 1)
             {
                 for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
                 {
                     if (curColIdx == pidInputIdx)
                         continue;
-                    inputData.Add(processSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
+                    inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
                         unitDataSet.U.GetColumn(curColIdx));
                 }
             }
 
-            inputData.Add(processSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
+            inputData.Add(plantSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
             inputData.CreateTimestamps(unitDataSet.GetTimeBase());
             inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
 
-            return (processSim, inputData);
+            return (plantSim, inputData);
         }
 
 
