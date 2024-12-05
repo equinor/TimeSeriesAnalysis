@@ -195,42 +195,83 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // run 2 version 1: try looking for the time constant that gives the smallest average disturbance amplitude
 
-            const bool doRun2Version2 = false;// TODO: implement version 2 and change over to improve Tc estimate
+            const bool doRun2Version2 = true;// TODO: implement version 2 and change over to improve Tc estimate
 
             if (doRun2  && idUnitModelsList.Last() != null)
             {
                 var unitModel = idUnitModelsList.Last();
-
+                unitModel.ID = "process";
                 if (doRun2Version2)
                 {
                     var pidModel = new PidModel(pidParams, "PID");
-                    (var plantSim, var inputData) = PlantSimulator.CreateFeedbackLoop(dataSetRun2, pidModel, unitModel, pidInputIdx);
 
                     var fitScores = new List<double>();
                     var Tcs = new List<double>();   
 
-                    var TcListTest = new List<double>() { 0,3,6,9,12,15,18,21};//for debugging, generalize
-                    var modelParams = ((UnitModel)plantSim.modelDict[unitModel.ID]).GetModelParameters();
+                    var TcListTest = new List<double>() { 0,5,10,15};//for debugging, generalize
+                    var modelParams = unitModel.GetModelParameters();
 
                     // TODO: need to estimate disturbance and add it to the simulation in each case.
+                    var runCounter = 0;
+                    var d_estList = new List<double[]>();
+                    var d_estDesc = new List<string>();
+                    var y_simList = new List<double[]>();
+                    var y_simDesc = new List<string>();
+                    var u_simList = new List<double[]>();
+                    var u_simDesc = new List<string>();
+                    DateTime[] dateTimes= null;
+                    bool doDebugPlot = true;
                     foreach ( var Tc in TcListTest)
                     {
+                        (var plantSim, var inputData) = PlantSimulator.CreateFeedbackLoop(dataSetRun2, pidModel, unitModel, pidInputIdx);
+                        plantSim.AddAndConnectExternalSignal(unitModel, "_D_" + unitModel.ID, SignalType.Disturbance_D);// TODO: add this line to CreateFeedbackLoop()
                         modelParams.TimeConstant_s = Tc; 
                         ((UnitModel)plantSim.modelDict[unitModel.ID]).SetModelParameters(modelParams);
 
-                        var distId = DisturbanceIdentifier.EstimateDisturbance
-                           (dataSetRun2, ((UnitModel)plantSim.modelDict[unitModel.ID]), pidInputIdx, pidParams);
+                        // 1. simulate just single and estimate the disturbance  
+                        bool doCalcYwithoutAdditiveTerms = false;
+                        var isSingleOk = plantSim.SimulateSingle(inputData, unitModel.ID, doCalcYwithoutAdditiveTerms, out var singleSimData);
+                        //var estDisturbance = TimeSeriesCreator.Constant(0, inputData.GetNumDataPoints());//used only for debugging
+                        var estDisturbance =  singleSimData.GetValues("_D_" + unitModel.ID);// this works, the disturbances are different for every Tc
+                        d_estList.Add(estDisturbance);
+                        d_estDesc.Add("y2= d_est" + runCounter);
 
-                        inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.Disturbance_D), distId.d_est);
-
-                        bool isSimOK = plantSim.Simulate(inputData, out var simData); 
-                        if (!isSimOK)
-                            Console.WriteLine("SIMULATE FAILED"); ;
-                        fitScores.Add(plantSim.PlantFitScore);
-                        Tcs.Add(Tc);
+                        if (isSingleOk)
+                        {
+                            var inputDataCoSim = new TimeSeriesDataSet(inputData);
+                            inputDataCoSim.Add("_D_" + unitModel.ID, estDisturbance);
+                        //    inputDataCoSim.Remove(SignalNamer.GetSignalName(pidModel.ID, SignalType.PID_U));
+                            // 2. co-simulate with disturbance from 1.
+                            bool isCoSimOK = plantSim.Simulate(inputDataCoSim, out var simData);
+                            if (isCoSimOK)
+                            {
+                                fitScores.Add(plantSim.PlantFitScore); // issue: these are now always 100%???
+                                Tcs.Add(Tc);
+                            }
+                            // debugging plot
+                            if (doDebugPlot)
+                            {
+                                y_simList.Add(inputDataCoSim.GetValues(unitModel.ID, SignalType.Output_Y));
+                                y_simDesc.Add("y1= y_sim"+runCounter);
+                                u_simList.Add(inputDataCoSim.GetValues(pidModel.ID, SignalType.PID_U));
+                                u_simDesc.Add("y3= u_sim" + runCounter);
+                                dateTimes = inputDataCoSim.GetTimeStamps();
+                            }
+                        }
+                        runCounter++;
+                    }
+                    if (doDebugPlot)
+                    {
+                        y_simList.AddRange(u_simList);
+                        y_simList.AddRange(d_estList);
+                        y_simDesc.AddRange(u_simDesc);
+                        y_simDesc.AddRange(d_estDesc);
+                        Shared.EnablePlots();
+                        Plot.FromList(y_simList, y_simDesc, dateTimes, "debug");
+                        Shared.DisablePlots();
                     }
                     // todo: determne the Tc that has the higest plant fit score
-                    Console.WriteLine("t");
+                    Console.WriteLine(fitScores.ToString());
                 }
                 else
                 {

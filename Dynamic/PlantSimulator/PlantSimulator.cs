@@ -398,9 +398,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Create a PlantSimulator and TimeSeriesDataSet from a UnitDataSet, PidModel and UnitModel to do closed-loop simulations
-        /// 
-        /// The feedback loop has no disturbance signal added, but this can be added to the returned PlantSimualtor as needed.
-        /// 
+        /// <para>
+        /// The feedback loop has no disturbance signal added, but this can be added to the returned PlantSimulator as needed.
+        /// </para>
         /// </summary>
         /// <param name="unitDataSet"></param>
         /// <param name="pidModel"></param>
@@ -588,10 +588,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Simulate a single model(any ISimulatable model), using inputData as inputs, 
-        ///
+        ///  Simulate a single model(any ISimulatable model), using inputData as inputs, 
+        ///  <para>
         ///  If the model is a unitModel and the inputData inludes both the measured y and measured u, the
         ///  simData will include an estimate of the additive disturbance.
+        ///  </para>
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="singleModelName"></param>

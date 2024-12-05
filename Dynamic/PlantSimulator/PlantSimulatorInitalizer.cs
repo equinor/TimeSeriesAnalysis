@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <item><description> Forward-calculate all processes in series (not in any feedback-loops), where inputs to leftmost process is given</description></item>
         /// <item><description> All PID-loops must have a setpoint value set and all Y_meas are initalized to setpoint</description></item>
         /// <item><description> Then all subprocesses inputs inside feedback-loops U are back-calculated(right-to-left) to give steady-state Y_meas equal to Y_set</description></item>
-        /// <item><description> Finally determine if there are ny serial processes downstream of any loops that can be calucated left-to-right</description></item>
+        /// <item><description> Finally determine if there are any serial processes downstream of any loops that can be calucated left-to-right</description></item>
         /// </list>
         /// </para>
         /// </summary>

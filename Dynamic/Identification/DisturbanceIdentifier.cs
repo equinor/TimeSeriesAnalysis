@@ -176,9 +176,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData_noDist.CreateTimestamps(unitDataSet.GetTimeBase());
                 inputData_noDist.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
          
-
+               
                 // rewrite:
-            //    (var processSim_noDist, var inputData_noDist) = PlantSimulator.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
+               // (var processSim_noDist, var inputData_noDist) = PlantSimulator.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
                 var noDist_isOk = processSim_noDist.Simulate(inputData_noDist, out TimeSeriesDataSet simData_noDist);
                // noDist_isOk = false;//TODO: remove temporary
                 if (noDist_isOk)

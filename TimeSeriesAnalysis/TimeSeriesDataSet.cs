@@ -335,6 +335,17 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
+        /// Returns the number of data points in the dataset
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumDataPoints()
+        {
+            if (timeStamps == null)
+                return 0;
+            return timeStamps.Count - 1;
+        }
+
+        /// <summary>
         /// Get the timebase, the time between two samples in the dataset
         /// </summary>
         /// <returns>The timebase in seconds</returns>
@@ -525,7 +536,7 @@ namespace TimeSeriesAnalysis
                 return Vec<double>.Fill(dataset_constants[signalName],N.Value);   
             else
             {
-                Shared.GetParserObj().AddError("TimeSeriesData.GetValues() did not find signal:" + signalName);
+                Shared.GetParserObj().AddError("TimeSeriesDataSert.GetValues() did not find signal:" + signalName);
                 return null;
             }
         }
