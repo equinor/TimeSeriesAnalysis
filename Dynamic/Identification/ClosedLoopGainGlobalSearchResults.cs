@@ -28,6 +28,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// self-variance of d_est, calculated for each linear gains
         /// </summary>
+        public List<double> uPidVarianceList;
+
+        /// <summary>
+        /// self-variance of d_est, calculated for each linear gains
+        /// </summary>
         public List<double> dEstVarianceList;
 
         /// <summary>
@@ -47,13 +52,14 @@ namespace TimeSeriesAnalysis.Dynamic
         internal ClosedLoopGainGlobalSearchResults()
         {
             unitParametersList= new List<UnitParameters>();
+            uPidVarianceList = new List<double>();
             dEstVarianceList = new List<double>();
             covBtwDestAndYsetList = new List<double>();
             pidLinearProcessGainList = new List<double>();
             covBtwDestAndUexternal = new List<double>();
         }
 
-        public void Add(double gain, UnitParameters unitParameters, double covBtwDestAndYset, double dest_variance,
+        public void Add(double gain, UnitParameters unitParameters, double covBtwDestAndYset, double upidVariance,double eEstVariance,
             double covBtwDestAndUexternal)
         {
           //  var newParams = unitParameters.CreateCopy();
@@ -61,7 +67,8 @@ namespace TimeSeriesAnalysis.Dynamic
             pidLinearProcessGainList.Add(gain);
             unitParametersList.Add(unitParameters);
             covBtwDestAndYsetList.Add(covBtwDestAndYset);
-            dEstVarianceList.Add(dest_variance);
+            uPidVarianceList.Add(upidVariance);
+            dEstVarianceList.Add(eEstVariance);
             this.covBtwDestAndUexternal.Add(covBtwDestAndUexternal);
         }
 
@@ -123,19 +130,30 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             Vec vec = new Vec();
 
-            var v1 = dEstVarianceList.ToArray();
+            var v1 = uPidVarianceList.ToArray();
             var v2 = covBtwDestAndYsetList.ToArray();
             var v3 = covBtwDestAndUexternal.ToArray();
             (double v1_Strength, int min_ind) = MinimumStrength(v1);
             (double v2_Strength, int min_ind_v2) = MinimumStrength(v2);
             (double v3_Strength,int min_ind_v3) = MinimumStrength(v3);
-            // add a scaled v2 to the objective only when v1 is very flat around the minimum
+
+            var v4 = dEstVarianceList.ToArray();
+            (double v4_Strength, int min_ind_v4) = MinimumStrength(v4);
+            // add a scaled v4 to the objective only when v1 is very flat around the minimum
             // as a "tiebreaker"
 
             if (v1_Strength == 0 && v2_Strength == 0 && v3_Strength == 0)
-            {
-                //defaultModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
-                return new Tuple<UnitModel, bool>(null, false);
+            {/*
+                if (v4_Strength > 0)
+                {
+                    return  new Tuple<UnitModel, bool>(new UnitModel(unitParametersList.ElementAt(min_ind_v4)), true);
+                }
+                else*/
+                {
+                    return new Tuple<UnitModel, bool>(null, false);
+                }
+                //modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
+       
             }
             double[] objFun = v1;
 

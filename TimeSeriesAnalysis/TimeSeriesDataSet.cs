@@ -536,7 +536,7 @@ namespace TimeSeriesAnalysis
                 return Vec<double>.Fill(dataset_constants[signalName],N.Value);   
             else
             {
-                Shared.GetParserObj().AddError("TimeSeriesDataSert.GetValues() did not find signal:" + signalName);
+                Shared.GetParserObj().AddError("TimeSeriesDataSet.GetValues() did not find signal:" + signalName);
                 return null;
             }
         }

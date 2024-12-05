@@ -112,7 +112,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(4,-1)]
         public void PlantSimulator_StepDisturbanceANDSetPointStep_EstimatesOk(double disturbanceStepAmplitude,double setpointAmplitude)
         {
-           // Shared.EnablePlots();
+          //  Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, disturbanceStepAmplitude);
             var setpoint = TimeSeriesCreator.Step(50, N, 50, 50+setpointAmplitude);
             DisturbanceTestUsingPlantSimulator(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance, true, setpoint);
@@ -181,9 +181,17 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             // 2.create plant model without disturbance, and try to to find the disturbance signal
             {
                 var pidModel1 = new PidModel(pidParameters1, "PID1");
-              
+
                 // important to add a disturbance signal with naming convention to the output of the process, to signal that the disturbance is to be estimated!
-                   var processModel3 = new UnitModel(dynamicModelParameters, "Proc1");
+
+                // begin testing
+                // var dynamicModelParameters_new = dynamicModelParameters.CreateCopy();
+                // dynamicModelParameters_new.TimeConstant_s = 20;
+                //end testing
+
+                //var processModel3 = new UnitModel(dynamicModelParameters_new, "Proc1");
+                var processModel3 = new UnitModel(dynamicModelParameters, "Proc1");
+
                 var distSignal = SignalNamer.EstDisturbance(processModel3);
                 processModel3.AddSignalToOutput(distSignal);
                 var plantSim = new PlantSimulator(
@@ -214,9 +222,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 inputData.CreateTimestamps(timeBase_s);
 
                 //////////////////////////////////
-                var isOK = plantSim.Simulate(inputData, out TimeSeriesDataSet simDataSetWithDisturbance);
+                var isOK = plantSim.Simulate(inputData, out var simDataSetWithDisturbance);
                 //////////////////////////////////
                 Assert.IsTrue(isOK);
+                Assert.IsTrue(plantSim.PlantFitScore == 100);
                 Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(distSignal));
                 if (doAssertResult)
                 {

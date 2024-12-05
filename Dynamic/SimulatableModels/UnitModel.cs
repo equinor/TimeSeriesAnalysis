@@ -67,6 +67,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
+        /// <summary>
+        /// Empty constructor
+        /// </summary>
         public UnitModel(){}
 
         /// <summary>
@@ -93,10 +96,7 @@ namespace TimeSeriesAnalysis.Dynamic
             this.ID = ID;
             InitSim(modelParameters);
         }
-        public string test()
-        {
-            return "test";
-        }
+
         /// <summary>
         /// Answers if the model can be simulated with the inputs provided.
         /// </summary>

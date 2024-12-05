@@ -399,15 +399,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Create a PlantSimulator and TimeSeriesDataSet from a UnitDataSet, PidModel and UnitModel to do closed-loop simulations
         /// <para>
-        /// The feedback loop has no disturbance signal added, but this can be added to the returned PlantSimulator as needed.
+        /// The feedback loop has NO disturbance signal added, but this can be added to the returned PlantSimulator as needed.
         /// </para>
         /// </summary>
         /// <param name="unitDataSet"></param>
         /// <param name="pidModel"></param>
         /// <param name="unitModel"></param>
         /// <param name="pidInputIdx"></param>
-        /// <returns></returns>
-        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoop(UnitDataSet unitDataSet, PidModel pidModel, 
+        /// <returns>a simulator object and a dataset object that is ready to be simulated with Simulate() </returns>
+        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoopNoDisturbance(UnitDataSet unitDataSet, PidModel pidModel, 
             UnitModel unitModel, int pidInputIdx=0)
         {
             var plantSim = new PlantSimulator(
@@ -416,8 +416,8 @@ namespace TimeSeriesAnalysis.Dynamic
             var signalId2 = plantSim.ConnectModels(pidModel, unitModel, pidInputIdx);
 
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(signalId1, unitDataSet.Y_meas);
-            inputData.Add(signalId2, unitDataSet.U.GetColumn(pidInputIdx));
+            inputData.Add(signalId1, (double[])unitDataSet.Y_meas.Clone());
+            inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
 
             if (unitDataSet.U.GetNColumns() > 1)
             {
@@ -426,15 +426,32 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (curColIdx == pidInputIdx)
                         continue;
                     inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
-                        unitDataSet.U.GetColumn(curColIdx));
+                        (double[])unitDataSet.U.GetColumn(curColIdx).Clone());
                 }
             }
 
-            inputData.Add(plantSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
+            inputData.Add(plantSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), (double[])unitDataSet.Y_setpoint.Clone());
             inputData.CreateTimestamps(unitDataSet.GetTimeBase());
             inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
 
             return (plantSim, inputData);
+        }
+
+        /// <summary>
+        /// Create a feedback loop, where the process model has an additive disturbance that is to be estimated.
+        /// </summary>
+        /// <param name="unitDataSet"></param>
+        /// <param name="pidModel"></param>
+        /// <param name="unitModel"></param>
+        /// <param name="pidInputIdx"></param>
+        /// <returns>a simulator object and a dataset object that is ready to be simulated with Simulate() </returns>
+        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoopWithEstimatedDisturbance(UnitDataSet unitDataSet, PidModel pidModel,
+             UnitModel unitModel, int pidInputIdx = 0)
+        {
+            // vital that signal follows naming convention, otherwise it will not be estimated, but should be provided.
+            unitModel.AddSignalToOutput(SignalNamer.EstDisturbance(unitModel));
+            (PlantSimulator sim, TimeSeriesDataSet data) =  CreateFeedbackLoopNoDisturbance(unitDataSet,pidModel, unitModel, pidInputIdx);
+            return (sim,data);
         }
 
 
@@ -593,6 +610,7 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  If the model is a unitModel and the inputData inludes both the measured y and measured u, the
         ///  simData will include an estimate of the additive disturbance.
         ///  </para>
+        /// 
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="singleModelName"></param>
@@ -707,7 +725,15 @@ namespace TimeSeriesAnalysis.Dynamic
             return true;
         }
         /// <summary>
-        /// Perform a dynamic simulation of the model provided, given the specified connections and external signals. 
+        /// Perform a "plant-wide" full dynamic simulation of the entire plant,i.e. all models in the plant, given the specified connections and external signals. 
+        /// <para>
+        /// The dynamic simulation will also return estimated disturbances in simData, if the plant contains feedback loops where there is an additive 
+        /// disturbance with a signal named according to SignalNamer.EstDisturbance() convention
+        /// </para>
+        /// <para>
+        ///  The simulation will also set the <c>PlantFitScore</c> which can be used to evalute the fit of the simulation to the plant data.
+        ///  For this score to be calculated, the measured time-series corresponding to <c>simData</c> need to be provided in <c>inputData</c>
+        ///  </para>
         /// </summary>
         /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>

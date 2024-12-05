@@ -22,6 +22,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a unique string identifier that is used to identify a signal</returns>
         public static string GetSignalName(string modelID, SignalType signalType, int idx = 0)
         {
+            if (signalType == SignalType.Disturbance_D)
+            {
+                return EstDisturbance(modelID);
+            }
+
             if (idx == 0)
                 return modelID + separator + signalType.ToString();
             else
