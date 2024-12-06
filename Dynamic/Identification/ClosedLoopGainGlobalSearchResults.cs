@@ -143,12 +143,16 @@ namespace TimeSeriesAnalysis.Dynamic
             // as a "tiebreaker"
 
             if (v1_Strength == 0 && v2_Strength == 0 && v3_Strength == 0)
-            {/*
+            {
+                // quite frequently the algorithm arrives here, where all the three "strengths" are zero. 
+                // if there is a persistent disturbance like a randomwalk or sinus
+                
+                // only thing is that in randowmalk case, this tend to over-estimate gain consistently by about 10-40%
                 if (v4_Strength > 0)
                 {
                     return  new Tuple<UnitModel, bool>(new UnitModel(unitParametersList.ElementAt(min_ind_v4)), true);
                 }
-                else*/
+                else
                 {
                     return new Tuple<UnitModel, bool>(null, false);
                 }

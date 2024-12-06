@@ -364,12 +364,17 @@ function makePlotyTimeSeriesPlot(dataStorageObj)
             if (prettyName == "price")
                 prettyName = csvname;
             let trace1 = {
-                x: unpackDate(allRows,currentDateColumnName),// 'yyyy-mm-dd HH:MM:SS.ssssss'
-                y: unpack(allRows,currentValueColumnName),
+                x: unpackDate(allRows, currentDateColumnName),// 'yyyy-mm-dd HH:MM:SS.ssssss'
+                y: unpack(allRows, currentValueColumnName),
                 mode: 'lines',
                 name: prettyName,
-                line:{color: colorName, width:2}
+                line: { width: 2 } // color: colorName,
             };
+            if (csvIdx < 16)
+            {
+                  trace1.line =  { color: colorName, width: 2 }
+            }
+
             if (dataStorageObj.isVarOnY1[csvIdx]==true)
             {
                 trace1.yaxis = 'y1';

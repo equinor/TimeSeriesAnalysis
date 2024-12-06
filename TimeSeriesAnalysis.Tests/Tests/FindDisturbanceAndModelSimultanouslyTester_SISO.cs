@@ -176,12 +176,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         this may not be as good an assumption as for the step disturbances considered in other tests. 
         */
 
-        [TestCase(5, 1.0, Category="NotWorking_AcceptanceTest"), NonParallelizable]
-        [TestCase(1, 1.0, Category = "NotWorking_AcceptanceTest") ]
-        [TestCase(1, 5.0)]// this only works when the step change is much bigger than the disturbance
+        [TestCase(5, 1.0, Category="NotWorking_AcceptanceTest"), NonParallelizable, Explicit]
+        [TestCase(1, 1.0, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 5.0 )]// this only works when the step change is much bigger than the disturbance
         [TestCase(1, 0.0, Category = "NotWorking_AcceptanceTest")]
-        public void Static_SinusDistANDSetpointStep(double distSinusAmplitude,
-            double ysetStepAmplitude)
+        public void Static_SinusDistANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude)
         {
             double precisionPrc = 20;
 
@@ -198,9 +197,52 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
                 false, true, yset, precisionPrc);
         }
+
+
+        // 0.25: saturates the controller
+        [TestCase(0.5, 0.1, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(0.5, 1, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 0.1, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 1, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2, 0.1, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2, 1, Category = "NotWorking_AcceptanceTest")]
+        // gain of 5 starts giving huge oscillations...
+
+        public void Static_RandomWalkDisturbancep(double procGain, double distAmplitude)
+        {
+         //   int seed = 50;// works fairly well..
+         //   int seed = 100;// much harder for some reason
+            int seed = 105;
+            double precisionPrc = 20;
+
+            int N = 2000;
+
+            UnitParameters staticModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { procGain },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+            var trueDisturbance = TimeSeriesCreator.RandomWalk(N,distAmplitude, 0, seed);
+            var yset = TimeSeriesCreator.Constant( 50, N);
+            Shared.EnablePlots();
+            GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance,
+                false, true, yset, precisionPrc);
+            Shared.DisablePlots();
+        }
+
+
+
+
+
+
+
+
+
         // these tests seem to run well when run individuall, but when "run all" they seem to fail
         // this is likely related to a test architecture issue, not to anything wiht the actual algorithm.
-   
+
         [TestCase(5, 1.0),Explicit,NonParallelizable]// most difficult
         [TestCase(1, 1.0)] //difficult
         [TestCase(1, 5.0)]//easist
@@ -285,7 +327,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             if (doNegativeGain)
             {
                 usedProcParameters.LinearGains[0] = -usedProcParameters.LinearGains[0];
-                usedProcParameters.Bias = 100;// 
+                usedProcParameters.Bias = 100;
                 usedProcessModel.SetModelParameters(usedProcParameters);
                 pidParameters1.Kp = -pidParameters1.Kp ;
                 UnitParameters trueParams = trueProcessModel.GetModelParameters();
@@ -322,7 +364,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             // NB! uses the "perfect" pid-model in the identification process
 
             var estPidParam = new PidParameters(pidModel1.GetModelParameters());
-          //  estPidParam.Kp = estPidParam.Kp * 0.5;// try adding a wrong kp and see what it does
 
             (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, estPidParam);
 
