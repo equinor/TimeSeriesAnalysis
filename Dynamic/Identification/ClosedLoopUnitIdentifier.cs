@@ -37,7 +37,7 @@ namespace TimeSeriesAnalysis.Dynamic
         // NB!! These three are somewhat "magic numbers", that need to be changed only after
         // testing over a wide array of cases
         const int firstPassNumIterations = 30;//TODO: change back to 50
-        const int secondPassNumIterations = 20;
+        const int secondPassNumIterations = 0;
         const double initalGuessFactor_higherbound = 2.5;// 2 is a bit low, should be a bit higher
         const int nDigits = 5; //number of significant digits in results.
         ////////////////////////
@@ -54,6 +54,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public static (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
         {
+            bool doConsoleDebugOut = true;
+
             bool wasGainGlobalSearchDone = false;
             bool doTimeDelayEstOnRun1 = false;
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
@@ -125,6 +127,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 var distIdResult1 = DisturbanceIdentifier.EstimateDisturbance
                     (dataSetRun1, null, pidInputIdx, pidParams);
 
+                if (doConsoleDebugOut)
+                    Console.WriteLine("Run1,step1: " + distIdResult1.estPidProcessGain.ToString("F3", CultureInfo.InvariantCulture));
+
                 dataSetRun1.D = distIdResult1.d_est;
                 var unitModel_run1 = UnitIdentifier.IdentifyLinearAndStatic(ref dataSetRun1, fittingSpecs, doTimeDelayEstOnRun1);
                 unitModel_run1.modelParameters.LinearGainUnc = null;
@@ -132,8 +137,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 idUnitModelsList.Add(unitModel_run1);
                 isOK = ClosedLoopSim(dataSetRun1, unitModel_run1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
 
+                if (doConsoleDebugOut)
+                    Console.WriteLine("Run1,ident: " + unitModel_run1.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture));
+
                 //  run1, "step2" : "global search" for linear pid-gainsgains
-                if(unitModel_run1.modelParameters.GetProcessGains()!= null)
+                if (unitModel_run1.modelParameters.GetProcessGains()!= null)
                 {
                  
                     double pidProcessInputInitalGainEstimate = unitModel_run1.modelParameters.GetProcessGains()[pidInputIdx];
@@ -150,27 +158,39 @@ namespace TimeSeriesAnalysis.Dynamic
                     var max_gain =  Math.Abs(pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound);
                     var min_gain = - max_gain;
 
-                    //  min_gain = 0;      // when debugging, it might be advantageous to set min_gain equal to the known true value
+                    if (doConsoleDebugOut)
+                    {
+                        Console.WriteLine("Run1,GS Higher bound: "+ max_gain.ToString("F3", CultureInfo.InvariantCulture) );
+                    }
+
+                        //  min_gain = 0;      // when debugging, it might be advantageous to set min_gain equal to the known true value
 
                     // first pass(wider grid with larger grid size)
-                    var retPass1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx, 
+                     var retGlobalSearch1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx, 
                          unitModel_run1, pidProcessInputInitalGainEstimate, 
                         min_gain, max_gain, fittingSpecs,firstPassNumIterations);
-                    var bestUnitModel = retPass1.Item1;
+                    var bestUnitModel = retGlobalSearch1.Item1;
+
+                    if (doConsoleDebugOut && retGlobalSearch1.Item1 != null)
+                        Console.WriteLine("Run1,GS1: " + retGlobalSearch1.Item1.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture));
+                    else
+                        Console.WriteLine("Run1,GS1: FAILED");
 
                     if (bestUnitModel != null)
                     {
                         // second pass(finer grid around best result of first pass)
-                        if (retPass1.Item1.modelParameters.Fitting.WasAbleToIdentify && secondPassNumIterations > 0)
+                        if (retGlobalSearch1.Item1.modelParameters.Fitting.WasAbleToIdentify && secondPassNumIterations > 0)
                         {
                             const int WIDTH_OF_SEARCH_PASS2 = 3;
 
-                            var gainPass1 = retPass1.Item1.modelParameters.LinearGains[pidInputIdx];
-                            var retPass2 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
-                               retPass1.Item1, gainPass1, gainPass1 - retPass1.Item2* WIDTH_OF_SEARCH_PASS2, gainPass1 + retPass1.Item2* WIDTH_OF_SEARCH_PASS2, 
+                            var gainPass1 = retGlobalSearch1.Item1.modelParameters.LinearGains[pidInputIdx];
+                            var retGlobalSearch2 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
+                               retGlobalSearch1.Item1, gainPass1, gainPass1 - retGlobalSearch1.Item2* WIDTH_OF_SEARCH_PASS2, gainPass1 + retGlobalSearch1.Item2* WIDTH_OF_SEARCH_PASS2, 
                                fittingSpecs,secondPassNumIterations);
-                            bestUnitModel = retPass2.Item1;
+                            bestUnitModel = retGlobalSearch2.Item1;
                             wasGainGlobalSearchDone = true;
+                            if (doConsoleDebugOut)
+                                Console.WriteLine("Run1,GS2: " + retGlobalSearch2.Item1.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture));
                         }
                     }
                     // add the "best" model to be used in the next model run
@@ -324,6 +344,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     var distIdResult_step4 = DisturbanceIdentifier.EstimateDisturbance
                             (dataSetRun2, step2Model, pidInputIdx, pidParams);
                     idDisturbancesList.Add(distIdResult_step4);
+                    if (doConsoleDebugOut)
+                        Console.WriteLine("Run2 " + step2Model.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture));
                 }
             }
 

@@ -105,7 +105,7 @@ to the algorithm, so that the algorith can infer about the control error ``e``.
 > is also true, what appear to be negative process gains at first sight may in
 > closed-loop be positive process gains.
 
-### First, model-free estimate
+### First, model-free estimate of the process gain
 A model-free estimate of the disturbance is required to initialize
 subsequent sequential estimation. 
 
@@ -114,18 +114,37 @@ a linear static model essentially boils down to estimating the process gain.
 
  ![init](./images/sysid_disturbance_init.png)
 
-This first estimate of the process gain ``G`` in a linear model ``y = G x u``
+This first estimate of the process gain ``G_0`` in a linear model ``y = G_0 x u``
 is found by the approximation 
 ```
-G = max(e)/(max(u)-min(u)) 
+G_0 = max(e)/(max(u)-min(u)) 
 ```
+
+The PID-controller usually has an integral effect which causes it to be somewhat delayed in 
+responding to a disturbance, and the process also can have time delay and/or a time constant 
+that means that the deviation ``e`` is brought back to zero over a certain period of time.
+The idea of creating an inital estimate withh ``min`` and ``max`` values is that it circumvents the lack 
+of knowledge of the dynamics at this early stage of estimaton. 
+
+It has been observed in unit tests that this estiamte in some cases is spot on the actual gain, such as when 
+the disturbance is a perfect step. 
+
+Remember, it is not needed for the inital heuritic guess of the process gain to be completely accurate, because
+subsequent steps in the search algorithm can try to improve on this estiamte. 
+
+Once an inital estiamte of the process gain has been made, it is possible to estimate the disturbance vector, which is used to initate the below steps. 
+
 ### Pid gain global search
 
-TODO
+After the inital estiamte of the 
+
+
+### Estimating upper-and lower boundds on the process gain 
+
 
 ### Time constant search algorithm
 
-TODO
+
 
 ### Separating the state of the system from the output
 

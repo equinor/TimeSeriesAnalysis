@@ -256,7 +256,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitModel = new UnitModel();
             var vec = new Vec(unitDataSet.BadDataID);
 
-            //var result = new DisturbanceIdResult(unitDataSet);
             if (unitDataSet.Y_setpoint == null || unitDataSet.Y_meas == null || unitDataSet.U == null)
             {
                 return null;
@@ -277,6 +276,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // but works better than candiate 2 when disturbance is a step
 
                 double FilterTc_s = 0;
+               
                 // initalizaing(rough estimate):
                 {
                     LowPass lowPass = new LowPass(unitDataSet.GetTimeBase());
@@ -316,6 +316,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot
                     double minU = vec.Min(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
                     estPidInputProcessGain = pidInput_processGainSign * maxDE / (maxU - minU);
+
+                //    double avgDE = vec.Mean(vec.Abs(eFiltered), unitDataSet.IndicesToIgnore).Value;
+                //    double avgU = vec.Mean(vec.Abs(pidInput_deltaU), unitDataSet.IndicesToIgnore).Value;
+                //    double estPidInputProcessGainUB = avgDE / avgU;
+                //    Console.WriteLine("process gain upper og lower boundbound:"+estPidInputProcessGainUB+ " uncertainty:" + Math.Abs(estPidInputProcessGain- estPidInputProcessGainUB));
+
                 }
              
                 int indexOfFirstGoodValue = 0;
@@ -337,6 +343,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     var unitParamters = new UnitParameters();
                     unitParamters.LinearGains = new double[nGains];
                     unitParamters.LinearGains[pidInputIdx] = estPidInputProcessGain;
+               //     unitParamters.LinearGainUnc[pidInputIdx] = estPidInputProcessGain-est;
+
                     unitParamters.U0 = new double[nGains];
                     unitParamters.U0[pidInputIdx] = pidInput_u0[pidInputIdx];
                     unitParamters.UNorm = Vec<double>.Fill(1, nGains);
@@ -432,6 +440,7 @@ namespace TimeSeriesAnalysis.Dynamic
             result.d_est = d_est;
             result.d_LF = d_LF;
             result.d_HF = d_HF;
+            result.estPidProcessGain = unitModel.GetModelParameters().LinearGains.ElementAt(pidInputIdx);
             result.adjustedUnitDataSet = unitDataSet_adjusted;
 
             // END STEP 2
