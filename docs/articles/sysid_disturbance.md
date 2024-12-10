@@ -82,6 +82,51 @@ d = d_HF+d_LF = d_HF(e)+ d_LF(u)
 ```
 ``d_LF`` will in general also be a function of the process model, especially the process gain.
 
+
+### Estimating the disturbance vector when a model is assumed
+
+By ``y_meas = y_mod(u) + d``, where ``y_internal(u)`` is the response of the process
+
+it stands to reason that once the a model ``y_mod(u)`` is assumed, the disturbance vector can be calculated
+by subtracting the effect of the model from the measured ``y_meas``:
+
+``d_est(t) = y_meas(t) - y_mod(u(t)) ``
+
+
+### Step 1 : First, model-free estimate of the process gain
+
+The idea of the inital estimate gain is to get an idea of the approximate value of the process gain, which will 
+determine the bounds for global search in subsequent steps. 
+
+A model-free estimate of the disturbance is required to initialize
+subsequent sequential estimation. 
+
+For the first iteration, all process dynamics and nonlinearities are neglected, 
+a linear static model essentially boils down to estimating the process gain. 
+
+ ![init](./images/sysid_disturbance_init.png)
+
+This first estimate of the process gain ``G_0`` in a linear model ``y = G_0 x u``
+is found by the approximation 
+```
+G_0 = max(e)/(max(u)-min(u)) 
+```
+
+The PID-controller integral effect time constant meant that a peak in the deviation ``e`` will not coincide with the peak
+in ``u''.
+The idea of creating an inital estimate withh ``min`` and ``max`` values is that it circumvents the lack 
+of knowledge of the dynamics at this early stage of estimaton. 
+
+It has been observed in unit tests that this estimate in some cases is spot on the actual gain, such as when 
+the disturbance is a perfect step. 
+
+Given the gain an inital UnitModel is created with a rudimentary bias and operating point ``u0``, so that the model can 
+be simulated to give an inital ``y_mod(u)``, so that an estimate ``d_est(t)`` can be found.
+
+Because no process dynamics are assumed yet, ``d_est(t)`` at this stage will include some transient artifacts if the process
+has dynamics. ``d_est(t)`` will be attempted improved in subsquent steps.
+
+
 ### Guessing the sign of the process gain
 
 Methods for open-loop estimation when applied naively to closed loop
@@ -105,58 +150,57 @@ to the algorithm, so that the algorith can infer about the control error ``e``.
 > is also true, what appear to be negative process gains at first sight may in
 > closed-loop be positive process gains.
 
-### First, model-free estimate of the process gain
-A model-free estimate of the disturbance is required to initialize
-subsequent sequential estimation. 
+To guess the sign of the proces gain, the algorithm divides the dataset into two subsets where
+the ``e`` is greater than zero and where it is smaller than zero. 
+Then the average value of ``u_pid`` for each of these sets is compared. 
+If the process gain sign is positive, we expect u_pid to have greater values when ``e<0`` than when ``e>0``
 
-For the first iteration, all process dynamics and nonlinearities are neglected, 
-a linear static model essentially boils down to estimating the process gain. 
 
- ![init](./images/sysid_disturbance_init.png)
+### Step2: Process gain global search (setpoint changes or u_ext changes)
 
-This first estimate of the process gain ``G_0`` in a linear model ``y = G_0 x u``
-is found by the approximation 
-```
-G_0 = max(e)/(max(u)-min(u)) 
-```
+The inital guesss for the process gain and process gain sign above have not considered
+ the pid-controller and its dynamcis, including any setpoint changes that the dataset may contain.
 
-The PID-controller usually has an integral effect which causes it to be somewhat delayed in 
-responding to a disturbance, and the process also can have time delay and/or a time constant 
-that means that the deviation ``e`` is brought back to zero over a certain period of time.
-The idea of creating an inital estimate withh ``min`` and ``max`` values is that it circumvents the lack 
-of knowledge of the dynamics at this early stage of estimaton. 
+If there are setpoint changes, it would be wise to try to use these to improve the model, but broadly speaking there
+are two kinds of changes that we could envisage:
 
-It has been observed in unit tests that this estiamte in some cases is spot on the actual gain, such as when 
-the disturbance is a perfect step. 
+- setpoint "step" changes due to an operator manually changing a setpoint 
+- continous smaller setpoint changes due to the controller being the innner loop in a "cascade" where another PID-controller
+or an MPC acts as the outer loop. 
 
-Remember, it is not needed for the inital heuritic guess of the process gain to be completely accurate, because
-subsequent steps in the search algorithm can try to improve on this estiamte. 
+In the second case, the the setpoint changes will be frequent and small, and will probably be correlated with the disturbance, while in the 
+first case, the setpoint change will be independent of the disturbance. 
 
-Once an inital estiamte of the process gain has been made, it is possible to estimate the disturbance vector, which is used to initate the below steps. 
+To determine the disturbance in the case of setpoint changes, 
 
-### Pid gain global search
+The PID-model and process model is simulated in a closed loop with no disturbance acting on it, but where the actual setpoint 
+signals and any external model inputs u are applied. This results in a simulation of "what the output ``y_meas`` would have been
+if the disturbance was zero" that can be repeated for different gains of the PID-input u_pid in the process model. 
 
-After the inital estiamte of the 
+It has been observed that the process gain that results int the smallest
+"mean-absolute-diff" of ``u_pid`` (referred to as ``u_pid_adjusted`` in code) 
+in this "disturbance free" simulation is a good esimate of the true process gain for datasets
+where there are changes in the setpoint, found as_
+
+``var uPidVariance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value``
+
+
+
+
 
 
 ### Estimating upper-and lower boundds on the process gain 
 
+It may be that the algorithm has a better accuracy when there are setpoint changes in the dataset.
+It may also be that there the model will do better when there are large "wavy" disturbances than when the
+disturbances are small and noisy. 
 
-### Time constant search algorithm
+An online identification can choose among different datasets to do identification from, and if estimates of the upper- and lower bounds
+on the gain were available, this knowledge could guide the choice of tuning data set. 
+
+Knowing upper- and lower bounds could also be a useful guide for subsequent manual fine-tuning of the process model. 
 
 
-
-### Separating the state of the system from the output
-
-Let the state ``X`` be defined as the output minus the disturbance:
-```
-y = x + d
-```
-When solving the process model for a given disturbance, the identification is 
-done on the un-measured ``x`` found from 
-```
-x = y-d
-```
 
 ### Determing the dynamic parameters of the process 
 
@@ -170,7 +214,7 @@ then this is usually preferable.
 
 These un-modeled transients may also cause process gains and disturbance estimates to be skewed slightly too large.
 
-In the final step, the *ClosedLoopEstimator* tries to modify the static models identifier previously by adding larger and larger
+In the final step, the *ClosedLoopUnitIdentifier* tries to modify the static models identifier previously by adding larger and larger
 time constants to the identified model, and observing if this reduces the *absolute, sample-over-sample variance in the disturbance".
 
 

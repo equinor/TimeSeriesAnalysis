@@ -145,12 +145,16 @@ namespace TimeSeriesAnalysis.Dynamic
             if (v1_Strength == 0 && v2_Strength == 0 && v3_Strength == 0)
             {
                 // quite frequently the algorithm arrives here, where all the three "strengths" are zero. 
-                // if there is a persistent disturbance like a randomwalk or sinus
+                // if there is a persistent disturbance like a randomwalk or sinus and no changes in the 
+                // setpoint or in external inputs to the process model. 
                 
                 // only thing is that in randowmalk case, this tend to over-estimate gain consistently by about 10-40%
                 if (v4_Strength > 0)
                 {
-                    return  new Tuple<UnitModel, bool>(new UnitModel(unitParametersList.ElementAt(min_ind_v4)), true);
+                    var unitPara = unitParametersList.ElementAt(min_ind_v4);
+                   // unitPara.Fitting = new FittingInfo();
+                  //  unitPara.Fitting.SolverID = "ClosedLoopId (global-search:v4)";
+                    return  new Tuple<UnitModel, bool>(new UnitModel(unitPara), true);
                 }
                 else
                 {
@@ -160,6 +164,7 @@ namespace TimeSeriesAnalysis.Dynamic
        
             }
             double[] objFun = v1;
+          //  string vString = "v1";
 
             if (v1_Strength < v1_Strength_Threshold)
             {
@@ -172,6 +177,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // var v3 = linregGainYsetToDestList.ToArray();
                     // var v3_scaled = vec.Div(vec.Subtract(v3, vec.Min(v3)), vec.Max(v3) - vec.Min(v3));
                     objFun = vec.Add(objFun, vec.Multiply(v2_scaled, v2_factor));
+             //       vString = "v2";
                 }
 
                 // if the system has external inputs, and they change in value
@@ -179,10 +185,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var v3_scaled = Scale(v3);
                     objFun = vec.Add(objFun, vec.Multiply(v3_scaled, v3_factor));
+           //         vString = "v3";
                 }
             }
+
             vec.Min(objFun, out min_ind);
-                return new Tuple<UnitModel, bool>(new UnitModel(unitParametersList.ElementAt(min_ind)), true);
+            var unitParams = unitParametersList.ElementAt(min_ind);
+       //     unitParams.Fitting = new FittingInfo();
+         //   unitParams.Fitting.SolverID = "ClosedLoopId (global-search:" + vString + ")";
+
+            return new Tuple<UnitModel, bool>(new UnitModel(unitParams), true);
          }
     }
 }

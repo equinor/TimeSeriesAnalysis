@@ -13,7 +13,7 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Test.DisturbanceID
 {
     [TestFixture]
-    class FindDisturbanceAndModelSimultanouslyTester_MISO
+    class ClosedLoopIdentifierTester_MISO
     {
         const bool doPlot = true;
 
@@ -216,7 +216,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // that is very close to zero- indicating something is wrong. They also have the warning message
         // "constant input U" - indicating there may be an error in the programming this test.
         
-        [TestCase(0, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(0, Category = "NotWorking_AcceptanceTest"),Explicit]
         [TestCase(1, Category = "NotWorking_AcceptanceTest")]
         public void DynamicMISO_externalUchanges_NoDisturbance_NOsetpointchange_DetectsProcessOk(int pidInputIdx)
         {
@@ -244,6 +244,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             var usedProcParameters = trueProcessModel.GetModelParameters().CreateCopy();
             var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
+            var usedPidParams = new PidParameters(pidParameters1);
             var extInputIdx1 = 1;
             var extInputIdx2 = 2;
             if (pidInputIdx == 1)
@@ -284,11 +285,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 usedProcParameters.LinearGains[pidInputIdx] = -usedProcParameters.LinearGains[pidInputIdx];
                 usedProcParameters.Bias = 50;// 
                 usedProcessModel.SetModelParameters(usedProcParameters);
-                pidParameters1.Kp = -pidParameters1.Kp;
+                usedPidParams.Kp = -usedPidParams.Kp;
                 trueProcessModel.SetModelParameters(usedProcParameters);
             }
             // create synthetic dataset
-            var pidModel1 = new PidModel(pidParameters1, "PID1");
+            var pidModel1 = new PidModel(usedPidParams, "PID1");
 
             var processSim = new PlantSimulator(
              new List<ISimulatableModel> { pidModel1, usedProcessModel });

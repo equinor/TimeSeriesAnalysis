@@ -1,15 +1,19 @@
 ﻿using Accord.Math;
+using Accord.Statistics;
 using Accord.Statistics.Links;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
@@ -114,6 +118,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Removes the effect of setpoint and (if relevant any non-pid input) changes  from the dataset using the model of pid and unit provided 
+        /// 
+        /// If external inputs u and y_set are constant, the original dataset is returned. 
         /// </summary>
         /// <param name="unitDataSet"></param>
         /// <param name="unitModel"></param>
@@ -180,7 +186,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 // rewrite:
                // (var processSim_noDist, var inputData_noDist) = PlantSimulator.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
                 var noDist_isOk = processSim_noDist.Simulate(inputData_noDist, out TimeSeriesDataSet simData_noDist);
-               // noDist_isOk = false;//TODO: remove temporary
                 if (noDist_isOk)
                 {
                     int idxFirstGoodValue = 0;
@@ -197,7 +202,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     var vec = new Vec();
 
-                    // create a new Y_meas that excludes the influence of any disturabnce using "no_Dist" simulation
+                    // create a new Y_meas that excludes the influence of any disturbance using "no_Dist" simulation
                     // this is used to find d_HF
                     var procOutputY = simData_noDist.GetValues(unitModel.GetID(), SignalType.Output_Y);
                     var deltaProcOutputY = vec.Subtract(procOutputY, procOutputY[idxFirstGoodValue]);
@@ -231,6 +236,18 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     if (false) // debugging plots, normally set to false
                     {
+                        // think this is wrong
+                        var dEst = vec.Subtract(unitDataSet.Y_meas,unitDataSet_adjusted.Y_meas);
+
+                        var u_pid_adjusted = unitDataSet_adjusted.U.GetColumn(pidInputIdx);
+                        var uPidVariance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value;
+                         var covBtwUPidAdjustedAndDest = Math.Abs(Measures.Covariance(dEst, u_pid_adjusted, false));
+                        var comment = "distIdent_setpointTest Kp=" +
+                            unitModel.GetModelParameters().LinearGains.ElementAt(pidInputIdx).ToString("F3", CultureInfo.InvariantCulture) +
+                             "uPidVariance= " + uPidVariance.ToString("F3", CultureInfo.InvariantCulture) +
+                             "cov=" + covBtwUPidAdjustedAndDest.ToString("F3", CultureInfo.InvariantCulture);
+
+
                         Shared.EnablePlots();
                         Plot.FromList(
                         new List<double[]> {
@@ -242,8 +259,9 @@ namespace TimeSeriesAnalysis.Dynamic
                           unitDataSet.U.GetColumn(pidInputIdx)
                         },
                         new List<string> { "y1=y_meas(new)", "y1=y_meas(old)", "y1=y_set(new)", "y1=y_set(old)", "y3=u_pid(new)", "y3=u_pid(old)" },
-                        inputData_noDist.GetTimeBase(), "distIdent_setpointTest");
+                        inputData_noDist.GetTimeBase(), comment);
                         Shared.DisablePlots();
+                        Thread.Sleep(100);
                     }
                 }
             }
@@ -251,117 +269,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         }
 
-        private static UnitModel EstimateClosedLoopProcessGain(UnitDataSet unitDataSet, int pidInputIdx)
-        {
-            var unitModel = new UnitModel();
-            var vec = new Vec(unitDataSet.BadDataID);
 
-            if (unitDataSet.Y_setpoint == null || unitDataSet.Y_meas == null || unitDataSet.U == null)
-            {
-                return null;
-            }
-
-            bool doesSetpointChange = !(vec.Max(unitDataSet.Y_setpoint, unitDataSet.IndicesToIgnore)
-                == vec.Min(unitDataSet.Y_setpoint, unitDataSet.IndicesToIgnore));
-            double estPidInputProcessGain = 0;
-
-            // try to find a rough first estimate by heuristics
-            {
-                double[] pidInput_u0 = Vec<double>.Fill(unitDataSet.U[pidInputIdx, 0],
-                    unitDataSet.GetNumDataPoints());
-                double yset0 = unitDataSet.Y_setpoint[0];
-
-                // y0,u0 is at the first data point
-                // disadvantage, is that you are not sure that the time series starts at steady state
-                // but works better than candiate 2 when disturbance is a step
-
-                double FilterTc_s = 0;
-               
-                // initalizaing(rough estimate):
-                {
-                    LowPass lowPass = new LowPass(unitDataSet.GetTimeBase());
-                    double[] e = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);
-                    // knowing the sign of the process gain is quite important!
-                    // if a system has negative gain and is given a positive process disturbance, then y and u will both increase in a way that is 
-                    // correlated 
-                    double pidInput_processGainSign = 1;
-                    // look at the correlation between u and y.
-                    // assuming that the sign of the Kp in PID controller is set correctly so that the process is not unstable: 
-                    // If an increase in _y(by means of a disturbance)_ causes PID-controller to _increase_ u then the processGainSign is negative
-                    // If an increase in y causes PID to _decrease_ u, then processGainSign is positive!
-                    {
-                        var indGreaterThanZeroE = vec.FindValues(e, 0, VectorFindValueType.BiggerOrEqual, unitDataSet.IndicesToIgnore);
-                        var indLessThanZeroE = vec.FindValues(e, 0, VectorFindValueType.SmallerOrEqual, unitDataSet.IndicesToIgnore);
-
-                        var u_pid = unitDataSet.U.GetColumn(pidInputIdx);
-                        var uAvgWhenEgreatherThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u_pid, indGreaterThanZeroE));
-                        var uAvgWhenElessThanZero = vec.Mean(Vec<double>.GetValuesAtIndices(u_pid, indLessThanZeroE));
-
-                        if (uAvgWhenEgreatherThanZero != null && uAvgWhenElessThanZero != 0)
-                        {
-                            if (uAvgWhenElessThanZero >= uAvgWhenEgreatherThanZero)
-                            {
-                                pidInput_processGainSign = 1;
-                            }
-                            else
-                            {
-                                pidInput_processGainSign = -1;
-                            }
-                        }
-                    }
-                    double[] pidInput_deltaU = vec.Subtract(unitDataSet.U.GetColumn(pidInputIdx), pidInput_u0);//TODO : U including feed-forward?
-                    double[] eFiltered = lowPass.Filter(e, FilterTc_s, 2, unitDataSet.IndicesToIgnore);
-                    double maxDE = vec.Max(vec.Abs(eFiltered), unitDataSet.IndicesToIgnore);       // this has to be sensitive to noise?
-                    double[] uFiltered = lowPass.Filter(pidInput_deltaU, FilterTc_s, 2, unitDataSet.IndicesToIgnore);
-                    double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot
-                    double minU = vec.Min(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
-                    estPidInputProcessGain = pidInput_processGainSign * maxDE / (maxU - minU);
-
-                //    double avgDE = vec.Mean(vec.Abs(eFiltered), unitDataSet.IndicesToIgnore).Value;
-                //    double avgU = vec.Mean(vec.Abs(pidInput_deltaU), unitDataSet.IndicesToIgnore).Value;
-                //    double estPidInputProcessGainUB = avgDE / avgU;
-                //    Console.WriteLine("process gain upper og lower boundbound:"+estPidInputProcessGainUB+ " uncertainty:" + Math.Abs(estPidInputProcessGain- estPidInputProcessGainUB));
-
-                }
-             
-                int indexOfFirstGoodValue = 0;
-                if (unitDataSet.IndicesToIgnore != null)
-                {
-                    if (unitDataSet.GetNumDataPoints() > 0)
-                    {
-                        while (unitDataSet.IndicesToIgnore.Contains(indexOfFirstGoodValue) && indexOfFirstGoodValue <
-                            unitDataSet.GetNumDataPoints() - 1)
-                        {
-                            indexOfFirstGoodValue++;
-                        }
-                    }
-                }
-
-                int nGains = unitDataSet.U.GetNColumns();
-                if (nGains == 1)
-                {
-                    var unitParamters = new UnitParameters();
-                    unitParamters.LinearGains = new double[nGains];
-                    unitParamters.LinearGains[pidInputIdx] = estPidInputProcessGain;
-               //     unitParamters.LinearGainUnc[pidInputIdx] = estPidInputProcessGain-est;
-
-                    unitParamters.U0 = new double[nGains];
-                    unitParamters.U0[pidInputIdx] = pidInput_u0[pidInputIdx];
-                    unitParamters.UNorm = Vec<double>.Fill(1, nGains);
-                    unitParamters.Bias = unitDataSet.Y_meas[indexOfFirstGoodValue];
-                    unitModel = new UnitModel(unitParamters);
-                }
-                else
-                {
-                    unitModel = UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet, pidInputIdx, estPidInputProcessGain,
-                        pidInput_u0[indexOfFirstGoodValue], 1);
-                }
-            }
-            // END STEP 1
-            ////////////////////////////
-
-            return unitModel;
-        }
 
 
 
@@ -374,26 +282,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitModel">the estimate of the unit</param>
         /// <param name="pidInputIdx">the index of the pid-input in the unitModel</param>
         /// <param name="pidParams">the parameters if known of the pid-controller in the closed loop</param>
-        /// <returns></returns>
-        public static DisturbanceIdResult EstimateDisturbance(UnitDataSet unitDataSet,
+        /// <returns>A DisturbanceIdResult object, that contains the estimated disturbance, as well as </returns>
+        public static DisturbanceIdResult CalculateDisturbanceVector(UnitDataSet unitDataSet,
             UnitModel unitModel, int pidInputIdx = 0, PidParameters pidParams = null)
         {
             if (unitModel == null)
-            {
-                unitModel = EstimateClosedLoopProcessGain(unitDataSet, pidInputIdx);
-            }
-            else if (unitModel.GetModelParameters()==null)
-            {
-                unitModel = EstimateClosedLoopProcessGain(unitDataSet, pidInputIdx);
-            }
-            else if (unitModel.GetModelParameters().LinearGains == null)
-            {
-                unitModel = EstimateClosedLoopProcessGain(unitDataSet, pidInputIdx);
-            }
-            else if (unitModel.GetModelParameters().LinearGains.Count() == 0)
-            {
-                unitModel = EstimateClosedLoopProcessGain(unitDataSet, pidInputIdx);
-            }
+                return null;
 
             var result = new DisturbanceIdResult(unitDataSet);
             /////////////////////////////
