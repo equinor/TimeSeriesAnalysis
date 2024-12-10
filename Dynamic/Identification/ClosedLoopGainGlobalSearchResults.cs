@@ -152,8 +152,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (v4_Strength > 0)
                 {
                     var unitPara = unitParametersList.ElementAt(min_ind_v4);
-                   // unitPara.Fitting = new FittingInfo();
-                  //  unitPara.Fitting.SolverID = "ClosedLoopId (global-search:v4)";
+              //      unitPara.Fitting = new FittingInfo();
+               //     unitPara.Fitting.SolverID = "ClosedLoopId (global-search:v4)";
                     return  new Tuple<UnitModel, bool>(new UnitModel(unitPara), true);
                 }
                 else

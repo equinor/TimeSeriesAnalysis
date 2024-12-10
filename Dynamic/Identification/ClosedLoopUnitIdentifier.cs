@@ -146,12 +146,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     // or antoher way to look at ti is that the output U with setpoint effects removed should be as decoupled 
                     // form Y_setpoint.
 
-                    // in some cases the first linear regression done without any estimate of the disturbance can even have the wrong
-                    // sign of the linear gains, although the amplitude will in general be of the right order, thus 
-                    // min_gain = -max_gain;  is a more robust choice than some small same-sign value or 0.
 
                     double max_gain, min_gain;
 
+                    // todo: considre improving these bounds?
                     if (pidProcessInputInitalGainEstimate > 0)
                     {
                         max_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
@@ -162,14 +160,10 @@ namespace TimeSeriesAnalysis.Dynamic
                         min_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
                         max_gain = pidProcessInputInitalGainEstimate * 1 / initalGuessFactor_higherbound;
                     }
-
-                 //   var min_gain = - max_gain;
                     if (doConsoleDebugOut)
                     {
                         Console.WriteLine("Step2,GS : " + min_gain.ToString("F3", CultureInfo.InvariantCulture) + " to " + max_gain.ToString("F3", CultureInfo.InvariantCulture));
                     }
-
-                    //  min_gain = 0;      // when debugging, it might be advantageous to set min_gain equal to the known true value
 
                     // first pass(wider grid with larger grid size)
                     var retGlobalSearch1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
@@ -412,31 +406,32 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (identUnitModel.modelParameters.Fitting == null)
                 {
                     identUnitModel.modelParameters.Fitting = new FittingInfo();
-                    identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
-                    identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
-                    identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
-                    identUnitModel.modelParameters.Fitting.TimeBase_s = dataSet.GetTimeBase();
-
-                    var uMaxList = new List<double>();
-                    var uMinList = new List<double>();
-
-                    for (int i = 0; i < dataSet.U.GetNColumns(); i++)
-                    {
-                        uMaxList.Add(SignificantDigits.Format(vec.Max(dataSet.U.GetColumn(i)), nDigits));
-                        uMinList.Add(SignificantDigits.Format(vec.Min(dataSet.U.GetColumn(i)), nDigits));
-                    }
-                    identUnitModel.modelParameters.Fitting.Umax = uMaxList.ToArray();
-                    identUnitModel.modelParameters.Fitting.Umin = uMinList.ToArray();
-
-                    if (wasGainGlobalSearchDone)
-                    {
-                        identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
-                    }
-                    else
-                        identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
-                    identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
-                    identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
                 }
+                identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
+                identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
+                identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
+                identUnitModel.modelParameters.Fitting.TimeBase_s = dataSet.GetTimeBase();
+
+                var uMaxList = new List<double>();
+                var uMinList = new List<double>();
+
+                for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+                {
+                    uMaxList.Add(SignificantDigits.Format(vec.Max(dataSet.U.GetColumn(i)), nDigits));
+                    uMinList.Add(SignificantDigits.Format(vec.Min(dataSet.U.GetColumn(i)), nDigits));
+                }
+                identUnitModel.modelParameters.Fitting.Umax = uMaxList.ToArray();
+                identUnitModel.modelParameters.Fitting.Umin = uMinList.ToArray();
+
+                if (wasGainGlobalSearchDone)
+                {
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
+                }
+                else
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
+                identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
+                identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
+                
                 // closed-loop simulation, adds U_sim and Y_sim to dataset
                 ClosedLoopSim(dataSet, identUnitModel.modelParameters, pidParams, disturbance);
 
@@ -822,7 +817,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         bestUnitModel.modelParameters.LinearGainUnc[pidInputIdx] = gainStepSize;
                     }
                 }
-                bestUnitModel.modelParameters.Fitting = new FittingInfo();
+                if (bestUnitModel.modelParameters.Fitting == null)
+                    bestUnitModel.modelParameters.Fitting = new FittingInfo();
                 bestUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
             }
             return new Tuple<UnitModel,double>(bestUnitModel, gainStepSize);
@@ -891,6 +887,9 @@ namespace TimeSeriesAnalysis.Dynamic
             bool doesSetpointChange = !(vec.Max(unitDataSet.Y_setpoint, unitDataSet.IndicesToIgnore)
                 == vec.Min(unitDataSet.Y_setpoint, unitDataSet.IndicesToIgnore));
             double estPidInputProcessGain = 0;
+
+            // TODO  note that this fails in the case of external input signals u, may need to subtract the influence of external inputs in this case. 
+            // TODO: consider using the pidParams to improve this estiamte?
             var pidInput_processGainSign = GuessSignOfProcessGain(unitDataSet, pidParams,pidInputIdx);
 
             // try to find a rough first estimate by heuristics
@@ -915,11 +914,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot
                 double minU = vec.Min(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
                 estPidInputProcessGain = pidInput_processGainSign * maxDE / (maxU - minU);
-
-                //    double avgDE = vec.Mean(vec.Abs(eFiltered), unitDataSet.IndicesToIgnore).Value;
-                //    double avgU = vec.Mean(vec.Abs(pidInput_deltaU), unitDataSet.IndicesToIgnore).Value;
-                //    double estPidInputProcessGainUB = avgDE / avgU;
-                //    Console.WriteLine("process gain upper og lower boundbound:"+estPidInputProcessGainUB+ " uncertainty:" + Math.Abs(estPidInputProcessGain- estPidInputProcessGainUB));
 
                 int indexOfFirstGoodValue = 0;
                 if (unitDataSet.IndicesToIgnore != null)
