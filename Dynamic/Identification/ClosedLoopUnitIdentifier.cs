@@ -835,9 +835,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitDataSet"></param>
         /// <param name="pidParams"></param>
         /// <param name="pidInputIdx"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 if gain is positive or -1 if gain is negative.</returns>
         private static double GuessSignOfProcessGain(UnitDataSet unitDataSet, PidParameters pidParams, int pidInputIdx)
         {
+            if (pidParams.Kp != 0 && !Double.IsNaN(pidParams.Kp) && pidParams.Kp != -9999)
+            {
+                if (pidParams.Kp > 0)
+                    return 1;
+                else
+                    return -1;
+            }
+
             var vec = new Vec(unitDataSet.BadDataID);
             double[] e = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);
             double pidInput_processGainSign = 1;
@@ -876,6 +884,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         private static UnitModel EstimateClosedLoopProcessGain(UnitDataSet unitDataSet, PidParameters pidParams, int pidInputIdx)
         {
+
+
+
             var unitModel = new UnitModel();
             var vec = new Vec(unitDataSet.BadDataID);
 

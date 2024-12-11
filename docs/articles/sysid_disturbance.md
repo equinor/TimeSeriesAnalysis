@@ -113,12 +113,15 @@ G_0 = max(e)/(max(u)-min(u))
 ```
 
 The PID-controller integral effect time constant meant that a peak in the deviation ``e`` will not coincide with the peak
-in ``u''.
+in ``u``.
 The idea of creating an inital estimate withh ``min`` and ``max`` values is that it circumvents the lack 
 of knowledge of the dynamics at this early stage of estimaton. 
 
 It has been observed in unit tests that this estimate in some cases is spot on the actual gain, such as when 
-the disturbance is a perfect step. 
+the disturbance is a perfect step.
+
+It seems that the accuracy of this initial estimate may depend on how much the process is close to steady-state for different disturbance values, 
+as disturbance step produces far better gain estiamtes than if the disturbance is a steady sinus(so that the system never reaches steady-state.)
 
 Given the gain an inital UnitModel is created with a rudimentary bias and operating point ``u0``, so that the model can 
 be simulated to give an inital ``y_mod(u)``, so that an estimate ``d_est(t)`` can be found.
@@ -184,12 +187,13 @@ where there are changes in the setpoint, found as_
 
 ``var uPidVariance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value``
 
+The algorithm seems to in general give better estiamtes of the process if there are step changes in the external inputs 
+or in the pid-setpoint, and the algorithm appears to be able to handle both cases. 
 
 
 
 
-
-### Estimating upper-and lower boundds on the process gain 
+### Estimating upper-and lower bounds on the process gain 
 
 It may be that the algorithm has a better accuracy when there are setpoint changes in the dataset.
 It may also be that there the model will do better when there are large "wavy" disturbances than when the
