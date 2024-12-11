@@ -73,19 +73,19 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void SinusDisturbance(double distSinusAmplitude)
         {
             double precisionPrc = 20;
-
+            bool doAddBadData = false;
             var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude, N / 8, timeBase_s, N);
             var yset = TimeSeriesCreator.Step(N / 2, N, 50, 50 );
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
-                false, true, yset, precisionPrc,isStatic);
+                false, true, yset, precisionPrc,doAddBadData,isStatic);
         }
 
 
         // 0.25: saturates the controller
         [TestCase(0.5, 0.1,20, Category = "NotWorking_AcceptanceTest")]
         [TestCase(0.5, 1, 20, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 0.1, 20, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 1, 20, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 0.1, 20)]
+        [TestCase(1, 1, 20)]
         [TestCase(2, 0.1, 20)]
         [TestCase(2, 1, 20)]
         // gain of 5 starts giving huge oscillations...

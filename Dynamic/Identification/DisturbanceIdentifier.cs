@@ -319,7 +319,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-
             double[] d_LF = vec.Multiply(vec.Subtract(y_sim, y_sim[indexOfFirstGoodValue]), -1);
             double[] d_HF = vec.Subtract(unitDataSet_adjusted.Y_meas, unitDataSet_adjusted.Y_setpoint);
 

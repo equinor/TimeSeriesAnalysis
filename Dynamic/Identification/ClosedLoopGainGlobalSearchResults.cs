@@ -89,10 +89,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="initalGainEstimate"></param>
         /// <returns></returns>
-        public Tuple<UnitModel,bool> GetBestModel(double initalGainEstimate)
+        public Tuple<UnitModel,string> GetBestModel(double initalGainEstimate)
         {
             if (unitParametersList.Count()== 0)
-                return new Tuple<UnitModel,bool>(null,false);
+                return new Tuple<UnitModel,string>(null,"");
 
             // calculate strenght of a minimum - strength is value between 0 and 100, higher is stronger
             Tuple<double,int> MinimumStrength(double[] values)
@@ -113,7 +113,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 // so it is not unexpected to have a vaue on one side be quite close to the value at "minIndex"
                 double valBeside = Math.Max(valAbove, valBelow);
                 return new Tuple<double,int>(100 * (1 - val / valBeside),minIndex);
-              //  return new Tuple<double, int>(valBeside-val, minIndex);
             }
 
             double[] Scale(double[] v_in)
@@ -129,7 +128,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             Vec vec = new Vec();
-
             var v1 = uPidVarianceList.ToArray();
             var v2 = covBtwDestAndYsetList.ToArray();
             var v3 = covBtwDestAndUexternal.ToArray();
@@ -152,19 +150,17 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (v4_Strength > 0)
                 {
                     var unitPara = unitParametersList.ElementAt(min_ind_v4);
-              //      unitPara.Fitting = new FittingInfo();
-               //     unitPara.Fitting.SolverID = "ClosedLoopId (global-search:v4)";
-                    return  new Tuple<UnitModel, bool>(new UnitModel(unitPara), true);
+                    return new Tuple<UnitModel, string>(new UnitModel(unitPara), "v4");
                 }
                 else
                 {
-                    return new Tuple<UnitModel, bool>(null, false);
+                    return new Tuple<UnitModel, string>(null, "");
                 }
                 //modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
        
             }
             double[] objFun = v1;
-          //  string vString = "v1";
+            var retString = "v1";
 
             if (v1_Strength < v1_Strength_Threshold)
             {
@@ -177,7 +173,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // var v3 = linregGainYsetToDestList.ToArray();
                     // var v3_scaled = vec.Div(vec.Subtract(v3, vec.Min(v3)), vec.Max(v3) - vec.Min(v3));
                     objFun = vec.Add(objFun, vec.Multiply(v2_scaled, v2_factor));
-             //       vString = "v2";
+                     retString = "v2";
                 }
 
                 // if the system has external inputs, and they change in value
@@ -185,16 +181,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var v3_scaled = Scale(v3);
                     objFun = vec.Add(objFun, vec.Multiply(v3_scaled, v3_factor));
-           //         vString = "v3";
+                    retString = "v3";
                 }
             }
 
             vec.Min(objFun, out min_ind);
             var unitParams = unitParametersList.ElementAt(min_ind);
-       //     unitParams.Fitting = new FittingInfo();
-         //   unitParams.Fitting.SolverID = "ClosedLoopId (global-search:" + vString + ")";
 
-            return new Tuple<UnitModel, bool>(new UnitModel(unitParams), true);
+            return new Tuple<UnitModel, string>(new UnitModel(unitParams), retString);
          }
     }
 }

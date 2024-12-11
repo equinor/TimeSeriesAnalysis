@@ -112,6 +112,9 @@ namespace TimeSeriesAnalysis.Dynamic
             var dataSetRun2 = new UnitDataSet(dataSet);
             var fittingSpecs = new FittingSpecs();
             fittingSpecs.u0 = u0;
+
+            var GSdescription = "";
+
             {
                 // ----------------
                 // run1: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
@@ -170,9 +173,16 @@ namespace TimeSeriesAnalysis.Dynamic
                         unitModel_step1, pidProcessInputInitalGainEstimate,
                        min_gain, max_gain, fittingSpecs, firstPassNumIterations);
                     var bestUnitModel = retGlobalSearch1.Item1;
-
+                    if (bestUnitModel != null)
+                    {
+                        GSdescription = bestUnitModel.GetModelParameters().Fitting.SolverID;
+                        wasGainGlobalSearchDone = true;
+                    }
                     if (doConsoleDebugOut && retGlobalSearch1.Item1 != null)
+                    {
+                       
                         Console.WriteLine("Step2,GS1: " + retGlobalSearch1.Item1.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture));
+                    }
                     else
                         Console.WriteLine("Step2,GS1: FAILED");
 
@@ -188,7 +198,7 @@ namespace TimeSeriesAnalysis.Dynamic
                                retGlobalSearch1.Item1, gainPass1, gainPass1 - retGlobalSearch1.Item2 * WIDTH_OF_SEARCH_PASS2, gainPass1 + retGlobalSearch1.Item2 * WIDTH_OF_SEARCH_PASS2,
                                fittingSpecs, secondPassNumIterations);
                             bestUnitModel = retGlobalSearch2.Item1;
-                            wasGainGlobalSearchDone = true;
+                        
                             if (doConsoleDebugOut)
                                 Console.WriteLine("Step2,GS2: " + retGlobalSearch2.Item1.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture));
                         }
@@ -425,7 +435,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (wasGainGlobalSearchDone)
                 {
-                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search/2 step";
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search "+ GSdescription;
                 }
                 else
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
@@ -803,7 +813,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
             // finally, select the best model from all the tested models by looking across all the kpis stored
-            (UnitModel bestUnitModel,bool didFindMimimum) = searchResults.GetBestModel(pidProcessInputInitalGainEstimate);
+            (UnitModel bestUnitModel,string gsMiniumType) = searchResults.GetBestModel(pidProcessInputInitalGainEstimate);
             if (bestUnitModel != null)
             {
                 if (bestUnitModel.modelParameters != null)
@@ -820,6 +830,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (bestUnitModel.modelParameters.Fitting == null)
                     bestUnitModel.modelParameters.Fitting = new FittingInfo();
                 bestUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
+                bestUnitModel.modelParameters.Fitting.SolverID = gsMiniumType;
             }
             return new Tuple<UnitModel,double>(bestUnitModel, gainStepSize);
         }
