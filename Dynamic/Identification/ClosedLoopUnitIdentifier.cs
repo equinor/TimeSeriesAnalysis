@@ -5,6 +5,7 @@ using Accord.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -124,6 +125,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 var distIdResult1 = DisturbanceIdentifier.CalculateDisturbanceVector(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
                 if (doConsoleDebugOut)
                     Console.WriteLine("Step1: " + unitModel_step1.GetModelParameters().LinearGains.ElementAt(pidInputIdx).ToString("F3", CultureInfo.InvariantCulture));
+
+              //  var KPest  = EstimateDisturbanceLF(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
+              //  if (doConsoleDebugOut)
+               //     Console.WriteLine("experimental: " + KPest);
+
+
+
+
 
                 // run1: ident (attempt to identify any other inputs) 
                 if (isMISO)
@@ -471,6 +480,51 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
       
+        }
+
+        private static double  EstimateDisturbanceLF(UnitDataSet dataSet, UnitModel unitModel, int pidInputIdx, PidParameters pidParams)
+        {
+            var vec = new Vec(dataSet.BadDataID);
+
+            var umInternal = (UnitModel)unitModel.Clone();
+            var d_HF = vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);
+            var unitParams = umInternal.GetModelParameters();
+
+            var dList = new List<double[]>();
+            var nameList = new List<string>();
+            dList.Add(d_HF);
+            nameList.Add("y1=dHF"); 
+        
+            var dHF_energy = vec.Mean(d_HF).Value;
+            for (double Kp = 0.5; Kp < 5.6; Kp += 0.5)
+            {
+                unitParams.LinearGains = new double[] { Kp };
+                umInternal.SetModelParameters(unitParams);
+                (var isOk, var y_proc) = PlantSimulator.SimulateSingle(dataSet, umInternal, false);
+                var d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[0]), -1);
+                var  d_est1 = vec.Add(d_HF, d_LF);
+                var d_est2 = vec.Subtract(dataSet.Y_meas, y_proc);
+                dList.Add(d_est2);
+                nameList.Add("y1=destKp"+Kp.ToString("F2",CultureInfo.InvariantCulture));
+                var dLF_energy = vec.Mean(d_LF).Value;
+
+
+
+                Debug.WriteLine("Kp="+Kp.ToString("F2", CultureInfo.InvariantCulture) + "dLFenergy:"+ dLF_energy.ToString("F2", CultureInfo.InvariantCulture) 
+                    + "dHFenergy" +dHF_energy.ToString("F2", CultureInfo.InvariantCulture)) ;
+
+                // if the energy of t
+
+            }
+
+            Shared.EnablePlots();
+            Plot.FromList(dList, nameList,dataSet.GetTimeBase(), "exp_Kp");
+            Shared.DisablePlots();
+
+
+
+
+            return 0;
         }
 
         /// <summary>
