@@ -114,7 +114,6 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class DisturbanceIdentifier
     {
-        const double numberOfTiConstantsToWaitAfterSetpointChange = 5;
 
         /// <summary>
         /// Removes the effect of setpoint and (if relevant any non-pid input) changes  from the dataset using the model of pid and unit provided 
@@ -268,10 +267,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return unitDataSet_adjusted;
 
         }
-
-
-
-
 
 
         /// <summary>

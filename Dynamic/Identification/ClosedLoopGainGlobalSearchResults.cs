@@ -1,6 +1,7 @@
 ﻿using Accord.Math;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -91,6 +92,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public Tuple<UnitModel,string> GetBestModel(double initalGainEstimate)
         {
+            bool doV4 = true;
+
             if (unitParametersList.Count()== 0)
                 return new Tuple<UnitModel,string>(null,"");
 
@@ -133,7 +136,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var v3 = covBtwDestAndUexternal.ToArray();
             (double v1_Strength, int min_ind) = MinimumStrength(v1);
             (double v2_Strength, int min_ind_v2) = MinimumStrength(v2);
-            (double v3_Strength,int min_ind_v3) = MinimumStrength(v3);
+            (double v3_Strength, int min_ind_v3) = MinimumStrength(v3);
 
             var v4 = dEstVarianceList.ToArray();
             (double v4_Strength, int min_ind_v4) = MinimumStrength(v4);
@@ -145,22 +148,25 @@ namespace TimeSeriesAnalysis.Dynamic
                 // quite frequently the algorithm arrives here, where all the three "strengths" are zero. 
                 // if there is a persistent disturbance like a randomwalk or sinus and no changes in the 
                 // setpoint or in external inputs to the process model. 
-                
+
                 // only thing is that in randowmalk case, this tend to over-estimate gain consistently by about 10-40%
-                if (v4_Strength > 0)
+                if (doV4)
                 {
-                    var unitPara = unitParametersList.ElementAt(min_ind_v4);
-                    return new Tuple<UnitModel, string>(new UnitModel(unitPara), "v4");
-                }
-                else
-                {
-                    return new Tuple<UnitModel, string>(null, "");
+                    if (v4_Strength > 0)
+                    {
+                        var unitPara = unitParametersList.ElementAt(min_ind_v4);
+                        return new Tuple<UnitModel, string>(new UnitModel(unitPara), "v4 (strength:"+ v4_Strength.ToString("F2",CultureInfo.InvariantCulture) + ") ");
+                    }
+                    else
+                    {
+                        return new Tuple<UnitModel, string>(null, "");
+                    }
                 }
                 //modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
        
             }
             double[] objFun = v1;
-            var retString = "v1";
+            var retString = "v1(strength: "+ v1_Strength.ToString("F2",CultureInfo.InvariantCulture) + ")";
 
             if (v1_Strength < v1_Strength_Threshold)
             {
@@ -170,10 +176,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (!Vec.IsAllValue(v2, 0))
                 {
                     var v2_scaled = Scale(v2);
-                    // var v3 = linregGainYsetToDestList.ToArray();
-                    // var v3_scaled = vec.Div(vec.Subtract(v3, vec.Min(v3)), vec.Max(v3) - vec.Min(v3));
                     objFun = vec.Add(objFun, vec.Multiply(v2_scaled, v2_factor));
-                     retString = "v2";
+                     retString = "v2(strength: " + v2_Strength.ToString("F2", CultureInfo.InvariantCulture) + ")" ;
                 }
 
                 // if the system has external inputs, and they change in value
@@ -181,7 +185,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var v3_scaled = Scale(v3);
                     objFun = vec.Add(objFun, vec.Multiply(v3_scaled, v3_factor));
-                    retString = "v3";
+                    retString = "v3(strength: " + v3_Strength.ToString("F2", CultureInfo.InvariantCulture) + ")";
                 }
             }
 
