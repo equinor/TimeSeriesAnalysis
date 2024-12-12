@@ -293,9 +293,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // non-disturbance related changes in the dataset producing "unitDataSet_adjusted"
             var unitDataSet_adjusted = RemoveSetpointAndOtherInputChangeEffectsFromDataSet(unitDataSet, unitModel, pidInputIdx, pidParams);
             unitDataSet_adjusted.D = null;
-            (bool isOk, double[] y_sim) = PlantSimulator.SimulateSingle(unitDataSet_adjusted, unitModel, false);
+            (bool isOk, double[] y_proc) = PlantSimulator.SimulateSingle(unitDataSet_adjusted, unitModel, false);
 
-            if (y_sim == null)
+            if (y_proc == null)
             {
                 result.zeroReason = DisturbanceSetToZeroReason.UnitSimulatorUnableToRun;
                 return result;
@@ -314,7 +314,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            double[] d_LF = vec.Multiply(vec.Subtract(y_sim, y_sim[indexOfFirstGoodValue]), -1);
+            double[] d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[indexOfFirstGoodValue]), -1);
             double[] d_HF = vec.Subtract(unitDataSet_adjusted.Y_meas, unitDataSet_adjusted.Y_setpoint);
 
             // d_u : (low-pass) back-estimation of disturbances by the effect that they have on u as the pid-controller integrates to 
@@ -324,7 +324,17 @@ namespace TimeSeriesAnalysis.Dynamic
             // will influence the process model identification afterwards.
 
             // d = d_HF+d_LF 
-            double[] d_est = vec.Add(d_HF, d_LF);
+          //  double[] d_est2 = vec.Add(d_HF, d_LF);
+            // alternative:
+            double[] d_est = vec.Subtract(unitDataSet_adjusted.Y_meas, y_proc);
+
+//            Shared.EnablePlots();
+ //           Plot.FromList(new List<double[]> { d_est, d_est2, d_HF }, new List<string> { "y1=d1", "y1=d2","y1=d_HF" }, unitDataSet.Times, "testplot");
+  //          Shared.DisablePlots();
+
+
+
+
             result.d_est = d_est;
             result.d_LF = d_LF;
             result.d_HF = d_HF;

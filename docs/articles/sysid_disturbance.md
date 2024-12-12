@@ -211,7 +211,26 @@ Some obervations:
 
 It could be an idea to count the number of zero crossing of e in the dataset, if it is very low, that may be an indication that the process gain is low.
  
+*It could be important to look at the internal output of the process model.* 
 
+*It could be that it is possible to have a very good estiamte of the distrubance d, yet the process gain can still be of by 40 percent. 
+This has been observed in some random walk unit tests where the process gain is small. This could be because the d_est in this cae is mostly 
+determined by ``d_HF```? This could be the clue to determining the uncertainty of the process gain, looking at how much the disturbance vector 
+estimate is sensitive to the process gain values?*
+
+There are essentially two ways of calculating the disturbance
+
+1. By subtracting the modelled ``y_{proc}(\hat{u})`` from ``\bar{y}'' : ``d_est = \bar{y} - y_{proc}(\hat{u})``
+2. By `d_est = d_HF(\hat{u}, y_{set}) +d_LF (u)``
+
+where 
+``d_LF (u) = \hat{y}(u(t))- \hat{y} (u(t_0))``
+
+Note that ``d_HF`` does not change with changing estimtes of the model gain or other paramters, while d_LF does. 
+
+Combining the two above means that 
+
+``d_LF(u) = (\bar{y} - y_{proc}(\hat{u})) - d_HF(\hat{u}, y_{set})
 
 
 

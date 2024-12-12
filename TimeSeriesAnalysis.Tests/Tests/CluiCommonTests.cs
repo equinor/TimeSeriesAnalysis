@@ -103,8 +103,9 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
 
 
 
-        static public void CommonPlotAndAsserts(UnitDataSet pidDataSet, double[] estDisturbance, double[] trueDisturbance,
-            UnitModel identifiedModel, UnitModel trueModel, double maxAllowedGainOffsetPrc, double maxAllowedMeanDisturbanceOffsetPrc = 30, bool isStatic=false)
+        static public void CommonPlotAndAsserts(UnitDataSet unitDataSet, double[] estDisturbance, double[] trueDisturbance,
+            UnitModel identifiedModel, UnitModel trueModel, double maxAllowedGainOffsetPrc, 
+            double maxAllowedMeanDisturbanceOffsetPrc = 30, bool isStatic=false)
         {
             Vec vec = new Vec();
 
@@ -112,14 +113,18 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = true;
+            bool doDebugPlot = false;
             if (doDebugPlot)
             {
+                double[] d_HF = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);
+                double[] d_LF = vec.Multiply(vec.Subtract(unitDataSet.Y_proc, unitDataSet.Y_proc[0]), -1);
+
                 Shared.EnablePlots();
-                Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,pidDataSet.Y_proc,
-                pidDataSet.U.GetColumn(0),  estDisturbance, trueDisturbance },
-                    new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
-                    pidDataSet.GetTimeBase(), caseId + "commonplotandasserts");
+                Plot.FromList(new List<double[]>{ unitDataSet.Y_meas, unitDataSet.Y_setpoint,unitDataSet.Y_proc,
+                unitDataSet.U.GetColumn(0), unitDataSet.U_sim.GetColumn(0), estDisturbance, trueDisturbance, d_HF,d_LF },
+                    new List<string> { "y1=y_meas", "y1=y_set", "y1=y_proc", "y2=u_meas(right)","y2=u_sim(right)", 
+                        "y3=est disturbance", "y3=true disturbance","y3= d_HF","y3=d_LF"},
+                    unitDataSet.GetTimeBase(), caseId + "commonplotandasserts");
                 Shared.DisablePlots();
             }
 

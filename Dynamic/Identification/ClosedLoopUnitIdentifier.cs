@@ -120,7 +120,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // run1: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
                 // to give afirst estimate of the disturbance
 
-                var unitModel_step1 = EstimateClosedLoopProcessGain(dataSetRun1, pidParams, pidInputIdx);
+                var unitModel_step1 = ModelFreeEstimateClosedLoopProcessGain(dataSetRun1, pidParams, pidInputIdx);
                 var distIdResult1 = DisturbanceIdentifier.CalculateDisturbanceVector(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
                 if (doConsoleDebugOut)
                     Console.WriteLine("Step1: " + unitModel_step1.GetModelParameters().LinearGains.ElementAt(pidInputIdx).ToString("F3", CultureInfo.InvariantCulture));
@@ -901,11 +901,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParams">an estimate of the PID-parameters</param>
         /// <param name="pidInputIdx">the index of U in the above dataset that is driven by the PID-controller.</param>
         /// <returns></returns>
-        private static UnitModel EstimateClosedLoopProcessGain(UnitDataSet unitDataSet, PidParameters pidParams, int pidInputIdx)
+        private static UnitModel ModelFreeEstimateClosedLoopProcessGain(UnitDataSet unitDataSet, PidParameters pidParams, int pidInputIdx)
         {
-
-
-
             var unitModel = new UnitModel();
             var vec = new Vec(unitDataSet.BadDataID);
 
@@ -1066,29 +1063,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 unitData.Y_sim = simData.GetValues(unitModel.GetID(), SignalType.Output_Y, 0);
                 unitData.Y_proc = simData.GetValues(unitModel.GetID());
             }
-
             return isOk;
-
-            /*
-
-
-
-            // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
-            //var ps = new PlantSimulator(new List<ISimulatableModel> { unitModel,pidModel });
-            //var inputData = new TimeSeriesDataSet();// TODO: need to map signal names here.
-            //ps.Simulate(inputData, out var simData);
-
-            var sim = new UnitSimulator(unitModel);
-            bool isOk = sim.CoSimulate(pidModel, ref unitData);
-            if (doDebuggingPlot)
-            {
-                Plot.FromList(new List<double[]> { unitData.Y_sim,unitData.Y_meas, 
-                    unitData.U_sim.GetColumn(0),  unitData.U.GetColumn(0)},
-                    new List<string> { "y1=y_sim", "y1=y_meas", "y3=u_sim","y3=u_meas" },
-                    unitData.GetTimeBase(), "doDebuggingPlot" + "_closedlooopsim_"+name); 
-            }
-
-            return isOk;*/
         }
     }
 }
