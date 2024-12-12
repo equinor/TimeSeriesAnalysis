@@ -63,6 +63,7 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
                 pidDataSet.Y_setpoint[50] = Double.NaN;
                 pidDataSet.Y_meas[400] = Double.NaN;
                 pidDataSet.U[500, 0] = Double.NaN;
+                Console.WriteLine("---------NB!!! bad data added!!--------");
             }
             // NB! uses the "perfect" pid-model in the identification process
 
@@ -111,13 +112,13 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
             if (doDebugPlot)
             {
                 Shared.EnablePlots();
-                Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
+                Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,pidDataSet.Y_proc,
                 pidDataSet.U.GetColumn(0),  estDisturbance, trueDisturbance },
-                    new List<string> { "y1=y meas", "y1=y set", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
+                    new List<string> { "y1=y_meas", "y1=y_set", "y1=y_sim", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
                     pidDataSet.GetTimeBase(), caseId + "commonplotandasserts");
                 Shared.DisablePlots();
             }

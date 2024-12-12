@@ -97,7 +97,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
         [TestCase(0,false)]
         [TestCase(1,false)]
-        [TestCase(0, true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(0, true)]
 
         public void StaticMISO_SetpointChanges_no_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
         {

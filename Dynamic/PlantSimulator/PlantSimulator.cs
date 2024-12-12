@@ -417,16 +417,21 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var inputData = new TimeSeriesDataSet();
             inputData.Add(signalId1, (double[])unitDataSet.Y_meas.Clone());
-            inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
+           // inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
 
-            if (unitDataSet.U.GetNColumns() > 1)
+         //   if (unitDataSet.U.GetNColumns() > 1)
             {
                 for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
                 {
                     if (curColIdx == pidInputIdx)
-                        continue;
-                    inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
-                        (double[])unitDataSet.U.GetColumn(curColIdx).Clone());
+                    {
+                        inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
+                    }
+                    else
+                    {
+                        inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
+                            (double[])unitDataSet.U.GetColumn(curColIdx).Clone());
+                    }
                 }
             }
 

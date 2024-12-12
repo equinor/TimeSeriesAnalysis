@@ -29,12 +29,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// self-variance of d_est, calculated for each linear gains
         /// </summary>
-        public List<double> uPidVarianceList;
+        public List<double> uPidDistanceList;
 
         /// <summary>
         /// self-variance of d_est, calculated for each linear gains
         /// </summary>
-        public List<double> dEstVarianceList;
+        public List<double> dEstDistanceList;
 
         /// <summary>
         /// self-variance of d_est, calculated for each linear gains
@@ -53,23 +53,22 @@ namespace TimeSeriesAnalysis.Dynamic
         internal ClosedLoopGainGlobalSearchResults()
         {
             unitParametersList= new List<UnitParameters>();
-            uPidVarianceList = new List<double>();
-            dEstVarianceList = new List<double>();
+            uPidDistanceList = new List<double>();
+            dEstDistanceList = new List<double>();
             covBtwDestAndYsetList = new List<double>();
             pidLinearProcessGainList = new List<double>();
             covBtwDestAndUexternal = new List<double>();
         }
 
-        public void Add(double gain, UnitParameters unitParameters, double covBtwDestAndYset, double upidVariance,double eEstVariance,
+        public void Add(double gain, UnitParameters unitParameters, double covBtwDestAndYset, 
+            double uPidDistance,double dEstDistance,
             double covBtwDestAndUexternal)
         {
-          //  var newParams = unitParameters.CreateCopy();
-
             pidLinearProcessGainList.Add(gain);
             unitParametersList.Add(unitParameters);
             covBtwDestAndYsetList.Add(covBtwDestAndYset);
-            uPidVarianceList.Add(upidVariance);
-            dEstVarianceList.Add(eEstVariance);
+            uPidDistanceList.Add(uPidDistance);
+            dEstDistanceList.Add(dEstDistance);
             this.covBtwDestAndUexternal.Add(covBtwDestAndUexternal);
         }
 
@@ -98,7 +97,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 return new Tuple<UnitModel,string>(null,"");
 
             // calculate strenght of a minimum - strength is value between 0 and 100, higher is stronger
-            Tuple<double,int> MinimumStrength(double[] values)
+            // this is a metric of how flat the objective space is, the lower the strenght, the flatter the objective function
+            Tuple<double,int> CalcStrengthOfObjectiveMinimum(double[] values)
             {
                 Vec vec2 = new Vec();
                 vec2.Min(values, out int minIndex);
@@ -118,6 +118,39 @@ namespace TimeSeriesAnalysis.Dynamic
                 return new Tuple<double,int>(100 * (1 - val / valBeside),minIndex);
             }
 
+            // look at the values of the objective either side of the minimum, and use this to indicate if the
+            // if the actual true value is higher or lower
+
+            string Direction(double[] v_in, int minIdx)
+            {
+                if (minIdx == 0)
+                    return "";
+                if (minIdx >= v_in.Length)
+                    return "";
+                double v_min = (new Vec()).Min(v_in);
+                double v_max = (new Vec()).Max(v_in);
+                double v_range = v_max - v_min; 
+                if (v_in[minIdx + 1] == v_in[minIdx - 1])
+                {
+                    return "><";
+                }
+                else
+                if (v_in[minIdx + 1] > v_in[minIdx - 1] )
+                {
+                    double directionPower = (v_in[minIdx - 1] - v_min) / (v_in[minIdx + 1] - v_min) * 100;
+                    return "<-" + directionPower.ToString("F1", CultureInfo.InvariantCulture)+"%";
+                }
+                else if (v_in[minIdx + 1] < v_in[minIdx - 1])
+                {
+                    double directionPower = (v_in[minIdx + 1] - v_min) / (v_in[minIdx - 1] - v_min)*100;
+                    return "->" + directionPower.ToString("F1", CultureInfo.InvariantCulture) + "%";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+
             double[] Scale(double[] v_in)
             {
                 Vec vec2 = new Vec();
@@ -131,19 +164,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             Vec vec = new Vec();
-            var v1 = uPidVarianceList.ToArray();
+            var v1 = uPidDistanceList.ToArray();
             var v2 = covBtwDestAndYsetList.ToArray();
             var v3 = covBtwDestAndUexternal.ToArray();
-            (double v1_Strength, int min_ind) = MinimumStrength(v1);
-            (double v2_Strength, int min_ind_v2) = MinimumStrength(v2);
-            (double v3_Strength, int min_ind_v3) = MinimumStrength(v3);
+            (double v1_Strength, int min_ind_v1) = CalcStrengthOfObjectiveMinimum(v1);
+            (double v2_Strength, int min_ind_v2) = CalcStrengthOfObjectiveMinimum(v2);
+            (double v3_Strength, int min_ind_v3) = CalcStrengthOfObjectiveMinimum(v3);
 
-            var v4 = dEstVarianceList.ToArray();
-            (double v4_Strength, int min_ind_v4) = MinimumStrength(v4);
+            var v4 = dEstDistanceList.ToArray();
+            (double v4_Strength, int min_ind_v4) = CalcStrengthOfObjectiveMinimum(v4);
             // add a scaled v4 to the objective only when v1 is very flat around the minimum
             // as a "tiebreaker"
 
-            if (v1_Strength == 0 && v2_Strength == 0 && v3_Strength == 0)
+            double strength_cutoff = 0.001;
+
+            if (v1_Strength < strength_cutoff && v2_Strength < strength_cutoff && v3_Strength < strength_cutoff)
             {
                 // quite frequently the algorithm arrives here, where all the three "strengths" are zero. 
                 // if there is a persistent disturbance like a randomwalk or sinus and no changes in the 
@@ -155,7 +190,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (v4_Strength > 0)
                     {
                         var unitPara = unitParametersList.ElementAt(min_ind_v4);
-                        return new Tuple<UnitModel, string>(new UnitModel(unitPara), "v4 (strength:"+ v4_Strength.ToString("F2",CultureInfo.InvariantCulture) + ") ");
+                        return new Tuple<UnitModel, string>(new UnitModel(unitPara), "Kp:v4 (strength:"+ v4_Strength.ToString("F3",CultureInfo.InvariantCulture) + ") "
+                            + Direction(v4, min_ind_v4));
                     }
                     else
                     {
@@ -166,7 +202,7 @@ namespace TimeSeriesAnalysis.Dynamic
        
             }
             double[] objFun = v1;
-            var retString = "v1(strength: "+ v1_Strength.ToString("F2",CultureInfo.InvariantCulture) + ")";
+            var retString = "Kp:v1(strength: " + v1_Strength.ToString("F2",CultureInfo.InvariantCulture) + ") "+ Direction(v1, min_ind_v1); ;
 
             if (v1_Strength < v1_Strength_Threshold)
             {
@@ -177,7 +213,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var v2_scaled = Scale(v2);
                     objFun = vec.Add(objFun, vec.Multiply(v2_scaled, v2_factor));
-                     retString = "v2(strength: " + v2_Strength.ToString("F2", CultureInfo.InvariantCulture) + ")" ;
+                     retString = "Kp:v2(strength: " + v2_Strength.ToString("F2", CultureInfo.InvariantCulture) + ")" ;
                 }
 
                 // if the system has external inputs, and they change in value
@@ -185,12 +221,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var v3_scaled = Scale(v3);
                     objFun = vec.Add(objFun, vec.Multiply(v3_scaled, v3_factor));
-                    retString = "v3(strength: " + v3_Strength.ToString("F2", CultureInfo.InvariantCulture) + ")";
+                    retString = "Kp:v3(strength: " + v3_Strength.ToString("F2", CultureInfo.InvariantCulture) + ")";
                 }
             }
 
-            vec.Min(objFun, out min_ind);
-            var unitParams = unitParametersList.ElementAt(min_ind);
+            vec.Min(objFun, out min_ind_v1);
+            var unitParams = unitParametersList.ElementAt(min_ind_v1);
 
             return new Tuple<UnitModel, string>(new UnitModel(unitParams), retString);
          }

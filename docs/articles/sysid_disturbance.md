@@ -153,16 +153,16 @@ to the algorithm, so that the algorith can infer about the control error ``e``.
 > is also true, what appear to be negative process gains at first sight may in
 > closed-loop be positive process gains.
 
-To guess the sign of the proces gain, the algorithm divides the dataset into two subsets where
-the ``e`` is greater than zero and where it is smaller than zero. 
-Then the average value of ``u_pid`` for each of these sets is compared. 
-If the process gain sign is positive, we expect u_pid to have greater values when ``e<0`` than when ``e>0``
-
+The strategy that is employed by the algorithm is to required the PID-parameters to be identfied
+prior to running the closed-loop identifier, and to use the sign of the Kp in these paramters to set the 
+sign of the process gain. 
 
 ### Step2: Process gain global search (setpoint changes or u_ext changes)
 
 The inital guesss for the process gain and process gain sign above have not considered
  the pid-controller and its dynamcis, including any setpoint changes that the dataset may contain.
+
+#### in the case of setpoint changes 
 
 If there are setpoint changes, it would be wise to try to use these to improve the model, but broadly speaking there
 are two kinds of changes that we could envisage:
@@ -189,6 +189,28 @@ where there are changes in the setpoint, found as_
 
 The algorithm seems to in general give better estiamtes of the process if there are step changes in the external inputs 
 or in the pid-setpoint, and the algorithm appears to be able to handle both cases. 
+
+The above works equally well in the case that process to be simualted is a multiple-input system and the other non-pid inputs are changed during 
+the tuning set. 
+
+#### Finding the gain that gives the disturbance with the ``shortest travelled distance``
+
+If there are no setpoint changes, the above method of determining the process gain will not succede, as the objective function will be flat. 
+
+In this case, the global search instead attempts to find the process gain that results in the disturbance that "travels the shortest distance", 
+expressed as: 
+
+`` var dEstVariance = vec.Mean(vec.Abs(vec.Diff(dEst))).Value''
+
+Some obervations:
+
+- this method is heurisitic
+- the objective has a minumum
+- the objective space is fairly flat, the minum has a fairly low ``strength'', i.e neighborhing process gains have almost equally low objectives
+- the objective space seems to be more concave ("stronger" i.e. more significant minimums) when the process gain is higher.
+
+It could be an idea to count the number of zero crossing of e in the dataset, if it is very low, that may be an indication that the process gain is low.
+ 
 
 
 

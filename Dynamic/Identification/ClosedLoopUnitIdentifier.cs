@@ -36,7 +36,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /////////////////////////
         // NB!! These three are somewhat "magic numbers", that need to be changed only after
         // testing over a wide array of cases
-        const int firstPassNumIterations = 20;
+        const int firstPassNumIterations = 50;
         const int secondPassNumIterations = 0;
         const double initalGuessFactor_higherbound = 2.5;// 2 is a bit low, should be a bit higher
         const int nDigits = 5; //number of significant digits in results.
@@ -133,7 +133,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     unitModel_step1.modelParameters.LinearGainUnc = null;
                     idDisturbancesList.Add(distIdResult1);
                     idUnitModelsList.Add(unitModel_step1);
-                    isOK = ClosedLoopSim(dataSetRun1, unitModel_step1.GetModelParameters(), pidParams, distIdResult1.d_est, "run1");
+                    isOK = ClosedLoopSim(dataSetRun1, unitModel_step1.GetModelParameters(), pidParams, distIdResult1.d_est,pidInputIdx, "run1");
                     if (doConsoleDebugOut)
                         Console.WriteLine("Step1,ident: " + unitModel_step1.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture));
                 }
@@ -443,7 +443,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
                 
                 // closed-loop simulation, adds U_sim and Y_sim to dataset
-                ClosedLoopSim(dataSet, identUnitModel.modelParameters, pidParams, disturbance);
+                ClosedLoopSim(dataSet, identUnitModel.modelParameters, pidParams, disturbance,pidInputIdx);
 
                 // round resulting parameters
 
@@ -528,8 +528,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     EstimateSISOdisturbanceForProcGain(unitModel_run1,
                         curCandPidLinProcessGain, pidInputIdx, dataSetCopy, pidParams);
 
+                if (curCandidateSISOModel == null)
+                {
+                    Console.WriteLine("warning: EstimateSISOdisturbanceForProcGain returned null ");
+                    continue;
+                }
                 var dEst = curCandDisturbanceEst_SISO.d_est;
-                // not sure about this one:
+    
                 var u_pid_adjusted = curCandDisturbanceEst_SISO.adjustedUnitDataSet.U.GetColumn(pidInputIdx);
 
                 var alternativeModelParameters = curCandidateSISOModel.modelParameters.CreateCopy();
@@ -642,7 +647,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     var distIdResultAlt_MISO = DisturbanceIdentifier.CalculateDisturbanceVector
                          (dataSet_altMISO, alternativeMISOModel, pidInputIdx, pidParams);
                     var d_est_MISO = distIdResultAlt_MISO.d_est;
-                    isOK = ClosedLoopSim(dataSet_altMISO, alternativeMISOModel.GetModelParameters(), pidParams, d_est_MISO, "run_altMISO");
+                    isOK = ClosedLoopSim(dataSet_altMISO, alternativeMISOModel.GetModelParameters(), pidParams, d_est_MISO, pidInputIdx, "run_altMISO");
 
                     if (false)
                     {
@@ -681,10 +686,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 // v3: just choose the gain that gives the least "variance" in u_pid when the disturbance is simulated
                 // in closed loop with the given PID-model and the assumed candiate process model. 
 
-                var uPidVariance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value;
+                var uPidDistance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value;
 
-                // v4: just choose the gain that gives the least "variance" in d_est 
-                var dEstVariance = vec.Mean(vec.Abs(vec.Diff(dEst))).Value;
+                // v4: just choose the gain that gives the least "distance travelled" in d_est 
+                var dEstDistance = vec.Mean(vec.Abs(vec.Diff(dEst))).Value; // original:
+                // var dEstVariance = vec.Mean(vec.Diff(dEst)).Value;
+                //var dEstVariance = vec.Mean(vec.Abs(dEst)).Value;
+                //var dEstVariance = dEst.Variance();
 
                 // test:
                 var covBtwUPidAdjustedAndDest = Math.Abs(Measures.Covariance(dEst, u_pid_adjusted, false));
@@ -710,7 +718,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 // finally,save all kpis of of this run.
                 searchResults.Add(curCandPidLinProcessGain, alternativeModelParameters, covarianceBtwDestAndYset, 
-                    uPidVariance, dEstVariance, covarianceBtwDestAndUexternal);
+                    uPidDistance, dEstDistance, covarianceBtwDestAndUexternal);
 
                 // save the time-series for debug-plotting
                 if (doDebugPlot == true)
@@ -1005,13 +1013,14 @@ namespace TimeSeriesAnalysis.Dynamic
             var dataSet_SISO = new UnitDataSet(dataSet);
             dataSet_SISO.U = Array2D<double>.CreateFromList( new List<double[]> { dataSet.U.GetColumn(pidInputIdx) } );
 
-            // pidInputIdx=0 always for the new SISO system:
+         
+            int pidInputIdx_NewSystem = 0;   // pidInputIdx=0 always for the new SISO system:
             var candidateModelDisturbance = DisturbanceIdentifier.CalculateDisturbanceVector
-                (dataSet_SISO, candidateModel, 0, pidParams);
+                (dataSet_SISO, candidateModel, pidInputIdx_NewSystem, pidParams);
 
             var d_est = candidateModelDisturbance.d_est;
             var isOK = ClosedLoopSim
-                (dataSet_SISO, candidateModel.GetModelParameters(), pidParams, d_est, "run_altSISO");
+                (dataSet_SISO, candidateModel.GetModelParameters(), pidParams, d_est, pidInputIdx_NewSystem, "run_altSISO");
 
             if (isOK)
                 return new Tuple<UnitModel, DisturbanceIdResult>(candidateModel, candidateModelDisturbance);
@@ -1020,28 +1029,50 @@ namespace TimeSeriesAnalysis.Dynamic
 
         }
 
-   
+
 
         /// <summary>
-        /// Closed-loop simulation of a unit model and pid model, for a given unit data set
+        /// Closed-loop simulation of a unit model and pid model, for a given unit data set.
+        /// Adds the U_sim and Y_sim to the 
         /// </summary>
         /// <param name="unitData">unit dataset for simulation</param>
         /// <param name="modelParams">paramters or UnitModel</param>
         /// <param name="pidParams">parameters of PidModel</param>
         /// <param name="disturbance">disturbance vector</param>
+        ///  <param name="pidInputIdx">index of the pid input in the process model</param>
         /// <param name="name">optional name used for plotting</param>
         /// <returns></returns>
         public static bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
-            double[] disturbance,string name="")
+            double[] disturbance,int pidInputIdx, string name="")
         {
             if (pidParams == null)
             {
                 return false;
             }
 
-            unitData.D = disturbance;
-            var pidModel = new PidModel(pidParams);
-            var unitModel = new UnitModel(modelParams);
+           // unitData.D = disturbance;
+            var pidModel = new PidModel(pidParams,"PidModel");
+            var unitModel = new UnitModel(modelParams, "ProcModel");
+            (var plantSim, var inputDataSet) = PlantSimulator.CreateFeedbackLoopWithEstimatedDisturbance(unitData, pidModel,
+                unitModel, pidInputIdx);
+
+            var isOk = plantSim.Simulate(inputDataSet, out var simData);
+
+            if (isOk)
+            {
+                // todo: what about external inputs?
+                unitData.U_sim = Array2D<double>.CreateFromList(new List<double[]> { 
+                    simData.GetValues(pidModel.GetID(), SignalType.PID_U, 0)} ); 
+                unitData.Y_sim = simData.GetValues(unitModel.GetID(), SignalType.Output_Y, 0);
+                unitData.Y_proc = simData.GetValues(unitModel.GetID());
+            }
+
+            return isOk;
+
+            /*
+
+
+
             // TODO: replace this with a "closed-loop" simulator that uses the PlantSimulator.
             //var ps = new PlantSimulator(new List<ISimulatableModel> { unitModel,pidModel });
             //var inputData = new TimeSeriesDataSet();// TODO: need to map signal names here.
@@ -1056,7 +1087,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     new List<string> { "y1=y_sim", "y1=y_meas", "y3=u_sim","y3=u_meas" },
                     unitData.GetTimeBase(), "doDebuggingPlot" + "_closedlooopsim_"+name); 
             }
-            return isOk;
+
+            return isOk;*/
         }
     }
 }

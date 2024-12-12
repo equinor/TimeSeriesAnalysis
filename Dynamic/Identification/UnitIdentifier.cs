@@ -1152,7 +1152,7 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.Bias = 0;
             double nanValue = internalData.BadDataID;
             var model = new UnitModel(parameters);
-            var simulator = new UnitSimulator(model);
+            var simulator = new UnitSimulator(model); // TODO: remove last UnitSimulator reference.
             var y_sim = simulator.Simulate(ref internalData);
            // (var isOk, var y_sim) = PlantSimulator.SimulateSingle(internalData, model,false, 0, true);
 
