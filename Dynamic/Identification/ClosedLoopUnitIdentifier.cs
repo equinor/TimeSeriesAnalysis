@@ -126,13 +126,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doConsoleDebugOut)
                     Console.WriteLine("Step1: " + unitModel_step1.GetModelParameters().LinearGains.ElementAt(pidInputIdx).ToString("F3", CultureInfo.InvariantCulture));
 
-              //  var KPest  = EstimateDisturbanceLF(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
-              //  if (doConsoleDebugOut)
-               //     Console.WriteLine("experimental: " + KPest);
+                idUnitModelsList.Add(unitModel_step1);
 
-
-
-
+                //   var KPest  = EstimateDisturbanceLF(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
+                //  if (doConsoleDebugOut)
+                //     Console.WriteLine("experimental: " + KPest);
 
                 // run1: ident (attempt to identify any other inputs) 
                 if (isMISO)
@@ -165,12 +163,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (pidProcessInputInitalGainEstimate > 0)
                     {
                         max_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
-                        min_gain = pidProcessInputInitalGainEstimate * 1 / initalGuessFactor_higherbound;
+                        min_gain = pidProcessInputInitalGainEstimate * 1 / initalGuessFactor_higherbound; // mostly works, but not for sinus disturbances
+                        //min_gain = 0;
                     }
                     else
                     {
                         min_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
                         max_gain = pidProcessInputInitalGainEstimate * 1 / initalGuessFactor_higherbound;
+                       // max_gain = 0;
                     }
                     if (doConsoleDebugOut)
                     {
@@ -187,6 +187,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         GSdescription = bestUnitModel.GetModelParameters().Fitting.SolverID;
                         wasGainGlobalSearchDone = true;
                     }
+ 
+
                     if (doConsoleDebugOut && retGlobalSearch1.Item1 != null)
                     {
                        
@@ -447,7 +449,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search "+ GSdescription;
                 }
                 else
-                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop heuritic (global search no minimum found)";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
                 identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
                 
@@ -491,12 +493,19 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitParams = umInternal.GetModelParameters();
 
             var dList = new List<double[]>();
-            var nameList = new List<string>();
+            var dNameList = new List<string>();
+            var v2List = new List<double[]>();
+            var v2NameList = new List<string>();
+
             dList.Add(d_HF);
-            nameList.Add("y1=dHF"); 
-        
-            var dHF_energy = vec.Mean(d_HF).Value;
-            for (double Kp = 0.5; Kp < 5.6; Kp += 0.5)
+            dNameList.Add("y1=dHF");
+            v2List.Add(dataSet.Y_meas);
+            v2NameList.Add("y3=y_meas");
+
+            var KpList = new List<double> { 0.5, 1, 2, 4 };
+
+            //    var dHF_energy = vec.Mean(d_HF).Value;
+            foreach (var Kp in KpList)
             {
                 unitParams.LinearGains = new double[] { Kp };
                 umInternal.SetModelParameters(unitParams);
@@ -505,20 +514,22 @@ namespace TimeSeriesAnalysis.Dynamic
                 var  d_est1 = vec.Add(d_HF, d_LF);
                 var d_est2 = vec.Subtract(dataSet.Y_meas, y_proc);
                 dList.Add(d_est2);
-                nameList.Add("y1=destKp"+Kp.ToString("F2",CultureInfo.InvariantCulture));
-                var dLF_energy = vec.Mean(d_LF).Value;
+                dNameList.Add("y1=destKp"+Kp.ToString("F2",CultureInfo.InvariantCulture));
+               // var dLF_energy = vec.Mean(d_LF).Value;
 
+                //Debug.WriteLine("Kp="+Kp.ToString("F2", CultureInfo.InvariantCulture) + "dLFenergy:"+ dLF_energy.ToString("F2", CultureInfo.InvariantCulture) 
+                 //   + "dHFenergy" +dHF_energy.ToString("F2", CultureInfo.InvariantCulture)) ;
 
-
-                Debug.WriteLine("Kp="+Kp.ToString("F2", CultureInfo.InvariantCulture) + "dLFenergy:"+ dLF_energy.ToString("F2", CultureInfo.InvariantCulture) 
-                    + "dHFenergy" +dHF_energy.ToString("F2", CultureInfo.InvariantCulture)) ;
+                v2List.Add(y_proc);
+                v2NameList.Add("y3=yProcKp" + Kp.ToString("F2", CultureInfo.InvariantCulture));
 
                 // if the energy of t
 
             }
-
+            dList.AddRange(v2List);
+            dNameList.AddRange(v2NameList);
             Shared.EnablePlots();
-            Plot.FromList(dList, nameList,dataSet.GetTimeBase(), "exp_Kp");
+            Plot.FromList(dList, dNameList, dataSet.GetTimeBase(), "exp_Kp");
             Shared.DisablePlots();
 
 

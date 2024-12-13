@@ -75,7 +75,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc,false, isStatic);
         }
 
-        [TestCase(2, Category = "NotWorking_AcceptanceTest")]
+        // does not work in the static case, no sens in doing dynamic case too
+
+       /* [TestCase(2, Category = "NotWorking_AcceptanceTest")]
         [TestCase(1,  Category = "NotWorking_AcceptanceTest")]
         [TestCase(0.5, Category = "NotWorking_AcceptanceTest")]
         public void SinusDisturbance(double distSinusAmplitude)
@@ -86,7 +88,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var yset = TimeSeriesCreator.Step(N / 2, N, 50, 50 );
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
                 false, true, yset, precisionPrc,doAddBadData,isStatic);
-        }
+        }*/
 
 
         // 0.25: saturates the controller

@@ -57,11 +57,89 @@ The challenge in describing disturbances in feedback-systems is that the feedbac
  given by the process(described by the process model.) To know what amplitude a disturbance has,
  requires knowledge of how much effect (or "gain") the change in manipulated variable u will 
  have caused on the output ``y``.
+
+The measurement ``y_meas``shows us the combination of the disturbance ``d`` and the process output ``y_process``
+
+`` y_meas(t) = y_process(u(t)) +d(t) = ``
+
+In most cases only a single u(t) is considered, and this is the pid-output ``u=u_pid(t)``.
+
+> [!Note]
+> in general it is hard to know if the observed closed-loop behavior ``y_meas``,``u_pid`` 
+> is due to a process with large process gain and the u_pid responding to large disturbances
+> or if the pid-controller is reacting to small disturbances for a process with small gains. 
+
+
+Observations
+- Note that ``y_process`` is not directly observable unless the disturbance is zero.
+- y_process depends on one or more inputs u(t) that are measured. 
+- one of the inputs to the ``y_process`` is the output of the pid-controller, which looks at ``y_meas`` 
+and tries to counter-act disturbances that enter, thus ``y_process`` and ``d(t)`` will be covariant.
  
-*Thus the two tasks of estimating the disturbance and estimating the process model are linked*,
-and thus they likely need to be solved *jointly*.
+
+> [!Note]
+> If the process model were known in a closed feedback loop, then the disturbance is also known 
+> because the influence of the process on the measured output ``y_meas`` could be subtracted
+> to determine ``d``. 
+
+If a model of the process can be determine that is close to the actual process output
+
+``y_process = y_mod(u(t))``
+
+then an estimate of the disturbance is given by
+
+``d_est(t) = y_meas(t) - y_mod(u(t)) ``
+
+> [!Note]
+> *The two tasks of estimating the disturbance and estimating the process model are linked*:
+> *if you have solved one, you > have solved the other.*
  
-## Approach 
+It is in general much easier to determine the gain of the process if there is **"external excitation"** either
+- the pid-controller is set in manual mode and a step change is performed, or
+- a setpoint step or some other setpoint change is applied to the pid-controller, or
+- (if the process is multiple-input, single-output (MISO), then applying changes to the other inputs also appears to improve the estimate of the process gain)
+
+**The aim of this algorithm is to give a sensible estimate of the process gain/disturbance even in cases where there is 
+no introduced excitation.** In some cases it will be impossible to determine a unique process gain, but in such cases it would be 
+useful if instead the method returned a range of possible values. 
+
+
+## Tools 
+
+The tools at our disposal are:
+- It can be assumed that a dynamic model of the PID-controller is avilable (``PidModel``) 
+- The ability to do both open-loop simulations of the ``UnitModel`` using ``PlantSimulator``
+- The ability to do closed-loop simulations of the ``UnitModel`` and ``PidModel`` together using ``PlantSimulator``
+
+Based on these tools, several avenues are open:
+- it will be possible to due a large number of very **computationlly inexpensive dynamic simulations** over a given dataset 
+for different paramters choices, so **"trial-and-error" global search for parameters** is feasible
+- it is possible to **create synthetic datasets** using the above methods where the "true" values will be known, and these datasets could
+be combined with the methods of automatic unit testing to ensure that the method works as expected.
+
+## Approach overview:
+
+Broadly speaking, the approach is as follows:
+1. use a heuristic to get an inital guess for the process gain and -sign
+2. do a global search in a wide area around the inital guess, by assuming a process gain, simulating and scoring the result by one or more criteria
+3. do a global search for the process time constant. 
+4. (try to improve the model in 3 by testing time-delays)(not implemented)
+
+A number of test scenarios are simulated and used to benchmarkt the algorithm:
+
+- step disturbances
+- random walk disturbances
+- sinusoidal disturbances
+- sinusoidal disturbances and a setpoint step change
+- step disturbance and setpoint step change
+
+> [!Note]
+> Of the above, a random walk disturbance is by far the most realistic. The method does appear to give reasonable process gain estimates in these cases. 
+> The method seems to work acceptably in all cases when the setpoint changes are introduces. 
+> If there is no setpoint change and the disturbance is sinsuoidal, the method does not find a good estimate (in this case, the heuritisc inital guess of the process gain is also far off.)
+
+
+## Definitions
 
 The chosen approach to solve the linked problem of solving for 
 process model and disturbance signal is *sequential*(as opposed to simultaneous),
@@ -190,7 +268,7 @@ where there are changes in the setpoint, found as_
 The algorithm seems to in general give better estiamtes of the process if there are step changes in the external inputs 
 or in the pid-setpoint, and the algorithm appears to be able to handle both cases. 
 
-The above works equally well in the case that process to be simualted is a multiple-input system and the other non-pid inputs are changed during 
+The above works equally well in the case that process to be simulated is a multiple-input system and the other non-pid inputs are changed during 
 the tuning set. 
 
 #### Finding the gain that gives the disturbance with the ``shortest travelled distance``
@@ -230,7 +308,18 @@ Note that ``d_HF`` does not change with changing estimtes of the model gain or o
 
 Combining the two above means that 
 
-``d_LF(u) = (\bar{y} - y_{proc}(\hat{u})) - d_HF(\hat{u}, y_{set})
+``d_LF(u) = (\bar{y} - y_{proc}(\hat{u})) - d_HF(\hat{u}, y_{set})``
+
+The smaller the process gain is the more d_est is similar to d_LF.
+
+
+It is possible to plot the solution space of the d_est for different Kp, and in periods where there is small changes in the integral
+term of the pid-controller, the disturbance looks quite similar for different Kp. So while in some periods vary with a factor 10 
+when Kp varies with a factor 10, in other peridos it just varies with a factor 2.
+
+
+
+
 
 
 

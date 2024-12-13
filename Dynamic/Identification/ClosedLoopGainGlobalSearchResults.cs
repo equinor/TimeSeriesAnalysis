@@ -209,7 +209,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var v1_scaled = Scale(v1);
                    
                 // if setpoint changes then v2 will be non-all-zero
-                if (!Vec.IsAllValue(v2, 0))
+                if (!Vec.IsAllValue(v2, 0) && v2_Strength>0)
                 {
                     var v2_scaled = Scale(v2);
                     objFun = vec.Add(objFun, vec.Multiply(v2_scaled, v2_factor));
@@ -217,7 +217,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
 
                 // if the system has external inputs, and they change in value
-                if (!Vec.IsAllValue(v3, 0))
+                if (!Vec.IsAllValue(v3, 0) && v3_Strength > 0)
                 {
                     var v3_scaled = Scale(v3);
                     objFun = vec.Add(objFun, vec.Multiply(v3_scaled, v3_factor));
