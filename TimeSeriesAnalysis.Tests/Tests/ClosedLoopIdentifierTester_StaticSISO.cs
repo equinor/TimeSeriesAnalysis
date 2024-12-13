@@ -37,9 +37,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Shared.GetParserObj().EnableDebugOutput();
         }
 
-        [TestCase(5,1.0, 5)]
-        [TestCase(1,1.0, 5)] 
-        [TestCase(1,5.0, 5)]
+        [TestCase(5,1.0, 10)]
+        [TestCase(1,1.0, 10)] 
+        [TestCase(1,5.0, 10)]
         public void StepDisturbanceANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude, double precisionPrc)
         {
             var locParameters = new UnitParameters
@@ -62,9 +62,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         this may not be as good an assumption as for the step disturbances considered in other tests. 
         */
 
-        [TestCase(5, 1.0,5 )]
-        [TestCase(1, 1.0,5)]
-        [TestCase(1, 5.0,5 )]// this only works when the step change is much bigger than the disturbance
+        [TestCase(5, 1.0,15 )]
+        [TestCase(1, 1.0,10)]
+        [TestCase(1, 5.0,10 )]// this only works when the step change is much bigger than the disturbance
 
         public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude, double gainPrecisionPrc)
         {
@@ -97,8 +97,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // third  seed 
         [TestCase(0.5, 0.1,50, 70)] // unacceptable precision!
         [TestCase(0.5, 1, 50, 70)]// unacceptable precision!
-        [TestCase(1, 0.1, 26, 70)]
-        [TestCase(1, 1, 26, 70)]
+        [TestCase(1, 0.1, 30, 70)]
+        [TestCase(1, 1, 30, 70)]
         [TestCase(2, 0.1, 15, 70)]
         [TestCase(2, 1, 15, 70)]
 

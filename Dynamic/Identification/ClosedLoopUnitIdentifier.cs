@@ -34,12 +34,14 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ClosedLoopUnitIdentifier
     {
-        /////////////////////////
-        // NB!! These three are somewhat "magic numbers", that need to be changed only after
-        // testing over a wide array of cases
-        const int firstPassNumIterations = 50;
+        const int MAX_NUM_PASSES = 1;
+        static int[] firstPassNumIterations =  new int[] { 50 ,20};
         const int secondPassNumIterations = 0;
-        const double initalGuessFactor_higherbound = 2.5;// 2 is a bit low, should be a bit higher
+        // these are given for each pass.
+        static double[] gainGlobalSearchUpperBoundPrc = new double[] { 150, 10 } ;
+        static double[] gainGlobalSearchLowerBoundPrc = new double[] { 90, 10 };
+
+
         const int nDigits = 5; //number of significant digits in results.
         ////////////////////////
         const bool doDebuggingPlot = false;
@@ -141,8 +143,8 @@ namespace TimeSeriesAnalysis.Dynamic
             //   var KPest  = EstimateDisturbanceLF(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
 
 
-            int MAX_RUNS = 1;
-            for (int runIdx = 1;runIdx<= MAX_RUNS; runIdx++)
+ 
+            for (int passNumber = 1;passNumber<= MAX_NUM_PASSES; passNumber++)
             {
                 //   "step2" : "global search" for linear pid-gains
                 if (idUnitModelsList.Last().modelParameters.GetProcessGains() != null)
@@ -159,22 +161,22 @@ namespace TimeSeriesAnalysis.Dynamic
                     // todo: consider improving these bounds?
                     if (pidProcessInputInitalGainEstimate > 0)
                     {
-                        max_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
-                        min_gain = pidProcessInputInitalGainEstimate * 1 / initalGuessFactor_higherbound; // mostly works, but not for sinus disturbances
+                        max_gain = pidProcessInputInitalGainEstimate * (1 + gainGlobalSearchUpperBoundPrc.ElementAt(passNumber-1)/100);
+                        min_gain = pidProcessInputInitalGainEstimate * (1 -gainGlobalSearchLowerBoundPrc.ElementAt(passNumber-1)/100); // mostly works, but not for sinus disturbances
                     }
                     else
                     {
-                        min_gain = pidProcessInputInitalGainEstimate * initalGuessFactor_higherbound;
-                        max_gain = pidProcessInputInitalGainEstimate * 1 / initalGuessFactor_higherbound;
+                        min_gain = pidProcessInputInitalGainEstimate *(1 + gainGlobalSearchUpperBoundPrc.ElementAt(passNumber-1)/100);
+                        max_gain = pidProcessInputInitalGainEstimate *(1- gainGlobalSearchLowerBoundPrc.ElementAt(passNumber-1)/100);
                     }
                     if (doConsoleDebugOut)
                     {
-                        Console.WriteLine("run"+ runIdx + " Step2 "   + "bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture) + " to " + max_gain.ToString("F3", CultureInfo.InvariantCulture));
+                        Console.WriteLine("pass"+ passNumber + " Step2 "   + "bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture) + " to " + max_gain.ToString("F3", CultureInfo.InvariantCulture));
                     }
 
                     // first pass(wider grid with larger grid size)
                     var retGlobalSearch1 = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
-                        idUnitModelsList.Last(), min_gain, max_gain, fittingSpecs, firstPassNumIterations);
+                        idUnitModelsList.Last(), min_gain, max_gain, fittingSpecs, firstPassNumIterations.ElementAt(passNumber-1));
                     var bestUnitModel = retGlobalSearch1.Item1;
                     if (bestUnitModel != null)
                     {
@@ -182,13 +184,12 @@ namespace TimeSeriesAnalysis.Dynamic
                         wasGainGlobalSearchDone = true;
                     }
 
-
                     if (doConsoleDebugOut && retGlobalSearch1.Item1 != null)
                     {
-                        ConsoleDebugOut( bestUnitModel, "run" + runIdx + "Step 2");
+                        ConsoleDebugOut( bestUnitModel, "pass" + passNumber + "Step 2 "," GS output: "+  GSdescription);
                     }
                     else
-                        Console.WriteLine("run" + runIdx + "Step2,GS1: FAILED");
+                        Console.WriteLine("pass" + passNumber + "Step2,GS1: FAILED");
 
                     if (bestUnitModel != null)
                     {
@@ -203,7 +204,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             bestUnitModel = retGlobalSearch2.Item1;
 
                             if (doConsoleDebugOut)
-                                ConsoleDebugOut(bestUnitModel, "run" + runIdx + "Step 2,GS2");
+                                ConsoleDebugOut(bestUnitModel, "pass" + passNumber + "Step 2,GS2");
                         }
                     }
                     // add the "best" model to be used in the next model run
@@ -362,56 +363,11 @@ namespace TimeSeriesAnalysis.Dynamic
                                     (dataSetStep3, step3Model, pidInputIdx, pidParams);
                             idDisturbancesList.Add(distIdResult_step4);
                             if (doConsoleDebugOut)
-                                ConsoleDebugOut(step3Model, "run" + runIdx + "Step 3");
+                                ConsoleDebugOut(step3Model, "pass" + passNumber + "Step 3");
 
                         }
                     }
                 }
-            }
-
-
-            // debugging plots, should normally be off
-            if (false)
-            {
-                Shared.EnablePlots();
-                Console.WriteLine("run1");
-                Console.WriteLine(idUnitModelsList[0].ToString());
-                Console.WriteLine("run2");
-                Console.WriteLine(idUnitModelsList[1].ToString());
-                Plot.FromList(
-                    new List<double[]> {
-                        idDisturbancesList[0].d_est,
-                        idDisturbancesList[1].d_est,
-
-                        idDisturbancesList[0].d_HF,
-                        idDisturbancesList[1].d_HF,
-
-                        idDisturbancesList[0].d_LF,
-                        idDisturbancesList[1].d_LF,
-                    },
-                    new List<string> {"y1=d_run1", "y1=d_run2",
-                    "y3=dHF_run1", "y3=dHF_run2",
-                    "y3=dLF_run1", "y3=dLF_run2",
-                    },
-                    dataSet.GetTimeBase(), "doDebuggingPlot_disturbanceHLandLF");
-                dataSet.D = null;
-
-                (var isOk1, var sim1results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[0], false);
-                (var isOk2, var sim2results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[1], false);
-                (var isOk3, var sim3results) = PlantSimulator.SimulateSingle(dataSet, idUnitModelsList[2], false);
-
-                Plot.FromList(
-                    new List<double[]> {
-                        dataSet.Y_meas,
-                        vec.Add(sim1results, idDisturbancesList[0].d_est),
-                        vec.Add(sim2results, idDisturbancesList[1].d_est),
-                        sim1results,
-                        sim2results,
-                    },
-                    new List<string> {"y1=y_meas","y1=xd_run1", "y1=xd_run2",
-                    "y3=x_run1","y3=x_run2"},
-                    dataSet.GetTimeBase(), "doDebuggingPlot_states");
-                Shared.DisablePlots();
             }
 
             if (idDisturbancesList.Count > 0)
@@ -444,7 +400,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search " + GSdescription;
                 }
                 else
-                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop heuritic (global search no minimum found)";
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop heuristic (global search no minimum found)";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
                 identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
 
@@ -529,10 +485,10 @@ namespace TimeSeriesAnalysis.Dynamic
             return 0;
         }
 
-        private static void ConsoleDebugOut(UnitModel unitModel, string description)
+        private static void ConsoleDebugOut(UnitModel unitModel, string description,string addOnTxt ="")
         {
             Console.WriteLine(description + " Kp:" + unitModel.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture) + 
-                " Tc:" + unitModel.GetModelParameters().TimeConstant_s.ToString("F1", CultureInfo.InvariantCulture));
+                " Tc:" + unitModel.GetModelParameters().TimeConstant_s.ToString("F1", CultureInfo.InvariantCulture)+ addOnTxt);
         }
 
 

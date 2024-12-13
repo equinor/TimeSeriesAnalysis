@@ -140,20 +140,13 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // this is likely related to a test architecture issue, not to anything wiht the actual algorithm.
 
         [TestCase(5, 1.0),NonParallelizable]// most difficult
-  //      [TestCase(1, 1.0)] //difficult
-   //     [TestCase(1, 5.0)]//easist
-        public void Static_StepDistANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude)
+
+        public void StepDistANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude)
         {
             Vec vec = new Vec();
 
             double precisionPrc = 20;// works when run indivdually
-         /*   UnitParameters staticModelParameters = new UnitParameters
-            {
-                TimeConstant_s = 15,
-                LinearGains = new double[] { 1.2 },
-                TimeDelay_s = 0,
-                Bias = 5
-            };*/
+
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 4, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
