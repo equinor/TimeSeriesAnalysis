@@ -332,9 +332,6 @@ namespace TimeSeriesAnalysis.Dynamic
  //           Plot.FromList(new List<double[]> { d_est, d_est2, d_HF }, new List<string> { "y1=d1", "y1=d2","y1=d_HF" }, unitDataSet.Times, "testplot");
   //          Shared.DisablePlots();
 
-
-
-
             result.d_est = d_est;
             result.d_LF = d_LF;
             result.d_HF = d_HF;

@@ -59,13 +59,14 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(d_est != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-
-            Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
+            if (false)
+            {
+                Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
             pidDataSet.U.GetColumn(0),
             d_est, trueDisturbance },
-                new List<string> { "y1=y meas", "y1=y set", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
-                pidDataSet.GetTimeBase(), caseId);
-
+                    new List<string> { "y1=y meas", "y1=y set", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
+                    pidDataSet.GetTimeBase(), caseId);
+            }
             Assert.IsTrue(vec.Mean(vec.Abs(vec.Subtract(trueDisturbance, d_est))) < distTrueAmplitude / 10,"true disturbance and actual disturbance too far apart");
         }
  
@@ -181,14 +182,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             {
                 var pidModel1 = new PidModel(pidParameters1, "PID1");
 
-                // important to add a disturbance signal with naming convention to the output of the process, to signal that the disturbance is to be estimated!
-
-                // begin testing
-                // var dynamicModelParameters_new = dynamicModelParameters.CreateCopy();
-                // dynamicModelParameters_new.TimeConstant_s = 20;
-                //end testing
-
-                //var processModel3 = new UnitModel(dynamicModelParameters_new, "Proc1");
                 var processModel3 = new UnitModel(dynamicModelParameters, "Proc1");
 
                 var distSignal = SignalNamer.EstDisturbance(processModel3);

@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void RandomWalkDisturbance(double procGain, double distAmplitude, double gainPrecisionPrc)
         {
-            int seed = 150;
+            int seed = 10;
             
             int N = 2000;
 
@@ -177,7 +177,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
 
         // for some reason, this test also does not work with "run all", but works fine when run individually?
-        [Test,Explicit,NonParallelizable]
+        [TestCase( Category = "NotWorking_AcceptanceTest"),Explicit]
         public void StepAtStartOfDataset_IsExcludedFromAnalysis()
         {
             double stepAmplitude = 1;

@@ -1,4 +1,5 @@
 ﻿using Accord.Math;
+using Accord.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -56,20 +57,56 @@ namespace TimeSeriesAnalysis.Dynamic
             uPidDistanceList = new List<double>();
             dEstDistanceList = new List<double>();
             covBtwDestAndYsetList = new List<double>();
-            pidLinearProcessGainList = new List<double>();
             covBtwDestAndUexternal = new List<double>();
         }
 
-        public void Add(double gain, UnitParameters unitParameters, double covBtwDestAndYset, 
-            double uPidDistance,double dEstDistance,
-            double covBtwDestAndUexternal)
+        /// <summary>
+        /// Add the result of one paramter study as part of the global search
+        /// </summary>
+        /// <param name="unitParameters">paramters that have been studied</param>
+        /// <param name="dataSet"></param>
+        /// <param name="dEst"></param>
+        /// <param name="u_pid_adjusted"></param>
+        /// <param name="pidInputIdx"></param>
+        internal void Add(UnitParameters unitParameters, UnitDataSet dataSet, double[] dEst, double[] u_pid_adjusted, int pidInputIdx)
         {
-            pidLinearProcessGainList.Add(gain);
+            var vec = new Vec(dataSet.BadDataID);
+
+            double covarianceBtwDestAndYset = Math.Abs(CorrelationCalculator.CorrelateTwoVectors(
+             dEst, dataSet.Y_setpoint, dataSet.IndicesToIgnore));
+
+            // v3: just choose the gain that gives the least "variance" in u_pid when the disturbance is simulated
+            // in closed loop with the given PID-model and the assumed candiate process model. 
+
+            var uPidDistance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value;
+
+            // v4: just choose the gain that gives the least "distance travelled" in d_est 
+            var dEstDistance = vec.Mean(vec.Abs(vec.Diff(dEst))).Value; 
+
+            var covBtwUPidAdjustedAndDest = Math.Abs(Measures.Covariance(dEst, u_pid_adjusted, false));
+
+            double covarianceBtwDestAndUexternal = 0;
+            if (dataSet.U.GetNColumns() > 1)
+            {
+                for (int inputIdx = 0; inputIdx < dataSet.U.GetNColumns(); inputIdx++)
+                {
+                    if (inputIdx == pidInputIdx)
+                    {
+                        continue;
+                    }
+                    covarianceBtwDestAndUexternal +=
+                    //   Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, dataSet.U.GetColumn(inputIdx), dataSet.IndicesToIgnore));
+                    Math.Abs(Measures.Covariance(dEst, dataSet.U.GetColumn(inputIdx), false));
+                    // Math.Abs(CorrelationCalculator.CorrelateTwoVectors(d_est, distIdResultAlt.adjustedUnitDataSet.U.GetColumn(nonPidIdx), dataSet.IndicesToIgnore));
+                }
+            }
+
             unitParametersList.Add(unitParameters);
-            covBtwDestAndYsetList.Add(covBtwDestAndYset);
+            covBtwDestAndYsetList.Add(covarianceBtwDestAndYset);
             uPidDistanceList.Add(uPidDistance);
             dEstDistanceList.Add(dEstDistance);
-            this.covBtwDestAndUexternal.Add(covBtwDestAndUexternal);
+            covBtwDestAndUexternal.Add(covarianceBtwDestAndUexternal);
+
         }
 
         /// <summary>
@@ -87,16 +124,16 @@ namespace TimeSeriesAnalysis.Dynamic
         /// 
         /// 
         /// </summary>
-        /// <param name="initalGainEstimate"></param>
+
         /// <returns></returns>
-        public Tuple<UnitModel,string> GetBestModel(double initalGainEstimate)
+        public Tuple<UnitModel,string> GetBestModel()
         {
             bool doV4 = true;
 
             if (unitParametersList.Count()== 0)
                 return new Tuple<UnitModel,string>(null,"");
 
-            // calculate strenght of a minimum - strength is value between 0 and 100, higher is stronger
+            // calculate strength of a minimum - strength is value between 0 and 100, higher is stronger
             // this is a metric of how flat the objective space is, the lower the strenght, the flatter the objective function
             Tuple<double,int> CalcStrengthOfObjectiveMinimum(double[] values)
             {
@@ -198,8 +235,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         return new Tuple<UnitModel, string>(null, "");
                     }
                 }
-                //modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
-       
+      
             }
             double[] objFun = v1;
             var retString = "Kp:v1(strength: " + v1_Strength.ToString("F2",CultureInfo.InvariantCulture) + ") "+ Direction(v1, min_ind_v1); ;
@@ -230,5 +266,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             return new Tuple<UnitModel, string>(new UnitModel(unitParams), retString);
          }
+
+
     }
 }

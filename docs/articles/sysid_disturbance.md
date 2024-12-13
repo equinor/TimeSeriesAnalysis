@@ -208,7 +208,7 @@ Because no process dynamics are assumed yet, ``d_est(t)`` at this stage will inc
 has dynamics. ``d_est(t)`` will be attempted improved in subsquent steps.
 
 
-### Guessing the sign of the process gain
+#### Guessing the sign of the process gain
 
 Methods for open-loop estimation when applied naively to closed loop
 time-series often estimate process gain with incorrect sign. 
@@ -283,18 +283,9 @@ expressed as:
 Some obervations:
 
 - this method is heurisitic
-- the objective has a minumum
+- the objective usually has a minimum, but not always (such as if the disturbance is a perfect sinus in unit tests)
 - the objective space is fairly flat, the minum has a fairly low ``strength'', i.e neighborhing process gains have almost equally low objectives
 - the objective space seems to be more concave ("stronger" i.e. more significant minimums) when the process gain is higher.
-
-It could be an idea to count the number of zero crossing of e in the dataset, if it is very low, that may be an indication that the process gain is low.
- 
-*It could be important to look at the internal output of the process model.* 
-
-*It could be that it is possible to have a very good estiamte of the distrubance d, yet the process gain can still be of by 40 percent. 
-This has been observed in some random walk unit tests where the process gain is small. This could be because the d_est in this cae is mostly 
-determined by ``d_HF```? This could be the clue to determining the uncertainty of the process gain, looking at how much the disturbance vector 
-estimate is sensitive to the process gain values?*
 
 There are essentially two ways of calculating the disturbance
 
@@ -312,12 +303,9 @@ Combining the two above means that
 
 The smaller the process gain is the more d_est is similar to d_LF.
 
-
 It is possible to plot the solution space of the d_est for different Kp, and in periods where there is small changes in the integral
 term of the pid-controller, the disturbance looks quite similar for different Kp. So while in some periods vary with a factor 10 
 when Kp varies with a factor 10, in other peridos it just varies with a factor 2.
-
-
 
 
 
@@ -336,7 +324,10 @@ Knowing upper- and lower bounds could also be a useful guide for subsequent manu
 
 
 
-### Determing the dynamic parameters of the process 
+
+
+
+### Step3:  Determing the dynamic parameters of the process 
 
 If the process is actually dynamic yet is modeled as static, then the above methodology will 
 result into un-modeled transients bleeding into the estimated disturbance, where they will appear as 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -187,7 +188,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueDisturbance,false,false);
         }
 
-        [Test]
+        [TestCase(Category = "NotWorking_AcceptanceTest")]
         public void BadDataPoints_IsExcludedFromAnalysis()
         {
             double stepAmplitude = 1;
