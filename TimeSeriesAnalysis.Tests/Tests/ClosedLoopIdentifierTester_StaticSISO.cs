@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var trueDisturbance = TimeSeriesCreator.Step(160, N, 0, distStepAmplitude);
             var yset = TimeSeriesCreator.Step(50, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,
-                false, true, yset, precisionPrc);
+                false, true, yset, precisionPrc,false, true);
         }
 
         /*
@@ -62,34 +62,17 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         this may not be as good an assumption as for the step disturbances considered in other tests. 
         */
 
-        [TestCase(5, 1.0), NonParallelizable]
-        [TestCase(1, 1.0)]
-        [TestCase(1, 5.0 )]// this only works when the step change is much bigger than the disturbance
+        [TestCase(5, 1.0,5 )]
+        [TestCase(1, 1.0,5)]
+        [TestCase(1, 5.0,5 )]// this only works when the step change is much bigger than the disturbance
 
-        public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude)
+        public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude, double gainPrecisionPrc)
         {
-            double precisionPrc = 20;
-
             var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude,N/8,timeBase_s,N );
             var yset = TimeSeriesCreator.Step(N/2, N, 50, 50 + ysetStepAmplitude);//do step before disturbance
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
-                false, true, yset, precisionPrc,false, isStatic);
+                false, true, yset, gainPrecisionPrc,false, isStatic);
         }
-
-        // does not work in the static case, no sens in doing dynamic case too
-
-       /* [TestCase(2, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1,  Category = "NotWorking_AcceptanceTest")]
-        [TestCase(0.5, Category = "NotWorking_AcceptanceTest")]
-        public void SinusDisturbance(double distSinusAmplitude)
-        {
-            double precisionPrc = 20;
-            bool doAddBadData = false;
-            var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude, N / 8, timeBase_s, N);
-            var yset = TimeSeriesCreator.Step(N / 2, N, 50, 50 );
-            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
-                false, true, yset, precisionPrc,doAddBadData,isStatic);
-        }*/
 
 
         // 0.25: saturates the controller
@@ -140,15 +123,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc,doBadData,isStatic);
         }
 
-        // these tests seem to run well when run individuall, but when "run all" they seem to fail
-        // this is likely related to a test architecture issue, not to anything wiht the actual algorithm.
-
-        [TestCase(5, 1.0),NonParallelizable]// most difficult
-        public void StepDisturbanceANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude)
+        [TestCase(5, 1.0,5)]
+        public void StepDisturbanceANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude, double precisionPrc )
         {
-            Vec vec = new Vec();
-
-            double precisionPrc = 20;// works when run indivdually
+            var vec = new Vec();
+         
             var locParameters = new UnitParameters
             {
                 TimeConstant_s = 0,
@@ -160,19 +139,18 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 4, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "StaticProcess"), trueDisturbance,
-                false, true, yset, precisionPrc);
+                false, true, yset, precisionPrc,false, true);
         }
 
-        [TestCase(5)]
-        [TestCase(-5)]         
-        public void LongStepDisturbance_EstimatesOk(double stepAmplitude)
+        [TestCase(5,5)]
+        [TestCase(-5,5)]         
+        public void LongStepDisturbance_EstimatesOk(double stepAmplitude, double gainPrecisionPrc)
         {
             bool doInvertGain = false;
-            //    Shared.EnablePlots();
             N = 1000;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
-            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "StaticProcess"), trueDisturbance,doInvertGain);
-          //  Shared.DisablePlots();
+            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "StaticProcess"), trueDisturbance,doInvertGain,true, null, gainPrecisionPrc, false, true);
+
         }
 
 
@@ -210,7 +188,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
              //Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
-                doNegativeGain,true,null,  processGainAllowedOffsetPrc);
+                doNegativeGain,true,null,  processGainAllowedOffsetPrc,false, true);
             //Shared.DisablePlots();
         }
 

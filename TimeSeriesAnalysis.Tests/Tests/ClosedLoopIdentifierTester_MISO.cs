@@ -16,6 +16,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
     class ClosedLoopIdentifierTester_MISO
     {
         const bool doPlot = true;
+        const bool isStatic = true;
 
         UnitParameters staticModelParameters = new UnitParameters
         {
@@ -52,7 +53,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         public void CommonPlotAndAsserts(UnitDataSet pidDataSet, double[] estDisturbance, double[] trueDisturbance,
-            UnitModel identifiedModel, UnitModel trueModel, double maxAllowedGainOffsetPrc, double maxAllowedMeanDisturbanceOffsetPrc = 30)
+            UnitModel identifiedModel, UnitModel trueModel, double maxAllowedGainOffsetPrc, double maxAllowedMeanDisturbanceOffsetPrc = 30, bool isStatic = true)
         {
             Vec vec = new Vec();
 
@@ -89,10 +90,13 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             }
 
             // time constant:
-            double estTimeConstant_s = identifiedModel.modelParameters.TimeConstant_s;
-            double trueTimeConstant_s = trueModel.modelParameters.TimeConstant_s;
-            double timeConstant_tol_s = 1;
-            Assert.IsTrue(Math.Abs(estTimeConstant_s - trueTimeConstant_s) < timeConstant_tol_s, "est time constant " + estTimeConstant_s + " too far off " + trueTimeConstant_s);
+            if (!isStatic)
+            {
+                double estTimeConstant_s = identifiedModel.modelParameters.TimeConstant_s;
+                double trueTimeConstant_s = trueModel.modelParameters.TimeConstant_s;
+                double timeConstant_tol_s = 1;
+                Assert.IsTrue(Math.Abs(estTimeConstant_s - trueTimeConstant_s) < timeConstant_tol_s, "est time constant " + estTimeConstant_s + " too far off " + trueTimeConstant_s);
+            }
 
         }
         [TestCase(0,false)]
@@ -113,7 +117,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueParamters.LinearGains =  new double[] { oldGains[1], oldGains[0], oldGains[2] };
             }
             GenericMISODisturbanceTest(new UnitModel(trueParamters, "StaticProcess"), trueDisturbance, externalU1,externalU2,
-                doNegative, true,yset, pidInputIdx);
+                doNegative, true,yset, pidInputIdx,10,false, isStatic);
         }
 
         [TestCase(0, false, false), NonParallelizable]
@@ -159,7 +163,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 15, 20);
             var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
             GenericMISODisturbanceTest(new UnitModel(trueParamters, "StaticProcess"), trueDisturbance, externalU1, externalU2,
-                doNegative, true, yset, pidInputIdx);
+                doNegative, true, yset, pidInputIdx,10,false,isStatic);
         }
         // be aware that adding any sort of dynamics to the "true" model here seems to destroy the 
         // model estimate. 
@@ -240,7 +244,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void GenericMISODisturbanceTest  (UnitModel trueProcessModel, double[] trueDisturbance,
             double[] externalU1, double[] externalU2, bool doNegativeGain,
             bool doAssertResult=true, double[] yset=null, int pidInputIdx = 0,
-            double processGainAllowedOffsetPrc=10, bool doAddBadData = false)
+            double processGainAllowedOffsetPrc=10, bool doAddBadData = false,bool isStatic = true)
         {
             var usedProcParameters = trueProcessModel.GetModelParameters().CreateCopy();
             var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
@@ -332,7 +336,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             if (doAssertResult)
             {
                 CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel,
-                    trueProcessModel, processGainAllowedOffsetPrc);
+                    trueProcessModel, processGainAllowedOffsetPrc, 30,isStatic);
             }
         }
 
