@@ -54,3 +54,14 @@ All models should inherit from ``ModelBaseClass``.
 Each model has a number of inputs that travel through the model, each with an id these are referred to as *model input IDs*.
 In addition, models support adding signals directly to the output. This is a feature intended for modeling disturbances. 
 The IDs of such signals are referred to as *additive input IDs*.
+
+### Estimating disturbances and simulating their effects
+
+If the ``inputData`` given to the PlantSimulator includes measured pid-outputs ``u`` and process outputs ``y`` of feedback loops,
+then PlantSimulator uses that 
+``y_meas = y_proc+d`` 
+calculate the disturbance vector ``d`` and this disturbance is then simulated as the ``driving force`` of closed loop dynamics. 
+
+Thus when the process model is known and inputs to the model are given, the method ``PlantSimulator.SimulateSingle()`` is used to 
+simulate the disturbance vector as part of the initialization of ``PlantSimulator.Simulate()``
+

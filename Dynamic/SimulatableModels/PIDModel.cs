@@ -328,7 +328,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 IDinternal = ID;
 
             var newPidParameters = new PidParameters(pidParameters); 
-            return new PidModel(newPidParameters, IDinternal);
+
+            var clone = new PidModel(newPidParameters, IDinternal);
+
+            clone.ModelInputIDs = GetModelInputIDs();
+            clone.outputID = GetOutputID(); 
+
+            return clone;
         }
 
 

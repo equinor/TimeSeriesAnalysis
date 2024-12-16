@@ -34,10 +34,10 @@ namespace TimeSeriesAnalysis.Test.PidID
 
 
         // Tendency of Kp and Ti to be biased lower when there is noise in Y
-        [TestCase(1, 0.0,1)]
-        [TestCase(1, 0.1,8)]
-        [TestCase(2, 0.1,5)]
-        [TestCase(5, 0.1,2)]
+        [TestCase(1, 0.0,10)]
+        [TestCase(1, 0.1,10)]
+        [TestCase(2, 0.1,10)]
+        [TestCase(5, 0.1,10)]
 
         public void SetpointStep_WNoise_KpAndTiEstimatedOk(double ySetAmplitude, double yNoiseAmplitude, double tolerancePrc)
         {

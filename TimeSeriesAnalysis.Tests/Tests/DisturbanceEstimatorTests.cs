@@ -61,11 +61,13 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Replace(")", "_").Replace(",", "_") + "y";
             if (false)
             {
+                Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
-            pidDataSet.U.GetColumn(0),
-            d_est, trueDisturbance },
+                pidDataSet.U.GetColumn(0),
+                d_est, trueDisturbance },
                     new List<string> { "y1=y meas", "y1=y set", "y2=u(right)", "y3=est disturbance", "y3=true disturbance" },
                     pidDataSet.GetTimeBase(), caseId);
+                Shared.DisablePlots();
             }
             Assert.IsTrue(vec.Mean(vec.Abs(vec.Subtract(trueDisturbance, d_est))) < distTrueAmplitude / 10,"true disturbance and actual disturbance too far apart");
         }
@@ -105,8 +107,16 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(4)]
         public void PlantSimulator_StepDisturbance_EstimatesOk(double stepAmplitude)
         {
+            var locModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 15,
+                LinearGains = new double[] { 1 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
-            DisturbanceTestUsingPlantSimulator(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance);
+            DisturbanceTestUsingPlantSimulator(locModelParameters, trueDisturbance);
         }
 
         [TestCase(4,1)]
@@ -116,7 +126,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
           //  Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, disturbanceStepAmplitude);
             var setpoint = TimeSeriesCreator.Step(50, N, 50, 50+setpointAmplitude);
-            DisturbanceTestUsingPlantSimulator(new UnitModel(dynamicModelParameters, "PlantSim_d"), trueDisturbance, true, setpoint);
+            DisturbanceTestUsingPlantSimulator(dynamicModelParameters, trueDisturbance, true, setpoint);
             //Shared.DisablePlots();
         }
 
@@ -149,7 +159,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
 
-        public void DisturbanceTestUsingPlantSimulator(UnitModel processModel, double[] trueDisturbance,
+        public void DisturbanceTestUsingPlantSimulator(UnitParameters unitParams, double[] trueDisturbance,
             bool doAssertResult = true, double[] externalYset=null)
         {
             TimeSeriesDataSet referenceSimDataSet;
@@ -157,7 +167,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             // 1 .create synthetic dataset - where a "true" known disturbance is specified
             {
                 var pidModel1 = new PidModel(pidParameters1, "PID1");
-                var processModel2 = new UnitModel(dynamicModelParameters, "Proc1");
+                var processModel2 = new UnitModel(unitParams, "Proc1");
                 var plantSim = new PlantSimulator(
                     new List<ISimulatableModel> { pidModel1, processModel2 });
                 plantSim.ConnectModels(processModel2, pidModel1);
@@ -182,7 +192,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             {
                 var pidModel1 = new PidModel(pidParameters1, "PID1");
 
-                var processModel3 = new UnitModel(dynamicModelParameters, "Proc1");
+                var processModel3 = new UnitModel(unitParams, "Proc1");
 
                 var distSignal = SignalNamer.EstDisturbance(processModel3);
                 processModel3.AddSignalToOutput(distSignal);
@@ -203,28 +213,29 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
                 /////////////////
                 ///
-                ///adding u and y to inputdata, should enable the plant simualtor to back-calculate the disturbance.
+                ///adding u and y to inputdata, should enable the plant simulator to back-calculate the disturbance.
                 /// 
                 var inputData = new TimeSeriesDataSet();
                 inputData.Add(ysetSignal, referenceInputDataSet.GetValues("yset"));
                 inputData.Add(uMeasSignal, referenceSimDataSet.GetValues("PID1", SignalType.PID_U));
                 inputData.Add(ymeasSignal, referenceSimDataSet.GetValues("Proc1", SignalType.Output_Y));
                 /////////////////
-                Assert.IsTrue(inputData.GetSignalNames().Count() == 3 );//sanity check for configuration errors 
+                Assert.IsTrue(inputData.GetSignalNames().Count() == 3,"configuration errors" );//sanity check for configuration errors 
                 inputData.CreateTimestamps(timeBase_s);
 
                 //////////////////////////////////
                 var isOK = plantSim.Simulate(inputData, out var simDataSetWithDisturbance);
                 //////////////////////////////////
-                Assert.IsTrue(isOK);
-                Assert.IsTrue(plantSim.PlantFitScore == 100);
-                Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(distSignal));
+
                 if (doAssertResult)
                 {
                     var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simDataSetWithDisturbance), pidModel1);
                     CommonPlotAndAsserts(pidDataSet, simDataSetWithDisturbance.GetValues(distSignal),
                         trueDisturbance);
                 }
+                Assert.IsTrue(isOK, "simulate dataset with the disturbane FAILED!!");
+                Assert.IsTrue(plantSim.PlantFitScore == 100, "expect plant fit score 100");
+                Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(distSignal), "simulated dataset does not contain the disturbance signal");
             }
         }
 
@@ -271,6 +282,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 inputData.CreateTimestamps(timeBase_s);
                 var isOK = plantSim.SimulateSingle(inputData, processModel.ID, 
                     out TimeSeriesDataSet simDataSetWithDisturbance);
+             //   var isOK = PlantSimulator.SimulateSingle(inputData, processModel,
+              //      out TimeSeriesDataSet simDataSetWithDisturbance);
+
                 Assert.IsTrue(isOK);
                 Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(SignalNamer.EstDisturbance(processModel)));
                 Assert.IsTrue(simDataSetWithDisturbance.ContainsSignal(processModel.GetID()),

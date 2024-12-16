@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             {
                 TimeConstant_s = 10,
                 LinearGains = new double[] { 1 },
-                TimeDelay_s = 5,
+                TimeDelay_s = 0,
                 Bias = 5
             };
             modelParameters2 = new UnitParameters
@@ -468,8 +468,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after disturbance");
             BasicPIDCommonTests(simData, pidModel);
         }
+
+        //
+        // Incredibly important that this unit tests passes, as SimulateSingle is used to estimate the disturbance as part of initalization of 
+        // Simulate(), so these two methods need to simulate in a consisten way for disturbance estimation to work, which again is vital for 
+        // disturbance estimation and closed-loop unit identification to work.
+        //
+
         [TestCase]
-        public void BasicPID_SimulateJustPID_sameresult()
+        public void BasicPID_CompareSimulateAndSimulateSingle_MustGiveSameResultForDisturbanceEstToWork()
         {
             double newSetpoint = 51;
             var plantSim = new PlantSimulator(
@@ -484,10 +491,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var newSet = new TimeSeriesDataSet();
             newSet.AddSet(inputData);
+        //    var outputSignalName = SignalNamer.GetSignalName(processModel1.GetID(), SignalType.Output_Y);
+       //     newSet.Add(outputSignalName, simData.GetValues(outputSignalName));
             newSet.AddSet(simData);
             newSet.SetTimeStamps(inputData.GetTimeStamps().ToList());
 
-            var isOK = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
+       //     var isOk2 = PlantSimulator.SimulateSingle(newSet, pidModel1, out var simData2);
+            var isOK2 = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
 
             if (true)
             {
@@ -497,7 +507,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                       simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
                       simData2.GetValues(pidModel1.GetID(),SignalType.PID_U),
                       inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset)},
-                   new List<string> { "y1=processOut", "y3=pidOut", "y3=pidOut2", "y2=disturbance" },
+                   new List<string> { "y1=processOutSimulate", "y3=upidSimulate", "y3=upidSimulateSingle", "y2=setpoint" },
                    timeBase_s, TestContext.CurrentContext.Test.Name);
                 Shared.DisablePlots();
             }

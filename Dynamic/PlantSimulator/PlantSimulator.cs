@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -81,6 +82,9 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class PlantSimulator
     {
+
+        private const bool doDestBasedONYsimOfLastTimestep = false; //TODO: was false, but want to refactor so that "true" works.
+
         /// <summary>
         /// User-friendly name that may include white spaces.
         /// </summary>
@@ -508,6 +512,8 @@ namespace TimeSeriesAnalysis.Dynamic
             return SimulateSingle(inputData, singleModelName, false, out simData);
         }
 
+
+
         /// <summary>
         /// Simulates a single model for a unit dataset and adds the output to unitData.Y_meas of the unitData, optionally with noise
         /// </summary>
@@ -567,13 +573,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.Add(uName, unitData.U.GetColumn(colIdx));
                 uNames.Add(uName);
             }
-            modelCopy.SetInputIDs(uNames.ToArray());
-            if (modelCopy.GetOutputID() == null)
-                modelCopy.SetOutputID("output");
+               modelCopy.SetInputIDs(uNames.ToArray());
+               if (modelCopy.GetOutputID() == null)
+                   modelCopy.SetOutputID("output");
+               
+               var  sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
+               var isOk = sim.SimulateSingle(inputData, singleModelName, false, out var simData);
 
-            PlantSimulator sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
-          //  var simData = new TimeSeriesDataSet();
-            var isOk = sim.SimulateSingle(inputData, singleModelName, false, out var simData);
+         //   var isOk = PlantSimulator.SimulateSingle(inputData, modelCopy, out var simData);
+
             if(!isOk)
                 return (false, null);
             double[] y_sim = simData.GetValues(singleModelName, SignalType.Output_Y);
@@ -619,6 +627,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, 
             bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)
         {
+            
             if (!modelDict.ContainsKey(singleModelName))
             {
                 simData = null;
@@ -664,9 +673,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // initalize
             {
-                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputData);
-                double[] outputVals =
-                    GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputData);
+                double[] inputVals = GetValuesFromEitherDataset(model,inputIDs, timeIdx, simData, inputData);
+                double[] outputVals = GetValuesFromEitherDataset(model,new string[] { outputID }, timeIdx, simData, inputData);
                 simData.InitNewSignal(nameOfSimulatedSignal, outputVals[0], N.Value);
                 model.WarmStart(inputVals, outputVals[0]);
             }
@@ -707,6 +715,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // disturbance estimation
             if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess && doEstimateDisturbance)
             {
+
                 // y_meas = y_internal+d as defined here
                 var y_meas = inputData.GetValues(outputID);
                 if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
@@ -716,7 +725,26 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         return false;
                     }
-                    var est_disturbance = (new Vec()).Subtract(y_meas, y_sim);
+                    // TODO: may need to "freeze" disturbance is there is a bad signal id?
+                    // old: y_meas and y_sim are subtracted without time-shifting
+
+                    double[] est_disturbance = null;
+                    if (doDestBasedONYsimOfLastTimestep)
+                    {
+                        // note that actually 
+                        // y_meas[t] = y_proc[t-1] + D[t]
+                         est_disturbance = new double[y_meas.Length];
+                         for (int i = 1; i < y_meas.Length; i++)
+                         {
+                             est_disturbance[i] = y_meas[i]-y_sim[i-1];
+                         }
+                         est_disturbance[0] = est_disturbance[1];
+                    }
+                    else
+                    {
+                        est_disturbance = (new Vec()).Subtract(y_meas, y_sim);
+
+                    }
                     simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
                     simData.Add(model.GetOutputID(), y_meas);
                 }
@@ -789,7 +817,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
 
-                double[] inputVals = GetValuesFromEitherDataset(inputIDs, timeIdx, simData, inputDataMinimal);
+                double[] inputVals = GetValuesFromEitherDataset(model,inputIDs, timeIdx, simData, inputDataMinimal);
 
                 string outputID = model.GetOutputID(); 
                 if (outputID==null)
@@ -799,7 +827,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return false;
                 }
                 double[] outputVals =
-                    GetValuesFromEitherDataset(new string[] { outputID }, timeIdx, simData, inputDataMinimal);
+                    GetValuesFromEitherDataset(model,new string[] { outputID }, timeIdx, simData, inputDataMinimal);
                 if (outputVals != null)
                 {
                     model.WarmStart(inputVals, outputVals[0]);
@@ -824,14 +852,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
                     string[] inputIDs = model.GetBothKindsOfInputIDs();
-                    int inputDataLookBackIdx = 0; 
-                    if (model.GetProcessModelType() == ModelType.PID && timeIdx > 0)
-                    {
-                        inputDataLookBackIdx = 1;//if set to zero, model fails(requires changing model order).
-                    }
 
-                    double[] inputVals = GetValuesFromEitherDataset(inputIDs, lastGoodTimeIndex - inputDataLookBackIdx, simData, inputDataMinimal);
-
+                    double[] inputVals = null;
+                    inputVals = GetValuesFromEitherDataset(model, inputIDs, lastGoodTimeIndex, simData, inputDataMinimal);
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -874,7 +897,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet1"></param>
         /// <param name="dataSet2"></param>
         /// <returns></returns>
-        private double[] GetValuesFromEitherDataset(string[] inputIDs, int timeIndex, 
+        private double[] GetValuesFromEitherDatasetInternal(string[] inputIDs, int timeIndex, 
             TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
         {
             double[] retVals = new double[inputIDs.Length];
@@ -904,6 +927,56 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return retVals;
         }
+
+        /// <summary>
+        /// Gets data for a given model from either of two datasets (usally the inputdata and possibly simulated data. 
+        /// This method also has a special treatment of PID-inputs, 
+        /// </summary>
+        /// <param name="model">the model that the data is for()</param>
+        /// <param name="inputIDs"></param>
+        /// <param name="timeIndex"></param>
+        /// <param name="dataSet1"></param>
+        /// <param name="dataSet2"></param>
+        /// <returns></returns>
+        public double[] GetValuesFromEitherDataset(ISimulatableModel model, string[] inputIDs, int timeIndex,
+            TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
+        {
+            if (model.GetProcessModelType() == ModelType.PID && timeIndex>0)
+            {
+         
+                int lookBackIndex = 1;
+                double[] lookBackValues = GetValuesFromEitherDatasetInternal(inputIDs, timeIndex - lookBackIndex, dataSet1, dataSet2); ;
+                double[] currentValues = GetValuesFromEitherDatasetInternal(inputIDs, timeIndex, dataSet1, dataSet2);
+
+                // "use values from current data point when available, but fall back on using values from the previous sample if need be"
+                // for instance, always use the most current setpoint value, but if no disturbance vector is given, then use the y_proc simulated from the last iteration.
+                double[] retValues = new double[currentValues.Length];
+                retValues = lookBackValues;
+
+                // adding in the below code  seems to remove the issue with there being a one sample wait time before the effect of a setpoint 
+                // is seen on the output, but causes there to be small deviation between what the PlantSimulator.SimulateSingle and PlantSimulator.Simulate
+                // seem to return for a PID-loop in the test BasicPID_CompareSimulateAndSimulateSingle_MustGiveSameResultForDisturbanceEstToWork
+                /*
+                  for (int i = 0; i < currentValues.Length; i++)
+                  {
+                      if (Double.IsNaN(currentValues[i]))
+                      {
+                          retValues[i] = lookBackValues[i];
+                      }
+                      else
+                      {
+                          retValues[i] = currentValues[i];
+                      }
+                  }*/
+                return retValues;
+            }
+            else
+            {
+                return GetValuesFromEitherDatasetInternal(inputIDs, timeIndex, dataSet1, dataSet2);
+            }
+        }
+
+
 
         /// <summary>
         /// Creates a JSON text string serialization of this object.

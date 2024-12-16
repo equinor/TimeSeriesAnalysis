@@ -818,7 +818,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 IDinternal = IDexternal;
 
             var newModelParams = modelParameters.CreateCopy();
-            return new UnitModel(newModelParams, IDinternal);
+            var retModel = new UnitModel(newModelParams, IDinternal);
+            retModel.additiveInputIDs = additiveInputIDs;
+            retModel.ModelInputIDs = ModelInputIDs;
+            retModel.outputID = outputID;
+            retModel.outputIdentID = outputIdentID;
+            return retModel;
         }
 
 
