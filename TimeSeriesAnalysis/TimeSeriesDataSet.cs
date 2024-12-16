@@ -41,7 +41,6 @@ namespace TimeSeriesAnalysis
             dataset = new Dictionary<string, double[]>();
             dataset_constants = new Dictionary<string, double>();
             indicesToIgnore = null;
-            //didSimulationReturnOk = false;
         }
         /// <summary>
         /// Constructor that copies another dataset into the returned object
@@ -69,6 +68,8 @@ namespace TimeSeriesAnalysis
         /// <param name="dateTimeFormat">the format of date-time strings in the csv-file</param>
         public TimeSeriesDataSet(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
+            dataset = new Dictionary<string, double[]>();
+            dataset_constants = new Dictionary<string, double>();
             LoadFromCsv(csvContent, separator, dateTimeFormat);
         }
 
@@ -80,6 +81,8 @@ namespace TimeSeriesAnalysis
         /// <param name="dateTimeFormat">the format of date-time strings in the csv-file</param>
         public TimeSeriesDataSet(string csvFileName, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
+            dataset = new Dictionary<string, double[]>();
+            dataset_constants = new Dictionary<string, double>();
             LoadFromCsv(csvFileName, separator, dateTimeFormat);
         }
 

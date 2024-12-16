@@ -489,7 +489,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var isOK = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
 
-            if (false)
+            if (true)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
@@ -503,6 +503,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             }
             double firstYsimE = Math.Abs(simData2.GetValues(pidModel1.GetID(), SignalType.PID_U).First() - simData.GetValues(pidModel1.GetID(), SignalType.PID_U).First());
             double lastYsimE = Math.Abs(simData2.GetValues(pidModel1.GetID(), SignalType.PID_U).Last() - simData.GetValues(pidModel1.GetID(), SignalType.PID_U).Last());
+
             Assert.IsTrue(isOk);
             Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");
             Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after disturbance");
