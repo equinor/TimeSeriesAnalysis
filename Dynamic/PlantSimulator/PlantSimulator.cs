@@ -417,28 +417,22 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var inputData = new TimeSeriesDataSet();
             inputData.Add(signalId1, (double[])unitDataSet.Y_meas.Clone());
-           // inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
 
-         //   if (unitDataSet.U.GetNColumns() > 1)
+            for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
             {
-                for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
+                if (curColIdx == pidInputIdx)
                 {
-                    if (curColIdx == pidInputIdx)
-                    {
-                        inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
-                    }
-                    else
-                    {
-                        inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
-                            (double[])unitDataSet.U.GetColumn(curColIdx).Clone());
-                    }
+                    inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
+                }
+                else
+                {
+                    inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
+                        (double[])unitDataSet.U.GetColumn(curColIdx).Clone());
                 }
             }
-
             inputData.Add(plantSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), (double[])unitDataSet.Y_setpoint.Clone());
             inputData.CreateTimestamps(unitDataSet.GetTimeBase());
             inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
-
             return (plantSim, inputData);
         }
 
@@ -455,7 +449,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             // vital that signal follows naming convention, otherwise it will not be estimated, but should be provided.
             unitModel.AddSignalToOutput(SignalNamer.EstDisturbance(unitModel));
-            (PlantSimulator sim, TimeSeriesDataSet data) =  CreateFeedbackLoopNoDisturbance(unitDataSet,pidModel, unitModel, pidInputIdx);
+            (var sim, var data) =  CreateFeedbackLoopNoDisturbance(unitDataSet,pidModel, unitModel, pidInputIdx);
             return (sim,data);
         }
 

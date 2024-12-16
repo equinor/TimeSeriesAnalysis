@@ -154,7 +154,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
 
-        // this works as long as only static identifiation is used in the closed-looop identifier,
+        // this works as long as only static identifiation is used in the closed-loop identifier,
        // issue! this hangs for some reason
         [Test]
         public void FlatData_DoesNotCrash()
@@ -166,15 +166,24 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueDisturbance,false,false);
         }
 
-        [TestCase(Category = "NotWorking_AcceptanceTest")]
-        public void BadDataPoints_IsExcludedFromAnalysis()
+        [Test()]
+        public void StepDisturbanceWITHBadDataPoints_IsExcludedFromAnalysis()
         {
-            double stepAmplitude = 1;
+            double stepAmplitude = 10;
+            double gainTolPrc = 10;
             bool doAddBadData = true;
-            N = 1000;
+            N = 350;
+            var locParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 1.5 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
-            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"),
-                trueDisturbance, false, true,null,10, doAddBadData);
+            CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"),
+                trueDisturbance, false, true,null,gainTolPrc, doAddBadData,true);
         }
 
         [TestCase(-5,10, false)]
@@ -182,13 +191,12 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(10, 10 ,false )]
         [TestCase(5, 10, true)]
 
-        public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
-            bool doNegativeGain =false)
+        public void StepDisturbance_EstimatesOk(double stepAmplitude, double gainTolPrc, bool doNegativeGain =false)
         {
              //Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
-            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
-                doNegativeGain,true,null,  processGainAllowedOffsetPrc,false, true);
+            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), 
+                trueDisturbance, doNegativeGain,true,null, gainTolPrc, false, true);
             //Shared.DisablePlots();
         }
 

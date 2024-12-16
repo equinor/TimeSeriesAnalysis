@@ -99,7 +99,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // set "indicestoignore" to exclude values outside ymin/ymax_fit and umin_fit,u_max_fit
             // 
-            // dataSet.DetermineIndicesToIgnore(fittingSpecs);
+            //dataSet.DetermineIndicesToIgnore(fittingSpecs);
 
             // this variable holds the "newest" unit model run and is updated
             // over multiple runs, and as it improves, the 
@@ -121,7 +121,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // ----------------
             // step 1: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
-            // to give afirst estimate of the disturbance
+            // to give a first estimate of the disturbance
             var unitModel_step1 = ModelFreeEstimateClosedLoopProcessGain(dataSetRun1, pidParams, pidInputIdx);
             var distIdResult1 = DisturbanceIdentifier.CalculateDisturbanceVector(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
             if (doConsoleDebugOut)
@@ -140,10 +140,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     ConsoleDebugOut(unitModel_step1, "Step 1,MISO");
             }
 
-            //   var KPest  = EstimateDisturbanceLF(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
+            //  EstimateDisturbanceLF(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
 
-
- 
             for (int passNumber = 1;passNumber<= MAX_NUM_PASSES; passNumber++)
             {
                 //   "step2" : "global search" for linear pid-gains
@@ -528,12 +526,13 @@ namespace TimeSeriesAnalysis.Dynamic
             var yProcPlotNames = new List<string>();
             var dEstList = new List<double[]>();
             var uSimList = new List<double[]>();
-            var dLfList = new List<double[]>();
-            var dHFList = new List<double[]>();
             var kpList = new List<double>();
             var yProcessList = new List<double[]>(); // the internal process output
             bool doDebugPlot = false;
 
+            // //////////////////////////////////////////////////
+            // try all the process gains between the min and the max and rank them 
+            // 
             for (var curCandPidLinProcessGain = minPidProcessGain; curCandPidLinProcessGain <= maxPidProcessGain; curCandPidLinProcessGain += range / numberOfGlobalSearchIterations)
             {
                 if (curCandPidLinProcessGain == 0)
@@ -542,8 +541,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var dataSetCopy = new UnitDataSet(dataSet);
 
                 (var curCandidateSISOModel, var curCandDisturbanceEst_SISO) =
-                    EstimateSISOdisturbanceForProcGain(unitModel_run1,
-                        curCandPidLinProcessGain, pidInputIdx, dataSetCopy, pidParams);
+                    EstimateSISOdisturbanceForProcGain(unitModel_run1,curCandPidLinProcessGain, pidInputIdx, dataSetCopy, pidParams);
 
                 if (curCandidateSISOModel == null)
                 {
@@ -552,7 +550,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 var dEst = curCandDisturbanceEst_SISO.d_est;
                 var u_pid_adjusted = curCandDisturbanceEst_SISO.adjustedUnitDataSet.U.GetColumn(pidInputIdx);
-
                 var candidateModelParameters = curCandidateSISOModel.modelParameters.CreateCopy();
 
                 // Multiple-input single-output modeling
@@ -704,8 +701,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     dEstPlotNames.Add("y2=d(Kp=" + curCandPidLinProcessGain.ToString("F2", CultureInfo.InvariantCulture) + ")");
                     kpList.Add(curCandPidLinProcessGain);
                     dEstList.Add(dEst);
-                    dLfList.Add(curCandDisturbanceEst_SISO.d_LF);
-                    dHFList.Add(curCandDisturbanceEst_SISO.d_HF);
                     uSimList.Add(u_pid_adjusted);
                     var yProc = vec.Subtract(dataSet.Y_meas, dEst);
                     yProcessList.Add(yProc);
@@ -729,10 +724,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     var mean = vec.Mean(inSignal).Value;
                     var max = vec.Max(inSignal);
                     var min = vec.Min(inSignal);
-
-
                     double scale = Math.Max(Math.Abs(max - mean), Math.Abs(min - mean));
-
                     return vec.Mean(vec.Abs(vec.Subtract(inSignal, vec.Mean(inSignal).Value))).Value / scale;
                 }
 
@@ -740,7 +732,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     return vec.Max(inSignal) - vec.Min(inSignal);
                 }
-
 
                 for (var i = 0; i < dEstList.Count(); i++)
                 {
@@ -765,7 +756,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     var yProcPower = Power(yProcessList.ElementAt(i));
                     var yMeasPower = Power(dataSet.Y_meas);
                     var uMeasPower = Power(dataSet.U.GetColumn(0));
-
                     var meanDest = vec.Mean(dEstList.ElementAt(i)).Value;
 
                     // dEstPower, will always be slightly higher than yProcPower, due to the HF element in it
@@ -874,6 +864,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Initial estimate of the process model gain made by observing the range of e (ymeas-ysetpoint)
         /// and u_pid
+        /// This method ignores all data in unitDataSet.IndicesToIgnore in the analysis.
         /// </summary>
         /// <param name="unitDataSet">the dataset</param>
         /// <param name="pidParams">an estimate of the PID-parameters</param>
@@ -1023,7 +1014,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return false;
             }
-
+            //TODO: this does not ignore bad datapoints?
             var pidModel = new PidModel(pidParams,"PidModel");
             var unitModel = new UnitModel(modelParams, "ProcModel");
             (var plantSim, var inputDataSet) = PlantSimulator.CreateFeedbackLoopWithEstimatedDisturbance(unitData, pidModel,

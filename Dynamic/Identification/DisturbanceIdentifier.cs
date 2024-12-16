@@ -235,9 +235,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     if (false) // debugging plots, normally set to false
                     {
-                        // think this is wrong
                         var dEst = vec.Subtract(unitDataSet.Y_meas,unitDataSet_adjusted.Y_meas);
-
                         var u_pid_adjusted = unitDataSet_adjusted.U.GetColumn(pidInputIdx);
                         var uPidVariance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value;
                          var covBtwUPidAdjustedAndDest = Math.Abs(Measures.Covariance(dEst, u_pid_adjusted, false));
@@ -245,8 +243,6 @@ namespace TimeSeriesAnalysis.Dynamic
                             unitModel.GetModelParameters().LinearGains.ElementAt(pidInputIdx).ToString("F3", CultureInfo.InvariantCulture) +
                              "uPidVariance= " + uPidVariance.ToString("F3", CultureInfo.InvariantCulture) +
                              "cov=" + covBtwUPidAdjustedAndDest.ToString("F3", CultureInfo.InvariantCulture);
-
-
                         Shared.EnablePlots();
                         Plot.FromList(
                         new List<double[]> {
@@ -314,24 +310,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
+            //TODO: can these be removed?
             double[] d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[indexOfFirstGoodValue]), -1);
             double[] d_HF = vec.Subtract(unitDataSet_adjusted.Y_meas, unitDataSet_adjusted.Y_setpoint);
 
-            // d_u : (low-pass) back-estimation of disturbances by the effect that they have on u as the pid-controller integrates to 
-            // counteract them
-            // d_y : (high-pass) disturbances appear for a short while on the output y before they can be counter-acted by the pid-controller 
-            // nb!candiateGainD is an estimate for the process gain, and the value chosen in this class 
-            // will influence the process model identification afterwards.
-
-            // d = d_HF+d_LF 
-          //  double[] d_est2 = vec.Add(d_HF, d_LF);
-            // alternative:
             double[] d_est = vec.Subtract(unitDataSet_adjusted.Y_meas, y_proc);
-
-//            Shared.EnablePlots();
- //           Plot.FromList(new List<double[]> { d_est, d_est2, d_HF }, new List<string> { "y1=d1", "y1=d2","y1=d_HF" }, unitDataSet.Times, "testplot");
-  //          Shared.DisablePlots();
-
             result.d_est = d_est;
             result.d_LF = d_LF;
             result.d_HF = d_HF;

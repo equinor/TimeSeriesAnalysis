@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel.Design;
 
 namespace TimeSeriesAnalysis
 {
@@ -214,9 +215,15 @@ namespace TimeSeriesAnalysis
                 return false;
             if (dataset.ContainsKey(signalID))
                 return true;
-            else if (dataset_constants.ContainsKey(signalID))
-                return true;
-            else 
+            else if (dataset_constants != null)
+            {
+                if (dataset_constants.ContainsKey(signalID))
+                    return true;
+                else
+                    return false;
+
+            }
+            else
                 return false;
         }
 

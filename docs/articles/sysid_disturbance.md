@@ -325,8 +325,6 @@ Knowing upper- and lower bounds could also be a useful guide for subsequent manu
 
 
 
-
-
 ### Step3:  Determing the dynamic parameters of the process 
 
 If the process is actually dynamic yet is modeled as static, then the above methodology will 
