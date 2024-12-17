@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         else
                         {
-                            Shared.GetParserObj().AddError("PlantSimulatorInitializer: computational loop init failed");
+                         //   Shared.GetParserObj().AddError("PlantSimulatorInitializer: computational loop init failed");
                             return false;
                         }
                         modelIdx++;
@@ -265,7 +265,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     continue;
                 var processId = upstreamModels.First();
                
-                var isOK = simulator.SimulateSingleInternal(inputData, processId,
+                var isOK = simulator.SimulateSingleWithoutAdditive(inputData, processId,
                     out TimeSeriesDataSet singleSimDataSetWithDisturbance);
                 if (isOK)
                 {

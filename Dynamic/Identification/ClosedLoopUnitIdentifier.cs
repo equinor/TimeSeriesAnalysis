@@ -459,7 +459,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 unitParams.LinearGains = new double[] { Kp };
                 umInternal.SetModelParameters(unitParams);
-                (var isOk, var y_proc) = PlantSimulator.SimulateSingle(dataSet, umInternal, false);
+                (var isOk, var y_proc) = PlantSimulator.SimulateSingle(dataSet, umInternal);
                 var d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[0]), -1);
                 var d_est1 = vec.Add(d_HF, d_LF);
                 var d_est2 = vec.Subtract(dataSet.Y_meas, y_proc);

@@ -37,7 +37,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
             dataSet.CreateTimeStamps(timeBase_s);
 
-            (bool isOk,double[] y_sim) = PlantSimulator.SimulateSingle(dataSet, model,false);
+            (bool isOk,double[] y_sim) = PlantSimulator.SimulateSingle(dataSet, model);
             // plot
             bool doPlot = false;
             if (doPlot)

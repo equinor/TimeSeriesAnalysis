@@ -458,7 +458,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var unitData = new UnitDataSet();
             unitData.SetU(input);
             unitData.CreateTimeStamps(timeBase_s);
-            (bool isOk, double[] y_meas)= PlantSimulator.SimulateSingleToYmeas(unitData,trueModel, noise_abs);
+            bool isOk = PlantSimulator.SimulateSingleToYmeas(unitData,trueModel, noise_abs);
 
             GainSchedModel idModel = new GainSchedModel();
             if (solver == "Identify")
@@ -481,7 +481,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
-                     y_meas,
+                     unitData.Y_meas,
                      unitData.Y_sim,
                      unitData.U.GetColumn(0),
                      },
@@ -606,13 +606,13 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // make the bias nonzero to test that the operating point estimation works.
             GainSchedModel trueModel = new GainSchedModel(trueParams, "true");
-            PlantSimulator.SimulateSingle(unitData, trueModel,true);
+            PlantSimulator.SimulateSingleToYsim(unitData, trueModel);
 
             var alteredParams = new GainSchedParameters(trueModel.GetModelParameters());
             var alteredIdModel = new GainSchedModel(alteredParams,"altered");
 
             alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
-            (bool isOk3, double[] simY2) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
+            (bool isOk3, double[] simY2) = PlantSimulator.SimulateSingle(unitData, alteredIdModel);
 
             // plot
             bool doPlot = false;
@@ -756,11 +756,11 @@ namespace TimeSeriesAnalysis.Test.SysID
                 gsFittingSpecs.uTimeConstantThresholds = trueParams.TimeConstantThresholds;
                 idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
             }
-            (bool isOk2, double[] simY2) =  PlantSimulator.SimulateSingle(unitData, idModel, false);
+            (bool isOk2, double[] simY2) =  PlantSimulator.SimulateSingle(unitData, idModel);
 
             var alteredIdModel = (GainSchedModel)idModel.Clone("altered");
             alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
-            (bool isOk3, double[] simY3) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
+            (bool isOk3, double[] simY3) = PlantSimulator.SimulateSingle(unitData, alteredIdModel);
 
             // plot
             bool doPlot = false;

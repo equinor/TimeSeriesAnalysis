@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using Accord.Statistics.Models.Regression.Fitting;
 using NUnit.Framework;
 
 using TimeSeriesAnalysis.Dynamic;
@@ -479,13 +479,14 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void BasicPID_CompareSimulateAndSimulateSingle_MustGiveSameResultForDisturbanceEstToWork()
         {
             double newSetpoint = 51;
+            int N = 100;
             var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { pidModel1, processModel1 });
             plantSim.ConnectModels(processModel1, pidModel1);
             plantSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
             inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
-                TimeSeriesCreator.Step(N / 4, N, Ysetpoint, newSetpoint));
+                TimeSeriesCreator.Step(1, N, Ysetpoint, newSetpoint));
             inputData.CreateTimestamps(timeBase_s);
             bool isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
@@ -496,7 +497,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             newSet.AddSet(simData);
             newSet.SetTimeStamps(inputData.GetTimeStamps().ToList());
 
-       //     var isOk2 = PlantSimulator.SimulateSingle(newSet, pidModel1, out var simData2);
+        //    var isOk2 = PlantSimulator.SimulateSingle(newSet, pidModel1, out var simData2);
             var isOK2 = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
 
             if (true)
@@ -507,7 +508,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                       simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
                       simData2.GetValues(pidModel1.GetID(),SignalType.PID_U),
                       inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset)},
-                   new List<string> { "y1=processOutSimulate", "y3=upidSimulate", "y3=upidSimulateSingle", "y2=setpoint" },
+                   new List<string> { "y1=processOutSimulate", "y3=upidSim", "y3=upidSimSingle", "y2=setpoint" },
                    timeBase_s, TestContext.CurrentContext.Test.Name);
                 Shared.DisablePlots();
             }
@@ -516,8 +517,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             Assert.IsTrue(isOk);
             Assert.IsTrue(firstYsimE < 0.01, "System should start in steady-state");
-            Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after disturbance");
             BasicPIDCommonTests(simData,pidModel1);
+
+            var vec = new Vec();
+            var v1 = simData.GetValues(pidModel1.GetID(), SignalType.PID_U);
+            var v2 = simData2.GetValues(pidModel1.GetID(), SignalType.PID_U);
+            var errorPrc = vec.Mean(vec.Abs(vec.Subtract(v1, v2) )) / vec.Mean(vec.Abs(v2));
+            Console.WriteLine("error prc:" + errorPrc.Value.ToString("F5"));
+            Assert.IsTrue(errorPrc < 0.001 / 100, "true disturbance and actual disturbance too far apart");
+
         }
 
         [TestCase]

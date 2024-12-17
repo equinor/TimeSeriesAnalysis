@@ -388,7 +388,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (simulateAndAddToYsimInDataSet)
             {
                 var bestModel = new GainSchedModel(BestGainSchedParams);
-                PlantSimulator.SimulateSingle(dataSet, bestModel, true);
+                PlantSimulator.SimulateSingleToYsim(dataSet, bestModel);
             }
             return (BestGainSchedParams, bestModelIdx);
         }
@@ -512,7 +512,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             gsParams.MoveOperatingPointUWithoutChangingModel(desiredOpU);
             
-            (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel,false);
+            (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel);
 
             if (isOk)
             {
@@ -523,7 +523,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (estBias.HasValue)
                 {
                     gsParams.IncreaseOperatingPointY(estBias.Value);
-                    (var isOk2, var y_sim2) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel, false);
+                    (var isOk2, var y_sim2) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel);
                     dataSet.Y_sim = y_sim2;
                     if (gsParams.Fitting == null)
                         gsParams.Fitting = new FittingInfo();
@@ -587,7 +587,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 copiedGsParams.TimeConstant_s = vec.Subtract(gsParams.TimeConstant_s, timedelay_s);
 
                 var gsIdentModel = new GainSchedModel(copiedGsParams, "ident_model");
-                (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel, false);
+                (var isOk, var y_sim) = PlantSimulator.SimulateSingle(dataSet, gsIdentModel);
 
                 if (isOk)
                 {

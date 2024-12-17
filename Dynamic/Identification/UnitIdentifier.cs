@@ -118,9 +118,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (model.modelParameters.Fitting.WasAbleToIdentify)
             {
-                PlantSimulator.SimulateSingle(dataSet, model, true);
-                //var simulator = new UnitSimulator(model);
-                //simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
+                PlantSimulator.SimulateSingleToYsim(dataSet, model);
                 model.SetFittedDataSet(dataSet);
             }
             return model;
@@ -451,10 +449,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // simulate
             if (modelParameters.Fitting.WasAbleToIdentify)
             {
-                PlantSimulator.SimulateSingle(dataSet, model, true);// overwrite any y_sim
+                PlantSimulator.SimulateSingleToYsim(dataSet, model);
                 model.SetFittedDataSet(dataSet);
              }
-
             return model;
         }
 

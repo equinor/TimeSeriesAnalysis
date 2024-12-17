@@ -68,7 +68,7 @@ namespace TimeSeriesAnalysis._Examples
             var refData = new UnitDataSet();
             refData.U = U;
             refData.CreateTimeStamps(timeBase_s);
-            PlantSimulator.SimulateSingle(refData, refModel,true);
+            PlantSimulator.SimulateSingleToYsim(refData, refModel);
 
             // simulate the nonlinear model 
             UnitParameters designParameters = new UnitParameters
