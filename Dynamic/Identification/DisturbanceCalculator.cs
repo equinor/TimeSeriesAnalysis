@@ -24,12 +24,12 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// Enum describing reasons that a disturbance may be set by logic to exactly zero
     /// </summary>
-    public enum DisturbanceSetToZeroReason
+    public enum DisturbanceEstimationError
     { 
         /// <summary>
         /// default, when disturbance estimation has not run yet
         /// </summary>
-        NotRunYet=0,
+        None=0,
         /// <summary>
         /// Set disturbance to zero beacause simulator did not run
         /// </summary>
@@ -58,7 +58,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// The reason for setting the disturbance to zero
         /// </summary>
-        public DisturbanceSetToZeroReason zeroReason;
+        public DisturbanceEstimationError ErrorType;
         /// <summary>
         /// 
         /// </summary>
@@ -88,6 +88,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public DisturbanceIdResult(UnitDataSet dataSet)
         {
             N = dataSet.GetNumDataPoints();
+            ErrorType = DisturbanceEstimationError.None;
             SetToZero();
         }
 
@@ -109,10 +110,9 @@ namespace TimeSeriesAnalysis.Dynamic
     }
 
     /// <summary>
-    /// An algorithm that attempts to re-create the additive output disturbance acting on 
-    /// a signal Y while PID-control attempts to counter-act the disturbance by adjusting its manipulated output u. 
+    /// For a given process model and dataset, calculate the disturbance vector d by subtracting y_proc from y_meas
     /// </summary>
-    public class DisturbanceIdentifier
+    public class DisturbanceCalculator
     {
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (y_proc == null)
             {
-                result.zeroReason = DisturbanceSetToZeroReason.UnitSimulatorUnableToRun;
+                result.ErrorType = DisturbanceEstimationError.UnitSimulatorUnableToRun;
                 return result;
             }
 

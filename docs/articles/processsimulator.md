@@ -55,7 +55,7 @@ Each model has a number of inputs that travel through the model, each with an id
 In addition, models support adding signals directly to the output. This is a feature intended for modeling disturbances. 
 The IDs of such signals are referred to as *additive input IDs*.
 
-### Estimating disturbances and simulating their effects
+### Estimating disturbances and simulating their effects using PlantSimulator.SimulateSingle()
 
 If the ``inputData`` given to the PlantSimulator includes measured pid-outputs ``u`` and process outputs ``y`` of feedback loops,
 then PlantSimulator uses that 

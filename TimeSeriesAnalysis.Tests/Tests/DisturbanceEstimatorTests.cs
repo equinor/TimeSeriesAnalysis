@@ -84,7 +84,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(5)]
         public void Static_SinusDisturbance_EstimatesOk(double stepAmplitude)
         {
-            var trueDisturbance = TimeSeriesCreator.Sinus(stepAmplitude, timeBase_s*15, timeBase_s,N );
+            var sinusPeriod = timeBase_s * 15;
+            var trueDisturbance = TimeSeriesCreator.Sinus(stepAmplitude, sinusPeriod, timeBase_s,N );
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance);
         }
 
@@ -149,7 +150,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(isOk);
             Assert.IsTrue(simData.ContainsSignal(processModel.GetID()),"simulated dataset should include internal process model output (pre-disturbance)");
             var pidDataSet = plantSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
-            var result = DisturbanceIdentifier.CalculateDisturbanceVector(pidDataSet, processModel);
+            var result = DisturbanceCalculator.CalculateDisturbanceVector(pidDataSet, processModel);
 
 
             if (doAssertResult)

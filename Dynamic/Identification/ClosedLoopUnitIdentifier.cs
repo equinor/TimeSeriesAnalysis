@@ -118,12 +118,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var GSdescription = "";
 
-
             // ----------------
             // step 1: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give a first estimate of the disturbance
             var unitModel_step1 = ModelFreeEstimateClosedLoopProcessGain(dataSetRun1, pidParams, pidInputIdx);
-            var distIdResult1 = DisturbanceIdentifier.CalculateDisturbanceVector(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
+            var distIdResult1 = DisturbanceCalculator.CalculateDisturbanceVector(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
+            if(distIdResult1.ErrorType != DisturbanceEstimationError.None)
+                Console.WriteLine("Step 1 Error:" + distIdResult1.ErrorType);
             if (doConsoleDebugOut)
                 ConsoleDebugOut(unitModel_step1, "Step 1");
             idUnitModelsList.Add(unitModel_step1);
@@ -312,7 +313,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             // approach1:
                             // "look for the time-constant that gives the disturbance that changes the least"
                             //
-                            var distIdResult2 = DisturbanceIdentifier.CalculateDisturbanceVector
+                            var distIdResult2 = DisturbanceCalculator.CalculateDisturbanceVector
                                 (dataSetStep3, unitModel, pidInputIdx, pidParams);
                             var estDisturbances = new List<double[]>();
                             var distDevs = new List<double>();
@@ -329,7 +330,7 @@ namespace TimeSeriesAnalysis.Dynamic
                                 var newParams = unitModel.GetModelParameters().CreateCopy();
                                 newParams.TimeConstant_s = candiateTc_s;
                                 var newModel = new UnitModel(newParams);
-                                var distIdResult_Test = DisturbanceIdentifier.CalculateDisturbanceVector
+                                var distIdResult_Test = DisturbanceCalculator.CalculateDisturbanceVector
                                     (dataSetStep3, newModel, pidInputIdx, pidParams);
                                 estDisturbances.Add(distIdResult_Test.d_est);
 
@@ -357,7 +358,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             step3params.TimeConstant_s = candiateTc_s;
                             var step3Model = new UnitModel(step3params);
                             idUnitModelsList.Add(step3Model);
-                            var distIdResult_step4 = DisturbanceIdentifier.CalculateDisturbanceVector
+                            var distIdResult_step4 = DisturbanceCalculator.CalculateDisturbanceVector
                                     (dataSetStep3, step3Model, pidInputIdx, pidParams);
                             idDisturbancesList.Add(distIdResult_step4);
                             if (doConsoleDebugOut)
@@ -656,7 +657,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     // part 2: actual disturbance modeling
                     var dataSet_altMISO = new UnitDataSet(dataSet);
-                    var distIdResultAlt_MISO = DisturbanceIdentifier.CalculateDisturbanceVector
+                    var distIdResultAlt_MISO = DisturbanceCalculator.CalculateDisturbanceVector
                          (dataSet_altMISO, alternativeMISOModel, pidInputIdx, pidParams);
                     if (false)
                     {
@@ -981,7 +982,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
          
             int pidInputIdx_NewSystem = 0;   // pidInputIdx=0 always for the new SISO system:
-            var candidateModelDisturbance = DisturbanceIdentifier.CalculateDisturbanceVector
+            var candidateModelDisturbance = DisturbanceCalculator.CalculateDisturbanceVector
                 (dataSet_SISO, candidateModel, pidInputIdx_NewSystem, pidParams);
 
             var d_est = candidateModelDisturbance.d_est;

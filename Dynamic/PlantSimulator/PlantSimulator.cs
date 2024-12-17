@@ -543,6 +543,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Simulate single model based on a unit data set
+        /// 
+        /// This is a convenience function that creates a TimeSeriesDataSet, sets default names in the model and dataset that match based on unitDataset 
+        /// The output is returned directly.
+        /// 
+        /// Optionally, the result can be written to y_meas or y_sim in unitdata.
         /// </summary>
         /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
         /// <param name="model">model to simulate</param>
@@ -550,11 +555,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="noiseAmplitude">if writing to Ymeas, it is possible to add noise of the given amplitude to signal</param>
         /// <param name="addSimToUnitData">if true, the Y_sim of unitData has the simulation result written two i</param>
         /// <param name="seedNr">the seed value of the noise to be added</param>
-        /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series</returns>
-        static private (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model,bool writeToYmeas= false, 
+        /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive </returns>
+        static private (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, bool writeToYmeas= false, 
             double noiseAmplitude=0,
             bool addSimToUnitData=false, int seedNr=123)
         {
+            const string defaultOutputName = "output";
             var inputData = new TimeSeriesDataSet();
             var singleModelName = "SimulateSingle";
             var modelCopy = model.Clone(singleModelName);
@@ -573,18 +579,42 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.Add(uName, unitData.U.GetColumn(colIdx));
                 uNames.Add(uName);
             }
-               modelCopy.SetInputIDs(uNames.ToArray());
-               if (modelCopy.GetOutputID() == null)
-                   modelCopy.SetOutputID("output");
-               
-               var  sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
-               var isOk = sim.SimulateSingle(inputData, singleModelName, false, out var simData);
+            modelCopy.SetInputIDs(uNames.ToArray());
+            {
+                inputData.Add(defaultOutputName, unitData.Y_meas);
+                modelCopy.SetOutputID(defaultOutputName);
+            } 
 
-         //   var isOk = PlantSimulator.SimulateSingle(inputData, modelCopy, out var simData);
+            var  sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
+            var isOk = sim.SimulateSingle(inputData, singleModelName, false, out var simData);
 
             if(!isOk)
                 return (false, null);
-            double[] y_sim = simData.GetValues(singleModelName, SignalType.Output_Y);
+
+            double[] y_proc = null;
+            double[] y_sim = null;
+
+            y_sim = simData.GetValues(defaultOutputName);
+
+            if (simData.ContainsSignal(singleModelName))
+            {
+                y_proc = simData.GetValues(singleModelName);
+            }
+            else
+            {
+                y_proc = y_sim;
+            }
+
+
+            // if the input included a "additive distubance" signal,there will be a internal process output
+     /*       double[] y_proc = simData.GetValues(singleModelName);
+            double[] y_sim = y_proc;
+
+            if (y_proc == null)
+            {
+                y_proc = simData.GetValues(defaultOutputName); 
+                y_sim = simData.GetValues(singleModelName, SignalType.Output_Y);
+            }*/
             if (noiseAmplitude > 0)
             {
                 // use a specific seed here, to avoid potential issues with "random unit tests" and not-repeatable
@@ -607,7 +637,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     unitData.Y_sim = y_sim;
                 }
             }
-            return (isOk, y_sim);
+            return (isOk, y_proc);
         }
 
 
