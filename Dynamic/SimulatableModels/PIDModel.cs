@@ -181,7 +181,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {// write back default scaling
                     this.pidParameters.Scaling = pid.GetScaling();
                 }
-                pid.SetGainScehduling(pidParameters.GainScheduling);
+                pid.SetGainScheduling(pidParameters.GainScheduling);
                 pid.SetAntiSurgeParams(pidParameters.AntiSurgeParams);
                 pid.SetFeedForward(pidParameters.FeedForward);
                 pid.SetPidFiltering(pidParameters.Filtering);

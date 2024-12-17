@@ -488,64 +488,59 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputIDs"></param>
-        /// <param name="timeIndex"></param>
-        /// <param name="dataSet1"></param>
-        /// <param name="dataSet2"></param>
-        /// <returns></returns>
-        private double[] GetValuesFromEitherDatasetInternal(string[] inputIDs, int timeIndex,
-            TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
-        {
-            double[] retVals = new double[inputIDs.Length];
 
-            int index = 0;
-            foreach (var inputId in inputIDs)
-            {
-                double? retVal = null;
-                if (dataSet1.ContainsSignal(inputId))
-                {
-                    retVal = dataSet1.GetValue(inputId, timeIndex);
-                }
-                else if (dataSet2.ContainsSignal(inputId))
-                {
-                    retVal = dataSet2.GetValue(inputId, timeIndex);
-                }
-                if (!retVal.HasValue)
-                {
-                    retVals[index] = Double.NaN;
-                }
-                else
-                {
-                    retVals[index] = retVal.Value;
-                }
-
-                index++;
-            }
-            return retVals;
-        }
 
         /// <summary>
         /// Gets data for a given model from either of two datasets (usally the inputdata and possibly simulated data. 
-        /// This method also has a special treatment of PID-inputs, 
+        /// This method also has a special treatment of PID-inputs.
+        /// This method is called to retreive input data during simulation.
         /// </summary>
         /// <param name="model">the model that the data is for()</param>
         /// <param name="inputIDs"></param>
         /// <param name="timeIndex"></param>
-        /// <param name="dataSet1"></param>
-        /// <param name="dataSet2"></param>
+        /// <param name="simDataSet">the dataset of the simulation that is being written to</param>
+        /// <param name="inputDataSet">measured or otherwise external data given at time of simulation</param>
         /// <returns></returns>
-        public double[] GetValuesFromEitherDataset(ISimulatableModel model, string[] inputIDs, int timeIndex,
-            TimeSeriesDataSet dataSet1, TimeSeriesDataSet dataSet2)
+        private double[] GetValuesFromEitherDataset(ISimulatableModel model, string[] inputIDs, int timeIndex,
+            TimeSeriesDataSet simDataSet, TimeSeriesDataSet inputDataSet)
         {
+            // internal helper, set "NaN" if a value is not found
+            double[] GetValuesFromEitherDatasetInternal( int timeIndexInternal)
+            {
+                double[] retVals = new double[inputIDs.Length];
+
+                int index = 0;
+                foreach (var inputId in inputIDs)
+                {
+                    double? retVal = null;
+                    // if the signal exists in the simulated dataset, prefer to use that one.
+                    if (simDataSet.ContainsSignal(inputId))
+                    {
+                        retVal = simDataSet.GetValue(inputId, timeIndexInternal);
+                    }
+                    else if (inputDataSet.ContainsSignal(inputId))
+                    {
+                        retVal = inputDataSet.GetValue(inputId, timeIndexInternal);
+                    }
+                    if (!retVal.HasValue)
+                    {
+                        retVals[index] = Double.NaN;
+                    }
+                    else
+                    {
+                        retVals[index] = retVal.Value;
+                    }
+
+                    index++;
+                }
+                return retVals;
+            }
+
             if (model.GetProcessModelType() == ModelType.PID && timeIndex > 0)
             {
                 int lookBackIndex = 1;
-                double[] lookBackValues = GetValuesFromEitherDatasetInternal(inputIDs, timeIndex - lookBackIndex, dataSet1, dataSet2); ;
-                double[] currentValues = GetValuesFromEitherDatasetInternal(inputIDs, timeIndex, dataSet1, dataSet2);
-
+                double[] lookBackValues = GetValuesFromEitherDatasetInternal( timeIndex - lookBackIndex); ;
+                double[] currentValues = GetValuesFromEitherDatasetInternal( timeIndex);
                 // "use values from current data point when available, but fall back on using values from the previous sample if need be"
                 // for instance, always use the most current setpoint value, but if no disturbance vector is given, then use the y_proc simulated from the last iteration.
                 double[] retValues = new double[currentValues.Length];
@@ -554,7 +549,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // adding in the below code  seems to remove the issue with there being a one sample wait time before the effect of a setpoint 
                 // is seen on the output, but causes there to be small deviation between what the PlantSimulator.SimulateSingle and PlantSimulator.Simulate
                 // seem to return for a PID-loop in the test BasicPID_CompareSimulateAndSimulateSingle_MustGiveSameResultForDisturbanceEstToWork
-                /*
+                
                   for (int i = 0; i < currentValues.Length; i++)
                   {
                       if (Double.IsNaN(currentValues[i]))
@@ -565,12 +560,12 @@ namespace TimeSeriesAnalysis.Dynamic
                       {
                           retValues[i] = currentValues[i];
                       }
-                 }*/
+                 }
                 return retValues;
             }
             else
             {
-                return GetValuesFromEitherDatasetInternal(inputIDs, timeIndex, dataSet1, dataSet2);
+                return GetValuesFromEitherDatasetInternal(timeIndex);
             }
         }
 
@@ -785,7 +780,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             for (timeIdx = 0; timeIdx < N; timeIdx++)
             {
-                double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
+                //  double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
+                double[] inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputData);
                 double[] outputVal = model.Iterate(inputVals, timeBase_s);
 
                 // if a second output is given, this is by definition the internal output upstream the additive signals.
