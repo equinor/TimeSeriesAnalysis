@@ -596,6 +596,21 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Simulate a single model to get the output including any additive inputs.
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="model"></param>
+        /// <param name="simData"></param>
+        /// <returns></returns>
+        public static bool SimulateSingle(TimeSeriesDataSet inputData, ISimulatableModel model, out TimeSeriesDataSet simData)
+        {
+            var plant = new PlantSimulator(new List<ISimulatableModel> { model });
+
+            return plant.Simulate(inputData, out simData );
+        }
+
+
+        /// <summary>
         /// Simulates a single model for a unit dataset and adds the output to unitData.Y_meas of the unitData, optionally with noise
         /// </summary>
         /// <param name="unitData">the dataset to be simualted over, and where the Y_meas is updated with result</param>

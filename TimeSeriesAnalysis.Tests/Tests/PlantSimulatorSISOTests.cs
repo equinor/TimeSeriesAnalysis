@@ -478,6 +478,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase]
         public void BasicPID_CompareSimulateAndSimulateSingle_MustGiveSameResultForDisturbanceEstToWork()
         {
+            //var pidCopy = pidModel1.Clone();
             double newSetpoint = 51;
             int N = 100;
             var plantSim = new PlantSimulator(
@@ -492,13 +493,17 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var newSet = new TimeSeriesDataSet();
             newSet.AddSet(inputData);
-        //    var outputSignalName = SignalNamer.GetSignalName(processModel1.GetID(), SignalType.Output_Y);
-       //     newSet.Add(outputSignalName, simData.GetValues(outputSignalName));
             newSet.AddSet(simData);
             newSet.SetTimeStamps(inputData.GetTimeStamps().ToList());
 
-        //    var isOk2 = PlantSimulator.SimulateSingle(newSet, pidModel1, out var simData2);
-            var isOK2 = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
+            // slight deviation between SimulateSingle and Simulate regardless of which version is used:
+            //v1
+            //     var isOK2 = plantSim.SimulateSingle(newSet, pidModel1.ID,out TimeSeriesDataSet simData2);
+            //v2
+            // pidCopy.SetInputIDs(pidModel1.GetModelInputIDs());
+            //  var isOk2 = PlantSimulator.SimulateSingle(newSet, pidCopy, out var simData2);
+            //v3
+            var isOk2 = PlantSimulator.SimulateSingle(newSet, pidModel1, out var simData2);
 
             if (true)
             {
