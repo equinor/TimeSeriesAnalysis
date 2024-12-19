@@ -485,31 +485,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Simulate a single model to get the internal "x" unmeasured output that excludes any additive outputs (like disturbances).
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="singleModelName"></param>
-        /// <param name="simData"></param>
-        /// <returns></returns>
-        public bool SimulateSingleWithoutAdditive(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
-        {
-            return SimulateSingleInternalCore(inputData,singleModelName,true, out simData);
-        }
-
-        /// <summary>
-        /// Simulate a single model to get the output including any additive inputs.
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="singleModelName"></param>
-        /// <param name="simData"></param>
-        /// <returns></returns>
-       /* public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
-        {
-            return SimulateSingleInternalCore(inputData, singleModelName, false, out simData);
-        }*/
-
-
-        /// <summary>
         ///  Simulate a single model(any ISimulatable model), using inputData as inputs, 
         ///  <para>
         ///  If the model is a unitModel and the inputData inludes both the measured y and measured u, the

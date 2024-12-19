@@ -216,7 +216,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
 
-        [TestCase( 99, Explicit =true)]
+        [TestCase( 99, Explicit =true, Category = "NotWorking_AcceptanceTest")]
 
         public void IgnoreIndicesInMiddleOfDataset_ResultShouldStillBeGood( double fitScoreReq)
         {
@@ -509,14 +509,14 @@ namespace TimeSeriesAnalysis.Test.SysID
 
 
 
-        [TestCase(-0.5, 0.055, Explicit = true)]
-        [TestCase(-0.2, 0.058, Explicit = true)]
-        [TestCase(0.2, 0.045, Explicit = true)]
-        [TestCase(0.5, 0.04, Explicit = true)]
-        [TestCase(1.0, 0.01, Explicit = true)]
-        [TestCase(2.0, 0.015, Explicit = true)]
-        [TestCase(2.5, 0.015, Explicit = true)]
-        [TestCase(3.0, 0.015, Explicit = true) ]
+        [TestCase(-0.5, 0.055, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(-0.2, 0.058, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(0.2, 0.045, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(0.5, 0.04, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1.0, 0.01, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2.0, 0.015, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2.5, 0.015, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(3.0, 0.015, Explicit = true, Category = "NotWorking_AcceptanceTest") ]
 
         public void TwoGainsAndTwoTc_StepChange_Identify_TwoTcEstEstOk(double gain_sched_threshold, double linearGainTresholdTol )
         {

@@ -1,18 +1,9 @@
-﻿using Accord.IO;
-using Accord.Math;
-using Accord.Math.Decompositions;
-using Accord.Statistics;
+﻿using Accord.Math;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
 using System.Threading;
-using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -323,12 +314,19 @@ namespace TimeSeriesAnalysis.Dynamic
                                 (dataSetStep3, unitModel, pidInputIdx, pidParams);
                             var estDisturbances = new List<double[]>();
                             var distDevs = new List<double>();
+                            var candidateTc = new List<double>();
+
+                            double CalcDev(double[] disturbance )
+                            { 
+                                 return vec.Mean(vec.Abs(vec.Diff(disturbance))).Value;
+                            }
 
                             estDisturbances.Add(distIdResult2.d_est);
                             var timeBase = dataSetStep3.GetTimeBase();
                             double candiateTc_s = 0;
+                            candidateTc.Add(candiateTc_s);
                             bool curDevIsDecreasing = true;
-                            double firstDev = vec.Sum(vec.Abs(vec.Diff(distIdResult2.d_est))).Value;
+                            double firstDev = CalcDev(distIdResult2.d_est);
                             distDevs.Add(firstDev);
                             while (candiateTc_s < LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE * timeBase && curDevIsDecreasing)
                             {
@@ -340,13 +338,14 @@ namespace TimeSeriesAnalysis.Dynamic
                                     (dataSetStep3, newModel, pidInputIdx, pidParams);
                                 estDisturbances.Add(distIdResult_Test.d_est);
 
-                                var curDev = vec.Mean(vec.Abs(vec.Diff(distIdResult_Test.d_est))).Value;
+                                var curDev = CalcDev(distIdResult_Test.d_est); 
 
                                 if (curDev < distDevs.Last<double>())
                                     curDevIsDecreasing = true;
                                 else
                                     curDevIsDecreasing = false;
                                 distDevs.Add(curDev);
+                                candidateTc.Add(candiateTc_s);
                             }
 
                             if (candiateTc_s == LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE)
@@ -1014,7 +1013,7 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  <param name="pidInputIdx">index of the pid input in the process model</param>
         /// <param name="name">optional name used for plotting</param>
         /// <returns></returns>
-        public static bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
+        private static bool ClosedLoopSim(UnitDataSet unitData, UnitParameters modelParams, PidParameters pidParams,
             int pidInputIdx, string name="")
         {
             if (pidParams == null)

@@ -174,7 +174,7 @@ namespace TimeSeriesAnalysis.Dynamic
          
                
                 // rewrite:
-               // (var processSim_noDist, var inputData_noDist) = PlantSimulator.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
+               // (var processSim_noDist, var inputData_noDist) = PlantSimulatorHelper.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
                 var noDist_isOk = processSim_noDist.Simulate(inputData_noDist, out TimeSeriesDataSet simData_noDist);
                 if (noDist_isOk)
                 {
@@ -273,8 +273,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return null;
 
             var result = new DisturbanceIdResult(unitDataSet);
-            /////////////////////////////
-            // STEP 2:
             var vec = new Vec(unitDataSet.BadDataID);
 
             // using the pidParams and unitModel, and if relevant any given y_set and external U, try to subtract the effects of 
@@ -302,14 +300,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            //TODO: can these be removed?
-            //double[] d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[indexOfFirstGoodValue]), -1);
-            //double[] d_HF = vec.Subtract(unitDataSet_adjusted.Y_meas, unitDataSet_adjusted.Y_setpoint);
-
-            // old: d[k] = y_meas[k] -y_proc[k]
-            //double[] d_est = vec.Subtract(unitDataSet_adjusted.Y_meas, y_proc);
-
-             bool IsNaN(double value)
+            bool IsNaN(double value)
             {
                 if (double.IsNaN(value) || value == unitDataSet_adjusted.BadDataID)
                     return true;
@@ -318,26 +309,18 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double[] d_est = new double[unitDataSet_adjusted.Y_meas.Length];
-
             for (int i = 1; i < d_est.Length; i++)
             {
                 if (IsNaN(unitDataSet_adjusted.Y_meas[i]) || IsNaN(y_proc[i]))
                     d_est[i] = double.NaN;
                 else
-                    d_est[i] = unitDataSet_adjusted.Y_meas[i] - y_proc[i-1];
+                    d_est[i] = unitDataSet_adjusted.Y_meas[i] - y_proc[i-1]; // NB!!!  note by definiton y_proc[i-1]
             }
             d_est[0] = unitDataSet_adjusted.Y_meas[0] - y_proc[0];
 
-
             result.d_est = d_est;
-            //result.d_LF = d_LF;
-           // result.d_HF = d_HF;
             result.estPidProcessGain = unitModel.GetModelParameters().LinearGains.ElementAt(pidInputIdx);
             result.adjustedUnitDataSet = unitDataSet_adjusted;
-
-            // END STEP 2
-            /////////////////////////////
-
             if (false)// debugging plots, should normally be set to "false"
             {
                 var variableList = new List<double[]> {

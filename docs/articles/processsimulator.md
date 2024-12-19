@@ -3,10 +3,21 @@
 
 Simulating multiple processes together is orchestrated by the class ``PlantSimulator``.
 
-## External interface
+## Significance
 
-The intention is that the ``PlantSimulator`` class should be able to simulate any well-formulated
-combination of models that implement the ``ISimulateableModel`` (such as ``PIDModel``,``Select`` and ``UnitModel``.)
+The ``PlantSimulator`` is used extensively to create generic time-series data for unit tests. 
+
+It is also used internally in some of the classes that do system identification, such as ``ClosedLoopUnitIdentifier``, ``DisturbanceCalculator``
+and the ``GainSchedIdentfier``. 
+
+**The intention is that the ``PlantSimulator`` class should be able to simulate any well-formulated
+combination of models that implement the ``ISimulateableModel`` (such as ``PIDModel``,``Select`` and ``UnitModel``.)**
+
+Furthermore, it is intended that all models in the library should implement the ``ISimulateableModel`` model and that all 
+simulations should be done using ``PlantSimulator`` and only using this class. 
+
+
+## External interface
 
 Connections can be done using
 - ``ConnectSignal`` connects a signal to a model
@@ -21,12 +32,27 @@ is then simulated by ``PlantSimulator.Simulate()``.
 
 The entire simulated dataset is presented after simulation as an object of the ``TimeSeriesDataSet`` class. 
 
+
+### ModelBaseClass: Two types of inputs 
+
+All models should inherit from ``ModelBaseClass``. 
+
+Each model has a number of inputs that travel through the model, each with an id these are referred to as *model input IDs*.
+In addition, models support adding signals directly to the output. This is a feature intended for modeling disturbances. 
+The IDs of such signals are referred to as *additive input IDs*.
+
+### PlantSimulatorHelper 
+
+The class ``PlantSimulatorHelper`` gives some convenience methods that make it easier to do common types of simulations:
+- ``SimulateSingle()`` is useful for quickly simulating any ``ISimulateableModel``. 
+- methods that allow calling the PlantSimulator with data in ``UnitData`` datasets rather than the more general ``TimeSeriesDataSet``.
+- methods that return a PlantSimulator object with a standard feedback loop. 
+
 ## Internal workings
 
 Internally each signal in the returned ``TimeSeriesDataSet``
  is named by a naming convention that is handled by ``SignalNamer``, which combines
 information about modelID and signal type to create a unique ID for each signal in the simulation. 
-
 
 ### Determining calculation order, parsing connections
 
@@ -46,15 +72,6 @@ state that results from the first value (at ``t=t0``) in each supplied ``PlantSi
 Determining the initial state is handled by the private method ``PlantSimulator.InitToSteadyState()``, which is 
 handled by parsing the model set and connections by logic.
 
-
-### ModelBaseClass: Two types of inputs 
-
-All models should inherit from ``ModelBaseClass``. 
-
-Each model has a number of inputs that travel through the model, each with an id these are referred to as *model input IDs*.
-In addition, models support adding signals directly to the output. This is a feature intended for modeling disturbances. 
-The IDs of such signals are referred to as *additive input IDs*.
-
 ### Estimating disturbances and simulating their effects 
 
 If the ``inputData`` given to the PlantSimulator includes measured pid-outputs ``u`` and process outputs ``y`` of feedback loops,
@@ -62,10 +79,8 @@ then PlantSimulator uses that
 ``y_meas[k] = y_proc[k-1]+d[k]`` 
 calculate the disturbance vector ``d`` and this disturbance is then simulated as the ``driving force`` of closed loop dynamics. 
 
-Thus when the process model is known and inputs to the model are given, the method ``PlantSimulator.SimulateSingle()`` is used to 
-simulate the disturbance vector as part of the initialization of ``PlantSimulator.Simulate()``
-
-### Closed loops : simulation order and disturbance
+Thus when the process model is known and inputs to the model are given, the methods  in ``DisturbanceCalculator`` are used to 
+simulate the disturbance vector as part of the initialization of ``PlantSimulator.Simulate()``. 
 
 PID-loops are a special case of a computational loop.
 
@@ -75,7 +90,7 @@ In a closed loop the simulation order will be
 - the process model (usally a *UnitModel*) gives ``u_pid[k]`` and any other inputs ``u[k]`` and outputs an internal state ``y_proc[k]``
 - In the next iteration y_meas[k+1] = y_proc[k] + d[k+1]
 
-This is by convention, and is how the simulator avoids both reading to ymeas[k] and writing to ymeas[k] in the same iteration.
+This is *by convention*, and is how the simulator avoids both reading to ymeas[k] and writing to ymeas[k] in the same iteration.
 
 This above means that implicitly all closed-loop processes in a manner of speaking have a time delay of 1. 
 
@@ -91,20 +106,12 @@ are implemented like this, but often the analysis is done on down-sampled data, 
 used internally to back-calculte disturbances as is described in the above section, and how the distrubance is calcualted will again be important as both single simulations and co-simulations 
 are used by ClosedLoopUnitIdentifier to identify the process model including possibly time constants and time-delays. 
 
-
-
 ### Computational loops other than PID-feedback loops
 
-The PlantSimulator can deal with computational loops other than PID-feedback loops. These are initalized to steady-state by co-simulating the loop for a number of iterations until the outputs hopefully settle on a steady value. 
+The PlantSimulator can deal with computational loops other than PID-feedback loops. 
+These are initalized to steady-state by co-simulating the loop for a number of iterations until the outputs hopefully settle on a steady value. 
 
 
 
-### PlantSimulatorHelper 
-
-The class PlantSimulatorHelper gives some convenience methods that make it easier to do common types of simulations:
-- 
-``SimulateSingle()`` is useful for quickly simulating any ``ISimulateableModel``. 
-- methods that allow calling the PlantSimulator with data in ``UnitData`` datasets rather than the more general ``TimeSeriesDataSet``.
-- methods that return a PlantSimulator object with a standard feedback loop. 
 
 

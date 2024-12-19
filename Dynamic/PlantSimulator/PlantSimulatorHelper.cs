@@ -212,7 +212,6 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 inputData.CreateTimestamps(unitData.GetTimeBase());
             }
-
             var uNames = new List<string>();
             for (int colIdx = 0; colIdx < unitData.U.GetNColumns(); colIdx++)
             {
@@ -225,11 +224,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.Add(defaultOutputName, unitData.Y_meas);
                 modelCopy.SetOutputID(defaultOutputName);
             }
-
             var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, out var simData);
-
-        //    var sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
-        //    var isOk = sim.Simulate(inputData,  out var simData);
 
             if (!isOk)
                 return (false, null);
@@ -238,7 +233,6 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] y_sim = null;
 
             y_sim = simData.GetValues(defaultOutputName);
-
             if (simData.ContainsSignal(singleModelName))
             {
                 y_proc = simData.GetValues(singleModelName);

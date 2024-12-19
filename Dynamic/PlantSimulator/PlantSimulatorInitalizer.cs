@@ -271,7 +271,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (inputData.ContainsSignal(estDisturbanceId))
                     continue;
 
-                bool doV1 = true;
+               /* bool doV1 = false;
 
                 if (doV1)
                 {
@@ -294,7 +294,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     }
                 }
-                else //: new version that uses DisturbanceCalculator
+                else *///: new version that uses DisturbanceCalculator
                 {
                     var processModel = (UnitModel)simulator.modelDict[processId];
                     var pidModel = (PidModel)simulator.modelDict[pidID];
