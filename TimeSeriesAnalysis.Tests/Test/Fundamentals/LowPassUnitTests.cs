@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using TimeSeriesAnalysis.Dynamic;
 
-namespace TimeSeriesAnalysis.Test
+namespace TimeSeriesAnalysis.Test.Fundamentals
 {
     [TestFixture]
     class FilterUnitTests

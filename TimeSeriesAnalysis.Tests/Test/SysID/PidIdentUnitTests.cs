@@ -5,7 +5,7 @@ using System.Linq;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.Test.PidID
+namespace TimeSeriesAnalysis.Test.SysID
 {
     [TestFixture]
     class PidIdentUnitTests

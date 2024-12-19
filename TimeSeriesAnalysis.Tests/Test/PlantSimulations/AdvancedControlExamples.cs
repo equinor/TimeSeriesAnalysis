@@ -20,28 +20,31 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
     /// </para>
     /// </summary>
     [TestFixture]
-    class Control
+    class AdvancedControlExamples
     {
         [Test]
         public void  CascadeControl()
         {
-            Shared.DisablePlots();
-
+            //     Shared.DisablePlots();
+          //  Shared.EnablePlots();
             ProcessControl pc = new ProcessControl();
             var dataSet = pc.CascadeControl();
-
-            Shared.EnablePlots();
+            Shared.DisablePlots();
+            //   Shared.EnablePlots();
         }
 
         [Test]
         public void FeedForwardControl_Part1()
         {
-            Shared.DisablePlots();
-
+           // Shared.EnablePlots();
+           // Shared.EnablePlots();
             ProcessControl pc = new ProcessControl();
             var dataSet = pc.FeedForward_Part1();
+           // Shared.DisablePlots();
 
-            Shared.EnablePlots();
+            Assert.IsTrue(dataSet.GetValue("Process1-Output_Y", 599) -60< 0.01);
+
+           // Shared.EnablePlots();
         }
 
 

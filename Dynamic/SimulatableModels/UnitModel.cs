@@ -42,12 +42,12 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </remarks>
     /// See also: <seealso cref="UnitParameters"/>
     /// </summary>
-    public class UnitModel : ModelBaseClass, ISimulatableModel 
+    public class UnitModel : ModelBaseClass, ISimulatableModel
     {
         /// <summary>
         /// The parameters of the UnitModel.
         /// </summary>
-        public  UnitParameters modelParameters;
+        public UnitParameters modelParameters;
 
         // first order dynamics :
         private LowPass lowPass1order;
@@ -56,21 +56,21 @@ namespace TimeSeriesAnalysis.Dynamic
         private SecondOrder secondOrder;
 
 
-        
+
         // time-delay 
         private TimeDelay delayObj;
 
         private bool isFirstIteration;
         private double[] lastGoodValuesOfInputs;
 
-        private UnitDataSet FittedDataSet=null;
+        private UnitDataSet FittedDataSet = null;
 
         private List<ProcessTimeDelayIdentWarnings> TimeDelayEstWarnings { get; }
 
         /// <summary>
         /// Empty constructor
         /// </summary>
-        public UnitModel(){}
+        public UnitModel() { }
 
         /// <summary>
         /// Constructor
@@ -78,7 +78,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="modelParameters">model parameter object</param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
         [JsonConstructor]
-        public UnitModel(UnitParameters modelParameters, string ID="not_named")
+        public UnitModel(UnitParameters modelParameters, string ID = "not_named")
         {
             processModelType = ModelType.SubProcess;
             this.ID = ID;
@@ -90,7 +90,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
         /// <param name="ID">a unique string that identifies this model in larger process models</param>
-        public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet,string ID = "not_named")
+        public UnitModel(UnitParameters modelParameters, UnitDataSet dataSet, string ID = "not_named")
         {
             processModelType = ModelType.SubProcess;
             this.ID = ID;
@@ -110,16 +110,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 explainStr = "modelParameters is null";
                 return false;
             }
-           /* if (modelParameters.LinearGains == null)
-            {
-                explainStr = "LinearGains is null"; 
-                return false;
-            }
-            if (modelParameters.LinearGains.Length == 0)
-            {
-                explainStr = "LinearGains is empty";
-                return false;
-            }*/
+            /* if (modelParameters.LinearGains == null)
+             {
+                 explainStr = "LinearGains is null"; 
+                 return false;
+             }
+             if (modelParameters.LinearGains.Length == 0)
+             {
+                 explainStr = "LinearGains is empty";
+                 return false;
+             }*/
             if (ModelInputIDs == null)
             {
                 explainStr = "ModelInputIDs is null";
@@ -162,9 +162,9 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             if (doSim)
             {
-                this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN, 
+                this.lastGoodValuesOfInputs = Vec<double>.Fill(Double.NaN,
                     GetLengthOfInputVector());
-                 this.SetInputIDs(new string[GetLengthOfInputVector()]);
+                this.SetInputIDs(new string[GetLengthOfInputVector()]);
             }
         }
 
@@ -212,7 +212,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return inputIDs.Length;
             }
         }
- 
+
         /// <summary>
         /// Get the object of model parameters contained in the model.
         /// </summary>
@@ -241,9 +241,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputIdx"></param>
         /// <param name="givenInputs"></param>
         /// <returns></returns>
-        public double? GetSteadyStateInput(double x0, int inputIdx=0, double[] givenInputs=null)
+        public double? GetSteadyStateInput(double x0, int inputIdx = 0, double[] givenInputs = null)
         {
-            double u0=0;
+            double u0 = 0;
 
             if (modelParameters.LinearGains == null)
             {
@@ -300,7 +300,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     u0 = 0;
                     if (modelParameters.U0 != null)
                     {
-                        u0 += modelParameters.U0[inputIdx]; 
+                        u0 += modelParameters.U0[inputIdx];
                     }
                     u0 += y_contributionFromInput / modelParameters.LinearGains[inputIdx];
 
@@ -315,18 +315,18 @@ namespace TimeSeriesAnalysis.Dynamic
                     double b = modelParameters.LinearGains[inputIdx];
                     double c = -y_contributionFromInput;
                     double[] quadSolution = SolveQuadratic(a, b, c);
-                    double chosenU=0;
+                    double chosenU = 0;
                     if (quadSolution.Length == 1)
-                    {   
-                       chosenU = quadSolution[0];
+                    {
+                        chosenU = quadSolution[0];
                     }
                     else if (quadSolution.Length == 2)
-                    { 
+                    {
                         chosenU = Math.Min(quadSolution[0], quadSolution[1]);
                     }
                     if (modelParameters.U0 == null)
                     {
-                        u0 = chosenU ;
+                        u0 = chosenU;
                     }
                     else
                     {
@@ -348,7 +348,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double processGainTerm = 0;
             if (modelParameters.U0 != null)
             {
-                processGainTerm += modelParameters.LinearGains[inputIndex] * (u- modelParameters.U0[inputIndex]);
+                processGainTerm += modelParameters.LinearGains[inputIndex] * (u - modelParameters.U0[inputIndex]);
             }
             else
             {
@@ -388,12 +388,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (modelParameters.U0 != null)
                 {
                     curvatureTerm += modelParameters.Curvatures[inputIndex] *
-                        Math.Pow((u - modelParameters.U0[inputIndex]) , 2) / uNorm;
+                        Math.Pow((u - modelParameters.U0[inputIndex]), 2) / uNorm;
                 }
                 else
                 {
                     curvatureTerm += modelParameters.Curvatures[inputIndex] *
-                        Math.Pow(u , 2) / uNorm;
+                        Math.Pow(u, 2) / uNorm;
                 }
             }
             return curvatureTerm;
@@ -405,7 +405,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputs"></param>
         /// <param name="badValueIndicator"></param>
         /// <returns></returns>
-        private double CalculateSteadyStateWithoutAdditive(double[] inputs, double badValueIndicator=-9999)
+        private double CalculateSteadyStateWithoutAdditive(double[] inputs, double badValueIndicator = -9999)
         {
             double x_ss = modelParameters.Bias;
             // inputs U may include a disturbance as the last entry
@@ -439,7 +439,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="u">vector of input values</param>
         /// <param name="badDataID"></param>
         /// <returns></returns>
-        public double? GetSteadyStateOutput(double[] u, double badDataID=-9999)
+        public double? GetSteadyStateOutput(double[] u, double badDataID = -9999)
         {
             if (modelParameters.LinearGains == null)
                 return 0;
@@ -478,9 +478,9 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  NaN is returned if model was not able to be identfied, or if no good U values have been given yet.
         ///  If some data points in U inputs are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
         /// </returns>
-        public double[] Iterate(double[] inputs, double timeBase_s,double badValueIndicator=-9999)
+        public double[] Iterate(double[] inputs, double timeBase_s, double badValueIndicator = -9999)
         {
-            if (modelParameters.Fitting!= null)
+            if (modelParameters.Fitting != null)
             {
                 if (!modelParameters.Fitting.WasAbleToIdentify)
                 {
@@ -500,14 +500,14 @@ namespace TimeSeriesAnalysis.Dynamic
             // this is the case for newly created models that have not yet been fitted
             if (modelParameters.LinearGains == null)
             {
-                return new double[] { 0 }; 
+                return new double[] { 0 };
             }
 
             // notice! the model does not use the parameters [a,b,c,unorm,td.u0] to simulate the process model
             // instead it calculates the steady-state and then filters the steady-state with LowPass to get the appropriate time constant
             //  - so it uses the parameters [linearGain, curvatureGain, Timeconstant,td]
 
-            double x_ss = CalculateSteadyStateWithoutAdditive(inputs,badValueIndicator);
+            double x_ss = CalculateSteadyStateWithoutAdditive(inputs, badValueIndicator);
 
             // nb! if first iteration, start model at steady-state
             double x_dynamic = x_ss;
@@ -528,7 +528,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double y = 0;
             if (modelParameters.TimeDelay_s <= 0)
             {
-                y =  x_dynamic;
+                y = x_dynamic;
             }
             else
             {
@@ -556,10 +556,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             if (y_internal.HasValue)
-                return new double[] { y, y_internal.Value};
+                return new double[] { y, y_internal.Value };
             else
                 return new double[] { y };
-         }
+        }
 
         /// <summary>
         /// Is the model static or dynamic?
@@ -567,7 +567,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>Returns true if the model is static(no time constant or time delay terms),otherwise false.</returns>
         public bool IsModelStatic()
         {
-           return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
+            return modelParameters.TimeConstant_s == 0 && modelParameters.TimeDelay_s == 0;
         }
 
 
@@ -602,6 +602,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 x = (-b + System.Math.Sqrt(sqrtpart)) / (2 * a);
                 return new double[] { x };
             }
+        }
+
+        /// <summary>
+        /// Removes the addtive inputs.
+        /// </summary>
+        public void RemoveAdditiveInputs()
+        {
+            additiveInputIDs = new List<string>(); 
         }
 
 

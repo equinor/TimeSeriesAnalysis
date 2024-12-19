@@ -17,6 +17,7 @@ using System.Threading;
 
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
+using Newtonsoft.Json.Linq;
 
 
 namespace TimeSeriesAnalysis.Dynamic
@@ -72,14 +73,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// (For debugging:) an estimated process gain
         /// </summary>
         public double estPidProcessGain;
-        /// <summary>
-        /// (for debugging) the high-frequency component of the disturbance that is determined by observing changes in process variable y
-        /// </summary>
-        public double[] d_HF;
-        /// <summary>
-        /// (for debugging) the low-frequency component of the disturbance that is determined by observing changes in manipulated variable u
-        /// </summary>
-        public double[] d_LF;
         
         /// <summary>
         /// Constuctor
@@ -100,12 +93,8 @@ namespace TimeSeriesAnalysis.Dynamic
             d_est = Vec<double>.Fill(0, N);
             estPidProcessGain = 0;
             isAllZero = true;
-            d_HF = Vec<double>.Fill(0, N);
-            d_LF = Vec<double>.Fill(0, N);
             adjustedUnitDataSet = null;
-
         }
-
 
     }
 
@@ -158,12 +147,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 // BEGIN "no_dist" process simulation = 
                 // a simulation of the process that does not include any real Y_meas or u_pid, thus no effects of 
                 // disturbances are visible in this simulation
-                
-               
+
+                var unitModelCopy = (UnitModel)unitModel.Clone("RemoveSetpointAndOtherInputChangeEffectsFromDataSet");// make copy that has no additive output signals(disturbance)
+                unitModelCopy.additiveInputIDs = null;
+
                var processSim_noDist = new PlantSimulator(
-                    new List<ISimulatableModel> { pidModel1, unitModel });
-                processSim_noDist.ConnectModels(unitModel, pidModel1);
-                processSim_noDist.ConnectModels(pidModel1, unitModel,pidInputIdx);
+                    new List<ISimulatableModel> { pidModel1, unitModelCopy });
+                processSim_noDist.ConnectModels(unitModelCopy, pidModel1);
+                processSim_noDist.ConnectModels(pidModel1, unitModelCopy, pidInputIdx);
 
                 var inputData_noDist = new TimeSeriesDataSet();
                 if (unitDataSet.U.GetNColumns()>1)
@@ -172,7 +163,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         if (curColIdx == pidInputIdx)
                             continue;
-                        inputData_noDist.Add(processSim_noDist.AddExternalSignal(unitModel, SignalType.External_U, curColIdx), 
+                        inputData_noDist.Add(processSim_noDist.AddExternalSignal(unitModelCopy, SignalType.External_U, curColIdx), 
                             unitDataSet.U.GetColumn(curColIdx));
                     }
                 }
@@ -203,7 +194,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     // create a new Y_meas that excludes the influence of any disturbance using "no_Dist" simulation
                     // this is used to find d_HF
-                    var procOutputY = simData_noDist.GetValues(unitModel.GetID(), SignalType.Output_Y);
+                    //var procOutputY = simData_noDist.GetValues(unitModel.GetID(), SignalType.Output_Y);
+                    var procOutputY = simData_noDist.GetValues(unitModelCopy.GetID());
                     var deltaProcOutputY = vec.Subtract(procOutputY, procOutputY[idxFirstGoodValue]);
                     unitDataSet_adjusted.Y_meas = vec.Subtract(unitDataSet.Y_meas, deltaProcOutputY);
 
@@ -289,7 +281,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // non-disturbance related changes in the dataset producing "unitDataSet_adjusted"
             var unitDataSet_adjusted = RemoveSetpointAndOtherInputChangeEffectsFromDataSet(unitDataSet, unitModel, pidInputIdx, pidParams);
             unitDataSet_adjusted.D = null;
-            (bool isOk, double[] y_proc) = PlantSimulator.SimulateSingle(unitDataSet_adjusted, unitModel);
+            (bool isOk, double[] y_proc) = PlantSimulatorHelper.SimulateSingle(unitDataSet_adjusted, unitModel);
 
             if (y_proc == null)
             {
@@ -311,13 +303,35 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             //TODO: can these be removed?
-            double[] d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[indexOfFirstGoodValue]), -1);
-            double[] d_HF = vec.Subtract(unitDataSet_adjusted.Y_meas, unitDataSet_adjusted.Y_setpoint);
+            //double[] d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[indexOfFirstGoodValue]), -1);
+            //double[] d_HF = vec.Subtract(unitDataSet_adjusted.Y_meas, unitDataSet_adjusted.Y_setpoint);
 
-            double[] d_est = vec.Subtract(unitDataSet_adjusted.Y_meas, y_proc);
+            // old: d[k] = y_meas[k] -y_proc[k]
+            //double[] d_est = vec.Subtract(unitDataSet_adjusted.Y_meas, y_proc);
+
+             bool IsNaN(double value)
+            {
+                if (double.IsNaN(value) || value == unitDataSet_adjusted.BadDataID)
+                    return true;
+                else
+                    return false;
+            }
+
+            double[] d_est = new double[unitDataSet_adjusted.Y_meas.Length];
+
+            for (int i = 1; i < d_est.Length; i++)
+            {
+                if (IsNaN(unitDataSet_adjusted.Y_meas[i]) || IsNaN(y_proc[i]))
+                    d_est[i] = double.NaN;
+                else
+                    d_est[i] = unitDataSet_adjusted.Y_meas[i] - y_proc[i-1];
+            }
+            d_est[0] = unitDataSet_adjusted.Y_meas[0] - y_proc[0];
+
+
             result.d_est = d_est;
-            result.d_LF = d_LF;
-            result.d_HF = d_HF;
+            //result.d_LF = d_LF;
+           // result.d_HF = d_HF;
             result.estPidProcessGain = unitModel.GetModelParameters().LinearGains.ElementAt(pidInputIdx);
             result.adjustedUnitDataSet = unitDataSet_adjusted;
 

@@ -160,7 +160,7 @@ namespace TimeSeriesAnalysis._Examples
             inputData.Add(simNoFeedF.AddExternalSignal(pidModel, SignalType.Setpoint_Yset),
                 TimeSeriesCreator.Constant(60, 600));
             inputData.Add(simNoFeedF.AddExternalSignal(disturbanceModel, SignalType.External_U),
-                TimeSeriesCreator.Step(300, 600, 25, 0));
+                TimeSeriesCreator.Step(100, 600, 25, 0));
             inputData.CreateTimestamps(timeBase_s);
             var isOk = simNoFeedF.Simulate(inputData,out var dataNoFeedF);
 
@@ -172,7 +172,7 @@ namespace TimeSeriesAnalysis._Examples
                 dataNoFeedF.GetValues(pidModel.GetID(),SignalType.PID_U),
                 inputData.GetValues(disturbanceModel.GetID(),SignalType.External_U)
                 },
-                new List<string> { "y1=y_run1", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
+                new List<string> { "y1=y_meas", "y1=y_setpoint", "y2=y_dist[right]", "y3=u_pid", "y3=u_dist" }, timeBase_s, "FeedForwardEx1");
 
             #endregion
 
@@ -526,7 +526,6 @@ namespace TimeSeriesAnalysis._Examples
             // integral oscillations using a first order linear system and a pid-control loop
             // unless the disturbance oscillates
             // integral oscillations are often thought to be created by 
-
 
             double noiseAmp = 1;
             UnitParameters modelParameters = new UnitParameters

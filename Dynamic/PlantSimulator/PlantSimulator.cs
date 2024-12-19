@@ -22,43 +22,7 @@ using TimeSeriesAnalysis.Utility;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
-    /// <summary>
-    /// Class that holds comments added to models.
-    /// </summary>
-    public class Comment
-    {
-        /// <summary>
-        /// Author of comment.
-        /// </summary>
-        public string author;
-        /// <summary>
-        /// Date of comment.
-        /// </summary>
-        public DateTime date;
-        /// <summary>
-        /// Comment string
-        /// </summary>
-        public string comment;
-        /// <summary>
-        /// Plant score, intended to hold manully set values indicating specific statuses of the model.
-        /// </summary>
-        public double plantScore;
 
-        /// <summary>
-        /// Comment constructor.
-        /// </summary>
-        /// <param name="author"></param>
-        /// <param name="date"></param>
-        /// <param name="comment"></param>
-        /// <param name="plantScore"></param>
-        public Comment(string author, DateTime date, string comment, double plantScore =0)
-        {
-            this.author = author;
-            this.date = date;
-            this.comment = comment;
-            this.plantScore= plantScore;
-        }
-     }
 
     /// <summary>
     /// Simulates larger "plant-models" that is built up of connected sub-models
@@ -318,87 +282,34 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Create a PlantSimulator and TimeSeriesDataSet from a UnitDataSet, PidModel and UnitModel to do closed-loop simulations
-        /// <para>
-        /// The feedback loop has NO disturbance signal added, but this can be added to the returned PlantSimulator as needed.
-        /// </para>
+        /// Get a list of all the outputs that are pid-controlled and thus need different treatment in the simualor. 
+        /// 
+        /// NOte that in the case that a PIDmodel is simulated in isolation using for example SimulateSingle, the 
         /// </summary>
-        /// <param name="unitDataSet"></param>
-        /// <param name="pidModel"></param>
-        /// <param name="unitModel"></param>
-        /// <param name="pidInputIdx"></param>
-        /// <returns>a simulator object and a dataset object that is ready to be simulated with Simulate() </returns>
-        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoopNoDisturbance(UnitDataSet unitDataSet, PidModel pidModel, 
-            UnitModel unitModel, int pidInputIdx=0)
+        /// <returns>a dictionary of the output signal ids and the modelIDs used to generate them. ModelIDs can be null</returns>
+        private Dictionary<string,string> DeterminePidControlledOutputs()
         {
-            var plantSim = new PlantSimulator(
-                new List<ISimulatableModel> { pidModel, unitModel });
-            var signalId1 = plantSim.ConnectModels(unitModel, pidModel);
-            var signalId2 = plantSim.ConnectModels(pidModel, unitModel, pidInputIdx);
+            var ret = new Dictionary<string,string>();
 
-            var inputData = new TimeSeriesDataSet();
-            inputData.Add(signalId1, (double[])unitDataSet.Y_meas.Clone());
-
-            for (int curColIdx = 0; curColIdx < unitDataSet.U.GetNColumns(); curColIdx++)
+            foreach (var model in modelDict)
             {
-                if (curColIdx == pidInputIdx)
+                if (model.Value.GetProcessModelType() == ModelType.PID)
                 {
-                    inputData.Add(signalId2, (double[])unitDataSet.U.GetColumn(pidInputIdx).Clone());
-                }
-                else
-                {
-                    inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, curColIdx),
-                        (double[])unitDataSet.U.GetColumn(curColIdx).Clone());
+                    var pidControlledOutputSignalID = model.Value.GetModelInputIDs().ElementAt((int)PidModelInputsIdx.Y_meas);
+                    string modelThatCreatesOutputID = null;
+                    foreach (var otherModel in modelDict)
+                    {
+                        if (otherModel.Value.GetOutputID() == pidControlledOutputSignalID)
+                        {
+                            modelThatCreatesOutputID = otherModel.Value.GetID();
+                        }
+                    }
+                  //  if(modelThatCreatesOutputID != null)
+                   ret.Add(model.Value.GetModelInputIDs().ElementAt((int)PidModelInputsIdx.Y_meas), modelThatCreatesOutputID);
                 }
             }
-            inputData.Add(plantSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), (double[])unitDataSet.Y_setpoint.Clone());
-            inputData.CreateTimestamps(unitDataSet.GetTimeBase());
-            inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
-            return (plantSim, inputData);
+            return ret;
         }
-
-        /// <summary>
-        /// Create a feedback loop, where the process model has an additive disturbance that is to be estimated.
-        /// </summary>
-        /// <param name="unitDataSet"></param>
-        /// <param name="pidModel"></param>
-        /// <param name="unitModel"></param>
-        /// <param name="pidInputIdx"></param>
-        /// <returns>a simulator object and a dataset object that is ready to be simulated with Simulate() </returns>
-        public static (PlantSimulator, TimeSeriesDataSet) CreateFeedbackLoopWithEstimatedDisturbance(UnitDataSet unitDataSet, PidModel pidModel,
-             UnitModel unitModel, int pidInputIdx = 0)
-        {
-            // vital that signal follows naming convention, otherwise it will not be estimated, but should be provided.
-            unitModel.AddSignalToOutput(SignalNamer.EstDisturbance(unitModel));
-            (var sim, var data) =  CreateFeedbackLoopNoDisturbance(unitDataSet,pidModel, unitModel, pidInputIdx);
-            return (sim,data);
-        }
-
-
-        /// <summary>
-        /// Returns a unit data set for a given UnitModel.
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="unitModel"></param>
-        /// <returns></returns>
-        public UnitDataSet GetUnitDataSetForProcess(TimeSeriesDataSet inputData, UnitModel unitModel)
-        {
-            UnitDataSet dataset = new UnitDataSet();
-            dataset.U = new double[inputData.GetLength().Value, 1];
-
-            dataset.Times = inputData.GetTimeStamps();
-            var inputIDs = unitModel.GetModelInputIDs();
-            var outputID = unitModel.GetOutputID();
-            dataset.Y_meas = inputData.GetValues(outputID);
-            for (int inputIDidx = 0; inputIDidx < inputIDs.Length; inputIDidx++)
-            {
-                var inputID = inputIDs[inputIDidx];
-                var curCol = inputData.GetValues(inputID);
-                dataset.U.WriteColumn(inputIDidx, curCol);
-            }
-            return dataset;
-        }
-
 
         /// <summary>
         /// Returns a "unitDataSet" for the given pidModel in the plant.
@@ -539,18 +450,18 @@ namespace TimeSeriesAnalysis.Dynamic
             if (model.GetProcessModelType() == ModelType.PID && timeIndex > 0)
             {
                 int lookBackIndex = 1;
-                double[] lookBackValues = GetValuesFromEitherDatasetInternal( timeIndex - lookBackIndex); ;
+         //       double[] lookBackValues = GetValuesFromEitherDatasetInternal( timeIndex - lookBackIndex); ;
                 double[] currentValues = GetValuesFromEitherDatasetInternal( timeIndex);
                 // "use values from current data point when available, but fall back on using values from the previous sample if need be"
                 // for instance, always use the most current setpoint value, but if no disturbance vector is given, then use the y_proc simulated from the last iteration.
                 double[] retValues = new double[currentValues.Length];
-                retValues = lookBackValues;
+                retValues = currentValues;
 
                 // adding in the below code  seems to remove the issue with there being a one sample wait time before the effect of a setpoint 
                 // is seen on the output, but causes there to be small deviation between what the PlantSimulator.SimulateSingle and PlantSimulator.Simulate
                 // seem to return for a PID-loop in the test BasicPID_CompareSimulateAndSimulateSingle_MustGiveSameResultForDisturbanceEstToWork
                 
-                  for (int i = 0; i < currentValues.Length; i++)
+                  /*for (int i = 0; i < currentValues.Length; i++)
                   {
                       if (Double.IsNaN(currentValues[i]))
                       {
@@ -560,7 +471,7 @@ namespace TimeSeriesAnalysis.Dynamic
                       {
                           retValues[i] = currentValues[i];
                       }
-                 }
+                 }*/
                 return retValues;
             }
             else
@@ -590,137 +501,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="singleModelName"></param>
         /// <param name="simData"></param>
         /// <returns></returns>
-        public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
+       /* public bool SimulateSingle(TimeSeriesDataSet inputData, string singleModelName, out TimeSeriesDataSet simData)
         {
             return SimulateSingleInternalCore(inputData, singleModelName, false, out simData);
-        }
+        }*/
 
-        /// <summary>
-        /// Simulate a single model to get the output including any additive inputs.
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="model"></param>
-        /// <param name="simData"></param>
-        /// <returns></returns>
-        public static bool SimulateSingle(TimeSeriesDataSet inputData, ISimulatableModel model, out TimeSeriesDataSet simData)
-        {
-            var plant = new PlantSimulator(new List<ISimulatableModel> { model });
-
-            return plant.Simulate(inputData, out simData );
-        }
-
-
-        /// <summary>
-        /// Simulates a single model for a unit dataset and adds the output to unitData.Y_meas of the unitData, optionally with noise
-        /// </summary>
-        /// <param name="unitData">the dataset to be simualted over, and where the Y_meas is updated with result</param>
-        /// <param name="model">the model to be simulated</param>
-        /// <param name="noiseAmplitude">the amplitude of noise to be added to Y_meas</param>
-        /// <param name="noiseSeed">a seed value of the randm noise(specify so that tests are repeatable)</param>
-        /// <returns></returns>
-        public static bool SimulateSingleToYmeas(UnitDataSet unitData, ISimulatableModel model, double noiseAmplitude = 0,
-             int noiseSeed= 123)
-        {
-            (bool isOk, double[] y_proc) = SimulateSingleUnitDataWrapper(unitData, model);
-
-            if (noiseAmplitude > 0)
-            {
-                // use a specific seed here, to avoid potential issues with "random unit tests" and not-repeatable
-                // errors.
-                Random rand = new Random(noiseSeed);
-                for (int k = 0; k < y_proc.Count(); k++)
-                {
-                    y_proc[k] += (rand.NextDouble() - 0.5) * 2 * noiseAmplitude;
-                }
-            }
-            unitData.Y_meas = y_proc;
-            return isOk;
-        }
-
-        /// <summary>
-        /// Simulates a single model for a unit dataset and adds the output to unitData.Y_meas of the unitData, optionally with noise
-        /// </summary>
-        /// <param name="unitData">the dataset to be simualted over, and where the Y_meas is updated with result</param>
-        /// <param name="model">the model to be simulated</param>
-        /// <returns></returns>
-        public static (bool, double[]) SimulateSingleToYsim(UnitDataSet unitData, ISimulatableModel model)
-        {
-            (bool isOk, double[] y_proc) = SimulateSingleUnitDataWrapper(unitData, model);
-            unitData.Y_sim = y_proc;
-            return (isOk, y_proc);
-        }
-
-
-        /// <summary>
-        /// Simulates a single model given a unit data set
-        /// </summary>
-        /// <param name="unitData"></param>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static  (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model)
-        {
-            return SimulateSingleUnitDataWrapper(unitData, model);
-        }
-
-        /// <summary>
-        /// Simulate single model based on a unit data set
-        /// 
-        /// This is a convenience function that creates a TimeSeriesDataSet, sets default names in the model and dataset that match based on unitDataset 
-        /// The output is returned directly.
-        /// 
-        /// Optionally, the result can be written to y_meas or y_sim in unitdata.
-        /// </summary>
-        /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
-        /// <param name="model">model to simulate</param>
-        /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive </returns>
-        static private (bool, double[]) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model  )
-        {
-            const string defaultOutputName = "output";
-            var inputData = new TimeSeriesDataSet();
-            var singleModelName = "SimulateSingle";
-            var modelCopy = model.Clone(singleModelName);
-
-            if (unitData.Times != null)
-                inputData.SetTimeStamps(unitData.Times.ToList());
-            else
-            {
-                inputData.CreateTimestamps(unitData.GetTimeBase());
-            }
-
-            var uNames = new List<string>();
-            for (int colIdx = 0; colIdx< unitData.U.GetNColumns(); colIdx++)
-            {
-                var uName = "U" + colIdx;
-                inputData.Add(uName, unitData.U.GetColumn(colIdx));
-                uNames.Add(uName);
-            }
-            modelCopy.SetInputIDs(uNames.ToArray());
-            {
-                inputData.Add(defaultOutputName, unitData.Y_meas);
-                modelCopy.SetOutputID(defaultOutputName);
-            } 
-
-            var  sim = new PlantSimulator(new List<ISimulatableModel> { modelCopy });
-            var isOk = sim.SimulateSingleInternalCore(inputData, singleModelName, false, out var simData);
-
-            if(!isOk)
-                return (false, null);
-
-            double[] y_proc = null;
-            double[] y_sim = null;
-
-            y_sim = simData.GetValues(defaultOutputName);
-
-            if (simData.ContainsSignal(singleModelName))
-            {
-                y_proc = simData.GetValues(singleModelName);
-            }
-            else
-            {
-                y_proc = y_sim;
-            }
-            return (isOk, y_proc);
-        }
 
         /// <summary>
         ///  Simulate a single model(any ISimulatable model), using inputData as inputs, 
@@ -908,7 +693,17 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var inputDataMinimal = new TimeSeriesDataSet(inputData);
 
+            // todo: disturbances could also instead be estimated in closed-loop? 
             var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict);
+
+            // need to keep special track of pid-controlled outputs.
+            var pidControlledOutputsDict = DeterminePidControlledOutputs();
+            // create internal "process outputs" for each such model
+            foreach (var pidOutput in pidControlledOutputsDict)
+            {
+                var signalID = pidOutput.Value;
+                simData.InitNewSignal(signalID, Double.NaN, N.Value);
+            }
 
             if (!didInit)
             {
@@ -965,6 +760,47 @@ namespace TimeSeriesAnalysis.Dynamic
                     var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
                     string[] inputIDs = model.GetBothKindsOfInputIDs();
 
+                    ////////////////////////
+                    // before calculating a PID-model, treat the "junction" before it to get the right y_meas[k] = y_proc[k_1] + D[k] 
+                    if (model.GetProcessModelType() == ModelType.PID && timeIdx > 0)
+                    {
+                        var junctionSignalID = inputIDs.ElementAt((int)PidModelInputsIdx.Y_meas);
+                        if (!pidControlledOutputsDict.ContainsKey(junctionSignalID))
+                        {
+                            Shared.GetParserObj().AddError("PlantSimulator.Simulate() junction signal error \"" + junctionSignalID + "\"");
+                        }
+                        else
+                        {
+                            var modelID = pidControlledOutputsDict[junctionSignalID];
+                            if (modelID != null) // Simulataing a single PID-model not the whole loop
+                            {
+                                var value = simData.GetValue(modelID, timeIdx - 1); //y_proc[k-1]
+                                if (modelID != null)
+                                {
+                                    if (modelDict[modelID].GetAdditiveInputIDs() != null)       // + D[k] 
+                                    {
+                                        var additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
+                                            modelDict[modelID].GetAdditiveInputIDs(), timeIdx, simData, inputDataMinimal);
+                                        foreach (var signalValue in additiveSignalsValues)
+                                        {
+                                            value += signalValue;
+                                        }
+                                    }
+                                }
+                                if (value.HasValue)
+                                {
+                                    bool isOk = simData.AddDataPoint(junctionSignalID, timeIdx, value.Value);
+                                }
+                                else
+                                {
+                                    Shared.GetParserObj().AddError("PlantSimulator.Simulate() error. Error calculating junction signal \"" + junctionSignalID +
+                                  "\"");
+                                }
+                            }
+                        }
+                    }
+                    ///////////////////////
+
                     double[] inputVals = null;
                     inputVals = GetValuesFromEitherDataset(model, inputIDs, lastGoodTimeIndex, simData, inputDataMinimal);
                     if (inputVals == null)
@@ -973,13 +809,30 @@ namespace TimeSeriesAnalysis.Dynamic
                             "\" error retreiving input values.");
                         return false;
                     }
+
                     double[] outputVal = model.Iterate(inputVals, timeBase_s);
-                    bool isOk = simData.AddDataPoint(model.GetOutputID(),timeIdx,outputVal[0]);
-                    if (!isOk)
+
+                    if (pidControlledOutputsDict.Keys.Contains(model.GetOutputID()))
                     {
-                        Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \"" 
-                            + model.GetOutputID() + "\", indicating an error in initalization. ");
-                        return false;
+                        // for pid-controlled outputs, save the result with the name of the process ID, to be used in the 
+                        // next iteration, possibly in combination with a disturbance signal
+                        bool isOk = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[0]);
+                        if (!isOk)
+                        {
+                            Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \""
+                                + model.GetOutputID() + "\", indicating an error in initalization. ");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        bool isOk = simData.AddDataPoint(model.GetOutputID(), timeIdx, outputVal[0]);
+                        if (!isOk)
+                        {
+                            Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \""
+                                + model.GetOutputID() + "\", indicating an error in initalization. ");
+                            return false;
+                        }
                     }
                     if (outputVal.Length > 1)
                     {
@@ -993,6 +846,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
+            if (inputDataMinimal != null)
+                if (inputDataMinimal.GetTimeStamps() != null)
             simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());
             PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData);
 

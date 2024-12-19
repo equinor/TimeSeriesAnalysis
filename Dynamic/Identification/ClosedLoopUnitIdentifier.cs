@@ -138,7 +138,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 idDisturbancesList.Add(distIdResult1);
                 idUnitModelsList.Add(unitModel_step1);
                 if (doConsoleDebugOut)
-                    ConsoleDebugOut(unitModel_step1, "Step 1,MISO");
+                {
+                    string otherGains = "";
+                    for(int i=0;i < unitModel_step1.GetModelParameters().LinearGains.Count();i++)
+                    {
+                        if (i!= pidInputIdx)
+                            otherGains+= " other Gains: "+ unitModel_step1.GetModelParameters().LinearGains.ElementAt(i).ToString("F2");
+                    }
+                    ConsoleDebugOut(unitModel_step1, "Step 1,MISO", otherGains);
+                }
             }
 
             //  EstimateDisturbanceLF(dataSetRun1, unitModel_step1, pidInputIdx, pidParams);
@@ -213,8 +221,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
       
-
-
                 // ----------------
                 // - issue is that after run 1 modelled output does not match measurement.
                 // - the reason that we want this run is that after run1 the time constant and 
@@ -260,7 +266,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             DateTime[] dateTimes = null;
                             bool doDebugPlot = true;
 
-                            (var plantSim, var inputData) = PlantSimulator.CreateFeedbackLoopWithEstimatedDisturbance(dataSetStep3, pidModel, unitModel, pidInputIdx);
+                            (var plantSim, var inputData) = PlantSimulatorHelper.CreateFeedbackLoopWithEstimatedDisturbance(dataSetStep3, pidModel, unitModel, pidInputIdx);
                             if (doDebugPlot)
                             {
                                 y_simList.Add(inputData.GetValues(unitModel.ID, SignalType.Output_Y));
@@ -459,7 +465,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 unitParams.LinearGains = new double[] { Kp };
                 umInternal.SetModelParameters(unitParams);
-                (var isOk, var y_proc) = PlantSimulator.SimulateSingle(dataSet, umInternal);
+                (var isOk, var y_proc) = PlantSimulatorHelper.SimulateSingle(dataSet, umInternal);
                 var d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[0]), -1);
                 var d_est1 = vec.Add(d_HF, d_LF);
                 var d_est2 = vec.Subtract(dataSet.Y_meas, y_proc);
@@ -1018,7 +1024,7 @@ namespace TimeSeriesAnalysis.Dynamic
             //TODO: this does not ignore bad datapoints?
             var pidModel = new PidModel(pidParams,"PidModel");
             var unitModel = new UnitModel(modelParams, "ProcModel");
-            (var plantSim, var inputDataSet) = PlantSimulator.CreateFeedbackLoopWithEstimatedDisturbance(unitData, pidModel,
+            (var plantSim, var inputDataSet) = PlantSimulatorHelper.CreateFeedbackLoopWithEstimatedDisturbance(unitData, pidModel,
                 unitModel, pidInputIdx);
 
             var isOk = plantSim.Simulate(inputDataSet, out var simData);

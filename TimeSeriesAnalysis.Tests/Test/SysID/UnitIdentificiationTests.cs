@@ -13,55 +13,13 @@ using System.Data;
 using System.Xml;
 
 namespace TimeSeriesAnalysis.Test.SysID
-{
-
-    class UnitSimulation
-    {
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(10)]
-        public void UnitSimulate_TimeDelay(int timeDelay_s)
-        {
-            var timeBase_s = 1;
-            var parameters = new UnitParameters
-            {
-                LinearGains = new double []{ 1},
-                TimeConstant_s = 0,
-                TimeDelay_s = timeDelay_s,
-                Bias =0
-            };
-            var model   = new UnitModel(parameters);
-            double[] u1 = Vec<double>.Concat(Vec<double>.Fill(0, 31),
-                Vec<double>.Fill(1, 30));
-            UnitDataSet dataSet = new UnitDataSet();
-            dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
-            dataSet.CreateTimeStamps(timeBase_s);
-
-            (bool isOk,double[] y_sim) = PlantSimulator.SimulateSingle(dataSet, model);
-            // plot
-            bool doPlot = false;
-            if (doPlot)
-            {
-                Shared.EnablePlots();
-                Plot.FromList(new List<double[]> { y_sim, u1 }, new List<string> { "y1=ymeas ", "y3=u1" }, timeBase_s);
-                Shared.DisablePlots();
-            }
-            //assert
-            //  Assert.IsNotNull(retSim);
-            Assert.IsTrue(isOk);
-            Assert.IsTrue(y_sim[30+ timeDelay_s] == 0,"step should not arrive at y_sim too early");
-            Assert.IsTrue(y_sim[31+ timeDelay_s] == 1, "steps should be delayed exactly timeDelay_s later  ");
-        }
-
-    }
-
-
+{ 
 
     /// <summary>
     /// DefaultModel unit tests
     /// In the naming convention I1 refers to one input, I2 two inputs etc.
     /// </summary>
-    class UnitIdentification
+    class UnitIdentificationTests
     {
         static Plot4Test plot = new Plot4Test(false);
         double timeBase_s = 1;
@@ -71,18 +29,16 @@ namespace TimeSeriesAnalysis.Test.SysID
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN,
             bool doNonWhiteNoise=false)
         {
-            UnitModel model = new UnitModel(designParameters);
+            var model = new UnitModel(designParameters);
             this.timeBase_s = timeBase_s;
 
-            UnitDataSet dataSet = new UnitDataSet();
+            var dataSet = new UnitDataSet();
             dataSet.U = U;
             dataSet.BadDataID = badValueId;
             dataSet.CreateTimeStamps(timeBase_s);
-        //    var simulator = new UnitSimulator(model);
             if (doNonWhiteNoise)
             {
-                PlantSimulator.SimulateSingleToYmeas(dataSet, model, 0);
-              //  simulator.SimulateYmeas(ref dataSet, 0);
+                PlantSimulatorHelper.SimulateSingleToYmeas(dataSet, model, 0);
                 double rand = 0;
                 var randObj = new Random(45466545);
                 for (int i = 0; i < dataSet.Y_meas.Length; i++)
@@ -93,8 +49,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             else
             {
-                PlantSimulator.SimulateSingleToYmeas(dataSet, model, noiseAmplitude);
-               // simulator.SimulateYmeas(ref dataSet, noiseAmplitude);
+                PlantSimulatorHelper.SimulateSingleToYmeas(dataSet, model, noiseAmplitude);
             }
 
             if (addInBadDataToYmeasAndU)

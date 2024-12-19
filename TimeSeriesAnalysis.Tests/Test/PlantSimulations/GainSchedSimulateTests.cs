@@ -8,10 +8,10 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Test.PlantSimulations
 {
     /// <summary>
-    /// Test of process simulations where each of or some of the models have multiple inputs
+    /// Test of PlantSimulator simulations of the GainSched model
     /// </summary>
     [TestFixture]
-    class GainsSchedModelTests
+    class GainsSchedSimulateTests
     {
         int timeBase_s = 1;
         int N = 480;
@@ -43,7 +43,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             TimeDelay_s = 1,
             GainSchedParameterIndex = 0
         };
-        GainSchedParameters gainSchedP4_singleThreshold_singleInput_bias_and_timedelay= new GainSchedParameters(0,-15)
+        GainSchedParameters gainSchedP4_singleThreshold_singleInput_bias_and_timedelay = new GainSchedParameters(0,-15)
         {
             TimeConstant_s = new double[] { 10, 20 },
             TimeConstantThresholds = new double[] { 2 },
@@ -170,7 +170,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             // Act
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
             double[] simY1 = simData.GetValues(refModel.GetID(), SignalType.Output_Y);
 
             if (false)
@@ -316,7 +316,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                     timeBase_s, "ContinousGradualRamp_BumplessModelOutput" + ver + upOrDown); 
                 Shared.DisablePlots();
             }
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
 
             // assert that step increase is gradual, even at the boundaries between different 
             double maxChg = ((11.0 +1)* 10.0) / N;
@@ -361,8 +361,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             // Act
             var isSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
-                        
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+
+            PsTest.CommonAsserts(inputData, simData, plantSim);
             double[] simY1 = simData.GetValues(gainSched.GetID(), SignalType.Output_Y); 
 
             bool doPlot = false;// should be false unless debugging.
@@ -433,7 +433,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Shared.DisablePlots();
             }
 
-            SISOTests.CommonAsserts(inputData, refSimData, truePlantSim);
+            PsTest.CommonAsserts(inputData, refSimData, truePlantSim);
             Assert.That(unitData.Y_meas.First() == yOperatingPoint, "since time series starts in uOperatingPoint, simulation should start in yOperatingPoint");
 
         }

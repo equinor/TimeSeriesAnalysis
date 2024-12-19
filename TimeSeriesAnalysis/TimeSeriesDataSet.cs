@@ -472,7 +472,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Get a vector of the timestamps of the data-set
+        /// Get a vector of the timestamps of the data-set, or null if no timestamps
         /// </summary>
         /// <returns></returns>
         public DateTime[] GetTimeStamps()

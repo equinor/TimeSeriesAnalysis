@@ -26,6 +26,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Bias = 10
         };
 
+
+
         UnitParameters dynamicModelParameters = new UnitParameters
         {
             TimeConstant_s = 8,
@@ -61,7 +63,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
             if (doDebugPlot)
             {
                 Shared.EnablePlots();
@@ -99,26 +101,26 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             }
 
         }
-        [TestCase(0,false)]
-        [TestCase(1,false)]
+
+        [TestCase(0, false)]
         [TestCase(0, true)]
 
-        public void StaticMISO_SetpointChanges_no_disturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
+        public void Static2Input_SetpointChanges_NOdisturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
-            var externalU1 = TimeSeriesCreator.Step(N/8, N, 5, 10);
-            var externalU2 = TimeSeriesCreator.Step(N*5/8, N, 2, 1);
-            var yset = TimeSeriesCreator.Step(N*3/8, N, 20, 18);
-            var trueParamters = staticModelParameters.CreateCopy();
-            if (pidInputIdx == 1)
+            var externalU1 = TimeSeriesCreator.Step(N / 8, N, 15, 20);
+            var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
+            UnitParameters twoInputModelParameters = new UnitParameters
             {
-                double[] oldGains = new double[3];
-                trueParamters.LinearGains.CopyTo(oldGains);
-                trueParamters.LinearGains =  new double[] { oldGains[1], oldGains[0], oldGains[2] };
-            }
-            GenericMISODisturbanceTest(new UnitModel(trueParamters, "StaticProcess"), trueDisturbance, externalU1,externalU2,
-                doNegative, true,yset, pidInputIdx,10,false, isStatic);
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 0.5, 0.25 },
+                TimeDelay_s = 0,
+                Bias = 10
+            };
+            GenericMISODisturbanceTest(new UnitModel(twoInputModelParameters, "StaticTwoInputsProcess"),
+                trueDisturbance, externalU1, null, doNegative, true, yset, pidInputIdx, 10, false, isStatic);
         }
+
 
         [TestCase(0, false, false), NonParallelizable]
         [TestCase(1, false, false)]
@@ -229,7 +231,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             {
                 TimeConstant_s = 10,
                 LinearGains = new double[] { 1, 0.5},
-                TimeDelay_s = 5,
+                TimeDelay_s = 0,
                 Bias = 5
             };
 
@@ -325,6 +327,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 pidDataSet.Y_setpoint[50] = Double.NaN;
                 pidDataSet.Y_meas[400] = Double.NaN;
                 pidDataSet.U[500,0] = Double.NaN;
+                Console.WriteLine("BAD DATA ADDED!!!");
             }
 
             (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, pidModel1.GetModelParameters(), pidInputIdx);

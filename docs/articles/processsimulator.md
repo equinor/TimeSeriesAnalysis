@@ -67,6 +67,8 @@ simulate the disturbance vector as part of the initialization of ``PlantSimulato
 
 ### Closed loops : simulation order and disturbance
 
+PID-loops are a special case of a computational loop.
+
 In a closed loop the simulation order will be
 
 - *PidModel* reads ``y_meas[k]`` and ``y_setpoint[k]`` and calculates ``u_pid[k]``
@@ -88,3 +90,11 @@ are implemented like this, but often the analysis is done on down-sampled data, 
 **Implicitly the above also defines how to interpret the disturbance d[k].** To be extremely precise with how this is defined is important, as the PlantSimulator is
 used internally to back-calculte disturbances as is described in the above section, and how the distrubance is calcualted will again be important as both single simulations and co-simulations 
 are used by ClosedLoopUnitIdentifier to identify the process model including possibly time constants and time-delays. 
+
+
+
+
+
+### Computational loops other than PID-feedback loops
+
+The PlantSimulator can deal with computational loops other than PID-feedback loops. These are initalized to steady-state by co-simulating the loop for a number of iterations until the outputs hopefully settle on a steady value. 

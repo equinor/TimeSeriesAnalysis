@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using TimeSeriesAnalysis;
 
-namespace TimeSeriesAnalysis.Test
+namespace TimeSeriesAnalysis.Test.Fundamentals
 {
     [TestFixture]
     class MatrixUnitTests
