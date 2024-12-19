@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
@@ -93,7 +94,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1, processModel2, minSelect1, pidModel1 });
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/4, N, 0, 1));
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/4, N, 5.5, 6));
             inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND),
                 TimeSeriesCreator.Step(N*3/4, N, 0, 1));
             inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST),
@@ -108,13 +109,35 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             plantSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
             plantSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
 
-
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]>
+                {
+                    simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                    simData.GetValues(processModel2.GetID(),SignalType.Output_Y),
+                    inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
+                    inputData.GetValues(processModel1.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                    inputData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.FIRST),
+                    inputData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                    simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                    simData.GetValues(minSelect1.GetID(),SignalType.SelectorOut),
+                },
+                    new List<string> { "y1=y1", "y1=y2", "y1=y1_set","y3=y1_u1","y3=y2_u1","y3=y1_u1",
+                "y3=u_pid", "y1=y_select" }, timeBase_s, "MinSelectWithPID");
+                Shared.DisablePlots();
+            }
+
+
+
             Assert.IsTrue(isOk);
             PsTest.CommonAsserts(inputData, simData, plantSim);
             double[] simY = simData.GetValues(minSelect1.GetID(), SignalType.SelectorOut);
 
-            SerializeHelper.Serialize("MinSelectWithPID", plantSim, inputData, simData);
+
+            //SerializeHelper.Serialize("MinSelectWithPID", plantSim, inputData, simData);
 
             //Assert.IsTrue(Math.Abs(simY[0] - (6.5)) < 0.01);
             //Assert.IsTrue(Math.Abs(simY.Last() - (6.5)) < 0.01);

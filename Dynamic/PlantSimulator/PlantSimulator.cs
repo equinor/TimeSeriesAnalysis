@@ -304,8 +304,10 @@ namespace TimeSeriesAnalysis.Dynamic
                             modelThatCreatesOutputID = otherModel.Value.GetID();
                         }
                     }
-                  //  if(modelThatCreatesOutputID != null)
-                   ret.Add(model.Value.GetModelInputIDs().ElementAt((int)PidModelInputsIdx.Y_meas), modelThatCreatesOutputID);
+                    var key = model.Value.GetModelInputIDs().ElementAt((int)PidModelInputsIdx.Y_meas);
+                    // note that in the case of a select, the key may already be present in the dictionary
+                    if (!ret.ContainsKey(key))
+                        ret.Add(key, modelThatCreatesOutputID);
                 }
             }
             return ret;

@@ -93,8 +93,18 @@ are used by ClosedLoopUnitIdentifier to identify the process model including pos
 
 
 
-
-
 ### Computational loops other than PID-feedback loops
 
 The PlantSimulator can deal with computational loops other than PID-feedback loops. These are initalized to steady-state by co-simulating the loop for a number of iterations until the outputs hopefully settle on a steady value. 
+
+
+
+### PlantSimulatorHelper 
+
+The class PlantSimulatorHelper gives some convenience methods that make it easier to do common types of simulations:
+- 
+``SimulateSingle()`` is useful for quickly simulating any ``ISimulateableModel``. 
+- methods that allow calling the PlantSimulator with data in ``UnitData`` datasets rather than the more general ``TimeSeriesDataSet``.
+- methods that return a PlantSimulator object with a standard feedback loop. 
+
+
