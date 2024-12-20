@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = true;
+            bool doDebugPlot = false;
             if (doDebugPlot)
             {
                 Shared.EnablePlots();
@@ -102,10 +102,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         }
 
-        [TestCase(0, false)]
-        [TestCase(0, true)]
+        [TestCase(0, false,25)]
+        [TestCase(0, true,25)]
 
-        public void Static2Input_SetpointChanges_NOdisturbance_detectsProcessOk(int pidInputIdx, bool doNegative)
+        public void Static2Input_SetpointChanges_NOdisturbance_detectsProcessOk(int pidInputIdx, bool doNegative, double gainTolPrc)
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 15, 20);
@@ -118,7 +118,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 10
             };
             GenericMISODisturbanceTest(new UnitModel(twoInputModelParameters, "StaticTwoInputsProcess"),
-                trueDisturbance, externalU1, null, doNegative, true, yset, pidInputIdx, 10, false, isStatic);
+                trueDisturbance, externalU1, null, doNegative, true, yset, pidInputIdx, gainTolPrc, false, isStatic);
         }
 
 

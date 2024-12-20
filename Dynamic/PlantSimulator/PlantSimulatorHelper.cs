@@ -67,7 +67,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return (sim, data);
         }
 
-
         /// <summary>
         /// Returns a unit data set for a given UnitModel.
         /// </summary>

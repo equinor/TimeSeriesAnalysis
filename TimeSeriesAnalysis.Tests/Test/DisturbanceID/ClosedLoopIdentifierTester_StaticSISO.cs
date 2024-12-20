@@ -56,15 +56,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc,false, true);
         }
 
-        /*
-        I think the reason this test struggles is that closedloopestimator tries to find the process model that results in the
-        disturbance with the smallest average change, but for continously acting disturbances like this sinus disturbance, 
-        this may not be as good an assumption as for the step disturbances considered in other tests. 
-        */
-
-        [TestCase(5, 1.0,15 )]
-        [TestCase(1, 1.0,10)]
-        [TestCase(1, 5.0,10 )]// this only works when the step change is much bigger than the disturbance
+        [TestCase(5, 1.0,30 )]
+        [TestCase(1, 1.0,30)]
+        [TestCase(1, 5.0,30 )]
 
         public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude, double gainPrecisionPrc)
         {

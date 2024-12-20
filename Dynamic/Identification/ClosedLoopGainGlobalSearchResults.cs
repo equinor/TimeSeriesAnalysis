@@ -160,13 +160,20 @@ namespace TimeSeriesAnalysis.Dynamic
 
             string Direction(double[] v_in, int minIdx)
             {
+
                 if (minIdx == 0)
                     return "";
                 if (minIdx >= v_in.Length)
                     return "";
                 double v_min = (new Vec()).Min(v_in);
                 double v_max = (new Vec()).Max(v_in);
-                double v_range = v_max - v_min; 
+                double v_range = v_max - v_min;
+                if (minIdx == 0 )
+                    return "@min";
+                if (minIdx <= v_in.Length)
+                    return "@max";
+
+
                 if (v_in[minIdx + 1] == v_in[minIdx - 1])
                 {
                     return "><";
