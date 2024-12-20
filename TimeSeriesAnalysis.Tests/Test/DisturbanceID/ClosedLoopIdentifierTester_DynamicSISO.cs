@@ -145,7 +145,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             Vec vec = new Vec();
 
-            double precisionPrc = 20;// works when run indivdually
+            double precisionPrc = 20;
 
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 4, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
