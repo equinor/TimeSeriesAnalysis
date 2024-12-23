@@ -63,14 +63,19 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
             if (doDebugPlot)
             {
+               var varsToPlot = new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
+                      estDisturbance, trueDisturbance };
+                var plotConfig = new List<string> { "y1=y meas", "y1=y set", "y3=est disturbance", "y3=true disturbance" };
+                for (var colIdx = 0; colIdx < pidDataSet.U.GetNColumns(); colIdx++)
+                {
+                    varsToPlot.Add(pidDataSet.U.GetColumn(colIdx));
+                    plotConfig.Add("y2=u_"+ colIdx+ "(right)");
+                }
                 Shared.EnablePlots();
-                Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
-                    pidDataSet.U.GetColumn(0),pidDataSet.U.GetColumn(1),  estDisturbance, trueDisturbance },
-                    new List<string> { "y1=y meas", "y1=y set", "y2=u_1(right)", "y2=u_2(right)", "y3=est disturbance", "y3=true disturbance" },
-                    pidDataSet.GetTimeBase(), caseId + "commonplotandasserts");
+                Plot.FromList(varsToPlot, plotConfig, pidDataSet.GetTimeBase(), caseId + "commonplotandasserts");
                 Shared.DisablePlots();
             }
 
@@ -127,7 +132,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // when a third input is added, estimation seems to fail.
         [TestCase(0, false, true)]
         [TestCase(1, false, true)]
-        public void StaticMISO_SetpointChanges_WITH_disturbance_detectsProcessOk(int pidInputIdx,
+        public void StaticMISO_externalUchangesAndStepDisturbanceWITHsetpointChange_detectsProcessOk(int pidInputIdx,
             bool doNegative, bool addThirdInput)
         {
             UnitParameters trueParamters = new UnitParameters
@@ -172,19 +177,19 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(0, false)]
         [TestCase(0, true)]
         [TestCase(1, false)]
-        public void StaticMISO_externalUchanges_NOsetpointChange_detectsProcessOk(int pidInputIdx, bool doNegative)
+        public void StaticMISO_externalUchangesANDstepdisturbance_NOsetpointChange_detectsProcessOk(int pidInputIdx, bool doNegative)
         {
             UnitParameters trueParameters = new UnitParameters
             {
                 TimeConstant_s = 0,
-                LinearGains = new double[] { 0.5, 0.25, 0.15 },
+                LinearGains = new double[] { 0.5, 0.25, -1.00 },
                 TimeDelay_s = 0,
                 Bias = 10
             };
 
             var trueDisturbance = TimeSeriesCreator.Step(N / 2, N, 0, 1);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 35, 40);
-            var externalU2 = TimeSeriesCreator.Step(N * 5 / 8, N, 2, 1);
+            var externalU2 = TimeSeriesCreator.Step(N * 6 / 8, N, 15, 10);
             var yset = TimeSeriesCreator.Constant(20,N);
 
             if (pidInputIdx == 1)

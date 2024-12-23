@@ -30,7 +30,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public class ClosedLoopUnitIdentifier
     {
-        const int MAX_NUM_PASSES = 2;//TODO: consider second pass, but step 3 often stops on zero Tc, 
+        const int MAX_NUM_PASSES = 2;
         static int[] step2GlobalSearchNumIterations =  new int[] { 10 ,25};// 50 total iterations usually enough, maybe even lower.
         // these are given for each pass.
         static double[] step2GainGlobalSearchUpperBoundPrc = new double[] { 150, 70 } ;
@@ -100,7 +100,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // estimate of the disturbance improves along with it.
             var idDisturbancesList = new List<DisturbanceIdResult>();
             var idUnitModelsList = new List<UnitModel>();
-            void SaveSearchResult(UnitModel unitModel )
+            void SaveSearchResult(UnitModel unitModel)
             {
                 if (unitModel == null)
                 {
@@ -152,23 +152,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 ConsoleDebugOut(unitModel_step1, "Step 1");
             SaveSearchResult(unitModel_step1);
             // step1, MISO: ident (add inital estimates of any other inputs to the above model-free estiamte) 
-            if (isMISO)
+       /*     if (isMISO)
             {
                 dataSetRun1.D = idDisturbancesList.Last().d_est;
                 var unitModel_step1Miso = UnitIdentifier.IdentifyLinearAndStatic(ref dataSetRun1, fittingSpecs, false);// no time-delay estimation.
                 unitModel_step1Miso.modelParameters.LinearGainUnc = null;
                 if (doConsoleDebugOut)
-                {
-                    string otherGains = "";
-                    for(int i=0;i < unitModel_step1Miso.GetModelParameters().LinearGains.Count();i++)
-                    {
-                        if (i!= pidInputIdx)
-                            otherGains+= " other Gains: "+ unitModel_step1Miso.GetModelParameters().LinearGains.ElementAt(i).ToString("F2");
-                    }
-                    ConsoleDebugOut(unitModel_step1Miso, "Step 1,MISO", otherGains);
-                }
+                    ConsoleDebugOut(unitModel_step1Miso, "Step 1,MISO");
                 SaveSearchResult(unitModel_step1Miso);
-            }
+            }*/
 
             // ----------------
             // steps 2 and 3 (run sequentially for multiple passes.)
@@ -529,8 +521,26 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             // note that unitModel can be NULL!
             if (unitModel != null)
-                Console.WriteLine(description + " Kp:" + unitModel.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture) +
-                " Tc:" + unitModel.GetModelParameters().TimeConstant_s.ToString("F1", CultureInfo.InvariantCulture) + addOnTxt);
+            {
+                if (unitModel.GetModelParameters().LinearGains.Count() == 1)
+                    Console.WriteLine(description + " Gain:" + unitModel.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture) +
+                      " Tc:" + unitModel.GetModelParameters().TimeConstant_s.ToString("F1", CultureInfo.InvariantCulture) + addOnTxt);
+                else
+                {
+                    string outstr = description + " Gain:[";
+                    int index = 0;
+                    foreach (var gain in unitModel.GetModelParameters().LinearGains)
+                    {
+                        outstr += gain.ToString("F2", CultureInfo.InvariantCulture);
+                        if (index < unitModel.GetModelParameters().LinearGains.Count()-1)
+                            outstr += ";";
+                        index++;
+                    }
+                    outstr += "]";
+                    outstr += " Tc:" + unitModel.GetModelParameters().TimeConstant_s.ToString("F1", CultureInfo.InvariantCulture) + addOnTxt;
+                    Console.WriteLine(outstr);
+                }
+            }
             else
                 Console.WriteLine(description + " returned NULL " + addOnTxt);
         }
@@ -549,8 +559,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParams">paramters of the pid-controller</param>
         /// <returns></returns>
         private static (double[], UnitParameters,double[]) GlobalSearchMisoModelEstimatedDisturbance(double pidProcGain, double[] d_est, 
-            UnitModel unitModel, UnitDataSet unitDataSet, 
-            int pidInputIdx, FittingSpecs fittingSpecs, PidParameters pidParams)
+            UnitModel unitModel, UnitDataSet unitDataSet, int pidInputIdx, FittingSpecs fittingSpecs, PidParameters pidParams)
         {
             var vec = new Vec(unitDataSet.BadDataID);
             int nGains = unitModel.modelParameters.GetProcessGains().Length;
