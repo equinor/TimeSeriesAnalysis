@@ -102,10 +102,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         }
 
-        [TestCase(0, false,25)]
-        [TestCase(0, true,25)]
+        [TestCase(0, false,20)]
+        [TestCase(0, true,20)]
 
-        public void Static2Input_SetpointChanges_NOdisturbance_detectsProcessOk(int pidInputIdx, bool doNegative, double gainTolPrc)
+        public void Static2Input_SetpointAndExtUChanges_NOdisturbance_detectsProcessOk(int pidInputIdx, bool doNegative, double gainTolPrc)
         {
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 15, 20);
@@ -197,9 +197,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 doNegative, true, yset, pidInputIdx);
         }
 
-        [TestCase(0)]
-        [TestCase(1)]
-        public void DynamicMISO_SetpointChanges_NoDisturbance_detectsProcessOk(int pidInputIdx)
+        [TestCase(0,5)]
+        [TestCase(1,5)]
+        public void DynamicMISO_SetpointAndExtUChanges_NoDisturbance_detectsProcessOk(int pidInputIdx, double gainTolPrc)
         {
             UnitParameters trueParameters = new UnitParameters
             {
@@ -214,7 +214,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var externalU2 = TimeSeriesCreator.Step(N *5 / 8, N, 2, 1);
             var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
             GenericMISODisturbanceTest(new UnitModel(trueParameters, "DynamicProcess"), trueDisturbance, externalU1,externalU2,false,true,
-                yset, pidInputIdx,20);
+                yset, pidInputIdx, gainTolPrc);
         }
 
         // TODO:
