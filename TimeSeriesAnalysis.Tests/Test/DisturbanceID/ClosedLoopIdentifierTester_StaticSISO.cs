@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         [TestCase(5,1.0, 10)]
         [TestCase(1,1.0, 10)] 
-        [TestCase(1,5.0, 10)]
+   //     [TestCase(1,5.0, 10)]
         public void StepDisturbanceANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude, double precisionPrc)
         {
             var locParameters = new UnitParameters

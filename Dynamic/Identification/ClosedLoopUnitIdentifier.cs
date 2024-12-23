@@ -31,10 +31,12 @@ namespace TimeSeriesAnalysis.Dynamic
     public class ClosedLoopUnitIdentifier
     {
         const int MAX_NUM_PASSES = 2;
-        static int[] step2GlobalSearchNumIterations =  new int[] { 10 ,25};// 50 total iterations usually enough, maybe even lower.
+        const bool doStep3 = true;//TODO: set to true, just temporararily set to false.
+        const double LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE = 60 + 1;
+        static int[] step2GlobalSearchNumIterations =  new int[] { 10 ,20};// 50 total iterations usually enough, maybe even lower, something like 30 is probable
         // these are given for each pass.
-        static double[] step2GainGlobalSearchUpperBoundPrc = new double[] { 150, 70 } ;
-        static double[] step2GainGlobalSearchLowerBoundPrc = new double[] { 90, 70 };
+        static double[] step2GainGlobalSearchUpperBoundPrc = new double[] { 150, 40 } ;
+        static double[] step2GainGlobalSearchLowerBoundPrc = new double[] { 90, 40 };
 
         const int nDigits = 5; //number of significant digits in results.
         ////////////////////////
@@ -192,7 +194,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 if (doConsoleDebugOut)
                 {
-                    Console.WriteLine("Pass "+ passNumber + " Step 2 "   + "bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture) 
+                    Console.WriteLine("Pass "+ passNumber + " Step 2 "   + "pid-process gain bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture) 
                         + " to " + max_gain.ToString("F3", CultureInfo.InvariantCulture));
                 }
                 var step2model = GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
@@ -222,8 +224,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // - the reason that we cannot do run2 immediately, is that that formulation 
                 // does not appear to give a solution if the guess disturbance vector is bad.
 
-                const bool doStep3 = true;
-                const double LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE = 60 + 1;
+
 
                 // step3 : do a run where it is no longer assumed that x[k-1] = y[k], 
                 // this run has the best chance of estimating correct time constants, but it requires a good inital guess of d
@@ -746,30 +747,36 @@ namespace TimeSeriesAnalysis.Dynamic
             // 
             for (var curCandPidProcGain = minPidProcessGain; curCandPidProcGain <= maxPidProcessGain; curCandPidProcGain += range / numberOfGlobalSearchIterations)
             {
-                (var curCandSISOModel, var curCandDistEst_SISO) =
-                    GlobalSearchEstimateSISOdisturbanceForProcGain(curCandPidProcGain,unitModel_prev, pidInputIdx, dataSet, pidParams);
-                var dEst = curCandDistEst_SISO.d_est;
-
-                if (curCandSISOModel == null)
-                {
-                    Console.WriteLine("warning: EstimateSISOdisturbanceForProcGain returned null ");
-                    continue;
-                }
                 double[] u_pid_adjusted = null;
                 UnitParameters candParameters;
-                if (nGains > 1)
+                double[] dEst;
+                if (nGains == 1)
+                {
+                    (var curCandSISOModel, var curCandDistEst_SISO) =
+                        GlobalSearchEstimateSISOdisturbanceForProcGain(curCandPidProcGain, unitModel_prev, pidInputIdx, dataSet, pidParams);
+                    dEst = curCandDistEst_SISO.d_est;
+                    if (curCandSISOModel == null)
+                    {
+                        Console.WriteLine("warning: EstimateSISOdisturbanceForProcGain returned null ");
+                        continue;
+                    }
+                    u_pid_adjusted = curCandDistEst_SISO.adjustedUnitDataSet.U.GetColumn(pidInputIdx);
+                    candParameters = curCandSISOModel.modelParameters.CreateCopy();
+                }
+                else// (nGains > 1)
                 {
                     // Single-input-single output disturbance will include transients in response to changes in yset and u_external
                     // Multiple-input single-output modeling: try to model the above estimate of disturbance against the external inputs and setpoint change
-                    (u_pid_adjusted, candParameters, dEst) = GlobalSearchMisoModelEstimatedDisturbance(curCandPidProcGain, dEst, unitModel_prev,
-                        dataSet, pidInputIdx, fittingSpecs, pidParams);
-                    if (u_pid_adjusted == null)
-                        continue;
-                }
-                else
-                {
-                    u_pid_adjusted = curCandDistEst_SISO.adjustedUnitDataSet.U.GetColumn(pidInputIdx);
-                    candParameters = curCandSISOModel.modelParameters.CreateCopy();
+                    /*(u_pid_adjusted, candParameters, dEst) = GlobalSearchMisoModelEstimatedDisturbance(curCandPidProcGain, dEst, unitModel_prev,
+                         dataSet, pidInputIdx, fittingSpecs, pidParams);
+                     if (u_pid_adjusted == null)
+                         continue;*/
+
+                    (var curCandMISOModel, var curCandDistEst_MISO) = GlobalSearchEstimateMISOdisturbanceForProcGain(curCandPidProcGain, unitModel_prev, pidInputIdx, dataSet, pidParams);
+                    dEst = curCandDistEst_MISO.d_est;
+                    u_pid_adjusted = curCandDistEst_MISO.adjustedUnitDataSet.U.GetColumn(pidInputIdx);
+                    candParameters = curCandMISOModel.modelParameters.CreateCopy();
+
                 }
                 searchResults.Add(candParameters, dataSet, dEst, u_pid_adjusted, pidInputIdx);
 
@@ -1027,6 +1034,39 @@ namespace TimeSeriesAnalysis.Dynamic
             return unitModel;
         }
 
+        // new MISO verison that does not rely on siso version running before it.
+        private static Tuple<UnitModel, DisturbanceIdResult> GlobalSearchEstimateMISOdisturbanceForProcGain(double pidProcGain, UnitModel prevModel,
+            int pidInputIdx, UnitDataSet unitDataSet, PidParameters pidParams)
+        {
+            int indexOfFirstGoodValue = 0;
+            if (unitDataSet.IndicesToIgnore != null)
+            {
+                if (unitDataSet.GetNumDataPoints() > 0)
+                {
+                    while (unitDataSet.IndicesToIgnore.Contains(indexOfFirstGoodValue) && indexOfFirstGoodValue <
+                        unitDataSet.GetNumDataPoints() - 1)
+                    {
+                        indexOfFirstGoodValue++;
+                    }
+                }
+            }
+       //     double[] pidInput_u0 = Vec<double>.Fill(unitDataSet.U[pidInputIdx, 0], unitDataSet.GetNumDataPoints());
+         //   prevModel.GetModelParameters().U0(pidInputIdx)
+                    var newUnitModel = UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet, pidInputIdx, pidProcGain,
+                prevModel.GetModelParameters().U0.ElementAt(pidInputIdx), 1);
+            // TEMPRORARY:FORCE MODEL TO BE ACCURATE 
+            /*var newUnitModel = (UnitModel)prevModel.Clone("test");
+            var parameters = newUnitModel.GetModelParameters();
+            parameters.LinearGains = new double[] { 0.5, 0.25, -1.00 };
+            parameters.LinearGains[pidInputIdx] = pidProcGain;
+            parameters.TimeConstant_s = 0;
+            parameters.Bias = 10;
+            parameters.U0 = new double[] { 0, 0, 0 };
+            newUnitModel.SetModelParameters(parameters);
+            */
+            var disturbanceIdresult = DisturbanceCalculator.CalculateDisturbanceVector(unitDataSet, newUnitModel, pidInputIdx, pidParams);
+            return new Tuple<UnitModel, DisturbanceIdResult> (newUnitModel, disturbanceIdresult);
+        }
 
         private static Tuple<UnitModel, DisturbanceIdResult> GlobalSearchEstimateSISOdisturbanceForProcGain(double pidProcGain, UnitModel referenceMISOmodel, 
              int pidInputIdx, UnitDataSet dataSet, PidParameters pidParams)

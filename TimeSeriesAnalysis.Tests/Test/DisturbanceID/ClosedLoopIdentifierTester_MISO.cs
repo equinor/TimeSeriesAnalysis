@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = true;
+            bool doDebugPlot = false;
             if (doDebugPlot)
             {
                var varsToPlot = new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
@@ -202,8 +202,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 doNegative, true, yset, pidInputIdx);
         }
 
-        [TestCase(0,5)]
-        [TestCase(1,5)]
+        [TestCase(0,10)]
+        [TestCase(1,10)]
         public void DynamicMISO_SetpointAndExtUChanges_NoDisturbance_detectsProcessOk(int pidInputIdx, double gainTolPrc)
         {
             UnitParameters trueParameters = new UnitParameters

@@ -102,20 +102,45 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
 
+        [TestCase(-5, 0.01)]
+   //     [TestCase(5, 0.01)]
+        public void Dynamic_MISO_StepDisturbance_EstimatesOk(double stepAmplitude, double tolPrc)
+        {
+            var misoModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 10,
+                LinearGains = new double[] { 1.5,2 },
+                TimeDelay_s = 5,
+                Bias = 5
+            };
+
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            GenericDisturbanceTest(new UnitModel(misoModelParameters, "MISOProcess"), trueDisturbance, tolPrc);
+        }
+
+
 
         public void GenericDisturbanceTest  (UnitModel processModel, double[] trueDisturbance, double tolPrc )
         {
+            int pidInputIdx = 0;
+            int externalInputIdx = 1;
+
             bool doAssertResult = true;
             // create synthetic dataset
             var pidModel1 = new PidModel(pidParameters1, "PID1");
             var plantSim = new PlantSimulator(
              new List<ISimulatableModel> { pidModel1, processModel });
             plantSim.ConnectModels(processModel, pidModel1);
-            plantSim.ConnectModels(pidModel1, processModel);
+            plantSim.ConnectModels(pidModel1, processModel,pidInputIdx);
             var inputData = new TimeSeriesDataSet();
            
             inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
             inputData.Add(plantSim.AddExternalSignal(processModel, SignalType.Disturbance_D), trueDisturbance);
+            if (processModel.modelParameters.LinearGains.Count() == 2)
+            { 
+                inputData.Add(plantSim.AddExternalSignal(processModel, SignalType.External_U, externalInputIdx), TimeSeriesCreator.TwoSteps(N/4,N*3/4, N,1,2,3));
+            }
+
             inputData.CreateTimestamps(timeBase_s);
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
