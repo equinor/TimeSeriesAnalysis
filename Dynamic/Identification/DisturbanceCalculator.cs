@@ -151,6 +151,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 var unitModelCopy = (UnitModel)unitModel.Clone("RemoveSetpointAndOtherInputChangeEffectsFromDataSet");// make copy that has no additive output signals(disturbance)
                 unitModelCopy.additiveInputIDs = null;
 
+                // a time delay of one sample must be applied because by convention
+                // y_meas[k] = y_proces[k-1] + d[k]
+                unitModelCopy.modelParameters.TimeDelay_s = unitModelCopy.modelParameters.TimeDelay_s + unitDataSet.GetTimeBase();
+
                var processSim_noDist = new PlantSimulator(
                     new List<ISimulatableModel> { pidModel1, unitModelCopy });
                 processSim_noDist.ConnectModels(unitModelCopy, pidModel1);
@@ -171,7 +175,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData_noDist.Add(processSim_noDist.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
                 inputData_noDist.CreateTimestamps(unitDataSet.GetTimeBase());
                 inputData_noDist.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
-         
                
                 // rewrite:
                // (var processSim_noDist, var inputData_noDist) = PlantSimulatorHelper.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
@@ -260,6 +263,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Estimates the disturbance time-series over a given unit data set 
         /// given an estimate of the unit model (reference unit model) for a closed loop system.
+        /// ymeas[k] = y_proc[k-1] +d[k] by convention
         /// </summary>
         /// <param name="unitDataSet">the dataset describing the unit, over which the disturbance is to be found, datset must specify Y_setpoint,Y_meas and U</param>
         /// <param name="unitModel">the estimate of the unit</param>

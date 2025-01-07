@@ -60,9 +60,13 @@ The challenge in describing disturbances in feedback-systems is that the feedbac
 
 The measurement ``y_meas``shows us the combination of the disturbance ``d`` and the process output ``y_process``
 
-`` y_meas(t) = y_process(u(t)) +d(t) = ``
+`` y_meas[k] = y_proc(u[k-1]) +d[k] = ``
 
-In most cases only a single u(t) is considered, and this is the pid-output ``u=u_pid(t)``.
+Note the above convention for y_proc, d and y_meas are consistent with the convention used by PlantSimulator. 
+This is important, as the PlantSimulator is used in the estimtion of disturbances. 
+
+
+In most cases only a single u(t) is considered, and this is the pid-output ``u=u_pid(k)``.
 
 > [!Note]
 > in general it is hard to know if the observed closed-loop behavior ``y_meas``,``u_pid`` 
@@ -343,17 +347,17 @@ time constants to the identified model, and observing if this reduces the *absol
 
 ### Algorithm
 
-(In the case of no setpoint changes in the data set)
+
 - parse data and remove bad data points 
-- "step 1":
+
+- "init":
 	- estimate the disturbance (preferably with a pre-specified *PidModel*)
 	- estimate the model for the given disturbance (*UnitIdentifier.IdentifyLinearAndStatic*)
-- "step 2": 
-	- global search for linear gain, first pass (using gain from step 1 as inital guess)
-	- global search for linear gain, second pass (finer grid size around result from above)
-- "step 3":
-	- estimate the disturbance using the model from step 2
-	- while loop: increase time constant ``T_c'' as long as the deviation of the disturbance *decreases*.
+- perform in two passes with the bounds on gain narrowing for each pass:	
+	- "step 1": 
+		- global search for linear gain, around the current best estiamte
+	- "step 2":
+		- global search for time constant : while loop increase time constant ``T_c'' as long as the deviation of the disturbance *decreases*.
 
 
 

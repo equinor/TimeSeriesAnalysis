@@ -198,7 +198,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         }
 
-        // if linear gains are null, then the simualtion should still run but with zero output.
+        // if linear gains are null, then the simulation should still run but with zero output.
         [TestCase]
         public void SimulateSingle_NullGains_RunsWithZeroOutput()
         {
