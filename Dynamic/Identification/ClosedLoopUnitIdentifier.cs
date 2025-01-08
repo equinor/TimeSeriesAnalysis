@@ -33,20 +33,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /*
          *  Algorithm 
          *  
-         *  first pass of the algorithm is
-         *  - step1 (model-free guess of process gain)
-         *  - step2 ("global search" for linear pid-gains)
-         *  - step3 (estimate time constant)
-         *  second pass of the algorithm:
-         *  - start with result of first pass
-         *  - step2 
-         *  - step3
+        
+         *  - intial step (model-free guess of process gain)
+         *  multiple passes: ass of the algorithm is
+         *  - step1 ("global search" for linear pid-gains), starting with result of last step
+         *  - step2(estimate time constant), starting with result of last step.
          *  
          *  for each subsequent pass, the search area of step 2 narrows around the the result of the previous pass
          *  
          */
-
-
 
         const int MAX_NUM_PASSES = 2;
         const bool doStep2 = true;//TODO: set to true, just temporararily set to false.
@@ -749,7 +744,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var uPidAdjList = new List<double[]>();
             var candPidGainList = new List<double>();
             var yProcessList = new List<double[]>(); // the internal process output
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
 
             // //////////////////////////////////////////////////
             // try all the process gains between the min and the max and rank them 
@@ -782,8 +777,8 @@ namespace TimeSeriesAnalysis.Dynamic
                      if (u_pid_adjusted == null)
                          continue;*/
 
-                    // v2: not sure about this one, the below method does not yet work properly if the disturbance is non-zero
-
+                    // v2: TODO: not sure about this one, the below method does not yet work properly if the disturbance is non-zero
+                    // try to rewrite inspired by the deprecated GlobalSearchMisoModelEstimatedDisturbance
 
                     (var curCandMISOModel, var curCandDistEst_MISO) =
                         Step1GlobalSearchEstimateMISOdisturbanceForProcGain(curCandPidProcGain, unitModel_prev, pidInputIdx, dataSet, pidParams);
@@ -795,7 +790,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 searchResults.Add(candParameters, dataSet, dEst, u_pid_adjusted, pidInputIdx);
 
                 // save the time-series for debug-plotting
-                if (doDebugPlot == true)
+                if (doDebugPlot)
                 {
                     yProcPlotNames.Add("y1=y_p(Kp" + curCandPidProcGain.ToString("F2", CultureInfo.InvariantCulture));
                     uSimPlotNames.Add("y3=u_sim(Kp" + curCandPidProcGain.ToString("F2", CultureInfo.InvariantCulture));
@@ -805,6 +800,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     uPidAdjList.Add(u_pid_adjusted);
                     var yProc = vec.Subtract(dataSet.Y_meas, dEst);
                     yProcessList.Add(yProc);
+                    Thread.Sleep(100);
                 }
             }
 
@@ -1145,17 +1141,12 @@ namespace TimeSeriesAnalysis.Dynamic
             candidateModel.modelParameters.Fitting = new FittingInfo();
             candidateModel.modelParameters.Fitting.WasAbleToIdentify = true;
 
-           // candidateModel.modelParameters.TimeDelay_s = dataSet.GetTimeBase(); 
-
-
             var dataSet_SISO = new UnitDataSet(dataSet);
             dataSet_SISO.U = Array2D<double>.CreateFromList( new List<double[]> { dataSet.U.GetColumn(pidInputIdx) } );
          
             int pidInputIdx_NewSystem = 0;   // pidInputIdx=0 always for the new SISO system:
             var candidateModelDisturbance = DisturbanceCalculator.CalculateDisturbanceVector
                 (dataSet_SISO, candidateModel, pidInputIdx_NewSystem, pidParams);
-
-          //  candidateModel.modelParameters.TimeDelay_s = 0;
 
             var d_est = candidateModelDisturbance.d_est;
             var isOK = ClosedLoopSim
