@@ -50,7 +50,9 @@
 - name: System identification
   href: sysid.md
   items:
-  
+        - name: System identification litterature
+          href: sysid_litterature.md
+
         - name: System identification tricks-of-the-trade
           href: sysid_tricks_of_the_trade.md
 
