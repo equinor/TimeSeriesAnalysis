@@ -157,7 +157,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Set the gain scheduling of the controller (by default controller has no gain-scheduling)
         /// Re-calling this setter to update gain-scheduling
         /// </summary>
-        public void SetGainScehduling(PidGainScheduling gainSchedulingObj)
+        public void SetGainScheduling(PidGainScheduling gainSchedulingObj)
         {
             this.gsObj = gainSchedulingObj;
         }

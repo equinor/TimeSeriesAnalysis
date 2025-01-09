@@ -5,10 +5,10 @@ using System.Linq;
 
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.Test
+namespace TimeSeriesAnalysis.Test.Fundamentals
 {
     [TestFixture]
-    class VecUnitTests
+    class VecTests
     {
 
         [TestCase(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3, 4 })]

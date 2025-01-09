@@ -8,7 +8,7 @@ using TimeSeriesAnalysis.Utility;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
-namespace TimeSeriesAnalysis.Test
+namespace TimeSeriesAnalysis.Test.Serialization
 {
     [TestFixture]
     class FileReading

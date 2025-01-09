@@ -95,7 +95,10 @@ namespace TimeSeriesAnalysis
                     {
                         if (!modelObj.GetAdditiveInputIDs()[0].StartsWith(disturbanceSignalPrefix))
                         {
-                            measY = inputData.GetValues(outputName);
+                            if (inputData.ContainsSignal(outputName))
+                            {
+                                measY = inputData.GetValues(outputName);
+                            }
                         }
                     }
                     else if (inputData.ContainsSignal(outputName))

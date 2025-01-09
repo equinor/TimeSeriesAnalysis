@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using TimeSeriesAnalysis.Utility;
 using NUnit.Framework;
 
-namespace TimeSeriesAnalysis.Test
+namespace TimeSeriesAnalysis.Test.Fundamentals
 {
     [TestFixture]
     class IndexTest

@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel.Design;
 
 namespace TimeSeriesAnalysis
 {
@@ -40,7 +41,6 @@ namespace TimeSeriesAnalysis
             dataset = new Dictionary<string, double[]>();
             dataset_constants = new Dictionary<string, double>();
             indicesToIgnore = null;
-            //didSimulationReturnOk = false;
         }
         /// <summary>
         /// Constructor that copies another dataset into the returned object
@@ -68,6 +68,8 @@ namespace TimeSeriesAnalysis
         /// <param name="dateTimeFormat">the format of date-time strings in the csv-file</param>
         public TimeSeriesDataSet(CsvContent csvContent, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
+            dataset = new Dictionary<string, double[]>();
+            dataset_constants = new Dictionary<string, double>();
             LoadFromCsv(csvContent, separator, dateTimeFormat);
         }
 
@@ -79,6 +81,8 @@ namespace TimeSeriesAnalysis
         /// <param name="dateTimeFormat">the format of date-time strings in the csv-file</param>
         public TimeSeriesDataSet(string csvFileName, char separator = ';', string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
+            dataset = new Dictionary<string, double[]>();
+            dataset_constants = new Dictionary<string, double>();
             LoadFromCsv(csvFileName, separator, dateTimeFormat);
         }
 
@@ -214,9 +218,15 @@ namespace TimeSeriesAnalysis
                 return false;
             if (dataset.ContainsKey(signalID))
                 return true;
-            else if (dataset_constants.ContainsKey(signalID))
-                return true;
-            else 
+            else if (dataset_constants != null)
+            {
+                if (dataset_constants.ContainsKey(signalID))
+                    return true;
+                else
+                    return false;
+
+            }
+            else
                 return false;
         }
 
@@ -335,6 +345,17 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
+        /// Returns the number of data points in the dataset
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumDataPoints()
+        {
+            if (timeStamps == null)
+                return 0;
+            return timeStamps.Count - 1;
+        }
+
+        /// <summary>
         /// Get the timebase, the time between two samples in the dataset
         /// </summary>
         /// <returns>The timebase in seconds</returns>
@@ -451,7 +472,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Get a vector of the timestamps of the data-set
+        /// Get a vector of the timestamps of the data-set, or null if no timestamps
         /// </summary>
         /// <returns></returns>
         public DateTime[] GetTimeStamps()
@@ -525,7 +546,7 @@ namespace TimeSeriesAnalysis
                 return Vec<double>.Fill(dataset_constants[signalName],N.Value);   
             else
             {
-                Shared.GetParserObj().AddError("TimeSeriesData.GetValues() did not find signal:" + signalName);
+                Shared.GetParserObj().AddError("TimeSeriesDataSet.GetValues() did not find signal:" + signalName);
                 return null;
             }
         }

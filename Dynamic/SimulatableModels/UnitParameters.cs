@@ -46,7 +46,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// The time delay in seconds.This number needs to be a multiple of the sampling rate.
-        /// Set to zero to turn of time delay in model.
+        /// Set to zero to turn off time delay in model.
         /// </summary>
         public double TimeDelay_s { get; set; } = 0;
 

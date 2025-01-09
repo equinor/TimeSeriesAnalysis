@@ -158,7 +158,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var dataSet = new UnitDataSet();
             dataSet.SetU(input);
             dataSet.CreateTimeStamps(timeBase_s);
-            PlantSimulator.SimulateSingleToYmeas(dataSet, refModel,noiseAmplitude);
+            PlantSimulatorHelper.SimulateSingleToYmeas(dataSet, refModel,noiseAmplitude);
 
             var idModel = GainSchedIdentifier.IdentifyForGivenThresholds(dataSet, gsFittingSpecs);
 
@@ -216,7 +216,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
 
-        [TestCase( 99, Explicit =true)]
+        [TestCase( 99, Explicit =true, Category = "NotWorking_AcceptanceTest")]
 
         public void IgnoreIndicesInMiddleOfDataset_ResultShouldStillBeGood( double fitScoreReq)
         {
@@ -243,7 +243,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 unitData1.CreateTimeStamps(timeBase_s);
 
                 GainSchedModel trueModel = new GainSchedModel(trueGSparams, "true gain sched model");
-                PlantSimulator.SimulateSingleToYmeas(unitData1, trueModel, noiseAmp, 454);
+                PlantSimulatorHelper.SimulateSingleToYmeas(unitData1, trueModel, noiseAmp, 454);
             }
             // Dataset 2 
             var unitData2 = new UnitDataSet("dataset2");
@@ -260,7 +260,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     TimeDelay_s = timeBase_s * 0,
                 };
                 GainSchedModel trueModel = new GainSchedModel(otherGsParams, "true gain sched model");
-                PlantSimulator.SimulateSingleToYmeas(unitData2, trueModel, noiseAmp, 454);
+                PlantSimulatorHelper.SimulateSingleToYmeas(unitData2, trueModel, noiseAmp, 454);
             }
             // dataset 3
             var unitData3 = new UnitDataSet("dataset3");
@@ -269,7 +269,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 unitData3.SetU(u3);
                 unitData3.CreateTimeStamps(timeBase_s);
                 GainSchedModel trueModel = new GainSchedModel(trueGSparams, "true gain sched model");
-                PlantSimulator.SimulateSingleToYmeas(unitData3, trueModel, noiseAmp, 454);
+                PlantSimulatorHelper.SimulateSingleToYmeas(unitData3, trueModel, noiseAmp, 454);
             }
 
             var joinedDataSet = new UnitDataSet(unitData1);
@@ -335,7 +335,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "true gain sched model");
-            PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, 454);
+            PlantSimulatorHelper.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, 454);
 
             // Act
             var idModel = GainSchedIdentifier.Identify(unitData);
@@ -395,7 +395,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "True Model");
-            PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, (int)Math.Ceiling(2 * gainSchedThreshold + 45));
+            PlantSimulatorHelper.SimulateSingleToYmeas(unitData, trueModel, noiseAmp, (int)Math.Ceiling(2 * gainSchedThreshold + 45));
 
             // Act
             var idModel = new GainSchedModel();
@@ -458,7 +458,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var unitData = new UnitDataSet();
             unitData.SetU(input);
             unitData.CreateTimeStamps(timeBase_s);
-            (bool isOk, double[] y_meas)= PlantSimulator.SimulateSingleToYmeas(unitData,trueModel, noise_abs);
+            bool isOk = PlantSimulatorHelper.SimulateSingleToYmeas(unitData,trueModel, noise_abs);
 
             GainSchedModel idModel = new GainSchedModel();
             if (solver == "Identify")
@@ -481,7 +481,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> {
-                     y_meas,
+                     unitData.Y_meas,
                      unitData.Y_sim,
                      unitData.U.GetColumn(0),
                      },
@@ -509,14 +509,14 @@ namespace TimeSeriesAnalysis.Test.SysID
 
 
 
-        [TestCase(-0.5, 0.055, Explicit = true)]
-        [TestCase(-0.2, 0.058, Explicit = true)]
-        [TestCase(0.2, 0.045, Explicit = true)]
-        [TestCase(0.5, 0.04, Explicit = true)]
-        [TestCase(1.0, 0.01, Explicit = true)]
-        [TestCase(2.0, 0.015, Explicit = true)]
-        [TestCase(2.5, 0.015, Explicit = true)]
-        [TestCase(3.0, 0.015, Explicit = true) ]
+        [TestCase(-0.5, 0.055, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(-0.2, 0.058, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(0.2, 0.045, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(0.5, 0.04, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1.0, 0.01, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2.0, 0.015, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2.5, 0.015, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(3.0, 0.015, Explicit = true, Category = "NotWorking_AcceptanceTest") ]
 
         public void TwoGainsAndTwoTc_StepChange_Identify_TwoTcEstEstOk(double gain_sched_threshold, double linearGainTresholdTol )
         {
@@ -542,7 +542,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
 
             GainSchedModel trueModel = new GainSchedModel(trueGSparams, "Correct gain sched model");
-            PlantSimulator.SimulateSingleToYmeas(unitData,trueModel, noiseAmp, (int)Math.Ceiling(2 * gain_sched_threshold + 45));
+            PlantSimulatorHelper.SimulateSingleToYmeas(unitData,trueModel, noiseAmp, (int)Math.Ceiling(2 * gain_sched_threshold + 45));
 
             // Act
             var idModel = GainSchedIdentifier.Identify(unitData);
@@ -606,13 +606,13 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // make the bias nonzero to test that the operating point estimation works.
             GainSchedModel trueModel = new GainSchedModel(trueParams, "true");
-            PlantSimulator.SimulateSingle(unitData, trueModel,true);
+            PlantSimulatorHelper.SimulateSingleToYsim(unitData, trueModel);
 
             var alteredParams = new GainSchedParameters(trueModel.GetModelParameters());
             var alteredIdModel = new GainSchedModel(alteredParams,"altered");
 
             alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
-            (bool isOk3, double[] simY2) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
+            (bool isOk3, double[] simY2) = PlantSimulatorHelper.SimulateSingle(unitData, alteredIdModel);
 
             // plot
             bool doPlot = false;
@@ -668,7 +668,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             //    trueParams.OperatingPoint_Y = 1.34;
             GainSchedModel trueModel = new GainSchedModel(trueParams, "Correct gain sched model");
 
-            PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmplitude, 123);
+            PlantSimulatorHelper.SimulateSingleToYmeas(unitData, trueModel, noiseAmplitude, 123);
 
             // Act
             var idModel = new GainSchedModel();
@@ -738,9 +738,9 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // make the bias nonzero to test that the operating point estimation works.
         //    trueParams.OperatingPoint_Y = 1.34;
-            GainSchedModel trueModel = new GainSchedModel(trueParams, "Correct gain sched model");
+            var trueModel = new GainSchedModel(trueParams, "Correct gain sched model");
 
-            PlantSimulator.SimulateSingleToYmeas(unitData, trueModel, noiseAmplitude,123);
+            PlantSimulatorHelper.SimulateSingleToYmeas(unitData, trueModel, noiseAmplitude,123);
 
             // Act
             var idModel = new GainSchedModel();
@@ -756,11 +756,11 @@ namespace TimeSeriesAnalysis.Test.SysID
                 gsFittingSpecs.uTimeConstantThresholds = trueParams.TimeConstantThresholds;
                 idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
             }
-            (bool isOk2, double[] simY2) =  PlantSimulator.SimulateSingle(unitData, idModel, false);
+            (bool isOk2, double[] simY2) =  PlantSimulatorHelper.SimulateSingle(unitData, idModel);
 
             var alteredIdModel = (GainSchedModel)idModel.Clone("altered");
             alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
-            (bool isOk3, double[] simY3) = PlantSimulator.SimulateSingle(unitData, alteredIdModel, false);
+            (bool isOk3, double[] simY3) = PlantSimulatorHelper.SimulateSingle(unitData, alteredIdModel);
 
             // plot
             bool doPlot = false;

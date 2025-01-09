@@ -118,9 +118,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (model.modelParameters.Fitting.WasAbleToIdentify)
             {
-                PlantSimulator.SimulateSingle(dataSet, model, true);
-                //var simulator = new UnitSimulator(model);
-                //simulator.Simulate(ref dataSet, default, true);// overwrite any y_sim
+                PlantSimulatorHelper.SimulateSingleToYsim(dataSet, model);
                 model.SetFittedDataSet(dataSet);
             }
             return model;
@@ -451,10 +449,9 @@ namespace TimeSeriesAnalysis.Dynamic
             // simulate
             if (modelParameters.Fitting.WasAbleToIdentify)
             {
-                PlantSimulator.SimulateSingle(dataSet, model, true);// overwrite any y_sim
+                PlantSimulatorHelper.SimulateSingleToYsim(dataSet, model);
                 model.SetFittedDataSet(dataSet);
              }
-
             return model;
         }
 
@@ -1152,7 +1149,7 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.Bias = 0;
             double nanValue = internalData.BadDataID;
             var model = new UnitModel(parameters);
-            var simulator = new UnitSimulator(model);
+            var simulator = new UnitSimulator(model); // TODO: remove last UnitSimulator reference.
             var y_sim = simulator.Simulate(ref internalData);
            // (var isOk, var y_sim) = PlantSimulator.SimulateSingle(internalData, model,false, 0, true);
 
