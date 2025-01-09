@@ -50,7 +50,8 @@ namespace TimeSeriesAnalysis.Dynamic
         // these are given for each pass.
         static double[] step2GainGlobalSearchUpperBoundPrc = new double[] { 150, 40 } ;
         static double[] step2GainGlobalSearchLowerBoundPrc = new double[] { 90, 40 };
-
+      //  static double[] step2GainGlobalSearchUpperBoundPrc = new double[] { 150, 150 } ;
+      //   static double[] step2GainGlobalSearchLowerBoundPrc = new double[] { 90, 90 };
         const int nDigits = 5; //number of significant digits in results.
         ////////////////////////
         const bool doDebuggingPlot = false;
@@ -209,8 +210,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     Console.WriteLine("Pass "+ passNumber + " Step 1 "   + "pid-process gain bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture) 
                         + " to " + max_gain.ToString("F3", CultureInfo.InvariantCulture));
                 }
+                
                 var step1model = Step1GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
                     idUnitModelsList.Last(), min_gain, max_gain, fittingSpecs, step2GlobalSearchNumIterations.ElementAt(passNumber-1));
+                // note that step 1 may return 
                 if (step1model != null)
                 {
                     GSdescription = step1model.GetModelParameters().Fitting.SolverID;
@@ -218,7 +221,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    GSdescription = "";
+                    GSdescription = "Pass" + passNumber + ",Step 1 global-search had a flat objective space and returned null - model uncertain.";
                 }
                 if (doConsoleDebugOut)
                 {
@@ -744,7 +747,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var uPidAdjList = new List<double[]>();
             var candPidGainList = new List<double>();
             var yProcessList = new List<double[]>(); // the internal process output
-            bool doDebugPlot = true;
+            bool doDebugPlot = false;
 
             // //////////////////////////////////////////////////
             // try all the process gains between the min and the max and rank them 
@@ -817,16 +820,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 double Power(double[] inSignal)
                 {
-                    var mean = vec.Mean(inSignal).Value;
+                    return vec.Mean(vec.Abs(vec.Diff(inSignal))).Value;
+
+               /*     var mean = vec.Mean(inSignal).Value;
                     var max = vec.Max(inSignal);
                     var min = vec.Min(inSignal);
                     double scale = Math.Max(Math.Abs(max - mean), Math.Abs(min - mean));
-                    return vec.Mean(vec.Abs(vec.Subtract(inSignal, vec.Mean(inSignal).Value))).Value / scale;
-                }
-
-                double Range(double[] inSignal)
-                {
-                    return vec.Max(inSignal) - vec.Min(inSignal);
+                    return vec.Mean(vec.Abs(vec.Subtract(inSignal, vec.Mean(inSignal).Value))).Value / scale;*/
                 }
 
                 for (var i = 0; i < dEstList.Count(); i++)
@@ -864,8 +864,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     // note that d_LF or "d_u" is basically the inverse of the y_process.
                     string comment =
                         "candPidProcGain=" + candPidGainList.ElementAt(i).ToString("F2", CultureInfo.InvariantCulture)
-                        + " dEstPower=" + dEstPower.ToString("F3", CultureInfo.InvariantCulture)
-                        + " yProcPower=" + yProcPower.ToString("F3", CultureInfo.InvariantCulture)
+                        + " dEstPower=" + dEstPower.ToString("F5", CultureInfo.InvariantCulture)
+                        + " yProcPower=" + yProcPower.ToString("F5", CultureInfo.InvariantCulture)
                         + " yMeasPower=" + yMeasPower.ToString("F3", CultureInfo.InvariantCulture)
                          + " uMeasPower=" + uMeasPower.ToString("F3", CultureInfo.InvariantCulture)
                     + " uMeanDest=" + meanDest.ToString("F3", CultureInfo.InvariantCulture);
@@ -873,11 +873,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     Shared.EnablePlots();
                     Plot.FromList(new List<double[]> { dEstList.ElementAt(i), vec.Subtract(yProcessList.ElementAt(i), vec.Mean(yProcessList.ElementAt(i)).Value),
                         vec.Subtract(dataSet.Y_meas, vec.Mean(dataSet.Y_meas).Value),
+                        dataSet.Y_meas,
                         vec.Subtract(dataSet.U.GetColumn(0),vec.Mean(dataSet.U.GetColumn(0)).Value),
-                        dataSet.U.GetColumn(0) },
-                        new List<string> { "y1=d_est", "y1=y_process", "y1=y_meas", "y1=u_pidDetrend", "y3=u_pid" }, dataSet.Times, comment);
+                        dataSet.U.GetColumn(0)},
+                        new List<string> { "y1=d_est", "y1=y_processDetrend", "y1=y_meas", "y1=u_pidDetrend", "y3=u_pid" }, dataSet.Times, comment);
                     Shared.DisablePlots();
-                    Thread.Sleep(100);
+                    Thread.Sleep(200);
                 }
             }
 

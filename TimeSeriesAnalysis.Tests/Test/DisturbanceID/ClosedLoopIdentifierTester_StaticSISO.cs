@@ -73,22 +73,22 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // gain of 5 starts giving huge oscillations...
 
         // generally, the smaller the process gain, the lower the precision of the estimated process gain.
-
+        //(halfing the gain-> halving the precision)
         // first seed
-        [TestCase(1, 0.1, 26, 105)]
-        [TestCase(1, 1, 26, 105)]
+        [TestCase(1, 0.1, 25, 105)]
+        [TestCase(1, 1, 25, 105)]
         [TestCase(2, 0.1, 15, 105)]
         [TestCase(2, 1, 15, 105)]
         // second seed 
-        [TestCase(1, 0.1, 26, 50)]
-        [TestCase(1, 1, 26, 50)]
-        [TestCase(2, 0.1, 15, 50)]
-        [TestCase(2, 1, 15, 50)]
+        [TestCase(1, 0.1, 25, 50)]
+        [TestCase(1, 1, 25, 50)]
+        [TestCase(2, 0.1, 12, 50)]
+        [TestCase(2, 1, 12, 50)]
         // third  seed 
-        [TestCase(1, 0.1, 30, 71)]
-        [TestCase(1, 1, 30, 71)]
-        [TestCase(2, 0.1, 15, 70)]
-        [TestCase(2, 1, 15, 70)]
+        [TestCase(1, 0.1, 25, 71)]
+        [TestCase(1, 1, 25, 71)]
+        [TestCase(2, 0.1, 12, 70)]
+        [TestCase(2, 1, 12, 70)]
 
 
         public void RandomWalkDisturbance(double procGain, double distAmplitude, double precisionPrc,int seed)
@@ -171,10 +171,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueDisturbance, false, true,null,gainTolPrc, doAddBadData,true);
         }
 
-        [TestCase(-5,10, false)]
-        [TestCase(5, 10, false)]
-        [TestCase(10, 10 ,false )]
-        [TestCase(5, 10, true)]
+        [TestCase(-5,5, false)]
+        [TestCase(5, 5, false)]
+        [TestCase(10, 5 ,false )]
+        [TestCase(5, 5, true)]
 
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double gainTolPrc, bool doNegativeGain =false)
         {

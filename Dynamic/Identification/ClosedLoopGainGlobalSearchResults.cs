@@ -48,6 +48,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public List<UnitParameters> unitParametersList;
 
+
+        /// <summary>
+        /// the covariance between the uPid and Dest (experimental)
+        /// </summary>
+        public List<double> covBtwUPidAdjustedAndDestList;
+
+
         /// <summary>
         /// Holds the results of a global search for process gains as performed by ClosedLoopIdentifier
         /// </summary>
@@ -58,6 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
             dEstDistanceList = new List<double>();
             covBtwDestAndYsetList = new List<double>();
             covBtwDestAndUexternal = new List<double>();
+            covBtwUPidAdjustedAndDestList = new List<double>();
         }
 
         /// <summary>
@@ -81,6 +89,17 @@ namespace TimeSeriesAnalysis.Dynamic
             var uPidDistance = vec.Mean(vec.Abs(vec.Diff(u_pid_adjusted))).Value;
 
             // v4: just choose the gain that gives the least "distance travelled" in d_est 
+
+            /*double Power(double[] inSignal)
+            {
+                var mean = vec.Mean(inSignal).Value;
+                var max = vec.Max(inSignal);
+                var min = vec.Min(inSignal);
+                double scale = Math.Max(Math.Abs(max - mean), Math.Abs(min - mean));
+                return vec.Mean(vec.Abs(vec.Subtract(inSignal, vec.Mean(inSignal).Value))).Value / scale;
+            }
+            var dEstDistance = Power(dEst);*/
+
             var dEstDistance = vec.Mean(vec.Abs(vec.Diff(dEst))).Value; 
 
             var covBtwUPidAdjustedAndDest = Math.Abs(Measures.Covariance(dEst, u_pid_adjusted, false));
@@ -106,7 +125,7 @@ namespace TimeSeriesAnalysis.Dynamic
             uPidDistanceList.Add(uPidDistance);
             dEstDistanceList.Add(dEstDistance);
             covBtwDestAndUexternal.Add(covarianceBtwDestAndUexternal);
-
+            covBtwUPidAdjustedAndDestList.Add(covBtwUPidAdjustedAndDest);
         }
 
         /// <summary>
@@ -170,24 +189,24 @@ namespace TimeSeriesAnalysis.Dynamic
                 double v_range = v_max - v_min;
                 if (minIdx == 0 )
                     return "@min";
-                if (minIdx <= v_in.Length)
+                if (minIdx >= v_in.Length)
                     return "@max";
 
 
                 if (v_in[minIdx + 1] == v_in[minIdx - 1])
                 {
-                    return "><";
+                    return "(><)";
                 }
                 else
                 if (v_in[minIdx + 1] > v_in[minIdx - 1] )
                 {
                     double directionPower = (v_in[minIdx - 1] - v_min) / (v_in[minIdx + 1] - v_min) * 100;
-                    return "<-" + directionPower.ToString("F1", CultureInfo.InvariantCulture)+"%";
+                    return "(<-)" + directionPower.ToString("F1", CultureInfo.InvariantCulture)+"%";
                 }
                 else if (v_in[minIdx + 1] < v_in[minIdx - 1])
                 {
                     double directionPower = (v_in[minIdx + 1] - v_min) / (v_in[minIdx - 1] - v_min)*100;
-                    return "->" + directionPower.ToString("F1", CultureInfo.InvariantCulture) + "%";
+                    return "(->)" + directionPower.ToString("F1", CultureInfo.InvariantCulture) + "%";
                 }
                 else
                 {
@@ -228,7 +247,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 // if there is a persistent disturbance like a randomwalk or sinus and no changes in the 
                 // setpoint or in external inputs to the process model. 
 
-                // only thing is that in randowmalk case, this tend to over-estimate gain consistently by about 10-40%
                 if (doV4)
                 {
                     if (v4_Strength > 0)
