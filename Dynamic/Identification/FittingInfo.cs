@@ -114,6 +114,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double[] Umax;
 
+        /// <summary>
+        /// A string containting detailed output of the solver, may include line-breaks
+        /// </summary>
+        public string SolverOutput;
 
         /// <summary>
         /// NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.

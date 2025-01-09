@@ -620,7 +620,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         override public string ToString()
         {
-            var writeCulture = new CultureInfo("en-US");// System.Globalization.CultureInfo.InstalledUICulture;
+            var writeCulture = new CultureInfo("en-US");
             var numberFormat = (System.Globalization.NumberFormatInfo)writeCulture.NumberFormat.Clone();
             numberFormat.NumberDecimalSeparator = ".";
 
@@ -632,7 +632,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(this.GetType().ToString());
+
+            if (modelParameters.Fitting.SolverOutput != null && modelParameters.Fitting.SolverOutput != "")
+            {
+                sb.AppendLine("-------------------------");
+                sb.Append(modelParameters.Fitting.SolverOutput);
+            }
             sb.AppendLine("-------------------------");
+
             if (modelParameters.Fitting == null)
             {
                 sb.AppendLine("a priori model");

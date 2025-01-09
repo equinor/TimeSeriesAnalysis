@@ -7,6 +7,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using TimeSeriesAnalysis.Utility;
@@ -67,9 +68,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public static (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
         {
-           const bool doConsoleDebugOut = true;
 
-
+            var  sbSolverOutput = new StringBuilder();
 
             bool isMISO = dataSet.U.GetNColumns() > 1 ? true : false;
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
@@ -131,7 +131,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     var distIdResult = DisturbanceCalculator.CalculateDisturbanceVector
                                        (dataSetCopy, unitModel, pidInputIdx, pidParams);
                     if (distIdResult.ErrorType != DisturbanceEstimationError.None)
-                        Console.WriteLine("Error:" + distIdResult.ErrorType);
+                        sbSolverOutput.AppendLine("Error:" + distIdResult.ErrorType);
                     idDisturbancesList.Add(distIdResult);
                     idUnitModelsList.Add(unitModel);
                 }
@@ -142,7 +142,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] bestDisturbance = null;
                 int idx = idDisturbancesList.Count()-1;
                 bool valueFound = false;
-                while (idx > 0 && !valueFound)
+                while (idx >= 0 && !valueFound)
                 {
                     if (idDisturbancesList.ElementAt(idx) != null && idUnitModelsList.ElementAt(idx) != null)
                     {
@@ -164,8 +164,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // init: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give a first estimate of the disturbance (used to initalize steps 2 and 3 below)
             var unitModel_init = InitModelFreeEstimateClosedLoopProcessGain(dataSet, pidParams, pidInputIdx);
-            if (doConsoleDebugOut)
-                ConsoleDebugOut(unitModel_init, "Init");
+            ConsoleDebugOut(sbSolverOutput,unitModel_init, "Init");
             SaveSearchResult(unitModel_init);
             // step1, MISO: ident (add inital estimates of any other inputs to the above model-free estiamte) 
            /* if (isMISO)
@@ -201,11 +200,10 @@ namespace TimeSeriesAnalysis.Dynamic
                         min_gain = pidProcGainPrevEstimate * (1 + step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100);
                         max_gain = pidProcGainPrevEstimate * (1 - step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100);
                     }
-                    if (doConsoleDebugOut)
-                    {
-                        Console.WriteLine("Pass " + passNumber + " Step 1 " + "pid-process gain bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture)
+
+                    sbSolverOutput.AppendLine("Pass " + passNumber + " Step 1 " + "pid-process gain bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture)
                             + " to " + max_gain.ToString("F3", CultureInfo.InvariantCulture));
-                    }
+
 
                     var step1model = Step1GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
                         idUnitModelsList.Last(), min_gain, max_gain, fittingSpecs, step1GlobalSearchNumIterations.ElementAt(passNumber - 1));
@@ -219,12 +217,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         GSdescription = "Pass" + passNumber + ",Step 1 global-search had a flat objective space and returned null - model uncertain.";
                     }
-                    if (doConsoleDebugOut)
-                    {
-                        ConsoleDebugOut(step1model, "Pass " + passNumber + " Step 1", " GS output: " + GSdescription);
-                    }
+                    if (step1model != null)
+                        ConsoleDebugOut(sbSolverOutput,step1model, "Pass " + passNumber + " Step 1", " GS output: " + GSdescription);
                     else
-                        Console.WriteLine("pass" + passNumber + "Step1,GS1: FAILED");
+                        sbSolverOutput.AppendLine("pass" + passNumber + "Step1,GS1: FAILED");
                     SaveSearchResult(step1model);
                 }
                 //
@@ -240,22 +236,21 @@ namespace TimeSeriesAnalysis.Dynamic
                         var step2Model = Step2GlobalSearchTimeConstant(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est,passNumber);
                         // version 2:  find the time contant that gives the lowest FitScore in closed loop simulations.
                       //  step2Model = Step2GlobalSearchTimeConstantFitScoreVersion(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est);
-
                         SaveSearchResult(step2Model);
-                        if (doConsoleDebugOut)
-                            ConsoleDebugOut(step2Model, "Pass " + passNumber + " Step 2");
+                        ConsoleDebugOut(sbSolverOutput,step2Model, "Pass " + passNumber + " Step 2");
                     }
                 }
             }// end PASS
             ///////////////////////////
 
             (UnitModel identUnitModel, double[] retDisturbance) = ChooseBestEstimates();
-            var retModel = CleanUpModel(identUnitModel,dataSet, pidParams, pidInputIdx, didStep1Succeed,  GSdescription);
+            var retModel = CleanUpModel(identUnitModel,dataSet, pidParams, pidInputIdx, didStep1Succeed,  GSdescription, sbSolverOutput);
             return  (identUnitModel, retDisturbance);
         }
 
 
-        private static UnitModel CleanUpModel(UnitModel identUnitModel,UnitDataSet dataSet, PidParameters pidParams,int pidInputIdx, bool didStep1Succeed, string GSdescription)
+        private static UnitModel CleanUpModel(UnitModel identUnitModel,UnitDataSet dataSet, PidParameters pidParams,int pidInputIdx, bool didStep1Succeed, string GSdescription, 
+            StringBuilder solverOutput)
         {
             const int nDigits = 5; //number of significant digits in results.
 
@@ -263,10 +258,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (identUnitModel != null)
             {
+
                 if (identUnitModel.modelParameters.Fitting == null)
                 {
                     identUnitModel.modelParameters.Fitting = new FittingInfo();
                 }
+                identUnitModel.modelParameters.Fitting.SolverOutput = solverOutput.ToString();
+
                 identUnitModel.modelParameters.Fitting.WasAbleToIdentify = true;
                 identUnitModel.modelParameters.Fitting.StartTime = dataSet.Times.First();
                 identUnitModel.modelParameters.Fitting.EndTime = dataSet.Times.Last();
@@ -544,13 +542,13 @@ namespace TimeSeriesAnalysis.Dynamic
             return 0;
         }
 
-        private static void ConsoleDebugOut(UnitModel unitModel, string description,string addOnTxt ="")
+        private static void ConsoleDebugOut(StringBuilder sb, UnitModel unitModel, string description,string addOnTxt ="")
         {
             // note that unitModel can be NULL!
             if (unitModel != null)
             {
                 if (unitModel.GetModelParameters().LinearGains.Count() == 1)
-                    Console.WriteLine(description + " Gain:" + unitModel.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture) +
+                    sb.AppendLine(description + " Gain:" + unitModel.GetModelParameters().LinearGains.First().ToString("F3", CultureInfo.InvariantCulture) +
                       " Tc:" + unitModel.GetModelParameters().TimeConstant_s.ToString("F1", CultureInfo.InvariantCulture) + addOnTxt);
                 else
                 {
@@ -565,11 +563,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     outstr += "]";
                     outstr += " Tc:" + unitModel.GetModelParameters().TimeConstant_s.ToString("F1", CultureInfo.InvariantCulture) + addOnTxt;
-                    Console.WriteLine(outstr);
+                    sb.AppendLine(outstr);
                 }
             }
             else
-                Console.WriteLine(description + " returned NULL " + addOnTxt);
+                sb.AppendLine(description + " returned NULL " + addOnTxt);
         }
 
 
