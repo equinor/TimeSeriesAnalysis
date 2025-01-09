@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
@@ -11,7 +12,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
     /// Test of process simulations where each of or some of the models have multiple inputs
     /// </summary>
     [TestFixture]
-    class PlantSimulatorModelTests
+    class LargerSystemSimulations
     {
         int timeBase_s = 1;
         int N = 480;
@@ -93,7 +94,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1, processModel2, minSelect1, pidModel1 });
             var inputData = new TimeSeriesDataSet();
-            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/4, N, 0, 1));
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/4, N, 5.5, 6));
             inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U, (int)INDEX.SECOND),
                 TimeSeriesCreator.Step(N*3/4, N, 0, 1));
             inputData.Add(plantSim.AddExternalSignal(processModel2, SignalType.External_U, (int)INDEX.FIRST),
@@ -108,13 +109,35 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             plantSim.ConnectModels(processModel1, minSelect1, (int)INDEX.FIRST);
             plantSim.ConnectModels(processModel2, minSelect1, (int)INDEX.SECOND);
 
-
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]>
+                {
+                    simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                    simData.GetValues(processModel2.GetID(),SignalType.Output_Y),
+                    inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),
+                    inputData.GetValues(processModel1.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                    inputData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.FIRST),
+                    inputData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND),
+                    simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                    simData.GetValues(minSelect1.GetID(),SignalType.SelectorOut),
+                },
+                    new List<string> { "y1=y1", "y1=y2", "y1=y1_set","y3=y1_u1","y3=y2_u1","y3=y1_u1",
+                "y3=u_pid", "y1=y_select" }, timeBase_s, "MinSelectWithPID");
+                Shared.DisablePlots();
+            }
+
+
+
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
             double[] simY = simData.GetValues(minSelect1.GetID(), SignalType.SelectorOut);
 
-            SerializeHelper.Serialize("MinSelectWithPID", plantSim, inputData, simData);
+
+            //SerializeHelper.Serialize("MinSelectWithPID", plantSim, inputData, simData);
 
             //Assert.IsTrue(Math.Abs(simY[0] - (6.5)) < 0.01);
             //Assert.IsTrue(Math.Abs(simY.Last() - (6.5)) < 0.01);
@@ -141,7 +164,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
             double[] simY = simData.GetValues(maxSelect1.GetID(), SignalType.SelectorOut);
 
             Assert.IsTrue(Math.Abs(simY[0] - (6.7)) < 0.01);
@@ -164,7 +187,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             inputData.CreateTimestamps(timeBase_s);
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
             double[] simY = simData.GetValues(processModel1.GetID(), SignalType.Output_Y);
 
             Assert.IsTrue(Math.Abs(simY[0] - (1 * 50 + 0.5 * 50 + 5)) < 0.01);
@@ -221,7 +244,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
       } */
 
         [TestCase]
-        public void Serial2_RunsAndConverges()
+        public void Serial2_MISO_RunsAndConverges()
         {
             var plantSim = new PlantSimulator(
             new List<ISimulatableModel> { processModel1, processModel2 });
@@ -236,7 +259,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData,simData, plantSim);
+            PsTest.CommonAsserts(inputData,simData, plantSim);
 
             //Shared.EnablePlots();
             //Plot.FromList(new List<double[]> {
@@ -311,18 +334,18 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             }
 
             Assert.IsTrue(isOk,"simulation returned false, it failed");
- /*
-            Plot.FromList(new List<double[]> {
-                simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
-                simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
-                simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
-                simData.GetValues(processModel1.GetID(),SignalType.External_U,externalUIndex),
-                simData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
-            },
-                new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
-                timeBase_s, "UnitTest_PIDandSerial2");*/
-            
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            /*
+                       Plot.FromList(new List<double[]> {
+                           simData.GetValues(processModel1.GetID(),SignalType.Output_Y_sim),
+                           simData.GetValues(processModel2.GetID(),SignalType.Output_Y_sim),
+                           simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                           simData.GetValues(processModel1.GetID(),SignalType.External_U,externalUIndex),
+                           simData.GetValues(processModel2.GetID(),SignalType.External_U,(int)INDEX.SECOND)
+                       },
+                           new List<string> { "y1=y_sim1","y1=y_sim2", "y3=u1(pid)", "y3=u2", "y3=u3" },
+                           timeBase_s, "UnitTest_PIDandSerial2");*/
+
+            PsTest.CommonAsserts(inputData, simData, plantSim);
             double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y);
             Assert.IsTrue(Math.Abs(simY[0] - 150) < 0.01, "unexpected starting value");
             Assert.IsTrue(Math.Abs(simY.Last() - 150) < 0.1, "unexpected ending value");
@@ -357,7 +380,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
 
          /*   Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
@@ -394,7 +417,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
             /*
             Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
@@ -434,7 +457,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
 
             /*
             Shared.EnablePlots();
@@ -475,7 +498,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
                         
      /*       Shared.EnablePlots();
             Plot.FromList(new List<double[]> {
@@ -490,13 +513,18 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Shared.DisablePlots();*/
         }
 
+
+
+
+
+
         [TestCase(0,Description ="this is the easiest, as it requires no res-")]
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(2)]
 
 
-        public void Serial3_RunsAndConverges(int ver)
+        public void Serial3_MISO_RunsAndConverges(int ver)
         {
             List<ISimulatableModel> modelList = new List<ISimulatableModel>();
             if (ver == 0)
@@ -533,7 +561,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
 
             double[] simY = simData.GetValues(processModel3.GetID(), SignalType.Output_Y);
             double expStartVal  = ((1 * 50 + 0.5 * 50 + 5) * 1.1 + 50 * 0.6 + 5)*0.8 + 0.7*30 + 5;
@@ -583,7 +611,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
 
             SerializeHelper.Serialize("Divide", plantSim, inputData, simData);
 
@@ -611,7 +639,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
             Assert.IsTrue(isOk);
-            SISOTests.CommonAsserts(inputData, simData, plantSim);
+            PsTest.CommonAsserts(inputData, simData, plantSim);
 
             SerializeHelper.Serialize("TwoProcessesToOne",plantSim,inputData,simData);
 

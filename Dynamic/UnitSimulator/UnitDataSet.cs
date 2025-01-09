@@ -32,9 +32,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double[] Y_meas { get; set; }
         /// <summary>
-        /// Output Y (simulated)
+        /// Output Y(simulated)
         /// </summary>
         public double[] Y_sim { get; set; }
+
+        /// <summary>
+        /// The simulated output of the process, this is a non-measured variable that excludes the disturbance
+        /// </summary>
+        public double[] Y_proc { get; set; }
 
         /// <summary>
         /// Input U(simulated) - in the case of PID-control

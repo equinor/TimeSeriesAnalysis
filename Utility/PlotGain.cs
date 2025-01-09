@@ -183,6 +183,7 @@ namespace TimeSeriesAnalysis.Utility
         /// </summary>
         /// <param name="model"></param>
         /// <param name="modelName"></param>
+        /// <param name="comment"></param>
         /// <param name="inputIdx"></param>
         /// <param name="uMinExt"></param>
         /// <param name="uMaxExt"></param>

@@ -8,7 +8,7 @@ using System.Text;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
-namespace TimeSeriesAnalysis.Tests.Serialization
+namespace TimeSeriesAnalysis.Test.Serialization
 {
     internal class PlantSimulatorSerialization
     {

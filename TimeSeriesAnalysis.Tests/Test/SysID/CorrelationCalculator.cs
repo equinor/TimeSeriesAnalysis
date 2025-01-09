@@ -8,7 +8,7 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using NUnit.Framework;
 
-namespace TimeSeriesAnalysis.Test
+namespace TimeSeriesAnalysis.Test.SysID
 {
     [TestFixture]
     class CorrelationCalculatorTests

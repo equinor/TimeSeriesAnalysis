@@ -721,6 +721,29 @@ namespace TimeSeriesAnalysis
             return retVal;
         }
 
+        /// <summary>
+        /// Returns the mean value of array1. while ignoring given indices
+        /// </summary>
+        public double? Mean(double[] array1, List<int> indToIgnore = null)
+        {
+            if (array1 == null)
+                return null;
+            double retVal = 0;
+            double N = 0; 
+            var indices =  Index.InverseIndices(array1.Length, indToIgnore);
+            foreach  (var ind in indices)
+            {
+                if (!IsNaN(array1[ind]))
+                {
+                    N += 1;
+                    retVal = retVal * (N - 1) / N + array1[ind] * 1 / N;
+                }
+            }
+            return retVal;
+        }
+
+    
+
 
 
 

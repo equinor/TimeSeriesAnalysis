@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <item><description> Forward-calculate all processes in series (not in any feedback-loops), where inputs to leftmost process is given</description></item>
         /// <item><description> All PID-loops must have a setpoint value set and all Y_meas are initalized to setpoint</description></item>
         /// <item><description> Then all subprocesses inputs inside feedback-loops U are back-calculated(right-to-left) to give steady-state Y_meas equal to Y_set</description></item>
-        /// <item><description> Finally determine if there are ny serial processes downstream of any loops that can be calucated left-to-right</description></item>
+        /// <item><description> Finally determine if there are any serial processes downstream of any loops that can be calucated left-to-right</description></item>
         /// </list>
         /// </para>
         /// </summary>
@@ -114,7 +114,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     simulatedSignals.Add(simulator.modelDict[modelName].GetOutputID());
                 }
-                // in addtion, any signal addted to signalValuesAtT0, but not in inputData is to be simulated.
+                // in addtion, any signal added to signalValuesAtT0, but not in inputData is to be simulated.
                 // this includes disturbances
                 foreach (string signalID in signalValuesAtT0.Keys)
                 {
@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         else
                         {
-                            Shared.GetParserObj().AddError("PlantSimulatorInitializer: computational loop init failed");
+                         //   Shared.GetParserObj().AddError("PlantSimulatorInitializer: computational loop init failed");
                             return false;
                         }
                         modelIdx++;
@@ -240,13 +240,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// For a plant, go through and find each plant/pid-controller and attempt to estimate the disturbance.
         /// For the disturbance to be estimateable,the inputs "u_meas" and the outputs "y_meas" for each "process" in
         /// each pid-process loop needs to be given in inputData.
-        /// The estimated disturbance signal is addes to simData
+        /// The estimated disturbance signal is added to simData
         /// </summary>
         /// <param name="inputData">note that for closed loop systems u and y signals are removed(these are used to estimate disturbance, removing them triggers code in PlantSimulator to re-estimate them)</param>
         /// <param name="simData"></param>
         /// <param name="signalValuesAtT0"></param>
         /// <returns>true if everything went ok, otherwise false</returns>
-        private bool EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,ref Dictionary<string, double> signalValuesAtT0)
+        private bool EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
+            ref Dictionary<string, double> signalValuesAtT0)
         {
             // find all PID-controllers
             List<string> pidIDs = new List<string>();
@@ -257,6 +258,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     pidIDs.Add(model.Key);
                 }
             }
+
             foreach (var pidID in pidIDs)
             {
                 var upstreamModels = simulator.connections.GetAllUpstreamModels(pidID);
@@ -264,48 +266,79 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (upstreamModels.Count == 0)
                     continue;
                 var processId = upstreamModels.First();
-                var isOK = simulator.SimulateSingleInternal(inputData, processId,
-                    out TimeSeriesDataSet singleSimDataSetWithDisturbance);
-                if (isOK)
+                var estDisturbanceId = SignalNamer.EstDisturbance(processId);
+
+                if (inputData.ContainsSignal(estDisturbanceId))
+                    continue;
+
+               /* bool doV1 = false;
+
+                if (doV1)
                 {
-                    var estDisturbanceId = SignalNamer.EstDisturbance(processId);
-                    if (singleSimDataSetWithDisturbance.ContainsSignal(estDisturbanceId))
+
+                    var isOK = simulator.SimulateSingleWithoutAdditive(inputData, processId,
+                        out var singleSimDataSetWithDisturbance);
+                    if (isOK)
                     {
-                        var estDisturbance = singleSimDataSetWithDisturbance.GetValues(estDisturbanceId);
-                        if (estDisturbance == null)
-                            continue;
-                        if ((new Vec()).IsAllNaN(estDisturbance))
-                            continue;
-                        // add signal if everything is ok.
-                        simData.Add(estDisturbanceId, estDisturbance);
-                        // todo: remove pid input pid-u and output y from inputdata(we want to re-estimate it, we have used it to estimate the disturbance)
-                        // an alterntive to this would hav been to to alter the code in the plant simulator to add signals in simData output that are duplicates of signal names in inputData
-                        // or better: make an internal "stripped" version of "inputData"
+
+                        if (singleSimDataSetWithDisturbance.ContainsSignal(estDisturbanceId))
                         {
-                            { 
-                                string y_meas_signal = simulator.modelDict[processId].GetOutputID();
-                                double? value = inputData.GetValue(y_meas_signal, 0);
-                                if (value.HasValue)
-                                {
-                                    signalValuesAtT0.Add(y_meas_signal, value.Value);
-                                    inputData.Remove(y_meas_signal);
-                                }
-                                else
-                                    return false;
-                            }
+                            var estDisturbance = singleSimDataSetWithDisturbance.GetValues(estDisturbanceId);
+                            if (estDisturbance == null)
+                                continue;
+                            if ((new Vec()).IsAllNaN(estDisturbance))
+                                continue;
+                            // add signal if everything is ok.
+                            simData.Add(estDisturbanceId, estDisturbance);
+                        }
+
+                    }
+                }
+                else *///: new version that uses DisturbanceCalculator
+                {
+                    var processModel = (UnitModel)simulator.modelDict[processId];
+                    var pidModel = (PidModel)simulator.modelDict[pidID];
+                    var pidParams = pidModel.GetModelParameters();
+                    var pidOutName = pidModel.outputID;
+                    var pidInputIdx = 0; 
+                    (var isDataOk,var dataset) = PlantSimulatorHelper.GetUnitDataSetForLoop(inputData, pidModel, processModel);
+                    if (isDataOk)
+                    {
+                        if (dataset.U.Length > 1)
+                        { 
+                            string pidOutId = pidModel.outputID;
+                            for (int i = 0; i < processModel.ModelInputIDs.Length; i++)
                             {
-                                string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
-                                double? value = inputData.GetValue(u_pid_signal, 0);
-                                if (value.HasValue)
-                                {
-                                    signalValuesAtT0.Add(u_pid_signal,value.Value);
-                                    inputData.Remove(u_pid_signal);
-                                }
-                                else
-                                    return false;
+                                if (processModel.ModelInputIDs[i] == pidOutId)
+                                    pidInputIdx = i;
                             }
                         }
+                        var distResult = DisturbanceCalculator.CalculateDisturbanceVector(dataset, processModel, pidInputIdx, pidParams);
+                        simData.Add(estDisturbanceId, distResult.d_est);
                     }
+                }
+                
+                {
+                    string y_meas_signal = simulator.modelDict[processId].GetOutputID();
+                    double? value = inputData.GetValue(y_meas_signal, 0);
+                    if (value.HasValue)
+                    {
+                        signalValuesAtT0.Add(y_meas_signal, value.Value);
+                        inputData.Remove(y_meas_signal);
+                    }
+                    else
+                        return false;
+                }
+                {
+                    string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
+                    double? value = inputData.GetValue(u_pid_signal, 0);
+                    if (value.HasValue)
+                    {
+                        signalValuesAtT0.Add(u_pid_signal, value.Value);
+                        inputData.Remove(u_pid_signal);
+                    }
+                    else
+                        return false;
                 }
             }
             return true;
