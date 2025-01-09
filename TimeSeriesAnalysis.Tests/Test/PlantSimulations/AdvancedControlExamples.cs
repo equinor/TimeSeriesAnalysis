@@ -27,9 +27,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         {
           //  Shared.EnablePlots();
             ProcessControl pc = new ProcessControl();
-            var dataSet = pc.CascadeControl();
             Shared.DisablePlots();
-            //     Shared.DisablePlots();
+            var dataSet = pc.CascadeControl();
+      //     Shared.DisablePlots();
         }
 
         [Test]
@@ -65,9 +65,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         public void MinSelect()
         {
             ProcessControl pc = new ProcessControl();
-            Shared.EnablePlots();
+       //     Shared.EnablePlots();
             var dataSet = pc.MinSelect();
-            Shared.DisablePlots();
+         //   Shared.DisablePlots();
             //   dataSet.SetT0(new DateTime(2021,1,1));
             //    var isOk = dataSet.ToCSV(@"C:\Appl\source\TimeSeriesAnalysis\minSelect_large.csv");
             //      Assert.IsTrue(isOk);

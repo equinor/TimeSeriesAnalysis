@@ -44,7 +44,6 @@ namespace TimeSeriesAnalysis.Dynamic
          */
 
         const int MAX_NUM_PASSES = 2;
-        const bool doStep2 = true;//TODO: set to true, just temporararily set to false.
         const double LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE = 60 + 1;
         static int[] step1GlobalSearchNumIterations =  new int[] { 10 ,20};// 50 total iterations usually enough, maybe even lower, something like 30 is probable
         // these are given for each pass.
@@ -52,7 +51,7 @@ namespace TimeSeriesAnalysis.Dynamic
         static double[] step1GainGlobalSearchLowerBoundPrc = new double[] { 90, 40 };
       //  static double[] step2GainGlobalSearchUpperBoundPrc = new double[] { 150, 150 } ;
       //   static double[] step2GainGlobalSearchLowerBoundPrc = new double[] { 90, 90 };
-        const int nDigits = 5; //number of significant digits in results.
+
         ////////////////////////
         const bool doDebuggingPlot = false;
 
@@ -68,15 +67,18 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public static (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
         {
-            bool doConsoleDebugOut = true;
+           const bool doConsoleDebugOut = true;
 
-            bool didStep1Succeed = false;
+
+
             bool isMISO = dataSet.U.GetNColumns() > 1 ? true : false;
             if (dataSet.Y_setpoint == null || dataSet.Y_meas == null || dataSet.U == null)
             {
                 return (null, null);
             }
             var vec = new Vec(dataSet.BadDataID);
+
+            bool didStep1Succeed = false;
             //
             // In some cases the first data point given is has a non-physical 
             // drop/increase that is caused by an outside error.
@@ -153,9 +155,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 return (bestModel, bestDisturbance);
             }
 
-            double[] u0 = SignificantDigits.Format(dataSet.U.GetRow(0), nDigits);
+            double[] u0 = SignificantDigits.Format(dataSet.U.GetRow(0), 5);
             double y0 = dataSet.Y_meas[0];
-            var dataSetStep2 = new UnitDataSet(dataSet);//todo:remove?
             var fittingSpecs = new FittingSpecs();
             fittingSpecs.u0 = u0;
             var GSdescription = "";
@@ -232,13 +233,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (idUnitModelsList.Count() > 0)
                 {
-                    if (doStep2 && idUnitModelsList.Last() != null)
+                    if (idUnitModelsList.Last() != null)
                     {
                         var unitModel = idUnitModelsList.Last();
-                        unitModel.ID = "process";
-                        UnitModel step2Model;
                        // version 1
-                        step2Model = Step2GlobalSearchTimeConstant(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est,passNumber);
+                        var step2Model = Step2GlobalSearchTimeConstant(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est,passNumber);
                         // version 2:  find the time contant that gives the lowest FitScore in closed loop simulations.
                       //  step2Model = Step2GlobalSearchTimeConstantFitScoreVersion(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est);
 
@@ -251,6 +250,16 @@ namespace TimeSeriesAnalysis.Dynamic
             ///////////////////////////
 
             (UnitModel identUnitModel, double[] retDisturbance) = ChooseBestEstimates();
+            var retModel = CleanUpModel(identUnitModel,dataSet, pidParams, pidInputIdx, didStep1Succeed,  GSdescription);
+            return  (identUnitModel, retDisturbance);
+        }
+
+
+        private static UnitModel CleanUpModel(UnitModel identUnitModel,UnitDataSet dataSet, PidParameters pidParams,int pidInputIdx, bool didStep1Succeed, string GSdescription)
+        {
+            const int nDigits = 5; //number of significant digits in results.
+
+            var vec = new Vec(dataSet.BadDataID);
 
             if (identUnitModel != null)
             {
@@ -276,10 +285,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (didStep1Succeed)
                 {
-                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain global search " + GSdescription;
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop/w gain 2-step global search " + GSdescription;
                 }
                 else
-                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop heuristic (global search no minimum found)";
+                    identUnitModel.modelParameters.Fitting.SolverID = "ClosedLoop init heuristic (global search no minimum found)";
                 identUnitModel.modelParameters.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
                 identUnitModel.modelParameters.Fitting.NFittingBadDataPoints = dataSet.IndicesToIgnore.Count();
 
@@ -298,7 +307,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (identUnitModel.modelParameters.TimeConstantUnc_s.HasValue)
                     identUnitModel.modelParameters.TimeConstantUnc_s = SignificantDigits.Format(identUnitModel.modelParameters.TimeConstantUnc_s.Value, nDigits);
                 identUnitModel.modelParameters.UNorm = SignificantDigits.Format(identUnitModel.modelParameters.UNorm, nDigits);
-                return (identUnitModel, retDisturbance);
+                return identUnitModel;
             }
             else
             {
@@ -306,13 +315,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 retModel.modelParameters = new UnitParameters();
                 retModel.modelParameters.Fitting = new FittingInfo();
                 retModel.modelParameters.Fitting.WasAbleToIdentify = false;
-                retModel.modelParameters.Fitting.SolverID = "ClosedLoop local (NO global search)";
+                retModel.modelParameters.Fitting.SolverID = "ClosedLoopUnitIdentifier (unable to identify)";
 
-                return (retModel, null);
+                return retModel;
             }
-
-
         }
+
+
 
         private static UnitModel Step2GlobalSearchTimeConstantFitScoreVersion(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx, UnitModel unitModel, double[] d_est)
         {

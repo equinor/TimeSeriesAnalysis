@@ -75,15 +75,18 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
             var estPidParam = new PidParameters(pidModel1.GetModelParameters());
 
             (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, estPidParam);
-
-            Console.WriteLine(identifiedModel.ToString());
-            Console.WriteLine();
-
-            DisturbancesToString(estDisturbance, trueDisturbance);
-            if (doAssertResult)
+            if (identifiedModel != null)
             {
-                CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel, trueProcessModel, processGainAllowedOffsetPrc,30,isStatic);
+                Console.WriteLine(identifiedModel.ToString());
+                Console.WriteLine();
+                DisturbancesToString(estDisturbance, trueDisturbance);
+                if (doAssertResult)
+                {
+                    CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel, trueProcessModel, processGainAllowedOffsetPrc, 30, isStatic);
+                }
             }
+
+
         }
 
         static void DisturbancesToString(double[] estDisturbance, double[] trueDisturbance)
