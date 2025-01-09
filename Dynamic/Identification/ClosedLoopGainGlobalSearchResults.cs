@@ -192,7 +192,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (minIdx >= v_in.Length)
                     return "@max";
 
-
                 if (v_in[minIdx + 1] == v_in[minIdx - 1])
                 {
                     return "(><)";

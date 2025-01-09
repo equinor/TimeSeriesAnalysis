@@ -135,36 +135,37 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Shared.DisablePlots();
         }
 
-        // these tests seem to run well when run individual, but when "run all" they seem to fail
-        // this is likely related to a test architecture issue, not to anything wiht the actual algorithm.
-
-        [TestCase(5, 1.0, Category = "NotWorking_AcceptanceTest")]// most difficult
+        [TestCase(5, 1.0, Category = "NotWorking_AcceptanceTest")]
 
         public void StepDistANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude)
         {
             Vec vec = new Vec();
-
             double precisionPrc = 20;
+            var  locParameters = new UnitParameters
+            {
+                TimeConstant_s = 10,
+                LinearGains = new double[] { 1.5 },
+                TimeDelay_s = 0,//was: 5
+                Bias = 5
+            };
 
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 4, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
-            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
+            CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,
                 false, true, yset, precisionPrc);
         }
 
 
 
-        [TestCase(5,20)]
-        [TestCase(-5,20)]         
+        [TestCase(5,5)]
+        [TestCase(-5,5)]         
         public void LongStepDist_EstimatesOk(double stepAmplitude,double procGainAllowedOffSetPrc)
         {
             bool doInvertGain = false;
-            //    Shared.EnablePlots();
             N = 1000;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,doInvertGain,true,null,procGainAllowedOffSetPrc);
-          //  Shared.DisablePlots();
         }
 
 

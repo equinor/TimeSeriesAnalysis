@@ -57,13 +57,15 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void CommonPlotAndAsserts(UnitDataSet pidDataSet, double[] estDisturbance, double[] trueDisturbance,
             UnitModel identifiedModel, UnitModel trueModel, double maxAllowedGainOffsetPrc, double maxAllowedMeanDisturbanceOffsetPrc = 30, bool isStatic = true)
         {
+            bool doDebugPlot = false;
+
             Vec vec = new Vec();
 
             double distTrueAmplitude = vec.Max(vec.Abs(trueDisturbance));
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                 Replace(")", "_").Replace(",", "_") + "y";
-            bool doDebugPlot = true;
+  
             if (doDebugPlot)
             {
                var varsToPlot = new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint,
