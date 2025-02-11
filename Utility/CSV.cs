@@ -77,16 +77,23 @@ namespace TimeSeriesAnalysis.Utility
             out Dictionary<string,double[]> variables, string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
             var isOk = LoadDataFromCSV(filename, separator, out double[,] doubleData, out string[] variableNames, out string[,] stringData);
-
-            int indexOfTimeData = 0;
-            dateTimes = Array2D.GetColumnParsedAsDateTime(stringData, indexOfTimeData, dateTimeFormat);
-
-            variables = new Dictionary<string, double[]>();
-            int colIdx = 0;
-            foreach(string variableName in variableNames)
+            if (isOk)
             {
-                variables.Add(variableName,doubleData.GetColumn(colIdx));
-                colIdx++;
+                int indexOfTimeData = 0;
+                dateTimes = Array2D.GetColumnParsedAsDateTime(stringData, indexOfTimeData, dateTimeFormat);
+
+                variables = new Dictionary<string, double[]>();
+                int colIdx = 0;
+                foreach (string variableName in variableNames)
+                {
+                    variables.Add(variableName, doubleData.GetColumn(colIdx));
+                    colIdx++;
+                }
+            }
+            else
+            {
+                variables = new Dictionary<string, double[]>();
+                dateTimes = new DateTime[0];
             }
             return isOk;
         }
@@ -104,11 +111,11 @@ namespace TimeSeriesAnalysis.Utility
         public static bool LoadDataFromCSV(string filename, char separator,out double[,] doubleData,
             out string[] variableNames, out string[,] stringData)
         {
-            var sr = new StreamReader(filename);
-            return LoadDataFromCSV(sr,separator,out doubleData, out variableNames, out stringData);
+            using (StreamReader sr = new StreamReader(filename))
+            {
+                return LoadDataFromCSV(sr, separator, out doubleData, out variableNames, out stringData);
+            }        
         }
-
-
 
         /// <summary>
         /// Version of  <c>LoadDataFromCSV</c> that accepts a <c>CSVcontent </c> containting the contents of a CSV-file as input
@@ -122,21 +129,22 @@ namespace TimeSeriesAnalysis.Utility
         public static bool LoadDataFromCsvContentAsTimeSeries(CsvContent csvString, char separator, out DateTime[] dateTimes,
             out Dictionary<string, double[]> variables, string dateTimeFormat = "yyyy-MM-dd HH:mm:ss")
         {
-            var sr = new StringReader(csvString.CsvTxt);
-            var isOk = LoadDataFromCSV(sr, separator, out double[,] doubleData, out string[] variableNames, out string[,] stringData);
-
-            int indexOfTimeData = 0;
-            dateTimes = Array2D.GetColumnParsedAsDateTime(stringData, indexOfTimeData, dateTimeFormat);
-
-            variables = new Dictionary<string, double[]>();
-            int colIdx = 0;
-            foreach (string variableName in variableNames)
+            using (var sr = new StringReader(csvString.CsvTxt))
             {
-                variables.Add(variableName, doubleData.GetColumn(colIdx));
-                colIdx++;
-            }
-            return isOk;
+                var isOk = LoadDataFromCSV(sr, separator, out double[,] doubleData, out string[] variableNames, out string[,] stringData);
 
+                int indexOfTimeData = 0;
+                dateTimes = Array2D.GetColumnParsedAsDateTime(stringData, indexOfTimeData, dateTimeFormat);
+
+                variables = new Dictionary<string, double[]>();
+                int colIdx = 0;
+                foreach (string variableName in variableNames)
+                {
+                    variables.Add(variableName, doubleData.GetColumn(colIdx));
+                    colIdx++;
+                }
+                return isOk;
+            }
 
         }
 
@@ -153,6 +161,8 @@ namespace TimeSeriesAnalysis.Utility
                 var linesStr = new List<string[]>();
                 // readheader
                 string currentLine = sr.ReadLine();
+                if (currentLine == null)
+                    return false;
                 variableNames = currentLine.Split(separator);
                 // if there is a trailing comma in the header, remove this variable
                 if (variableNames.Last().Trim() == "")

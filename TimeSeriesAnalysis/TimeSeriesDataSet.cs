@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis
 
 
     /// <summary>
-    /// A class that holds time-series data for any number of tags 
+    /// A class that holds time-series data for any number of tags, and with built in support for serlalizing/deserializing to a csv-file.
     /// <para>
     /// Time is either treated by giving a timeBase in seconds and a starting time, or by  
     /// specifying a vector of timestamps.
@@ -30,6 +30,7 @@ namespace TimeSeriesAnalysis
         Dictionary<string, double[]> dataset;
         Dictionary<string, double> dataset_constants;
         List<int> indicesToIgnore;
+        string csvFileName = string.Empty;
         int? N;
 
         /// <summary>
@@ -74,7 +75,8 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Constructor that builds a dataset object from a csv-file, by loading LoadFromCsv()
+        /// Constructor that builds a dataset object from a csv-file, by loading LoadFromCsv().
+        /// If file does not exist, it is created
         /// </summary>
         /// <param name="csvFileName">name of csv-file</param>
         /// <param name="separator">the separator in the csv-file</param>
@@ -83,7 +85,11 @@ namespace TimeSeriesAnalysis
         {
             dataset = new Dictionary<string, double[]>();
             dataset_constants = new Dictionary<string, double>();
-            LoadFromCsv(csvFileName, separator, dateTimeFormat);
+            this.csvFileName = csvFileName;
+            if (File.Exists(csvFileName))
+                LoadFromCsv(csvFileName, separator, dateTimeFormat);
+        //    else
+         //       File.Create(csvFileName);
         }
 
         /// <summary>
@@ -204,6 +210,58 @@ namespace TimeSeriesAnalysis
                 return false;
 
             dataset[signalName] = new Vec().Add(dataset[signalName], Vec.Rand(N.Value, -noiseAmplitude, noiseAmplitude, seed));
+            return true;
+        }
+
+        /// <summary>
+        /// Append a single value to a given signal.The signal is added if the signal name does not exist.
+        /// This method is useful for logging values in a for-loop. Combine with AppendTimeStamp to ensure there is a time-stamp.
+        /// If this variable does not exist, then previous values are padded. 
+        /// </summary>
+        /// <param name="signalName">name of signal</param>
+        /// <param name="value">value of signal</param>
+        /// <returns></returns>
+        public void AppendDataPoint(string signalName, double value)
+        {
+            if (!dataset.ContainsKey(signalName))
+            {
+                if (N == 0 || !N.HasValue)
+                    dataset.Add(signalName, new double[] { value });
+                else
+                {
+                    var valArray = Vec<double>.Fill(Double.NaN, N.Value+1);
+                    valArray[N.Value] = value;
+                    dataset.Add(signalName, valArray);
+                }
+            }
+            else
+            {
+                var tempList = new List<double>(dataset[signalName]);
+                tempList.Add(value);
+                dataset[signalName] = tempList.ToArray();
+            }
+        }
+
+
+        /// <summary>
+        /// Used in conjunction with AppendDataPoint when appending data to the data set.
+        /// Appends a time stamp, and updates the number of data points N, if the timestamp
+        /// does not already exist and is newer than the newest time stampe in the curent dataset.
+        /// </summary>
+        /// <returns>true if able to append, otherwise false</returns>
+        /// <param name="timestamp"></param>
+        public bool AppendTimeStamp(DateTime timestamp)
+        {
+            if (timeStamps == null)
+                timeStamps = new List<DateTime>();
+            else if (timeStamps.Count()>0)
+            {
+                var lastTime = timeStamps.Last();
+                if (timestamp <= lastTime)
+                    return false;
+            }
+            timeStamps.Add(timestamp);
+            N = GetLength() + 1;
             return true;
         }
 
@@ -332,7 +390,7 @@ namespace TimeSeriesAnalysis
             }
             // load actual dataset
             dataset = variableDict;
-            if (dateTimes.Length > 1)
+            if (dateTimes.Length >= 1)
             {
                 timeStamps = dateTimes.ToList();
             }
@@ -434,11 +492,15 @@ namespace TimeSeriesAnalysis
                 }
                 else if (dataset.ContainsKey(signalName))
                 {
-                    if (timeIdx > dataset[signalName].Count())
+                    if (timeIdx >= dataset[signalName].Count())
                     {
-                        return null;
+                        retData[valueIdx] = double.NaN;
+//                        return null;
                     }
-                    retData[valueIdx] = dataset[signalName][timeIdx];
+                    else
+                    {
+                        retData[valueIdx] = dataset[signalName][timeIdx];
+                    }
                 }
                 else if (dataset_constants.ContainsKey(signalName))
                 {
@@ -455,7 +517,10 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         public int? GetLength()
         {
-            return N;
+            if (N == null)
+                return 0;
+            else
+               return N;
         }
         /// <summary>
         /// Get the names of all the singals, wheter constant or varying
@@ -728,12 +793,12 @@ namespace TimeSeriesAnalysis
         public string ToCsvText(string csvSeparator = ";", int nSignificantDigits = 5)
         {
             StringBuilder sb = new StringBuilder();
+
             var signalNames = GetSignalNames();
             // make header
             sb.Append("Time" + csvSeparator);
             sb.Append(string.Join(csvSeparator, signalNames));
             sb.Append("\r\n");
-
 
             for (int curTimeIdx = 0; curTimeIdx < GetLength(); curTimeIdx++)
             {
@@ -751,6 +816,7 @@ namespace TimeSeriesAnalysis
             }
             return sb.ToString();
 
+
         }
 
 
@@ -763,7 +829,7 @@ namespace TimeSeriesAnalysis
         /// <param name="fileName">The CSV-file name</param>
         /// <param name="csvSeparator">the separator to use in the csv-file(despite the name, the most common is perhaps ";" which Excel will recognize automatically)</param>
         /// <param name="nSignificantDigits">the number of singificant digits to include for each variable</param>
-        /// <returns></returns>
+        /// <returns>true if successful, otherwise false</returns>
         public bool ToCsv(string fileName, string csvSeparator = ";", int nSignificantDigits = 5)
         {
             string csvTxt = ToCsvText(csvSeparator, nSignificantDigits);
@@ -783,6 +849,7 @@ namespace TimeSeriesAnalysis
                 catch (Exception)
                 {
                     Shared.GetParserObj().AddError("Exception writing file:" + fileName);
+                    return false;
                 }
             }
             return true;
@@ -804,6 +871,17 @@ namespace TimeSeriesAnalysis
                 }
             }
             return ret;
+        }
+
+
+
+        /// <summary>
+        ///  When a dataset has been loaded from csv-file and changed, this method writes said changes back to the csv-file. 
+        /// </summary>
+        /// <returns>true if succesful, otherwise false</returns>
+        public bool UpdateCsv()
+        {
+            return ToCsv(csvFileName);
         }
 
 

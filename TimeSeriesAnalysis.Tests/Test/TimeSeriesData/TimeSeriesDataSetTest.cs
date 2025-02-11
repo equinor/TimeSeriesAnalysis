@@ -8,6 +8,8 @@ using NUnit.Framework;
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis._Examples;
+using System.IO;
+using System.Data;
 
 namespace TimeSeriesAnalysis.Tests.TimeSeriesData
 {
@@ -29,6 +31,93 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
             Assert.IsTrue(result == 29.44);
         }
 
+        [Test, Explicit]
+        public void CsvAppendDataPoint()
+        {
+            var path = @"C:\Appl\source\TimeSeriesAnalysis\test.csv";
+            var signalNames = new List<string>() { "signal_1", "signal_2", "signal_3", "signal_4" };
+            var signalNames2 = new List<string>() { "signal_1", "signal_2", "signal_3", "signal_4","signal_5" };
+            if (File.Exists(path))
+               File.Delete(path);
+            // first data point should create dataset if it does not exist
+            {
+                TimeSeriesDataSet dataset = new TimeSeriesDataSet(path);
+                int value = 1;
+                foreach (var signal in signalNames)
+                {
+                    dataset.AppendDataPoint(signal, value);
+                    value++;
+                }
+                dataset.AppendTimeStamp(new DateTime(2025, 1, 1, 12, 00, 00));
+                var isOk = dataset.UpdateCsv();
+                Assert.IsTrue(isOk);
+            }
+            // second data point 
+            {
+                TimeSeriesDataSet dataset2 = new TimeSeriesDataSet(path);
+                int value = 11;
+                foreach (var signal in signalNames)
+                {
+                    dataset2.AppendDataPoint(signal, value);
+                    value++;
+                }
+                var isOK2 = dataset2.AppendTimeStamp(new DateTime(2025, 1, 1, 12, 01, 00));
+                Assert.IsTrue(isOK2);
+                dataset2.UpdateCsv();
+            }
+            // third data point : re-doing the sampe data point, should not be added
+            {
+                TimeSeriesDataSet dataset3 = new TimeSeriesDataSet(path);
+                int value = 11;
+                foreach (var signal in signalNames)
+                {
+                    dataset3.AppendDataPoint(signal, value);
+                    value++;
+                }
+                var isOK3 = dataset3.AppendTimeStamp(new DateTime(2025, 1, 1, 12, 01, 00));//same as prev
+                Assert.IsFalse(isOK3);
+            }
+     
+            // fourth  data point : add a new signal , should not be added
+            {
+                TimeSeriesDataSet dataset4 = new TimeSeriesDataSet(path);
+                      int value = 41;
+                foreach (var signal in signalNames2) // NB! signalnames2
+                {
+                    dataset4.AppendDataPoint(signal, value);
+                    value++;
+                }
+                var isOK4 = dataset4.AppendTimeStamp(new DateTime(2025, 1, 1, 12, 02, 00));
+                Assert.IsTrue(isOK4);
+                dataset4.UpdateCsv();
+            }
+            // fifth  data point : try add just four of the five signals
+            {
+                TimeSeriesDataSet dataset5 = new TimeSeriesDataSet(path);
+                int value = 51;
+                foreach (var signal in signalNames) // NB! signalnames
+                {
+                    dataset5.AppendDataPoint(signal, value);
+                    value++;
+                }
+                var isOK5 = dataset5.AppendTimeStamp(new DateTime(2025, 1, 1, 12, 03, 00));
+                Assert.IsTrue(isOK5);
+                dataset5.UpdateCsv();
+            }
+            // sixth  data point : add all signals again
+            {
+                TimeSeriesDataSet dataset6 = new TimeSeriesDataSet(path);
+                int value = 61;
+                foreach (var signal in signalNames) // NB! signalnames
+                {
+                    dataset6.AppendDataPoint(signal, value);
+                    value++;
+                }
+                var isOK6 = dataset6.AppendTimeStamp(new DateTime(2025, 1, 1, 12, 04, 00));
+                Assert.IsTrue(isOK6);
+                dataset6.UpdateCsv();
+            }
+        }
 
 
         [Test, Explicit]

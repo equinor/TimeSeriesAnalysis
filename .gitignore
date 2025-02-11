@@ -26,3 +26,4 @@ profiler/
 docs/_site/
 docs/api/
 TimeSeriesAnalysis.ClosedTests/
+test.csv
