@@ -22,4 +22,4 @@ jobs:
             - name: Build 
               run: dotnet build TimeSeriesAnalysis.sln -c Debug
             - name: Run tests
-              run: dotnet test D:\a\TimeSeriesAnalysis\TimeSeriesAnalysis\TimeSeriesAnalysis.Tests\bin\Debug\net6.0\TimeSeriesAnalysis.Tests.dll  --filter Category!=NotWorking_AcceptanceTest
+              run: dotnet test D:\a\TimeSeriesAnalysis\TimeSeriesAnalysis\TimeSeriesAnalysis.Tests\bin\Debug\net8.0\TimeSeriesAnalysis.Tests.dll  --filter Category!=NotWorking_AcceptanceTest
