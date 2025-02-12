@@ -79,7 +79,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         inputData.Add(plantSim.AddExternalSignal(unitModel, SignalType.External_U, (int)INDEX.FIRST), dataSet.U.GetColumn(k));
                     }
-                    inputData.CreateTimestamps(timeBase_s);
+                    inputData.CreateTimestamps(timeBase_s, dataSet.GetNumDataPoints());
                     var trueIsSimulatable = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
                     double[] unitModelSim = simData.GetValues(unitModel.GetID(), SignalType.Output_Y);
                     // Plot here!

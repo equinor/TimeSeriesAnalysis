@@ -173,7 +173,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                      
                 inputData_noDist.Add(processSim_noDist.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), unitDataSet.Y_setpoint);
-                inputData_noDist.CreateTimestamps(unitDataSet.GetTimeBase());
+                inputData_noDist.CreateTimestamps(unitDataSet.GetTimeBase(),unitDataSet.GetNumDataPoints());
                 inputData_noDist.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
                
                 // rewrite:

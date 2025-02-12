@@ -725,7 +725,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double[] u = TimeSeriesCreator.Concat(u1, u2);
             unitData.SetU(u);
             unitData.Times = TimeSeriesCreator.CreateDateStampArray(
-                new DateTime(2000, 1, 1), timeBase_s, N);
+                new DateTime(2000, 1, 1), timeBase_s, N*2);
 
             GainSchedParameters trueParams = new GainSchedParameters(0,1.34)
             {

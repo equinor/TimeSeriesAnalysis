@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N/7, N,50,50+ySetAmplitude));
-            inputData.CreateTimestamps(timeBase_s,t0);
+            inputData.CreateTimestamps(timeBase_s,0,t0);
             var isOk = processSim.Simulate(inputData,out TimeSeriesDataSet simData);
             simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude,0);
             Assert.IsTrue(isOk);
@@ -110,7 +110,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             processSim.ConnectModels(pidModel1, processModel1);
             var inputData = new TimeSeriesDataSet();
             inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Step(N / 7, N, 50, 50 + ySetAmplitude));
-            inputData.CreateTimestamps(timeBase_s, t0);
+            inputData.CreateTimestamps(timeBase_s, 0,t0);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             simData.AddNoiseToSignal("SubProcess1-Output_Y", yNoiseAmplitude,0);
             Assert.IsTrue(isOk);

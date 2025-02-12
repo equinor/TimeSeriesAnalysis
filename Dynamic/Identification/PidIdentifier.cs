@@ -530,8 +530,8 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.TimeBase_s = dataSet.GetTimeBase();
             pidParam.Fitting.StartTime = dataSet.Times.First();
             pidParam.Fitting.EndTime = dataSet.Times.Last();
-            pidParam.Fitting.Umin = new double[] { vec.Min(dataSet.U.GetColumn(0)) };
-            pidParam.Fitting.Umax = new double[] { vec.Max(dataSet.U.GetColumn(0)) };
+            pidParam.Fitting.Umin = new double[] { SignificantDigits.Format(vec.Min(dataSet.U.GetColumn(0)), nDigitsParams) };
+            pidParam.Fitting.Umax = new double[] { SignificantDigits.Format(vec.Max(dataSet.U.GetColumn(0)), nDigitsParams) };
 
             pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;

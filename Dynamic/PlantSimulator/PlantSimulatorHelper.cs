@@ -45,7 +45,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             inputData.Add(plantSim.AddExternalSignal(pidModel, SignalType.Setpoint_Yset), (double[])unitDataSet.Y_setpoint.Clone());
-            inputData.CreateTimestamps(unitDataSet.GetTimeBase());
+            inputData.CreateTimestamps(unitDataSet.GetTimeBase(),unitDataSet.GetNumDataPoints());
             inputData.SetIndicesToIgnore(unitDataSet.IndicesToIgnore);
             return (plantSim, inputData);
         }
@@ -209,7 +209,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.SetTimeStamps(unitData.Times.ToList());
             else
             {
-                inputData.CreateTimestamps(unitData.GetTimeBase());
+                inputData.CreateTimestamps(unitData.GetTimeBase(),unitData.GetNumDataPoints());
             }
             var uNames = new List<string>();
             for (int colIdx = 0; colIdx < unitData.U.GetNColumns(); colIdx++)

@@ -138,13 +138,14 @@ namespace TimeSeriesAnalysis._Examples
             var sim = new PlantSimulator(new List<ISimulatableModel> { processModel });
             // create "synthetic" dataset and add the synthetic signals to plant simulator
             int timeBase_s = 1;
-            double[] u1 = TimeSeriesCreator.Step(3, 100, 1, 2);
-            double[] u2 = TimeSeriesCreator.Step(30, 100, 2, 1);
+            int N = 100;
+            double[] u1 = TimeSeriesCreator.Step(3, N, 1, 2);
+            double[] u2 = TimeSeriesCreator.Step(30, N, 2, 1);
             //
             var inputData = new TimeSeriesDataSet();
             inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.FIRST), u1);
             inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.SECOND), u2);
-            inputData.CreateTimestamps(timeBase_s);
+            inputData.CreateTimestamps(timeBase_s,N);
             // simulate the plant
             var isOK =  sim.Simulate(inputData, out var simData);
              Assert.IsTrue(isOK);
@@ -214,7 +215,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Constant(50, N));
             inputData.Add(sim.AddExternalSignal(processModel, SignalType.External_U, (int)INDEX.SECOND),
                 TimeSeriesCreator.Step(N / 2, N, 0, 1));
-            inputData.CreateTimestamps(timeBase_s);
+            inputData.CreateTimestamps(timeBase_s,N);
             // simulate model over the 
             var isOk = sim.Simulate(inputData, out var simData);
 
@@ -267,7 +268,7 @@ namespace TimeSeriesAnalysis._Examples
                 TimeSeriesCreator.Constant(50,N));
             inputData.Add(sim.AddExternalSignal(processModel,SignalType.External_U, (int)INDEX.SECOND),
                 TimeSeriesCreator.Step(N/2,N,0,1));
-            inputData.CreateTimestamps(timeBase_s);
+            inputData.CreateTimestamps(timeBase_s, N);
             // simulate model over the 
             var isOk = sim.Simulate(inputData,out var simData);
 

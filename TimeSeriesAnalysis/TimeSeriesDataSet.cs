@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis
         Dictionary<string, double> dataset_constants;
         List<int> indicesToIgnore;
         string csvFileName = string.Empty;
-        int? N;
+     //   int? N;
 
         /// <summary>
         /// Default constructor
@@ -56,7 +56,7 @@ namespace TimeSeriesAnalysis
                 AddSet(inputDataSet);
             }
             dataset_constants = inputDataSet.dataset_constants;
-            N = inputDataSet.N;
+            //N = inputDataSet.N;
             timeStamps = inputDataSet.timeStamps;
         }
 
@@ -112,21 +112,21 @@ namespace TimeSeriesAnalysis
             {
                 return false;
             }
-            if (N.HasValue)
+            if (GetLength()>0 && GetLength().HasValue)
             {
-                if (N != values.Length)
+                if (GetLength() != values.Length)
                 {
                     dataset.Add(signalName, values);
                     return false;//incorrect size of signal
                 }
             }
-            else
+            /*else
             {
                 if (values.Length > 1)
                 {
                     N = values.Length;
                 }
-            }
+            }*/
             dataset.Add(signalName, values);
             return true;
         }
@@ -162,7 +162,7 @@ namespace TimeSeriesAnalysis
             foreach (string signalName in inputDataSet.GetSignalNames())
             {
                 double[] values = inputDataSet.GetValues(signalName);
-                N = values.Length;// todo:check that all are equal length
+                //N = values.Length;// todo:check that all are equal length
 
                 bool isOk = Add(signalName, values);
                 if (!isOk)
@@ -209,7 +209,8 @@ namespace TimeSeriesAnalysis
             if (!dataset.ContainsKey(signalName))
                 return false;
 
-            dataset[signalName] = new Vec().Add(dataset[signalName], Vec.Rand(N.Value, -noiseAmplitude, noiseAmplitude, seed));
+            int N = GetLength().Value;
+            dataset[signalName] = new Vec().Add(dataset[signalName], Vec.Rand(N, -noiseAmplitude, noiseAmplitude, seed));
             return true;
         }
 
@@ -225,6 +226,7 @@ namespace TimeSeriesAnalysis
         {
             if (!dataset.ContainsKey(signalName))
             {
+                int? N = GetLength();
                 if (N == 0 || !N.HasValue)
                     dataset.Add(signalName, new double[] { value });
                 else
@@ -247,6 +249,7 @@ namespace TimeSeriesAnalysis
         /// Used in conjunction with AppendDataPoint when appending data to the data set.
         /// Appends a time stamp, and updates the number of data points N, if the timestamp
         /// does not already exist and is newer than the newest time stampe in the curent dataset.
+        /// 
         /// </summary>
         /// <returns>true if able to append, otherwise false</returns>
         /// <param name="timestamp"></param>
@@ -261,7 +264,7 @@ namespace TimeSeriesAnalysis
                     return false;
             }
             timeStamps.Add(timestamp);
-            N = GetLength() + 1;
+            //N = GetLength() + 1;
             return true;
         }
 
@@ -299,7 +302,7 @@ namespace TimeSeriesAnalysis
             foreach (string signalName in inputDataSet.GetSignalNames())
             {
                 double[] values = inputDataSet.GetValues(signalName);
-                N = values.Length;// todo:check that all are equal length
+                //N = values.Length;// todo:check that all are equal length
 
                 bool isOk = dataSet.Add(signalName, values);
             }
@@ -323,7 +326,7 @@ namespace TimeSeriesAnalysis
             TimeSeriesDataSet ret = new TimeSeriesDataSet();
 
             ret.timeStamps = Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor).ToList();
-            ret.N = ret.timeStamps.Count();
+            //ret.N = ret.timeStamps.Count();
             ret.dataset_constants = dataset_constants;
             foreach (var item in dataset)
             {
@@ -337,13 +340,17 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
         /// <param name="t0">start time, can be null, which can be usedful for testing</param>
-        public void CreateTimestamps(double timeBase_s, DateTime? t0 = null)
+        public void CreateTimestamps(double timeBase_s, int N=0, DateTime? t0 = null)
         {
             if (t0 == null)
             {
                 t0 = new DateTime(2010, 1, 1);//intended for testing
             }
 
+            if (N == 0)
+            {
+                N = dataset.First().Value.Count();
+            }
             var times = new List<DateTime>();
             DateTime time = t0.Value;
             for (int i = 0; i < N; i++)
@@ -383,7 +390,7 @@ namespace TimeSeriesAnalysis
             if (variableDict.Keys.Count() == 0)
                 return false;
 
-            N = variableDict[variableDict.Keys.First()].Length;
+            var N = variableDict[variableDict.Keys.First()].Length;
             if (N == 0)
             {
                 return false;
@@ -513,14 +520,15 @@ namespace TimeSeriesAnalysis
 
         /// <summary>
         /// Get the length in samples of the data set
+        /// 
+        /// The length of the dataset is determined by the number of timestamps.
+        /// 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>an integer indicating the length of the dataset</returns>
         public int? GetLength()
         {
-            if (N == null)
-                return 0;
-            else
-               return N;
+            return timeStamps.Count();
+
         }
         /// <summary>
         /// Get the names of all the singals, wheter constant or varying
@@ -608,7 +616,10 @@ namespace TimeSeriesAnalysis
             if (dataset.ContainsKey(signalName))
                 return dataset[signalName];
             else if (dataset_constants.ContainsKey(signalName))
-                return Vec<double>.Fill(dataset_constants[signalName],N.Value);   
+            {
+                var N = GetLength();
+                return Vec<double>.Fill(dataset_constants[signalName], N.Value);
+            }
             else
             {
                 Shared.GetParserObj().AddError("TimeSeriesDataSet.GetValues() did not find signal:" + signalName);
@@ -735,6 +746,8 @@ namespace TimeSeriesAnalysis
             if (endPrc < 0)
                 endPrc = 0;
 
+            var N = GetLength();
+
             int startInd = (int)Math.Floor(startPrc / 100 * N.Value);
             int endInd = (int)Math.Floor(endPrc / 100 * N.Value);
             return SubsetInd(startInd, endInd);
@@ -749,6 +762,8 @@ namespace TimeSeriesAnalysis
         /// <returns></returns>
         public TimeSeriesDataSet SubsetInd(int startInd, int endInd)
         {
+            var N = GetLength();
+
             if (!N.HasValue)
                 return null;
             if (endInd > N-1)
@@ -861,8 +876,9 @@ namespace TimeSeriesAnalysis
         /// <returns>Returns the dataset as a dictionary </returns>
         public Dictionary<string, double[]> ToDict()
         {
-            Dictionary<string, double[]> ret = new Dictionary<string, double[]>(dataset);
-            Vec vec = new Vec();
+            var ret = new Dictionary<string, double[]>(dataset);
+            var vec = new Vec();
+            var N = GetLength();
             foreach (var constant in dataset_constants)
             {
                 if (N.HasValue)
