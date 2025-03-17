@@ -11,7 +11,7 @@ using TimeSeriesAnalysis.Dynamic;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Class that attempts to identify the parameters(such as Kp and Ti) of a PID-controller from a 
+    /// Class that attempts to identify the parameters (such as Kp and Ti) of a PID-controller from a 
     /// given set of time-series of the input and output of said controller.
     /// </summary>
     public class PidIdentifier
@@ -64,9 +64,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
-            const bool doOnlyWithDelay = false;//should be false unless debugging something
-            const bool DoFiltering = true; //default is true(this improves performance significantly)
-            const bool returnFilterParameters = false; // even if filtering helps improve estimtes, maybe the filter should not be returned?
+            const bool doOnlyWithDelay = false;// should be false unless debugging something
+            const bool DoFiltering = true; // default is true (this improves performance significantly)
+            const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
 
             // 1. try identification with delay of one sample but without filtering
             (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true);
@@ -77,8 +77,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 return results_withDelay;
             }
 
-            // 2. try identification without delay of one sample (yields better results often if dataset is downsampled)
-            //    relative to the clock that the pid algorithm ran on originally
+            // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
+            //    relative to the clock that the pid algorithm ran on originally)
             (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false);
 
             // save which is the "best" estimate for comparison 
@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
 
                 // 4. try filtering the input u_meas
-                // this is experimental, but if downsampled, Kp/Ti seems often too low, and hypothesis is that this is because
+                // this is experimental, but if downsampled, Kp/Ti often seems too low, and the hypothesis is that this is because
                 // small variations in u_meas/y_meas are no longer tightly correlated, so identification should perhaps focus on fitting
                 // to only "larger" changes. 
                 bool filterUmeas = true;
@@ -136,7 +136,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // 5. finally return the "best" result
             dataSet.U_sim = bestU;
-            // consider if the the filter paramters maybe do not need to be returned
+            // consider if the the filter parameters maybe do not need to be returned
             if (!returnFilterParameters)
             {
                 bestPidParameters.Filtering = new PidFilterParams();
@@ -145,7 +145,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// a steady state-offset between U_sim and U is an indication of noise in Y_meas getting into controller and 
+        /// a steady-state offset between U_sim and U is an indication of noise in Y_meas getting into controller and 
         /// "biasing" estimates
         /// </summary>
         /// <returns></returns>
@@ -183,7 +183,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // protect from divide-by-zero
             if (u_Range == 0)
                 return false;
-            // see if average max deviation is signficant in amplitude
+            // see if average max deviation is significant in amplitude
             double avgOffsetRelativeToRange_prc = (double)Math.Max(valLower, valHigher) / u_Range * 100;
             if (avgOffsetRelativeToRange_prc < avgOffsetRelativeToRange_cutoff_prc)
             {
@@ -195,7 +195,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 return true;
             }
-            // see if there is big deviation between amplitude of overshoot and undershoot.
+            // see if there is a big deviation between amplitude of overshoot and undershoot.
             float percentDiffBetweenLowerAndHigherValues = 
                 (float)((Math.Max(valLower,valHigher)/Math.Min(valLower, valHigher)) -1) * 100;
             if (percentDiffBetweenLowerAndHigherValues> cutoff_percent)
@@ -256,7 +256,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Internal Pid-identification for a given dataset, sampling and with a given filter on y.
-        /// Note that if there is noise on y, then this identification algorithm is observed to under-estimate Kp and Ti.
+        /// Note that if there is noise on y, then this identification algorithm is observed to underestimate Kp and Ti.
         /// This is the motivation for including the ability to include a filter on y
         /// This method also takes pidScaling into account!
         /// </summary>
@@ -359,7 +359,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             for (int curEstidx = 0; curEstidx < numEstimations; curEstidx++)
             {
-                int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iteration back.
+                int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iterations back.
 
                 int idxStart = nIndexesBetweenWindows * curEstidx + nIterationsToLookBack;
                 int idxEnd = nIndexesBetweenWindows * (curEstidx + 1) - 1;
@@ -476,8 +476,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (b[1] == 0)
                 {
-                    // this seems to happen in for instance entire Y is constant, for instance in case 
-                    // of input saturation, or if the controller is in manual the entire time or is the wrong signal
+                    // this seems to happen if for instance the entire Y is constant, for instance in case 
+                    // of input saturation, or if the controller is in manual the entire time or it is the wrong signal
                     pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY);
                     Tiest[curEstidx] = badValueIndicatingValue;
                     continue;
@@ -494,9 +494,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong
-            // if data is "only noise" then the two can be very close even if model is good, for that reason add
+            // if the data is "only noise" then the two can be very close even if the model is good, for that reason add
             // a little margin 
-            // if there is too little variation in U, then Kp tends to close to zero.
+            // if there is too little variation in U, then Kp tends to be close to zero.
 
             const int nDigits = 7;
             const int nDigitsParams = 4;
@@ -521,6 +521,15 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.WasAbleToIdentify = true;
 
             dataSet.U_sim = U_sim;
+
+            // If the measured and simulated signals end up being inversely correlated, the sign of the Kp parameter
+            // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
+            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), null, 0) < 0)
+            {
+                pidParam.Kp = -pidParam.Kp;
+                dataSet.U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
+            }
+
         //    pidParam.Fitting.CalcCommonFitMetricsFromDataset(dataSet, null, true);
 
             pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigitsParams);
@@ -555,7 +564,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Returns the simulated time series of the manipulated varialbe u as given by the PID-controller.
+        /// Returns the simulated time series of the manipulated variable u as given by the PID-controller.
         /// </summary>
         /// <param name="pidParams"></param>
         /// <param name="dataset"></param>
