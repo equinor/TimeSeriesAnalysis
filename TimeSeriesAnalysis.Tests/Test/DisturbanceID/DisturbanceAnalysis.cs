@@ -22,10 +22,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceAnalysis
                 signal, timeBase_s
             );
 
-            if (period != null)
-            {
-                Assert.AreEqual((float)period, truePeriod, delta: tolerance * truePeriod);
-            }
+            Assert.AreEqual((float)period, truePeriod, delta: tolerance * truePeriod);
         }
 
         [TestCase(5, 10, 7, 84)]
@@ -47,10 +44,23 @@ namespace TimeSeriesAnalysis.Test.DisturbanceAnalysis
                 signal, timeBase_s
             );
 
-            if (period != null)
-            {
-                Assert.AreEqual((float)period, truePeriod, delta: tolerance * truePeriod);
-            }
+            Assert.AreEqual((float)period, truePeriod, delta: tolerance * truePeriod);
+        }
+
+        [Test]
+        public void FFT_constant_noPeriod()
+        {
+            int nStepsDuration = 32;
+            int timeBase_s = 1;
+
+            double[] signal = TimeSeriesCreator.Constant(value: 5.0, nStepsDuration);
+ 
+            double? period = SignalPeriodEstimator.EstimatePeriod
+            (
+                signal, timeBase_s
+            );
+
+            Assert.IsNull(period);
         }
     }
 }
