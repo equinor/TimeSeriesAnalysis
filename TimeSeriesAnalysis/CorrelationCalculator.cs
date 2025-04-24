@@ -126,7 +126,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="mainSignalName"></param>
         /// <param name="dataSet">the dataset, which must have a correctly set timestamps in order to estimate time constants</param>
-        /// <param name="minimumCorrCoeffToDoTimeshiftCalc">calculate time-shift for every corr coeff that is above this threshold(0.0-1.0)</param>
+        /// <param name="minimumCorrCoeffToDoTimeshiftCalc">calculate time-shift for every corr coeff with absolute value that is above this threshold(0.0-1.0)</param>
         /// <param name="minimumRsqAbs">for a time-shift to be valid, the resulting model nees to have Rsq over this threshold</param>
         /// <returns>a</returns>
         public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet,
@@ -175,18 +175,12 @@ namespace TimeSeriesAnalysis
                 double? timeDelay_s = null;
 
                 if (curSignalName != mainSignalName && dataSet.GetTimeBase() != 0
-                    && curCorrCoef > minimumCorrCoeffToDoTimeshiftCalc)
+                    && Math.Abs(curCorrCoef) > minimumCorrCoeffToDoTimeshiftCalc)
                 {
                     double[] curSignalValues = dataSet.GetValues(curSignalName);
                     if (curSignalValues != null)
                     {
                         (timeConstant_s,timeDelay_s) = EstimateTimeShift(curSignalValues,mainSignalValues);
-                       //  else
-                        { // check if it is possible to identify model if we reverse which signal is in and which is out.
-                      //      var timeShiftReversed = EstiamteTimeShift(mainSignalValues,curSignalValues );
-                        //    if (timeShiftReversed.HasValue)
-                          //      timeConstant_s = -1* timeShiftReversed.Value;
-                        }
                     }
                 }
                 ret.Add(new CorrelationObject(curSignalName, curCorrCoef,timeConstant_s, timeDelay_s)); 
