@@ -13,7 +13,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Uses the largest-in-magnitude index of the FFT of the signal to estimate the period.
         /// </summary>
-        public static double? EstimatePeriod(double[] signal, double timeBase_s)
+        public static double? EstimatePeriod(double[] signal, double timeBase_s, double significantPeakThreshold = 0.3)
         {
             if (signal == null || signal.Length == 0)
             {
@@ -31,7 +31,25 @@ namespace TimeSeriesAnalysis
 
             double[] fft = CalculateFFT(signal, fft_length);
 
-            int highest_freq_index = fft.Skip(1).ToArray().ArgMax();
+            // Remove DC / 0 Hz term before further analysis
+            fft = fft.Skip(1).ToArray();
+
+            double[] fft_descending = fft.OrderByDescending(x => x).ToArray();
+            bool significantPeak = false;
+            for (int i = 1; i < fft_descending.Length; i++)
+            {
+                if (fft_descending[i] < (1 - significantPeakThreshold) * fft_descending[i - 1])
+                {
+                    significantPeak = true;
+                }
+            }
+
+            if (!significantPeak)
+            {
+                return null;
+            }
+
+            int highest_freq_index = fft.ArgMax();
             if (highest_freq_index == 0)
             {
                 return null;
