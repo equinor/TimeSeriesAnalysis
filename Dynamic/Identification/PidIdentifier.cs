@@ -78,7 +78,17 @@ namespace TimeSeriesAnalysis.Dynamic
             const bool DoFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
 
+            // Find the oversampled factor if relevant
             bool ignoreFlatLinesFirst = ignoreFlatLines;
+            if (downsampleOversampledData & ignoreFlatLinesFirst)
+            {
+                double oversampledFactor = dataSet.GetOversampledFactor(out int keyIndex);
+                // Oversamples of less than 20 percent can be handled by the flatline index ignoration.
+                if (oversampledFactor > 1.2)
+                {
+                    ignoreFlatLinesFirst = false;
+                }
+            }
 
             // 1. try identification with delay of one sample but without filtering
             (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true, ignoreFlatLines: ignoreFlatLinesFirst);
