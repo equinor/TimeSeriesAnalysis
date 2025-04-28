@@ -378,8 +378,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 double[] ucur, uprev, ecur, eprev;
 
-                List<int> indicesToIgnore = new List<int>();
-
                 double[] e_scaled;
                 double yScaleFactor = 1;
                 if (pidParam.Scaling.IsKpScalingOn())
@@ -512,23 +510,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadU).ToList();
-
-            if (ignoreFlatLines)
-            {
-                // Identify oversampled data
-                List<int> indSameU = new List<int>();
-                for (int i = 0; i < dataSet.U.GetNColumns(); i++)
-                {
-                   indSameU = indSameU.Union(vec.FindValues(dataSet.U.GetColumn(i), -9999, VectorFindValueType.SameAsPrevious)).ToList();
-                }
-                List<int> indSameYmeas = vec.FindValues(dataSet.Y_meas, -9999, VectorFindValueType.SameAsPrevious);
-                List<int> indSameYsetpoint = vec.FindValues(dataSet.Y_setpoint, -9999, VectorFindValueType.SameAsPrevious);
-                List<int> indOversampled = indSameU.Intersect(indSameYmeas).ToList();
-                indOversampled = indOversampled.Intersect(indSameYsetpoint).ToList();
-
-                indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indOversampled).ToList();
-                indicesToIgnoreForEvalSim.Sort();
-            }
 
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong
