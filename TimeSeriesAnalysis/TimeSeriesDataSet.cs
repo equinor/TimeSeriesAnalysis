@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -317,20 +317,20 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Returns a copy of the dataset that is downsampled by the given factor
+        /// Returns a copy of the dataset that is downsampled by the given factor.
         /// </summary>
-        /// <param name="downsampleFactor">value greater than 1 indicating that every nth value of the orignal data will be transferred</param>
+        /// <param name="downsampleFactor">value greater than 1 indicating that every Floor(n*factor) value of the orignal data will be transferred.</param>
+        /// <param name="keyIndex">optional index around which to perform the downsampling.</param>
         /// <returns></returns>
-        public TimeSeriesDataSet CreateDownsampledCopy(int downsampleFactor)
+        public TimeSeriesDataSet CreateDownsampledCopy(double downsampleFactor, int keyIndex = 0)
         {
             TimeSeriesDataSet ret = new TimeSeriesDataSet();
 
-            ret.timeStamps = Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor).ToList();
-            //ret.N = ret.timeStamps.Count();
+            ret.timeStamps = Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor, keyIndex).ToList();
             ret.dataset_constants = dataset_constants;
             foreach (var item in dataset)
             {
-                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor);
+                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor, keyIndex);
             }
             return ret;
         }

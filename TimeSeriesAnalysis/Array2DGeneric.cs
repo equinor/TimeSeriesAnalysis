@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -189,8 +189,9 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="matrix"></param>
         /// <param name="downsampleFactor"></param>
+        /// <param name="keyindex"></param>
         /// <returns></returns>
-        static public T[,] Downsample(T[,] matrix, int downsampleFactor)
+        static public T[,] Downsample(T[,] matrix, double downsampleFactor, int keyindex = 0)
         {
             if (matrix == null)
                 return null;
@@ -202,7 +203,7 @@ namespace TimeSeriesAnalysis
             {
                 T[] curCol = Array2D<T>.GetColumn(matrix, colIdx);
 
-                ret[colIdx] = Vec<T>.Downsample(curCol, downsampleFactor);
+                ret[colIdx] = Vec<T>.Downsample(curCol, downsampleFactor, keyindex);
             }
             var jaggedRet = Created2DFromJagged(ret);
             return Array2D<T>.Transpose(jaggedRet);

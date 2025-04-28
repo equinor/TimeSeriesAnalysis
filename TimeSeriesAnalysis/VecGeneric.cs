@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis
@@ -46,21 +47,41 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Downsample a vector by a given factor(selet only every Nth value)
+        /// Downsample a vector by a given factor by choosing every Floor(factor*n) value.
+        /// The optional key index indicates an index for which to base the downsampling around.
         /// </summary>
         /// <param name="vec"></param>
         /// <param name="factor"></param>
+        /// <param name="keyIndex"></param>
         /// <returns></returns>
-        static public T[] Downsample(T[] vec, int factor)
+        static public T[] Downsample(T[] vec, double factor, int keyIndex = 0)
         {
             if (vec == null)
                 return null;
             if (factor <= 1)
                 return vec;
-            var ret = new List<T>();
-            for (int i = 0; i < vec.Length; i += factor)
+            
+            // Find downsampled indices
+            var ind = new List<int>();
+            int count = 0;
+            for (int i = keyIndex; i >= 0; i = keyIndex - (int)Math.Ceiling(factor*count))
             {
-                ret.Add(vec[i]);
+                ind.Add(i);
+                count++;
+            }
+            count = 1;
+            for (int i = keyIndex + (int)Math.Floor(factor); i < vec.Length; i = keyIndex + (int)Math.Floor(factor*count))
+            {
+                ind.Add(i);
+                count++;
+            }
+            ind.Sort();
+
+            // Populate and return downsampled vector
+            var ret = new List<T>();
+            for (int i = 0; i < ind.Count(); i++)
+            {
+                ret.Add(vec[ind[i]]);
             }
             return ret.ToArray();
         }
