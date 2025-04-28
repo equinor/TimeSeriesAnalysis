@@ -1,4 +1,4 @@
-﻿using Accord.IO;
+using Accord.IO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -141,16 +141,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="originalDataSet"></param>
         /// <param name="downsampleFactor">factor by which to downsample the original dataset</param>
-        public UnitDataSet(UnitDataSet originalDataSet, int downsampleFactor)
+        /// <param name="keyIndex">index around which to center the downsampling</param>
+        public UnitDataSet(UnitDataSet originalDataSet, double downsampleFactor, int keyIndex=0)
         {
             this.ProcessName = originalDataSet.ProcessName + "downsampledFactor" + downsampleFactor;
 
-            this.Y_meas = Vec<double>.Downsample(originalDataSet.Y_meas, downsampleFactor);
-            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor);
-            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor);
-            this.U = Array2D<double>.Downsample(originalDataSet.U, downsampleFactor);
-            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor);
-            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor);
+            this.Y_meas = Vec<double>.Downsample(originalDataSet.Y_meas, downsampleFactor, keyIndex);
+            this.Y_setpoint = Vec<double>.Downsample(originalDataSet.Y_setpoint, downsampleFactor, keyIndex);
+            this.Y_sim = Vec<double>.Downsample(originalDataSet.Y_sim, downsampleFactor, keyIndex);
+            this.U = Array2D<double>.Downsample(originalDataSet.U, downsampleFactor, keyIndex);
+            this.U_sim = Array2D<double>.Downsample(originalDataSet.U_sim, downsampleFactor, keyIndex);
+            this.Times = Vec<DateTime>.Downsample(originalDataSet.Times, downsampleFactor, keyIndex);
         }
 
         /// <summary>
