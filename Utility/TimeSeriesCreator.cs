@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,10 +44,10 @@ namespace TimeSeriesAnalysis.Utility
         /// Create an array of DateTimes starting at <c>t0</c> of length N and with sampling interval <c>dT_s</c>
         /// </summary>
         /// <param name="t0">first datetime in the array to be created</param>
-        /// <param name="dT_s">sampling internval</param>
+        /// <param name="dT_s">sampling interval</param>
         /// <param name="N">number of desired data points</param>
         /// <returns></returns>
-        static public DateTime[] CreateDateStampArray(DateTime t0, int dT_s, int N)
+        static public DateTime[] CreateDateStampArray(DateTime t0, double dT_s, int N)
         {
             List<DateTime> times = new List<DateTime>();
             DateTime curTime = t0;
@@ -62,12 +62,12 @@ namespace TimeSeriesAnalysis.Utility
         /// <summary>
         /// Create an array representing a sinus
         /// </summary>
-        /// <param name="amplitude">amplitud of sinus</param>
+        /// <param name="amplitude">amplitude of sinus</param>
         /// <param name="sinusPeriod_s">time for a complete 360 degree period of the sinus in seconds</param>
         /// <param name="dT_s">the timebase</param>
-        /// <param name="N">number of desired data point in return array</param>
-        /// <returns>an array continaing the specified sinus</returns>
-        static public double[] Sinus(double amplitude, double sinusPeriod_s, int dT_s, int N)
+        /// <param name="N">number of desired data points in return array</param>
+        /// <returns>an array containing the specified sinus</returns>
+        static public double[] Sinus(double amplitude, double sinusPeriod_s, double dT_s, int N)
         {
             List<double> list = new List<double>();
 

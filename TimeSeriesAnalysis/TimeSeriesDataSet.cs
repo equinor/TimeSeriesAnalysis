@@ -339,6 +339,7 @@ namespace TimeSeriesAnalysis
         /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
         /// </summary>
         /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
+        /// <param name="N">number of datapoints</param>
         /// <param name="t0">start time, can be null, which can be usedful for testing</param>
         public void CreateTimestamps(double timeBase_s, int N=0, DateTime? t0 = null)
         {
@@ -417,18 +418,19 @@ namespace TimeSeriesAnalysis
         {
             if (timeStamps == null)
                 return 0;
-            return timeStamps.Count - 1;
+            return timeStamps.Count;
         }
 
         /// <summary>
-        /// Get the timebase, the time between two samples in the dataset
+        /// Get the timebase, the average time between two samples in the dataset
         /// </summary>
         /// <returns>The timebase in seconds</returns>
         public double GetTimeBase()
         {
             if (timeStamps.Count > 2)
             {
-                return timeStamps[2].Subtract(timeStamps[1]).TotalSeconds;
+                int N = GetNumDataPoints();
+                return timeStamps[N-1].Subtract(timeStamps[0]).TotalSeconds / (N-1);
             }
             else
                 return 0;
