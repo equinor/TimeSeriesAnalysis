@@ -1,4 +1,4 @@
-﻿using Accord.Math;
+using Accord.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +50,15 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private bool IsFirstModelBetterThanSecondModel(PidParameters firstModel, PidParameters secondModel)
         {
-            if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
+            // If both models show a very high R-Squared-diff, look at fitscore instead if there is a significant difference
+            if (firstModel.Fitting.RsqDiff > 95 && secondModel.Fitting.RsqDiff > 95 && Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > 10)
+            {
+                if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
+                    return true;
+                else
+                    return false;
+            }
+            else if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
                 return true;
             else
                 return false;
@@ -61,6 +69,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
+        /// <param name="downsampleOversampledData">Boolean, whether to do internal oversample identification and attempt downsampling. Defaults to true.</param>
+        /// <param name="ignoreFlatLines">Boolean, whether to do internal flatline identification and ignore their indices. Defaults to true.</param>
         /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
@@ -356,6 +366,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] Rsq = new double[numEstimations];
 
             RegressionResults regressResults = null;
+            List<int> indicesToIgnore = new List<int>();
 
             for (int curEstidx = 0; curEstidx < numEstimations; curEstidx++)
             {
@@ -394,7 +405,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
 
                 // replace -9999 in dataset
-                List<int> indBadU = SysIdBadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
+                List<int> indBadUcur = SysIdBadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
                 List<int> indBadEcur = vec.FindValues(ecur, -9999, VectorFindValueType.Equal);
                 List<int> indBadEprev = Index.Subtract(indBadEcur.ToArray(), 1).ToList();
 
@@ -415,7 +426,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     //   List<int> indAntiSurge = Vec.FindValues(ecur, result.antiSurgeParams.kickBelowThresholdE, FindValues.SmallerThan);
                 }
                 */
-                indicesToIgnore = indicesToIgnore.Union(indBadU).ToList();
+                indicesToIgnore = indicesToIgnore.Union(indBadUcur).ToList();
                 indicesToIgnore = indicesToIgnore.Union(indBadEcur).ToList();
                 indicesToIgnore = indicesToIgnore.Union(indBadEprev).ToList();
                 //TODO: need to remove indice if _previous_ value was umax or umin
@@ -490,7 +501,34 @@ namespace TimeSeriesAnalysis.Dynamic
                     t_result[curEstidx] = dataSet.Times[idxEnd];
                 }
             }
+            // The ignored indices above are for the arrays used for identification.
+            // For evaluation and simulation, slightly larger arrays are used, and other indices must be found.
+            List<int> indicesToIgnoreForEvalSim = new List<int>();
 
+            List<int> indBadU = new List<int>();
+            for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+            {
+                indBadU = indBadU.Union(vec.FindValues(dataSet.U.GetColumn(i),dataSet.BadDataID, VectorFindValueType.Equal)).ToList();
+            }
+
+            indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadU).ToList();
+
+            if (ignoreFlatLines)
+            {
+                // Identify oversampled data
+                List<int> indSameU = new List<int>();
+                for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+                {
+                   indSameU = indSameU.Union(vec.FindValues(dataSet.U.GetColumn(i), -9999, VectorFindValueType.SameAsPrevious)).ToList();
+                }
+                List<int> indSameYmeas = vec.FindValues(dataSet.Y_meas, -9999, VectorFindValueType.SameAsPrevious);
+                List<int> indSameYsetpoint = vec.FindValues(dataSet.Y_setpoint, -9999, VectorFindValueType.SameAsPrevious);
+                List<int> indOversampled = indSameU.Intersect(indSameYmeas).ToList();
+                indOversampled = indOversampled.Intersect(indSameYsetpoint).ToList();
+
+                indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indOversampled).ToList();
+                indicesToIgnoreForEvalSim.Sort();
+            }
 
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong
@@ -516,7 +554,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return (pidParam,null);
             }
 
-            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
+            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indicesToIgnoreForEvalSim));
 
             pidParam.Fitting.WasAbleToIdentify = true;
 
@@ -524,10 +562,19 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // If the measured and simulated signals end up being inversely correlated, the sign of the Kp parameter
             // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
-            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), null, 0) < 0)
+            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim, 0) < -0.1)
             {
+                double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim);
                 pidParam.Kp = -pidParam.Kp;
-                dataSet.U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
+                U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indicesToIgnoreForEvalSim));
+                double newFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim);
+                //todo: find out why this sometimes fails and needs to be reverted
+                if (oldFitScore > newFitScore)
+                {
+                    pidParam.Kp = -pidParam.Kp;
+                    U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indicesToIgnoreForEvalSim));
+                }
+                dataSet.U_sim = U_sim;
             }
 
         //    pidParam.Fitting.CalcCommonFitMetricsFromDataset(dataSet, null, true);
@@ -547,10 +594,10 @@ namespace TimeSeriesAnalysis.Dynamic
       
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
-            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0)), nDigits);
+            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim), nDigits);
             
             pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), U_sim.GetColumn(0), 0);
-            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), null, 0) * 100;
+            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim, 0) * 100;
 
             pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
@@ -569,13 +616,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParams"></param>
         /// <param name="dataset"></param>
         /// <param name="isPIDoutputDelayOneSample"></param>
+        /// <param name="indToIgnore"></param>
         /// <returns></returns>
-        public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample)
+        public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, List<int> indToIgnore = null)
         {
             int firstGoodDataPointToStartSimIdx = 0;
             while ((dataset.Y_setpoint[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
                 dataset.Y_meas[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
-                dataset.U[firstGoodDataPointToStartSimIdx,0] == badValueIndicatingValue) &&
+                dataset.U[firstGoodDataPointToStartSimIdx,0] == badValueIndicatingValue ||
+                indToIgnore.Contains(firstGoodDataPointToStartSimIdx)) &&
                  firstGoodDataPointToStartSimIdx < dataset.Y_meas.Length - 2)
             {
                 firstGoodDataPointToStartSimIdx++;
@@ -608,16 +657,29 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double lastGoodU = 0, nextU;
+            int gapSize = 0;
             for (int i = firstGoodDataPointToStartSimIdx; i < Math.Min(simulatedU.Length - samplesToDelayOutput, dataset.Y_meas.Length); i++)
             {
-                if (dataset.Y_meas[i] == -9999 || Double.IsNaN(dataset.Y_meas[i]) || Double.IsInfinity(dataset.Y_meas[i]))
+                if (dataset.Y_meas[i] == -9999 || Double.IsNaN(dataset.Y_meas[i]) || Double.IsInfinity(dataset.Y_meas[i]) || indToIgnore.Contains(i))
                 {
                     nextU = lastGoodU;
+                    gapSize++;
                 }
                 else
                 {
-                    nextU = pid.Iterate(dataset.Y_meas[i], dataset.Y_setpoint[i]);
+                    // If there is a considerable consecutive data gap, the pid should be warm-started again with the conditions after the gap.
+                    if (gapSize > 5)
+                    {
+                        pid.WarmStart(dataset.Y_meas[i], 
+                            dataset.Y_setpoint[i], dataset.U[i,0]);
+                        nextU = dataset.U[i,0];
+                    }
+                    else
+                    {
+                        nextU = pid.Iterate(dataset.Y_meas[i], dataset.Y_setpoint[i]);
+                    }
                     lastGoodU = nextU;
+                    gapSize = 0;
                 }
                 simulatedU[i + samplesToDelayOutput] = nextU;
             }
