@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="downsampleOversampledData">Boolean, whether to do internal oversample identification and attempt downsampling. Defaults to true.</param>
         /// <param name="ignoreFlatLines">Boolean, whether to do internal flatline identification and ignore their indices. Defaults to true.</param>
         /// <returns>the identified parameters of the PID-controller</returns>
-        public PidParameters Identify(ref UnitDataSet dataSet)
+        public PidParameters Identify(ref UnitDataSet dataSet, bool downsampleOversampledData = true)
         {
             const bool doOnlyWithDelay = false;// should be false unless debugging something
             const bool DoFiltering = true; // default is true (this improves performance significantly)
@@ -144,7 +144,30 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
             }
-            // 5. finally return the "best" result
+
+            // 5. Try identifying if the data is oversampled, and if so check whether downsampled identification yields better results.
+            if (downsampleOversampledData)
+            {
+                double oversampledFactor = dataSet.GetOversampledFactor(out int keyIndex);
+                // Oversamples of less than 20 percent can be handled by the flatline index ignoration.
+                if (oversampledFactor > 1.2)
+                {
+                    UnitDataSet dataSetDownsampled = new UnitDataSet(dataSet, oversampledFactor, keyIndex);
+                    if (dataSet.Times.Count() != dataSetDownsampled.Times.Count())
+                    {
+                        pidFilter = null;
+                        PidParameters results_downsampled = Identify(ref dataSetDownsampled);
+                        if (IsFirstModelBetterThanSecondModel(results_downsampled, bestPidParameters))
+                        {
+                            bestU = dataSetDownsampled.U_sim;
+                            dataSet = dataSetDownsampled;
+                            bestPidParameters = results_downsampled;
+                        }
+                    }
+                }
+            }
+            
+            // 6. finally return the "best" result
             dataSet.U_sim = bestU;
             // consider if the the filter parameters maybe do not need to be returned
             if (!returnFilterParameters)
@@ -274,10 +297,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="isPIDoutputDelayOneSample"></param>
         /// <param name="pidFilterParams">optional filter to apply to y</param>
         /// <param name="doFilterUmeas"> if set to true, the measurement of the manipulated variable will be filtered</param>
+        /// <param name="ignoreFlatLines">if set to true, indices with oversampled data will be ignored.
+        /// This helps identification if there are periods with flatlined data that are oversampled,
+        /// but will give incorrect Ti if the entire dataset is oversampled.</param>
         /// 
         /// <returns></returns>
         private (PidParameters, double[,]) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
-            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false)
+            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false, bool ignoreFlatLines=true)
         {
             this.timeBase_s = dataSet.GetTimeBase();
             PidParameters pidParam = new PidParameters();
@@ -438,6 +464,20 @@ namespace TimeSeriesAnalysis.Dynamic
                     pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_BadInputData);
                     continue;
                 }
+
+                if (ignoreFlatLines)
+                {
+                    // Identify oversampled data
+                    List<int> indSameUcur = vec.FindValues(ucur, -9999, VectorFindValueType.SameAsPrevious);
+                    List<int> indSameEcur = vec.FindValues(ecur, -9999, VectorFindValueType.SameAsPrevious);
+                    List<int> indOversampled = indSameUcur.Intersect(indSameEcur).ToList();
+
+                    // ignore oversampled indices as well.
+                    indicesToIgnore = indicesToIgnore.Union(indOversampled).ToList();
+                    indicesToIgnore.Sort();
+                }
+
+
                 double uCurRange = vec.Max(ucur) - vec.Min(ucur);
                 if (uCurRange < uRange * MIN_DATASUBSET_URANGE_PRC / 100)
                 {
@@ -510,6 +550,23 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadU).ToList();
+            
+            if (ignoreFlatLines)
+            {
+                // Identify oversampled data
+                List<int> indSameU = new List<int>();
+                for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+                {
+                   indSameU = indSameU.Union(vec.FindValues(dataSet.U.GetColumn(i), -9999, VectorFindValueType.SameAsPrevious)).ToList();
+                }
+                List<int> indSameYmeas = vec.FindValues(dataSet.Y_meas, -9999, VectorFindValueType.SameAsPrevious);
+                List<int> indSameYsetpoint = vec.FindValues(dataSet.Y_setpoint, -9999, VectorFindValueType.SameAsPrevious);
+                List<int> indOversampled = indSameU.Intersect(indSameYmeas).ToList();
+                indOversampled = indOversampled.Intersect(indSameYsetpoint).ToList();
+
+                indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indOversampled).ToList();
+                indicesToIgnoreForEvalSim.Sort();
+            }
 
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong

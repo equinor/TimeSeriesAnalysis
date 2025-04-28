@@ -336,6 +336,25 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
+        /// Returns a copy of the dataset that is oversampled by the given factor.
+        /// </summary>
+        /// <param name="oversampleFactor">value greater than 1 indicating that every value will be sampled until (i / factor > 1).</param>
+        /// <param name="keyIndex">optional index around which to perform the oversampling.</param>
+        /// <returns></returns>
+        public TimeSeriesDataSet CreateOversampledCopy(double oversampleFactor, int keyIndex = 0)
+        {
+            TimeSeriesDataSet ret = new TimeSeriesDataSet();
+
+            ret.CreateTimestamps(timeBase_s: GetTimeBase() / oversampleFactor, N: (int)Math.Ceiling(GetNumDataPoints() * oversampleFactor), t0: timeStamps[0]);
+            ret.dataset_constants = dataset_constants;
+            foreach (var item in dataset)
+            {
+                ret.dataset[item.Key] = Vec<double>.Oversample(item.Value, oversampleFactor, keyIndex);
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
         /// </summary>
         /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
