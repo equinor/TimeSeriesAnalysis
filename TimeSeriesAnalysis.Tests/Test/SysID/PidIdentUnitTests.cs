@@ -251,6 +251,24 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
 
+        /// <summary>
+        /// It is not uncommon for datasets to be oversampled from the resolution of the stored timeseries.
+        /// The identification should then automatically attempt downsampling to improve the fitscore.
+        /// </summary>
+        /// <param name="N">number of samples in the stored dataset,</param>
+        /// <param name="timebaseStored">Timebase of the stored signals.</param>
+        /// <param name="timebaseOversampled">Timebase of the oversampled data.</param>
+        [TestCase(1000,50.0,1.0)]// the stored signal is oversampled by a factor 50
+        [TestCase(1000,50.0,7.0)]// the stored signal is oversampled by a factor 50/7
+        [TestCase(1000,50.0,37.0)]// the stored signal is oversampled by a factor 50/37
+        [TestCase(1000,10.0,1.0)]// the stored signal is oversampled by a factor 10
+        [TestCase(1000,10.0,2.0)]// the stored signal is oversampled by a factor 5
+        [TestCase(1000,10.0,3.0)]// the stored signal is oversampled by a factor 10/3
+        [TestCase(1000,10.0,4.0)]// the stored signal is oversampled by a factor 2.5
+        [TestCase(1000,10.0,5.0)]// the stored signal is oversampled by a factor 2
+        [TestCase(1000,7.0,4.0)]// the stored signal is oversampled by a factor 7/4
+        [TestCase(1000,5.0,3.0)]// the stored signal is oversampled by a factor 5/3
+        [TestCase(1000,5.0,4.0)]// the stored signal is oversampled by a factor 1.25
         public void DownsampleOversampledData(int N, double timebaseStored, double timebaseOversampled)
         {
             // Define parameters
@@ -404,49 +422,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue((oversampledModelParameters.Fitting.FitScorePrc > 0.9 * oversampledModelParameters_control.Fitting.FitScorePrc) | (oversampledModelParameters.Fitting.RsqDiff > 0.9 * oversampledModelParameters_control.Fitting.RsqDiff)); // Allow a little slack due to noise effects
         }
 
-        /// <summary>
-        /// A comprehensive case can include situations where both noise, downsampling, oversampling, and data loss
-        /// occurs in the same dataset. These tests ensure that the identification is able to find the key parameters
-        /// in such situations as well.
-        /// </summary>
-        /// <param name="N">number of samples in the original dataset.</param>
-        /// <param name="timebaseOriginal">Timebase of the original signals.</param>
-        /// <param name="timebaseStored">Timebase of the stored signals.</param>
-        /// <param name="timebaseOversampled">Timebase of the oversampled data.</param>
-        /// <param name="flatlinePeriods">Number of periods with flatlined data.</param>
-        /// <param name="flatlineProportion">Proportion of the dataset that should be flatlines.</param>
-        [TestCase(10000,1.0,8.0,2.0,1,0.1)]
-        [TestCase(10000,1.0,8.0,2.0,1,0.25)]
-        [TestCase(10000,1.0,8.0,2.0,4,0.1)]
-        [TestCase(10000,1.0,8.0,2.0,4,0.25)]
-        [TestCase(10000,1.0,8.0,5.0,1,0.1)]
-        [TestCase(10000,1.0,8.0,5.0,1,0.25)]
-        [TestCase(10000,1.0,8.0,5.0,4,0.1)]
-        [TestCase(10000,1.0,8.0,5.0,4,0.25)]
-        [TestCase(10000,1.0,15.0,2.0,1,0.1)]
-        [TestCase(10000,1.0,15.0,2.0,1,0.25)]
-        [TestCase(10000,1.0,15.0,2.0,4,0.1)]
-        [TestCase(10000,1.0,15.0,2.0,4,0.25)]
-        [TestCase(10000,1.0,15.0,5.0,1,0.1)]
-        [TestCase(10000,1.0,15.0,5.0,1,0.25)]
-        [TestCase(10000,1.0,15.0,5.0,4,0.1)]
-        [TestCase(10000,1.0,15.0,5.0,4,0.25)]
-        [TestCase(10000,3.0,8.0,2.0,1,0.1)]
-        [TestCase(10000,3.0,8.0,2.0,1,0.25)]
-        [TestCase(10000,3.0,8.0,2.0,4,0.1)]
-        [TestCase(10000,3.0,8.0,2.0,4,0.25)]
-        [TestCase(10000,3.0,8.0,5.0,1,0.1)]
-        [TestCase(10000,3.0,8.0,5.0,1,0.25)]
-        [TestCase(10000,3.0,8.0,5.0,4,0.1)]
-        [TestCase(10000,3.0,8.0,5.0,4,0.25)]
-        [TestCase(10000,3.0,15.0,2.0,1,0.1)]
-        [TestCase(10000,3.0,15.0,2.0,1,0.25)]
-        [TestCase(10000,3.0,15.0,2.0,4,0.1)]
-        [TestCase(10000,3.0,15.0,2.0,4,0.25)]
-        [TestCase(10000,3.0,15.0,5.0,1,0.1)]
-        [TestCase(10000,3.0,15.0,5.0,1,0.25)]
-        [TestCase(10000,3.0,15.0,5.0,4,0.1)]
-        [TestCase(10000,3.0,15.0,5.0,4,0.25)]
+       
 
 
 
