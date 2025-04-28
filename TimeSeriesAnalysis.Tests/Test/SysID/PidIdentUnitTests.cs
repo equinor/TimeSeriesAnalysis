@@ -305,7 +305,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             // Identify model on oversampled data
             var pidDataSetOversampled_control = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
             var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
-            var oversampledModelParameters_control = new PidIdentifier().Identify(ref pidDataSetOversampled_control, downsampleOversampledData: false);
+            var oversampledModelParameters_control = new PidIdentifier().Identify(ref pidDataSetOversampled_control, downsampleOversampledData: false, ignoreFlatLines: false);
             var oversampledModelParameters = new PidIdentifier().Identify(ref pidDataSetOversampled);
 
             // Plot results
@@ -393,7 +393,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             // Identify model on oversampled data
             var pidDataSetOversampled_control = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
             var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
-            var oversampledModelParameters_control = new PidIdentifier().Identify(ref pidDataSetOversampled_control, downsampleOversampledData: false);
+            var oversampledModelParameters_control = new PidIdentifier().Identify(ref pidDataSetOversampled_control, downsampleOversampledData: false, ignoreFlatLines: false);
             var oversampledModelParameters = new PidIdentifier().Identify(ref pidDataSetOversampled);
 
             // Plot results
