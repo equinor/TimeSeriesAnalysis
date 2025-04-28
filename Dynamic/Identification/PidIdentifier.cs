@@ -89,7 +89,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
             //    relative to the clock that the pid algorithm ran on originally)
-            (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false);
+            (PidParameters results_withoutDelay, double[,] U_withoutDelay) = IdentifyInternal(dataSet, false, ignoreFlatLines: ignoreFlatLinesFirst);
 
             // save which is the "best" estimate for comparison 
             bool doDelay = true;
@@ -117,7 +117,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
-                    (PidParameters results_withFilter, double[,] U_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams);
+                    (PidParameters results_withFilter, double[,] U_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams, ignoreFlatLines: ignoreFlatLinesFirst);
 
                     if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
                     {
@@ -135,7 +135,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                     (PidParameters results_withFilter, double[,] U_withFilter) =
-                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas);
+                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas, ignoreFlatLines: ignoreFlatLinesFirst);
 
                     if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
                     {
@@ -156,7 +156,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (dataSet.Times.Count() != dataSetDownsampled.Times.Count())
                     {
                         pidFilter = null;
-                        PidParameters results_downsampled = Identify(ref dataSetDownsampled);
+                        PidParameters results_downsampled = Identify(ref dataSetDownsampled, ignoreFlatLines: ignoreFlatLines);
                         if (IsFirstModelBetterThanSecondModel(results_downsampled, bestPidParameters))
                         {
                             bestU = dataSetDownsampled.U_sim;
