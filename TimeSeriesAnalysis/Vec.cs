@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1202,9 +1202,9 @@ namespace TimeSeriesAnalysis
             // Plot.FromList(new List<double[]> { x_mod_int , x_meas_int },new List<string> {"y1=xmod","y1=xmeas" },
             //      TimeSeriesCreator.CreateDateStampArray(new DateTime(2000,1,1),1, x_mod_int.Length));
             //  double SSres = SumOfSquareErr(x_mod_int, x_meas_int, 0, false);
-            double SSres = SumOfSquareErr(x_mod_int, x_meas_int, ymodOffset, false);//explainedVariation
-            double meanOfMeas = Mean(x_meas_int).Value;
-            double SStot = SumOfSquareErr(x_mod_int, meanOfMeas, false); //totalVariation
+            double SSres = SumOfSquareErr(x_mod_int, x_meas_int, ymodOffset, false, indToIgnore);//explainedVariation
+            double meanOfMeas = Mean(x_meas_int, indToIgnore).Value;
+            double SStot = SumOfSquareErr(x_mod_int, meanOfMeas, false, indToIgnore); //totalVariation
             double Rsq = 1 - SSres / SStot;
             return Rsq;
         }
@@ -1382,15 +1382,22 @@ namespace TimeSeriesAnalysis
         /// Sum of the square errors of the vector compared to a constant. by default the return value is normalized by dividing by the number of elements;
         /// this normalization can be turned off.
         /// </summary>
-        public static double SumOfSquareErr(double[] vec, double constant, bool doNormalization = true)
+        public static double SumOfSquareErr(double[] vec, double constant, bool doNormalization = true, List<int> indToIgnore=null)
         {
             double ret = 0;
+            int nGoodValues = 0;
             for (int i = 0; i < vec.Count(); i++)
             {
+                if (indToIgnore != null)
+                {
+                    if (indToIgnore.Contains(i))
+                        continue;
+                }
+                nGoodValues++;
                 ret += Math.Pow(vec[i] - constant, 2);
             }
             if (doNormalization)
-                return ret / vec.Length;
+                return ret / nGoodValues;
             else
                 return ret;
         }
