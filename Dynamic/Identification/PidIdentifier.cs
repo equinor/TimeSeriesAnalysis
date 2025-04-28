@@ -78,8 +78,10 @@ namespace TimeSeriesAnalysis.Dynamic
             const bool DoFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
 
+            bool ignoreFlatLinesFirst = ignoreFlatLines;
+
             // 1. try identification with delay of one sample but without filtering
-            (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true);
+            (PidParameters results_withDelay, double[,] U_withDelay) = IdentifyInternal(dataSet, true, ignoreFlatLines: ignoreFlatLinesFirst);
    
             if (doOnlyWithDelay)
             {
