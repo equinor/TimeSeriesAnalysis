@@ -72,7 +72,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="downsampleOversampledData">Boolean, whether to do internal oversample identification and attempt downsampling. Defaults to true.</param>
         /// <param name="ignoreFlatLines">Boolean, whether to do internal flatline identification and ignore their indices. Defaults to true.</param>
         /// <returns>the identified parameters of the PID-controller</returns>
-        public PidParameters Identify(ref UnitDataSet dataSet, bool downsampleOversampledData = true)
+        public PidParameters Identify(ref UnitDataSet dataSet, bool downsampleOversampledData = true, bool ignoreFlatLines = true)
         {
             const bool doOnlyWithDelay = false;// should be false unless debugging something
             const bool DoFiltering = true; // default is true (this improves performance significantly)
