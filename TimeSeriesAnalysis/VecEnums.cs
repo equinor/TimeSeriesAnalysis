@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +42,11 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Find values that are NOT equal to a given value
         /// </summary>
-        NotEqual = 8
+        NotEqual = 8,
+        /// <summary>
+        /// Find values that are equal to the previous index value
+        /// </summary>
+        SameAsPrevious = 9
 
 
     }

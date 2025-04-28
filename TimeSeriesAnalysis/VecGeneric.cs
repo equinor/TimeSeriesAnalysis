@@ -86,6 +86,45 @@ namespace TimeSeriesAnalysis
             return ret.ToArray();
         }
 
+        /// <summary>
+        /// Oversample a vector by a given factor by choosing every value until (i/factor > 1).
+        /// The optional key index indicates an index for which to base the oversampling around.
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="factor"></param>
+        /// <param name="keyIndex"></param>
+        /// <returns></returns>
+        static public T[] Oversample(T[] vec, double factor, int keyIndex = 0)
+        {
+            if (vec == null)
+                return null;
+            if (factor <= 1)
+                return vec;
+
+            // Find oversampled indices
+            var ind = new List<int>();
+            int count = 0;
+            for (int i = keyIndex; i >= 0; i = keyIndex - (int)Math.Ceiling(count / factor))
+            {
+                ind.Add(i);
+                count++;
+            }
+            count = 1;
+            for (int i = keyIndex + (int)Math.Floor(1 / factor); i < vec.Length; i = keyIndex + (int)Math.Floor(count / factor))
+            {
+                ind.Add(i);
+                count++;
+            }
+            ind.Sort();
+
+            // Populate and return oversampled vector
+            var ret = new List<T>();
+            for (int i = 0; i < ind.Count(); i++)
+            {
+                ret.Add(vec[ind[i]]);
+            }
+            return ret.ToArray();
+        }
 
         ///<summary>
         /// creates an array of size N where every element has value value
