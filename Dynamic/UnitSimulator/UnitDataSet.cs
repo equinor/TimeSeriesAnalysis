@@ -499,6 +499,83 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
+            // If both flatlines and oversamples are present, disregard the flatline data, keeping in mind that flatlines can 'amputate' part of an oversampled group of points.
+            int flatlinepoints = 0;
+            int flatlines = 0;
+            for (int i = 2; i < consecutiveOversamplesList.Count() - flatlines; i++)
+            {
+                if ((consecutiveOversamplesList[i] > consecutiveOversamplesList[i-1] + 2) & (consecutiveOversamplesList[i] > consecutiveOversamplesList[i-2] + 2))
+                {
+                    flatlinepoints += consecutiveOversamplesList[i];
+                    flatlines++;
+                    consecutiveOversamplesList.RemoveAt(i);
+                    consecutiveLargeIndexDiffsStartIndexList.RemoveAt(i);
+                }
+            }
+            if (consecutiveOversamplesList.Count() > 3)
+            {
+                if ((consecutiveOversamplesList[0] > consecutiveOversamplesList[1] + 2) & (consecutiveOversamplesList[0] > consecutiveOversamplesList[2] + 2))
+                {
+                    flatlinepoints += consecutiveOversamplesList[0];
+                    flatlines++;
+                    consecutiveOversamplesList.RemoveAt(0);
+                    consecutiveLargeIndexDiffsStartIndexList.RemoveAt(0);
+                    if (consecutiveOversamplesList[0] > consecutiveOversamplesList[1] + 2)
+                    {
+                        flatlinepoints += consecutiveOversamplesList[0];
+                        flatlines++;
+                        consecutiveOversamplesList.RemoveAt(0);
+                        consecutiveLargeIndexDiffsStartIndexList.RemoveAt(0);
+                    }
+                }
+                else if ((consecutiveOversamplesList[1] > consecutiveOversamplesList[0] + 2) & (consecutiveOversamplesList[1] > consecutiveOversamplesList[2] + 2))
+                {
+                    flatlinepoints += consecutiveOversamplesList[1];
+                    flatlines++;
+                    consecutiveOversamplesList.RemoveAt(1);
+                    consecutiveLargeIndexDiffsStartIndexList.RemoveAt(1);
+                }
+            }
+
+            // Revise the oversampled factor calculation if necessary
+            if (flatlines > 0)
+            {
+                // Flatlines will cause some oversampled points to be mislabeled as flatlinepoints on each end.
+                // These should be taken into account for the calculation. Half an oversample on each end of the flatline is an average value.
+                oversampledFactor = (double)(N - flatlinepoints) / (double)(N - indOversampled.Count());
+                oversampledFactor = (double)(N - (flatlinepoints - (flatlines * oversampledFactor))) / (double)(N - indOversampled.Count());
+                if (oversampledFactor <= 1)
+                {
+                    keyIndex = 0;
+                    return 1;
+                }
+                else if ((consecutiveOversamplesList.Max() <= (int)Math.Ceiling(oversampledFactor) + 1) & (consecutiveOversamplesList.Max() >= (int)Math.Floor(oversampledFactor) - 1))
+                {
+                    keyIndex = 0;
+                    int numConsecutiveSmallOversamples = 0;
+                    int mostConsecutiveSmallOversamples = 0;
+                    int smallestOversample = (int)Math.Floor(oversampledFactor);
+                    for (int i = 0; i < consecutiveOversamplesList.Count(); i++)
+                    {
+                        if (consecutiveOversamplesList[i] == smallestOversample)
+                        {
+                            numConsecutiveSmallOversamples++;
+                            if (numConsecutiveSmallOversamples > mostConsecutiveSmallOversamples)
+                            {
+                                mostConsecutiveSmallOversamples = numConsecutiveSmallOversamples;
+                                keyIndex = Math.Max(consecutiveLargeIndexDiffsStartIndexList[i - mostConsecutiveSmallOversamples + 1] - 1, 0);
+                            }
+                        }
+                    }
+                    return oversampledFactor;
+                }
+                else
+                {
+                    keyIndex = 0;
+                    return 1;
+                }
+            }
+
             // Return the oversampled factor, or 1 if no evenly spread oversampling is found.
             if ((mostConsecutiveOversamples + 1 == (int)Math.Ceiling(oversampledFactor)) & 
                 (largestIndexDiff - secondLargestIndexDiff < 3))
