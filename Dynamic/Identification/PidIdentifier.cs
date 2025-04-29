@@ -1,4 +1,4 @@
-using Accord.Math;
+﻿using Accord.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,8 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         private const double CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC = 0.005;
         const double rSquaredCutoffForInTrackingWarning = 0.02;//must be between 0 and 1
-
+        private const double MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE = 95; // Must be below 100
+        private const double MIN_FITSCORE_DIFF_BEFORE_COMPARING_FITSCORE = 10; // Must be positive
         private const int MAX_ESTIMATIONS_PER_DATASET = 1;
         private const double MIN_DATASUBSET_URANGE_PRC = 0;
         private double badValueIndicatingValue;
@@ -51,7 +52,9 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool IsFirstModelBetterThanSecondModel(PidParameters firstModel, PidParameters secondModel)
         {
             // If both models show a very high R-Squared-diff, look at fitscore instead if there is a significant difference
-            if (firstModel.Fitting.RsqDiff > 95 && secondModel.Fitting.RsqDiff > 95 && Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > 10)
+            if (firstModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
+                && secondModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
+                && Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > MIN_FITSCORE_DIFF_BEFORE_COMPARING_FITSCORE)
             {
                 if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
                     return true;
