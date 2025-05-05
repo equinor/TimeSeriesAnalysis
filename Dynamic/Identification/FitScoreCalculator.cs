@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -196,12 +196,20 @@ namespace TimeSeriesAnalysis
                 return double.NaN;
             double ret = 0;
             double N = 0;
+            indToIgnore?.Sort();
+            int indToIgnoreIndex = 0;
             for (var i = 0; i < Math.Min(reference.Length, model.Length); i++)
             {
-                if (indToIgnore != null)
+                if (!((indToIgnore == null) || (indToIgnore.Count == 0)))
                 {
-                    if (indToIgnore.Contains(i))
+                    if (i == indToIgnore[indToIgnoreIndex])
+                    {
+                        if (indToIgnoreIndex + 1 < indToIgnore.Count)
+                        {
+                            indToIgnoreIndex++;
+                        }
                         continue;
+                    }
                 }
                 ret += Math.Abs(reference[i] - model[i]);
                 N++;
@@ -225,12 +233,20 @@ namespace TimeSeriesAnalysis
 
             var N = 0;
             double ret = 0;
+            indToIgnore?.Sort();
+            int indToIgnoreIndex = 0;
             for (var i = 0; i < signal.Length; i++)
             {
-                if (indToIgnore != null)
+                if (!((indToIgnore == null) || (indToIgnore.Count == 0)))
                 {
-                    if (indToIgnore.Contains(i))
+                    if (i == indToIgnore[indToIgnoreIndex])
+                    {
+                        if (indToIgnoreIndex + 1 < indToIgnore.Count)
+                        {
+                            indToIgnoreIndex++;
+                        }
                         continue;
+                    }
                 }
                 ret += Math.Abs(signal[i] - avg.Value);
                 N++;
