@@ -40,6 +40,11 @@ namespace TimeSeriesAnalysis
             {
                 if (fft_descending[i] < (1 - significantPeakThreshold) * fft_descending[i - 1])
                 {
+                    // Ignore frequency peaks that are too low in magnitude
+                    if ((i > Math.Floor(fft_descending.Length * significantPeakThreshold)) && !significantPeak)
+                    {
+                        return null;
+                    }
                     significantPeak = true;
                 }
             }
