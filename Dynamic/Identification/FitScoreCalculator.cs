@@ -55,7 +55,7 @@ namespace TimeSeriesAnalysis
         /// <param name="indToIgnore">optional list of indices to be ignored</param>
         /// <returns></returns>
         static public double GetPlantWideSimulated(PlantSimulator plantSimObj, TimeSeriesDataSet inputData, 
-            TimeSeriesDataSet simData,, List<int> indToIgnore = null)
+                TimeSeriesDataSet simData, List<int> indToIgnore = null)
         {
             const string disturbanceSignalPrefix = "_D";
             List<double> fitScores = new List<double>();
