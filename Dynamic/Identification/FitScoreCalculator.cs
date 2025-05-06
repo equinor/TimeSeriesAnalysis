@@ -52,9 +52,10 @@ namespace TimeSeriesAnalysis
         /// <param name="plantSimObj"></param>
         /// <param name="inputData"></param>
         /// <param name="simData"></param>
+        /// <param name="indToIgnore">optional list of indices to be ignored</param>
         /// <returns></returns>
         static public double GetPlantWideSimulated(PlantSimulator plantSimObj, TimeSeriesDataSet inputData, 
-            TimeSeriesDataSet simData)
+            TimeSeriesDataSet simData,, List<int> indToIgnore = null)
         {
             const string disturbanceSignalPrefix = "_D";
             List<double> fitScores = new List<double>();
@@ -114,7 +115,7 @@ namespace TimeSeriesAnalysis
 
                 if (measY != null && simY != null)
                 {
-                    var curFitScore = FitScoreCalculator.Calc(measY, simY);
+                    var curFitScore = FitScoreCalculator.Calc(measY, simY, indToIgnore);
 
                     if (curFitScore != double.NaN)
                     {
