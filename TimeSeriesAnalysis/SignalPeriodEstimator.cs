@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Accord.Math;
@@ -34,27 +35,32 @@ namespace TimeSeriesAnalysis
             // Remove DC / 0 Hz term before further analysis
             fft = fft.Skip(1).ToArray();
 
-            double[] fft_descending = fft.OrderByDescending(x => x).ToArray();
-            bool significantPeak = false;
-            for (int i = 1; i < fft_descending.Length; i++)
+            List<(double magnitude, int originalIndex)> indexedFft = fft.Select((magnitude, index) => (magnitude, index)).ToList();
+
+            var fft_descending = indexedFft.OrderByDescending(x => x.magnitude).ToList();
+            List<int> significantPeakIndices = new List<int>();
+
+            for (int i = 0; i < fft_descending.Count - 1; i++)
             {
-                if (fft_descending[i] < (1 - significantPeakThreshold) * fft_descending[i - 1])
+                if (fft_descending[i + 1].magnitude < (1 - significantPeakThreshold) * fft_descending[i].magnitude)
                 {
                     // Ignore frequency peaks that are too low in magnitude
-                    if ((i > Math.Floor(fft_descending.Length * significantPeakThreshold)) && !significantPeak)
+                    if ((i > Math.Floor(fft_descending.Count * significantPeakThreshold)) && !significantPeakIndices.Any())
                     {
                         return null;
                     }
-                    significantPeak = true;
+
+                    significantPeakIndices.Add(fft_descending[i].originalIndex);
+
                 }
             }
 
-            if (!significantPeak)
+            if (!significantPeakIndices.Any())
             {
                 return null;
             }
 
-            int highest_freq_index = fft.ArgMax();
+            int highest_freq_index = significantPeakIndices[0];
             if (highest_freq_index == 0)
             {
                 return null;
