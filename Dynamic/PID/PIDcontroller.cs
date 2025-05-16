@@ -531,13 +531,27 @@ namespace TimeSeriesAnalysis.Dynamic
         /// useful to avoid bumps when staring controller
         /// </summary>
 
-        public void  WarmStart(double y_process_abs, double y_set_abs, double u_abs)
+        public void  WarmStart(double y_process_abs, double y_set_abs, double u_abs, double y_process_abs_prev = 0, double y_set_abs_prev = 0, double y_process_abs_prev_prev = 0, double y_set_abs_prev_prev = 0)
         {
             y_set_prc_prev = pidScaling.ScaleYValue(y_set_abs);
             u_prev      = u_abs; 
             double e    = CalcUnscaledE(y_process_abs, y_set_abs);
-            e_prev_unscaled      = e;
-            e_prev_prev_unscaled = e;
+            if ((y_process_abs_prev != 0) & (y_set_abs_prev != 0))
+            {
+                e_prev_unscaled = CalcUnscaledE(y_process_abs_prev, y_set_abs_prev);
+            }
+            else
+            {
+                e_prev_unscaled = e;
+            }
+            if ((y_process_abs_prev_prev != 0) & (y_set_abs_prev_prev != 0))
+            {
+                e_prev_prev_unscaled = CalcUnscaledE(y_process_abs_prev_prev, y_set_abs_prev_prev);
+            }
+            else
+            {
+                e_prev_prev_unscaled = e;
+            }
            // u0      = u_abs;
             uIfInAuto = u_abs;
             controllerStatus = PidStatus.AUTO; 
