@@ -1,4 +1,4 @@
-using Accord.IO;
+﻿using Accord.IO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -395,7 +395,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             for (int i = 0; i < U.GetNColumns(); i++)
             {
-                double? avg = (new Vec(BadDataID)).Mean(U.GetColumn(i));
+                double? avg = (new Vec(BadDataID)).Mean(U.GetColumn(i), IndicesToIgnore);
                 if (!avg.HasValue)
                     return null;
                 averages.Add(avg.Value);

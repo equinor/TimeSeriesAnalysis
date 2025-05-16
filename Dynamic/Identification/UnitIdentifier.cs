@@ -1168,7 +1168,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             double[] diff = (new Vec(nanValue)).Subtract(yMeas_exceptIgnoredValues, ySim_exceptIgnoredValues);
-            double? bias = (new Vec(nanValue)).Mean(diff);
+            double? bias = (new Vec(nanValue)).Mean(diff, dataSet.IndicesToIgnore);
             double[] y_sim_ret = null;
             if (bias.HasValue && y_sim != null)
             {
