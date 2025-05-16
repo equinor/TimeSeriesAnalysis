@@ -518,7 +518,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 var simY_nobias = y_sim;
                 var estBias = vec.Mean(vec.Subtract(vec.GetValues(dataSet.Y_meas, dataSet.IndicesToIgnore),
-                    vec.GetValues(simY_nobias, dataSet.IndicesToIgnore)));
+                    vec.GetValues(simY_nobias, dataSet.IndicesToIgnore)), dataSet.IndicesToIgnore);
 
                 if (estBias.HasValue)
                 {

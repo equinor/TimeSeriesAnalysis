@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         private const double CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC = 0.005;
         const double rSquaredCutoffForInTrackingWarning = 0.02;//must be between 0 and 1
-        private const double MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE = 95; // Must be below 100
+        private const double MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE = 99.75; // Must be below 100
         private const double MIN_FITSCORE_DIFF_BEFORE_COMPARING_FITSCORE = 10; // Must be positive
         private const int MAX_ESTIMATIONS_PER_DATASET = 1;
         private const double MIN_DATASUBSET_URANGE_PRC = 0;
@@ -53,8 +53,9 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             // If both models show a very high R-Squared-diff, look at fitscore instead if there is a significant difference
             if (firstModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
-                && secondModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
-                && Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > MIN_FITSCORE_DIFF_BEFORE_COMPARING_FITSCORE)
+                && secondModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE)
+            //     && (Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > Math.Abs(firstModel.Fitting.RsqDiff - secondModel.Fitting.RsqDiff)))
+            //     && Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > MIN_FITSCORE_DIFF_BEFORE_COMPARING_FITSCORE)
             {
                 if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
                     return true;
@@ -654,10 +655,10 @@ namespace TimeSeriesAnalysis.Dynamic
       
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
-            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim), nDigits);
+            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreForEvalSim), nDigits);
             
-            pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), U_sim.GetColumn(0), 0);
-            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim, 0) * 100;
+            pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);
+            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreForEvalSim, 0) * 100;
 
             pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
@@ -666,7 +667,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;
             // fitting abs?
-            return (pidParam, U_sim, indicesToIgnoreForEvalSim);
+            return (pidParam, dataSet.U_sim, indicesToIgnoreForEvalSim);
         }
 
 
