@@ -157,7 +157,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // objective function " average of absolute model deviation
             //avgErrorObj = vec.SumOfSquareErr(ymeas_vals, ysim_vals);
-            var avgErrorObj = vec.Mean(vec.Abs(vec.Subtract(ymeas_vals, ysim_vals)));
+            var avgErrorObj = vec.Mean(vec.Abs(vec.Subtract(ymeas_vals, ysim_vals)), yIndicesToIgnore);
             if (avgErrorObj.HasValue)
             {
                 this.ObjFunValAbs = SignificantDigits.Format(avgErrorObj.Value, nDigits); ;
