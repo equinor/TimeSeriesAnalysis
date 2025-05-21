@@ -417,6 +417,12 @@ namespace TimeSeriesAnalysis.Dynamic
             RegressionResults regressResults = null;
             List<int> indicesToIgnore = new List<int>();
 
+            int nSamplesToLookBack = 0;
+            if (isPIDoutputDelayOneSample)
+            {
+                nSamplesToLookBack = 1;
+            }
+
             for (int curEstidx = 0; curEstidx < numEstimations; curEstidx++)
             {
                 int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iterations back.
@@ -443,11 +449,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 ucur = Vec<double>.SubArray(uMinusFF, idxStart, idxEnd);
                 uprev = Vec<double>.SubArray(uMinusFF, idxStart - 1, idxEnd - 1);
-                int nSamplesToLookBack = 0;
-                if (isPIDoutputDelayOneSample)
-                {
-                    nSamplesToLookBack = 1;
-                }
+                
                 ecur = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
                 eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
 
@@ -493,6 +495,28 @@ namespace TimeSeriesAnalysis.Dynamic
                     // Identify oversampled data
                     List<int> indSameUcur = vec.FindValues(ucur, -9999, VectorFindValueType.SameAsPrevious);
                     List<int> indSameEcur = vec.FindValues(ecur, -9999, VectorFindValueType.SameAsPrevious);
+                    // A delay in one of the signals causes more indices to need filtering out
+                    if (nSamplesToLookBack != 0)
+                    {
+                        var moreIndSameUcur = new List<int>();
+                        for (int i = 0; i < indSameUcur.Count; i++)
+                        {
+                            if (indSameUcur[i] + nSamplesToLookBack < ucur.Count())
+                            {
+                                moreIndSameUcur.Add(indSameUcur[i] + nSamplesToLookBack);
+                            }
+                        }
+                        indSameUcur = indSameUcur.Union(moreIndSameUcur).ToList();
+                        var moreIndSameEcur = new List<int>();
+                        for (int i = 0; i < indSameEcur.Count; i++)
+                        {
+                            if (indSameEcur[i] - nSamplesToLookBack >= 0)
+                            {
+                                moreIndSameEcur.Add(indSameEcur[i] - nSamplesToLookBack);
+                            }
+                        }
+                        indSameEcur = indSameEcur.Union(moreIndSameEcur).ToList();
+                    }
                     List<int> indOversampled = indSameUcur.Intersect(indSameEcur).ToList();
 
                     // ignore oversampled indices as well.
@@ -571,8 +595,10 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 indBadU = indBadU.Union(vec.FindValues(dataSet.U.GetColumn(i),dataSet.BadDataID, VectorFindValueType.Equal)).ToList();
             }
+            List<int> indBadY_meas = vec.FindValues(dataSet.Y_meas,dataSet.BadDataID, VectorFindValueType.Equal).ToList();
 
             indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadU).ToList();
+            indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadY_meas).ToList();
             
             if (ignoreFlatLines)
             {
@@ -719,8 +745,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
             double lastGoodU = 0, nextU;
             int gapSize = 0;
+            int gapSizeLimit = 1; // Number of consecutive indicies to ignore needed to trigger warmstarting the simulator.
             for (int i = firstGoodDataPointToStartSimIdx; i < Math.Min(simulatedU.Length - samplesToDelayOutput, dataset.Y_meas.Length); i++)
             {
+                // Check if there is bad data
                 if (dataset.Y_meas[i] == -9999 || Double.IsNaN(dataset.Y_meas[i]) || Double.IsInfinity(dataset.Y_meas[i]) || indToIgnore.Contains(i))
                 {
                     nextU = lastGoodU;
@@ -729,19 +757,49 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                 {
                     // If there is a considerable consecutive data gap, the pid should be warm-started again with the conditions after the gap.
-                    if (gapSize > 5)
+                    if (gapSize > gapSizeLimit)
                     {
-                        pid.WarmStart(dataset.Y_meas[i], 
-                            dataset.Y_setpoint[i], dataset.U[i,0]);
                         nextU = dataset.U[i,0];
+                        // If the next index is not ignored, it can be used to better start the pid
+                        if (i + 1 < simulatedU.Length)
+                        {
+                            if (!indToIgnore.Contains(i + 1))
+                            {
+                                simulatedU[i] = nextU;
+                                pid.WarmStart(dataset.Y_meas[i+1], 
+                                dataset.Y_setpoint[i+1], dataset.U[i+1,0],
+                                dataset.Y_meas[i], dataset.Y_setpoint[i]);
+                                nextU = dataset.U[i+1,0];
+                                simulatedU[i+1] = nextU;
+                                lastGoodU = nextU;
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            pid.WarmStart(dataset.Y_meas[i], 
+                            dataset.Y_setpoint[i], dataset.U[i,0]);
+                        }
                     }
                     else
                     {
                         nextU = pid.Iterate(dataset.Y_meas[i], dataset.Y_setpoint[i]);
                     }
-                    lastGoodU = nextU;
+                    // Handle special cases when there is a delayed ouput
+                    if (samplesToDelayOutput > 0)
+                    {
+                        // Before bad data
+                        if (i + samplesToDelayOutput < simulatedU.Length)
+                        {
+                            if (indToIgnore.Contains(i + samplesToDelayOutput))
+                            {
+                                nextU = lastGoodU;
+                            }
+                        }
+                    }
                     gapSize = 0;
                 }
+                lastGoodU = nextU;
                 simulatedU[i + samplesToDelayOutput] = nextU;
             }
             return simulatedU;
