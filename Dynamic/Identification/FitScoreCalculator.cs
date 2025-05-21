@@ -227,7 +227,7 @@ namespace TimeSeriesAnalysis
             if (signal.Length == 0) return double.NaN;
 
             var vec = new Vec();
-            var avg = vec.Mean(signal);
+            var avg = vec.Mean(signal, indToIgnore: indToIgnore);
 
             if (!avg.HasValue)
                 return double.NaN;

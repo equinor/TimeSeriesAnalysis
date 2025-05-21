@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -990,7 +990,7 @@ namespace TimeSeriesAnalysis
                     }
                     var X_T_reg = Array2D<double>.Combine(X_T, Array2D<double>.CreateJaggedFromList(regX));
                     var Y_reg = Vec<double>.Concat(Y, Vec<double>.Fill(0, regX.Count()));
-                    double? Y_mean = vec.Mean(Y);
+                    double? Y_mean = vec.Mean(Y, indToIgnore: yIndToIgnore?.ToList());
                     double regressionWeight = (double)Y.Length / 1000;
                     var weights_reg = Vec<double>.Concat(weights, Vec<double>.Fill(regressionWeight, regX.Count())) ;
 
