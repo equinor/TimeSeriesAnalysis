@@ -428,7 +428,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var modelParametersWithFlatlines = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);
 
             // Plot results
-            if (true)
+            if (false)
             {
                 Shared.EnablePlots();
                 string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
