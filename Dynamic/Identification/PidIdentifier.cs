@@ -681,6 +681,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, List<int> indToIgnore = null)
         {
+            var pidModel = new PidModel(pidParams, "pid");
+            (var isOk,var simulatedU) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel);
+            dataset.U_sim = Array2D<double>.CreateFromList(new List<double[]> { simulatedU });
+            return simulatedU;
+
+            /*
+            const bool DO_GAP_SKIPPING = false;
+
             int firstGoodDataPointToStartSimIdx = 0;
             while ((dataset.Y_setpoint[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
                 dataset.Y_meas[firstGoodDataPointToStartSimIdx] == badValueIndicatingValue ||
@@ -716,67 +724,89 @@ namespace TimeSeriesAnalysis.Dynamic
                     simulatedU[i] = u_init;
                 }
             }
-
-            double lastGoodU = 0, nextU;
-            int gapSize = 0;
-            int gapSizeLimit = 1; // Number of consecutive indicies to ignore needed to trigger warmstarting the simulator.
-            for (int i = firstGoodDataPointToStartSimIdx; i < Math.Min(simulatedU.Length - samplesToDelayOutput, dataset.Y_meas.Length); i++)
+            if (DO_GAP_SKIPPING)
             {
-                // Check if there is bad data
-                if (dataset.Y_meas[i] == badValueIndicatingValue || Double.IsNaN(dataset.Y_meas[i]) || Double.IsInfinity(dataset.Y_meas[i]) || indToIgnore.Contains(i))
+                double lastGoodU = 0, nextU;
+                int gapSize = 0;
+                int gapSizeLimit = 1; // Number of consecutive indicies to ignore needed to trigger warmstarting the simulator.
+                for (int i = firstGoodDataPointToStartSimIdx; i < Math.Min(simulatedU.Length - samplesToDelayOutput, dataset.Y_meas.Length); i++)
                 {
-                    nextU = lastGoodU;
-                    gapSize++;
-                }
-                else
-                {
-                    // If there is a considerable consecutive data gap, the pid should be warm-started again with the conditions after the gap.
-                    if (gapSize > gapSizeLimit)
+                    // Check if there is bad data
+                    if (dataset.Y_meas[i] == badValueIndicatingValue || Double.IsNaN(dataset.Y_meas[i]) 
+                        || Double.IsInfinity(dataset.Y_meas[i]) || indToIgnore.Contains(i))
                     {
-                        nextU = dataset.U[i,0];
-                        // If the next index is not ignored, it can be used to better start the pid
-                        if (i + 1 < simulatedU.Length)
+                        nextU = lastGoodU;
+                        gapSize++;
+                    }
+                    else
+                    {
+                        // If there is a considerable consecutive data gap, the pid should be warm-started again with the conditions after the gap.
+                        if (gapSize > gapSizeLimit)
                         {
-                            if (!indToIgnore.Contains(i + 1))
+                            nextU = dataset.U[i, 0];
+                            // If the next index is not ignored, it can be used to better start the pid
+                            if (i + 1 < simulatedU.Length)
                             {
-                                simulatedU[i] = nextU;
-                                pid.WarmStart(dataset.Y_meas[i+1], 
-                                dataset.Y_setpoint[i+1], dataset.U[i+1,0],
-                                dataset.Y_meas[i], dataset.Y_setpoint[i]);
-                                nextU = dataset.U[i+1,0];
-                                simulatedU[i+1] = nextU;
-                                lastGoodU = nextU;
-                                continue;
+                                if (!indToIgnore.Contains(i + 1))
+                                {
+                                    simulatedU[i] = nextU;
+                                    pid.WarmStart(dataset.Y_meas[i + 1],
+                                    dataset.Y_setpoint[i + 1], dataset.U[i + 1, 0],
+                                    dataset.Y_meas[i], dataset.Y_setpoint[i]);
+                                    nextU = dataset.U[i + 1, 0];
+                                    simulatedU[i + 1] = nextU;
+                                    lastGoodU = nextU;
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                pid.WarmStart(dataset.Y_meas[i],
+                                dataset.Y_setpoint[i], dataset.U[i, 0]);
                             }
                         }
                         else
                         {
-                            pid.WarmStart(dataset.Y_meas[i], 
-                            dataset.Y_setpoint[i], dataset.U[i,0]);
+                            nextU = pid.Iterate(dataset.Y_meas[i], dataset.Y_setpoint[i]);
                         }
+                        // Handle special cases when there is a delayed ouput
+                        if (samplesToDelayOutput > 0)
+                        {
+                            // Before bad data
+                            if (i + samplesToDelayOutput < simulatedU.Length)
+                            {
+                                if (indToIgnore.Contains(i + samplesToDelayOutput))
+                                {
+                                    nextU = lastGoodU;
+                                }
+                            }
+                        }
+                        gapSize = 0;
+                    }
+                    lastGoodU = nextU;
+                    simulatedU[i + samplesToDelayOutput] = nextU;
+                }
+                return simulatedU;
+            }
+            else
+            {
+                double lastGoodU = 0, nextU;
+                for (int i = firstGoodDataPointToStartSimIdx; i < Math.Min(simulatedU.Length - samplesToDelayOutput, dataset.Y_meas.Length); i++)
+                {
+                    if (dataset.Y_meas[i] == -9999 || Double.IsNaN(dataset.Y_meas[i]) || Double.IsInfinity(dataset.Y_meas[i]))
+                    {
+                        nextU = lastGoodU;
                     }
                     else
                     {
                         nextU = pid.Iterate(dataset.Y_meas[i], dataset.Y_setpoint[i]);
+                        lastGoodU = nextU;
                     }
-                    // Handle special cases when there is a delayed ouput
-                    if (samplesToDelayOutput > 0)
-                    {
-                        // Before bad data
-                        if (i + samplesToDelayOutput < simulatedU.Length)
-                        {
-                            if (indToIgnore.Contains(i + samplesToDelayOutput))
-                            {
-                                nextU = lastGoodU;
-                            }
-                        }
-                    }
-                    gapSize = 0;
+                    simulatedU[i + samplesToDelayOutput] = nextU;
                 }
-                lastGoodU = nextU;
-                simulatedU[i + samplesToDelayOutput] = nextU;
+                return simulatedU;
             }
-            return simulatedU;
+           */
         }
     }
 

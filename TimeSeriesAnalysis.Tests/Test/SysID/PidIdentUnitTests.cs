@@ -289,6 +289,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Sinus(10, timebase*20, timebase, N));
             inputData.CreateTimestamps(timebase);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk,"simulate did not run");
             var combinedData = inputData.Combine(simData);
             var pidDataSet = processSim.GetUnitDataSetForPID(combinedData, pidModel1);
 
@@ -299,6 +300,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             inputDataFlatlines.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Sinus(10, timebase*20, timebase, N));
             inputDataFlatlines.CreateTimestamps(timebase);
             var isOkFlatlines = processSim.Simulate(inputDataFlatlines, out TimeSeriesDataSet simDataFlatlines);
+            Assert.IsTrue(isOkFlatlines, "simulate did not run in with flatlines added");
             var combinedDataFlatlines = inputDataFlatlines.Combine(simDataFlatlines);
             var pidDataSetWithFlatlines_control = processSim.GetUnitDataSetForPID(combinedDataFlatlines, pidModel1);
             var pidDataSetWithFlatlines = processSim.GetUnitDataSetForPID(combinedDataFlatlines, pidModel1);
@@ -322,7 +324,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var modelParametersWithFlatlines = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);
 
             // Plot results
-            if (false)
+            if (true)
             {
                 Shared.EnablePlots();
                 string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
@@ -330,7 +332,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint, pidDataSet.U.GetColumn(0), pidDataSet.U_sim.GetColumn(0)},
                     new List<string> { "y1=y_meas", "y1=y_setpoint", "y3=u", "y3=u_sim" },
                     pidDataSet.GetTimeBase(), caseId+"_raw");
-                Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint, pidDataSetWithFlatlines.U.GetColumn(0), pidDataSetWithFlatlines.U_sim.GetColumn(0)},
+                Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint, 
+                    pidDataSetWithFlatlines.U.GetColumn(0), pidDataSetWithFlatlines.U_sim.GetColumn(0)},
                     new List<string> { "y1=y_meas_with_flatlines", "y1=y_setpoint_with_flatlines", "y3=u_with_flatlines", "y3=u_sim_with_flatlines" },
                     pidDataSetWithFlatlines.GetTimeBase(), caseId+"_with_flatlines");
                 Shared.DisablePlots();
@@ -340,13 +343,15 @@ namespace TimeSeriesAnalysis.Test.SysID
             // and check that it also finds parameters that are somewhat close to the original values.
             // Also assert that the identification yields better fits when attempting to ignore flatlines than when not doing so.
             // Finally, assert that the fit is better when taking flatline handling into account.
-            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Kp - modelParameters.Kp) < 0.02 * modelParametersWithFlatlines.Kp); // Allow 2% slack on Kp
-            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Ti_s - modelParameters.Ti_s) < 0.05 * modelParametersWithFlatlines.Ti_s); // Allow 5% slack on Ti
-            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Kp - pidParameters1.Kp) < 0.02 * pidParameters1.Kp); // Allow 2% slack on Kp
-            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Ti_s - pidParameters1.Ti_s) < 0.05 * pidParameters1.Ti_s); // Allow 5% slack on Ti
-            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Kp - pidParameters1.Kp) < Math.Abs(modelParametersWithFlatlines_control.Kp - pidParameters1.Kp));
-            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Ti_s - pidParameters1.Ti_s) < Math.Abs(modelParametersWithFlatlines_control.Ti_s - pidParameters1.Ti_s));
-            Assert.IsTrue((modelParametersWithFlatlines.Fitting.FitScorePrc > modelParametersWithFlatlines_control.Fitting.FitScorePrc) | (modelParametersWithFlatlines.Fitting.RsqDiff > modelParametersWithFlatlines_control.Fitting.RsqDiff));
+            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Kp - modelParameters.Kp) < 0.02 * modelParametersWithFlatlines.Kp,"Kp too far off 1 "); // Allow 2% slack on Kp
+            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Ti_s - modelParameters.Ti_s) < 0.05 * modelParametersWithFlatlines.Ti_s,"Ti too far off"); // Allow 5% slack on Ti
+            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Kp - pidParameters1.Kp) < 0.02 * pidParameters1.Kp, "Kp too far off 2"); // Allow 2% slack on Kp
+            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Ti_s - pidParameters1.Ti_s) < 0.05 * pidParameters1.Ti_s, "Ti too far off"); // Allow 5% slack on Ti
+            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Kp - pidParameters1.Kp) < Math.Abs(modelParametersWithFlatlines_control.Kp - pidParameters1.Kp), "Kp too far off 3");
+            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Ti_s - pidParameters1.Ti_s) < Math.Abs(modelParametersWithFlatlines_control.Ti_s - pidParameters1.Ti_s), "Ti too far off");
+            Assert.IsTrue(modelParametersWithFlatlines.Fitting.FitScorePrc > modelParametersWithFlatlines_control.Fitting.FitScorePrc,"Fit score should improve");
+            Assert.IsTrue(modelParametersWithFlatlines.Fitting.RsqDiff > modelParametersWithFlatlines_control.Fitting.RsqDiff, "Rsq should improve");
+
         }
 
         /// <summary>

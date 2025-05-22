@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -211,18 +213,30 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 inputData.CreateTimestamps(unitData.GetTimeBase(),unitData.GetNumDataPoints());
             }
-            var uNames = new List<string>();
-            for (int colIdx = 0; colIdx < unitData.U.GetNColumns(); colIdx++)
+
+            if (model.GetProcessModelType() == ModelType.PID)
             {
-                var uName = "U" + colIdx;
-                inputData.Add(uName, unitData.U.GetColumn(colIdx));
-                uNames.Add(uName);
+                // todo: should ideally use (int)PidModelInputsIdx
+                inputData.Add("Y", unitData.Y_meas);
+                inputData.Add("Y_setpoint", unitData.Y_setpoint);
+                modelCopy.SetInputIDs((new List<string> { "Y", "Y_setpoint" }).ToArray());
             }
-            modelCopy.SetInputIDs(uNames.ToArray());
+            else
+            {
+                var uNames = new List<string>();
+                for (int colIdx = 0; colIdx < unitData.U.GetNColumns(); colIdx++)
+                {
+                    var uName = "U" + colIdx;
+                    inputData.Add(uName, unitData.U.GetColumn(colIdx));
+                    uNames.Add(uName);
+                }
+                modelCopy.SetInputIDs(uNames.ToArray());
+            }
             {
                 inputData.Add(defaultOutputName, unitData.Y_meas);
                 modelCopy.SetOutputID(defaultOutputName);
             }
+
             var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, out var simData);
 
             if (!isOk)

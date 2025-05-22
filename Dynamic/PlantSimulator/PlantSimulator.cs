@@ -499,7 +499,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doCalcYwithoutAdditiveTerms"></param>
         /// <param name="simData"></param>
         /// <returns></returns>
-        private bool SimulateSingleInternalCore(TimeSeriesDataSet inputData, string singleModelName, 
+      /*  private bool SimulateSingleInternalCore(TimeSeriesDataSet inputData, string singleModelName, 
             bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)
         {
             if (!modelDict.ContainsKey(singleModelName))
@@ -624,7 +624,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             return true;
-        }
+        }*/
         /// <summary>
         /// Perform a "plant-wide" full dynamic simulation of the entire plant,i.e. all models in the plant, given the specified connections and external signals. 
         /// <para>
