@@ -74,14 +74,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="downsampleOversampledData">Boolean, whether to do internal oversample identification and attempt downsampling. Defaults to true.</param>
         /// <param name="ignoreFlatLines">Boolean, whether to do internal flatline identification and ignore their indices. Defaults to true.</param>
         /// <returns>the identified parameters of the PID-controller</returns>
-        public PidParameters Identify(ref UnitDataSet dataSet, bool downsampleOversampledData = true, bool ignoreFlatLines = true)
+        public PidParameters Identify(ref UnitDataSet dataSet, bool downsampleOversampledData = true/*, bool ignoreFlatLines = true*/)
         {
-            const bool doOnlyWithDelay = false;// should be false unless debugging something
+         //   const bool doOnlyWithDelay = false;// should be false unless debugging something
             const bool DoFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
 
             // Find the oversampled factor if relevant
-            bool ignoreFlatLinesFirst = ignoreFlatLines;
+          /*  bool ignoreFlatLinesFirst = ignoreFlatLines;
             if (downsampleOversampledData & ignoreFlatLinesFirst)
             {
                 double oversampledFactor = dataSet.GetOversampledFactor(out int keyIndex);
@@ -90,20 +90,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     ignoreFlatLinesFirst = false;
                 }
-            }
+            }*/
 
             // 1. try identification with delay of one sample but without filtering
-            (PidParameters results_withDelay, double[,] U_withDelay, List<int> indicesToIgnore_withDelay) = IdentifyInternal(dataSet, true, ignoreFlatLines: ignoreFlatLinesFirst);
+            (PidParameters results_withDelay, double[,] U_withDelay, List<int> indicesToIgnore_withDelay) = IdentifyInternal(dataSet, true);
    
-            if (doOnlyWithDelay)
+   /*         if (doOnlyWithDelay)
             {
                 dataSet.U_sim = U_withDelay;
                 return results_withDelay;
-            }
+            }*/
 
             // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
             //    relative to the clock that the pid algorithm ran on originally)
-            (PidParameters results_withoutDelay, double[,] U_withoutDelay, List<int> indicesToIgnore_withoutDelay) = IdentifyInternal(dataSet, false, ignoreFlatLines: ignoreFlatLinesFirst);
+            (PidParameters results_withoutDelay, double[,] U_withoutDelay, List<int> indicesToIgnore_withoutDelay) = 
+                IdentifyInternal(dataSet, false);
 
             // save which is the "best" estimate for comparison 
             bool doDelay = true;
@@ -134,7 +135,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
-                    (PidParameters results_withFilter, double[,] U_withFilter, List<int> indicesToIgnore_withFilter) = IdentifyInternal(dataSet, doDelay, pidFilterParams, ignoreFlatLines: ignoreFlatLinesFirst);
+                    (PidParameters results_withFilter, double[,] U_withFilter, List<int> indicesToIgnore_withFilter) = 
+                        IdentifyInternal(dataSet, doDelay, pidFilterParams/*, ignoreFlatLines: ignoreFlatLinesFirst*/);
 
                     if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
                     {
@@ -153,7 +155,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                     (PidParameters results_withFilter, double[,] U_withFilter, List<int> indicesToIgnore_withFilter) =
-                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas, ignoreFlatLines: ignoreFlatLinesFirst);
+                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas/*, ignoreFlatLines: ignoreFlatLinesFirst*/);
 
                     if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
                     {
@@ -175,7 +177,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (dataSet.Times.Count() != dataSetDownsampled.Times.Count())
                     {
                         pidFilter = null;
-                        PidParameters results_downsampled = Identify(ref dataSetDownsampled, ignoreFlatLines: ignoreFlatLines);
+                        PidParameters results_downsampled = Identify(ref dataSetDownsampled/*, ignoreFlatLines: ignoreFlatLines*/);
                         if (IsFirstModelBetterThanSecondModel(results_downsampled, bestPidParameters))
                         {
                             bestU = dataSetDownsampled.U_sim;
@@ -324,7 +326,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// 
         /// <returns></returns>
         private (PidParameters, double[,], List<int>) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
-            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false, bool ignoreFlatLines=true)
+            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false/*, bool ignoreFlatLines=true*/)
         {
             this.timeBase_s = dataSet.GetTimeBase();
             PidParameters pidParam = new PidParameters();
@@ -470,7 +472,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     return (pidParam, null, null);
                 }*/
 
-                if (ignoreFlatLines)
+             /*   if (ignoreFlatLines)
                 {
                     // Identify oversampled data
                     List<int> indSameUcur = vec.FindValues(ucur, badValueIndicatingValue, VectorFindValueType.SameAsPrevious);
@@ -502,7 +504,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // ignore oversampled indices as well.
                     indicesToIgnore = indicesToIgnore.Union(indOversampled).ToList();
                     indicesToIgnore.Sort();
-                }
+                }*/
                 Y_ols = vec.Subtract(ucur, uprev);
                 X1_ols = vec.Subtract(ecur, eprev);
                 X2_ols = vec.Multiply(ecur, timeBase_s);
@@ -578,7 +580,7 @@ namespace TimeSeriesAnalysis.Dynamic
             indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadU).ToList();
             indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadY_meas).ToList();
             
-            if (ignoreFlatLines)
+           /* if (ignoreFlatLines)
             {
                 // Identify oversampled data
                 List<int> indSameU = new List<int>();
@@ -593,7 +595,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indOversampled).ToList();
                 indicesToIgnoreForEvalSim.Sort();
-            }
+            }*/
 
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong
@@ -625,7 +627,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // If the measured and simulated signals end up being inversely correlated, the sign of the Kp parameter
             // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
-            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim, 0) < -0.1)
+         /*   if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim, 0) < -0.1)
             {
                 double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreForEvalSim);
                 pidParam.Kp = -pidParam.Kp;
@@ -638,7 +640,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indicesToIgnoreForEvalSim));
                 }
                 dataSet.U_sim = U_sim;
-            }
+            }*/
 
             pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigitsParams);
             pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigitsParams);

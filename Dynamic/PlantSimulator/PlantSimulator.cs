@@ -670,8 +670,12 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var inputDataMinimal = new TimeSeriesDataSet(inputData);
 
+            // in some cases all the time-series may "freeze"
+            // try to detect this by analyzing inputDataMinimal, and use this to update append the "indicesToIgnore"
+
             // todo: disturbances could also instead be estimated in closed-loop? 
             var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict);
+
 
             // need to keep special track of pid-controlled outputs.
             var pidControlledOutputsDict = DeterminePidControlledOutputs();
