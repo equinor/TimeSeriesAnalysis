@@ -316,7 +316,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="timebase">Timebase of the signals.</param>
         /// <param name="flatlinePeriods">Number of periods with flatlined data.</param>
         /// <param name="flatlineProportion">Proportion of the dataset that should be flatlines.</param>
-        [TestCase(50,1,1,0.3)]// There is one flatline period 
+        [TestCase(80,1,1,0.3)]// There is one flatline period 
 
         public void IndicesToIgnore_WFlatLines(int N, double timebase, int flatlinePeriods, double flatlineProportion)
         {
@@ -372,13 +372,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex + j] = pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex];
                 }
             }
-            // experimental: just detect frozen data and ignore those samples.(todo: consider moving below code into identify)
-            var frozenIdx_old = FrozenDataDetector.DetectFrozenSamples(pidDataSetWithFlatlines);
-       
-            /*
-            var frozenIdx =  DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(pidDataSetWithFlatlines);
-            pidDataSetWithFlatlines.IndicesToIgnore = frozenIdx;
-            */
+
             var idParametersWithFlatlines = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
 
             // Plot results
@@ -394,6 +388,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :"+ idParametersWithFlatlines.Kp); // Allow 2% slack on Kp
             Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Ti_s - trueParameters.Ti_s) < 0.05 * trueParameters.Ti_s, "Ti too far off"+ idParametersWithFlatlines.Ti_s); // Allow 5% slack on Ti
+            Assert.IsTrue(idParametersWithFlatlines.Fitting.FitScorePrc > 99, "fit score should ignore bad data and give a high score");
         }
 
      /*   /// <summary>

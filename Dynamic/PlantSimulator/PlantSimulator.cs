@@ -426,12 +426,21 @@ namespace TimeSeriesAnalysis.Dynamic
                 foreach (var inputId in inputIDs)
                 {
                     double? retVal = null;
+
                     // if the signal exists in the simulated dataset, prefer to use that one.
                     if (simDataSet.ContainsSignal(inputId))
                     {
                         retVal = simDataSet.GetValue(inputId, timeIndexInternal);
+                        if (retVal != null)
+                            if (Double.IsNaN(retVal.Value))
+                            {
+                                if (inputDataSet.ContainsSignal(inputId))
+                                {
+                                    retVal = inputDataSet.GetValue(inputId, timeIndexInternal);
+                                }
+                            }
                     }
-                    else if (inputDataSet.ContainsSignal(inputId))
+                    else if  ( inputDataSet.ContainsSignal(inputId))
                     {
                         retVal = inputDataSet.GetValue(inputId, timeIndexInternal);
                     }
@@ -451,8 +460,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (model.GetProcessModelType() == ModelType.PID && timeIndex > 0)
             {
-                int lookBackIndex = 1;
-         //       double[] lookBackValues = GetValuesFromEitherDatasetInternal( timeIndex - lookBackIndex); ;
                 double[] currentValues = GetValuesFromEitherDatasetInternal( timeIndex);
                 // "use values from current data point when available, but fall back on using values from the previous sample if need be"
                 // for instance, always use the most current setpoint value, but if no disturbance vector is given, then use the y_proc simulated from the last iteration.
@@ -692,36 +699,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
             }
 
-            // warm start every model
-            int timeIdx = 0;
-            for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
-            {
-                var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
-                string[] inputIDs = model.GetBothKindsOfInputIDs();
-                if (inputIDs == null)
-                {
-                    Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \""+ model.GetID() +
-                        "\" has null inputIDs.");
-                    return false;
-                }
-
-                double[] inputVals = GetValuesFromEitherDataset(model,inputIDs, timeIdx, simData, inputDataMinimal);
-
-                string outputID = model.GetOutputID(); 
-                if (outputID==null)
-                {
-                    Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
-                        "\" has null outputID.");
-                    return false;
-                }
-                double[] outputVals =
-                    GetValuesFromEitherDataset(model,new string[] { outputID }, timeIdx, simData, inputDataMinimal);
-                if (outputVals != null)
-                {
-                    model.WarmStart(inputVals, outputVals[0]);
-                }
-            }
-
             var idxToIgnore = inputDataMinimal.GetIndicesToIgnore();
             int lastGoodTimeIndex = 0;
             // if start of dataset is bad, then parse forward until first good time index..
@@ -731,17 +708,54 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             // simulate for all time steps(after first step!)
+            const int restartModelAfterXConsecutiveBadIndices = 3;
             int nConsecutiveBadIndicesCounter = 0;
-            for (timeIdx = 0; timeIdx < N; timeIdx++)
+            for (int timeIdx = 0; timeIdx < N; timeIdx++)
             {
+                bool doRestartModels = false;
+                if (timeIdx == 0)
+                    doRestartModels = true;
                 if (!idxToIgnore.Contains(timeIdx))
                 {
                     lastGoodTimeIndex = timeIdx;
+                    if (nConsecutiveBadIndicesCounter > restartModelAfterXConsecutiveBadIndices)
+                        doRestartModels = true;
                     nConsecutiveBadIndicesCounter = 0;
                 }
                 else
                 {
                     nConsecutiveBadIndicesCounter++;
+                }
+             
+                // warm start every model on first data point, and after any long period of bad data
+                if (doRestartModels)
+                {
+                    for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
+                    {
+                        var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
+                        string[] inputIDs = model.GetBothKindsOfInputIDs();
+                        if (inputIDs == null)
+                        {
+                            Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
+                                "\" has null inputIDs.");
+                            return false;
+                        }
+                        double[] inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputDataMinimal);
+
+                        string outputID = model.GetOutputID();
+                        if (outputID == null)
+                        {
+                            Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
+                                "\" has null outputID.");
+                            return false;
+                        }
+                        double[] outputVals =
+                            GetValuesFromEitherDataset(model, new string[] { outputID }, timeIdx, simData, inputDataMinimal);
+                        if (outputVals != null)
+                        {
+                            model.WarmStart(inputVals, outputVals[0]);
+                        }
+                    }
                 }
 
                 for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
