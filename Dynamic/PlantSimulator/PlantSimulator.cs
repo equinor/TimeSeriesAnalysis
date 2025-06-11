@@ -731,10 +731,18 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             // simulate for all time steps(after first step!)
+            int nConsecutiveBadIndicesCounter = 0;
             for (timeIdx = 0; timeIdx < N; timeIdx++)
             {
                 if (!idxToIgnore.Contains(timeIdx))
+                {
                     lastGoodTimeIndex = timeIdx;
+                    nConsecutiveBadIndicesCounter = 0;
+                }
+                else
+                {
+                    nConsecutiveBadIndicesCounter++;
+                }
 
                 for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                 {

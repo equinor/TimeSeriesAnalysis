@@ -316,7 +316,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="timebase">Timebase of the signals.</param>
         /// <param name="flatlinePeriods">Number of periods with flatlined data.</param>
         /// <param name="flatlineProportion">Proportion of the dataset that should be flatlines.</param>
-        [TestCase(100,1,1,0.3)]// There is one flatline period 
+        [TestCase(50,1,1,0.3)]// There is one flatline period 
 
         public void IndicesToIgnore_WFlatLines(int N, double timebase, int flatlinePeriods, double flatlineProportion)
         {
@@ -349,7 +349,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").Replace(")", "_").Replace(",", "_") + "y"; 
 
-            if (true)
+            if (false)// plot the raw data before flatline is created
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> { pidDataSet.Y_meas, pidDataSet.Y_setpoint, pidDataSet.U.GetColumn(0) },
@@ -382,7 +382,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var idParametersWithFlatlines = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
 
             // Plot results
-            if (true)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint, 

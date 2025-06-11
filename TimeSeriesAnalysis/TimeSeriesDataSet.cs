@@ -58,6 +58,7 @@ namespace TimeSeriesAnalysis
             dataset_constants = inputDataSet.dataset_constants;
             //N = inputDataSet.N;
             timeStamps = inputDataSet.timeStamps;
+            indicesToIgnore = inputDataSet.indicesToIgnore;
         }
 
         /// <summary>
