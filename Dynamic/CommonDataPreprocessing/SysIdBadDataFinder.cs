@@ -25,6 +25,7 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             List<int> badValueIndices = GetBadValueIndices(inData, badValueIndicatingValue);
             //   List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
+
             List<int> badIndices = badValueIndices;
             return badIndices;
         }

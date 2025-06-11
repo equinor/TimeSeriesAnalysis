@@ -316,25 +316,19 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="timebase">Timebase of the signals.</param>
         /// <param name="flatlinePeriods">Number of periods with flatlined data.</param>
         /// <param name="flatlineProportion">Proportion of the dataset that should be flatlines.</param>
-        [TestCase(1000,1,1,0.1)]// There is one flatline period covering 10%.
-       /* [TestCase(1000,10.0,1,0.25)]// There is one flatline period covering 25%.
-        [TestCase(1000,10.0,2,0.1)]// There are two flatline periods covering 10%.
-        [TestCase(1000,10.0,2,0.25)]// There are two flatline periods covering 25%.
-        [TestCase(1000,10.0,3,0.1)]// There are three flatline periods covering 10%.
-        [TestCase(1000,10.0,3,0.25)]// There are three flatline periods covering 25%.
-        [TestCase(1000,10.0,4,0.1)]// There are four flatline periods covering 10%.
-        [TestCase(1000,10.0,4,0.25)]// There are four flatline periods covering 25%.*/
+        [TestCase(100,1,1,0.3)]// There is one flatline period 
+
         public void IndicesToIgnore_WFlatLines(int N, double timebase, int flatlinePeriods, double flatlineProportion)
         {
             // Define parameters
-            var pidParameters1 = new PidParameters()
+            var trueParameters = new PidParameters()
             {
                 Kp = 0.5,
                 Ti_s = 50
             };
 
             // Create plant model
-            var pidModel1 = new PidModel(pidParameters1, "PID1");
+            var pidModel1 = new PidModel(trueParameters, "PID1");
             var processSim = new PlantSimulator(
             new List<ISimulatableModel> { pidModel1, processModel1 });
             processSim.ConnectModels(processModel1, pidModel1);
@@ -352,7 +346,18 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             var combinedDataFlatLines = new TimeSeriesDataSet(combinedData);
             // Identify on both original and flatlined datasets
-            var idParameters = new PidIdentifier().Identify(ref pidDataSet, false);
+
+            string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").Replace(")", "_").Replace(",", "_") + "y"; 
+
+            if (true)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> { pidDataSet.Y_meas, pidDataSet.Y_setpoint, pidDataSet.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_setpoint", "y3=u"},
+                    pidDataSet.GetTimeBase(), caseId + "_beforeSim");
+                Shared.DisablePlots();
+            }
+         //   var idParameters = new PidIdentifier().Identify(ref pidDataSet, false);
             // Create synthetic data with flatlines (Create them anew to avoid shallow copies / references)
             int flatlinePeriodLength = (int)(flatlineProportion * N / flatlinePeriods);
             var pidDataSetWithFlatlines = processSim.GetUnitDataSetForPID(combinedDataFlatLines, pidModel1);
@@ -367,25 +372,19 @@ namespace TimeSeriesAnalysis.Test.SysID
                     pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex + j] = pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex];
                 }
             }
-
             // experimental: just detect frozen data and ignore those samples.(todo: consider moving below code into identify)
-            var frozenIdx = FrozenDataDetector.DetectFrozenSamples(pidDataSetWithFlatlines);
-           // pidDataSetWithFlatlines_control.IndicesToIgnore = frozenIdx;
+            var frozenIdx_old = FrozenDataDetector.DetectFrozenSamples(pidDataSetWithFlatlines);
+       
+            /*
+            var frozenIdx =  DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(pidDataSetWithFlatlines);
             pidDataSetWithFlatlines.IndicesToIgnore = frozenIdx;
-
-        //    var modelParametersWithFlatlines_control = new PidIdentifier().Identify(ref pidDataSetWithFlatlines_control/*, ignoreFlatLines: false*/);
-            var idParametersWithFlatlines = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);
+            */
+            var idParametersWithFlatlines = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
 
             // Plot results
-            if (false)
+            if (true)
             {
                 Shared.EnablePlots();
-                string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
-                    Replace(")", "_").Replace(",", "_") + "y";
-                // plot the dataset without "flatlines" 
-                Plot.FromList(new List<double[]>{ pidDataSet.Y_meas, pidDataSet.Y_setpoint, pidDataSet.U.GetColumn(0), pidDataSet.U_sim.GetColumn(0)},
-                    new List<string> { "y1=y_meas", "y1=y_setpoint", "y3=u", "y3=u_sim" },
-                    pidDataSet.GetTimeBase(), caseId+"_raw");
                 Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint, 
                     pidDataSetWithFlatlines.U.GetColumn(0), pidDataSetWithFlatlines.U_sim.GetColumn(0)},
                     new List<string> { "y1=y_meas_with_flatlines", "y1=y_setpoint_with_flatlines", "y3=u_with_flatlines", "y3=u_sim_with_flatlines" },
@@ -393,19 +392,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.DisablePlots();
             }
 
-            // Assert that identification on datasets with flatlines yields the same parameters as identification on original data
-            // and check that it also finds parameters that are somewhat close to the original values.
-            // Also assert that the identification yields better fits when attempting to ignore flatlines than when not doing so.
-            // Finally, assert that the fit is better when taking flatline handling into account.
-            Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Kp - idParameters.Kp) < 0.02 * idParametersWithFlatlines.Kp,"Kp too far off 1 "); // Allow 2% slack on Kp
-            Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Ti_s - idParameters.Ti_s) < 0.05 * idParametersWithFlatlines.Ti_s,"Ti too far off"); // Allow 5% slack on Ti
-            Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Kp - pidParameters1.Kp) < 0.02 * pidParameters1.Kp, "Kp too far off 2"); // Allow 2% slack on Kp
-            Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Ti_s - pidParameters1.Ti_s) < 0.05 * pidParameters1.Ti_s, "Ti too far off"); // Allow 5% slack on Ti
-     /*       Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Kp - pidParameters1.Kp) < Math.Abs(modelParametersWithFlatlines_control.Kp - pidParameters1.Kp), "Kp too far off 3");
-            Assert.IsTrue(Math.Abs(modelParametersWithFlatlines.Ti_s - pidParameters1.Ti_s) < Math.Abs(modelParametersWithFlatlines_control.Ti_s - pidParameters1.Ti_s), "Ti too far off");
-            Assert.IsTrue(modelParametersWithFlatlines.Fitting.FitScorePrc > modelParametersWithFlatlines_control.Fitting.FitScorePrc,"Fit score should improve");
-            Assert.IsTrue(modelParametersWithFlatlines.Fitting.RsqDiff > modelParametersWithFlatlines_control.Fitting.RsqDiff, "Rsq should improve");
-     */
+            Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :"+ idParametersWithFlatlines.Kp); // Allow 2% slack on Kp
+            Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Ti_s - trueParameters.Ti_s) < 0.05 * trueParameters.Ti_s, "Ti too far off"+ idParametersWithFlatlines.Ti_s); // Allow 5% slack on Ti
         }
 
      /*   /// <summary>

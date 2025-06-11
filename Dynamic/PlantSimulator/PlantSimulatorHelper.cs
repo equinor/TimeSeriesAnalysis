@@ -121,18 +121,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public static bool SimulateSingle(TimeSeriesDataSet inputData, ISimulatableModel model, out TimeSeriesDataSet simData)
         {
-            PlantSimulator plant = null;
-           /* if (model.GetProcessModelType() == ModelType.SubProcess)
-            {
-                var modelClone = (UnitModel)model.Clone("clone");
-                modelClone.RemoveAdditiveInputs();
-
-                plant = new PlantSimulator(new List<ISimulatableModel> { modelClone });
-            }
-            else*/
-            {
-                plant = new PlantSimulator(new List<ISimulatableModel> { model });
-            }
+            PlantSimulator plant = new PlantSimulator(new List<ISimulatableModel> { model });
             return plant.Simulate(inputData, out simData);
         }
 
@@ -202,7 +191,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive </returns>
         static private (bool, double[]) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model)
         {
-            const string defaultOutputName = "output";
+            string defaultOutputName = "output";
             var inputData = new TimeSeriesDataSet();
             var singleModelName = "SimulateSingle";
             var modelCopy = model.Clone(singleModelName);
@@ -220,6 +209,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.Add("Y", unitData.Y_meas);
                 inputData.Add("Y_setpoint", unitData.Y_setpoint);
                 modelCopy.SetInputIDs((new List<string> { "Y", "Y_setpoint" }).ToArray());
+                inputData.Add(defaultOutputName, unitData.U.GetColumn(0));
+                modelCopy.SetOutputID(defaultOutputName);
             }
             else
             {
@@ -231,30 +222,40 @@ namespace TimeSeriesAnalysis.Dynamic
                     uNames.Add(uName);
                 }
                 modelCopy.SetInputIDs(uNames.ToArray());
-            }
-            {
+                // unless pid, then output is Y_meas
                 inputData.Add(defaultOutputName, unitData.Y_meas);
                 modelCopy.SetOutputID(defaultOutputName);
             }
+
+            inputData.SetIndicesToIgnore(unitData.IndicesToIgnore);
 
             var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, out var simData);
 
             if (!isOk)
                 return (false, null);
 
-            double[] y_proc = null;
-            double[] y_sim = null;
-
-            y_sim = simData.GetValues(defaultOutputName);
-            if (simData.ContainsSignal(singleModelName))
+            if (model.GetProcessModelType() == ModelType.PID)
             {
-                y_proc = simData.GetValues(singleModelName);
+                double[] u_sim = null;
+                u_sim = simData.GetValues(defaultOutputName);
+                return (isOk, u_sim);
             }
             else
             {
-                y_proc = y_sim;
+                double[] y_proc = null;
+                double[] y_sim = null;
+
+                y_sim = simData.GetValues(defaultOutputName);
+                if (simData.ContainsSignal(singleModelName))
+                {
+                    y_proc = simData.GetValues(singleModelName);
+                }
+                else
+                {
+                    y_proc = y_sim;
+                }
+                return (isOk, y_proc);
             }
-            return (isOk, y_proc);
         }
 
 

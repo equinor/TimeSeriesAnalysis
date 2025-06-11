@@ -6,7 +6,7 @@ using TimeSeriesAnalysis;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Quickly serialie both plantSim and data associated with it.
+    /// Quickly serialize both PlantSimulator object and data associated with it.
     /// </summary>
     public  static class SerializeHelper
     {

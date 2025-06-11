@@ -442,6 +442,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 List<int> umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
                 List<int> uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
+                
+                var indToIgnoreFromChooser =  DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet);
 
                 // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
                 /*
@@ -463,6 +465,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 //TODO: need to remove indice if _previous_ value was umax or umin
                 indicesToIgnore = indicesToIgnore.Union(umaxInd).ToList();
                 indicesToIgnore = indicesToIgnore.Union(uminInd).ToList();
+                indicesToIgnore = indicesToIgnore.Union(indToIgnoreFromChooser).ToList();
                 indicesToIgnore.Sort();
 
              /*   if (indicesToIgnore.Count() > ucur.Count() * 0.5)
@@ -568,7 +571,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             // The ignored indices above are for the arrays used for identification.
             // For evaluation and simulation, slightly larger arrays are used, and other indices must be found.
-            List<int> indicesToIgnoreForEvalSim = new List<int>();
+       /*     List<int> indicesToIgnoreForEvalSim = new List<int>();
 
             List<int> indBadU = new List<int>();
             for (int i = 0; i < dataSet.U.GetNColumns(); i++)
@@ -579,7 +582,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadU).ToList();
             indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadY_meas).ToList();
-            
+            */
            /* if (ignoreFlatLines)
             {
                 // Identify oversampled data
@@ -621,7 +624,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 return (pidParam, null, null);
             }
 
-            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indicesToIgnoreForEvalSim));
+            // NB! important that simulations use the same indicesToIgnore that identification had!
+            dataSet.IndicesToIgnore = indicesToIgnore;
+            //
+
+            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indicesToIgnore));
             pidParam.Fitting.WasAbleToIdentify = true;
             dataSet.U_sim = U_sim;
 
@@ -657,10 +664,10 @@ namespace TimeSeriesAnalysis.Dynamic
       
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
-            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreForEvalSim), nDigits);
+            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnore), nDigits);
             
             pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);
-            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreForEvalSim, 0) * 100;
+            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnore, 0) * 100;
 
             pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
@@ -669,7 +676,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;
             // fitting abs?
-            return (pidParam, dataSet.U_sim, indicesToIgnoreForEvalSim);
+            return (pidParam, dataSet.U_sim, indicesToIgnore);
         }
 
 
