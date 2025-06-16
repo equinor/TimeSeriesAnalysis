@@ -317,6 +317,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="flatlinePeriods">Number of periods with flatlined data.</param>
         /// <param name="flatlineProportion">Proportion of the dataset that should be flatlines.</param>
         [TestCase(80,1,1,0.3)]// There is one flatline period 
+        [TestCase(180, 1, 2, 0.3)]// There is one flatline period 
 
         public void IndicesToIgnore_WFlatLines(int N, double timebase, int flatlinePeriods, double flatlineProportion)
         {
@@ -357,7 +358,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                     pidDataSet.GetTimeBase(), caseId + "_beforeSim");
                 Shared.DisablePlots();
             }
-         //   var idParameters = new PidIdentifier().Identify(ref pidDataSet, false);
             // Create synthetic data with flatlines (Create them anew to avoid shallow copies / references)
             int flatlinePeriodLength = (int)(flatlineProportion * N / flatlinePeriods);
             var pidDataSetWithFlatlines = processSim.GetUnitDataSetForPID(combinedDataFlatLines, pidModel1);
@@ -385,10 +385,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                     pidDataSetWithFlatlines.GetTimeBase(), caseId+"_with_flatlines");
                 Shared.DisablePlots();
             }
-
+            Assert.IsTrue(idParametersWithFlatlines.Fitting.FitScorePrc > 99, "fit score should ignore bad data and give a high score:"+ idParametersWithFlatlines.Fitting.FitScorePrc);
             Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :"+ idParametersWithFlatlines.Kp); // Allow 2% slack on Kp
             Assert.IsTrue(Math.Abs(idParametersWithFlatlines.Ti_s - trueParameters.Ti_s) < 0.05 * trueParameters.Ti_s, "Ti too far off"+ idParametersWithFlatlines.Ti_s); // Allow 5% slack on Ti
-            Assert.IsTrue(idParametersWithFlatlines.Fitting.FitScorePrc > 99, "fit score should ignore bad data and give a high score");
         }
 
      /*   /// <summary>

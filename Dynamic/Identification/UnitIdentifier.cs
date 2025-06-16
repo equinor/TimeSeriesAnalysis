@@ -579,7 +579,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var indUbad = new List<int>();
             for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
             {
-                indUbad = indUbad.Union(SysIdBadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx),
+                indUbad = indUbad.Union(BadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx),
                     dataSet.BadDataID)).ToList();
             }
             List<int> indYcurBad = vec.FindValues(ycur, dataSet.BadDataID, VectorFindValueType.NaN);

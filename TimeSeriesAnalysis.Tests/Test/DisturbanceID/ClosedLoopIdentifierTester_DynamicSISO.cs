@@ -115,11 +115,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void RandomWalkDisturbance(double procGain, double distAmplitude, double gainPrecisionPrc)
         {
-          //  int seed = 10;//fails to find model even if Tc_s is zero
             int seed = 50; // important: this seend will if time constant is zero be able to find a model 
-
             int N = 2000;
-
             var locParameters = new UnitParameters
             {
                 TimeConstant_s = 2,//should be nonzero for dynamic test (fails if  timconstant_s i larger than about 2)

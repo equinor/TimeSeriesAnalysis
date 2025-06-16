@@ -11,7 +11,13 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </summary>
     public static class DataIndicesToIgnoreChooser
     {
-        public static List<int> ChooseIndicesToIgnore(UnitDataSet dataSet)
+        /// <summary>
+        /// Looks over UnitDataSet and chooses which indices to ignore
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="detectFrozenData"> if set to true, then any time sample where all inputs are empty will be removed</param>
+        /// <returns></returns>
+        public static List<int> ChooseIndicesToIgnore(UnitDataSet dataSet, bool detectFrozenData = false)
         {
             var tsData = new TimeSeriesDataSet();
 
@@ -22,14 +28,34 @@ namespace TimeSeriesAnalysis.Dynamic
                 tsData.Add("U"+i, dataSet.U.GetColumn(i));
             }
             tsData.SetTimeStamps(dataSet.Times.ToList());
-            return ChooseIndicesToIgnore(tsData);
+            return ChooseIndicesToIgnore(tsData, detectFrozenData);
         }
 
-        public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet)
+        /// <summary>
+        /// Looks over dataset and chooses indices to ignore. 
+        /// For best results, only include those time-series that are needed for simulation, remove unused time-series from this dataset.
+        /// </summary>
+        /// <param name="dataSet">dataset to be investigated</param>
+        ///  <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"(only use when dataset includes measoured outputs y with noise)</param>
+        /// <returns></returns>
+        public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet, bool detectFrozenData=false)
         {
-            var frozenIdx = FrozenDataDetector.DetectFrozenSamples(dataSet);
+            var badDataIdx = new List<int>();
+            foreach (var signalID in dataSet.GetSignalNames())
+            {
+                var signalValues = dataSet.GetValues(signalID);
+                badDataIdx.Union(BadDataFinder.GetAllBadIndicesPlussNext(signalValues, dataSet.BadDataID));
+            }
 
-            return frozenIdx;
+            if (detectFrozenData)
+            {
+                var frozenIdx = FrozenDataDetector.DetectFrozenSamples(dataSet);
+                return badDataIdx.Union(frozenIdx).ToList();
+            }
+            else
+            {
+                return badDataIdx;
+            }
         }
 
 

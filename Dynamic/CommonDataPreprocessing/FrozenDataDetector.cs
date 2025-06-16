@@ -5,6 +5,9 @@ using System.Text;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
+    /// <summary>
+    /// Determines if all data has frozen for any samples
+    /// </summary>
     static public class FrozenDataDetector
     {
 

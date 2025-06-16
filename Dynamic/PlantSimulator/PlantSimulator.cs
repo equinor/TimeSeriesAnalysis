@@ -506,132 +506,139 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doCalcYwithoutAdditiveTerms"></param>
         /// <param name="simData"></param>
         /// <returns></returns>
-      /*  private bool SimulateSingleInternalCore(TimeSeriesDataSet inputData, string singleModelName, 
-            bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)
+        /*  private bool SimulateSingleInternalCore(TimeSeriesDataSet inputData, string singleModelName, 
+              bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)
+          {
+              if (!modelDict.ContainsKey(singleModelName))
+              {
+                  simData = null;
+                  return false;
+              }
+              if (!modelDict[singleModelName].IsModelSimulatable(out string explStr))
+              {
+                  Shared.GetParserObj().AddError(explStr);
+                  simData = null;
+                  return false;
+              }
+
+              simData = new TimeSeriesDataSet();
+              int? N = inputData.GetLength();
+              if (N.Value == 0)
+                  return false;
+              int timeIdx = 0;
+              var model = modelDict[singleModelName];
+              string[] additiveInputIDs = model.GetAdditiveInputIDs();
+              string outputID = model.GetOutputID();
+
+              string[] inputIDs = model.GetModelInputIDs();
+              if (doCalcYwithoutAdditiveTerms == false)
+              {
+                  inputIDs = model.GetBothKindsOfInputIDs();
+              }
+              bool doEstimateDisturbance = false;
+              if (additiveInputIDs != null)
+              {
+                  if (!inputData.ContainsSignal(additiveInputIDs[0]))
+                  {
+                      doEstimateDisturbance = true;
+                      inputIDs = model.GetModelInputIDs();
+                  }
+              }
+
+              var vec = new Vec();
+              var nameOfSimulatedSignal = model.GetOutputID();
+              if (doEstimateDisturbance)
+              {
+                  nameOfSimulatedSignal = model.GetID();
+              }
+
+              // initalize
+              {
+                  double[] inputVals = GetValuesFromEitherDataset(model,inputIDs, timeIdx, simData, inputData);
+                  double[] outputVals = GetValuesFromEitherDataset(model,new string[] { outputID }, timeIdx, simData, inputData);
+                  simData.InitNewSignal(nameOfSimulatedSignal, outputVals[0], N.Value);
+                  model.WarmStart(inputVals, outputVals[0]);
+              }
+              // main loop
+              var timeBase_s = inputData.GetTimeBase(); ;
+
+              for (timeIdx = 0; timeIdx < N; timeIdx++)
+              {
+                  //  double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
+                  double[] inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputData);
+                  double[] outputVal = model.Iterate(inputVals, timeBase_s);
+
+                  // if a second output is given, this is by definition the internal output upstream the additive signals.
+                  if (outputVal.Count() == 2)
+                  {
+                      if (timeIdx == 0)
+                      {
+                          simData.InitNewSignal(model.GetID(), outputVal[1], N.Value);
+                      }
+                      var isOk_internal = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[1]);
+                      if (!isOk_internal)
+                      {
+                          return false;
+                      }
+                  }
+                  var  isOk = simData.AddDataPoint(nameOfSimulatedSignal, timeIdx, outputVal[0]);
+                  if (!isOk)
+                  {
+                      return false;
+                  }
+              }
+              if (inputData.GetTimeStamps() != null)
+                  simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
+              else
+              { 
+              //?
+              }
+              // disturbance estimation
+              if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess && doEstimateDisturbance)
+              {
+
+                  // y_meas = y_internal+d as defined here
+                  var y_meas = inputData.GetValues(outputID);
+                  if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
+                  {
+                      var y_sim = simData.GetValues(nameOfSimulatedSignal);
+                      if ((new Vec()).IsAllNaN(y_sim))
+                      {
+                          return false;
+                      }
+                      // TODO: may need to "freeze" disturbance is there is a bad signal id?
+                      // old: y_meas and y_sim are subtracted without time-shifting
+
+                      double[] est_disturbance = null;
+                      if (doDestBasedONYsimOfLastTimestep)
+                      {
+                          // note that actually 
+                          // y_meas[t] = y_proc[t-1] + D[t]
+                           est_disturbance = new double[y_meas.Length];
+                           for (int i = 1; i < y_meas.Length; i++)
+                           {
+                               est_disturbance[i] = y_meas[i]-y_sim[i-1];
+                           }
+                           est_disturbance[0] = est_disturbance[1];
+                      }
+                      else
+                      {
+                          est_disturbance = (new Vec()).Subtract(y_meas, y_sim);
+
+                      }
+                      simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
+                      simData.Add(model.GetOutputID(), y_meas);
+                  }
+              }
+              return true;
+          }*/
+
+        // this is version that does NOT do determination of indices to ignore
+        public bool Simulate(TimeSeriesDataSet inputData,  out TimeSeriesDataSet simData)
         {
-            if (!modelDict.ContainsKey(singleModelName))
-            {
-                simData = null;
-                return false;
-            }
-            if (!modelDict[singleModelName].IsModelSimulatable(out string explStr))
-            {
-                Shared.GetParserObj().AddError(explStr);
-                simData = null;
-                return false;
-            }
+            return Simulate(inputData, false, out simData);
+        }
 
-            simData = new TimeSeriesDataSet();
-            int? N = inputData.GetLength();
-            if (N.Value == 0)
-                return false;
-            int timeIdx = 0;
-            var model = modelDict[singleModelName];
-            string[] additiveInputIDs = model.GetAdditiveInputIDs();
-            string outputID = model.GetOutputID();
-
-            string[] inputIDs = model.GetModelInputIDs();
-            if (doCalcYwithoutAdditiveTerms == false)
-            {
-                inputIDs = model.GetBothKindsOfInputIDs();
-            }
-            bool doEstimateDisturbance = false;
-            if (additiveInputIDs != null)
-            {
-                if (!inputData.ContainsSignal(additiveInputIDs[0]))
-                {
-                    doEstimateDisturbance = true;
-                    inputIDs = model.GetModelInputIDs();
-                }
-            }
-
-            var vec = new Vec();
-            var nameOfSimulatedSignal = model.GetOutputID();
-            if (doEstimateDisturbance)
-            {
-                nameOfSimulatedSignal = model.GetID();
-            }
-
-            // initalize
-            {
-                double[] inputVals = GetValuesFromEitherDataset(model,inputIDs, timeIdx, simData, inputData);
-                double[] outputVals = GetValuesFromEitherDataset(model,new string[] { outputID }, timeIdx, simData, inputData);
-                simData.InitNewSignal(nameOfSimulatedSignal, outputVals[0], N.Value);
-                model.WarmStart(inputVals, outputVals[0]);
-            }
-            // main loop
-            var timeBase_s = inputData.GetTimeBase(); ;
-
-            for (timeIdx = 0; timeIdx < N; timeIdx++)
-            {
-                //  double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
-                double[] inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputData);
-                double[] outputVal = model.Iterate(inputVals, timeBase_s);
-
-                // if a second output is given, this is by definition the internal output upstream the additive signals.
-                if (outputVal.Count() == 2)
-                {
-                    if (timeIdx == 0)
-                    {
-                        simData.InitNewSignal(model.GetID(), outputVal[1], N.Value);
-                    }
-                    var isOk_internal = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[1]);
-                    if (!isOk_internal)
-                    {
-                        return false;
-                    }
-                }
-                var  isOk = simData.AddDataPoint(nameOfSimulatedSignal, timeIdx, outputVal[0]);
-                if (!isOk)
-                {
-                    return false;
-                }
-            }
-            if (inputData.GetTimeStamps() != null)
-                simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
-            else
-            { 
-            //?
-            }
-            // disturbance estimation
-            if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess && doEstimateDisturbance)
-            {
-
-                // y_meas = y_internal+d as defined here
-                var y_meas = inputData.GetValues(outputID);
-                if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
-                {
-                    var y_sim = simData.GetValues(nameOfSimulatedSignal);
-                    if ((new Vec()).IsAllNaN(y_sim))
-                    {
-                        return false;
-                    }
-                    // TODO: may need to "freeze" disturbance is there is a bad signal id?
-                    // old: y_meas and y_sim are subtracted without time-shifting
-
-                    double[] est_disturbance = null;
-                    if (doDestBasedONYsimOfLastTimestep)
-                    {
-                        // note that actually 
-                        // y_meas[t] = y_proc[t-1] + D[t]
-                         est_disturbance = new double[y_meas.Length];
-                         for (int i = 1; i < y_meas.Length; i++)
-                         {
-                             est_disturbance[i] = y_meas[i]-y_sim[i-1];
-                         }
-                         est_disturbance[0] = est_disturbance[1];
-                    }
-                    else
-                    {
-                        est_disturbance = (new Vec()).Subtract(y_meas, y_sim);
-
-                    }
-                    simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
-                    simData.Add(model.GetOutputID(), y_meas);
-                }
-            }
-            return true;
-        }*/
         /// <summary>
         /// Perform a "plant-wide" full dynamic simulation of the entire plant,i.e. all models in the plant, given the specified connections and external signals. 
         /// <para>
@@ -642,11 +649,17 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  The simulation will also set the <c>PlantFitScore</c> which can be used to evalute the fit of the simulation to the plant data.
         ///  For this score to be calculated, the measured time-series corresponding to <c>simData</c> need to be provided in <c>inputData</c>
         ///  </para>
+        ///  <para>
+        ///  The simulation will consider the <c>.IndicesToIgnore</c> member of the inputData, and ignore these data indices, re-starting dynamic
+        ///  models once periods of bad data pass.
+        /// </para>
+        /// 
         /// </summary>
         /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
+        /// <param name="doDetermineIndicesToIgnore"> is set to true, the simulator tries to determine indices to ignore internally</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
         /// <returns></returns>
-        public bool Simulate (TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
+        public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
         {
             var timeBase_s = inputData.GetTimeBase(); ;
 
@@ -669,20 +682,22 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            (var orderedSimulatorIDs,var compLoopDict) = connections.InitAndDetermineCalculationOrderOfModels(modelDict);
+            (var orderedSimulatorIDs,var compLoopDict) = 
+                connections.InitAndDetermineCalculationOrderOfModels(modelDict);
             simData = new TimeSeriesDataSet();
 
             // initalize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
 
-            var inputDataMinimal = new TimeSeriesDataSet(inputData);
-
-            // in some cases all the time-series may "freeze"
-            // try to detect this by analyzing inputDataMinimal, and use this to update append the "indicesToIgnore"
+            var inputDataMinimal = SelectMinimalInputData(inputData);
+            // parse dataset and determine indices that are to be ignored when simulating.
+            if (doDetermineIndicesToIgnore)
+            {
+                inputDataMinimal.SetIndicesToIgnore(DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(inputDataMinimal, detectFrozenData: false));
+            }
 
             // todo: disturbances could also instead be estimated in closed-loop? 
             var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict);
-
 
             // need to keep special track of pid-controlled outputs.
             var pidControlledOutputsDict = DeterminePidControlledOutputs();
@@ -852,12 +867,51 @@ namespace TimeSeriesAnalysis.Dynamic
             if (inputDataMinimal != null)
                 if (inputDataMinimal.GetTimeStamps() != null)
             simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());
+            simData.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
             PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData);
 
             return true;
         }
 
+        /// <summary>
+        /// Choose only the input time series that are actually used by a given plant
+        /// </summary>
+        /// <param name="rawInputData"></param>
+        /// <returns></returns>
+        public TimeSeriesDataSet SelectMinimalInputData(TimeSeriesDataSet rawInputData)
+        {
+            var retTimeSeries = new TimeSeriesDataSet();
 
+            foreach (var model in modelDict)
+            {
+                foreach (var inputID in model.Value.GetBothKindsOfInputIDs())
+                {
+                    var values = rawInputData.GetValues(inputID);
+                    if (values != null)
+                    {
+                        retTimeSeries.Add(inputID, values);
+                    }
+                }
+                var outputID = model.Value.GetOutputID();
+                if (rawInputData.ContainsSignal(outputID))
+                {
+                    var values = rawInputData.GetValues(outputID);
+                    retTimeSeries.Add(outputID, values);
+                }
+
+                var outputIdentID = model.Value.GetOutputIdentID();
+                if (rawInputData.ContainsSignal(outputIdentID))
+                {
+                    var values = rawInputData.GetValues(outputIdentID);
+                    retTimeSeries.Add(outputIdentID, values);
+                }
+            }
+
+            retTimeSeries.SetTimeStamps(rawInputData.GetTimeStamps().ToList());
+            retTimeSeries.SetIndicesToIgnore(rawInputData.GetIndicesToIgnore());
+
+            return retTimeSeries;
+        }
 
 
 

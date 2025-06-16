@@ -403,6 +403,43 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
              timeBase_s, "UnitTest_SerialProcess");*/
         }
 
+        [TestCase]
+        public void Serial2_SISO_IgnoresBadDataPoints_RunsAndConverges()
+        {
+            var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { processModel1, processModel2 }, "Serial2");
+
+            plantSim.ConnectModels(processModel1, processModel2);
+            var inputData = new TimeSeriesDataSet();
+
+            var uValues = TimeSeriesCreator.Step(N / 4, N, 50, 55);
+            uValues[5] = inputData.BadDataID;
+
+            inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U), uValues);
+            inputData.CreateTimestamps(timeBase_s);
+
+            var isOk = plantSim.Simulate(inputData, true, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk);
+            Assert.IsTrue(simData.GetIndicesToIgnore().Count()>0,"no indices were tagged to be ignored!");
+
+            PsTest.CommonAsserts(inputData, simData, plantSim);
+
+            double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y);
+            Assert.IsTrue(Math.Abs(simY[0] - (55 * 1.1 + 5)) < 0.01);
+            Assert.IsTrue(Math.Abs(simY.Last() - (60 * 1.1 + 5)) < 0.01);
+
+            if (false)
+            {
+                Plot.FromList(new List<double[]> {
+                 simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                 simData.GetValues(processModel2.GetID(),SignalType.Output_Y),
+                 simData.GetValues(processModel1.GetID(),SignalType.External_U)},
+                new List<string> { "y1=y_sim1", "y1=y_sim2", "y3=u" },
+                timeBase_s, "UnitTest_SerialProcess");
+            }
+        }
+
+
 
         [TestCase]
         public void Serial3_SISO_RunsAndConverges()

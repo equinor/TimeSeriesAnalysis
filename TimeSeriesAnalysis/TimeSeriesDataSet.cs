@@ -31,7 +31,11 @@ namespace TimeSeriesAnalysis
         Dictionary<string, double> dataset_constants;
         List<int> indicesToIgnore;
         string csvFileName = string.Empty;
-     //   int? N;
+        /// <summary>
+        /// Some systems for storing data do not support "NaN", but instead some other magic 
+        /// value is reserved for indicating that a value is bad or missing. 
+        /// </summary>
+        public double BadDataID { get; set; } = -9999;
 
         /// <summary>
         /// Default constructor
@@ -652,7 +656,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Get a list of the indices in the dataset that are flagged to be ignored in identification
         /// </summary>
-        /// <returns></returns>
+        /// <returns>empty list if no indices, otherwise a list of indices (never returns null)</returns>
         public List<int> GetIndicesToIgnore()
         {
             if (indicesToIgnore == null)
@@ -672,6 +676,19 @@ namespace TimeSeriesAnalysis
             Add(signalName, Vec<double>.Concat(new double[] { initalValue },
                 Vec<double>.Fill(nonYetSimulatedValue, N - 1)));
         }
+
+        /// <summary>
+        /// Determine if internal IndicesToIgnore is "null" i.e. has not been speified
+        /// </summary>
+        /// <returns>true if IndicesToIgnore is not null, or false it is null</returns>
+        public bool IsIndicesToIgnoreSet()
+        {
+            if (indicesToIgnore == null)
+                return false;
+            else
+                return true;
+        }
+
 
         /// <summary>
         /// Loads the CsvContent(which can be read from a file) into a TimeSeriesDataSet object

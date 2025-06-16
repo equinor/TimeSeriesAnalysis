@@ -13,7 +13,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// that it is especially important to filter out, otherwise it may 
     /// destory identification of dynamic terms.
     /// </summary>
-    static class SysIdBadDataFinder
+    static class BadDataFinder
     {
         /// <summary>
         /// 
@@ -21,7 +21,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inData"></param>
         /// <param name="badValueIndicatingValue"></param>
         /// <returns></returns>
-        static private List<int> GetAllBadIndices(double[] inData, double badValueIndicatingValue)
+        static public  List<int> GetAllBadIndices(double[] inData, double badValueIndicatingValue)
         {
             List<int> badValueIndices = GetBadValueIndices(inData, badValueIndicatingValue);
             //   List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
