@@ -1,4 +1,5 @@
 ﻿using Accord.Math;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,6 +172,28 @@ namespace TimeSeriesAnalysis
                     new_array.Add(array[i]);
             }
             return new_array.ToArray() ;
+        }
+
+        /// <summary>
+        /// Shifts the indice array by an integer, (positive or negative value)
+        /// Note that the return index array by will not have negative indices, so returned array may be smaller in dimension that input
+        /// </summary>
+        /// <param name="inArray"></param>
+        /// <param name="shiftByIndex"></param>
+        /// <returns></returns>
+        public static int[] Shift(int[] inArray, int shiftByIndex)
+        {
+            if (shiftByIndex == 0)
+                return inArray;
+            List<int> retVal = new List<int>();
+            for (int i = 0; i < inArray.Length; i++)
+            {
+                if (IsNaN(inArray[i]))
+                    continue;
+                if (inArray[i] + shiftByIndex>=0)
+                    retVal.Add(inArray[i] + shiftByIndex);
+            }
+            return retVal.ToArray();
         }
 
 

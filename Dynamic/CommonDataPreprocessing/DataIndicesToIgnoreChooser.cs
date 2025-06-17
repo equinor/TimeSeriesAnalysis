@@ -13,11 +13,15 @@ namespace TimeSeriesAnalysis.Dynamic
     {
         /// <summary>
         /// Looks over UnitDataSet and chooses which indices to ignore
+        /// 
+        /// - Tags indices where any of the timeseries in dataSet have value badDataID or is NaN 
+        /// - if detectFrozenData=true, it will also consider the dataset "frozen" if all tags in dataset retain the exact same value from one data point to the next
         /// </summary>
         /// <param name="dataSet"></param>
+        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removd/param>
         /// <param name="detectFrozenData"> if set to true, then any time sample where all inputs are empty will be removed</param>
         /// <returns></returns>
-        public static List<int> ChooseIndicesToIgnore(UnitDataSet dataSet, bool detectFrozenData = false)
+        public static List<int> ChooseIndicesToIgnore(UnitDataSet dataSet, bool detectBadData =true, bool detectFrozenData = false)
         {
             var tsData = new TimeSeriesDataSet();
 
@@ -28,7 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 tsData.Add("U"+i, dataSet.U.GetColumn(i));
             }
             tsData.SetTimeStamps(dataSet.Times.ToList());
-            return ChooseIndicesToIgnore(tsData, detectFrozenData);
+            return ChooseIndicesToIgnore(tsData, detectBadData, detectFrozenData);
         }
 
         /// <summary>
@@ -36,15 +40,19 @@ namespace TimeSeriesAnalysis.Dynamic
         /// For best results, only include those time-series that are needed for simulation, remove unused time-series from this dataset.
         /// </summary>
         /// <param name="dataSet">dataset to be investigated</param>
+        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removd/param>
         ///  <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"(only use when dataset includes measoured outputs y with noise)</param>
         /// <returns></returns>
-        public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet, bool detectFrozenData=false)
+        public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet, bool detectBadData = true, bool detectFrozenData=false)
         {
             var badDataIdx = new List<int>();
-            foreach (var signalID in dataSet.GetSignalNames())
+            if (detectBadData)
             {
-                var signalValues = dataSet.GetValues(signalID);
-                badDataIdx.Union(BadDataFinder.GetAllBadIndicesPlussNext(signalValues, dataSet.BadDataID));
+                foreach (var signalID in dataSet.GetSignalNames())
+                {
+                    var signalValues = dataSet.GetValues(signalID);
+                    badDataIdx = badDataIdx.Union(BadDataFinder.GetAllBadIndicesPlussNext(signalValues, dataSet.BadDataID)).ToList();
+                }
             }
 
             if (detectFrozenData)

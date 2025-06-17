@@ -34,7 +34,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Default constructor
         /// </summary>
         /// <param name="pidScaling"></param>
-        /// <param name="maxExpectedTc_s"></param>
         /// <param name="badValueIndicatingValue"></param>
         /// <param name="type"></param>
         public PidIdentifier(PidScaling pidScaling=null,  double badValueIndicatingValue=-9999,
@@ -76,7 +75,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public PidParameters Identify(ref UnitDataSet dataSet, bool downsampleOversampledData = true)
         {
          //   const bool doOnlyWithDelay = false;// should be false unless debugging something
-            const bool DoFiltering = true; // default is true (this improves performance significantly)
+            const bool doFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
 
             // Find the oversampled factor if relevant
@@ -92,7 +91,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }*/
 
             // 1. try identification with delay of one sample but without filtering
-            (PidParameters results_withDelay, double[,] U_withDelay, List<int> indicesToIgnore_withDelay)
+            (var idParamsWithDelay, var U_withDelay, var indicesToIgnore_withDelay)
                 = IdentifyInternal(dataSet, true);
    
    /*         if (doOnlyWithDelay)
@@ -103,18 +102,18 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
             //    relative to the clock that the pid algorithm ran on originally)
-            (PidParameters results_withoutDelay, double[,] U_withoutDelay, List<int> indicesToIgnore_withoutDelay) = 
+            (var idParamsWithoutDelay, var U_withoutDelay, var indicesToIgnore_withoutDelay) = 
                 IdentifyInternal(dataSet, false);
 
             // save which is the "best" estimate for comparison 
             bool doDelay = true;
-            PidParameters bestPidParameters= results_withoutDelay;
+            var bestPidParameters= idParamsWithoutDelay;
             double[,] bestU = U_withoutDelay;
-            List<int> bestIndicesToIgnore = indicesToIgnore_withoutDelay;
-            if (IsFirstModelBetterThanSecondModel(results_withDelay, results_withoutDelay))
+            var  bestIndicesToIgnore = indicesToIgnore_withoutDelay;
+            if (IsFirstModelBetterThanSecondModel(idParamsWithDelay, idParamsWithoutDelay))
             {
                 doDelay = true;
-                bestPidParameters = results_withDelay;
+                bestPidParameters = idParamsWithDelay;
                 bestU = U_withDelay;
                 bestIndicesToIgnore = indicesToIgnore_withDelay;
 
@@ -122,12 +121,12 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 doDelay = false;
-                bestPidParameters = results_withoutDelay;
+                bestPidParameters = idParamsWithoutDelay;
                 bestU = U_withoutDelay;
                 bestIndicesToIgnore = indicesToIgnore_withoutDelay;
             }
 
-            if (DoFiltering)
+            if (doFiltering)
             {
                 // 3. try filtering y_meas and see if this improves fit 
                 // if there is noise on y_meas that is not filtered, this may cause too small Kp/Ti
@@ -135,14 +134,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
-                    (PidParameters results_withFilter, double[,] U_withFilter, List<int> indicesToIgnore_withFilter) = 
+                    (var idParamsWithFilter, var U_withFilter, var indicesToIgnoreWithFilter) = 
                         IdentifyInternal(dataSet, doDelay, pidFilterParams/*, ignoreFlatLines: ignoreFlatLinesFirst*/);
 
-                    if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
+                    if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
                     {
                         bestU = U_withFilter;
-                        bestPidParameters = results_withFilter;
-                        bestIndicesToIgnore = indicesToIgnore_withFilter;
+                        bestPidParameters = idParamsWithFilter;
+                        bestIndicesToIgnore = indicesToIgnoreWithFilter;
                     }
                 }
 
@@ -154,13 +153,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
-                    (PidParameters results_withFilter, double[,] U_withFilter, List<int> indicesToIgnore_withFilter) =
+                    (var idParamsWithFilter, var UwithFilter, var indicesToIgnore_withFilter) =
                         IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas/*, ignoreFlatLines: ignoreFlatLinesFirst*/);
 
-                    if (IsFirstModelBetterThanSecondModel(results_withFilter, bestPidParameters))
+                    if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
                     {
-                        bestU = U_withFilter;
-                        bestPidParameters = results_withFilter;
+                        bestU = UwithFilter;
+                        bestPidParameters = idParamsWithFilter;
                         bestIndicesToIgnore = indicesToIgnore_withFilter;
                     }
                 }
@@ -177,12 +176,12 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (dataSet.Times.Count() != dataSetDownsampled.Times.Count())
                     {
                         pidFilter = null;
-                        PidParameters results_downsampled = Identify(ref dataSetDownsampled);
-                        if (IsFirstModelBetterThanSecondModel(results_downsampled, bestPidParameters))
+                        var idParamsDownsampled = Identify(ref dataSetDownsampled);
+                        if (IsFirstModelBetterThanSecondModel(idParamsDownsampled, bestPidParameters))
                         {
                             bestU = dataSetDownsampled.U_sim;
                             dataSet = dataSetDownsampled;
-                            bestPidParameters = results_downsampled;
+                            bestPidParameters = idParamsDownsampled;
                             bestIndicesToIgnore = dataSetDownsampled.IndicesToIgnore;
                         }
                     }
@@ -336,7 +335,13 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] yMod ;
 
              RegressionResults regressResults = null;
-            List<int> indicesToIgnore = new List<int>();
+            
+            //
+            // Note that these are the indices to be fed to the regression, and does not 1-to-1 conicide with indices numbering of the
+            // given dataset without conversion!
+            // 
+
+            var  indicesToIgnoreInternal = new List<int>();
 
             int nSamplesToLookBack = 0;
             if (isPIDoutputDelayOneSample)
@@ -344,9 +349,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 nSamplesToLookBack = 1;
             }
 
+            int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iterations back.
             {
-                int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iterations back.
-
                 int idxStart = nIterationsToLookBack;
                 int idxEnd = dataSet.GetNumDataPoints() - 1;
              
@@ -374,14 +378,16 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 // todo: remove? this is now integrated in  DataIndicesToIgnoreChooser.ChooseIndicesToIgnore
                 // replace -9999 in dataset
-                List<int> indBadUcur = BadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
-                List<int> indBadEcur = BadDataFinder.GetAllBadIndicesPlussNext(eprev,dataSet.BadDataID);
-              //  List<int> indBadEprev = new List<int>();
+                var indBadUcur = BadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
+                //var indBadEcur = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(eprev,dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
+                var indBadEcur = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(ecur, dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
+                //  var indBadEcur = BadDataFinder.GetAllBadIndicesPlussNext(ecur, dataSet.BadDataID);
 
-                List<int> umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
-                List<int> uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
-                
-                var indToIgnoreFromChooser =  DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, detectFrozenData: true);
+                var umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
+                var uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
+
+                // var indToIgnoreFromChooser =  Index.Shift(DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, detectBadData: false,detectFrozenData: true).ToArray(), -nIterationsToLookBack);
+                var indToIgnoreFromChooser = DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, detectBadData: false, detectFrozenData: true).ToArray();
 
                 // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
                 /*
@@ -397,13 +403,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     //   List<int> indAntiSurge = Vec.FindValues(ecur, result.antiSurgeParams.kickBelowThresholdE, FindValues.SmallerThan);
                 }
                 */
-                indicesToIgnore = indicesToIgnore.Union(indBadUcur).ToList();
-                indicesToIgnore = indicesToIgnore.Union(indBadEcur).ToList();
+                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadUcur).ToList();
+                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadEcur).ToList();
                 //TODO: need to remove indice if _previous_ value was umax or umin
-                indicesToIgnore = indicesToIgnore.Union(umaxInd).ToList();
-                indicesToIgnore = indicesToIgnore.Union(uminInd).ToList();
-                indicesToIgnore = indicesToIgnore.Union(indToIgnoreFromChooser).ToList();
-                indicesToIgnore.Sort();
+                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(umaxInd).ToList();
+                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(uminInd).ToList();
+                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indToIgnoreFromChooser).ToList();
+                indicesToIgnoreInternal.Sort();
 
                 Y_ols = vec.Subtract(ucur, uprev);
                 X1_ols = vec.Subtract(ecur, eprev);
@@ -411,7 +417,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 double[][] inputs = { X1_ols, X2_ols };
                 // important: use the un-regularized solver here!!
-                regressResults = vec.RegressUnRegularized(Y_ols, inputs, indicesToIgnore.ToArray());
+                regressResults = vec.RegressUnRegularized(Y_ols, inputs, indicesToIgnoreInternal.ToArray());
                 //  out double[] notUsed, out double[] Y_mod, out double Rsq_cur;
                 var b = regressResults.Param;
 
@@ -521,11 +527,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 return (pidParam, null, null);
             }
 
-            // NB! important that simulations use the same indicesToIgnore that identification had!
-            dataSet.IndicesToIgnore = indicesToIgnore;
-            //
+            // NB! important that simulations use the same indicesToIgnore that identification had, this is also important for FitScore!
+ 
 
-            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indicesToIgnore));
+            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
             pidParam.Fitting.WasAbleToIdentify = true;
             dataSet.U_sim = U_sim;
 
@@ -560,11 +565,14 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
       
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
-            pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;
-            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnore), nDigits);
+            pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;//remove? does not include indicesToIgnore?
+
+            dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
+            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 
+                nIterationsToLookBack, dataSet.IndicesToIgnore), nDigits);
             
-            pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);
-            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnore, 0) * 100;
+            pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);//remove? does not include indicesToIgnore?
+            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreInternal, 0) * 100;
 
             pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
@@ -573,7 +581,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;
             // fitting abs?
-            return (pidParam, dataSet.U_sim, indicesToIgnore);
+            return (pidParam, dataSet.U_sim, indicesToIgnoreInternal);
         }
 
 
@@ -581,11 +589,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns the simulated time series of the manipulated variable u as given by the PID-controller.
         /// </summary>
         /// <param name="pidParams"></param>
-        /// <param name="dataset"></param>
+        /// <param name="dataset"> includeing the "indices to ignore"</param>
         /// <param name="isPIDoutputDelayOneSample"></param>
-        /// <param name="indToIgnore"></param>
         /// <returns></returns>
-        public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, List<int> indToIgnore = null)
+        public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample)
         {
             var pidModel = new PidModel(pidParams, "pid");
             (var isOk,var simulatedU) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel);

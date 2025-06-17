@@ -20,16 +20,17 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="meas"></param>
         /// <param name="sim"></param>
+        /// <param name="initialIndicesToIgnore">ignore inital number of indices in meas and sim</param>
         /// <param name="indToIgnore"></param>
         /// <returns> a fit score that is maximum 100 percent, but can also go negative if fit is poor</returns>
-        public static double Calc(double[] meas, double[] sim,  List<int> indToIgnore = null)
+        public static double Calc(double[] meas, double[] sim, int initialIndicesToIgnore =0,  List<int> indToIgnore = null)
         {
             if (meas == null)
                 return double.NaN;
             if (sim == null)
                 return double.NaN;
 
-            double dev = Deviation(meas, sim, indToIgnore);
+            double dev = Deviation(meas, sim, initialIndicesToIgnore, indToIgnore);
             double devFromSelf = DeviationFromAvg(meas, indToIgnore);
 
             double fitScore = 0;
@@ -109,13 +110,13 @@ namespace TimeSeriesAnalysis
                     }
                 }
                 if (simData.ContainsSignal(outputName))
-                { 
+                {  
                     simY = simData.GetValues(outputName);
                 }
 
                 if (measY != null && simY != null)
                 {
-                    var curFitScore = FitScoreCalculator.Calc(measY, simY, indToIgnore);
+                    var curFitScore = FitScoreCalculator.Calc(measY, simY, 1,indToIgnore);
 
                     if (curFitScore != double.NaN)
                     {
@@ -183,9 +184,10 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="reference"></param>
         /// <param name="model"></param>
+        /// <param name="initialIndicesToIgnore"></param>
         /// <param name="indToIgnore"></param>
         /// <returns></returns>
-        private static double Deviation(double[] reference, double[] model, List<int> indToIgnore = null)
+        private static double Deviation(double[] reference, double[] model, int initialIndicesToIgnore, List<int> indToIgnore = null)
         {
             if (reference == null)
                 return double.NaN;
@@ -199,7 +201,7 @@ namespace TimeSeriesAnalysis
             double N = 0;
             indToIgnore?.Sort();
             int indToIgnoreIndex = 0;
-            for (var i = 0; i < Math.Min(reference.Length, model.Length); i++)
+            for (var i = initialIndicesToIgnore; i < Math.Min(reference.Length, model.Length); i++)
             {
                 if (!((indToIgnore == null) || (indToIgnore.Count == 0)))
                 {

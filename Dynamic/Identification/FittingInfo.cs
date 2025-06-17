@@ -120,6 +120,15 @@ namespace TimeSeriesAnalysis.Dynamic
         public string SolverOutput;
 
         /// <summary>
+        /// Counter of how many times the simulator has re-started over the course of the dataset due to periods of bad data
+        /// </summary>
+
+        public int numSimulatorRestarts = 0;
+
+
+
+
+        /// <summary>
         /// NB! this code seems to have an error with negative rsqdiff for cases when there yIndicesToIgnore is not empty.
         /// It may be preferable to use the output of the regression, as this avoids duplicating logic.
         /// </summary>

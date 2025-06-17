@@ -188,7 +188,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
         /// <param name="model">model to simulate</param>
-        /// <returns>a tuple, first aa true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive </returns>
+        /// <returns>a tuple, first a true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive </returns>
         static private (bool, double[]) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model)
         {
             string defaultOutputName = "output";
