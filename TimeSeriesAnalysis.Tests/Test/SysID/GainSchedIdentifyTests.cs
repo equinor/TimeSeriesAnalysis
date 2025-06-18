@@ -612,7 +612,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var alteredIdModel = new GainSchedModel(alteredParams,"altered");
 
             alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
-            (bool isOk3, double[] simY2) = PlantSimulatorHelper.SimulateSingle(unitData, alteredIdModel);
+            (bool isOk3, double[] simY2,_) = PlantSimulatorHelper.SimulateSingle(unitData, alteredIdModel);
 
             // plot
             bool doPlot = false;
@@ -756,11 +756,11 @@ namespace TimeSeriesAnalysis.Test.SysID
                 gsFittingSpecs.uTimeConstantThresholds = trueParams.TimeConstantThresholds;
                 idModel = GainSchedIdentifier.IdentifyForGivenThresholds(unitData, gsFittingSpecs);
             }
-            (bool isOk2, double[] simY2) =  PlantSimulatorHelper.SimulateSingle(unitData, idModel);
+            (bool isOk2, double[] simY2,_) =  PlantSimulatorHelper.SimulateSingle(unitData, idModel);
 
             var alteredIdModel = (GainSchedModel)idModel.Clone("altered");
             alteredIdModel.GetModelParameters().MoveOperatingPointUWithoutChangingModel(3);
-            (bool isOk3, double[] simY3) = PlantSimulatorHelper.SimulateSingle(unitData, alteredIdModel);
+            (bool isOk3, double[] simY3,_) = PlantSimulatorHelper.SimulateSingle(unitData, alteredIdModel);
 
             // plot
             bool doPlot = false;

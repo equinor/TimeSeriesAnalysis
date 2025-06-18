@@ -283,7 +283,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // non-disturbance related changes in the dataset producing "unitDataSet_adjusted"
             var unitDataSet_adjusted = RemoveSetpointAndOtherInputChangeEffectsFromDataSet(unitDataSet, unitModel, pidInputIdx, pidParams);
             unitDataSet_adjusted.D = null;
-            (bool isOk, double[] y_proc) = PlantSimulatorHelper.SimulateSingle(unitDataSet_adjusted, unitModel);
+            (bool isOk, double[] y_proc, int numSimRestarts) = PlantSimulatorHelper.SimulateSingle(unitDataSet_adjusted, unitModel);
 
             if (y_proc == null)
             {

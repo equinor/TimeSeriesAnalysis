@@ -634,7 +634,8 @@ namespace TimeSeriesAnalysis.Dynamic
           }*/
 
         // this is version that does NOT do determination of indices to ignore
-        public bool Simulate(TimeSeriesDataSet inputData,  out TimeSeriesDataSet simData)
+
+        public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
         {
             return Simulate(inputData, false, out simData);
         }
@@ -725,6 +726,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // simulate for all time steps(after first step!)
             const int restartModelAfterXConsecutiveBadIndices = 3;
             int nConsecutiveBadIndicesCounter = 0;
+            int numRestartCounter = -1;
             for (int timeIdx = 0; timeIdx < N; timeIdx++)
             {
                 bool doRestartModels = false;
@@ -745,6 +747,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // warm start every model on first data point, and after any long period of bad data
                 if (doRestartModels)
                 {
+                    numRestartCounter++;
                     for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                     {
                         var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
@@ -868,7 +871,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (inputDataMinimal.GetTimeStamps() != null)
             simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());
             simData.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
-            PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData);
+            simData.SetNumSimulatorRestarts(numRestartCounter);
+            PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData, inputDataMinimal.GetIndicesToIgnore() );
 
             return true;
         }

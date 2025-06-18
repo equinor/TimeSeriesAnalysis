@@ -491,7 +491,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-
+        /*
         private static double EstimateDisturbanceLF(UnitDataSet dataSet, UnitModel unitModel, int pidInputIdx, PidParameters pidParams)
         {
             var vec = new Vec(dataSet.BadDataID);
@@ -540,7 +540,7 @@ namespace TimeSeriesAnalysis.Dynamic
             Plot.FromList(dList, dNameList, dataSet.GetTimeBase(), "exp_Kp");
             Shared.DisablePlots();
             return 0;
-        }
+        }*/
 
         private static void ConsoleDebugOut(StringBuilder sb, UnitModel unitModel, string description,string addOnTxt ="")
         {

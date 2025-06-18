@@ -596,7 +596,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             dataSet.U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
             dataSet.CreateTimeStamps(timeBase_s);
 
-            (bool isOk, double[] y_sim) = PlantSimulatorHelper.SimulateSingle(dataSet, model);
+            (bool isOk, double[] y_sim, _) = PlantSimulatorHelper.SimulateSingle(dataSet, model);
             // plot
             bool doPlot = false;
             if (doPlot)

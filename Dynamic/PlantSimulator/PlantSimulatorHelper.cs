@@ -131,8 +131,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitData"></param>
         /// <param name="model"></param>
-        /// <returns></returns>
-        public static (bool, double[]) SimulateSingle(UnitDataSet unitData, ISimulatableModel model)
+        /// <returns>tuple : true/false if simulation ran, the simulated output, and the number of simulation restarts</returns>
+        public static (bool, double[],int) SimulateSingle(UnitDataSet unitData, ISimulatableModel model)
         {
             return SimulateSingleUnitDataWrapper(unitData, model);
         }
@@ -148,7 +148,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public static bool SimulateSingleToYmeas(UnitDataSet unitData, ISimulatableModel model, double noiseAmplitude = 0,
              int noiseSeed = 123)
         {
-            (bool isOk, double[] y_proc) = SimulateSingleUnitDataWrapper(unitData, model);
+            (bool isOk, double[] y_proc, int numSimRestarts) = SimulateSingleUnitDataWrapper(unitData, model);
 
             if (noiseAmplitude > 0)
             {
@@ -170,11 +170,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitData">the dataset to be simualted over, and where the Y_meas is updated with result</param>
         /// <param name="model">the model to be simulated</param>
         /// <returns></returns>
-        public static (bool, double[]) SimulateSingleToYsim(UnitDataSet unitData, ISimulatableModel model)
+        public static (bool, double[],int) SimulateSingleToYsim(UnitDataSet unitData, ISimulatableModel model)
         {
-            (bool isOk, double[] y_proc) = SimulateSingleUnitDataWrapper(unitData, model);
+            (bool isOk, double[] y_proc, int numSimRestarts) = SimulateSingleUnitDataWrapper(unitData, model);
             unitData.Y_sim = y_proc;
-            return (isOk, y_proc);
+            return (isOk, y_proc, numSimRestarts);
         }
 
 
@@ -188,8 +188,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
         /// <param name="model">model to simulate</param>
-        /// <returns>a tuple, first a true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive </returns>
-        static private (bool, double[]) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model)
+        /// <returns>a tuple, first a true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive,third is number of simulator re-starts </returns>
+        static private (bool, double[],int) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model)
         {
             string defaultOutputName = "output";
             var inputData = new TimeSeriesDataSet();
@@ -232,13 +232,13 @@ namespace TimeSeriesAnalysis.Dynamic
             var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, out var simData);
 
             if (!isOk)
-                return (false, null);
+                return (false, null,0);
 
             if (model.GetProcessModelType() == ModelType.PID)
             {
                 double[] u_sim = null;
                 u_sim = simData.GetValues(defaultOutputName);
-                return (isOk, u_sim);
+                return (isOk, u_sim,simData.GetNumSimulatorRestarts());
             }
             else
             {
@@ -254,7 +254,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     y_proc = y_sim;
                 }
-                return (isOk, y_proc);
+                return (isOk, y_proc, simData.GetNumSimulatorRestarts());
             }
         }
 
