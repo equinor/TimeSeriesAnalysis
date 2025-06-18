@@ -531,8 +531,12 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
             dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
+<<<<<<< HEAD
             (var u_sim, int numSimRestarts) = GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample);
             double[,] U_sim = Array2D<double>.Create(u_sim);
+=======
+            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
+>>>>>>> origin/feature/rewrite_handling_flatlines
             pidParam.Fitting.WasAbleToIdentify = true;
             dataSet.U_sim = U_sim;
 
