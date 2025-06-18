@@ -20,10 +20,10 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="meas"></param>
         /// <param name="sim"></param>
-        /// <param name="initialIndicesToIgnore">ignore inital number of indices in meas and sim</param>
         /// <param name="indToIgnore"></param>
+        /// <param name="initialIndicesToIgnore">ignore inital number of indices in meas and sim</param>
         /// <returns> a fit score that is maximum 100 percent, but can also go negative if fit is poor</returns>
-        public static double Calc(double[] meas, double[] sim, int initialIndicesToIgnore =0,  List<int> indToIgnore = null)
+        public static double Calc(double[] meas, double[] sim, List<int> indToIgnore = null,int initialIndicesToIgnore = 2)
         {
             if (meas == null)
                 return double.NaN;
@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis
                 return double.NaN;
 
             double dev = Deviation(meas, sim, initialIndicesToIgnore, indToIgnore);
-            double devFromSelf = DeviationFromAvg(meas, indToIgnore);
+            double devFromSelf = DeviationFromAvg(meas, initialIndicesToIgnore,indToIgnore);
 
             double fitScore = 0;
             if ( !Double.IsNaN(dev))
@@ -116,7 +116,7 @@ namespace TimeSeriesAnalysis
 
                 if (measY != null && simY != null)
                 {
-                    var curFitScore = FitScoreCalculator.Calc(measY, simY, 1,indToIgnore);
+                    var curFitScore = FitScoreCalculator.Calc(measY, simY, indToIgnore);
 
                     if (curFitScore != double.NaN)
                     {
@@ -223,7 +223,7 @@ namespace TimeSeriesAnalysis
             return ret;
         }
 
-        private static double DeviationFromAvg(double[] signal, List<int> indToIgnore = null)
+        private static double DeviationFromAvg(double[] signal, int initialIndicesToIgnore, List<int> indToIgnore = null)
         {
             if (signal == null) return double.NaN;
             if (signal.Length == 0) return double.NaN;
@@ -238,6 +238,7 @@ namespace TimeSeriesAnalysis
             double ret = 0;
             indToIgnore?.Sort();
             int indToIgnoreIndex = 0;
+
             for (var i = 0; i < signal.Length; i++)
             {
                 if (!((indToIgnore == null) || (indToIgnore.Count == 0)))
@@ -251,8 +252,11 @@ namespace TimeSeriesAnalysis
                         continue;
                     }
                 }
-                ret += Math.Abs(signal[i] - avg.Value);
-                N++;
+                if (i >= initialIndicesToIgnore)
+                {
+                    ret += Math.Abs(signal[i] - avg.Value);
+                    N++;
+                }
             }
             return ret / N;
         }

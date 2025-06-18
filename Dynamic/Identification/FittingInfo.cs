@@ -123,9 +123,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Counter of how many times the simulator has re-started over the course of the dataset due to periods of bad data
         /// </summary>
 
-        public int numSimulatorRestarts = 0;
-
-
+        public int NumSimulatorRestarts = 0;
 
 
         /// <summary>
@@ -192,7 +190,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 this.NFittingBadDataPoints = yIndicesToIgnore.Count;
             }
 
-            var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals);
+            var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals, yIndicesToIgnore);
             this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);
             this.TimeBase_s = dataSet.GetTimeBase();
 

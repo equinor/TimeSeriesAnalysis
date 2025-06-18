@@ -30,6 +30,8 @@ namespace TimeSeriesAnalysis
         Dictionary<string, double[]> dataset;
         Dictionary<string, double> dataset_constants;
         List<int> indicesToIgnore;
+        int numSimulatorRestarts;
+
         string csvFileName = string.Empty;
         /// <summary>
         /// Some systems for storing data do not support "NaN", but instead some other magic 
@@ -654,6 +656,15 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
+        /// Get the number of time the simulator was restarted due to periods of bad data(only applicable for simulated datasets)
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumSimulatorRestarts()
+        {
+            return numSimulatorRestarts;
+        }
+
+        /// <summary>
         /// Get a list of the indices in the dataset that are flagged to be ignored in identification
         /// </summary>
         /// <returns>empty list if no indices, otherwise a list of indices (never returns null)</returns>
@@ -746,8 +757,15 @@ namespace TimeSeriesAnalysis
                 return false;
             }
         }
-
-
+        /// <summary>
+        /// Save the number of simulator restarts that has been performed for a simulated dataset
+        /// (not applicable for measured datasets)
+        /// </summary>
+        /// <param name="numSimulatorRestarts"></param>
+        public void SetNumSimulatorRestarts(int numSimulatorRestarts)
+        {
+            this.numSimulatorRestarts = numSimulatorRestarts;
+        }
 
         /// <summary>
         /// The given indices will be skipped in any subsequent simulation of the dataset

@@ -528,8 +528,9 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             // NB! important that simulations use the same indicesToIgnore that identification had, this is also important for FitScore!
- 
 
+
+            dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
             double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
             pidParam.Fitting.WasAbleToIdentify = true;
             dataSet.U_sim = U_sim;
@@ -567,9 +568,9 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;//remove? does not include indicesToIgnore?
 
-            dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
-            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 
-                nIterationsToLookBack, dataSet.IndicesToIgnore), nDigits);
+    
+            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0),
+                dataSet.IndicesToIgnore,nIterationsToLookBack), nDigits);
             
             pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);//remove? does not include indicesToIgnore?
             pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreInternal, 0) * 100;
@@ -581,7 +582,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;
             // fitting abs?
-            return (pidParam, dataSet.U_sim, indicesToIgnoreInternal);
+            return (pidParam, dataSet.U_sim, dataSet.IndicesToIgnore);
         }
 
 
@@ -589,7 +590,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Returns the simulated time series of the manipulated variable u as given by the PID-controller.
         /// </summary>
         /// <param name="pidParams"></param>
-        /// <param name="dataset"> includeing the "indices to ignore"</param>
+        /// <param name="dataset"> dataset, including including the "indicesToIgnore"</param>
         /// <param name="isPIDoutputDelayOneSample"></param>
         /// <returns></returns>
         public double[] GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample)
