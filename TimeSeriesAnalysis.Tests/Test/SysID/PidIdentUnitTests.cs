@@ -392,6 +392,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(Math.Abs(idParams.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :"+ idParams.Kp); // Allow 2% slack on Kp
             Assert.IsTrue(Math.Abs(idParams.Ti_s - trueParameters.Ti_s) < 0.05 * trueParameters.Ti_s, "Ti too far off"+ idParams.Ti_s); // Allow 5% slack on Ti
             Assert.Greater(idParams.Fitting.FitScorePrc, 96, "fit score should ignore bad data and give a high score:");
+            Assert.IsTrue(idParams.Fitting.NumSimulatorRestarts > 0, "simulator should restart");
         }
 
         public enum BadDataEnum { U, Y_set, Y_meas}
@@ -479,7 +480,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(Math.Abs(idParameters.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :" + idParameters.Kp); 
             Assert.IsTrue(Math.Abs(idParameters.Ti_s - trueParameters.Ti_s) < 0.05 * trueParameters.Ti_s, "Ti too far off" + idParameters.Ti_s); 
             Assert.Greater(idParameters.Fitting.FitScorePrc, 50, "fit score should ignore bad data and give a high score:");
-          //  Assert.AreEqual(trueBadDataIdx,);
+            Assert.AreEqual(idParameters.Fitting.NumSimulatorRestarts,0,"single bad data point should not cause simulator restarts");
         }
 
 

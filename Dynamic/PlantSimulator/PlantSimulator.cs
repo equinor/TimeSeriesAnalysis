@@ -47,7 +47,14 @@ namespace TimeSeriesAnalysis.Dynamic
     public class PlantSimulator
     {
 
-        private const bool doDestBasedONYsimOfLastTimestep = true; 
+        private const bool doDestBasedONYsimOfLastTimestep = true;
+
+        /// <summary>
+        /// How many consequtive bad indices are required before the simulator does a new "warm-up" on the first following good indice.
+        /// should be larger than two, because a single bad point can can require skipping two indices in a recursive model, and thus can happen often.
+        /// </summary>
+        private int restartModelAfterXConsecutiveBadIndices = 3;
+
 
         /// <summary>
         /// User-friendly name that may include white spaces.
@@ -489,152 +496,13 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-
-
         /// <summary>
-        ///  Simulate a single model(any ISimulatable model), using inputData as inputs, 
-        ///  <para>
-        ///  If the model is a unitModel and the inputData inludes both the measured y and measured u, the
-        ///  simData will include an estimate of the additive disturbance.
-        ///  </para>
-        /// <para>
-        /// All other SimulateSingle() methods in this class should be convenience wrapper that ultimately call this method.
-        /// </para>
+        /// Simulate plant. This version of simualte does not internally determine any indices to ignore, but it will consider
+        /// indicesToIgnore of <c>inputData</c>
         /// </summary>
         /// <param name="inputData"></param>
-        /// <param name="singleModelName"></param>
-        /// <param name="doCalcYwithoutAdditiveTerms"></param>
         /// <param name="simData"></param>
-        /// <returns></returns>
-        /*  private bool SimulateSingleInternalCore(TimeSeriesDataSet inputData, string singleModelName, 
-              bool doCalcYwithoutAdditiveTerms, out TimeSeriesDataSet simData)
-          {
-              if (!modelDict.ContainsKey(singleModelName))
-              {
-                  simData = null;
-                  return false;
-              }
-              if (!modelDict[singleModelName].IsModelSimulatable(out string explStr))
-              {
-                  Shared.GetParserObj().AddError(explStr);
-                  simData = null;
-                  return false;
-              }
-
-              simData = new TimeSeriesDataSet();
-              int? N = inputData.GetLength();
-              if (N.Value == 0)
-                  return false;
-              int timeIdx = 0;
-              var model = modelDict[singleModelName];
-              string[] additiveInputIDs = model.GetAdditiveInputIDs();
-              string outputID = model.GetOutputID();
-
-              string[] inputIDs = model.GetModelInputIDs();
-              if (doCalcYwithoutAdditiveTerms == false)
-              {
-                  inputIDs = model.GetBothKindsOfInputIDs();
-              }
-              bool doEstimateDisturbance = false;
-              if (additiveInputIDs != null)
-              {
-                  if (!inputData.ContainsSignal(additiveInputIDs[0]))
-                  {
-                      doEstimateDisturbance = true;
-                      inputIDs = model.GetModelInputIDs();
-                  }
-              }
-
-              var vec = new Vec();
-              var nameOfSimulatedSignal = model.GetOutputID();
-              if (doEstimateDisturbance)
-              {
-                  nameOfSimulatedSignal = model.GetID();
-              }
-
-              // initalize
-              {
-                  double[] inputVals = GetValuesFromEitherDataset(model,inputIDs, timeIdx, simData, inputData);
-                  double[] outputVals = GetValuesFromEitherDataset(model,new string[] { outputID }, timeIdx, simData, inputData);
-                  simData.InitNewSignal(nameOfSimulatedSignal, outputVals[0], N.Value);
-                  model.WarmStart(inputVals, outputVals[0]);
-              }
-              // main loop
-              var timeBase_s = inputData.GetTimeBase(); ;
-
-              for (timeIdx = 0; timeIdx < N; timeIdx++)
-              {
-                  //  double[] inputVals = inputData.GetValuesAtTime(inputIDs, timeIdx);
-                  double[] inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputData);
-                  double[] outputVal = model.Iterate(inputVals, timeBase_s);
-
-                  // if a second output is given, this is by definition the internal output upstream the additive signals.
-                  if (outputVal.Count() == 2)
-                  {
-                      if (timeIdx == 0)
-                      {
-                          simData.InitNewSignal(model.GetID(), outputVal[1], N.Value);
-                      }
-                      var isOk_internal = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[1]);
-                      if (!isOk_internal)
-                      {
-                          return false;
-                      }
-                  }
-                  var  isOk = simData.AddDataPoint(nameOfSimulatedSignal, timeIdx, outputVal[0]);
-                  if (!isOk)
-                  {
-                      return false;
-                  }
-              }
-              if (inputData.GetTimeStamps() != null)
-                  simData.SetTimeStamps(inputData.GetTimeStamps().ToList());
-              else
-              { 
-              //?
-              }
-              // disturbance estimation
-              if (modelDict[singleModelName].GetProcessModelType() == ModelType.SubProcess && doEstimateDisturbance)
-              {
-
-                  // y_meas = y_internal+d as defined here
-                  var y_meas = inputData.GetValues(outputID);
-                  if (!(new Vec()).IsAllNaN(y_meas) && y_meas != null)
-                  {
-                      var y_sim = simData.GetValues(nameOfSimulatedSignal);
-                      if ((new Vec()).IsAllNaN(y_sim))
-                      {
-                          return false;
-                      }
-                      // TODO: may need to "freeze" disturbance is there is a bad signal id?
-                      // old: y_meas and y_sim are subtracted without time-shifting
-
-                      double[] est_disturbance = null;
-                      if (doDestBasedONYsimOfLastTimestep)
-                      {
-                          // note that actually 
-                          // y_meas[t] = y_proc[t-1] + D[t]
-                           est_disturbance = new double[y_meas.Length];
-                           for (int i = 1; i < y_meas.Length; i++)
-                           {
-                               est_disturbance[i] = y_meas[i]-y_sim[i-1];
-                           }
-                           est_disturbance[0] = est_disturbance[1];
-                      }
-                      else
-                      {
-                          est_disturbance = (new Vec()).Subtract(y_meas, y_sim);
-
-                      }
-                      simData.Add(SignalNamer.EstDisturbance(model), est_disturbance);
-                      simData.Add(model.GetOutputID(), y_meas);
-                  }
-              }
-              return true;
-          }*/
-
-        // this is version that does NOT do determination of indices to ignore
-
+        /// <returns>true if able to simulate, otherwise false</returns>
         public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
         {
             return Simulate(inputData, false, out simData);
@@ -651,8 +519,11 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  For this score to be calculated, the measured time-series corresponding to <c>simData</c> need to be provided in <c>inputData</c>
         ///  </para>
         ///  <para>
-        ///  The simulation will consider the <c>.IndicesToIgnore</c> member of the inputData, and ignore these data indices, re-starting dynamic
-        ///  models once periods of bad data pass.
+        ///  If <c>doDetermineIndicesToIgnore</c> is set to <c>false</c>, then the 
+        ///  the simulation will consider the <c>.IndicesToIgnore</c> member of the inputData, and ignore these data indices, re-starting dynamic
+        ///  models once periods of bad data pass.(this indcies will be padded internally do not need to be padded when supplied)
+        ///  If instead set to <c>true</c>, the simulator will parse the input data to determine 
+        ///  bad indices, but it will not be able to determine periods of "frozen" datasets (as outputs y are generally not required to be given in the input data.)
         /// </para>
         /// 
         /// </summary>
@@ -694,7 +565,12 @@ namespace TimeSeriesAnalysis.Dynamic
             // parse dataset and determine indices that are to be ignored when simulating.
             if (doDetermineIndicesToIgnore)
             {
-                inputDataMinimal.SetIndicesToIgnore(DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(inputDataMinimal, detectFrozenData: false));
+                inputDataMinimal.SetIndicesToIgnore(
+                    DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(inputDataMinimal, detectFrozenData: false));
+            }
+            else
+            {
+                inputDataMinimal.SetIndicesToIgnore(Index.AppendTrailingIndices(inputDataMinimal.GetIndicesToIgnore()));
             }
 
             // todo: disturbances could also instead be estimated in closed-loop? 
@@ -724,7 +600,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             // simulate for all time steps(after first step!)
-            const int restartModelAfterXConsecutiveBadIndices = 3;
+       
             int nConsecutiveBadIndicesCounter = 0;
             int numRestartCounter = -1;
             for (int timeIdx = 0; timeIdx < N; timeIdx++)
@@ -971,6 +847,16 @@ namespace TimeSeriesAnalysis.Dynamic
             var fileWriter = new StringToFileWriter(fileName);
             fileWriter.Write(serializedTxt);
             return fileWriter.Close();
+        }
+
+        /// <summary>
+        /// If the number of consecutive bad samples exceeds this threshold, then the simulator will restart on the 
+        /// subsequent first good sample.
+        /// </summary>
+        /// <param name="samples"></param>
+        public void SetNumberOfConsecutiveBadIndicesBeforeSimulatoRestarts(int samples)
+        { 
+            this.restartModelAfterXConsecutiveBadIndices = samples;
         }
 
     }

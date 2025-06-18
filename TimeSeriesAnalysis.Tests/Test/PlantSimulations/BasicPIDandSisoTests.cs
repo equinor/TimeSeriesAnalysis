@@ -403,8 +403,12 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
              timeBase_s, "UnitTest_SerialProcess");*/
         }
 
-        [TestCase]
-        public void Serial2_SISO_IgnoresBadDataPoints_RunsAndConverges()
+        [TestCase(1,false, true)]
+        [TestCase(3, true, true)]
+        [TestCase(1, false,false)]
+        [TestCase(3, true, false)]
+        public void Serial2_SISO_IgnoresBadDataPoints_RunsRestartsSimulatorAndConverges(int nBadIndices, bool expectSimRestart,
+            bool letSimulatorDetermineIndToIgnore)
         {
             var plantSim = new PlantSimulator(
                 new List<ISimulatableModel> { processModel1, processModel2 }, "Serial2");
@@ -413,20 +417,43 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var inputData = new TimeSeriesDataSet();
 
             var uValues = TimeSeriesCreator.Step(N / 4, N, 50, 55);
-            uValues[5] = inputData.BadDataID;
+            var badIdxList = new List<int>();
+            for (int i = 0; i < nBadIndices; i++)
+            {
+                int badIdx = 5 + i;
+                badIdxList.Add(badIdx);
+                uValues[badIdx] = inputData.BadDataID;
+            }
 
             inputData.Add(plantSim.AddExternalSignal(processModel1, SignalType.External_U), uValues);
             inputData.CreateTimestamps(timeBase_s);
 
-            var isOk = plantSim.Simulate(inputData, true, out TimeSeriesDataSet simData);
-            Assert.IsTrue(isOk);
+            var simData = new TimeSeriesDataSet(); ;
+            var isOk = false;
+            if (letSimulatorDetermineIndToIgnore)
+            {
+                isOk = plantSim.Simulate(inputData, doDetermineIndicesToIgnore: letSimulatorDetermineIndToIgnore,
+                   out simData);
+            }
+            else
+            {
+                //NB! need to append trailing indices if given an external list of indices to ignore.
+                inputData.SetIndicesToIgnore(badIdxList);
+                isOk = plantSim.Simulate(inputData, doDetermineIndicesToIgnore: letSimulatorDetermineIndToIgnore,
+                    out simData);
+            }
+
+            Assert.IsTrue(isOk,"simulation did not run");
+            Assert.IsTrue(simData.GetIndicesToIgnore().Count() > 0, "no indices were tagged to be ignored!");
             Assert.IsTrue(simData.GetIndicesToIgnore().Count()>0,"no indices were tagged to be ignored!");
 
             PsTest.CommonAsserts(inputData, simData, plantSim);
 
             double[] simY = simData.GetValues(processModel2.GetID(), SignalType.Output_Y);
-            Assert.IsTrue(Math.Abs(simY[0] - (55 * 1.1 + 5)) < 0.01);
-            Assert.IsTrue(Math.Abs(simY.Last() - (60 * 1.1 + 5)) < 0.01);
+            Assert.IsTrue(Math.Abs(simY[0] - (55 * 1.1 + 5)) < 0.01,"should start up in steady state");
+            Assert.IsTrue(Math.Abs(simY.Last() - (60 * 1.1 + 5)) < 0.01,"should end in steady-state");
+
+            Assert.AreEqual(simData.GetNumSimulatorRestarts() == 1, expectSimRestart,"should restart once");
 
             if (false)
             {

@@ -527,16 +527,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 return (pidParam, null, null);
             }
 
-            // NB! important that simulations use the same indicesToIgnore that identification had, this is also important for FitScore!
-
-
             dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
-<<<<<<< HEAD
             (var u_sim, int numSimRestarts) = GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample);
             double[,] U_sim = Array2D<double>.Create(u_sim);
-=======
-            double[,] U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample));
->>>>>>> origin/feature/rewrite_handling_flatlines
+
             pidParam.Fitting.WasAbleToIdentify = true;
             dataSet.U_sim = U_sim;
 
