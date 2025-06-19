@@ -85,6 +85,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="TimeSeriesAnalysis.Tests\Test\Fundamentals\" />
   </ItemGroup>
 
   <ItemGroup>

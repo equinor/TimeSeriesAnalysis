@@ -68,6 +68,30 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
+        /// Constructor that copies another dataset into the returned object, but only the values and times for the indices given
+        /// </summary>
+        /// <param name="inputDataSet"></param>
+        ///  <param name="indicesToNotCopy"></param>
+
+        public TimeSeriesDataSet(TimeSeriesDataSet inputDataSet, List<int> indicesToNotCopy)
+        {
+            dataset = new Dictionary<string, double[]>();
+            if (inputDataSet != null)
+            {
+                foreach (var signalName in inputDataSet.GetSignalNames())
+                {
+                    var signalValues = inputDataSet.GetValues(signalName);
+                    Add(signalName, Vec<double>.GetValuesExcludingIndices(signalValues, indicesToNotCopy));
+                }
+            }
+            dataset_constants = inputDataSet.dataset_constants;
+            timeStamps = Vec<DateTime>.GetValuesExcludingIndices(inputDataSet.timeStamps.ToArray(), indicesToNotCopy).ToList();
+        }
+
+
+
+
+        /// <summary>
         /// Constructor that builds a dataset object from a csv-file, by loading LoadFromCsv()
         /// This version of the constructor is useful when receiving the csv-data across an API.
         /// </summary>
@@ -323,43 +347,6 @@ namespace TimeSeriesAnalysis
 
 
 
-        /// <summary>
-        /// Returns a copy of the dataset that is downsampled by the given factor.
-        /// </summary>
-        /// <param name="downsampleFactor">value greater than 1 indicating that every Floor(n*factor) value of the orignal data will be transferred.</param>
-        /// <param name="keyIndex">optional index around which to perform the downsampling.</param>
-        /// <returns></returns>
-        public TimeSeriesDataSet CreateDownsampledCopy(double downsampleFactor, int keyIndex = 0)
-        {
-            TimeSeriesDataSet ret = new TimeSeriesDataSet();
-
-            ret.timeStamps = Vec<DateTime>.Downsample(timeStamps.ToArray(), downsampleFactor, keyIndex).ToList();
-            ret.dataset_constants = dataset_constants;
-            foreach (var item in dataset)
-            {
-                ret.dataset[item.Key] = Vec<double>.Downsample(item.Value, downsampleFactor, keyIndex);
-            }
-            return ret;
-        }
-
-        /// <summary>
-        /// Returns a copy of the dataset that is oversampled by the given factor.
-        /// </summary>
-        /// <param name="oversampleFactor">value greater than 1 indicating that every value will be sampled until (i / factor > 1).</param>
-        /// <param name="keyIndex">optional index around which to perform the oversampling.</param>
-        /// <returns></returns>
-        public TimeSeriesDataSet CreateOversampledCopy(double oversampleFactor, int keyIndex = 0)
-        {
-            TimeSeriesDataSet ret = new TimeSeriesDataSet();
-
-            ret.CreateTimestamps(timeBase_s: GetTimeBase() / oversampleFactor, N: (int)Math.Ceiling(GetNumDataPoints() * oversampleFactor), t0: timeStamps[0]);
-            ret.dataset_constants = dataset_constants;
-            foreach (var item in dataset)
-            {
-                ret.dataset[item.Key] = Vec<double>.Oversample(item.Value, oversampleFactor, keyIndex);
-            }
-            return ret;
-        }
 
         /// <summary>
         /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 

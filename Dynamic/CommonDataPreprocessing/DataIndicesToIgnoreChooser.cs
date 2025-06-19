@@ -41,7 +41,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">dataset to be investigated</param>
         /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removd/param>
-        ///  <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"(only use when dataset includes measoured outputs y with noise)</param>
+        /// <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"(only use when dataset includes measoured outputs y with noise)</param>
         /// <returns></returns>
         public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet, bool detectBadData = true, bool detectFrozenData=false)
         {
@@ -54,10 +54,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     badDataIdx = badDataIdx.Union(BadDataFinder.GetAllBadIndicesPlussNext(signalValues, dataSet.BadDataID)).ToList();
                 }
             }
-
             if (detectFrozenData)
             {
-                var frozenIdx = FrozenDataDetector.DetectFrozenSamples(dataSet);
+                (var frozenIdx,var avgSampleBtwGoodIdx, var minSampleBtwGoodIdx) = 
+                    FrozenDataDetector.DetectFrozenSamples(dataSet);
                 return badDataIdx.Union(frozenIdx).ToList();
             }
             else
@@ -65,7 +65,5 @@ namespace TimeSeriesAnalysis.Dynamic
                 return badDataIdx;
             }
         }
-
-
     }
 }

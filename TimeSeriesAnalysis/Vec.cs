@@ -323,7 +323,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] > value && !IsNaN(vec[i]))
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.SmallerThan)
@@ -331,7 +331,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] < value && !IsNaN(vec[i]))
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.BiggerOrEqual)
@@ -339,7 +339,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] >= value && !IsNaN(vec[i]))
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.SmallerOrEqual)
@@ -347,7 +347,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] <= value && !IsNaN(vec[i]))
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.Equal)
@@ -355,7 +355,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] == value)
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.NaN)
@@ -387,7 +387,7 @@ namespace TimeSeriesAnalysis
                 for (int i = 1; i < vec.Length; i++)
                 {
                     if (vec[i] == vec[i-1])
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             return indices;
@@ -917,8 +917,6 @@ namespace TimeSeriesAnalysis
             double[] weights = Vec<double>.Fill(1, Y.Length); //null;
             if (yIndToIgnore != null)
             {
-           //     yIndToIgnore.Sort();
-
                 for (int i = 0; i < yIndToIgnore.Length; i++)
                 {
                     int curInd = yIndToIgnore[i];

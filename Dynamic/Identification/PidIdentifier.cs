@@ -89,17 +89,6 @@ namespace TimeSeriesAnalysis.Dynamic
             const bool doFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
 
-            // Find the oversampled factor if relevant
-          /*  bool ignoreFlatLinesFirst = ignoreFlatLines;
-            if (downsampleOversampledData & ignoreFlatLinesFirst)
-            {
-                double oversampledFactor = dataSet.GetOversampledFactor(out int keyIndex);
-                // Oversamples of less than 20 percent can be handled by the flatline index ignoration.
-                if (oversampledFactor > 1.2)
-                {
-                    ignoreFlatLinesFirst = false;
-                }
-            }*/
 
             // 1. try identification with delay of one sample but without filtering
             (var idParamsWithDelay, var U_withDelay, var indicesToIgnore_withDelay)
@@ -165,7 +154,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                     (var idParamsWithFilter, var UwithFilter, var indicesToIgnore_withFilter) =
-                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas/*, ignoreFlatLines: ignoreFlatLinesFirst*/);
+                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas);
 
                     if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
                     {
@@ -340,12 +329,11 @@ namespace TimeSeriesAnalysis.Dynamic
             double[] X2_ols = new double[bufferLength];
             double[] Y_ols = new double[bufferLength];
 
-            int nIndexesBetweenWindows = (int)Math.Floor((double)dataSet.GetNumDataPoints() / 1);
             double Kpest, Tiest, Rsq; 
             DateTime t_result ;
             double[] yMod ;
 
-             RegressionResults regressResults = null;
+            RegressionResults regressResults = null;
             
             //
             // Note that these are the indices to be fed to the regression, and does not 1-to-1 conicide with indices numbering of the
@@ -387,12 +375,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 ecur = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
                 eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
 
-                // todo: remove? this is now integrated in  DataIndicesToIgnoreChooser.ChooseIndicesToIgnore
-                // replace -9999 in dataset
+                // replace -9999 or NaNs in dataset
                 var indBadUcur = BadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
-                //var indBadEcur = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(eprev,dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
                 var indBadEcur = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(ecur, dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
-                //  var indBadEcur = BadDataFinder.GetAllBadIndicesPlussNext(ecur, dataSet.BadDataID);
 
                 var umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
                 var uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));

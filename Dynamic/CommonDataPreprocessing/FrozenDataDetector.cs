@@ -15,34 +15,48 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Look at all the time-series n the dataset, and tag thos sample indices where all values seem to be frozen compared to previous
         /// </summary>
         /// <param name="dataSet"></param>
-        /// <returns></returns>
-        public static List<int> DetectFrozenSamples(TimeSeriesDataSet dataSet)
+        /// <returns>returns a tupel of a list of the indices of frozen samples, and the average samples between good indices</returns>
+        public static (List<int>,int,int) DetectFrozenSamples(TimeSeriesDataSet dataSet)
         {
+            var avgSamplesBtwValueChange = new RecursiveAverage(dataSet.BadDataID);
+
             var result = new List<int>();
+            int samplesSinceLastGoodIdx = 0;
+            int minSamplesBtwValueChange = Int32.MaxValue;
             var signalNames = dataSet.GetSignalNames();
             for (int curIdx=1;curIdx<dataSet.GetNumDataPoints(); curIdx++)
             {
                 bool doesAtLeastOneValueChange = false;
                 int curSignalIdx = 0;
-
                 while (!doesAtLeastOneValueChange && curSignalIdx < signalNames.Count())
                 {
-                    if (dataSet.GetValue(signalNames.ElementAt(curSignalIdx), curIdx) != dataSet.GetValue(signalNames.ElementAt(curSignalIdx), curIdx-1))
+                    if (dataSet.GetValue(signalNames.ElementAt(curSignalIdx), curIdx) != dataSet.GetValue(signalNames.ElementAt(curSignalIdx), curIdx - 1))
                     {
                         doesAtLeastOneValueChange = true;
+                        avgSamplesBtwValueChange.AddDataPoint(samplesSinceLastGoodIdx);
+                        if (samplesSinceLastGoodIdx < minSamplesBtwValueChange)
+                        {
+                            minSamplesBtwValueChange = samplesSinceLastGoodIdx;
+                        }
                     }
                     curSignalIdx++;
                 }
                 if (!doesAtLeastOneValueChange)
                 {
                     result.Add(curIdx);
+                    samplesSinceLastGoodIdx++;
                 }
+                else
+                {
+                    samplesSinceLastGoodIdx = 0;
+                }
+                
             }
-            return result;
+            return (result, (int)Math.Ceiling(avgSamplesBtwValueChange.GetAverage()), minSamplesBtwValueChange );
         }
 
 
-        /// <summary>
+     /*   /// <summary>
         /// Look at all the time-series n the dataset, and tag thos sample indices where all values seem to be frozen compared to previous
         /// </summary>
         /// <param name="dataSet"></param>
@@ -72,7 +86,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             return result;
-        }
+        }*/
 
 
 

@@ -91,16 +91,16 @@ namespace TimeSeriesAnalysis
         /// The optional key index indicates an index for which to base the oversampling around.
         /// </summary>
         /// <param name="vec"></param>
-        /// <param name="factor"></param>
+        /// <param name="oversampleFactor"></param>
         /// <param name="keyIndex"></param>
         /// <returns></returns>
-        static public T[] Oversample(T[] vec, double factor, int keyIndex = 0)
+        static public T[] Oversample(T[] vec, double oversampleFactor, int keyIndex = 0)
         {
             if (vec == null)
                 return null;
-            if (factor <= 1)
+            if (oversampleFactor <= 1)
                 return vec;
-
+            /*
             // Find oversampled indices
             var ind = new List<int>();
             int count = 0;
@@ -123,7 +123,27 @@ namespace TimeSeriesAnalysis
             {
                 ret.Add(vec[ind[i]]);
             }
+            return ret.ToArray();*/
+
+            var ret = new List<T>();
+
+            int curRetIdx = 0;
+            for (int i = keyIndex; i < oversampleFactor; i++)
+            {
+                ret.Add(vec[0]);
+                curRetIdx++;
+            }
+            int curOrigIdx = 1;
+            while (curOrigIdx < vec.Length)
+            {
+                for (int i = 0; i < oversampleFactor; i++)
+                {
+                    ret.Add(vec[curOrigIdx]);
+                }
+                curOrigIdx++;
+            }
             return ret.ToArray();
+
         }
 
         ///<summary>

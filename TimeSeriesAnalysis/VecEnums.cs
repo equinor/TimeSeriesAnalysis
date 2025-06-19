@@ -44,7 +44,8 @@ namespace TimeSeriesAnalysis
         /// </summary>
         NotEqual = 8,
         /// <summary>
-        /// Find values that are equal to the previous index value
+        /// Find values that are equal to the previous index value 
+        /// Note that in this case "Find" algorithm will disregard the supplied "value"
         /// </summary>
         SameAsPrevious = 9
 
