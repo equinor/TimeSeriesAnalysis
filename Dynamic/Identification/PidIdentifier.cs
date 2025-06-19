@@ -48,22 +48,33 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private bool IsFirstModelBetterThanSecondModel(PidParameters firstModel, PidParameters secondModel)
         {
-            // If both models show a very high R-Squared-diff, look at fitscore instead if there is a significant difference
-            if (firstModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
-                && secondModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE)
-            //     && (Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > Math.Abs(firstModel.Fitting.RsqDiff - secondModel.Fitting.RsqDiff)))
-            //     && Math.Abs(firstModel.Fitting.FitScorePrc - secondModel.Fitting.FitScorePrc) > MIN_FITSCORE_DIFF_BEFORE_COMPARING_FITSCORE)
+            // TODO: would ideally like to remove reliance on other scores than FitScore, but setting the below to true 
+            // causes some unit tests to fail
+            const bool useOnlyFitScore = false; //would like: true
+
+            if (useOnlyFitScore)
             {
                 if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
                     return true;
                 else
                     return false;
             }
-            else if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
-                return true;
             else
-                return false;
-
+            {
+                    // If both models show a very high R-Squared-diff, look at fitscore instead if there is a significant difference
+                    if (firstModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
+                        && secondModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE)
+                    {
+                        if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
+                            return true;
+                        else
+                            return false;
+                    }
+                    else if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
+                        return true;
+                    else
+                        return false;
+            }
         }
 
         /// <summary>
