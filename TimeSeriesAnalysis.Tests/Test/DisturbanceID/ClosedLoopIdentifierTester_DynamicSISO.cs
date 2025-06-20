@@ -159,9 +159,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(-5,5)]         
         public void LongStepDist_EstimatesOk(double stepAmplitude,double procGainAllowedOffSetPrc)
         {
+            double noiseAmplitude = 0.01;
             bool doInvertGain = false;
             N = 1000;
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).
+                Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,doInvertGain,true,null,procGainAllowedOffSetPrc);
         }
 
@@ -170,9 +172,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepAtStartOfDataset_IsExcludedFromAnalysis()
         {
             double stepAmplitude = 1;
+            double noiseAmplitude = 0.01;
             bool doAddBadData = true;
             N = 1000;
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);//.Add(TimeSeriesCreator.Noise(N, noiseAmplitude)); ;
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"),
                 trueDisturbance, false, true,null,10, doAddBadData);
         }
@@ -183,8 +186,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
             bool doNegativeGain =false)
         {
+            double noiseAmplitude = 0.01;
              //Shared.EnablePlots();
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
                 doNegativeGain,true,null,  processGainAllowedOffsetPrc);
             //Shared.DisablePlots();

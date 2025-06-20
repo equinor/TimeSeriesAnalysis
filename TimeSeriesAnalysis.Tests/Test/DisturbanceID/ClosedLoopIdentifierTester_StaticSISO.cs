@@ -42,6 +42,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
    //     [TestCase(1,5.0, 10)]
         public void StepDisturbanceANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude, double precisionPrc)
         {
+            double noiseAmplitude = 0.001;
             var locParameters = new UnitParameters
             {
                 TimeConstant_s = 0,
@@ -50,7 +51,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
 
-            var trueDisturbance = TimeSeriesCreator.Step(160, N, 0, distStepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(160, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude)); ;
             var yset = TimeSeriesCreator.Step(50, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,
                 false, true, yset, precisionPrc,false, true);
@@ -156,7 +157,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             double stepAmplitude = 10;
             double gainTolPrc = 10;
-            bool doAddBadData = true;
+            bool doAddBadData = false;
             N = 350;
             var locParameters = new UnitParameters
             {

@@ -804,6 +804,9 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
                 sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
+
+                sb.AppendLine("simulator restarts:" + modelParameters.Fitting.NumSimulatorRestarts);
+
             }
             return sb.ToString();
         }

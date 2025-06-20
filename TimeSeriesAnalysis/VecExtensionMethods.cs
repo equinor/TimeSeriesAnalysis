@@ -28,7 +28,17 @@ namespace TimeSeriesAnalysis
             return (new Vec(nanValue)).Add(array, scalar);
         }
 
-
+        /// <summary>
+        /// Add a vector to vector
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="vectorToAdd"></param>
+        /// <param name="nanValue"></param>
+        /// <returns></returns>
+        public static double[] Add(this double[] array, double[] vectorToAdd, double nanValue = -9999)
+        {
+            return (new Vec(nanValue)).Add(array, vectorToAdd);
+        }
         /// <summary>
         /// Elementwise subtraction of two arrays of same size
         /// </summary>

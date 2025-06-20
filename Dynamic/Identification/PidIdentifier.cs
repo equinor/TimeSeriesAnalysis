@@ -81,9 +81,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
-        /// <param name="downsampleOversampledData">Boolean, whether to do internal oversample identification and attempt downsampling. Defaults to true.</param>
-        /// <returns>the identified parameters of the PID-controller</returns>
-        public PidParameters Identify(ref UnitDataSet dataSet, bool downsampleOversampledData = true)
+           /// <returns>the identified parameters of the PID-controller</returns>
+        public PidParameters Identify(ref UnitDataSet dataSet)
         {
          //   const bool doOnlyWithDelay = false;// should be false unless debugging something
             const bool doFiltering = true; // default is true (this improves performance significantly)
@@ -149,24 +148,27 @@ namespace TimeSeriesAnalysis.Dynamic
                 // this is experimental, but if downsampled, Kp/Ti often seems too low, and the hypothesis is that this is because
                 // small variations in u_meas/y_meas are no longer tightly correlated, so identification should perhaps focus on fitting
                 // to only "larger" changes. 
-                bool filterUmeas = true;
-                for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
+                if (true)
                 {
-                    var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
-                    (var idParamsWithFilter, var UwithFilter, var indicesToIgnore_withFilter) =
-                        IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas);
-
-                    if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
+                    bool filterUmeas = true;
+                    for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                     {
-                        bestU = UwithFilter;
-                        bestPidParameters = idParamsWithFilter;
-                        bestIndicesToIgnore = indicesToIgnore_withFilter;
+                        var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
+                        (var idParamsWithFilter, var UwithFilter, var indicesToIgnore_withFilter) =
+                            IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas);
+
+                        if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
+                        {
+                            bestU = UwithFilter;
+                            bestPidParameters = idParamsWithFilter;
+                            bestIndicesToIgnore = indicesToIgnore_withFilter;
+                        }
                     }
                 }
             }
 
             // 5. Try identifying if the data is oversampled, and if so check whether downsampled identification yields better results.
-            if (downsampleOversampledData)
+            if (false)  //if (downsampleOversampledData )
             {
                 double oversampledFactor = dataSet.GetOversampledFactor(out int keyIndex);
                 // Oversamples of less than 20 percent can be handled by the flatline index ignoration.

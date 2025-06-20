@@ -12,6 +12,7 @@ using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.Design;
+using System.Configuration;
 
 namespace TimeSeriesAnalysis
 {
@@ -744,6 +745,47 @@ namespace TimeSeriesAnalysis
                 return false;
             }
         }
+
+        /// <summary>
+        /// Replaces the values of a specific signal
+        /// </summary>
+        /// <param name="processID"></param>
+        /// <param name="signalType"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public void ReplaceValues(string processID, SignalType signalType, double[] newValues, int index = 0)
+        {
+            string signalName = SignalNamer.GetSignalName(processID, signalType, index);
+
+            if (dataset.ContainsKey(signalName))
+            {
+                if (Vec<double>.IsConstant(newValues))
+                {
+                    dataset.Remove(signalName);
+                    dataset_constants.Add(signalName, newValues[0]);
+                }
+                else
+                    dataset[signalName] = newValues;
+            }
+            else if (dataset_constants.ContainsKey(signalName))
+            {
+                if (Vec<double>.IsConstant(newValues))
+                {
+                    dataset_constants[signalName] = newValues[0];
+                }
+                else
+                {
+                    dataset_constants.Remove(signalName);
+                    dataset.Add(signalName, newValues);
+                }
+
+                var N = GetLength();
+                return ;
+            }
+            return;
+        }
+
+
         /// <summary>
         /// Save the number of simulator restarts that has been performed for a simulated dataset
         /// (not applicable for measured datasets)

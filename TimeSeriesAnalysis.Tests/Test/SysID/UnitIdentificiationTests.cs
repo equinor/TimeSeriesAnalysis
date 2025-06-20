@@ -175,15 +175,10 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
         [TestCase(new int[] { 0, 10, 20, 28 })]
-        [TestCase(new int[] { 29})]//TOOD: this unit test fails if the last point in the data set is excluded
+        [TestCase(new int[] { 29})]
         [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8})]
         [TestCase(new int[] { 11, 13, 15, 17})]
         [TestCase(new int[] { 20, 21, 22, 23,24,25,26,27 })]
-
-
-        //    [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8,9,10,11 })]//fails
-        // makes u2-non-observable -causing gain of u2 to be too big. (this needs to be treated more thourougly)
-        //    [TestCase(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 })]
 
         public void IndicesToIgnoreProvided_FiltersOutDataAndGivesCorrectDynamicModel(int[] badDataIndices)
         {
@@ -282,12 +277,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1, 2),
                 Bias = bias
             };
-
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, new FittingSpecs(designParameters.U0, null), noiseAmplitude,addInBadDataToYmeas, badValueId);
-
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
-
             DefaultAsserts(model, designParameters);
         }
 

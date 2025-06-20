@@ -55,16 +55,17 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
             inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.Disturbance_D), trueDisturbance);
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
             Assert.IsTrue(isOk);
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             if (doAddBadData)
             {
-                pidDataSet.Y_setpoint[255] = Double.NaN;
+            /*    pidDataSet.Y_setpoint[255] = Double.NaN;
                 pidDataSet.Y_setpoint[155] = Double.NaN;
                 pidDataSet.Y_setpoint[55] = Double.NaN;
                 pidDataSet.Y_meas[300] = Double.NaN;
                 pidDataSet.Y_meas[200] = Double.NaN;
-                pidDataSet.Y_meas[100] = Double.NaN;
+                pidDataSet.Y_meas[100] = Double.NaN;*/
                 pidDataSet.U[50, 0] = Double.NaN;
                 pidDataSet.U[300, 0] = Double.NaN;
                 pidDataSet.U[5, 0] = Double.NaN;

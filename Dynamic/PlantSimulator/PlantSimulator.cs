@@ -151,6 +151,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 model.AddSignalToOutput(signalID);
                 return signalID;
             }
+            else if (type == SignalType.Output_Y && modelType == ModelType.SubProcess)
+            {
+                model.AddSignalToOutput(signalID);
+                return signalID;
+            }
             else if (type == SignalType.External_U && modelType == ModelType.SubProcess)
             {
                 List<string> newInputIDs = new List<string>();
@@ -182,7 +187,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal '"+ signalID+"'" );
+                Shared.GetParserObj().AddError("PlantSimulator.AddSignal was unable to add signal '" + signalID + "'");
                 return null;
             }
 
@@ -854,7 +859,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// subsequent first good sample.
         /// </summary>
         /// <param name="samples"></param>
-        public void SetNumberOfConsecutiveBadIndicesBeforeSimulatoRestarts(int samples)
+        public void SetNumberOfConsecutiveBadIndicesBeforeSimRestarts(int samples)
         { 
             this.restartModelAfterXConsecutiveBadIndices = samples;
         }

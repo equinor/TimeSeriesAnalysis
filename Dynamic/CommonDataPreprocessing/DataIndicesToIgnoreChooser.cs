@@ -24,7 +24,8 @@ namespace TimeSeriesAnalysis.Dynamic
         public static List<int> ChooseIndicesToIgnore(UnitDataSet dataSet, bool detectBadData =true, bool detectFrozenData = false)
         {
             var tsData = new TimeSeriesDataSet();
-
+            tsData.BadDataID = dataSet.BadDataID;
+            tsData.SetIndicesToIgnore(dataSet.IndicesToIgnore);
             tsData.Add("y_meas",dataSet.Y_meas);
             tsData.Add("y_set", dataSet.Y_setpoint);
             for (int i = 0; i < dataSet.U.GetNColumns(); i++)
@@ -39,31 +40,42 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Looks over dataset and chooses indices to ignore. 
         /// For best results, only include those time-series that are needed for simulation, remove unused time-series from this dataset.
         /// </summary>
-        /// <param name="dataSet">dataset to be investigated</param>
+        /// <param name="dataSet">dataset to be investigated(if this dataset has IndicesToIgnore set, then they are included in the returned lst)</param>
         /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removd/param>
         /// <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"(only use when dataset includes measoured outputs y with noise)</param>
-        /// <returns></returns>
+        /// <returns>a sorted list of indicest to ignore</returns>
         public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet, bool detectBadData = true, bool detectFrozenData=false)
         {
-            var badDataIdx = new List<int>();
+            var indicesToIgnore = new List<int>();
+            if (dataSet.GetIndicesToIgnore().Count() > 0)
+            {
+
+                var indicesMinusOne = Index.Max(Index.Subtract(dataSet.GetIndicesToIgnore().ToArray(), 1), 0).Distinct<int>();
+                indicesToIgnore = Index.AppendTrailingIndices(indicesMinusOne.ToList());
+  
+              //  indicesToIgnore = new List<int>(dataSet.GetIndicesToIgnore());
+                // note that for identification often the trailing indices need also to be removed due to the nature of 
+                // reursive models. We can never be certain if this sort of "padded out" indices to ignore is provided or not.
+         //       indicesToIgnore = new List<int>(Index.AppendTrailingIndices(dataSet.GetIndicesToIgnore()));
+            }
             if (detectBadData)
             {
                 foreach (var signalID in dataSet.GetSignalNames())
                 {
                     var signalValues = dataSet.GetValues(signalID);
-                    badDataIdx = badDataIdx.Union(BadDataFinder.GetAllBadIndicesPlussNext(signalValues, dataSet.BadDataID)).ToList();
+                    var signalBadValuesIdx = BadDataFinder.GetAllBadIndicesPlussNext(signalValues, dataSet.BadDataID);
+                    indicesToIgnore = indicesToIgnore.Union(signalBadValuesIdx).ToList();
                 }
             }
             if (detectFrozenData)
             {
-                (var frozenIdx,var avgSampleBtwGoodIdx, var minSampleBtwGoodIdx) = 
+                (var frozenIdx, var avgSampleBtwGoodIdx, var minSampleBtwGoodIdx) =
                     FrozenDataDetector.DetectFrozenSamples(dataSet);
-                return badDataIdx.Union(frozenIdx).ToList();
+                indicesToIgnore = indicesToIgnore.Union(frozenIdx).ToList();
             }
-            else
-            {
-                return badDataIdx;
-            }
+            
+            indicesToIgnore.Sort();
+            return indicesToIgnore; 
         }
     }
 }

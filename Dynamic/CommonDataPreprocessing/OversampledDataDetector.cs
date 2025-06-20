@@ -20,7 +20,7 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        static public (double, int) GetOversampledFactor(UnitDataSet dataSet)
+        /*static public (double, int) GetOversampledFactor(UnitDataSet dataSet)
         {
             var tsData = new TimeSeriesDataSet();
 
@@ -32,7 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
             }
             tsData.SetTimeStamps(dataSet.Times.ToList());
             return GetOversampledFactor(tsData);
-        }
+        }*/
 
         /// <summary>
         /// Identify the oversampled factor of a TimeSeriesDataSet. The oversamples need to be evenly spread in the dataset.
@@ -248,10 +248,9 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
         /// Returns a copy of the dataset that is oversampled by the given factor.
         /// </summary>
         /// <param name="dataSet"></param>
-        /// <param name="oversampleFactor">value greater than 1 indicating that every value will be sampled until (i / factor > 1).</param>
-        /// <param name="keyIndex">optional index around which to perform the oversampling.</param>
+        /// <param name="timeBaseOversampled">desired time base </param>
         /// <returns> a downsampled copy, or null if operation failed. (Method will fail if no timestamps are given.)</returns>
-        static public TimeSeriesDataSet CreateOversampledCopy(TimeSeriesDataSet dataSet, double oversampleFactor, int keyIndex = 0)
+        static public TimeSeriesDataSet CreateOversampledCopy(TimeSeriesDataSet dataSet, double timeBaseOversampled)
         {
             var ret = new TimeSeriesDataSet();
 
@@ -259,12 +258,34 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
             {
                 return null;
             }
-            ret.CreateTimestamps(timeBase_s: dataSet.GetTimeBase() / oversampleFactor, 
-                N: (int)Math.Ceiling(dataSet.GetNumDataPoints() * oversampleFactor), 
+            double oversampleFactor = dataSet.GetTimeBase() / timeBaseOversampled;
+            int N = (int)Math.Ceiling(dataSet.GetNumDataPoints() * oversampleFactor);
+            ret.CreateTimestamps(timeBase_s: dataSet.GetTimeBase() / oversampleFactor,
+                N: N,
                 t0: dataSet.GetTimeStamps()[0]);
+
             foreach (var signalName in dataSet.GetSignalNames())
             {
-                ret.Add(signalName, Vec<double>.Oversample(dataSet.GetValues(signalName), oversampleFactor, keyIndex)) ;
+                var newSignal = new double[N];
+                int curOrigTimeIdx = 0;
+                for (var curNewTimeIdx = 0; curNewTimeIdx < ret.GetTimeStamps().Count(); curNewTimeIdx++)
+                {
+                    bool whileIsDone = false;
+                    while  (curOrigTimeIdx < dataSet.GetNumDataPoints() - 1 && !whileIsDone)
+                    {
+                        if (ret.GetTimeStamps().ElementAt(curNewTimeIdx) >= dataSet.GetTimeStamps().ElementAt(curOrigTimeIdx + 1))
+                        {
+                            curOrigTimeIdx++;
+                        }
+                        else
+                        {
+                            whileIsDone = true;
+                        }
+
+                    }
+                    newSignal[curNewTimeIdx] = dataSet.GetValue(signalName, curOrigTimeIdx).Value;
+                }
+                ret.Add(signalName, newSignal);
             }
             return ret;
         }

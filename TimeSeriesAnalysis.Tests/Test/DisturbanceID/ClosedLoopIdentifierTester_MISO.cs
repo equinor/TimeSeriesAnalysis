@@ -57,7 +57,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void CommonPlotAndAsserts(UnitDataSet pidDataSet, double[] estDisturbance, double[] trueDisturbance,
             UnitModel identifiedModel, UnitModel trueModel, double maxAllowedGainOffsetPrc, double maxAllowedMeanDisturbanceOffsetPrc = 30, bool isStatic = true)
         {
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
 
             Vec vec = new Vec();
 
@@ -139,7 +139,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             int pidInputIdx = 1;
 
-            var trueDisturbance = TimeSeriesCreator.Constant(0, N);
+            var trueDisturbance = TimeSeriesCreator.Constant(0, N); ;
             var yset = TimeSeriesCreator.Step(N * 3 / 8, N, 20, 18);
 
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 15, 20);
@@ -160,8 +160,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void Static2Input_WITHdisturbanceNOsetpointChange_ExtUChanges_detectsProcessOk(bool doNegative, double gainTolPrc)
         {
+            double noiseAmplitude = 0.000;
             int pidInputIdx = 0;
-            var trueDisturbance = TimeSeriesCreator.Step(N * 3 / 8, N, 0, 1);  
+            var trueDisturbance = TimeSeriesCreator.Step(N * 3 / 8, N, 0, 1).Add(TimeSeriesCreator.Noise(N, noiseAmplitude)); ;  
             var yset = TimeSeriesCreator.Constant(20, N);
 
             var externalU1 = TimeSeriesCreator.Step(N / 8, N, 15, 20);
@@ -308,6 +309,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             bool doAssertResult=true, double[] yset=null, int pidInputIdx = 0,
             double processGainAllowedOffsetPrc=10, bool doAddBadData = false,bool isStatic = true)
         {
+            double noiseAmplitude = 1;
+
             var usedProcParameters = trueProcessModel.GetModelParameters().CreateCopy();
             var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
             var usedPidParams = new PidParameters(pidParameters1);
@@ -377,8 +380,15 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 inputData.Add(extInputID2, externalU2);
             }
             inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.Disturbance_D), trueDisturbance);
+            /*inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.OutputNoise), 
+                TimeSeriesCreator.Noise(N, noiseAmplitude));*/
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+            var measY = simData.GetValues(usedProcessModel.GetID(), SignalType.Output_Y);
+
+            //    simData.ReplaceValues(usedProcessModel.GetID(), SignalType.Output_Y), measY);
+
             Assert.IsTrue(isOk);
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             if (doAddBadData)

@@ -13,6 +13,7 @@ using System.Net.Http.Headers;
 using System.Data;
 using System.Reflection;
 using System.ComponentModel.Design;
+using Accord.Math;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -280,17 +281,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
             modelList.Add(modelParams_StaticAndNoCurvature);
 
-            // find a dynamic model with no time delay or nonlinearity
-            // (the time constant gives an upper bound on the time delay)
-            /*    UnitParameters modelParams_DynamicAndNoCurvature =
-                    EstimateProcessForAGivenTimeDelay
-                    (timeDelayIdx, dataSet, true, allCurvesDisabled,
-                    FilterTc_s, u0, uNorm, assumeThatYkminusOneApproxXkminusOne);
-                    modelList.Add(modelParams_DynamicAndNoCurvature);
-            //    modelList.Add(modelParams_DynamicAndNoCurvature);
-                   //   double maxExpectedTc_s = Math.Ceiling(modelParams_DynamicAndNoCurvature.TimeConstant_s/ dataSet.GetTimeBase())* dataSet.GetTimeBase() + dataSet.GetTimeBase()*3;
-
-            */
             var warningList = new List<UnitdentWarnings>();
 
             //nb! this is quite a high uppper bound, in the worst case this can cause
@@ -528,7 +518,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private static UnitParameters EstimateProcessForAGivenTimeDelay
             (int timeDelay_samples, UnitDataSet dataSet,
-            bool useDynamicModel,bool[] doEstimateCurvature, 
+            bool useDynamicModel, bool[] doEstimateCurvature,
             double FilterTc_s, double[] u0, double[] uNorm, bool assumeThatYkminusOneApproxXkminusOne
             )
         {
@@ -548,7 +538,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 solverID += "Dynamic";
                 for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
-                    ucurList.Add(Vec<double>.SubArray(dataSet.U.GetColumn(colIdx), 
+                    ucurList.Add(Vec<double>.SubArray(dataSet.U.GetColumn(colIdx),
                         idxStart - timeDelay_samples, idxEnd - timeDelay_samples));
                 }
                 ycur = Vec<double>.SubArray(dataSet.Y_meas, idxStart, idxEnd);
@@ -568,46 +558,71 @@ namespace TimeSeriesAnalysis.Dynamic
                 solverID += "Static";
                 for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
-                    ucurList.Add(Vec<double>.SubArray(dataSet.U.GetColumn(colIdx), 
+                    ucurList.Add(Vec<double>.SubArray(dataSet.U.GetColumn(colIdx),
                         idxStart - timeDelay_samples, idxEnd - timeDelay_samples));
                 }
                 ycur = Vec<double>.SubArray(dataSet.Y_meas, idxStart, idxEnd);
                 dcur = Vec<double>.SubArray(dataSet.D, idxStart, idxEnd);
             }
 
-            // find instances of "badDataID" value in u or y
-            var indUbad = new List<int>();
-            for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
-            {
-                indUbad = indUbad.Union(BadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx),
-                    dataSet.BadDataID)).ToList();
-            }
-            List<int> indYcurBad = vec.FindValues(ycur, dataSet.BadDataID, VectorFindValueType.NaN);
-
+            //
+            // TODO: the below code should be replaced by DataIndicesToIgnoreChooser.ChooseIndicesToIgnore
+            //
+            bool useOldVer = true;
             List<int> yIndicesToIgnore = new List<int>();
-            if (dataSet.IndicesToIgnore != null)
-                if (dataSet.IndicesToIgnore.Count > 0)
+            if (useOldVer)
+            {
+                // find instances of "badDataID" value in u or y
+                if (dataSet.IndicesToIgnore != null)
+                    if (dataSet.IndicesToIgnore.Count > 0)
+                    {
+                        yIndicesToIgnore = new List<int>(dataSet.IndicesToIgnore);
+                    }
+
+                // the above code misses the special case that y_prev[0] is bad, as it only looks at y_cur
+                if (useDynamicModel)
                 {
-                    yIndicesToIgnore = new List<int>(dataSet.IndicesToIgnore);
+                    if (Double.IsNaN(yprev[0]) || yprev[0] == dataSet.BadDataID)
+                    {
+                        yIndicesToIgnore.Add(0);
+                    }
                 }
 
-            // the above code misses the special case that y_prev[0] is bad, as it only looks at y_cur
-            if (useDynamicModel)
-            {
-                if (Double.IsNaN(yprev[0]) || yprev[0] == dataSet.BadDataID)
+                var indUbad = new List<int>();
+                for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
-                    yIndicesToIgnore.Add(0);
+                    indUbad = indUbad.Union(BadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx),
+                        dataSet.BadDataID)).ToList();
                 }
+                List<int> indYcurBad = vec.FindValues(ycur, dataSet.BadDataID, VectorFindValueType.NaN);
+
+                yIndicesToIgnore = yIndicesToIgnore.Union(indUbad).ToList();
+                yIndicesToIgnore = yIndicesToIgnore.Union(Index.AppendTrailingIndices(indYcurBad)).ToList();
+                if (dataSet.IndicesToIgnore != null)
+                {
+                    var indicesMinusOne = Index.Max(Index.Subtract(dataSet.IndicesToIgnore.ToArray(), 1), 0).Distinct<int>();
+                    yIndicesToIgnore = yIndicesToIgnore.Union(
+                        Index.AppendTrailingIndices(indicesMinusOne.ToList())).ToList();
+                }
+                yIndicesToIgnore.Sort();
+
+                // debug code (comment out when working)
+             /*   var yIndicesToIgnoreNewForComparison = DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, true, false);
+                yIndicesToIgnoreNewForComparison = Index.Shift(yIndicesToIgnoreNewForComparison.ToArray(), timeDelay_samples).ToList();
+
+                var isOk = yIndicesToIgnore.IsEqual(yIndicesToIgnoreNewForComparison);
+                for (int i = 0; i < yIndicesToIgnore.Count; i++)
+                {
+                    Console.WriteLine("timeDelay_samples:"+ timeDelay_samples + " | "+ yIndicesToIgnore.ElementAt(i) + " " + yIndicesToIgnoreNewForComparison.ElementAt(i));
+                }
+                Console.WriteLine("finished");*/
             }
-            yIndicesToIgnore = yIndicesToIgnore.Union(indUbad).ToList();
-            yIndicesToIgnore = yIndicesToIgnore.Union(Index.AppendTrailingIndices(indYcurBad)).ToList();
-            if (dataSet.IndicesToIgnore != null)
-            {
-                var indicesMinusOne = Index.Max(Index.Subtract(dataSet.IndicesToIgnore.ToArray(), 1),0).Distinct<int>();
-                yIndicesToIgnore = yIndicesToIgnore.Union(
-                    Index.AppendTrailingIndices(indicesMinusOne.ToList()) ).ToList();
+            else
+            { 
+                // note: this code does not deal with time delays correclty, and so cannot be used until refactored/generalized
+                yIndicesToIgnore = DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, true, false);
+                yIndicesToIgnore = Index.Shift(yIndicesToIgnore.ToArray(), timeDelay_samples).ToList();
             }
-            yIndicesToIgnore.Sort();
 
             if (FilterTc_s > 0)
             {

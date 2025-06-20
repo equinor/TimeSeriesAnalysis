@@ -15,7 +15,7 @@ namespace TimeSeriesAnalysis.Test.Fundamentals
     [TestFixture]
     internal class DataPreprocessingTests
     {
-        [TestCase(1,10)]
+       /* [TestCase(1,10)]
         [TestCase(5,10)]
 
         public void OversampledDataDetector_NotOversampledData_NoOversamplingDetected(int nSignals,int N)
@@ -29,14 +29,14 @@ namespace TimeSeriesAnalysis.Test.Fundamentals
 
             Assert.AreEqual(distance, 1);
             Assert.AreEqual(key, 0);
-        }
+        }*/
 
         [TestCase(3,0)]
         [TestCase(3,1)]
 
         public void OversampledDataDetector_TwoSignalsOversampled_IsDetected(double oversampleFactor, int keyIndex)
         {
-            int N = 10;
+      /*      int N = 10;
             double timeBase_s = 5;
             var dataSetOrig = new TimeSeriesDataSet();
 
@@ -48,7 +48,7 @@ namespace TimeSeriesAnalysis.Test.Fundamentals
             var dataSet = OversampledDataDetector.CreateOversampledCopy(dataSetOrig, oversampleFactor, keyIndex);
 
             var frozenIdx =  FrozenDataDetector.DetectFrozenSamples(dataSet);
-
+      */
      //       (var estFactor,var estKeyIndex) = OversampledDataDetector.GetOversampledFactor(dataSet);
 
 //            Assert.AreEqual(oversampleFactor,estFactor,"oversample factor estimated incorrectly");

@@ -36,6 +36,12 @@
         /// <summary>
         /// The output of a select block
         /// </summary>
-        SelectorOut =7 // Select
+        SelectorOut =7, // Select
+        /// <summary>
+        /// A noise signal
+        /// </summary>
+        OutputNoise = 8 
+
+
     }
 }

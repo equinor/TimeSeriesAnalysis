@@ -66,9 +66,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name = "pidInputIdx">the index of the PID-input to the unit model</param>
         /// 
         /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
-        public static (UnitModel, double[]) Identify(UnitDataSet dataSet, PidParameters pidParams = null, int pidInputIdx = 0)
+        public static (UnitModel, double[]) Identify(UnitDataSet dataSet, 
+            PidParameters pidParams = null, int pidInputIdx = 0)
         {
-
             var  sbSolverOutput = new StringBuilder();
 
             bool isMISO = dataSet.U.GetNColumns() > 1 ? true : false;
@@ -90,24 +90,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     dataSet.IndicesToIgnore = new List<int>();
                 }
-                bool doesSetpointChange = !(vec.Max(dataSet.Y_setpoint, dataSet.IndicesToIgnore) ==
-                    vec.Min(dataSet.Y_setpoint, dataSet.IndicesToIgnore));
-                if (doesSetpointChange)
-                {
-                    var ind = vec.FindValues(vec.Diff(dataSet.Y_setpoint), 0, VectorFindValueType.NotEqual, dataSet.IndicesToIgnore);
-                    // if the only setpoint step is in the first iteration,ignore it.
-                    if (ind.Count() < dataSet.GetNumDataPoints() / 4 && ind.First() <= 1)
-                    {
-                        dataSet.IndicesToIgnore.Add(ind.First() - 1);//because "diff",subtract 1
-                                                                     //  dataSet.IndicesToIgnore.Add(ind.First());
-                    }
-                }
-                dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.Y_setpoint, 0, VectorFindValueType.NaN));
-                dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.Y_meas, 0, VectorFindValueType.NaN));
-                for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
-                {
-                    dataSet.IndicesToIgnore.AddRange(vec.FindValues(dataSet.U.GetColumn(colIdx), 0, VectorFindValueType.NaN));
-                }
+                // TODO: if detectFrozenData is set to true, then model seems to fail for some unit tests
+                dataSet.IndicesToIgnore = DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(
+                    dataSet,detectBadData:true,detectFrozenData:false); 
             }
             // set "indicestoignore" to exclude values outside ymin/ymax_fit and umin_fit,u_max_fit
             // 
@@ -243,7 +228,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }// end PASS
             ///////////////////////////
 
-            (UnitModel identUnitModel, double[] retDisturbance) = ChooseBestEstimates();
+            (var identUnitModel, var retDisturbance) = ChooseBestEstimates();
             var retModel = CleanUpModel(identUnitModel,dataSet, pidParams, pidInputIdx, didStep1Succeed,  GSdescription, sbSolverOutput);
             return  (identUnitModel, retDisturbance);
         }
