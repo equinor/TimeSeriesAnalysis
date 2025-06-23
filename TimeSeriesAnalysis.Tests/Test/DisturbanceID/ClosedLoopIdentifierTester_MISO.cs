@@ -57,7 +57,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void CommonPlotAndAsserts(UnitDataSet pidDataSet, double[] estDisturbance, double[] trueDisturbance,
             UnitModel identifiedModel, UnitModel trueModel, double maxAllowedGainOffsetPrc, double maxAllowedMeanDisturbanceOffsetPrc = 30, bool isStatic = true)
         {
-            bool doDebugPlot = true;
+            bool doDebugPlot = false;
 
             Vec vec = new Vec();
 
@@ -309,7 +309,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             bool doAssertResult=true, double[] yset=null, int pidInputIdx = 0,
             double processGainAllowedOffsetPrc=10, bool doAddBadData = false,bool isStatic = true)
         {
-            double noiseAmplitude = 1;
+            double noiseAmplitude = 0.01;
 
             var usedProcParameters = trueProcessModel.GetModelParameters().CreateCopy();
             var usedProcessModel = new UnitModel(usedProcParameters,"UsedProcessModel");
@@ -380,14 +380,13 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 inputData.Add(extInputID2, externalU2);
             }
             inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.Disturbance_D), trueDisturbance);
-            /*inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.OutputNoise), 
-                TimeSeriesCreator.Noise(N, noiseAmplitude));*/
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
 
-            var measY = simData.GetValues(usedProcessModel.GetID(), SignalType.Output_Y);
-
-            //    simData.ReplaceValues(usedProcessModel.GetID(), SignalType.Output_Y), measY);
+            var vec = new Vec();
+            var measY = vec.Add(simData.GetValues(usedProcessModel.GetID(), SignalType.Output_Y),
+                TimeSeriesCreator.Noise(N,noiseAmplitude));
+            simData.ReplaceValues(usedProcessModel.GetID(), SignalType.Output_Y, measY);
 
             Assert.IsTrue(isOk);
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
