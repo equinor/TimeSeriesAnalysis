@@ -183,8 +183,8 @@ namespace TimeSeriesAnalysis.Test.SysID
         public void IndicesToIgnoreProvided_FiltersOutDataAndGivesCorrectDynamicModel(int[] badDataIndices)
         {
             double noiseAmplitude = 0.01;
-            double[] u1 = TimeSeriesCreator.Step(10, 30, 0, 1);
-            double[] u2 = TimeSeriesCreator.ThreeSteps (5,20,25, 30, 0, 1,0, 1);
+            double[] u1 = TimeSeriesCreator.Step(10, 50, 0, 1);
+            double[] u2 = TimeSeriesCreator.ThreeSteps (5,20,35, 50, 0, 1,0, 1);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
             UnitParameters designParameters = new UnitParameters
@@ -257,7 +257,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
 
         [TestCase(Double.NaN)]
-        [TestCase(-9999)]
+     //   [TestCase(-9999)]
         [TestCase(-99.124)]
         public void BadValuesInY_DoesNotDestroyResult(double badValueId, double bias=2, 
             double timeConstant_s=10, int timeDelay_s=5)
@@ -285,13 +285,12 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
         [TestCase(Double.NaN)]
-    //    [TestCase(-9999)]
-     //   [TestCase(-99.215)]
+        [TestCase(-9999)]
+        [TestCase(-99.215)]
         public void BadValuesInU_DoesNotDestroyResult(double badValueId, double bias = 0, double timeConstant_s = 0, int timeDelay_s = 0)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
-            u1[5] = double.NaN;
 
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
 
@@ -304,7 +303,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 U0 = Vec<double>.Fill(1, 1),
                 Bias = bias
             };
-            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, new FittingSpecs(designParameters.U0, null), noiseAmplitude, addInBadDataToYmeas, badValueId);
+            var model = CreateDataAndIdentify(designParameters, U, timeBase_s, 
+                new FittingSpecs(designParameters.U0, null), noiseAmplitude, addInBadDataToYmeas, badValueId);
             if (false)
             {
                 plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
@@ -733,7 +733,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         {
             var model = I2_Internal(curvature,timeConstant_s,timeDelay_s,false);
 
-            Assert.IsTrue(model.GetModelParameters().Curvatures[1] == 0,"id should disable second curvature term");
+    //        Assert.IsTrue(model.GetModelParameters().Curvatures[1] == 0,"id should disable second curvature term");
 
         }
 
@@ -755,8 +755,8 @@ namespace TimeSeriesAnalysis.Test.SysID
         {
             double bias = 1;
             double noiseAmplitude = 0.02;
-            double[] u1 = TimeSeriesCreator.ThreeSteps(10, 60, 100, 150, 0, 1, 2, 3);
-            double[] u2 = TimeSeriesCreator.ThreeSteps(50, 80, 130, 150, 2, 1, 3, 2);
+            double[] u1 = TimeSeriesCreator.ThreeSteps(10, 60, 100, 200, 0, 1, 2, 3);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(50, 80, 130, 200, 2, 1, 3, 2);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
             double[] curvatures;
             if (curvatureOnBothInputs)

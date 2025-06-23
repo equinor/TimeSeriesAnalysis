@@ -391,30 +391,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 // on real-world data it is sometimes obsrevd that RsqAbs and ObjFunAbs is NaN.
                 // to be robust, check for nan and use any of the four different metrics in order of trust
-
-                if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.RsqAbs) &&
-                    !Double.IsNaN(modelParameters.Fitting.RsqAbs))
+                if (true)
                 {
-                    if (modelParams_StaticAndNoCurvature.Fitting.RsqAbs > modelParameters.Fitting.RsqAbs)
+                    if (modelParams_StaticAndNoCurvature.Fitting.FitScorePrc >
+                        modelParameters.Fitting.FitScorePrc)
+                    {
                         modelParameters = modelParams_StaticAndNoCurvature;
-                }
-                else if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.RsqDiff) &&
-                    !Double.IsNaN(modelParameters.Fitting.RsqDiff))
-                {
-                    if (modelParams_StaticAndNoCurvature.Fitting.RsqDiff > modelParameters.Fitting.RsqDiff)
-                        modelParameters = modelParams_StaticAndNoCurvature;
-                }
-                else if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.ObjFunValDiff) &&
-                    !Double.IsNaN(modelParameters.Fitting.ObjFunValDiff))
-                {
-                    if (modelParams_StaticAndNoCurvature.Fitting.ObjFunValDiff < modelParameters.Fitting.ObjFunValDiff)
-                        modelParameters = modelParams_StaticAndNoCurvature;
-                }
-                else if (!Double.IsNaN(modelParams_StaticAndNoCurvature.Fitting.ObjFunValAbs) &&
-                    !Double.IsNaN(modelParameters.Fitting.ObjFunValAbs))
-                {
-                    if (modelParams_StaticAndNoCurvature.Fitting.ObjFunValAbs < modelParameters.Fitting.ObjFunValAbs)
-                        modelParameters = modelParams_StaticAndNoCurvature;
+                    }
                 }
             }
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
@@ -468,50 +451,64 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private static UnitParameters ChooseBestModel(UnitParameters fallbackModel,List<UnitParameters> allModels)
         {
-            UnitParameters bestModel = fallbackModel;
+            bool useOnlyFitScore = true;//preferred:true
+
+            var bestModel = fallbackModel;
             // models will be arranged from least to most numbre of curvature terms
             // in case of doubt, do not add in extra curvature that does not significantly improve the objective function
             foreach (UnitParameters curModel in allModels)
             {
-                // Rsquared: higher is better
-                double RsqFittingDiff_improvement = curModel.Fitting.RsqDiff - bestModel.Fitting.RsqDiff ;
-                double RsqFittingAbs_improvement = curModel.Fitting.RsqAbs - bestModel.Fitting.RsqAbs;
-                // objective function: lower is better
-                double objFunDiff_improvement = bestModel.Fitting.ObjFunValDiff  - curModel.Fitting.ObjFunValDiff ;// positive if curmodel improves on the current best
-                double objFunAbs_improvement = bestModel.Fitting.ObjFunValAbs - curModel.Fitting.ObjFunValAbs ;// positive if curmodel improves on the current best
+                if (useOnlyFitScore)
+                {
+                    if (curModel.Fitting.FitScorePrc > bestModel.Fitting.FitScorePrc)
+                    {
+                        bestModel = curModel;
+                    }
+                }
+            /*    else
+                {
 
-                if (Double.IsNaN(RsqFittingAbs_improvement) || Double.IsNaN(objFunAbs_improvement))
-                {
-                    if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
-                       RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
-                       curModel.Fitting.WasAbleToIdentify
-                       )
+                    // Rsquared: higher is better
+                    double RsqFittingDiff_improvement = curModel.Fitting.RsqDiff - bestModel.Fitting.RsqDiff;
+                    double RsqFittingAbs_improvement = curModel.Fitting.RsqAbs - bestModel.Fitting.RsqAbs;
+                    // objective function: lower is better
+                    double objFunDiff_improvement = bestModel.Fitting.ObjFunValDiff - curModel.Fitting.ObjFunValDiff;// positive if curmodel improves on the current best
+                    double objFunAbs_improvement = bestModel.Fitting.ObjFunValAbs - curModel.Fitting.ObjFunValAbs;// positive if curmodel improves on the current best
+
+                    if (Double.IsNaN(RsqFittingAbs_improvement) || Double.IsNaN(objFunAbs_improvement))
                     {
-                        bestModel = curModel;
+                        if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
+                           RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
+                           curModel.Fitting.WasAbleToIdentify
+                           )
+                        {
+                            bestModel = curModel;
+                        }
                     }
-                }
-                else if (Double.IsNaN(RsqFittingDiff_improvement) || Double.IsNaN(objFunDiff_improvement))
-                {
-                    if (objFunAbs_improvement >= 0 &&
-                        RsqFittingAbs_improvement >= 0 &&
-                       curModel.Fitting.WasAbleToIdentify
-                       )
+                    else if (Double.IsNaN(RsqFittingDiff_improvement) || Double.IsNaN(objFunDiff_improvement))
                     {
-                        bestModel = curModel;
+                        if (objFunAbs_improvement >= 0 &&
+                            RsqFittingAbs_improvement >= 0 &&
+                           curModel.Fitting.WasAbleToIdentify
+                           )
+                        {
+                            bestModel = curModel;
+                        }
                     }
-                }
-                else
-                {
-                    if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
-                       RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
-                       objFunAbs_improvement >= 0 &&
-                       RsqFittingAbs_improvement >= 0 &&
-                       curModel.Fitting.WasAbleToIdentify
-                       )
+                    else
                     {
-                        bestModel = curModel;
+                        if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
+                           RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
+                           objFunAbs_improvement >= 0 &&
+                           RsqFittingAbs_improvement >= 0 &&
+                           curModel.Fitting.WasAbleToIdentify
+                           )
+                        {
+                            bestModel = curModel;
+                        }
                     }
-                }
+                }*/
+
             }
             return bestModel;
         }

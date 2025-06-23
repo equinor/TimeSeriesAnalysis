@@ -476,7 +476,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // TODO: this feels somewhat like a hack, and should be refactored.
             // If the measured and simulated signals end up being inversely correlated, the sign of the Kp parameter
             // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
-          /*  if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreInternal, 0) < -0.1)
+            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreInternal, 0) < -0.1)
             {
                 double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0));
                 pidParam.Kp = -pidParam.Kp;
@@ -490,7 +490,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample).Item1);
                 }
                 dataSet.U_sim = U_sim;
-            }*/
+            }
 
             pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigitsParams);
             pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigitsParams);

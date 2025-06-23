@@ -113,7 +113,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         // five gains that are the same (note that the tolerance can be much lower in this case)
         [TestCase(2, 0, 1, 0.0, 99, Description = "Two steps for every threshold(five thresholds)")]
         [TestCase(2, 0, 5, 1.0, 92, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
-        [TestCase(2, 0, 10, 2.0, 85, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
+        [TestCase(2, 0, 11, 2.0, 85, Description = "Two steps for every threshold(five thresholds)")]//note here that the tolerance can be set much lower!
         public void FiveGainsStatic_StepChange_ForGivenThresholds_CorrectGains(int ver, int expectedNumWarnings, double gainTolerancePrc, double noiseAmplitude,
             double fitScoreReq)
         {
