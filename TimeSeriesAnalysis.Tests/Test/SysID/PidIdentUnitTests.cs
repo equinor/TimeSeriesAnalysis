@@ -526,7 +526,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 // Identify model on oversampled data
                  var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
                 // new prototype alternative: try to create a downsampled copy of the dataset and give that to identification
-                var combinedDataDownsampled = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
+                (var isDownsampled,var combinedDataDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
                 var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
                 var idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
 
@@ -546,6 +546,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                    Shared.DisablePlots();
                }
 
+               Assert.IsTrue(isDownsampled,"DataDownsample should return true, should downsample");
                Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.01 * truePidParams.Ti_s);
                Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.01 * truePidParams.Kp); 
                Assert.Greater(idModelParams.Fitting.FitScorePrc, 80); 

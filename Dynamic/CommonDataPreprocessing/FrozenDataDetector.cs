@@ -15,7 +15,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Look at all the time-series n the dataset, and tag thos sample indices where all values seem to be frozen compared to previous
         /// </summary>
         /// <param name="dataSet"></param>
-        /// <returns>returns a tupel of a list of the indices of frozen samples, and the average samples between good indices</returns>
+        /// <returns>returns a tuple of a list of the indices of frozen samples, and the average samples between good indices</returns>
         public static (List<int>,int,int) DetectFrozenSamples(TimeSeriesDataSet dataSet)
         {
             var avgSamplesBtwValueChange = new RecursiveAverage(dataSet.BadDataID);
@@ -24,6 +24,7 @@ namespace TimeSeriesAnalysis.Dynamic
             int samplesSinceLastGoodIdx = 0;
             int minSamplesBtwValueChange = Int32.MaxValue;
             var signalNames = dataSet.GetSignalNames();
+       
             for (int curIdx=1;curIdx<dataSet.GetNumDataPoints(); curIdx++)
             {
                 bool doesAtLeastOneValueChange = false;

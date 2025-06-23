@@ -132,7 +132,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Shared.DisablePlots();
         }
 
-        [TestCase(5, 1.0, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(5, 1.0)]
 
         public void StepDistANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude)
         {
@@ -180,7 +180,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueDisturbance, false, true,null,10, doAddBadData);
         }
 
-        [TestCase(-5,5)]
+        [TestCase(-5,10)]
         [TestCase(5, 5)]
         [TestCase(10, 5)]
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 

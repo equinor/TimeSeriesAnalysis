@@ -4,6 +4,9 @@ using System.Text;
 
 namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
 {
+    /// <summary>
+    /// Class dealing with downsampling oversampled datasets.
+    /// </summary>
     public class DatasetDownsampler
     {
         /// <summary>
@@ -11,19 +14,20 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
         /// is changed compared to previous value. 
         /// </summary>
         /// <param name="rawData"></param>
-        /// <returns></returns>
-        public static TimeSeriesDataSet CreateDownsampledCopyIfPossible(TimeSeriesDataSet rawData)
+        /// <returns>a tuple consisting of a bool indicating if a copy was made, and secondly the downsampled dataset</returns>
+        public static (bool,TimeSeriesDataSet) CreateDownsampledCopyIfPossible(TimeSeriesDataSet rawData)
         {
-            (var listFrozenSampleIdx, var avgSamplesBtwGoodIdx, var minSamplesBtwGoodIdx) = FrozenDataDetector.DetectFrozenSamples(rawData);
+            (var listFrozenSampleIdx, var avgSamplesBtwGoodIdx, var minSamplesBtwGoodIdx) = 
+                FrozenDataDetector.DetectFrozenSamples(rawData);
 
             // if the above list is "periodic"
             if (avgSamplesBtwGoodIdx >= 1 && minSamplesBtwGoodIdx >= 1)
             {
                 // then create a downsampled copy of the original dataset.
-                return new TimeSeriesDataSet(rawData, listFrozenSampleIdx);
+                return (true, new TimeSeriesDataSet(rawData, listFrozenSampleIdx));
             }
 
-            return rawData;
+            return (false,rawData);
         }
 
     }

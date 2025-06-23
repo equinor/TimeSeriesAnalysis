@@ -9,7 +9,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Common logic that is to be shared among PlantSimulator and different Identification algoirthms, to choose
     /// data points that are to be ignored when either simulating or identifying or both.
     /// </summary>
-    public static class DataIndicesToIgnoreChooser
+    public static class CommonDataPreprocessor
     {
         /// <summary>
         /// Looks over UnitDataSet and chooses which indices to ignore
@@ -49,14 +49,10 @@ namespace TimeSeriesAnalysis.Dynamic
             var indicesToIgnore = new List<int>();
             if (dataSet.GetIndicesToIgnore().Count() > 0)
             {
-
-                var indicesMinusOne = Index.Max(Index.Subtract(dataSet.GetIndicesToIgnore().ToArray(), 1), 0).Distinct<int>();
-                indicesToIgnore = Index.AppendTrailingIndices(indicesMinusOne.ToList());
-  
-              //  indicesToIgnore = new List<int>(dataSet.GetIndicesToIgnore());
                 // note that for identification often the trailing indices need also to be removed due to the nature of 
                 // reursive models. We can never be certain if this sort of "padded out" indices to ignore is provided or not.
-         //       indicesToIgnore = new List<int>(Index.AppendTrailingIndices(dataSet.GetIndicesToIgnore()));
+                var indicesMinusOne = Index.Max(Index.Subtract(dataSet.GetIndicesToIgnore().ToArray(), 1), 0).Distinct<int>();
+                indicesToIgnore = Index.AppendTrailingIndices(indicesMinusOne.ToList());
             }
             if (detectBadData)
             {

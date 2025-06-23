@@ -403,11 +403,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
              timeBase_s, "UnitTest_SerialProcess");*/
         }
 
-        [TestCase(1,false, true)]
-        [TestCase(3, true, true)]
-        [TestCase(1, false,false)]
-        [TestCase(3, true, false)]
-        public void Serial2_SISO_IgnoresBadDataPoints_RunsRestartsSimulatorAndConverges(int nBadIndices, bool expectSimRestart,
+        [TestCase(1, 1, true)]
+        [TestCase(3, 1, true)]
+        [TestCase(1, 0,false)]
+        [TestCase(3, 1, false)]
+        public void Serial2_SISO_IgnoresBadDataPoints_RunsRestartsSimulatorAndConverges(int nBadIndices, int expectSimRestarts,
             bool letSimulatorDetermineIndToIgnore)
         {
             var plantSim = new PlantSimulator(
@@ -453,7 +453,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(Math.Abs(simY[0] - (55 * 1.1 + 5)) < 0.01,"should start up in steady state");
             Assert.IsTrue(Math.Abs(simY.Last() - (60 * 1.1 + 5)) < 0.01,"should end in steady-state");
 
-            Assert.AreEqual(simData.GetNumSimulatorRestarts() == 1, expectSimRestart,"should restart once");
+            Assert.AreEqual(expectSimRestarts,simData.GetNumSimulatorRestarts(), "sim restarted wrong number of times");
 
             if (false)
             {

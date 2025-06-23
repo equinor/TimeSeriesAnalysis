@@ -76,8 +76,7 @@
               href: sysid_ex_pid.md       
             - name: Closed-loop identification (disturbances)
               href: sysid_ex_closedloop.md          
-
- 
+              
  
 
 - name: Dynamic simulation
@@ -98,6 +97,9 @@
             - name: Select control and tracking
               href: pid_select.md
 
+
+- name: Data preprocessing
+  href: data_preproc.md
 
 - name: List of known limitations 
   href: limitations.md

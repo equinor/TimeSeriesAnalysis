@@ -619,8 +619,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             { 
-                // note: this code does not deal with time delays correclty, and so cannot be used until refactored/generalized
-                yIndicesToIgnore = DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, true, false);
+                // note: this code does not deal with time delays correctly, and so cannot be used until refactored/generalized
+                yIndicesToIgnore = CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, true, false);
                 yIndicesToIgnore = Index.Shift(yIndicesToIgnore.ToArray(), timeDelay_samples).ToList();
             }
 
@@ -934,8 +934,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
 
+          //      dataSet.IndicesToIgnore = yIndicesToIgnore;
+
                 (double? recalcBias, double[] y_sim_recalc) =
-                    SimulateAndReEstimateBias(dataSet, parameters);
+                    SimulateAndReEstimateBias(dataSet, parameters, yIndicesToIgnore);
                 dataSet.Y_sim = y_sim_recalc;
                 if (recalcBias.HasValue)
                 {
@@ -1157,24 +1159,24 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet"></param>
         /// <param name="parameters"></param>
+        /// <param name="yIndicesToIgnore"></param>
         /// <returns></returns>
-        static public (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters)
+        static private (double?, double[]) SimulateAndReEstimateBias(UnitDataSet dataSet, UnitParameters parameters,
+            List<int> yIndicesToIgnore)
         {
-            UnitDataSet internalData = new UnitDataSet(dataSet);
+            var internalData = new UnitDataSet(dataSet);
             parameters.Bias = 0;
             double nanValue = internalData.BadDataID;
             var model = new UnitModel(parameters);
-            var simulator = new UnitSimulator(model); // TODO: remove last UnitSimulator reference.
-            var y_sim = simulator.Simulate(ref internalData);
-           // (var isOk, var y_sim) = PlantSimulator.SimulateSingle(internalData, model,false, 0, true);
-
+            internalData.IndicesToIgnore = yIndicesToIgnore;
+            (var isOk, var y_sim, int n_restarts) =  PlantSimulatorHelper.SimulateSingle(internalData, model);
             var yMeas_exceptIgnoredValues = internalData.Y_meas;
             var ySim_exceptIgnoredValues = y_sim;
-            if (dataSet.IndicesToIgnore != null)
+            if (internalData.IndicesToIgnore != null)
             {
-                for (int ind = 0; ind < dataSet.IndicesToIgnore.Count(); ind++)
+                for (int ind = 0; ind < internalData.IndicesToIgnore.Count(); ind++)
                 {
-                    int indToIgnore = dataSet.IndicesToIgnore.ElementAt(ind);
+                    int indToIgnore = internalData.IndicesToIgnore.ElementAt(ind);
                     yMeas_exceptIgnoredValues[indToIgnore] = Double.NaN;//nan values are ignored by Vec.Means
                     if (ySim_exceptIgnoredValues != null)
                     {

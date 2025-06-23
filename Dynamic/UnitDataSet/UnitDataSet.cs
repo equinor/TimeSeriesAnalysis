@@ -16,10 +16,6 @@ namespace TimeSeriesAnalysis.Dynamic
     public class UnitDataSet
     {
         /// <summary>
-        /// list of warings during identification
-        /// </summary>
-        public List<UnitWarnings> Warnings { get; set; }
-        /// <summary>
         /// Name
         /// </summary>
         public string ProcessName { get; }
@@ -80,7 +76,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="name">optional internal name of dataset</param>
         public UnitDataSet(string name = null)
         {
-            this.Warnings = new List<UnitWarnings>();
             this.Y_meas = null;
             this.U = null;
             this.ProcessName = name;

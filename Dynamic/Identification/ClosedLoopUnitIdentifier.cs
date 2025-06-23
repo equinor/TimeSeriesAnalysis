@@ -91,7 +91,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.IndicesToIgnore = new List<int>();
                 }
                 // TODO: if detectFrozenData is set to true, then model seems to fail for some unit tests
-                dataSet.IndicesToIgnore = DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(
+                dataSet.IndicesToIgnore = CommonDataPreprocessor.ChooseIndicesToIgnore(
                     dataSet,detectBadData:true,detectFrozenData:false); 
             }
             // set "indicestoignore" to exclude values outside ymin/ymax_fit and umin_fit,u_max_fit

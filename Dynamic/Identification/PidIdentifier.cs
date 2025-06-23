@@ -84,20 +84,12 @@ namespace TimeSeriesAnalysis.Dynamic
            /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
-         //   const bool doOnlyWithDelay = false;// should be false unless debugging something
             const bool doFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
-
 
             // 1. try identification with delay of one sample but without filtering
             (var idParamsWithDelay, var U_withDelay, var indicesToIgnore_withDelay)
                 = IdentifyInternal(dataSet, true);
-   
-   /*         if (doOnlyWithDelay)
-            {
-                dataSet.U_sim = U_withDelay;
-                return results_withDelay;
-            }*/
 
             // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
             //    relative to the clock that the pid algorithm ran on originally)
@@ -162,29 +154,6 @@ namespace TimeSeriesAnalysis.Dynamic
                             bestU = UwithFilter;
                             bestPidParameters = idParamsWithFilter;
                             bestIndicesToIgnore = indicesToIgnore_withFilter;
-                        }
-                    }
-                }
-            }
-
-            // 5. Try identifying if the data is oversampled, and if so check whether downsampled identification yields better results.
-            if (false)  //if (downsampleOversampledData )
-            {
-                double oversampledFactor = dataSet.GetOversampledFactor(out int keyIndex);
-                // Oversamples of less than 20 percent can be handled by the flatline index ignoration.
-                if (oversampledFactor > 1.2)
-                {
-                    UnitDataSet dataSetDownsampled = new UnitDataSet(dataSet, oversampledFactor, keyIndex);
-                    if (dataSet.Times.Count() != dataSetDownsampled.Times.Count())
-                    {
-                        pidFilter = null;
-                        var idParamsDownsampled = Identify(ref dataSetDownsampled);
-                        if (IsFirstModelBetterThanSecondModel(idParamsDownsampled, bestPidParameters))
-                        {
-                            bestU = dataSetDownsampled.U_sim;
-                            dataSet = dataSetDownsampled;
-                            bestPidParameters = idParamsDownsampled;
-                            bestIndicesToIgnore = dataSetDownsampled.IndicesToIgnore;
                         }
                     }
                 }
@@ -383,9 +352,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 var umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
                 var uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
+                var ymaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetYmax(), VectorFindValueType.BiggerOrEqual));
+                var yminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
 
-                // var indToIgnoreFromChooser =  Index.Shift(DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, detectBadData: false,detectFrozenData: true).ToArray(), -nIterationsToLookBack);
-                var indToIgnoreFromChooser = DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(dataSet, detectBadData: false, detectFrozenData: true).ToArray();
+                var indToIgnoreFromChooser = CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, detectFrozenData: true).ToArray();
 
                 // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
                 /*
@@ -403,9 +373,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 */
                 indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadUcur).ToList();
                 indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadEcur).ToList();
-                //TODO: need to remove indice if _previous_ value was umax or umin
                 indicesToIgnoreInternal = indicesToIgnoreInternal.Union(umaxInd).ToList();
                 indicesToIgnoreInternal = indicesToIgnoreInternal.Union(uminInd).ToList();
+                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(ymaxInd).ToList();
+                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(yminInd).ToList();
                 indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indToIgnoreFromChooser).ToList();
                 indicesToIgnoreInternal.Sort();
 
@@ -468,38 +439,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     pidParam.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
                     return (pidParam, null, null);
                 }
-
             }
-            // The ignored indices above are for the arrays used for identification.
-            // For evaluation and simulation, slightly larger arrays are used, and other indices must be found.
-       /*     List<int> indicesToIgnoreForEvalSim = new List<int>();
 
-            List<int> indBadU = new List<int>();
-            for (int i = 0; i < dataSet.U.GetNColumns(); i++)
-            {
-                indBadU = indBadU.Union(vec.FindValues(dataSet.U.GetColumn(i),dataSet.BadDataID, VectorFindValueType.Equal)).ToList();
-            }
-            List<int> indBadY_meas = vec.FindValues(dataSet.Y_meas,dataSet.BadDataID, VectorFindValueType.Equal).ToList();
-
-            indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadU).ToList();
-            indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indBadY_meas).ToList();
-            */
-           /* if (ignoreFlatLines)
-            {
-                // Identify oversampled data
-                List<int> indSameU = new List<int>();
-                for (int i = 0; i < dataSet.U.GetNColumns(); i++)
-                {
-                   indSameU = indSameU.Union(vec.FindValues(dataSet.U.GetColumn(i), badValueIndicatingValue, VectorFindValueType.SameAsPrevious)).ToList();
-                }
-                List<int> indSameYmeas = vec.FindValues(dataSet.Y_meas, badValueIndicatingValue, VectorFindValueType.SameAsPrevious);
-                List<int> indSameYsetpoint = vec.FindValues(dataSet.Y_setpoint, badValueIndicatingValue, VectorFindValueType.SameAsPrevious);
-                List<int> indOversampled = indSameU.Intersect(indSameYmeas).ToList();
-                indOversampled = indOversampled.Intersect(indSameYsetpoint).ToList();
-
-                indicesToIgnoreForEvalSim = indicesToIgnoreForEvalSim.Union(indOversampled).ToList();
-                indicesToIgnoreForEvalSim.Sort();
-            }*/
 
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong
@@ -579,7 +520,6 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.NumSimulatorRestarts = numSimRestarts;
 
             pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;
-            // fitting abs?
             return (pidParam, dataSet.U_sim, dataSet.IndicesToIgnore);
         }
 

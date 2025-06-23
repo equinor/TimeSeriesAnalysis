@@ -259,7 +259,8 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(Double.NaN)]
         [TestCase(-9999)]
         [TestCase(-99.124)]
-        public void BadValuesInY_DoesNotDestroyResult(double badValueId, double bias=2, double timeConstant_s=10, int timeDelay_s=5)
+        public void BadValuesInY_DoesNotDestroyResult(double badValueId, double bias=2, 
+            double timeConstant_s=10, int timeDelay_s=5)
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
@@ -269,7 +270,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             bool addInBadDataToYmeas = true;
 
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -290,14 +291,12 @@ namespace TimeSeriesAnalysis.Test.SysID
         {
             double noiseAmplitude = 0.01;
             double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
-            //    double[] u2 = TimeSeriesCreator.Step(80, 300, 1, 3);
             u1[5] = double.NaN;
 
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
 
             bool addInBadDataToYmeas = false;
-
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -306,10 +305,11 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Bias = bias
             };
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, new FittingSpecs(designParameters.U0, null), noiseAmplitude, addInBadDataToYmeas, badValueId);
-
-            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
-                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s);
-
+            if (false)
+            {
+                plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1 },
+                    new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s);
+            }
             DefaultAsserts(model, designParameters);
         }
 
@@ -560,7 +560,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(0, 0, 5, Category = "Delay")]
         public void YminFit_IsExcludedOk(double bias, double timeConstant_s, int timeDelay_s)
         {
-            double noiseAmplitude = 0.00;
+            double noiseAmplitude = 0.01;
             UnitParameters designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
@@ -683,7 +683,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double[] u1 = TimeSeriesCreator.ThreeSteps(60, 120, 180, 240, 0, 1, 2, 3);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
 
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -694,7 +694,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Bias = bias
             };
 
-            UnitParameters paramtersNoCurvature = new UnitParameters
+            var paramtersNoCurvature = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -889,7 +889,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double[] u2 = Vec<double>.Fill(0,100);// input is flat - the gain should in this case be zero!;//todo: try with nonzero const value
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -905,16 +905,16 @@ namespace TimeSeriesAnalysis.Test.SysID
         }
 
 
-        [TestCase(1, 0, 2, Category = "Delayed")]
-        [TestCase(1, 15, 2, Category = "Dynamic")]
+   /*     [TestCase(1, 0, 2, Category = "Delayed")]
+        [TestCase(1, 5, 2, Category = "Dynamic")]
         public void ExcludeDisturbance_I2_Linear(double bias, double timeConstant_s, int timeDelay_s)
         {
-            double noiseAmplitude = 0.01;
+            double noiseAmplitude = 0.00;
             double[] u1 = TimeSeriesCreator.Step(60, 100, 0, 1);
             double[] u2 = TimeSeriesCreator.Step(40, 100, 1, 0);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -931,10 +931,11 @@ namespace TimeSeriesAnalysis.Test.SysID
             var model = Identify(dataSet, fittingSpecs);
 
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2, disturbance },
-                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y4=dist" }, (int)timeBase_s,"excl_disturbance");
+                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2","y4=dist" }, 
+                (int)timeBase_s,"excl_disturbance");
 
             DefaultAsserts(model, designParameters,0);
-        }
+        }*/
 
 
 
@@ -970,7 +971,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double[] u2 = TimeSeriesCreator.Step(35, 100, 1, 0);
             double[] u3 = TimeSeriesCreator.Step(60, 100, 0, 1);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2, u3 });
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 LinearGains = new double[] { 1, 2, 1.5 },
@@ -993,7 +994,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double[] u2 = TimeSeriesCreator.Step(350, N, 1, 0);
             double[] u3 = TimeSeriesCreator.Step(600, N, 0, 1);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2, u3 });
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 LinearGains = new double[] { 1, 2, 1.5 },

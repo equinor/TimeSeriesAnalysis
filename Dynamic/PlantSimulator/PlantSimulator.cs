@@ -571,7 +571,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (doDetermineIndicesToIgnore)
             {
                 inputDataMinimal.SetIndicesToIgnore(
-                    DataIndicesToIgnoreChooser.ChooseIndicesToIgnore(inputDataMinimal, detectFrozenData: false));
+                    CommonDataPreprocessor.ChooseIndicesToIgnore(inputDataMinimal, detectFrozenData: true));
             }
             else
             {
