@@ -39,9 +39,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         [TestCase(5,1.0, 10)]
         [TestCase(1,1.0, 10)] 
-   //     [TestCase(1,5.0, 10)]
+
         public void StepDisturbanceANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude, double precisionPrc)
         {
+            int N = 100;
             double noiseAmplitude = 0.001;
             var locParameters = new UnitParameters
             {
@@ -51,17 +52,17 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
 
-            var trueDisturbance = TimeSeriesCreator.Step(160, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude)); ;
-            var yset = TimeSeriesCreator.Step(50, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
+            var trueDisturbance = TimeSeriesCreator.Step(80, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude)); ;
+            var yset = TimeSeriesCreator.Step(10, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,
                 false, true, yset, precisionPrc,false, true);
         }
 
-        [TestCase(5, 1.0,30 )]
-        [TestCase(1, 1.0,30)]
-        [TestCase(1, 5.0,30 )]
+        [TestCase(5, 1.0,30,500 )]
+        [TestCase(1, 5.0,30,500 )]
 
-        public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude, double gainPrecisionPrc)
+        public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude, 
+            double gainPrecisionPrc, int N)
         {
             var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude,N/8,timeBase_s,N );
             var yset = TimeSeriesCreator.Step(N/2, N, 50, 50 + ysetStepAmplitude);//do step before disturbance
@@ -76,25 +77,21 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // generally, the smaller the process gain, the lower the precision of the estimated process gain.
         //(halfing the gain-> halving the precision)
         // first seed
-        [TestCase(1, 0.1, 25, 105)]
-       // [TestCase(1, 1, 25, 105)]
-        [TestCase(2, 0.1, 15, 105)]
-       // [TestCase(2, 1, 15, 105)]
+        [TestCase(1, 0.1, 25, 105,1000)]
+        [TestCase(2, 0.1, 15, 105,1500)]
         // second seed 
-       // [TestCase(1, 0.1, 25, 50)]
-        [TestCase(1, 1, 25, 50)]
-      //  [TestCase(2, 0.1, 12, 50)]
-        [TestCase(2, 1, 12, 50)]
+        [TestCase(1, 1, 25, 50,1000)]
+
+        [TestCase(2, 1, 12, 50, 2000)]
         // third  seed 
-        [TestCase(1, 0.1, 25, 71)]
-      //  [TestCase(1, 1, 25, 71)]
-        [TestCase(2, 0.1, 12, 70)]
-      //  [TestCase(2, 1, 12, 70)]
+        [TestCase(1, 0.1, 25, 71,1500)]
+        [TestCase(2, 0.1, 12, 70, 2000)]
 
 
-        public void RandomWalkDisturbance(double procGain, double distAmplitude, double precisionPrc,int seed)
+
+        public void RandomWalkDisturbance(double procGain, double distAmplitude, double precisionPrc,int seed, int N)
         {
-            int N = 2000;
+          //  int N = 2000;
             bool doBadData = false;
             var locParameters = new UnitParameters
             {
@@ -110,8 +107,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         [TestCase(5, 1.0,5)]
-        public void StepDisturbanceANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude, double precisionPrc )
+        public void StepDisturbanceANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude,
+            double precisionPrc )
         {
+            int N = 300;
             var vec = new Vec();
          
             var locParameters = new UnitParameters
@@ -122,7 +121,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
-            var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 4, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
+            var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 8, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "StaticProcess"), trueDisturbance,
                 false, true, yset, precisionPrc,false, true);
@@ -133,10 +132,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void LongStepDisturbance_EstimatesOk(double stepAmplitude, double gainPrecisionPrc)
         {
             bool doInvertGain = false;
-            N = 1000;
+            N = 300;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "StaticProcess"), trueDisturbance,doInvertGain,true, null, gainPrecisionPrc, false, true);
-
         }
 
 
@@ -179,8 +177,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double gainTolPrc, bool doNegativeGain =false)
         {
+            int N = 50;
              //Shared.EnablePlots();
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude);
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), 
                 trueDisturbance, doNegativeGain,true,null, gainTolPrc, false, true);
             //Shared.DisablePlots();

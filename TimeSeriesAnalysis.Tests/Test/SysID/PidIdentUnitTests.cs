@@ -199,9 +199,9 @@ namespace TimeSeriesAnalysis.Test.SysID
         // way. It may be that instead the solver should run the pid-controller at its original time sampling,
         // maybe this will casue the noise to smoothe out
 
-        [TestCase(2,0,10)]
-        [TestCase(2,0.05,35)]// this is poor
-        [TestCase(4,0,10)]
+        [TestCase(2,0,5)]
+        [TestCase(2,0.05,20)]
+        [TestCase(4,0,10)] // if data is downsampled sufficiently, then sometimes the ident returns wrong sign of Kp, like is seen here.
         [TestCase(4,0.05,20)]
         public void DistStep_WNoise_Downsampled_KpAndTiEstimatedOk(int downsampleFactor, double noiseAmplitude, double tolerancePrc)
         {

@@ -114,6 +114,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk( bool doNegative, double gainTolPrc)
         {
+            int N = 150;
             int pidInputIdx = 0;
 
             var trueDisturbance = TimeSeriesCreator.Constant(0, N);
@@ -137,6 +138,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void Static2Input_PidInputIdx1_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk(bool doNegative, double gainTolPrc)
         {
+            int N = 150;
             int pidInputIdx = 1;
 
             var trueDisturbance = TimeSeriesCreator.Constant(0, N); ;

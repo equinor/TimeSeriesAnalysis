@@ -263,8 +263,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             double timeConstant_s=10, int timeDelay_s=5)
         {
             double noiseAmplitude = 0.01;
-            double[] u1 = TimeSeriesCreator.Step(150, 300, 0, 1);
-            double[] u2 = TimeSeriesCreator.Step( 80, 300, 1, 3);
+            double[] u1 = TimeSeriesCreator.Step(30, 100, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step( 80, 100, 1, 3);
 
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
 
@@ -680,7 +680,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             double bias = 1;
             double noiseAmplitude = 0.01;
 
-            double[] u1 = TimeSeriesCreator.ThreeSteps(60, 120, 180, 240, 0, 1, 2, 3);
+            double[] u1 = TimeSeriesCreator.ThreeSteps(10, 20, 40, 60, 0, 1, 2, 3);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
 
             var designParameters = new UnitParameters
@@ -755,11 +755,9 @@ namespace TimeSeriesAnalysis.Test.SysID
         {
             double bias = 1;
             double noiseAmplitude = 0.02;
-
-            double[] u1 = TimeSeriesCreator.ThreeSteps(60, 120, 180, 240, 0, 1, 2, 3);
-            double[] u2 = TimeSeriesCreator.ThreeSteps(90, 150, 210, 240, 2, 1, 3, 2);
+            double[] u1 = TimeSeriesCreator.ThreeSteps(10, 60, 100, 150, 0, 1, 2, 3);
+            double[] u2 = TimeSeriesCreator.ThreeSteps(50, 80, 130, 150, 2, 1, 3, 2);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2 });
-
             double[] curvatures;
             if (curvatureOnBothInputs)
             {
@@ -769,8 +767,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 curvatures = new double[] { curvature, 0 };
             }
-
-            UnitParameters designParameters = new UnitParameters
+            var designParameters = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -780,11 +777,8 @@ namespace TimeSeriesAnalysis.Test.SysID
                 UNorm = new double[] { 1, 1 },// set this to make results comparable
                 Bias = bias
             };
-
             var fittingSpecs = new FittingSpecs(designParameters.U0,designParameters.UNorm);
-
-
-            UnitParameters paramtersNoCurvature = new UnitParameters
+            var paramtersNoCurvature = new UnitParameters
             {
                 TimeConstant_s = timeConstant_s,
                 TimeDelay_s = timeDelay_s,
@@ -946,9 +940,10 @@ namespace TimeSeriesAnalysis.Test.SysID
         public void I3_Linear_OneStep(double bias, double timeConstant_s)
         {
             double noiseAmplitude = 0.01;
-            double[] u1 = TimeSeriesCreator.Step(50, 100 ,0,1) ;
-            double[] u2 = TimeSeriesCreator.Step(35, 100, 1, 0);
-            double[] u3 = TimeSeriesCreator.Step(60, 100, 0, 1);
+            double[] u1 = TimeSeriesCreator.Step(10, 50, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(35, 50, 1, 0);
+            double[] u3 = TimeSeriesCreator.Step(40, 50, 0, 1);
+
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2, u3 });
             UnitParameters designParameters = new UnitParameters
             {
@@ -988,11 +983,11 @@ namespace TimeSeriesAnalysis.Test.SysID
         public void SignificantNonWhiteNoise_I3_Linear(double bias, double timeConstant_s)
         {
             Plot4Test plotLocal = new Plot4Test(false);
-            int N = 1000;
+            int N = 300;
             double noiseAmplitude = 0.07;
-            double[] u1 = TimeSeriesCreator.Step(500, N, 0, 1);
-            double[] u2 = TimeSeriesCreator.Step(350, N, 1, 0);
-            double[] u3 = TimeSeriesCreator.Step(600, N, 0, 1);
+            double[] u1 = TimeSeriesCreator.Step(200, N, 0, 1);
+            double[] u2 = TimeSeriesCreator.Step(50, N, 1, 0);
+            double[] u3 = TimeSeriesCreator.Step(150, N, 0, 1);
             double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1, u2, u3 });
             var designParameters = new UnitParameters
             {

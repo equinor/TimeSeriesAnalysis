@@ -80,7 +80,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(5, 0.01)]
         public void Static_StepDisturbance_EstimatesOk(double stepAmplitude, double tolPrc)
         {
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            int N = 30;
+            var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, tolPrc);
         }
 
@@ -88,6 +89,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(5, 0.01)]
         public void Static_SinusDisturbance_EstimatesOk(double stepAmplitude,double tolPrc)
         {
+            int N = 30;
             var sinusPeriod = timeBase_s * 15;
             var trueDisturbance = TimeSeriesCreator.Sinus(stepAmplitude, sinusPeriod, timeBase_s,N );
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, tolPrc);
@@ -97,15 +99,16 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(5, 0.01)]
         public void Dynamic_StepDisturbance_EstimatesOk(double stepAmplitude,double tolPrc)
         {
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            int N = 60;
+            var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(dynamicModelParameters, "DynamicProcess"), trueDisturbance, tolPrc);
         }
 
 
         [TestCase(-5, 0.01)]
-   //     [TestCase(5, 0.01)]
         public void Dynamic_MISO_StepDisturbance_EstimatesOk(double stepAmplitude, double tolPrc)
         {
+            int N = 60;
             var misoModelParameters = new UnitParameters
             {
                 TimeConstant_s = 10,
@@ -114,7 +117,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
 
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude);
             GenericDisturbanceTest(new UnitModel(misoModelParameters, "MISOProcess"), trueDisturbance, tolPrc);
         }
 

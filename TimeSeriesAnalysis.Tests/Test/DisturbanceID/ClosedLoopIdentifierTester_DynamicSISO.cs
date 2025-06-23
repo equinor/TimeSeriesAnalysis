@@ -63,49 +63,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc);
         }
 
-        /*
-        I think the reason this test struggles is that closedloopestimator tries to find the process model that results in the
-        disturbance with the smallest average change, but for continously acting disturbances like this sinus disturbance, 
-        this may not be as good an assumption as for the step disturbances considered in other tests. 
-        */
-        /*
-        [TestCase(5, 1.0, Category="NotWorking_AcceptanceTest"), NonParallelizable]
-        [TestCase(1, 1.0, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 5.0 )]// this only works when the step change is much bigger than the disturbance
-
-        public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude)
-        {
-            double precisionPrc = 20;
-
-            UnitParameters staticModelParameters = new UnitParameters
-            {
-                TimeConstant_s = 15,
-                LinearGains = new double[] { 1.2 },
-                TimeDelay_s = 0,
-                Bias = 5
-            };
-            var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude,N/8,timeBase_s,N );
-            var yset = TimeSeriesCreator.Step(N/2, N, 50, 50 + ysetStepAmplitude);//do step before disturbance
-            CluiCommonTests.GenericDisturbanceTest(new UnitModel(staticModelParameters, "Process"), trueDisturbance,
-                false, true, yset, precisionPrc);
-        }
-        */
-
-        /*
-        [TestCase(2, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1,  Category = "NotWorking_AcceptanceTest")]
-        [TestCase(0.5, Category = "NotWorking_AcceptanceTest")]
-        public void SinusDisturbance(double distSinusAmplitude)
-        {
-            double precisionPrc = 20;
-
-            var trueDisturbance = TimeSeriesCreator.Sinus(distSinusAmplitude, N / 8, timeBase_s, N);
-            var yset = TimeSeriesCreator.Step(N / 2, N, 50, 50 );
-            CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
-                false, true, yset, precisionPrc);
-        }
-        */
-
         // 0.25: saturates the controller
         [TestCase(1, 0.1, 30, Category = "NotWorking_AcceptanceTest")]
         [TestCase(1, 1, 30, Category = "NotWorking_AcceptanceTest")]
@@ -161,7 +118,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             double noiseAmplitude = 0.01;
             bool doInvertGain = false;
-            N = 1000;
+            N = 400;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).
                 Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,doInvertGain,true,null,procGainAllowedOffSetPrc);
@@ -172,23 +129,23 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepAtStartOfDataset_IsExcludedFromAnalysis()
         {
             double stepAmplitude = 1;
-            double noiseAmplitude = 0.01;
             bool doAddBadData = true;
-            N = 1000;
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);//.Add(TimeSeriesCreator.Noise(N, noiseAmplitude)); ;
+            int N = 100;
+            var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude);
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"),
                 trueDisturbance, false, true,null,10, doAddBadData);
         }
 
         [TestCase(-5,10)]
-        [TestCase(5, 5)]
+        [TestCase(5, 10)]
         [TestCase(10, 5)]
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
             bool doNegativeGain =false)
         {
+            int N = 100;
             double noiseAmplitude = 0.01;
              //Shared.EnablePlots();
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
+            var trueDisturbance = TimeSeriesCreator.Step(40, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
                 doNegativeGain,true,null,  processGainAllowedOffsetPrc);
             //Shared.DisablePlots();

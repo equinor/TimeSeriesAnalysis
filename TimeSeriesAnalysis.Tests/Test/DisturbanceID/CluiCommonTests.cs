@@ -67,7 +67,7 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
                 pidDataSet.Y_meas[200] = Double.NaN;
                 pidDataSet.Y_meas[100] = Double.NaN;*/
                 pidDataSet.U[50, 0] = Double.NaN;
-                pidDataSet.U[300, 0] = Double.NaN;
+                pidDataSet.U[20, 0] = Double.NaN;
                 pidDataSet.U[5, 0] = Double.NaN;
                 Console.WriteLine("---------NB!!! bad data added to Ymeas, Y_setpoint and U !!--------");
             }
