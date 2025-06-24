@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NuGet.Frameworks;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -527,8 +528,11 @@ namespace TimeSeriesAnalysis.Test.SysID
                  var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
                 // new prototype alternative: try to create a downsampled copy of the dataset and give that to identification
                 (var isDownsampled,var combinedDataDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
+                // 
+                (var isDownsampled_V2, var combinedDataDownsampled_V2) = DatasetDownsampler.CreateDownsampledCopyIfPossible(pidDataSetOversampled);
                 var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
                 var idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
+
 
                // Plot results
                if (false)
@@ -545,12 +549,17 @@ namespace TimeSeriesAnalysis.Test.SysID
                        pidDataSetDownsampled.GetTimeBase(), caseId+"_oversampled");
                    Shared.DisablePlots();
                }
+               // test that the two methods are equivalent
+                Assert.AreEqual(combinedDataDownsampled_V2.GetNumDataPoints(), pidDataSetDownsampled.GetNumDataPoints());
+                Assert.AreEqual(combinedDataDownsampled_V2.Y_meas, pidDataSetDownsampled.Y_meas);
+                Assert.AreEqual(combinedDataDownsampled_V2.U, pidDataSetDownsampled.U);
+                Assert.IsTrue(isDownsampled_V2);
 
-               Assert.IsTrue(isDownsampled,"DataDownsample should return true, should downsample");
-               Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.01 * truePidParams.Ti_s);
-               Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.01 * truePidParams.Kp); 
-               Assert.Greater(idModelParams.Fitting.FitScorePrc, 80); 
-               Assert.IsTrue(Math.Abs(idModelParams.Fitting.TimeBase_s - timebaseTrue) < 0.01 * timebaseTrue);
+                Assert.IsTrue(isDownsampled,"DataDownsample should return true, should downsample");
+                Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.01 * truePidParams.Ti_s);
+                Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.01 * truePidParams.Kp); 
+                Assert.Greater(idModelParams.Fitting.FitScorePrc, 80); 
+                Assert.IsTrue(Math.Abs(idModelParams.Fitting.TimeBase_s - timebaseTrue) < 0.01 * timebaseTrue);
            }
 
         /*  /// <summary>

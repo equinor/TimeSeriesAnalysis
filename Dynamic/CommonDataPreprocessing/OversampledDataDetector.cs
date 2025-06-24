@@ -7,6 +7,7 @@ using System.Text;
 namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
 {
     /// <summary>
+    /// (Deprecated, to be removed, do not use.)
     /// This class deals with identifying when a dataset is oversampled. 
     /// Oversampling happens when the data is stored with a given timbase_s, and then retreived at a higher frequency, in which
     /// case many systems will return data at the requested timebese_s even though the data is not stored with sufficient fidelity,

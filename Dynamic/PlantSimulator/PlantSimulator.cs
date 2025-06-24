@@ -334,6 +334,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData, PidModel pidModel)
         {
+            bool allOk = true;
             var unitModID = connections.GetUnitModelControlledByPID(pidModel.GetID(), modelDict);
             string[] modelInputIDs = null;
             if (unitModID != null)
@@ -348,7 +349,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (int modelInputIdx = 0; modelInputIdx < modelInputIDs.Length; modelInputIdx++)
                 {
                     var inputID = modelInputIDs[modelInputIdx];
-                    dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
+                    var values = inputData.GetValues(inputID);
+                    if (values != null)
+                        dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
+                    else
+                    {
+                        allOk = false;
+                        dataset.U = new double[inputData.GetLength().Value, 1];
+                        dataset.U.WriteColumn(0, inputData.GetValues(pidModel.GetOutputID()));
+                    }
+                     
                 }
             }
             else
@@ -366,11 +376,27 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (inputIDidx == (int)PidModelInputsIdx.Y_setpoint)
                 {
-                    dataset.Y_setpoint = inputData.GetValues(inputID);
+                    var values = inputData.GetValues(inputID);
+                    if (values != null)
+                    {
+                        dataset.Y_setpoint = inputData.GetValues(inputID);
+                    }
+                    else
+                    {
+                        allOk = false;
+                    }
                 }
                 else if (inputIDidx == (int)PidModelInputsIdx.Y_meas)
                 {
-                    dataset.Y_meas = inputData.GetValues(inputID);
+                    var values = inputData.GetValues(inputID);
+                    if (values != null)
+                    {
+                        dataset.Y_meas = inputData.GetValues(inputID);
+                    }
+                    else
+                    {
+                        allOk = false;
+                    }
                 }
                 //todo: feedforward?
                 /*else if (type == SignalType.Output_Y_sim)

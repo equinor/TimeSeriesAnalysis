@@ -56,6 +56,19 @@ namespace TimeSeriesAnalysis.Dynamic
             return (result, (int)Math.Ceiling(avgSamplesBtwValueChange.GetAverage()), minSamplesBtwValueChange );
         }
 
+        /// <summary>
+        /// Look at all the time-series n the dataset, and tag thos sample indices where all values seem to be frozen compared to previous
+        /// </summary>
+        /// <param name="dataSet"> a UnitDataSet to be analyzed</param>
+        /// <returns></returns>
+        public static (List<int>, int, int) DetectFrozenSamples(UnitDataSet dataSet)
+        {
+            var tsDataSet = CommonDataPreprocessor.CreateTimeSeriesDataSetFromUnitDataSet(dataSet);
+            return DetectFrozenSamples(tsDataSet);
+        }
+
+
+
 
      /*   /// <summary>
         /// Look at all the time-series n the dataset, and tag thos sample indices where all values seem to be frozen compared to previous

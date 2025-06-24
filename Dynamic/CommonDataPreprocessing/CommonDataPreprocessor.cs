@@ -23,16 +23,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public static List<int> ChooseIndicesToIgnore(UnitDataSet dataSet, bool detectBadData =true, bool detectFrozenData = false)
         {
-            var tsData = new TimeSeriesDataSet();
-            tsData.BadDataID = dataSet.BadDataID;
-            tsData.SetIndicesToIgnore(dataSet.IndicesToIgnore);
-            tsData.Add("y_meas",dataSet.Y_meas);
-            tsData.Add("y_set", dataSet.Y_setpoint);
-            for (int i = 0; i < dataSet.U.GetNColumns(); i++)
-            {
-                tsData.Add("U"+i, dataSet.U.GetColumn(i));
-            }
-            tsData.SetTimeStamps(dataSet.Times.ToList());
+
+            var tsData = CreateTimeSeriesDataSetFromUnitDataSet(dataSet);
+
+
             return ChooseIndicesToIgnore(tsData, detectBadData, detectFrozenData);
         }
 
@@ -73,5 +67,53 @@ namespace TimeSeriesAnalysis.Dynamic
             indicesToIgnore.Sort();
             return indicesToIgnore; 
         }
+
+        /// <summary>
+        /// Utility function to create a TimeSeriesDataSet from a UnitDataSet
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        public static TimeSeriesDataSet CreateTimeSeriesDataSetFromUnitDataSet(UnitDataSet dataSet)
+        {
+            var tsData = new TimeSeriesDataSet();
+            tsData.BadDataID = dataSet.BadDataID;
+            tsData.SetIndicesToIgnore(dataSet.IndicesToIgnore);
+            tsData.Add("y_meas", dataSet.Y_meas);
+            tsData.Add("y_set", dataSet.Y_setpoint);
+            for (int i = 0; i < dataSet.U.GetNColumns(); i++)
+            {
+                tsData.Add("U" + i, dataSet.U.GetColumn(i));
+            }
+            tsData.SetTimeStamps(dataSet.Times.ToList());
+            return tsData;
+        }
+
+        /// <summary>
+        /// To turn a TimeSeriesDataSet created with sister-method <c>CreateTimeSeriesDataSetFromUnitDataSet</c> back into 
+        /// a UnitDataSet
+        /// </summary>
+        /// <param name="tsDataSet">a TimeSeriesDataSet crated with <c>CreateTimeSeriesDataSetFromUnitDataSet</c></param>
+        /// <returns></returns>
+        public static UnitDataSet CreateUnitDataSetFromTimeSeriesData(TimeSeriesDataSet tsDataSet)
+        {
+            var unitData = new UnitDataSet();
+            unitData.BadDataID = tsDataSet.BadDataID;
+            unitData.IndicesToIgnore = tsDataSet.GetIndicesToIgnore();
+            unitData.Y_meas = tsDataSet.GetValues("y_meas");
+            unitData.Y_setpoint = tsDataSet.GetValues("y_set");
+            int curInputIdx = 0;
+            var uList = new List<double[]>();
+            while (tsDataSet.ContainsSignal("U" + curInputIdx))
+            {
+                uList.Add(tsDataSet.GetValues("U"+ curInputIdx));
+                curInputIdx++;
+            }
+            unitData.U = Array2D<double>.CreateFromList(uList);
+            unitData.Times = tsDataSet.GetTimeStamps();
+            return unitData;
+        }
+
+
+
     }
 }
