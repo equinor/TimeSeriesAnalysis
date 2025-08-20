@@ -86,7 +86,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(Math.Abs(simY.Last() - 60) < 0.01);
 
             // now test that "simulateSingle" produces the same result!
-            var isOk2 = PlantSimulatorHelper.SimulateSingle(inputData, processModel1, out TimeSeriesDataSet simData2);
+            var isOk2 = PlantSimulatorHelper.SimulateSingle(inputData, processModel1, false,out TimeSeriesDataSet simData2);
            // var isOk2 = plantSim.SimulateSingle(inputData, processModel1.ID, out TimeSeriesDataSet simData2);
 
             if (false)
@@ -225,7 +225,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(Math.Abs(simY[0]) == 0);
 
             // now test that "simulateSingle" produces the same result!
-            var isOk2 = PlantSimulatorHelper.SimulateSingle(inputData, processModel1, out TimeSeriesDataSet simData2);
+            var isOk2 = PlantSimulatorHelper.SimulateSingle(inputData, processModel1, false,out TimeSeriesDataSet simData2);
             //var isOk2 = plantSim.SimulateSingle(inputData, processModel1.ID, out TimeSeriesDataSet simData2);
 
 
@@ -533,7 +533,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             newSet.AddSet(simData);
             newSet.SetTimeStamps(inputData.GetTimeStamps().ToList());
 
-            var isOk2 = PlantSimulatorHelper.SimulateSingle(newSet, pidModel1, out var simData2);
+            var isOk2 = PlantSimulatorHelper.SimulateSingle(newSet, pidModel1, false,out var simData2);
 
             if (false)
             {

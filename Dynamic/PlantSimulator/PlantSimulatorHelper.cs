@@ -117,12 +117,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="model"></param>
+        /// <param name="doDetermineIndicesToIgnore"></param>
         /// <param name="simData"></param>
         /// <returns></returns>
-        public static bool SimulateSingle(TimeSeriesDataSet inputData, ISimulatableModel model, out TimeSeriesDataSet simData)
+        public static bool SimulateSingle(TimeSeriesDataSet inputData, ISimulatableModel model,
+            bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
         {
             PlantSimulator plant = new PlantSimulator(new List<ISimulatableModel> { model });
-            return plant.Simulate(inputData, out simData);
+            return plant.Simulate(inputData, doDetermineIndicesToIgnore, out simData);
         }
 
 
@@ -191,6 +193,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>a tuple, first a true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive,third is number of simulator re-starts </returns>
         static private (bool, double[],int) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model)
         {
+            bool doDetermineIndicesToIgnore = false;
             string defaultOutputName = "output";
             var inputData = new TimeSeriesDataSet();
             var singleModelName = "SimulateSingle";
@@ -229,7 +232,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             inputData.SetIndicesToIgnore(unitData.IndicesToIgnore);
 
-            var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, out var simData);
+            var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, doDetermineIndicesToIgnore,out var simData);
 
             if (!isOk)
                 return (false, null,0);
