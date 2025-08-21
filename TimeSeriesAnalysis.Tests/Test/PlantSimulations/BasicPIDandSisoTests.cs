@@ -603,6 +603,96 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         }
 
 
+
+        [TestCase(100,1,1,0.05 )]
+        public void BasicPID_wFlatlines_SimRestartsOk(int N, double timeBase, int flatlinePeriods, double flatlineProportion)
+        {
+            // Define parameters
+            var trueParameters = new PidParameters()
+            {
+                Kp = 0.5,
+                Ti_s = 50
+            };
+
+            // Create plant model
+            var pidModel1 = new PidModel(trueParameters, "PID1");
+            var processSim = new PlantSimulator( new List<ISimulatableModel> { pidModel1, processModel1 });
+            processSim.ConnectModels(processModel1, pidModel1);
+            processSim.ConnectModels(pidModel1, processModel1);
+
+            // Create synthetic data
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.Add(processSim.AddExternalSignal(processModel1, SignalType.Disturbance_D), TimeSeriesCreator.Sinus(10, timeBase * 20, timeBase, N));
+            inputData.CreateTimestamps(timeBase);
+            var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+            Assert.IsTrue(isOk, "simulate did not run");
+            var combinedData = inputData.Combine(simData);
+            var pidDataSet = processSim.GetUnitDataSetForPID(combinedData, pidModel1);
+
+            var combinedDataFlatLines = new TimeSeriesDataSet(combinedData);
+            // Identify on both original and flatlined datasets
+
+            string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").Replace(")", "_").Replace(",", "_") + "y";
+
+            if (false)// plot the raw data before flatline is created
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> { pidDataSet.Y_meas, pidDataSet.Y_setpoint, pidDataSet.U.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_setpoint", "y3=u" },
+                    pidDataSet.GetTimeBase(), caseId + "_beforeSim");
+                Shared.DisablePlots();
+            }
+            // Create synthetic data with flatlines (Create them anew to avoid shallow copies / references)
+            int flatlinePeriodLength = (int)(flatlineProportion * N / flatlinePeriods);
+            var pidDataSetWithFlatlines = processSim.GetUnitDataSetForPID(combinedDataFlatLines, pidModel1);
+            /// create the flat data sets.
+            for (int i = 0; i < flatlinePeriods; i++)
+            {
+                int flatlineStartIndex = (int)(N * ((double)i + 0.5) / flatlinePeriods - flatlinePeriodLength / 2);
+                for (int j = 1; j < flatlinePeriodLength; j++)
+                {
+                    pidDataSetWithFlatlines.U[flatlineStartIndex + j, 0] = pidDataSetWithFlatlines.U[flatlineStartIndex, 0];
+                    pidDataSetWithFlatlines.Y_meas[flatlineStartIndex + j] = pidDataSetWithFlatlines.Y_meas[flatlineStartIndex];
+                    pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex + j] = pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex];
+                }
+            }
+
+            // var idParams = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
+            // Plot results
+
+            var inputData_withFlatLines = new TimeSeriesDataSet();
+            inputData_withFlatLines.Add("PID1-Setpoint_Yset", pidDataSetWithFlatlines.Y_setpoint);
+            inputData_withFlatLines.SetTimeStamps(inputData.GetTimeStamps().ToList());
+
+            inputData_withFlatLines.Add("SubProcess1-Output_Y", pidDataSetWithFlatlines.Y_meas);
+            inputData_withFlatLines.Add("PID1-PID_U", pidDataSetWithFlatlines.U.GetColumn(0));
+
+            bool determineIndicesToIgnore = true;
+            var isOk2 = processSim.Simulate(inputData_withFlatLines, determineIndicesToIgnore, out var simData_withFlatLines);
+
+
+            var simU = simData_withFlatLines.GetValues(pidModel1.GetID(), SignalType.PID_U);
+
+            if (true)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint,
+                    pidDataSetWithFlatlines.U.GetColumn(0), simU},
+                    new List<string> { "y1=y_meas_with_flatlines", "y1=y_setpoint_with_flatlines", "y3=u_with_flatlines", "y3=u_sim_with_flatlines" },
+                    pidDataSetWithFlatlines.GetTimeBase(), caseId + "_with_flatlines");
+                Shared.DisablePlots();
+            }
+            var fitScore = FitScoreCalculator.GetPlantWideSimulated(processSim, inputData_withFlatLines, simData_withFlatLines);
+            
+            Assert.IsTrue(isOk2);
+            Assert.AreEqual(1,simData.GetNumSimulatorRestarts(),"simulator should restart once"); ;
+
+
+
+        }
+
+
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(10)]
