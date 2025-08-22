@@ -605,8 +605,11 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
 
         [TestCase(100,1,1,0.05 )]
-        public void BasicPID_wFlatlines_SimRestartsOk(int N, double timeBase, int flatlinePeriods, double flatlineProportion)
+        public void BasicPID_wFlatlinesCoSimulate_SimRestartIsBumpless(int N, double timeBase, int flatlinePeriods, double flatlineProportion)
         {
+            int firstFlatLineStartIndex = -1;
+            int firstFlatLineEndIndex = -1;
+
             // Define parameters
             var trueParameters = new PidParameters()
             {
@@ -650,17 +653,21 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             for (int i = 0; i < flatlinePeriods; i++)
             {
                 int flatlineStartIndex = (int)(N * ((double)i + 0.5) / flatlinePeriods - flatlinePeriodLength / 2);
+                if (i == 0)
+                    firstFlatLineStartIndex = flatlineStartIndex;
                 for (int j = 1; j < flatlinePeriodLength; j++)
                 {
                     pidDataSetWithFlatlines.U[flatlineStartIndex + j, 0] = pidDataSetWithFlatlines.U[flatlineStartIndex, 0];
                     pidDataSetWithFlatlines.Y_meas[flatlineStartIndex + j] = pidDataSetWithFlatlines.Y_meas[flatlineStartIndex];
                     pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex + j] = pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex];
+                    if (i == 0) 
+                    {
+                        firstFlatLineEndIndex = flatlineStartIndex + j;
+                    }
                 }
             }
 
-            // var idParams = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
-            // Plot results
-
+            // try to simualte dataset, and see that a simulator reset is performed and that the pid-controller is "warm-started" correctly in a bumpless
             var inputData_withFlatLines = new TimeSeriesDataSet();
             inputData_withFlatLines.Add("PID1-Setpoint_Yset", pidDataSetWithFlatlines.Y_setpoint);
             inputData_withFlatLines.SetTimeStamps(inputData.GetTimeStamps().ToList());
@@ -671,10 +678,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             bool determineIndicesToIgnore = true;
             var isOk2 = processSim.Simulate(inputData_withFlatLines, determineIndicesToIgnore, out var simData_withFlatLines);
 
-
             var simU = simData_withFlatLines.GetValues(pidModel1.GetID(), SignalType.PID_U);
 
-            if (true)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint,
@@ -686,8 +692,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             var fitScore = FitScoreCalculator.GetPlantWideSimulated(processSim, inputData_withFlatLines, simData_withFlatLines);
             
             Assert.IsTrue(isOk2);
-            Assert.AreEqual(1,simData.GetNumSimulatorRestarts(),"simulator should restart once"); ;
-
+            Assert.AreEqual(1, simData_withFlatLines.GetNumSimulatorRestarts(),"simulator should restart once");
+            Assert.IsTrue(fitScore > 60, "simulation should restart and this should ensure that there is no large devaiation after the flatline period and a high fitscore.");
 
 
         }

@@ -654,6 +654,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 // warm start every model on first data point, and after any long period of bad data
                 if (doRestartModels)
                 {
+                    bool useMinimalDataSet = true;
+                    if (timeIdx > 0)
+                        useMinimalDataSet = false;
+
                     numRestartCounter++;
                     for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                     {
@@ -665,8 +669,11 @@ namespace TimeSeriesAnalysis.Dynamic
                                 "\" has null inputIDs.");
                             return false;
                         }
-                        double[] inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputDataMinimal);
-
+                        double[] inputVals;
+                        if (useMinimalDataSet)
+                            inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputDataMinimal);
+                        else
+                            inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputData);
                         string outputID = model.GetOutputID();
                         if (outputID == null)
                         {
@@ -674,8 +681,11 @@ namespace TimeSeriesAnalysis.Dynamic
                                 "\" has null outputID.");
                             return false;
                         }
-                        double[] outputVals =
-                            GetValuesFromEitherDataset(model, new string[] { outputID }, timeIdx, simData, inputDataMinimal);
+                        double[] outputVals;
+                        if (useMinimalDataSet)
+                            outputVals = GetValuesFromEitherDataset(model, new string[] { outputID }, timeIdx, simData, inputDataMinimal);
+                        else
+                            outputVals = GetValuesFromEitherDataset(model, new string[] { outputID }, timeIdx, simData, inputData);
                         if (outputVals != null)
                         {
                             model.WarmStart(inputVals, outputVals[0]);
