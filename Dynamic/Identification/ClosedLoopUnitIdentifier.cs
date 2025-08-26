@@ -148,7 +148,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // ----------------
             // init: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give a first estimate of the disturbance (used to initalize steps 2 and 3 below)
-            var unitModel_init = InitModelFreeEstimateClosedLoopProcessGain(dataSet, pidParams, pidInputIdx);
+            var unitModel_init = InitModelFreeEstimateClosedLoopProcessGain(dataSet, pidParams, pidInputIdx, fittingSpecs);
             ConsoleDebugOut(sbSolverOutput,unitModel_init, "Init");
             SaveSearchResult(unitModel_init);
             // step1, MISO: ident (add inital estimates of any other inputs to the above model-free estiamte) 
@@ -975,7 +975,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParams">an estimate of the PID-parameters</param>
         /// <param name="pidInputIdx">the index of U in the above dataset that is driven by the PID-controller.</param>
         /// <returns></returns>
-        private static UnitModel InitModelFreeEstimateClosedLoopProcessGain(UnitDataSet unitDataSet, PidParameters pidParams, int pidInputIdx)
+        private static UnitModel InitModelFreeEstimateClosedLoopProcessGain(UnitDataSet unitDataSet, PidParameters pidParams, int pidInputIdx, FittingSpecs fittingSpecs)
         {
             var unitModel = new UnitModel();
             var vec = new Vec(unitDataSet.BadDataID);
@@ -994,7 +994,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // try to find a rough first estimate by heuristics
             {
-                double[] pidInput_u0 = Vec<double>.Fill(unitDataSet.U[pidInputIdx, 0], unitDataSet.GetNumDataPoints());
+               //  double[] pidInput_u0 = Vec<double>.Fill(unitDataSet.U[pidInputIdx, 0], unitDataSet.GetNumDataPoints());
+                double[] pidInput_u0 = Vec<double>.Fill(fittingSpecs.u0[pidInputIdx], unitDataSet.GetNumDataPoints());
+
                 double yset0 = unitDataSet.Y_setpoint[0];
 
                 // y0,u0 is at the first data point
