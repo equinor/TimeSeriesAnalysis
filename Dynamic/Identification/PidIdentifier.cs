@@ -424,7 +424,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // this seems to happen if for instance the entire Y is constant, for instance in case 
                     // of input saturation, or if the controller is in manual the entire time or it is the wrong signal
                     pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY);
-                    Tiest = badValueIndicatingValue;
+                    Tiest = 0;
                 }
                 else
                     Tiest = Math.Abs( b[0] / b[1]);
