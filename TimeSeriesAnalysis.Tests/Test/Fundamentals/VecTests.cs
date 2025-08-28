@@ -256,6 +256,15 @@ namespace TimeSeriesAnalysis.Test.Fundamentals
         }
 
         [Test]
+        public void FindValues_DifferentFromPrevious()
+        {
+            double[] vec = { 2, 2, 2, 5, 5, 5, 5, 5, 5, 5, 9 };
+            List<int> vecResult = (new Vec()).FindValues(vec, -9999, VectorFindValueType.DifferentFromPrevious);
+            List<int> vecExpt = new List<int> { 3, 10 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+        [Test]
         public void GetIndicesOfValues()
         {
             var vec2 = new List<int> { 10, 30, 50, 70 };

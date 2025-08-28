@@ -390,6 +390,14 @@ namespace TimeSeriesAnalysis
                         Add(i);
                 }
             }
+            else if (type == VectorFindValueType.DifferentFromPrevious)
+            {
+                for (int i = 1; i < vec.Length; i++)
+                {
+                    if (vec[i] != vec[i-1])
+                        Add(i);
+                }
+            }
             return indices;
         }
 

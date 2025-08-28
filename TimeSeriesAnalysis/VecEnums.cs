@@ -47,7 +47,12 @@ namespace TimeSeriesAnalysis
         /// Find values that are equal to the previous index value 
         /// Note that in this case "Find" algorithm will disregard the supplied "value"
         /// </summary>
-        SameAsPrevious = 9
+        SameAsPrevious = 9,
+        /// <summary>
+        /// Find values that are different from the previous index value
+        /// Note that in this case "Find" algorithm will disregard the supplied "value"
+        /// </summary>
+        DifferentFromPrevious = 10
 
 
     }
