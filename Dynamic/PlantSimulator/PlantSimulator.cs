@@ -880,7 +880,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 fileName += plantName;
             }
-            if (!fileName.EndsWith(".json"))
+            if (!fileName.EndsWith(".json")|| !fileName.EndsWith(".ajson"))
                 fileName += ".json";
 
             var serializedTxt = SerializeTxt();
