@@ -323,7 +323,12 @@ namespace TimeSeriesAnalysis.Dynamic
             d_est[0] = unitDataSet_adjusted.Y_meas[0] - y_proc[0];
 
             result.d_est = d_est;
-            result.estPidProcessGain = unitModel.GetModelParameters().LinearGains.ElementAt(pidInputIdx);
+            if (unitModel.GetModelParameters().LinearGains == null)
+                result.estPidProcessGain = 0;
+            else if (unitModel.GetModelParameters().LinearGains.Count()-1 < pidInputIdx)
+                result.estPidProcessGain = 0;
+            else
+                result.estPidProcessGain = unitModel.GetModelParameters().LinearGains.ElementAt(pidInputIdx);
             result.adjustedUnitDataSet = unitDataSet_adjusted;
             if (false)// debugging plots, should normally be set to "false"
             {
