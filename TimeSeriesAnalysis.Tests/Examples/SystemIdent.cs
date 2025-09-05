@@ -196,7 +196,11 @@ namespace TimeSeriesAnalysis._Examples
             Assert.IsTrue(isOk);
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
 
-            (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, pidModel1.GetModelParameters());
+            var identifiedModel = new UnitModel();
+
+            //  (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, pidModel1.GetModelParameters());
+
+             var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, pidModel1.GetModelParameters());
 
             Console.WriteLine(identifiedModel.ToString());
 

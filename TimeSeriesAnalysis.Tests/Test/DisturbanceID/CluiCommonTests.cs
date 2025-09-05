@@ -75,7 +75,8 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
 
             var estPidParam = new PidParameters(pidModel1.GetModelParameters());
 
-            (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, estPidParam);
+            var identifiedModel = new UnitModel();
+            var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, estPidParam);
             if (identifiedModel != null)
             {
                 Console.WriteLine(identifiedModel.ToString());

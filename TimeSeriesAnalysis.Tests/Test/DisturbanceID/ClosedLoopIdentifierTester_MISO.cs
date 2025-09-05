@@ -401,7 +401,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Console.WriteLine("BAD DATA ADDED!!!");
             }
 
-            (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, pidModel1.GetModelParameters(), pidInputIdx);
+            var identifiedModel = new UnitModel();
+
+            var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, pidModel1.GetModelParameters(), pidInputIdx);
 
             Console.WriteLine(identifiedModel.ToString());
             Console.WriteLine();

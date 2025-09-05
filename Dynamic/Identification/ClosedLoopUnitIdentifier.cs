@@ -59,13 +59,33 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Identify the unit model of a closed-loop system and the disturbance (additive output signal)
         /// </summary>
+        /// <param name="unitModel"> model that may include signal ids, the model parameters are added to i</param>
+        /// <param name="dataSet">unit data set to be identified against</param>
+        /// <param name="pidParams">pid parameters should be identified or given beforehand</param>
+        /// <param name="pidInputIdx">index of pid input to unit model</param>
+        /// <returns> the estimated disturbance</returns>
+        public static double[] Identify(ref UnitModel unitModel, UnitDataSet dataSet,
+            PidParameters pidParams = null, int pidInputIdx = 0)
+        { 
+            (var locUnitModel, var dist) =  Identify(dataSet, pidParams, pidInputIdx);
+            unitModel.modelParameters = locUnitModel.modelParameters; 
+
+            return dist;
+        }
+
+
+
+
+        /// <summary>
+        /// Identify the unit model of a closed-loop system and the disturbance (additive output signal)
+        /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name = "dataSet">the unit data set, containing both the input to the unit and the output</param>
         /// <param name = "pidParams">if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</param>
         /// <param name = "pidInputIdx">the index of the PID-input to the unit model</param>
         /// 
-        /// <returns>The unit model, with the name of the newly created disturbance added to the additiveInputSignals</returns>
+        /// <returns>The unit model(only parameters, no signal ids!), with the name of the newly created disturbance added to the additiveInputSignals</returns>
         public static (UnitModel, double[]) Identify(UnitDataSet dataSet, 
             PidParameters pidParams = null, int pidInputIdx = 0)
         {
