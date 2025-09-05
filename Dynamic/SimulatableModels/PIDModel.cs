@@ -61,7 +61,6 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 delayObj = new TimeDelaySamples(1);
             }
-
         }
 
 
@@ -337,6 +336,19 @@ namespace TimeSeriesAnalysis.Dynamic
             return clone;
         }
 
+        /// <summary>
+        /// Create deep copy/clone that replaces the existing paramters with a new paramters object, keeping the id the same
+        /// </summary>
+        /// <returns></returns>
+        public ISimulatableModel Clone( PidParameters newPidParameters)
+        {
+            var clone = new PidModel(newPidParameters, ID);
+
+            clone.ModelInputIDs = GetModelInputIDs();
+            clone.outputID = GetOutputID();
+
+            return clone;
+        }
 
     }
 
