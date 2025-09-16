@@ -19,13 +19,28 @@ namespace TimeSeriesAnalysis.Test.Serialization
         [TestCase(@"test_extraValue.csv", Description = "an extra value with no corresponding header should be ignored")]
         [TestCase(@"test_extraCommaFirstRow.csv", Description = "an extra comma in the header should be ignored")]
 
+
         public void CSV_read(string filename)
         {
             CSV.LoadDataFromCSV(@"..\..\..\TestData\" + filename, ',',out double[,] doubleData,
                 out string[] variableNames, out string[,] stringData);
             Assert.AreEqual(new string[] {"variable","value1","value2"}, variableNames);
             Assert.AreEqual(new string[,] { { "var1", "1", "2" }, { "var2", "3", "4" }, { "var3","5", "6"} }, stringData);
-            Assert.AreEqual(new double[,] { { Double.NaN, 1, 2 }, { Double.NaN, 3, 4 }, { Double.NaN, 5, 6 } }, doubleData);
+            Assert.AreEqual(new double[,] { { Double.NaN, 1, Double.NaN, 2 }, 
+                { Double.NaN, 3, Double.NaN, 4 }, 
+                { Double.NaN, 5, Double.NaN, 6 } }, doubleData);
+        }
+
+        [TestCase(@"test_emptyrow.csv", Description = "a tag without data is added")]
+        public void CSV_read_emptyrows(string filename)
+        {
+            CSV.LoadDataFromCSV(@"..\..\..\TestData\" + filename, ',', out double[,] doubleData,
+                out string[] variableNames, out string[,] stringData);
+            Assert.AreEqual(new string[] { "variable", "value1", "value2","value3" }, variableNames);
+            Assert.AreEqual(new string[,] { { "var1", "1", "", "2" }, { "var2", "3", "", "4" }, { "var3", "5", "", "6" } }, stringData);
+            Assert.AreEqual(new double[,] { { Double.NaN, 1, Double.NaN, 2 }, 
+                { Double.NaN, 3, Double.NaN, 4 }, 
+                { Double.NaN, 5, Double.NaN, 6 } }, doubleData);
         }
 
         [TestCase(@"test_edgecase_justdates.csv", Description = "")]
