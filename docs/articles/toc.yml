@@ -45,6 +45,12 @@
                   href: ex_pid_python.md
                 - name: 6. Larger-scale dynamic process simulation 
                   href: ex_processsim_python.md
+        - name: Working with important files
+          items:
+                - name: Loading and saving time series to and from csv-files with TimeSeriesDataSet
+                  href: files_csv.md
+                - name: Loading and saving PlantSimulator objects to and from json-files
+                  href: files_plants.md
           
 
 - name: System identification

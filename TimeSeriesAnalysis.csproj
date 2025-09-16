@@ -89,6 +89,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="bin\test_edgecase_justdates.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

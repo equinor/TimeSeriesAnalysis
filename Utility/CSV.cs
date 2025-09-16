@@ -203,10 +203,12 @@ namespace TimeSeriesAnalysis.Utility
                     stringData = new string[linesDouble.Count, nColumns];
                 }
                 for (int k = 0; k < linesDouble.Count; k++)
+                {
                     for (int l = 0; l < Math.Min(linesDouble[k].Count(), nColumns); l++)
                     {
                         doubleData[k, l] = linesDouble[k][l];
                     }
+                }
                 for (int k = 0; k < linesStr.Count; k++)
                     for (int l = 0; l < Math.Min(linesStr[k].Count(), nColumns); l++)
                     {
