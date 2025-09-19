@@ -74,6 +74,10 @@
         - name: Closed-loop disturbance estimation
           href: sysid_disturbance.md
 
+
+        - name: Fit scores 
+          href: fitscores.md
+
         - name: System identification code examples
           items:
             - name: Nonlinear unit model identification
