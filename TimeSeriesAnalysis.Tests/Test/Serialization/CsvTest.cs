@@ -26,9 +26,9 @@ namespace TimeSeriesAnalysis.Test.Serialization
                 out string[] variableNames, out string[,] stringData);
             Assert.AreEqual(new string[] {"variable","value1","value2"}, variableNames);
             Assert.AreEqual(new string[,] { { "var1", "1", "2" }, { "var2", "3", "4" }, { "var3","5", "6"} }, stringData);
-            Assert.AreEqual(new double[,] { { Double.NaN, 1, Double.NaN, 2 }, 
-                { Double.NaN, 3, Double.NaN, 4 }, 
-                { Double.NaN, 5, Double.NaN, 6 } }, doubleData);
+            Assert.AreEqual(new double[,] { { Double.NaN, 1, 2 }, 
+                { Double.NaN, 3, 4 }, 
+                { Double.NaN, 5, 6 } }, doubleData);
         }
 
         [TestCase(@"test_emptyrow.csv", Description = "a tag without data is added")]

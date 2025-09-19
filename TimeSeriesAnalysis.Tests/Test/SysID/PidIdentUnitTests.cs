@@ -522,16 +522,16 @@ namespace TimeSeriesAnalysis.Test.SysID
                var pidDataSet = processSim.GetUnitDataSetForPID(combinedData, pidModel1);
 
                // Oversample synthetic data
-                var combinedDataOversampled = OversampledDataDetector.CreateOversampledCopy(combinedData, timebaseOversampled);
+               var combinedDataOversampled = OversampledDataDetector.CreateOversampledCopy(combinedData, timebaseOversampled);
 
-                // Identify model on oversampled data
-                 var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
-                // new prototype alternative: try to create a downsampled copy of the dataset and give that to identification
-                (var isDownsampled,var combinedDataDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
-                // 
-                (var isDownsampled_V2, var combinedDataDownsampled_V2) = DatasetDownsampler.CreateDownsampledCopyIfPossible(pidDataSetOversampled);
-                var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
-                var idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
+               // Identify model on oversampled data
+               var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
+               // new prototype alternative: try to create a downsampled copy of the dataset and give that to identification
+               (var isDownsampled,var combinedDataDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
+               // 
+               (var isDownsampled_V2, var combinedDataDownsampled_V2) = DatasetDownsampler.CreateDownsampledCopyIfPossible(pidDataSetOversampled);
+               var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
+               var idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
 
 
                // Plot results
