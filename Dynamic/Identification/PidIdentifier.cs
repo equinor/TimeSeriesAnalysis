@@ -85,7 +85,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
             const bool doFiltering = true; // default is true (this improves performance significantly)
-            const bool returnFilterParameters = false; // even if filtering helps improve estimates, maybe the filter should not be returned?
+            const bool returnFilterParameters = false; // even if filtering helps improve estimates, the filter should normally not be returned
 
             // 1. try identification with delay of one sample but without filtering
             (var idParamsWithDelay, var U_withDelay, var indicesToIgnore_withDelay)
@@ -126,7 +126,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                     (var idParamsWithFilter, var U_withFilter, var indicesToIgnoreWithFilter) = 
-                        IdentifyInternal(dataSet, doDelay, pidFilterParams/*, ignoreFlatLines: ignoreFlatLinesFirst*/);
+                        IdentifyInternal(dataSet, doDelay, pidFilterParams);
 
                     if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
                     {
@@ -192,30 +192,11 @@ namespace TimeSeriesAnalysis.Dynamic
             else
             {
                 double[] y_filt = new double[dataSet.Y_meas.Length];
-                /*
-                y_filt[0] = dataSet.Y_meas[0];
-                for (int i = 1; i < dataSet.Y_meas.Length; i++)
-                {
-                    y_filt[i] = pidFilter.Filter(dataSet.Y_meas[i]);
-                }
-                */
 
                 int kernelLength = (int)Math.Floor(pidFilter.GetParams().TimeConstant_s / timeBase_s);
                 y_filt = (new Vec()).NonCausalSmooth(dataSet.Y_meas, kernelLength);
-
-                /*
-                if (kernelLength > 0)
-                {
-                    Shared.EnablePlots();
-                    Plot.FromList(new List<double[]>{ dataSet.Y_meas,
-                    y_filt },
-                        new List<string> { "y1=y_meas", "y1=yfilt" },
-                        timeBase_s, "test_3");
-                    Shared.DisablePlots();
-                }*/
                 return vec.Subtract(y_filt, dataSet.Y_setpoint);
             }
-
         }
 
 
@@ -228,7 +209,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet">dataset to filter over</param>
         /// <param name="isPIDoutputDelayOneSample"></param>
         /// <param name="pidFilterParams">optional filter to apply to y</param>
-        /// <param name="doFilterUmeas"> if set to true, the measurement of the manipulated variable will be filtered</param>
+        /// <param name="doFilterUmeas"> if set to true, the measurement of the manipulated variable will be filtered
         /// This helps identification if there are periods with flatlined data that are oversampled,
         /// but will give incorrect Ti if the entire dataset is oversampled.</param>
         /// 
@@ -237,7 +218,8 @@ namespace TimeSeriesAnalysis.Dynamic
             PidFilterParams pidFilterParams = null, bool doFilterUmeas=false)
         {
             this.timeBase_s = dataSet.GetTimeBase();
-            PidParameters pidParam = new PidParameters();
+            var pidParam = new PidParameters();
+            string solverID = "PidIdentifier";
             if (pidFilterParams != null)
             {
                 pidFilter = new PidFilter(pidFilterParams, timeBase_s);
@@ -263,36 +245,16 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double[] e_unscaled = GetErrorTerm(dataSet, pidFilter);
-            /*
-            if (pidParam.Scaling.IsDefault())
-            {
-                double umin, umax;
-                DetermineUminUmax(dataSet, out umin, out umax);
-                // TODO: the check for this should be better.
-                bool foundEstimatedUmax = false;
-                if (umax < 100)
-                {
-                    pidParam.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmax);
-                    foundEstimatedUmax = true;
-                }
-                if (umin > 0)
-                {
-                    pidParam.AddWarning(PidIdentWarning.InputSaturation_UcloseToUmin);
-                    foundEstimatedUmax = true;
-                }
-                if (foundEstimatedUmax)
-                {
-                    pidScaling.SetEstimatedUminUmax(umin, umax);
-                }
-            }
-            */
+
             int bufferLength = dataSet.GetNumDataPoints() - 1;
 
             double[] uMinusFF = GetUMinusFF(dataSet);
+
             if (doFilterUmeas && pidFilter != null)
             {
                 int kernelLength = (int)Math.Floor(pidFilter.GetParams().TimeConstant_s / timeBase_s);
                 uMinusFF = (new Vec()).NonCausalSmooth(uMinusFF, kernelLength);
+                solverID += "(Umeas was filtered)";
             }
 
             double uRange = vec.Max(uMinusFF) - vec.Min(uMinusFF);
@@ -398,6 +360,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     Tiest = badValueIndicatingValue;
                     Kpest = badValueIndicatingValue;
                     pidParam.Fitting.WasAbleToIdentify = false;
+                    solverID += "(Regression failed)";
                     pidParam.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
                     return (pidParam, null, null);
                 }
@@ -429,6 +392,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 else
                     Tiest = Math.Abs( b[0] / b[1]);
 
+                pidParam.Fitting.SolverID = solverID;
+
                 if (dataSet.Times != null)
                 {
                     t_result = dataSet.Times[idxEnd];
@@ -453,7 +418,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
             pidParam.Kp = Kpest;
             pidParam.Ti_s = Tiest;
-            pidParam.Fitting.SolverID = "PidIdentifier v1.0";
 
             if (dataSet.Times.Count() > 0)
             {
@@ -478,16 +442,22 @@ namespace TimeSeriesAnalysis.Dynamic
             // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
             if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreInternal, 0) < -0.1)
             {
+        
                 double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0));
                 pidParam.Kp = -pidParam.Kp;
 
                 U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample).Item1);
                 double newFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0));
                 //todo: find out why this sometimes fails and needs to be reverted
-                if (oldFitScore > newFitScore)
+               /* if (oldFitScore > newFitScore)
                 {
+                    pidParam.Fitting.SolverID += "(Kp double-flipped)";
                     pidParam.Kp = -pidParam.Kp;
                     U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample).Item1);
+                }
+                else*/
+                {
+                    pidParam.Fitting.SolverID += "(Kp flipped)";
                 }
                 dataSet.U_sim = U_sim;
             }
@@ -507,7 +477,6 @@ namespace TimeSeriesAnalysis.Dynamic
       
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;//remove? does not include indicesToIgnore?
-
     
             pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0),
                 dataSet.IndicesToIgnore,nIterationsToLookBack), nDigits);

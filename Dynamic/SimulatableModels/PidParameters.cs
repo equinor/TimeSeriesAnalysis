@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,8 +70,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double Td_s { get; set; } = 0;
 
-
-
         /// <summary>
         /// PID-scaling object. This is optional, set to null to use unscaled PID.
         /// </summary>
@@ -88,7 +89,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Feed-forward parameters object. This is optional, set to null when feedforward is not in use.
         /// </summary>
         public PidFeedForward FeedForward { get; set; } = null;
-
 
         /// <summary>
         /// PID anti-surge parameters object. This is optional, set to null if not anti-surge PID
@@ -153,7 +153,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     sb.AppendLine("---NOT able to identify---");
                 }
+                if (Fitting.SolverID != null)
+                {
+                    sb.AppendLine(Fitting.SolverID);
+                }
             }
+
             if (DelayOutputOneSample)
             {
                 sb.AppendLine("u[k] set from e[k-1] (delayed one sample)");
@@ -184,6 +189,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             sb.AppendLine(timeConstantString);
             sb.AppendLine("Td : " + SignificantDigits.Format(Td_s, sDigits)+ " sec");
+            sb.AppendLine("-------------------------");
 
             if (Scaling.IsEstimated())
             {
@@ -202,13 +208,22 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("Umax : " + Scaling.GetUmax());
             sb.AppendLine("Ymin : " + Scaling.GetYmin());
             sb.AppendLine("Ymax : " + Scaling.GetYmax());
+
+            if (Scaling.doesSasPidScaleKp)
+                sb.AppendLine("Kp IS scaled" );
+            else
+                sb.AppendLine("Kp IS NOT scaled");
+
             if (GainScheduling == null)
             {
                 sb.AppendLine("NO gainsceduling");
             }
             else
             {
-                sb.AppendLine("Gainsceduling configured");//todo:give output
+                if (GainScheduling.GSActive_b)
+                    sb.AppendLine("Gainsceduling configured");//todo:give output
+                else
+                    sb.AppendLine("NO gainsceduling");
             }
             if (FeedForward == null)
             {
@@ -216,7 +231,14 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                sb.AppendLine("Feedforward configured");//todo:give output
+                if (FeedForward.isFFActive)
+                {
+                    sb.AppendLine("Feedforward configured");//todo:give output
+                }
+                else
+                {
+                    sb.AppendLine("NO feedforward");
+                }
             }
 
             if (Filtering == null)
@@ -225,8 +247,16 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                sb.AppendLine("Filtering configured");//todo:give output
+                if (Filtering.IsEnabled)
+                    sb.AppendLine("Filtering configured");//todo:give output
+                else
+                    sb.AppendLine("NO filtering");
             }
+
+            sb.AppendLine("  -------------------------");
+            int nDigits = 5;
+            sb.AppendLine("Fit score(%):" + SignificantDigits.Format(Fitting.FitScorePrc, nDigits).ToString(CultureInfo.InvariantCulture));
+            sb.AppendLine("model fit data points: "+ Fitting.NFittingTotalDataPoints+ " of which " + Fitting.NFittingBadDataPoints + " were ignored");
 
             return sb.ToString();
 

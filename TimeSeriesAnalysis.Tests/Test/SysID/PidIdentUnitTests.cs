@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing;
 using TimeSeriesAnalysis.Utility;
@@ -66,8 +67,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
             Assert.AreEqual(idResult.GetWarnings().Count(),0);
-            Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
-     
+            Console.WriteLine(idResult.ToString());
+
             if (false)
             {
                 Shared.EnablePlots();
@@ -123,7 +124,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var downsampleData = OversampledDataDetector.CreateDownsampledCopy(combinedData,downsampleFactor);
             var pidDataSet = processSim.GetUnitDataSetForPID(downsampleData, pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
-            Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
+            Console.WriteLine(idResult.ToString());
 
             Assert.AreEqual(idResult.GetWarnings().Count(), 0);
 
@@ -179,6 +180,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
+            Console.WriteLine(idResult.ToString());
 
             Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, "Kp too far off:"+ idResult.Kp);
@@ -231,7 +233,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var pidDataSet = processSim.GetUnitDataSetForPID(downsampleData, pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
 
-            Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
+            Console.WriteLine(idResult.ToString());
             if (false)
             {
                 Shared.EnablePlots();
@@ -253,8 +255,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-         //   Assert.Greater(idResult.Fitting.FitScorePrc, 50, "fit score be high");
-
         }
 
 
@@ -291,7 +291,9 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // Identify on both original and flatlined datasets
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
-           
+
+            Console.WriteLine(idResult.ToString());
+
             // Plot results
             if (false)
             {
@@ -380,6 +382,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 }
             }
             var idParams = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
+            Console.WriteLine(idParams.ToString());
             // Plot results
             if (false)
             {
@@ -469,6 +472,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                 }
             }
             var idParameters = new PidIdentifier().Identify(ref pidDataSetWithBadData);
+            Console.WriteLine(idParameters.ToString()); 
             // Plot results
             if (false)
             {
@@ -532,10 +536,10 @@ namespace TimeSeriesAnalysis.Test.SysID
                (var isDownsampled_V2, var combinedDataDownsampled_V2) = DatasetDownsampler.CreateDownsampledCopyIfPossible(pidDataSetOversampled);
                var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
                var idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
+            Console.WriteLine(idModelParams.ToString());
 
-
-               // Plot results
-               if (false)
+            // Plot results
+            if (false)
                {
                    Shared.EnablePlots();
                    string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").

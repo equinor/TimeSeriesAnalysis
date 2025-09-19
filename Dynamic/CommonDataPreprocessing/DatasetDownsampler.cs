@@ -22,7 +22,9 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
                 FrozenDataDetector.DetectFrozenSamples(rawData);
 
             // if the above list is "periodic"
-            if (avgSamplesBtwGoodIdx >= 1 && minSamplesBtwGoodIdx >= 1)
+
+            //if (avgSamplesBtwGoodIdx >= 1 && minSamplesBtwGoodIdx >= 1)
+            if (avgSamplesBtwGoodIdx >= 1 )
             {
                 // then create a downsampled copy of the original dataset.
                 return (true, new TimeSeriesDataSet(rawData, listFrozenSampleIdx));
