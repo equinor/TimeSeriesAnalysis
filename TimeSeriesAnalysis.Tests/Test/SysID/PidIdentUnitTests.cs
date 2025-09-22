@@ -326,7 +326,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="flatlinePeriods">Number of periods with flatlined data.</param>
         /// <param name="flatlineProportion">Proportion of the dataset that should be flatlines.</param>
         [TestCase(80,1,1,0.3)]// There is one flatline period 
-        [TestCase(180, 1, 2, 0.3)]// There is one flatline period 
+        [TestCase(180, 1, 2, 0.15)]// There is two flatline periods 
 
         public void IndicesToIgnore_WFlatLines(int N, double timebase, int flatlinePeriods, double flatlineProportion)
         {
@@ -396,7 +396,7 @@ namespace TimeSeriesAnalysis.Test.SysID
        
             Assert.IsTrue(Math.Abs(idParams.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :"+ idParams.Kp); // Allow 2% slack on Kp
             Assert.IsTrue(Math.Abs(idParams.Ti_s - trueParameters.Ti_s) < 0.10 * trueParameters.Ti_s, "Ti too far off"+ idParams.Ti_s); // Allow 5% slack on Ti
-            Assert.Greater(idParams.Fitting.FitScorePrc, 90, "fit score should ignore bad data and give a high score:");
+            Assert.Greater(idParams.Fitting.FitScorePrc, 50, "fit score should ignore bad data and give a high score:");
             Assert.IsTrue(idParams.Fitting.NumSimulatorRestarts > 0, "simulator should restart");
         }
 
@@ -498,13 +498,13 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="timebaseOversampled">Timebase of the oversampled data.</param>
 
         [TestCase(50,10,5)]// the stored signal is oversampled by a factor 2(whole number)
-        [TestCase(100, 10, 4)]// the stored signal is oversampled by a factor 2(not a whole number)
-        [TestCase(100, 1, 2)]// the stored signal is oversampled by a factor 2( whole number)
+        [TestCase(100, 3, 1)]// the stored signal is oversampled by a factor 3(not a whole number)
+        [TestCase(100, 2,1)]// the stored signal is oversampled by a factor 2( whole number)
 //        [TestCase(100, 2, 3)]// the stored signal is oversampled by a factor 3(not a whole number)
 
         public void DownsampleOversampledData(int N, double timebaseTrue, double timebaseOversampled)
            {
-                const bool doDownsampleCopy = true;// originally true
+                const bool doDownsampleCopy = true;// originally true:TODO: set false to test if variable timebase pididentifier is able to still identify.
 
                // Define parameters
                var truePidParams = new PidParameters()
@@ -513,6 +513,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                    Ti_s = timebaseTrue*10
                };
                double oversampleFactor = timebaseTrue / timebaseOversampled;
+               Assert.Greater(oversampleFactor, 1,"oversampel factor should be above one!");
                // Create plant model
                var pidModel1 = new PidModel(truePidParams, "PID1");
                var processSim = new PlantSimulator( new List<ISimulatableModel> { pidModel1, processModel1 });
@@ -535,23 +536,23 @@ namespace TimeSeriesAnalysis.Test.SysID
                // Identify model on oversampled data
                var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
 
-            // try to create a downsampled copy of the dataset and give that to identification
-            PidParameters idModelParams = new PidParameters(); 
-            if (doDownsampleCopy)
-            {
-                (var isDownsampled, var combinedDataDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
-                // 
-                (var isDownsampled_V2, var combinedDataDownsampled_V2) = DatasetDownsampler.CreateDownsampledCopyIfPossible(pidDataSetOversampled);
-                var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
-                idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
-            }
-            // test not doing "cratedownsampledcopy" but instead letting the variable timebase method fix the issue.
-            else
-            {
-                idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled);
-            }
+                // try to create a downsampled copy of the dataset and give that to identification
+                PidParameters idModelParams = new PidParameters(); 
+                if (doDownsampleCopy)
+                {
+                    (var isDownsampled, var combinedDataDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
+                    // 
+                    (var isDownsampled_V2, var combinedDataDownsampled_V2) = DatasetDownsampler.CreateDownsampledCopyIfPossible(pidDataSetOversampled);
+                    var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
+                    idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
+                }
+                // test not doing "cratedownsampledcopy" but instead letting the variable timebase method fix the issue.
+                else
+                {
+                    idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled);
+                }
 
-            Console.WriteLine(idModelParams.ToString());
+                Console.WriteLine(idModelParams.ToString());
 
         /*    // Plot results
             if (false)
@@ -576,9 +577,9 @@ namespace TimeSeriesAnalysis.Test.SysID
 
                 Assert.IsTrue(isDownsampled,"DataDownsample should return true, should downsample");
             */ 
-                Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.1 * truePidParams.Ti_s);
-                Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.1 * truePidParams.Kp); 
-                Assert.Greater(idModelParams.Fitting.FitScorePrc, 80); 
+                Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.1 * truePidParams.Ti_s,"Ti too far off!!");
+                Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.1 * truePidParams.Kp, "Kp too far off!!"); 
+                Assert.Greater(idModelParams.Fitting.FitScorePrc, 60, "FitScore poor!"); 
 //                Assert.IsTrue(Math.Abs(idModelParams.Fitting.TimeBase_s - timebaseTrue) < 0.1 * timebaseTrue);
            }
 

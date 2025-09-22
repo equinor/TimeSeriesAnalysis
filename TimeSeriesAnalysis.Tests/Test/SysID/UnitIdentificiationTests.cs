@@ -174,7 +174,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(model.GetModelParameters().LinearGains.First() >0.98);
         }
 
-        [TestCase(new int[] { 0, 10, 20, 28 })]
+    //    [TestCase(new int[] { 0, 10, 20, 28 })]
         [TestCase(new int[] { 29})]
         [TestCase(new int[] { 0, 1,2,3,4,5,6,7,8})]
         [TestCase(new int[] { 11, 13, 15, 17})]

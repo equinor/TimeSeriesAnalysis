@@ -256,6 +256,10 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("  -------------------------");
             int nDigits = 5;
             sb.AppendLine("Fit score(%):" + SignificantDigits.Format(Fitting.FitScorePrc, nDigits).ToString(CultureInfo.InvariantCulture));
+            if (Fitting.NumSimulatorRestarts == 0)
+                sb.AppendLine("Number of simulator restarts in fitting: " + Fitting.NumSimulatorRestarts );
+            else
+                sb.AppendLine("Number of simulator restarts in fitting: " + Fitting.NumSimulatorRestarts + "(missing data may affect fit accuracy and fitscore)");
             sb.AppendLine("model fit data points: "+ Fitting.NFittingTotalDataPoints+ " of which " + Fitting.NFittingBadDataPoints + " were ignored");
 
             return sb.ToString();

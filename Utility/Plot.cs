@@ -112,17 +112,6 @@ namespace TimeSeriesAnalysis.Utility
             if (caseName.Length > 0)
                 plotURL += ";casename:" + caseName;
 
-       /*     var chromePathAppConfig = ConfigurationManager.AppSettings.GetValues("ChromePath");
-            var chromePathInternal = chromePath;
-            if (File.Exists(chromePath))
-                chromePathInternal = chromePath;
-            else if (File.Exists(chromePath2))
-                chromePathInternal = chromePath;
-
-            if (chromePathAppConfig != null)
-            {
-                chromePathInternal = chromePathAppConfig[0];
-            }*/
             var chromePathInternal = GetChromePath();
 
             if (doStartChrome)
@@ -178,7 +167,7 @@ namespace TimeSeriesAnalysis.Utility
             {
                 caseName = comment;
             }
-            caseName = RemoveIllegalChars(caseName);// = caseName.Replace("(", "").Replace(")", "").Replace(" ", "");
+            caseName = RemoveIllegalChars(caseName);
 
             int j = 0;
             foreach (string plotName in plotNames)

@@ -49,11 +49,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private const bool doDestBasedONYsimOfLastTimestep = true;
 
-        /// <summary>
-        /// How many consequtive bad indices are required before the simulator does a new "warm-up" on the first following good indice.
-        /// should be larger than two, because a single bad point can can require skipping two indices in a recursive model, and thus can happen often.
-        /// </summary>
-        private int restartModelAfterXConsecutiveBadIndices = 3;
+
 
 
         /// <summary>
@@ -326,6 +322,61 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// Returns the largets timeconstant in the the plant (in seconds)
+        /// </summary>
+        /// <returns></returns>
+        private double GetLargestTimeConstant()
+        {
+            var vec = new Vec();
+
+            double ret = 0;
+
+            foreach (var model in modelDict)
+            {
+                if (model.Value.GetProcessModelType() == ModelType.PID)
+                {
+                    if (((PidModel)model.Value).GetModelParameters() != null)
+                    {
+                        var Tc = ((PidModel)model.Value).GetModelParameters().Ti_s;
+                        if (Tc > ret)
+                            ret = Tc;
+                    }
+
+
+
+                }
+                else if (model.Value.GetProcessModelType() == ModelType.SubProcess)
+                {
+                    if (model.Value.GetType() == typeof(UnitModel))
+                    {
+                        if (((UnitModel)model.Value).GetModelParameters() != null)
+                        {
+                            var Tc = ((UnitModel)model.Value).GetModelParameters().TimeConstant_s;
+                            if (Tc > ret)
+                                ret = Tc;
+                        }
+                    }
+                    else if (model.Value.GetType() == typeof(GainSchedModel))
+                    {
+                        if (((GainSchedModel)model.Value).GetModelParameters() != null)
+                        {
+                            var Tc = ((GainSchedModel)model.Value).GetModelParameters().TimeConstant_s;
+                            if (Tc != null)
+                            {
+                                var maxTx = vec.Max(Tc);
+                                if (maxTx > ret)
+                                    ret = maxTx;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+
+        /// <summary>
         /// Returns a "unitDataSet" for the given pidModel in the plant.
         /// This function only works when the unit model connected to the pidModel only has a single input. 
         /// </summary>
@@ -564,7 +615,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
         {
-
+            const bool doVarTimeBase = true;// experimentally, try using the values of the last good time. 
+            const bool doPadIndicesToIgnoreWithTrailingIndices = false; // ideally want this to be false, as if data is oversampled by around factor 2 you risk ignoreing all data. 
 
             int? N = inputData.GetLength();
             if (!N.HasValue)
@@ -601,7 +653,11 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                inputDataMinimal.SetIndicesToIgnore(Index.AppendTrailingIndices(inputDataMinimal.GetIndicesToIgnore()));
+                if (doPadIndicesToIgnoreWithTrailingIndices)
+                    inputDataMinimal.SetIndicesToIgnore(Index.AppendTrailingIndices(inputDataMinimal.GetIndicesToIgnore()));
+                else
+                    inputDataMinimal.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
+//           
             }
 
             // todo: disturbances could also instead be estimated in closed-loop? 
@@ -632,8 +688,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // simulate for all time steps(after first step!)
        
-            int nConsecutiveBadIndicesCounter = 0;
+            int nConsecutiveBadSamplesCounter = 0;
             int numRestartCounter = -1;
+            double largestTc =  GetLargestTimeConstant();
+            const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargetsTc = 0.20; // design variable.
+            double restartSimulatorAfterBadDataPeriod_s = largestTc * restartAfterConsecutiveBadDataTimePeriod_FractionOfLargetsTc;
+            double restartSimulatorAfterBadDataPeriod_samples = Math.Ceiling(restartSimulatorAfterBadDataPeriod_s / inputDataMinimal.GetTimeBase());
+
+
             for (int timeIdx = 0; timeIdx < N; timeIdx++)
             {
                 bool doRestartModels = false;
@@ -641,14 +703,17 @@ namespace TimeSeriesAnalysis.Dynamic
                     doRestartModels = true;
                 if (!idxToIgnore.Contains(timeIdx))
                 {
+                    if (largestTc > 0)
+                    {
+                        if (nConsecutiveBadSamplesCounter > restartSimulatorAfterBadDataPeriod_samples)
+                            doRestartModels = true;
+                    }
                     lastGoodTimeIndex = timeIdx;
-                    if (nConsecutiveBadIndicesCounter > restartModelAfterXConsecutiveBadIndices)
-                        doRestartModels = true;
-                    nConsecutiveBadIndicesCounter = 0;
+                    nConsecutiveBadSamplesCounter = 0;
                 }
                 else
                 {
-                    nConsecutiveBadIndicesCounter++;
+                    nConsecutiveBadSamplesCounter++;
                 }
              
                 // warm start every model on first data point, and after any long period of bad data
@@ -710,15 +775,32 @@ namespace TimeSeriesAnalysis.Dynamic
                         else
                         {
                             var modelID = pidControlledOutputsDict[junctionSignalID];
-                            if (modelID != null) // Simulataing a single PID-model not the whole loop
+                            if (modelID != null) // Simulating a single PID-model not the whole loop
                             {
-                                var value = simData.GetValue(modelID, timeIdx - 1); //y_proc[k-1]
+                                double? value =0;
+                          
+                                if (doVarTimeBase)
+                                {
+                                    value = simData.GetValue(modelID, lastGoodTimeIndex-1); //y_proc[k-1]
+                                }
+                                else   // original code: constant timebase:
+                                    value = simData.GetValue(modelID, timeIdx - 1); //y_proc[k-1]
+
                                 if (modelID != null)
                                 {
                                     if (modelDict[modelID].GetAdditiveInputIDs() != null)       // + D[k] 
                                     {
-                                        var additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
-                                            modelDict[modelID].GetAdditiveInputIDs(), timeIdx, simData, inputDataMinimal);
+                                        double[] additiveSignalsValues = new double[0];
+                                        if (doVarTimeBase)
+                                        {
+                                            additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
+                                                modelDict[modelID].GetAdditiveInputIDs(), lastGoodTimeIndex, simData, inputDataMinimal);
+                                        }
+                                        else
+                                        {
+                                            additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
+                                                modelDict[modelID].GetAdditiveInputIDs(), timeIdx, simData, inputDataMinimal);
+                                        }
                                         foreach (var signalValue in additiveSignalsValues)
                                         {
                                             value += signalValue;
@@ -889,16 +971,6 @@ namespace TimeSeriesAnalysis.Dynamic
             var fileWriter = new StringToFileWriter(fileName);
             fileWriter.Write(serializedTxt);
             return fileWriter.Close();
-        }
-
-        /// <summary>
-        /// If the number of consecutive bad samples exceeds this threshold, then the simulator will restart on the 
-        /// subsequent first good sample.
-        /// </summary>
-        /// <param name="samples"></param>
-        public void SetNumberOfConsecutiveBadIndicesBeforeSimRestarts(int samples)
-        { 
-            this.restartModelAfterXConsecutiveBadIndices = samples;
         }
 
     }

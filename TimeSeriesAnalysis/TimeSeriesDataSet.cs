@@ -983,6 +983,8 @@ namespace TimeSeriesAnalysis
         {
             StringBuilder sb = new StringBuilder();
 
+            int nDigits = 5;
+
             sb.AppendLine("TimeSeriesDataSet");
             sb.AppendLine("------------------");
             if (csvFileName != null && csvFileName != "")
@@ -998,7 +1000,8 @@ namespace TimeSeriesAnalysis
             var vec = new Vec(BadDataID);
             foreach (var variable in dataset)
             {
-                sb.AppendLine(variable.Key + " with " + variable.Value.Length + " values from " +vec.Min(variable.Value) + " to " + vec.Max(variable.Value));
+                sb.AppendLine(variable.Key + " with " + variable.Value.Length + " values from " +SignificantDigits.Format(vec.Min(variable.Value), nDigits) +
+                    " to " + SignificantDigits.Format(vec.Max(variable.Value), nDigits));
             }
             foreach (var variable in dataset_constants)
             {

@@ -456,14 +456,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 pidParam.Fitting.StartTime = dataSet.Times.First();
                 pidParam.Fitting.EndTime = dataSet.Times.Last();
             }
-           /* if (regressResults == null)
-            {
-                pidParam.Fitting.WasAbleToIdentify = false;
-                return (pidParam, null, null);
-            }*/
 
             //if (useConstantTimeBase)
-                dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
+            dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
             (var u_sim, int numSimRestarts) = GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample);
             double[,] U_sim = Array2D<double>.Create(u_sim);
 
@@ -507,13 +502,20 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
-       //     pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;//remove? does not include indicesToIgnore?
-    
             pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0),
                 dataSet.IndicesToIgnore,nIterationsToLookBack), nDigits);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> { dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0) },
+                    new List<string> { "y1=u_meas", "y1=u_sim"},
+                    dataSet.GetTimeBase(), "PidIdentifier_Debug");
+                Shared.DisablePlots();
+            }
+
             
-         //   pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);//remove? does not include indicesToIgnore?
-            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreInternal, 0) * 100;
+              pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreInternal, 0) * 100;
 
             pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);

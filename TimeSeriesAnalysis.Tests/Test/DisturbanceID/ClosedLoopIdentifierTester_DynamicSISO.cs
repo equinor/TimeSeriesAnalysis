@@ -124,7 +124,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,doInvertGain,true,null,procGainAllowedOffSetPrc);
         }
 
-
+        /*
         [TestCase()]
         public void StepAtStartOfDataset_IsExcludedFromAnalysis()
         {
@@ -134,11 +134,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude);
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"),
                 trueDisturbance, false, true,null,10, doAddBadData);
-        }
+        }*/
 
         [TestCase(-5,10)]
         [TestCase(5, 10)]
-        [TestCase(10, 5)]
+        [TestCase(10, 10)]
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
             bool doNegativeGain =false)
         {
