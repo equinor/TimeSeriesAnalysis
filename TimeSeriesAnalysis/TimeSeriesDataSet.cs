@@ -975,6 +975,39 @@ namespace TimeSeriesAnalysis
             return ret;
         }
 
+        /// <summary>
+        /// Summaize dataset in string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("TimeSeriesDataSet");
+            sb.AppendLine("------------------");
+            if (csvFileName != null && csvFileName != "")
+               sb.AppendLine("csv file name:" + csvFileName);
+            else
+                sb.AppendLine("csv file name: [unset]");
+
+            sb.AppendLine("number of simulator restarts:" + numSimulatorRestarts);
+            sb.AppendLine("bad data ID: " +BadDataID);
+
+            sb.AppendLine("timestamps: " + timeStamps.Count() + " from "+ timeStamps.First() + " to " + timeStamps.Last());
+            sb.AppendLine("number of indices to ignore: " + indicesToIgnore.Count());
+            var vec = new Vec(BadDataID);
+            foreach (var variable in dataset)
+            {
+                sb.AppendLine(variable.Key + " with " + variable.Value.Length + " values from " +vec.Min(variable.Value) + " to " + vec.Max(variable.Value));
+            }
+            foreach (var variable in dataset_constants)
+            {
+                sb.AppendLine(variable.Key + " constant at " + variable.Value );
+            }
+            return sb.ToString();
+        }
+
+
 
 
         /// <summary>
