@@ -564,7 +564,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
         {
-            var timeBase_s = inputData.GetTimeBase(); ;
+
 
             int? N = inputData.GetLength();
             if (!N.HasValue)
@@ -748,6 +748,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
 
+                    var timeBase_s = inputData.GetTimeBase(); ;
                     double[] outputVal = model.Iterate(inputVals, timeBase_s);
 
                     if (pidControlledOutputsDict.Keys.Contains(model.GetOutputID()))

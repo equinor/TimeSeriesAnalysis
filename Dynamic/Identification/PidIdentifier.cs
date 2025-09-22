@@ -217,9 +217,21 @@ namespace TimeSeriesAnalysis.Dynamic
         private (PidParameters, double[,], List<int>) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
             PidFilterParams pidFilterParams = null, bool doFilterUmeas=false)
         {
+            const bool useConstantTimeBase = true;// default is true, false is experimental. 
+
+
             this.timeBase_s = dataSet.GetTimeBase();
             var pidParam = new PidParameters();
             string solverID = "PidIdentifier";
+            if (useConstantTimeBase)
+            {
+                solverID += "(constant timebase)";
+            }
+            else
+            {
+                solverID += "(variable timebase)";
+            }
+
             if (pidFilterParams != null)
             {
                 pidFilter = new PidFilter(pidFilterParams, timeBase_s);
@@ -245,36 +257,25 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             double[] e_unscaled = GetErrorTerm(dataSet, pidFilter);
-
             int bufferLength = dataSet.GetNumDataPoints() - 1;
-
             double[] uMinusFF = GetUMinusFF(dataSet);
-
             if (doFilterUmeas && pidFilter != null)
             {
                 int kernelLength = (int)Math.Floor(pidFilter.GetParams().TimeConstant_s / timeBase_s);
                 uMinusFF = (new Vec()).NonCausalSmooth(uMinusFF, kernelLength);
                 solverID += "(Umeas was filtered)";
             }
-
             double uRange = vec.Max(uMinusFF) - vec.Min(uMinusFF);
-            double[] X1_ols = new double[bufferLength];
-            double[] X2_ols = new double[bufferLength];
-            double[] Y_ols = new double[bufferLength];
-
             double Kpest, Tiest, Rsq; 
             DateTime t_result ;
             double[] yMod ;
-
             RegressionResults regressResults = null;
-            
+           
             //
             // Note that these are the indices to be fed to the regression, and does not 1-to-1 conicide with indices numbering of the
             // given dataset without conversion!
             // 
-
             var  indicesToIgnoreInternal = new List<int>();
-
             int nSamplesToLookBack = 0;
             if (isPIDoutputDelayOneSample)
             {
@@ -282,131 +283,162 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             int nIterationsToLookBack = 2;//since eprev and eprevprev are needed, look two iterations back.
-            {
-                int idxStart = nIterationsToLookBack;
-                int idxEnd = dataSet.GetNumDataPoints() - 1;
+            
+            int idxStart = nIterationsToLookBack;
+            int idxEnd = dataSet.GetNumDataPoints() - 1;
              
-                double[] ucur, uprev, ecur, eprev;
+            double[] ucur, uprev, ecur, eprev;
 
-                double[] e_scaled;
-                double yScaleFactor = 1;
-                if (pidParam.Scaling.IsKpScalingOn())
-                {
-                    yScaleFactor = 1 / pidScaling.GetKpScalingFactor();
-                }
-                if (yScaleFactor == 1)
-                {
-                    e_scaled = e_unscaled;
-                }
-                else
-                {
-                    e_scaled = vec.Multiply(e_unscaled, yScaleFactor);
-                }
-                ucur = Vec<double>.SubArray(uMinusFF, idxStart, idxEnd);
-                uprev = Vec<double>.SubArray(uMinusFF, idxStart - 1, idxEnd - 1);
+            double[] e_scaled;
+            double yScaleFactor = 1;
+            if (pidParam.Scaling.IsKpScalingOn())
+            {
+                yScaleFactor = 1 / pidScaling.GetKpScalingFactor();
+            }
+            if (yScaleFactor == 1)
+            {
+                e_scaled = e_unscaled;
+            }
+            else
+            {
+                e_scaled = vec.Multiply(e_unscaled, yScaleFactor);
+            }
+            ucur = Vec<double>.SubArray(uMinusFF, idxStart, idxEnd);
+            uprev = Vec<double>.SubArray(uMinusFF, idxStart - 1, idxEnd - 1);
                 
-                ecur = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
-                eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
+            ecur = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
+            eprev = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
 
-                // replace -9999 or NaNs in dataset
-                var indBadUcur = BadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
-                var indBadEcur = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(ecur, dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
+            // replace -9999 or NaNs in dataset
+            var indBadUcur = BadDataFinder.GetAllBadIndicesPlussNext(ucur,dataSet.BadDataID);
+            var indBadEcur = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(ecur, dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
 
-                var umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
-                var uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
-                var ymaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetYmax(), VectorFindValueType.BiggerOrEqual));
-                var yminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
+            var umaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
+            var uminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
+            var ymaxInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetYmax(), VectorFindValueType.BiggerOrEqual));
+            var yminInd = Index.AppendTrailingIndices(vec.FindValues(ucur, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
 
-                var indToIgnoreFromChooser = CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, detectFrozenData: true).ToArray();
+            var indToIgnoreFromChooser = CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, detectFrozenData: true).ToArray();
 
-                // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
-                /*
-                if (type == ControllerType.AntiSurge)
-                {
-                    List<int> indAntiSurgeKicks = PIDantiSurgeID.FindKicks(ucur, indicesToIgnore, TimeBase_s,
-                        out int nKicksFound, out double? estFFdownRampLimit_prcPerMin);
-                    indicesToIgnore = indicesToIgnore.Union(indAntiSurgeKicks).ToList();
-                    //   result.antiSurgeParams      = PIDantiSurgeID.Ident(ecur, ucur, indicesToIgnore, TimeBase_s);//TODO: find these values!
-                    result.antiSurgeParams = new AntiSurgePIDParams(50 / TimeBase_s,
-                        estFFdownRampLimit_prcPerMin, nKicksFound);
-                    // for anti-surge "ymeas" contains "CtrlDev" and yset=0.
-                    //   List<int> indAntiSurge = Vec.FindValues(ecur, result.antiSurgeParams.kickBelowThresholdE, FindValues.SmallerThan);
-                }
-                */
-                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadUcur).ToList();
-                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadEcur).ToList();
-                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(umaxInd).ToList();
-                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(uminInd).ToList();
-                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(ymaxInd).ToList();
-                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(yminInd).ToList();
-                indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indToIgnoreFromChooser).ToList();
-                indicesToIgnoreInternal.Sort();
+            // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
+            /*
+            if (type == ControllerType.AntiSurge)
+            {
+                List<int> indAntiSurgeKicks = PIDantiSurgeID.FindKicks(ucur, indicesToIgnore, TimeBase_s,
+                    out int nKicksFound, out double? estFFdownRampLimit_prcPerMin);
+                indicesToIgnore = indicesToIgnore.Union(indAntiSurgeKicks).ToList();
+                //   result.antiSurgeParams      = PIDantiSurgeID.Ident(ecur, ucur, indicesToIgnore, TimeBase_s);//TODO: find these values!
+                result.antiSurgeParams = new AntiSurgePIDParams(50 / TimeBase_s,
+                    estFFdownRampLimit_prcPerMin, nKicksFound);
+                // for anti-surge "ymeas" contains "CtrlDev" and yset=0.
+                //   List<int> indAntiSurge = Vec.FindValues(ecur, result.antiSurgeParams.kickBelowThresholdE, FindValues.SmallerThan);
+            }
+            */
+            indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadUcur).ToList();
+            indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indBadEcur).ToList();
+            indicesToIgnoreInternal = indicesToIgnoreInternal.Union(umaxInd).ToList();
+            indicesToIgnoreInternal = indicesToIgnoreInternal.Union(uminInd).ToList();
+            indicesToIgnoreInternal = indicesToIgnoreInternal.Union(ymaxInd).ToList();
+            indicesToIgnoreInternal = indicesToIgnoreInternal.Union(yminInd).ToList();
+            indicesToIgnoreInternal = indicesToIgnoreInternal.Union(indToIgnoreFromChooser).ToList();
+            indicesToIgnoreInternal.Sort();
 
+            double[] X1_ols = new double[bufferLength];
+            double[] X2_ols = new double[bufferLength];
+            double[] Y_ols = new double[bufferLength];
+            if (useConstantTimeBase)
+            {
+                X1_ols = new double[bufferLength];
+                X2_ols = new double[bufferLength];
+                Y_ols = new double[bufferLength];
                 Y_ols = vec.Subtract(ucur, uprev);
                 X1_ols = vec.Subtract(ecur, eprev);
                 X2_ols = vec.Multiply(ecur, timeBase_s);
-
-                double[][] inputs = { X1_ols, X2_ols };
-                // important: use the un-regularized solver here!!
-                regressResults = vec.RegressUnRegularized(Y_ols, inputs, indicesToIgnoreInternal.ToArray());
-                //  out double[] notUsed, out double[] Y_mod, out double Rsq_cur;
-                var b = regressResults.Param;
-
-                Rsq = regressResults.Rsq;
-                yMod = regressResults.Y_modelled;
-
-                if (b == null)
+            }
+            else
+            {
+                // experimental.
+                var goodIndices = Index.InverseIndices(ucur.Count(), indicesToIgnoreInternal);
+                X1_ols = new double[goodIndices.Count()];
+                X2_ols = new double[goodIndices.Count()];
+                Y_ols = new double[goodIndices.Count()];
+                var timeSinceLastGoodInd_s = timeBase_s;
+                for (int goodInd=0; goodInd< goodIndices.Count;goodInd++)
                 {
-                    Tiest = badValueIndicatingValue;
-                    Kpest = badValueIndicatingValue;
-                    pidParam.Fitting.WasAbleToIdentify = false;
-                    solverID += "(Regression failed)";
-                    pidParam.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
-                    return (pidParam, null, null);
-                }
-                else
-                {
-                    Kpest = -b[0];
-                }
-
-                double eMax = vec.Max(ecur);
-                double eMin = vec.Min(ecur);
-                double uMax = vec.Max(ucur);
-                double uMin = vec.Min(ucur);
-                
-                double expectedRoughtEstimateForKp = Math.Abs((uMax - uMin) / (eMax - eMin));
-                if (Math.Abs(Kpest) < expectedRoughtEstimateForKp * CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC)
-                {
-                    pidParam.AddWarning(PidIdentWarning.PIDControllerDoesNotAppearToBeInAuto);
-                    pidParam.Fitting.WasAbleToIdentify = false;
-                    return (pidParam, null, null);
-                }
-
-                if (b[1] == 0)
-                {
-                    // this seems to happen if for instance the entire Y is constant, for instance in case 
-                    // of input saturation, or if the controller is in manual the entire time or it is the wrong signal
-                    pidParam.AddWarning(PidIdentWarning.NotPossibleToIdentifyPIDcontroller_UAppearsUncorrelatedWithY);
-                    Tiest = 0;
-                }
-                else
-                    Tiest = Math.Abs( b[0] / b[1]);
-
-                pidParam.Fitting.SolverID = solverID;
-
-                if (dataSet.Times != null)
-                {
-                    t_result = dataSet.Times[idxEnd];
-                }
-                if (Double.IsNaN(Kpest) || Double.IsNaN(Tiest))
-                {
-                    pidParam.Fitting.WasAbleToIdentify = false;
-                    pidParam.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
-                    return (pidParam, null, null);
+                    if (goodInd>0)
+                        timeSinceLastGoodInd_s = (goodIndices[goodInd] - goodIndices[goodInd - 1]) * timeBase_s;
+                    var ind = goodIndices[goodInd];
+                    Y_ols[goodInd] = ucur[ind] - uprev[ind];
+                    X1_ols[goodInd] = ecur[ind] - eprev[ind];
+                    X2_ols[goodInd] = ecur[ind]* timeSinceLastGoodInd_s;
                 }
             }
 
 
+            double[][] inputs = { X1_ols, X2_ols };
+            // important: use the un-regularized solver here!!
+            if (useConstantTimeBase)
+                regressResults = vec.RegressUnRegularized(Y_ols, inputs, indicesToIgnoreInternal.ToArray());
+            else
+                regressResults = vec.RegressUnRegularized(Y_ols, inputs);
+
+            var b = regressResults.Param;
+
+            Rsq = regressResults.Rsq;
+            yMod = regressResults.Y_modelled;
+
+            if (b == null)
+            {
+                Tiest = badValueIndicatingValue;
+                Kpest = badValueIndicatingValue;
+                pidParam.Fitting.WasAbleToIdentify = false;
+                solverID += "(Regression failed)";
+       //         pidParam.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
+                return (pidParam, null, null);
+            }
+            else
+            {
+                Kpest = -b[0];
+            }
+
+            double eMax = vec.Max(ecur);
+            double eMin = vec.Min(ecur);
+            double uMax = vec.Max(ucur);
+            double uMin = vec.Min(ucur);
+                
+            double expectedRoughtEstimateForKp = Math.Abs((uMax - uMin) / (eMax - eMin));
+            if (Math.Abs(Kpest) < expectedRoughtEstimateForKp * CUTOFF_FOR_GUESSING_PID_IN_MANUAL_FRAC)
+            {
+                solverID += "(PID not in auto?)";
+                pidParam.Fitting.WasAbleToIdentify = false;
+                return (pidParam, null, null);
+            }
+
+            if (b[1] == 0)
+            {
+                // this seems to happen if for instance the entire Y is constant, for instance in case 
+                // of input saturation, or if the controller is in manual the entire time or it is the wrong signal
+                solverID += "(Y appears uncorrelatd with U)";
+                Tiest = 0;
+            }
+            else
+                Tiest = Math.Abs( b[0] / b[1]);
+
+            pidParam.Fitting.SolverID = solverID;
+
+            if (dataSet.Times != null)
+            {
+                t_result = dataSet.Times[idxEnd];
+            }
+            if (Double.IsNaN(Kpest) || Double.IsNaN(Tiest))
+            {
+                pidParam.Fitting.WasAbleToIdentify = false;
+
+                solverID += "(regression failed)";
+             //   pidParam.AddWarning(PidIdentWarning.RegressionProblemFailedToYieldSolution);
+                return (pidParam, null, null);
+            }
+            
             // see if using "next value= last value" gives better objective function than the model found"
             // if so it is an indication that something is wrong
             // if the data is "only noise" then the two can be very close even if the model is good, for that reason add
@@ -424,13 +456,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 pidParam.Fitting.StartTime = dataSet.Times.First();
                 pidParam.Fitting.EndTime = dataSet.Times.Last();
             }
-            if (regressResults == null)
+           /* if (regressResults == null)
             {
                 pidParam.Fitting.WasAbleToIdentify = false;
                 return (pidParam, null, null);
-            }
+            }*/
 
-            dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
+            //if (useConstantTimeBase)
+                dataSet.IndicesToIgnore = Index.Shift(indicesToIgnoreInternal.ToArray(), nIterationsToLookBack).ToList();
             (var u_sim, int numSimRestarts) = GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample);
             double[,] U_sim = Array2D<double>.Create(u_sim);
 
@@ -440,7 +473,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // TODO: this feels somewhat like a hack, and should be refactored.
             // If the measured and simulated signals end up being inversely correlated, the sign of the Kp parameter
             // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
-            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreInternal, 0) < -0.1)
+            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indicesToIgnoreInternal, 0) < -0.1 && useConstantTimeBase)
             {
         
                 double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0));
@@ -448,17 +481,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample).Item1);
                 double newFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0));
-                //todo: find out why this sometimes fails and needs to be reverted
-               /* if (oldFitScore > newFitScore)
-                {
-                    pidParam.Fitting.SolverID += "(Kp double-flipped)";
-                    pidParam.Kp = -pidParam.Kp;
-                    U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample).Item1);
-                }
-                else*/
-                {
-                    pidParam.Fitting.SolverID += "(Kp flipped)";
-                }
+                pidParam.Fitting.SolverID += "(Kp flipped)";
                 dataSet.U_sim = U_sim;
             }
 
@@ -472,16 +495,24 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.Umin = new double[] { SignificantDigits.Format(vec.Min(dataSet.U.GetColumn(0)), nDigitsParams) };
             pidParam.Fitting.Umax = new double[] { SignificantDigits.Format(vec.Max(dataSet.U.GetColumn(0)), nDigitsParams) };
 
-            pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
-            pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
-      
+            if (useConstantTimeBase)
+            {
+                pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
+                pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
+            }
+            else
+            {
+                pidParam.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
+                pidParam.Fitting.NFittingBadDataPoints = indicesToIgnoreInternal.Count();
+            }
+
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
-            pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;//remove? does not include indicesToIgnore?
+       //     pidParam.Fitting.ObjFunValDiff = regressResults.ObjectiveFunctionValue;//remove? does not include indicesToIgnore?
     
             pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0),
                 dataSet.IndicesToIgnore,nIterationsToLookBack), nDigits);
             
-            pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);//remove? does not include indicesToIgnore?
+         //   pidParam.Fitting.ObjFunValAbs  = vec.SumOfSquareErr(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), 0);//remove? does not include indicesToIgnore?
             pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indicesToIgnoreInternal, 0) * 100;
 
             pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
