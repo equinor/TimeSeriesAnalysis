@@ -61,19 +61,19 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                    // If both models show a very high R-Squared-diff, look at fitscore instead if there is a significant difference
-                    if (firstModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
-                        && secondModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE)
-                    {
-                        if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
-                            return true;
-                        else
-                            return false;
-                    }
-                    else if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
+                // If both models show a very high R-Squared-diff, look at fitscore instead if there is a significant difference
+                if (firstModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE
+                    && secondModel.Fitting.RsqDiff > MAX_RSQUARED_DIFF_BEFORE_COMPARING_FITSCORE)
+                {
+                    if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
                         return true;
                     else
                         return false;
+                }
+                else if (firstModel.Fitting.RsqDiff > secondModel.Fitting.RsqDiff)
+                    return true;
+                else
+                    return false;
             }
         }
 

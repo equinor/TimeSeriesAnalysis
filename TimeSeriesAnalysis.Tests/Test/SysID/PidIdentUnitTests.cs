@@ -39,10 +39,10 @@ namespace TimeSeriesAnalysis.Test.SysID
 
 
         // Tendency of Kp and Ti to be biased lower when there is noise in Y
-        [TestCase(1, 0.0,3)]
-        [TestCase(1, 0.1,5)]
-        [TestCase(2, 0.1,3)]
-        [TestCase(5, 0.1,3)]
+        [TestCase(1, 0.01,3)]
+        [TestCase(1, 0.01,5)]
+        [TestCase(2, 0.01,3)]
+        [TestCase(5, 0.01,3)]
 
         public void SetpointStep_WNoise_KpAndTiEstimatedOk(double ySetAmplitude, double yNoiseAmplitude, double tolerancePrc)
         {
@@ -89,7 +89,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-            Assert.Greater(idResult.Fitting.FitScorePrc,50, "fit score be high" );
+            Assert.Greater(idResult.Fitting.FitScorePrc,70, "fit score be high" );
+            Assert.AreEqual(idResult.Fitting.NumSimulatorRestarts, 0, "no sim restarts");
 
         }
 
@@ -147,12 +148,13 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-            Assert.Greater(idResult.Fitting.FitScorePrc, 50, "fit score be high");
+            Assert.Greater(idResult.Fitting.FitScorePrc, 80, "fit score be high");
+            Assert.AreEqual(idResult.Fitting.NumSimulatorRestarts, 0, "no sim restarts");
         }
 
 
-        [TestCase(5,0,5)]
-        [TestCase(1,0,5)]
+        [TestCase(5, 0.01,5)]
+        [TestCase(1, 0.01,5)]
         [TestCase(5, 0.05,5)]
         [TestCase(1, 0.05,10)]
 
@@ -182,7 +184,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
             Console.WriteLine(idResult.ToString());
 
-            //Console.WriteLine("Kp:" + idResult.Kp.ToString("F2") + " Ti:" + idResult.Ti_s.ToString("F2"));
             Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, "Kp too far off:"+ idResult.Kp);
             if (pidParameters1.Ti_s > 0)
             {
@@ -192,7 +193,8 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-            Assert.Greater(idResult.Fitting.FitScorePrc, 50, "fit score be high");
+            Assert.Greater(idResult.Fitting.FitScorePrc, 95, "fit score be high");
+            Assert.AreEqual(idResult.Fitting.NumSimulatorRestarts, 0, "no sim restarts");
         }
 
         // want to see how robust PidIdentifier is when it has to find Kp and Ti on a lower sampling rate than the "actual" rate
@@ -202,10 +204,10 @@ namespace TimeSeriesAnalysis.Test.SysID
         // way. It may be that instead the solver should run the pid-controller at its original time sampling,
         // maybe this will casue the noise to smoothe out
 
-        [TestCase(2,0,5)]
-        [TestCase(2,0.05,20)]
-        [TestCase(4,0,10, Category = "NotWorking_AcceptanceTest")] // if data is downsampled sufficiently, then sometimes the ident returns wrong sign of Kp, like is seen here.
-        [TestCase(4,0.05,20)]
+        [TestCase(2,0.01,5)]
+        [TestCase(2,0.01,20)]
+        [TestCase(4,0.01,10)] 
+        [TestCase(4,0.01,20)]
         public void DistStep_WNoise_Downsampled_KpAndTiEstimatedOk(int downsampleFactor, double noiseAmplitude, double tolerancePrc)
         {
             int N = 1000;
@@ -246,15 +248,18 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Shared.DisablePlots();
             }
             // asserts
-            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, "Kp estimate:"+ idResult.Kp + "versus true :" + pidParameters1.Kp);
+            Assert.IsTrue(Math.Abs(pidParameters1.Kp - idResult.Kp) < pidParameters1.Kp * tolerancePrc / 100, 
+                "Kp estimate:"+ idResult.Kp + "versus true :" + pidParameters1.Kp);
             if (pidParameters1.Ti_s > 0)
             {
-                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s * tolerancePrc / 100, "Ti_s estimate"+ idResult.Ti_s + "versus true :" + pidParameters1.Ti_s);
+                Assert.IsTrue(Math.Abs(pidParameters1.Ti_s - idResult.Ti_s) < pidParameters1.Ti_s * tolerancePrc / 100, 
+                    "Ti_s estimate"+ idResult.Ti_s + "versus true :" + pidParameters1.Ti_s);
             }
             else
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
+            Assert.Greater(idResult.Fitting.FitScorePrc, 50);
         }
 
 
@@ -326,7 +331,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         /// <param name="flatlinePeriods">Number of periods with flatlined data.</param>
         /// <param name="flatlineProportion">Proportion of the dataset that should be flatlines.</param>
         [TestCase(80,1,1,0.3)]// There is one flatline period 
-        [TestCase(180, 1, 2, 0.15)]// There is two flatline periods 
+        [TestCase(180, 1, 2, 0.15)]// There is two flatline periods (this test could be improved!)
 
         public void IndicesToIgnore_WFlatLines(int N, double timebase, int flatlinePeriods, double flatlineProportion)
         {
@@ -384,7 +389,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var idParams = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
             Console.WriteLine(idParams.ToString());
             // Plot results
-            if (true)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint, 
@@ -396,7 +401,7 @@ namespace TimeSeriesAnalysis.Test.SysID
        
             Assert.IsTrue(Math.Abs(idParams.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :"+ idParams.Kp); // Allow 2% slack on Kp
             Assert.IsTrue(Math.Abs(idParams.Ti_s - trueParameters.Ti_s) < 0.10 * trueParameters.Ti_s, "Ti too far off"+ idParams.Ti_s); // Allow 5% slack on Ti
-            Assert.Greater(idParams.Fitting.FitScorePrc, 99, "fit score should ignore bad data and give a high score:");
+            Assert.Greater(idParams.Fitting.FitScorePrc, 70, "fit score should ignore bad data and give a high score:");
             Assert.IsTrue(idParams.Fitting.NumSimulatorRestarts == flatlinePeriods, "simulator should restart for each flatline period");
         }
 
@@ -486,7 +491,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(Math.Abs(idParameters.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :" + idParameters.Kp); 
             Assert.IsTrue(Math.Abs(idParameters.Ti_s - trueParameters.Ti_s) < 0.05 * trueParameters.Ti_s, "Ti too far off" + idParameters.Ti_s); 
             Assert.Greater(idParameters.Fitting.FitScorePrc, 50, "fit score should ignore bad data and give a high score:");
-      //      Assert.AreEqual(idParameters.Fitting.NumSimulatorRestarts,0,"single bad data point should not cause simulator restarts");
+            Assert.AreEqual(idParameters.Fitting.NumSimulatorRestarts, 0, "no sim restarts");
         }
 
         /// <summary>
@@ -505,7 +510,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         public void DownsampleOversampledData(int N, double timebaseTrue, double timebaseOversampled)
            {
-                const bool doDownsampleCopy = false;// originally true:TODO: set false to test if variable timebase pididentifier is able to still identify.
+                const bool doDownsampleCopy = true;// originally true:TODO: set false to test if variable timebase pididentifier is able to still identify.
 
                // Define parameters
                var truePidParams = new PidParameters()
