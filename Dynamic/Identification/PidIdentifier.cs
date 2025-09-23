@@ -93,6 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
             //    relative to the clock that the pid algorithm ran on originally)
+            dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
             (var idParamsWithoutDelay, var U_withoutDelay, var indicesToIgnore_withoutDelay) = 
                 IdentifyInternal(dataSet, false);
 
@@ -125,6 +126,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                 {
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
+                    dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
                     (var idParamsWithFilter, var U_withFilter, var indicesToIgnoreWithFilter) = 
                         IdentifyInternal(dataSet, doDelay, pidFilterParams);
 
@@ -146,6 +148,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     for (double filterTime_s = timeBase_s; filterTime_s < maxFilterTime_s; filterTime_s += timeBase_s)
                     {
                         var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
+                        dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
                         (var idParamsWithFilter, var UwithFilter, var indicesToIgnore_withFilter) =
                             IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas);
 
