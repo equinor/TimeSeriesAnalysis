@@ -134,9 +134,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitData"></param>
         /// <param name="model"></param>
         /// <returns>tuple : true/false if simulation ran, the simulated output, and the number of simulation restarts</returns>
-        public static (bool, double[],int) SimulateSingle(UnitDataSet unitData, ISimulatableModel model)
+        public static (bool, double[],int) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, List<int> indToIgnore=null)
         {
-            return SimulateSingleUnitDataWrapper(unitData, model);
+            return SimulateSingleUnitDataWrapper(unitData, model, indToIgnore);
         }
 
         /// <summary>
@@ -190,8 +190,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
         /// <param name="model">model to simulate</param>
+        /// <param name="indToIgnore">if specific, this specifies the indices to be ignored rather than unitData</param>
         /// <returns>a tuple, first a true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive,third is number of simulator re-starts </returns>
-        static private (bool, double[],int) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model)
+        static private (bool, double[],int) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model, List<int> indToIgnore=null)
         {
             bool doDetermineIndicesToIgnore = false;
             string defaultOutputName = "output";
@@ -229,9 +230,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.Add(defaultOutputName, unitData.Y_meas);
                 modelCopy.SetOutputID(defaultOutputName);
             }
-
-            inputData.SetIndicesToIgnore(unitData.IndicesToIgnore);
-
+            if (indToIgnore == null)
+                inputData.SetIndicesToIgnore(unitData.IndicesToIgnore);
+            else
+                inputData.SetIndicesToIgnore(indToIgnore);
             var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, doDetermineIndicesToIgnore,out var simData);
 
             if (!isOk)

@@ -313,7 +313,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             // Finally, assert that the fit is better when taking flatline handling into account.
             Assert.IsTrue(Math.Abs(trueParams.Kp - idResult.Kp) < 0.02 * trueParams.Kp, "Kp too far off: "+ idResult.Kp); // Allow 2% slack on Kp
             Assert.IsTrue(Math.Abs(trueParams.Ti_s - idResult.Ti_s) < 0.05 * trueParams.Ti_s, "Ti too far off:"+ idResult.Ti_s); // Allow 5% slack on Ti
-            Assert.Greater(idResult.Fitting.FitScorePrc, 50, "fit score be high");
+            Assert.Greater(idResult.Fitting.FitScorePrc, 99.99, "fit score should be almost 100 because no noise ");
 
         }
 
@@ -357,7 +357,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var combinedDataFlatLines = new TimeSeriesDataSet(combinedData);
             // Identify on both original and flatlined datasets
 
-            string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").Replace(")", "_").Replace(",", "_") + "y"; 
+            string caseId = TestContext.CurrentContext.Test.Name;
 
             if (false)// plot the raw data before flatline is created
             {
@@ -384,7 +384,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var idParams = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
             Console.WriteLine(idParams.ToString());
             // Plot results
-            if (false)
+            if (true)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ pidDataSetWithFlatlines.Y_meas, pidDataSetWithFlatlines.Y_setpoint, 
@@ -396,8 +396,8 @@ namespace TimeSeriesAnalysis.Test.SysID
        
             Assert.IsTrue(Math.Abs(idParams.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :"+ idParams.Kp); // Allow 2% slack on Kp
             Assert.IsTrue(Math.Abs(idParams.Ti_s - trueParameters.Ti_s) < 0.10 * trueParameters.Ti_s, "Ti too far off"+ idParams.Ti_s); // Allow 5% slack on Ti
-            Assert.Greater(idParams.Fitting.FitScorePrc, 50, "fit score should ignore bad data and give a high score:");
-            Assert.IsTrue(idParams.Fitting.NumSimulatorRestarts > 0, "simulator should restart");
+            Assert.Greater(idParams.Fitting.FitScorePrc, 99, "fit score should ignore bad data and give a high score:");
+            Assert.IsTrue(idParams.Fitting.NumSimulatorRestarts == flatlinePeriods, "simulator should restart for each flatline period");
         }
 
         public enum BadDataEnum { U, Y_set, Y_meas}
