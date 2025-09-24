@@ -7,6 +7,7 @@ using System.Text;
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
+using System.ComponentModel.Design;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -452,23 +453,37 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             (var u_sim, int numSimRestarts) = GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indToIgnore);
-            double[,] U_sim = Array2D<double>.Create(u_sim);
+            double[,] uSim = Array2D<double>.Create(u_sim);
 
             pidParam.Fitting.WasAbleToIdentify = true;
-            dataSet.U_sim = U_sim;
+            dataSet.U_sim = uSim;
 
-            // TODO: this feels somewhat like a hack, and should be refactored.
-            // If the measured and simulated signals end up being inversely correlated, the sign of the Kp parameter
-            // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
-            if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indToIgnore, 0) < -0.1 && useConstantTimeBase && doFlipKpIfNeeded)
+
+            // check if flipping Kp results in a singificantly higher Fitscore, if so, go for it. 
+            double fitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSim.GetColumn(0), dataSet.BadDataID, indToIgnore);
+            bool isFlipped = false;
+            if (fitScore < -0.1 && doFlipKpIfNeeded)
             {
-                double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), dataSet.BadDataID, indToIgnore);
-                pidParam.Kp = -pidParam.Kp;// flip sign of kp
-                U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indToIgnore).Item1);
-                double newFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), dataSet.BadDataID, indToIgnore);
-                pidParam.Fitting.SolverID += "(Kp flipped)";
-                dataSet.U_sim = U_sim;
+                var pidParamFlipped = new PidParameters(pidParam);
+                pidParamFlipped.Kp = -pidParam.Kp;
+                var uSimFlipped = Array2D<double>.Create(GetSimulatedU(pidParamFlipped, dataSet, isPIDoutputDelayOneSample, indToIgnore).Item1);
+                double flippedFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSimFlipped.GetColumn(0), dataSet.BadDataID, indToIgnore);
+
+                if (flippedFitScore > 0 && flippedFitScore > fitScore)
+                {
+                    if (pidParamFlipped.Fitting.SolverID == null)
+                        pidParamFlipped.Fitting.SolverID = "(Kp flipped)";
+                    else
+                        pidParamFlipped.Fitting.SolverID += "(Kp flipped)";
+
+                    dataSet.U_sim = uSimFlipped;
+                    pidParam = pidParamFlipped;
+                    pidParam.Fitting.FitScorePrc = flippedFitScore;
+                    isFlipped = true;
+                }
             }
+            if (!isFlipped)
+                pidParam.Fitting.FitScorePrc = fitScore;
 
             pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigitsParams);
             pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigitsParams);
@@ -492,8 +507,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
-            pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0),
-                 dataSet.BadDataID,indToIgnore), nDigits);
 
             if (false)
             {
@@ -503,15 +516,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.GetTimeBase(), "PidIdentifier_Debug");
                 Shared.DisablePlots();
             }
-                        
-       //     pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indToIgnore, 0) * 100;
-
-           // pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
-           // pidParam.Fitting.ObjFunValDiff = SignificantDigits.Format(pidParam.Fitting.ObjFunValDiff, nDigits);
-           // pidParam.Fitting.ObjFunValAbs = SignificantDigits.Format(pidParam.Fitting.ObjFunValAbs, nDigits);
             pidParam.Fitting.NumSimulatorRestarts = numSimRestarts;
-
             pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;
             return (pidParam, dataSet.U_sim, indToIgnore);
         }
