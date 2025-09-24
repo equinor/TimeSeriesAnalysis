@@ -43,7 +43,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         static public GainSchedModel Identify(UnitDataSet dataSet, GainSchedFittingSpecs gsFittingSpecs = null)
         {
-            const bool chooseModelV2 = false;// this for some reason causes worse performance, better if "false"(consider basing on something othre than fitscore? like rsq?)
+            const bool chooseModelBasedOnFitscore = false;// this for some reason causes worse performance, better if "false"(consider basing on something other than fitscore? like rsq?)
 
             int gainSchedInputIndex = 0;
             if (gsFittingSpecs != null)
@@ -133,7 +133,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             GainSchedParameters bestModel_pass1 ;
             int bestModelIdx_pass1;
-            if (chooseModelV2)
+            if (chooseModelBasedOnFitscore)
                 (bestModel_pass1, bestModelIdx_pass1) = ChooseBestModelFromFittingInfo(allGainSchedParams, ref dataSet);
             else
                 (bestModel_pass1, bestModelIdx_pass1) =  ChooseBestModelFromSimulationList(allGainSchedParams, allYSimList, ref dataSet);
@@ -156,7 +156,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 GainSchedParameters bestModel_pass2;
                 int bestModelIdx_pass2;
 
-                if (chooseModelV2)
+                if (chooseModelBasedOnFitscore)
                     (bestModel_pass2, bestModelIdx_pass2) = ChooseBestModelFromFittingInfo(potentialGainschedParametersList_pass2,ref dataSet);
                 else
 
@@ -394,8 +394,6 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-
-
         /// <summary>
         /// Chooses the best parameter in list, given a list of the simulation results of all of the candidates
         /// </summary>
@@ -419,19 +417,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     var curSimY = candidateYsim.ElementAt(curModelIdx);
                     var residuals = vec.Abs(vec.Subtract(curSimY, dataSet.Y_meas));
-
-                    //V1: rms-based selection.                    
-                    /* double rms = 0;
-                     for (int j = 0; j < curSimY.Length; j++)
-                     {
-                         rms = rms + Math.Pow(residuals.ElementAt(j), 2);
-                     }
-                     if (rms < lowestRms)
-                     {
-                         BestGainSchedParams = curGainSchedParams;
-                         lowestRms = rms;
-                         bestModelIdx = curModelIdx;
-                     }*/
 
                     //V2: abs value of residuals : slightly better in gain-scheduled ramp tests.
                     {
@@ -465,7 +450,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         string str_linear_gains = "";
                         for (int j = 0; j < curGainSchedParams.LinearGains.Count; j++)
                         {
-                            str_linear_gains = str_linear_gains + string.Concat(curGainSchedParams.LinearGains[j].Select(x => x.ToString("F2", CultureInfo.InvariantCulture))) + " ";
+                            str_linear_gains = str_linear_gains + 
+                                string.Concat(curGainSchedParams.LinearGains[j].Select(x => x.ToString("F2", CultureInfo.InvariantCulture))) + " ";
                         }
                         Shared.EnablePlots();
                         Plot.FromList(new List<double[]> {
@@ -527,7 +513,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     dataSet.Y_sim = y_sim2;
                     if (gsParams.Fitting == null)
                         gsParams.Fitting = new FittingInfo();
-                    gsParams.Fitting.FitScorePrc = FitScoreCalculator.Calc(dataSet.Y_meas,dataSet.Y_sim);
+                    gsParams.Fitting.FitScorePrc = FitScoreCalculator.Calc(dataSet.Y_meas,dataSet.Y_sim, dataSet.BadDataID);
                     gsParams.Fitting.WasAbleToIdentify = true;
                     gsParams.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
                     if  (dataSet.IndicesToIgnore != null)

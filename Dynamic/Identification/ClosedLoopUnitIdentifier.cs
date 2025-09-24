@@ -578,7 +578,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Try to model the effects of other non-pid inputs in a MISO-system, given an inital estimate of d_est and unitModel, 
-        /// when the gain of the pid-output is forced equat to pidProcGain
+        /// when the gain of the pid-output is forced equat to pidProcGain(depreated)
         /// </summary>
         /// <param name="pidProcGain">the estimated gain of the the pid-controlled input (which has input pidInputIdx)</param>
         /// <param name="d_est">the estimated disturbance </param>
@@ -641,9 +641,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        if (model_dist_diff.GetModelParameters().Fitting.ObjFunValDiff >
-                            model_dist_abs.GetModelParameters().Fitting.ObjFunValDiff)
-
+                        if (model_dist_diff.GetModelParameters().Fitting.FitScorePrc >
+                            model_dist_abs.GetModelParameters().Fitting.FitScorePrc)
                             model_dist = model_dist_diff;
                         else
                             model_dist = model_dist_abs;

@@ -121,11 +121,10 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 PlantSimulatorHelper.SimulateSingleToYsim(dataSet, model);
                 model.SetFittedDataSet(dataSet);
+                model.GetModelParameters().Fitting.SolverID += "(diff)";
             }
             return model;
-
         }
-
 
         /// <summary>
         /// Identifies the "Default" process model that best fits the dataSet given, but disables curvatures and time-constants
@@ -253,10 +252,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 uNorm = SignificantDigits.Format(uNorm, nDigits);
             }
-            
-
-
-
 
             // logic for all curves off an all curves on, treated as special cases
             bool[] allCurvesDisabled = new bool[u0.Count()];
@@ -388,16 +383,10 @@ namespace TimeSeriesAnalysis.Dynamic
             // check if the static model is better than the dynamic model. 
             else if (modelParameters.Fitting.WasAbleToIdentify && modelParams_StaticAndNoCurvature.Fitting.WasAbleToIdentify)
             {
-
-                // on real-world data it is sometimes obsrevd that RsqAbs and ObjFunAbs is NaN.
-                // to be robust, check for nan and use any of the four different metrics in order of trust
-                if (true)
+                if (modelParams_StaticAndNoCurvature.Fitting.FitScorePrc >
+                    modelParameters.Fitting.FitScorePrc)
                 {
-                    if (modelParams_StaticAndNoCurvature.Fitting.FitScorePrc >
-                        modelParameters.Fitting.FitScorePrc)
-                    {
-                        modelParameters = modelParams_StaticAndNoCurvature;
-                    }
+                    modelParameters = modelParams_StaticAndNoCurvature;
                 }
             }
             modelParameters.TimeDelayEstimationWarnings = timeDelayWarnings;
@@ -451,64 +440,15 @@ namespace TimeSeriesAnalysis.Dynamic
 
         private static UnitParameters ChooseBestModel(UnitParameters fallbackModel,List<UnitParameters> allModels)
         {
-            bool useOnlyFitScore = true;//preferred:true
-
             var bestModel = fallbackModel;
-            // models will be arranged from least to most numbre of curvature terms
+            // models will be arranged from least to most numer of curvature terms
             // in case of doubt, do not add in extra curvature that does not significantly improve the objective function
             foreach (UnitParameters curModel in allModels)
             {
-                if (useOnlyFitScore)
+                if (curModel.Fitting.FitScorePrc > bestModel.Fitting.FitScorePrc)
                 {
-                    if (curModel.Fitting.FitScorePrc > bestModel.Fitting.FitScorePrc)
-                    {
-                        bestModel = curModel;
-                    }
+                    bestModel = curModel;
                 }
-            /*    else
-                {
-
-                    // Rsquared: higher is better
-                    double RsqFittingDiff_improvement = curModel.Fitting.RsqDiff - bestModel.Fitting.RsqDiff;
-                    double RsqFittingAbs_improvement = curModel.Fitting.RsqAbs - bestModel.Fitting.RsqAbs;
-                    // objective function: lower is better
-                    double objFunDiff_improvement = bestModel.Fitting.ObjFunValDiff - curModel.Fitting.ObjFunValDiff;// positive if curmodel improves on the current best
-                    double objFunAbs_improvement = bestModel.Fitting.ObjFunValAbs - curModel.Fitting.ObjFunValAbs;// positive if curmodel improves on the current best
-
-                    if (Double.IsNaN(RsqFittingAbs_improvement) || Double.IsNaN(objFunAbs_improvement))
-                    {
-                        if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
-                           RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
-                           curModel.Fitting.WasAbleToIdentify
-                           )
-                        {
-                            bestModel = curModel;
-                        }
-                    }
-                    else if (Double.IsNaN(RsqFittingDiff_improvement) || Double.IsNaN(objFunDiff_improvement))
-                    {
-                        if (objFunAbs_improvement >= 0 &&
-                            RsqFittingAbs_improvement >= 0 &&
-                           curModel.Fitting.WasAbleToIdentify
-                           )
-                        {
-                            bestModel = curModel;
-                        }
-                    }
-                    else
-                    {
-                        if (objFunDiff_improvement >= obFunDiff_MinImprovement &&
-                           RsqFittingDiff_improvement >= rSquaredDiff_MinImprovement &&
-                           objFunAbs_improvement >= 0 &&
-                           RsqFittingAbs_improvement >= 0 &&
-                           curModel.Fitting.WasAbleToIdentify
-                           )
-                        {
-                            bestModel = curModel;
-                        }
-                    }
-                }*/
-
             }
             return bestModel;
         }
@@ -872,7 +812,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     linearProcessGains = Vec<double>.SubArray(regResults.Param, 0, regResults.Param.Length - 2);
                 }
             }
-            UnitParameters parameters = new UnitParameters();
+            var parameters = new UnitParameters();
         
             parameters.Fitting = new FittingInfo();
             parameters.Fitting.SolverID = solverID;
@@ -930,8 +870,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 parameters.Curvatures = SignificantDigits.Format(processCurvatures, nDigits);
                 parameters.U0 = u0;
                 parameters.UNorm = uNorm;
-
-          //      dataSet.IndicesToIgnore = yIndicesToIgnore;
 
                 (double? recalcBias, double[] y_sim_recalc) =
                     SimulateAndReEstimateBias(dataSet, parameters, yIndicesToIgnore);

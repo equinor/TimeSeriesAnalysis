@@ -462,10 +462,10 @@ namespace TimeSeriesAnalysis.Dynamic
             // can be flipped to produce a simulated signal that is positively correlated with the measured signal.
             if (vec.RSquared(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indToIgnore, 0) < -0.1 && useConstantTimeBase && doFlipKpIfNeeded)
             {
-                double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indToIgnore);
+                double oldFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), dataSet.BadDataID, indToIgnore);
                 pidParam.Kp = -pidParam.Kp;// flip sign of kp
                 U_sim = Array2D<double>.Create(GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indToIgnore).Item1);
-                double newFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), indToIgnore);
+                double newFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), U_sim.GetColumn(0), dataSet.BadDataID, indToIgnore);
                 pidParam.Fitting.SolverID += "(Kp flipped)";
                 dataSet.U_sim = U_sim;
             }
@@ -493,7 +493,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
             pidParam.Fitting.FitScorePrc = SignificantDigits.Format(FitScoreCalculator.Calc(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0),
-                 indToIgnore), nDigits);
+                 dataSet.BadDataID,indToIgnore), nDigits);
 
             if (false)
             {
@@ -504,12 +504,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.DisablePlots();
             }
                         
-            pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indToIgnore, 0) * 100;
+       //     pidParam.Fitting.RsqAbs = vec.RSquared(dataSet.U.GetColumn(0), dataSet.U_sim.GetColumn(0), indToIgnore, 0) * 100;
 
-            pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
+           // pidParam.Fitting.RsqAbs = SignificantDigits.Format(pidParam.Fitting.RsqAbs, nDigits);
             pidParam.Fitting.RsqDiff = SignificantDigits.Format(pidParam.Fitting.RsqDiff, nDigits);
-            pidParam.Fitting.ObjFunValDiff = SignificantDigits.Format(pidParam.Fitting.ObjFunValDiff, nDigits);
-            pidParam.Fitting.ObjFunValAbs = SignificantDigits.Format(pidParam.Fitting.ObjFunValAbs, nDigits);
+           // pidParam.Fitting.ObjFunValDiff = SignificantDigits.Format(pidParam.Fitting.ObjFunValDiff, nDigits);
+           // pidParam.Fitting.ObjFunValAbs = SignificantDigits.Format(pidParam.Fitting.ObjFunValAbs, nDigits);
             pidParam.Fitting.NumSimulatorRestarts = numSimRestarts;
 
             pidParam.DelayOutputOneSample = isPIDoutputDelayOneSample;

@@ -73,29 +73,12 @@ namespace TimeSeriesAnalysis.Dynamic
         public double RsqDiff { get; set; }
 
         /// <summary>
-        /// The value of the R2 or root mean square
-        /// <para>
-        /// This is the R-squared of the "absolute" sum(ymeas[k] - ymod[k] )
-        /// </para>>
-        /// </summary>
-        public double RsqAbs { get; set; }
-
-        /// <summary>
         /// The value of the objective function during fitting, lower is better(used to choose among models)
         /// <para>
         /// This is the R-squared of the "differences"  sum(ymeas[k]-ymeas[k-1] -(ymod[k]-ymod[k-1]) )
         /// </para>>
         /// </summary>
         public double ObjFunValDiff { get; set; }
-
-        /// <summary>
-        /// The value of the objective function during fitting, lower is better(used to choose among models)
-        /// <para>
-        /// This is the R-squared of the "absolute" sum(ymeas[k]-ymod[k-1])
-        /// </para>>
-        /// </summary>
-
-        public double ObjFunValAbs { get; set; }
 
         /// <summary>
         /// The time base of the fitting dataset (model can still be run on other timebases)
@@ -158,24 +141,12 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 ysim_diff = Vec<double>.SubArray(ysim_diff, 1);
             }
-
-            this.RsqAbs = SignificantDigits.Format(vec.RSquared(ymeas_vals, ysim_vals) * 100, nDigits);
             this.RsqDiff = SignificantDigits.Format(vec.RSquared(ymeas_diff, ysim_diff) * 100, nDigits);
 
             // objective function " average of absolute model deviation
-            //avgErrorObj = vec.SumOfSquareErr(ymeas_vals, ysim_vals);
             var avgErrorObj = vec.Mean(vec.Abs(vec.Subtract(ymeas_vals, ysim_vals)), yIndicesToIgnore);
-            if (avgErrorObj.HasValue)
-            {
-                this.ObjFunValAbs = SignificantDigits.Format(avgErrorObj.Value, nDigits); ;
-            }
-            else
-            {
-                this.ObjFunValAbs = Double.NaN;
-            }
 
             // "objective function" average of absolute diffs of model deviation
-            //  var diffObj = vec.SumOfSquareErr(ymeas_diff, ysim_diff)
             var diffObj = vec.Mean(vec.Abs(vec.Diff(vec.Subtract(ymeas_vals, ysim_vals), yIndicesToIgnore)));
             if (diffObj.HasValue)
             {
@@ -190,7 +161,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 this.NFittingBadDataPoints = yIndicesToIgnore.Count;
             }
 
-            var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals, yIndicesToIgnore);
+            var fitScore = FitScoreCalculator.Calc(ymeas_vals, ysim_vals, dataSet.BadDataID, yIndicesToIgnore );
             this.FitScorePrc = SignificantDigits.Format(fitScore, nDigits);
             this.TimeBase_s = dataSet.GetTimeBase();
 

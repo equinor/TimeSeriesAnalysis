@@ -55,36 +55,89 @@ namespace TimeSeriesAnalysis.Dynamic
 
         public bool DetermineIfContinueIncreasingTimeDelay(int timeDelayIdx)
         {
+            const bool useOnlyFitScore = false; // would like to set to true
+
             if (timeDelayIdx < minTimeDelayIts)
                 return true;
 
             // nb! note that time window decreases with one timestep for each increase in time delay of one timestep.
             // thus there is a chance of the object function decreasing without the model fit improving.
             // especially if the only information in the dataset is at the start of the dataset.
-            var objFunVals = GetObjFunDiffValList();
-            bool isObjFunDecreasing = objFunVals.ElementAt(objFunVals.Length - 2) < objFunVals.ElementAt(objFunVals.Length-1);
-
-            var r2Vals = GetR2DiffList();
-            bool isR2Decreasing = r2Vals.ElementAt(r2Vals.Length - 2) < r2Vals.ElementAt(r2Vals.Length - 1); ;
 
             bool continueIncreasingTimeDelayEst;// = true;
 
-            if (isObjFunDecreasing || isR2Decreasing)
+            if (useOnlyFitScore)
             {
-                if (timeDelayIdx < maxExpectedTimeDelay_samples)
+                var objFitScore = GetFitScoreList();
+                bool isFitScoreIncreasing = objFitScore.ElementAt(objFitScore.Length - 2) <= objFitScore.ElementAt(objFitScore.Length - 1);
+
+                if (isFitScoreIncreasing)
                 {
-                    continueIncreasingTimeDelayEst = true;
+                    if (timeDelayIdx < maxExpectedTimeDelay_samples)
+                    {
+                        continueIncreasingTimeDelayEst = true;
+                    }
+                    else
+                    {
+                        continueIncreasingTimeDelayEst = false;
+                    }
+                }
+                else
+                    continueIncreasingTimeDelayEst = false;
+            }
+            else
+            {
+                 var objFunVals = GetObjFunDiffValList();
+                 bool isObjFunDecreasing = objFunVals.ElementAt(objFunVals.Length - 2) < objFunVals.ElementAt(objFunVals.Length-1);
+
+                 var r2Vals = GetR2DiffList();
+                 bool isR2Decreasing = r2Vals.ElementAt(r2Vals.Length - 2) < r2Vals.ElementAt(r2Vals.Length - 1); ;
+
+                 if (isObjFunDecreasing || isR2Decreasing)
+                 {
+                     if (timeDelayIdx < maxExpectedTimeDelay_samples)
+                     {
+                         continueIncreasingTimeDelayEst = true;
+                     }
+                     else
+                     {
+                         continueIncreasingTimeDelayEst = false;
+                     }
+                 }
+                 else
+                     continueIncreasingTimeDelayEst = false;
+            }
+
+            return continueIncreasingTimeDelayEst;
+        }
+
+        /// <summary>
+        /// Get Fit score of all runs so far in an array, 
+        /// </summary>
+        /// <returns>array or R-squared values, with Nan if any runs have failed</returns>
+        private double[] GetFitScoreList()
+        {
+            List<double> objFitScoreList = new List<double>();
+            for (int i = 0; i < modelRuns.Count; i++)
+            {
+                if (modelRuns[i] == null)
+                {
+                    objFitScoreList.Add(Double.NaN);
                 }
                 else
                 {
-                    continueIncreasingTimeDelayEst = false;
+                    if (modelRuns[i].Fitting.WasAbleToIdentify)
+                    {
+                        objFitScoreList.Add(modelRuns[i].Fitting.FitScorePrc);
+                    }
+                    else
+                    {
+                        objFitScoreList.Add(Double.NaN);
+                    }
                 }
+
             }
-            else
-                continueIncreasingTimeDelayEst = false;
-
-
-            return continueIncreasingTimeDelayEst;
+            return objFitScoreList.ToArray();
         }
 
         /// <summary>

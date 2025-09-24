@@ -127,10 +127,10 @@ namespace TimeSeriesAnalysis
         /// <param name="mainSignalName"></param>
         /// <param name="dataSet">the dataset, which must have a correctly set timestamps in order to estimate time constants</param>
         /// <param name="minimumCorrCoeffToDoTimeshiftCalc">calculate time-shift for every corr coeff with absolute value that is above this threshold(0.0-1.0)</param>
-        /// <param name="minimumRsqAbs">for a time-shift to be valid, the resulting model nees to have Rsq over this threshold</param>
+        /// <param name="minimumFitScore">for a time-shift to be valid, the resulting model nees to have Rsq over this threshold</param>
         /// <returns>a</returns>
         public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet,
-            double minimumCorrCoeffToDoTimeshiftCalc=0.4,double  minimumRsqAbs = 10)
+            double minimumCorrCoeffToDoTimeshiftCalc=0.4,double minimumFitScore = 10)
         {
             (double?,double?) EstimateTimeShift(double[] signalIn, double[] signalOut)
             {
@@ -139,7 +139,7 @@ namespace TimeSeriesAnalysis
                 dataSetUnit.U = Array2D<double>.CreateFromList(new List<double[]> { signalIn });
                 dataSetUnit.CreateTimeStamps(dataSet.GetTimeBase());
                 var identModel = UnitIdentifier.Identify(ref dataSetUnit);
-                if (identModel.modelParameters.Fitting.WasAbleToIdentify && identModel.modelParameters.Fitting.RsqAbs > minimumRsqAbs)
+                if (identModel.modelParameters.Fitting.WasAbleToIdentify && identModel.modelParameters.Fitting.FitScorePrc > minimumFitScore)
                 {
                     return (Math.Round(identModel.modelParameters.TimeConstant_s),
                         Math.Round(identModel.modelParameters.TimeDelay_s));

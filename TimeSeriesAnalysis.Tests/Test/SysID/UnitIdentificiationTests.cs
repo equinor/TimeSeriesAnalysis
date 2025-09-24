@@ -144,6 +144,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             Assert.IsTrue(Math.Abs(model.GetModelParameters().TimeDelay_s - designParameters.TimeDelay_s) < timeDelayTolerance_s,
                 "est.time delay should be close to actual");
+
         }
 
 
@@ -279,9 +280,16 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Bias = bias
             };
             var model = CreateDataAndIdentify(designParameters, U, timeBase_s, new FittingSpecs(designParameters.U0, null), noiseAmplitude,addInBadDataToYmeas, badValueId);
-            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
-                new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1, u2 },
+                    new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
+                Shared.DisablePlots();
+            }
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 95, "fit score should be high!");
         }
 
         [TestCase(Double.NaN)]
@@ -311,6 +319,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s);
             }
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 98, "fit score should be high!");
         }
 
 
@@ -330,7 +339,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             UnitParameters designParameters = new UnitParameters
             {
-                TimeConstant_s = 0,// NB! if a time-constant 10 is added here, the resultin performance is quite poor!
+                TimeConstant_s = 00,// NB! if a time-constant 10 is added here, the resulting performance is quite poor!
                 TimeDelay_s = 0,
                 LinearGains = new double[] { 1.5,1.7,0.3 },
                 U0 = Vec<double>.Fill(1, Ninputs),
@@ -487,6 +496,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                  caseId.Replace("(","").Replace(")","").Replace(",","_"));
 
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 98, "fit score should be high!");
         }
         [TestCase(0, 0, 0, Category = "Static")]
         //
@@ -516,6 +526,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 94, "fit score should be high!");
         }
 
         [TestCase(0,  0,  0, Category = "Static")]
@@ -553,6 +564,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.Greater(model.modelParameters.Fitting.NFittingBadDataPoints,0, "number of excluded data points should be more than zero");
             Assert.AreEqual(fittingSpecs.U_min_fit, model.modelParameters.FittingSpecs.U_min_fit, "input umin fit should be preserved in model parameters");
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 98, "fit score should be high!");
         }
 
         [TestCase(0, 0, 0, Category = "Static")]
@@ -587,8 +599,9 @@ namespace TimeSeriesAnalysis.Test.SysID
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
             Assert.Greater(model.modelParameters.Fitting.NFittingBadDataPoints, 0, "number of excluded data points should be more than zero");
-           Assert.AreEqual(fittingSpecs.Y_min_fit, model.modelParameters.FittingSpecs.Y_min_fit, "input umin fit should be preserved in model parameters");
+            Assert.AreEqual(fittingSpecs.Y_min_fit, model.modelParameters.FittingSpecs.Y_min_fit, "input umin fit should be preserved in model parameters");
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 98, "fit score should be high!");
         }
 
         /*
@@ -805,6 +818,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                  caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
 
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 95, "fit score should be high!");
             return model;
         }
 
@@ -836,6 +850,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim, model.GetFittedDataSet().Y_meas, u1,u2 },
                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1", "y3=u2" }, (int)timeBase_s);
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 98, "fit score should be high!");
         }
 
         [TestCase(0, 0, 0, Category = "Static")]
@@ -955,6 +970,7 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             var model = CreateDataAndIdentify(designParameters, U,timeBase_s, fittingSpecs,noiseAmplitude);
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 96, "fit score should be high!");
         }
 
         [TestCase(0, 0, Category = "Static")]
@@ -974,6 +990,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             };
             var model = CreateDataAndIdentifyStatic(designParameters, U, timeBase_s, fittingSpecs, noiseAmplitude);
             DefaultAsserts(model, designParameters);
+            Assert.IsTrue(model.GetModelParameters().Fitting.FitScorePrc > 98, "fit score should be high!");
         }
 
         [TestCase(0, 0, Category = "Static")]

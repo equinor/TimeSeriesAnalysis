@@ -781,9 +781,9 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 sb.AppendLine("Fit score(%): " + modelParameters.Fitting.FitScorePrc.ToString(writeCulture));
 
-                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValDiff, 4).ToString(writeCulture));
+//                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValDiff, 4).ToString(writeCulture));
                 sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqDiff, 4).ToString(writeCulture));
-                sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqAbs, 4).ToString(writeCulture));
+            //    sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqAbs, 4).ToString(writeCulture));
 
                 sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints 
                     + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were ignored");
