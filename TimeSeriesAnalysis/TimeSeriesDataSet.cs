@@ -480,6 +480,8 @@ namespace TimeSeriesAnalysis
                 {
                     return null;
                 }
+                else if (timeIdx<0)
+                    return dataset[signalName][0];
                 else
                     return dataset[signalName][timeIdx];
             }
@@ -518,7 +520,11 @@ namespace TimeSeriesAnalysis
                     if (timeIdx >= dataset[signalName].Count())
                     {
                         retData[valueIdx] = double.NaN;
-//                        return null;
+                        //                        return null;
+                    }
+                    else if (timeIdx < 0)
+                    {
+                        retData[valueIdx] = dataset[signalName][0]; ;
                     }
                     else
                     {
