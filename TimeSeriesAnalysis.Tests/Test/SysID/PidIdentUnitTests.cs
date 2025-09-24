@@ -89,7 +89,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-            Assert.Greater(idResult.Fitting.FitScorePrc,70, "fit score be high" );
+            Assert.Greater(idResult.Fitting.FitScorePrc,91, "fit score be high" );
             Assert.AreEqual(idResult.Fitting.NumSimulatorRestarts, 0, "no sim restarts");
 
         }
@@ -259,7 +259,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             {
                 Assert.IsTrue(idResult.Ti_s < 1);
             }
-            Assert.Greater(idResult.Fitting.FitScorePrc, 50);
+            Assert.Greater(idResult.Fitting.FitScorePrc, 96);
         }
 
 
@@ -490,7 +490,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             }
             Assert.IsTrue(Math.Abs(idParameters.Kp - trueParameters.Kp) < 0.02 * trueParameters.Kp, "Kp too far off :" + idParameters.Kp); 
             Assert.IsTrue(Math.Abs(idParameters.Ti_s - trueParameters.Ti_s) < 0.05 * trueParameters.Ti_s, "Ti too far off" + idParameters.Ti_s); 
-            Assert.Greater(idParameters.Fitting.FitScorePrc, 50, "fit score should ignore bad data and give a high score:");
+            Assert.Greater(idParameters.Fitting.FitScorePrc, 95, "fit score should ignore bad data and give a high score:");
             Assert.AreEqual(idParameters.Fitting.NumSimulatorRestarts, 0, "no sim restarts");
         }
 
@@ -585,7 +585,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             */ 
                 Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.1 * truePidParams.Ti_s,"Ti too far off!!");
                 Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.1 * truePidParams.Kp, "Kp too far off!!"); 
-                Assert.Greater(idModelParams.Fitting.FitScorePrc, 60, "FitScore poor!"); 
+                Assert.Greater(idModelParams.Fitting.FitScorePrc, 99, "FitScore poor!"); 
            }
 
         /*  /// <summary>
