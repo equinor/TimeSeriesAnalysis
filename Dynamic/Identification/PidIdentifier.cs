@@ -471,8 +471,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (flippedFitScore > 0 && flippedFitScore > fitScore)
                 {
+                    if (pidParamFlipped.Fitting == null)
+                        pidParamFlipped.Fitting = new FittingInfo();    
+
                     if (pidParamFlipped.Fitting.SolverID == null)
-                        pidParamFlipped.Fitting.SolverID = "(Kp flipped)";
+                        pidParamFlipped.Fitting.SolverID = "PidIdentifier (Kp flipped)";
                     else
                         pidParamFlipped.Fitting.SolverID += "(Kp flipped)";
 

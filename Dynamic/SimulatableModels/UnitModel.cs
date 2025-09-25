@@ -755,7 +755,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-
             sb.AppendLine(" -> u0 : " + Vec.ToString(modelParameters.U0, sDigits).ToString(writeCulture));
             if (modelParameters.UNorm == null)
             {
@@ -780,10 +779,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (modelParameters.Fitting != null)
             {
                 sb.AppendLine("Fit score(%): " + modelParameters.Fitting.FitScorePrc.ToString(writeCulture));
-
-//                sb.AppendLine("objective(diffs): " + SignificantDigits.Format(modelParameters.Fitting.ObjFunValDiff, 4).ToString(writeCulture));
                 sb.AppendLine("R2(diffs): " + SignificantDigits.Format(modelParameters.Fitting.RsqDiff, 4).ToString(writeCulture));
-            //    sb.AppendLine("R2(abs): " + SignificantDigits.Format(modelParameters.Fitting.RsqAbs, 4).ToString(writeCulture));
 
                 sb.AppendLine("model fit data points: " + modelParameters.Fitting.NFittingTotalDataPoints 
                     + " of which " + modelParameters.Fitting.NFittingBadDataPoints + " were ignored");
@@ -806,7 +802,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
 
                 sb.AppendLine("simulator restarts:" + modelParameters.Fitting.NumSimulatorRestarts);
-
             }
             return sb.ToString();
         }
