@@ -86,7 +86,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public double PlantFitScore;
 
 
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -262,15 +261,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
                 }// process output-> connects to process input of another process
-                /*else if (upstreamType == ProcessModelType.SubProcess && downstreamType == ProcessModelType.SubProcess)
-                {
-                    var isOk = downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
-                    if (!isOk)
-                    {
-                        Shared.GetParserObj().AddError("ProcessSimulator.ConnectModels() error connecting:" + outputId);
-                        return false;
-                    }
-                }*/
                 else 
                 {
                     var isOk = downstreamModel.SetInputIDs(new string[] { outputId }, inputIndex);
@@ -484,9 +474,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return modelDict;
         }
 
-
-
-
         /// <summary>
         /// Gets data for a given model from either of two datasets (usally the inputdata and possibly simulated data. 
         /// This method also has a special treatment of PID-inputs.
@@ -549,22 +536,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 // for instance, always use the most current setpoint value, but if no disturbance vector is given, then use the y_proc simulated from the last iteration.
                 double[] retValues = new double[currentValues.Length];
                 retValues = currentValues;
-
-                // adding in the below code  seems to remove the issue with there being a one sample wait time before the effect of a setpoint 
-                // is seen on the output, but causes there to be small deviation between what the PlantSimulator.SimulateSingle and PlantSimulator.Simulate
-                // seem to return for a PID-loop in the test BasicPID_CompareSimulateAndSimulateSingle_MustGiveSameResultForDisturbanceEstToWork
-                
-                  /*for (int i = 0; i < currentValues.Length; i++)
-                  {
-                      if (Double.IsNaN(currentValues[i]))
-                      {
-                          retValues[i] = lookBackValues[i];
-                      }
-                      else
-                      {
-                          retValues[i] = currentValues[i];
-                      }
-                 }*/
                 return retValues;
             }
             else
@@ -611,7 +582,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
         {
             const bool doVarTimeBase = true;// experimentally, try using the values of the last good time. 
-            const bool doPadIndicesToIgnoreWithTrailingIndices = false; // ideally want this to be false, as if data is oversampled by around factor 2 you risk ignoreing all data. 
 
             int? N = inputData.GetLength();
             if (!N.HasValue)
@@ -648,11 +618,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                if (doPadIndicesToIgnoreWithTrailingIndices)
-                    inputDataMinimal.SetIndicesToIgnore(Index.AppendTrailingIndices(inputDataMinimal.GetIndicesToIgnore()));
-                else
                     inputDataMinimal.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
-//           
             }
 
             // todo: disturbances could also instead be estimated in closed-loop? 
