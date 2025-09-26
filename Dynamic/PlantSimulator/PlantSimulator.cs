@@ -47,11 +47,6 @@ namespace TimeSeriesAnalysis.Dynamic
     public class PlantSimulator
     {
 
-        private const bool doDestBasedONYsimOfLastTimestep = true;
-
-
-
-
         /// <summary>
         /// User-friendly name that may include white spaces.
         /// </summary>
