@@ -105,7 +105,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     dataSet.IndicesToIgnore = new List<int>();
                 }
-                // TODO: if detectFrozenData is set to true, then model seems to fail for some unit tests
                 dataSet.IndicesToIgnore = CommonDataPreprocessor.ChooseIndicesToIgnore(
                     dataSet,detectBadData:true,detectFrozenData:false); 
             }
@@ -167,18 +166,21 @@ namespace TimeSeriesAnalysis.Dynamic
             ConsoleDebugOut(sbSolverOutput,unitModel_init, "Init");
             SaveSearchResult(unitModel_init);
             // step1, MISO: ident (add inital estimates of any other inputs to the above model-free estiamte) 
-           /* if (isMISO)
-            {
-                dataSetRun1.D = idDisturbancesList.Last().d_est;
-                var unitModel_step1Miso = UnitIdentifier.IdentifyLinearAndStatic(ref dataSetRun1, fittingSpecs, false);// no time-delay estimation.
-                unitModel_step1Miso.modelParameters.LinearGainUnc = null;
-                if (doConsoleDebugOut)
-                    ConsoleDebugOut(unitModel_step1Miso, "Step 1,MISO");
-                SaveSearchResult(unitModel_step1Miso);
-            }*/
+            /* if (isMISO)
+             {
+                 dataSetRun1.D = idDisturbancesList.Last().d_est;
+                 var unitModel_step1Miso = UnitIdentifier.IdentifyLinearAndStatic(ref dataSetRun1, fittingSpecs, false);// no time-delay estimation.
+                 unitModel_step1Miso.modelParameters.LinearGainUnc = null;
+                 if (doConsoleDebugOut)
+                     ConsoleDebugOut(unitModel_step1Miso, "Step 1,MISO");
+                 SaveSearchResult(unitModel_step1Miso);
+             }*/
 
             // ----------------
             // steps 1 and 2 (run sequentially for multiple passes.)
+
+            double maxStableProcessGainAbs = Math.Abs(1 / pidParams.Kp * 0.98);
+
             for (int passNumber = 1;passNumber<= MAX_NUM_PASSES; passNumber++)//NB! passNumber starts at 1.
             {
                 // /////////////////////
@@ -192,13 +194,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     double max_gain, min_gain;
                     if (pidProcGainPrevEstimate > 0)
                     {
-                        max_gain = pidProcGainPrevEstimate * (1 + step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100);
-                        min_gain = pidProcGainPrevEstimate * (1 - step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100);
+                        max_gain = Math.Min(pidProcGainPrevEstimate * (1 + step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100), maxStableProcessGainAbs) ;
+                        min_gain = Math.Min(pidProcGainPrevEstimate * (1 - step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100), maxStableProcessGainAbs);
                     }
                     else
                     {
-                        min_gain = pidProcGainPrevEstimate * (1 + step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100);
-                        max_gain = pidProcGainPrevEstimate * (1 - step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100);
+                        min_gain = -Math.Min(Math.Abs(pidProcGainPrevEstimate * (1 + step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100)), maxStableProcessGainAbs);
+                        max_gain = -Math.Min(Math.Abs(pidProcGainPrevEstimate * (1 - step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100)), maxStableProcessGainAbs);
                     }
 
                     sbSolverOutput.AppendLine("Pass " + passNumber + " Step 1 " + "pid-process gain bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture)
@@ -792,12 +794,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 double Power(double[] inSignal)
                 {
                     return vec.Mean(vec.Abs(vec.Diff(inSignal))).Value;
-
-               /*     var mean = vec.Mean(inSignal).Value;
-                    var max = vec.Max(inSignal);
-                    var min = vec.Min(inSignal);
-                    double scale = Math.Max(Math.Abs(max - mean), Math.Abs(min - mean));
-                    return vec.Mean(vec.Abs(vec.Subtract(inSignal, vec.Mean(inSignal).Value))).Value / scale;*/
                 }
 
                 for (var i = 0; i < dEstList.Count(); i++)
@@ -806,10 +802,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     // thus they two signals should not expect to have the same power...
                     //var dEstPower = Power(dEstList.ElementAt(i) );
                     // var yProcPower = Power(yProcessList.ElementAt(i) );
-
-                    //
-                    // these two signals have the same range!
-                    //
 
                     //
                     // it is usually when yProcess has the same range as dHF, you are at or slightly above the true process gain!
@@ -925,9 +917,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             return pidInput_processGainSign;
-
         }
-
 
         /// <summary>
         /// Initial estimate of the process model gain made by observing the range of e (ymeas-ysetpoint)
@@ -937,6 +927,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitDataSet">the dataset</param>
         /// <param name="pidParams">an estimate of the PID-parameters</param>
         /// <param name="pidInputIdx">the index of U in the above dataset that is driven by the PID-controller.</param>
+        /// <param name="fittingSpecs">specify the range of data to fit to </param>
         /// <returns></returns>
         private static UnitModel InitModelFreeEstimateClosedLoopProcessGain(UnitDataSet unitDataSet, PidParameters pidParams, int pidInputIdx, FittingSpecs fittingSpecs)
         {
@@ -957,9 +948,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // try to find a rough first estimate by heuristics
             {
-               //  double[] pidInput_u0 = Vec<double>.Fill(unitDataSet.U[pidInputIdx, 0], unitDataSet.GetNumDataPoints());
                 double[] pidInput_u0 = Vec<double>.Fill(fittingSpecs.u0[pidInputIdx], unitDataSet.GetNumDataPoints());
-
                 double yset0 = unitDataSet.Y_setpoint[0];
 
                 // y0,u0 is at the first data point
@@ -979,6 +968,12 @@ namespace TimeSeriesAnalysis.Dynamic
                 double maxU = vec.Max(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot
                 double minU = vec.Min(vec.Abs(uFiltered), unitDataSet.IndicesToIgnore);        // sensitive to output noise/controller overshoot  
                 estPidInputProcessGain = pidInput_processGainSign * maxDE / (maxU - minU);
+
+                // to ensure that the intial guess is stable, the process gain * Kp (pid gain)<1
+                if (Math.Abs(pidParams.Kp * estPidInputProcessGain) > 1)
+                {
+                    estPidInputProcessGain = 1 / pidParams.Kp * 0.95;
+                }
 
                 int indexOfFirstGoodValue = 0;
                 if (unitDataSet.IndicesToIgnore != null)
