@@ -22,8 +22,9 @@ namespace TimeSeriesAnalysis.Test.SysID
     class UnitIdentificationTests
     {
         static Plot4Test plot = new Plot4Test(false);
-        double timeBase_s = 1;
-        FittingSpecs fittingSpecs = new FittingSpecs(); 
+        double timeBase_s = 1; 
+        FittingSpecs fittingSpecs = new FittingSpecs();
+
 
         public UnitDataSet CreateDataSet(UnitParameters designParameters, double[,] U, double timeBase_s,
             double noiseAmplitude = 0, bool addInBadDataToYmeasAndU = false, double badValueId = Double.NaN,
@@ -152,6 +153,8 @@ namespace TimeSeriesAnalysis.Test.SysID
         public void SetUp()
         {
             Shared.GetParserObj().EnableDebugOutput();
+            timeBase_s = 1;
+            fittingSpecs = new FittingSpecs();
         }
 
         [TestCase()]

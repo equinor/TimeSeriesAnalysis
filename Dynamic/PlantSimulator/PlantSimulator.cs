@@ -581,7 +581,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
         {
-            const bool doVarTimeBase = true;// experimentally, try using the values of the last good time. 
+            const bool doUseLastGoodValueRatherThanLastValue = true;// experimentally, try using the values of the last good time. 
+            const bool doVariableTimeBase = false;// experimentally, vary the timebase based on the timestamp and time diff since last good value.
 
             int? N = inputData.GetLength();
             if (!N.HasValue)
@@ -618,7 +619,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                    inputDataMinimal.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
+                inputDataMinimal.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
             }
 
             // todo: disturbances could also instead be estimated in closed-loop? 
@@ -640,15 +641,16 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             var idxToIgnore = inputDataMinimal.GetIndicesToIgnore();
-            int lastGoodTimeIndex = 0;
+            int curGoodTimeIndex = 0, prevGoodTimeIndex = 0;
             // if start of dataset is bad, then parse forward until first good time index..
-            while (idxToIgnore.Contains(lastGoodTimeIndex) && lastGoodTimeIndex < inputDataMinimal.GetLength())
+            while (idxToIgnore.Contains(curGoodTimeIndex) && curGoodTimeIndex < inputDataMinimal.GetLength())
             {
-                lastGoodTimeIndex++;
+                curGoodTimeIndex++;
             }
+            prevGoodTimeIndex = curGoodTimeIndex - 1;
 
             // simulate for all time steps(after first step!)
-       
+
             int nConsecutiveBadSamplesCounter = 0;
             int numRestartCounter = -1;
             double largestTc =  GetLargestTimeConstant();
@@ -657,19 +659,20 @@ namespace TimeSeriesAnalysis.Dynamic
             double restartSimulatorAfterBadDataPeriod_samples = Math.Ceiling(restartSimulatorAfterBadDataPeriod_s / inputDataMinimal.GetTimeBase());
 
 
-            for (int timeIdx = 0; timeIdx < N; timeIdx++)
+            for (int curTimeIdx = 0; curTimeIdx < N; curTimeIdx++)
             {
                 bool doRestartModels = false;
-                if (timeIdx == 0)
+                if (curTimeIdx == 0)
                     doRestartModels = true;
-                if (!idxToIgnore.Contains(timeIdx))
+                if (!idxToIgnore.Contains(curTimeIdx))
                 {
                     if (largestTc > 0)
                     {
                         if (nConsecutiveBadSamplesCounter > restartSimulatorAfterBadDataPeriod_samples)
                             doRestartModels = true;
                     }
-                    lastGoodTimeIndex = timeIdx;
+                    prevGoodTimeIndex = curGoodTimeIndex;
+                    curGoodTimeIndex = curTimeIdx;
                     nConsecutiveBadSamplesCounter = 0;
                 }
                 else
@@ -681,7 +684,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doRestartModels)
                 {
                     bool useMinimalDataSet = true;
-                    if (timeIdx > 0)
+                    if (curTimeIdx > 0)
                         useMinimalDataSet = false;
 
                     numRestartCounter++;
@@ -697,9 +700,9 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         double[] inputVals;
                         if (useMinimalDataSet)
-                            inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputDataMinimal);
+                            inputVals = GetValuesFromEitherDataset(model, inputIDs, curTimeIdx, simData, inputDataMinimal);
                         else
-                            inputVals = GetValuesFromEitherDataset(model, inputIDs, timeIdx, simData, inputData);
+                            inputVals = GetValuesFromEitherDataset(model, inputIDs, curTimeIdx, simData, inputData);
                         string outputID = model.GetOutputID();
                         if (outputID == null)
                         {
@@ -709,9 +712,9 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         double[] outputVals;
                         if (useMinimalDataSet)
-                            outputVals = GetValuesFromEitherDataset(model, new string[] { outputID }, timeIdx, simData, inputDataMinimal);
+                            outputVals = GetValuesFromEitherDataset(model, new string[] { outputID }, curTimeIdx, simData, inputDataMinimal);
                         else
-                            outputVals = GetValuesFromEitherDataset(model, new string[] { outputID }, timeIdx, simData, inputData);
+                            outputVals = GetValuesFromEitherDataset(model, new string[] { outputID }, curTimeIdx, simData, inputData);
                         if (outputVals != null)
                         {
                             model.WarmStart(inputVals, outputVals[0]);
@@ -726,7 +729,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     ////////////////////////
                     // before calculating a PID-model, treat the "junction" before it to get the right y_meas[k] = y_proc[k_1] + D[k] 
-                    if (model.GetProcessModelType() == ModelType.PID && timeIdx > 0)
+                    if (model.GetProcessModelType() == ModelType.PID && curTimeIdx > 0)
                     {
                         var junctionSignalID = inputIDs.ElementAt((int)PidModelInputsIdx.Y_meas);
                         if (!pidControlledOutputsDict.ContainsKey(junctionSignalID))
@@ -740,27 +743,27 @@ namespace TimeSeriesAnalysis.Dynamic
                             {
                                 double? value =0;
                           
-                                if (doVarTimeBase)
+                                if (doUseLastGoodValueRatherThanLastValue)
                                 {
-                                    value = simData.GetValue(modelID, lastGoodTimeIndex-1); //y_proc[k-1]
+                                    value = simData.GetValue(modelID, curGoodTimeIndex-1); //y_proc[k-1]
                                 }
                                 else   // original code: constant timebase:
-                                    value = simData.GetValue(modelID, timeIdx - 1); //y_proc[k-1]
+                                    value = simData.GetValue(modelID, curTimeIdx - 1); //y_proc[k-1]
 
                                 if (modelID != null)
                                 {
                                     if (modelDict[modelID].GetAdditiveInputIDs() != null)       // + D[k] 
                                     {
                                         double[] additiveSignalsValues = new double[0];
-                                        if (doVarTimeBase)
+                                        if (doUseLastGoodValueRatherThanLastValue)
                                         {
                                             additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
-                                                modelDict[modelID].GetAdditiveInputIDs(), lastGoodTimeIndex, simData, inputDataMinimal);
+                                                modelDict[modelID].GetAdditiveInputIDs(), curGoodTimeIndex, simData, inputDataMinimal);
                                         }
                                         else
                                         {
                                             additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
-                                                modelDict[modelID].GetAdditiveInputIDs(), timeIdx, simData, inputDataMinimal);
+                                                modelDict[modelID].GetAdditiveInputIDs(), curTimeIdx, simData, inputDataMinimal);
                                         }
                                         foreach (var signalValue in additiveSignalsValues)
                                         {
@@ -770,7 +773,7 @@ namespace TimeSeriesAnalysis.Dynamic
                                 }
                                 if (value.HasValue)
                                 {
-                                    bool isOk = simData.AddDataPoint(junctionSignalID, timeIdx, value.Value);
+                                    bool isOk = simData.AddDataPoint(junctionSignalID, curTimeIdx, value.Value);
                                 }
                                 else
                                 {
@@ -783,7 +786,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     ///////////////////////
 
                     double[] inputVals = null;
-                    inputVals = GetValuesFromEitherDataset(model, inputIDs, lastGoodTimeIndex, simData, inputDataMinimal);
+                    inputVals = GetValuesFromEitherDataset(model, inputIDs, curGoodTimeIndex, simData, inputDataMinimal);
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -791,14 +794,19 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
 
-                    var timeBase_s = inputData.GetTimeBase(); ;
-                    double[] outputVal = model.Iterate(inputVals, timeBase_s);
+                    var simTimeBase_s = inputData.GetTimeBase(); ;
+                    if (doVariableTimeBase)
+                    {
+                        simTimeBase_s = inputData.GetTimeDiff_s(curGoodTimeIndex, prevGoodTimeIndex);
+                    }
+
+                    double[] outputVal = model.Iterate(inputVals, simTimeBase_s);
 
                     if (pidControlledOutputsDict.Keys.Contains(model.GetOutputID()))
                     {
                         // for pid-controlled outputs, save the result with the name of the process ID, to be used in the 
                         // next iteration, possibly in combination with a disturbance signal
-                        bool isOk = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[0]);
+                        bool isOk = simData.AddDataPoint(model.GetID(), curTimeIdx, outputVal[0]);
                         if (!isOk)
                         {
                             Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \""
@@ -808,7 +816,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        bool isOk = simData.AddDataPoint(model.GetOutputID(), timeIdx, outputVal[0]);
+                        bool isOk = simData.AddDataPoint(model.GetOutputID(), curTimeIdx, outputVal[0]);
                         if (!isOk)
                         {
                             Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \""
@@ -818,11 +826,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     if (outputVal.Length > 1)
                     {
-                        if (timeIdx ==0)
+                        if (curTimeIdx ==0)
                         {
                             simData.InitNewSignal(model.GetID(), outputVal[1],N.Value);
                         }
-                        bool isOk2 = simData.AddDataPoint(model.GetID(), timeIdx, outputVal[1]);
+                        bool isOk2 = simData.AddDataPoint(model.GetID(), curTimeIdx, outputVal[1]);
                         if (!isOk2)
                             return false;
                     }
@@ -837,6 +845,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
             return true;
         }
+
+
 
         /// <summary>
         /// Choose only the input time series that are actually used by a given plant

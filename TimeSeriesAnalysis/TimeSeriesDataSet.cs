@@ -582,6 +582,28 @@ namespace TimeSeriesAnalysis
             return null;
         }
 
+        /// <summary>
+        /// Returns the time difference in seconds between two indices (in seconds)
+        /// </summary>
+        /// <param name="olderIndex"></param>
+        /// <param name="newerIndex"></param>
+        /// <returns></returns>
+        public double GetTimeDiff_s(int olderIndex, int newerIndex)
+        {
+            if (timeStamps == null)
+                return this.GetTimeBase()*(newerIndex- olderIndex);
+            if (timeStamps.Count() == 0)
+                return this.GetTimeBase() * (newerIndex - olderIndex);
+            if (timeStamps.Count() < newerIndex)
+                return this.GetTimeBase() * (newerIndex - olderIndex);
+            if (olderIndex == newerIndex)// may happen during startup.
+                return this.GetTimeBase();
+
+            var span = timeStamps.ElementAt(newerIndex) - timeStamps.ElementAt(olderIndex)  ;
+
+            return span.TotalSeconds;
+        }
+
 
         /// <summary>
         /// Get the values of a specific signal
