@@ -50,8 +50,6 @@ namespace TimeSeriesAnalysis.Dynamic
         // these are given for each pass.
         static double[] step1GainGlobalSearchUpperBoundPrc = new double[] { 150, 40 } ;
         static double[] step1GainGlobalSearchLowerBoundPrc = new double[] { 90, 40 };
-      //  static double[] step2GainGlobalSearchUpperBoundPrc = new double[] { 150, 150 } ;
-      //   static double[] step2GainGlobalSearchLowerBoundPrc = new double[] { 90, 90 };
 
         ////////////////////////
         const bool doDebuggingPlot = false;
@@ -72,9 +70,6 @@ namespace TimeSeriesAnalysis.Dynamic
 
             return dist;
         }
-
-
-
 
         /// <summary>
         /// Identify the unit model of a closed-loop system and the disturbance (additive output signal)
@@ -495,57 +490,6 @@ namespace TimeSeriesAnalysis.Dynamic
             return step2Model;
         }
 
-
-        /*
-        private static double EstimateDisturbanceLF(UnitDataSet dataSet, UnitModel unitModel, int pidInputIdx, PidParameters pidParams)
-        {
-            var vec = new Vec(dataSet.BadDataID);
-
-            var umInternal = (UnitModel)unitModel.Clone();
-            var d_HF = vec.Subtract(dataSet.Y_meas, dataSet.Y_setpoint);
-            var unitParams = umInternal.GetModelParameters();
-
-            var dList = new List<double[]>();
-            var dNameList = new List<string>();
-            var v2List = new List<double[]>();
-            var v2NameList = new List<string>();
-
-            dList.Add(d_HF);
-            dNameList.Add("y1=dHF");
-            v2List.Add(dataSet.Y_meas);
-            v2NameList.Add("y3=y_meas");
-
-            var KpList = new List<double> { 0.5, 1, 2, 4 };
-
-            //    var dHF_energy = vec.Mean(d_HF).Value;
-            foreach (var Kp in KpList)
-            {
-                unitParams.LinearGains = new double[] { Kp };
-                umInternal.SetModelParameters(unitParams);
-                (var isOk, var y_proc) = PlantSimulatorHelper.SimulateSingle(dataSet, umInternal);
-                var d_LF = vec.Multiply(vec.Subtract(y_proc, y_proc[0]), -1);
-                var d_est1 = vec.Add(d_HF, d_LF);
-                var d_est2 = vec.Subtract(dataSet.Y_meas, y_proc);
-                dList.Add(d_est2);
-                dNameList.Add("y1=destKp" + Kp.ToString("F2", CultureInfo.InvariantCulture));
-                // var dLF_energy = vec.Mean(d_LF).Value;
-
-                //Debug.WriteLine("Kp="+Kp.ToString("F2", CultureInfo.InvariantCulture) + "dLFenergy:"+ dLF_energy.ToString("F2", CultureInfo.InvariantCulture) 
-                //   + "dHFenergy" +dHF_energy.ToString("F2", CultureInfo.InvariantCulture)) ;
-
-                v2List.Add(y_proc);
-                v2NameList.Add("y3=yProcKp" + Kp.ToString("F2", CultureInfo.InvariantCulture));
-
-                // if the energy of t
-
-            }
-            dList.AddRange(v2List);
-            dNameList.AddRange(v2NameList);
-            Shared.EnablePlots();
-            Plot.FromList(dList, dNameList, dataSet.GetTimeBase(), "exp_Kp");
-            Shared.DisablePlots();
-            return 0;
-        }*/
 
         private static void ConsoleDebugOut(StringBuilder sb, UnitModel unitModel, string description,string addOnTxt ="")
         {
@@ -1078,58 +1022,12 @@ namespace TimeSeriesAnalysis.Dynamic
         private static Tuple<UnitModel, DisturbanceIdResult> Step1GlobalSearchEstimateMISOdisturbanceForProcGain(double pidProcGain, UnitModel prevModel,
             int pidInputIdx, UnitDataSet unitDataSet, PidParameters pidParams)
         {
-            // start with a "siso" estimate
-            /*       (var sisoModel, var disturbanceIDresult) = Step1GlobalSearchEstimateSISOdisturbanceForProcGain(pidProcGain, prevModel,
-                     pidInputIdx, unitDataSet, pidParams);
-
-                   var vec = new Vec(unitDataSet.BadDataID);
-
-                   int indexOfFirstGoodValue = 0;
-                   if (unitDataSet.IndicesToIgnore != null)
-                   {
-                       if (unitDataSet.GetNumDataPoints() > 0)
-                       {
-                           while (unitDataSet.IndicesToIgnore.Contains(indexOfFirstGoodValue) && indexOfFirstGoodValue <
-                               unitDataSet.GetNumDataPoints() - 1)
-                           {
-                               indexOfFirstGoodValue++;
-                           }
-                       }
-                   }
-
-                   int nGains = sisoModel.modelParameters.GetProcessGains().Length;
-                   bool doesSetpointChange = !(vec.Max(unitDataSet.Y_setpoint, unitDataSet.IndicesToIgnore)
-                       == vec.Min(unitDataSet.Y_setpoint, unitDataSet.IndicesToIgnore));
-
-                   bool doIncludeYsetpointAsInput = true;
-                   if (!doesSetpointChange)
-                       doIncludeYsetpointAsInput = false;
-
-                   var dataSet_d = new UnitDataSet("dist");
-                   dataSet_d.Y_meas = disturbanceIDresult.d_est;
-                   var inputList = new List<double[]>();
-                   if (doIncludeYsetpointAsInput)
-                       inputList.Add(unitDataSet.Y_setpoint);
-                   for (int inputIdx = 0; inputIdx < nGains; inputIdx++)
-                   {
-                       if (inputIdx == pidInputIdx)
-                           continue;
-                       inputList.Add(unitDataSet.U.GetColumn(inputIdx));
-                   }
-                   dataSet_d.U = Array2D<double>.CreateFromList(inputList);
-            */
-            //     double[] pidInput_u0 = Vec<double>.Fill(unitDataSet.U[pidInputIdx, 0], unitDataSet.GetNumDataPoints());
-            //   prevModel.GetModelParameters().U0(pidInputIdx)
-            //   var newUnitModel = UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(dataSet_d, pidInputIdx, pidProcGain,
-            //       prevModel.GetModelParameters().U0.ElementAt(pidInputIdx), 1);
-
 
             // this below model is fairly accurate when there is no disturbance, but even in this case there are "blips" in the resulting 
             // d_est that result from 
 
             var newUnitModel = UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet, pidInputIdx, pidProcGain,
                  prevModel.GetModelParameters().U0.ElementAt(pidInputIdx), 1);
-
 
             // TEMPRORARY:FORCE MODEL TO BE ACCURATE 
             /*var newUnitModel = (UnitModel)prevModel.Clone("test");
