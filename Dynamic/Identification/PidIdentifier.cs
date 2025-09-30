@@ -8,6 +8,7 @@ using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 using System.ComponentModel.Design;
+using Accord.Collections;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -82,23 +83,65 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
-           /// <returns>the identified parameters of the PID-controller</returns>
+        /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(ref UnitDataSet dataSet)
+        {
+            //double[] usimFrozen, usimUnfrozen;
+
+            // try both with and without frozen data detection, and pick the best result
+            List<int> indToIgnoreOrig = null;
+            if (dataSet.IndicesToIgnore != null)
+                 indToIgnoreOrig = new List<int>(dataSet.IndicesToIgnore);
+            var paramWithoutFrozen = Identify_Level1(ref dataSet, false);
+          //  usimUnfrozen = dataSet.U_sim.GetColumn(0); ;
+            dataSet.IndicesToIgnore = indToIgnoreOrig;
+            var paramWithFrozen =  Identify_Level1(ref dataSet, true);
+           /* usimFrozen = dataSet.U_sim.GetColumn(0);
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]> { usimUnfrozen, usimFrozen, dataSet.U.GetColumn(0) },
+                new List<string> { "y1= u_simUnfrozen", "y1= u_simfronzen", "y1=umeas" },dataSet.Times);
+            Shared.DisablePlots();
+           */
+            var fitScoreWithFrozen = paramWithFrozen.Fitting.FitScorePrc;
+            var fitScoreWithoutFrozen = paramWithoutFrozen.Fitting.FitScorePrc;
+
+            if (!paramWithFrozen.Fitting.WasAbleToIdentify && paramWithoutFrozen.Fitting.WasAbleToIdentify)
+                return paramWithoutFrozen;
+            if (paramWithFrozen.Fitting.WasAbleToIdentify && !paramWithoutFrozen.Fitting.WasAbleToIdentify)
+                return paramWithFrozen;
+
+            if (fitScoreWithoutFrozen > fitScoreWithFrozen)
+            {
+                return paramWithoutFrozen;
+            }
+            else
+            {
+                return paramWithFrozen;
+            }
+           
+        }
+
+        /// <summary>
+        /// Identifies a PID-controller from a UnitDataSet
+        /// </summary>
+        /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
+        /// <param name="doDetectFrozenData">if true, the model attempts to find and ignore portions of frozen data</param>
+        /// <returns>the identified parameters of the PID-controller</returns>
+        public PidParameters Identify_Level1(ref UnitDataSet dataSet, bool doDetectFrozenData)
         {
             const bool doFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, the filter should normally not be returned
             const bool doFlipKp = true; // test if flipping the sign of Kp produces a better fit score.
 
-
             // 1. try identification with delay of one sample but without filtering
             (var idParamsWithDelay, var U_withDelay, var indicesToIgnore_withDelay)
-                = IdentifyInternal(dataSet, true);
+                = Identify_Level2(dataSet, true,null, false, doDetectFrozenData);
 
             // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
             //    relative to the clock that the pid algorithm ran on originally)
             dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
             (var idParamsWithoutDelay, var U_withoutDelay, var indicesToIgnore_withoutDelay) = 
-                IdentifyInternal(dataSet, false);
+                Identify_Level2(dataSet, false, null, false, doDetectFrozenData);
 
             // save which is the "best" estimate for comparison 
             bool doDelay = true;
@@ -131,7 +174,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                     dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
                     (var idParamsWithFilter, var U_withFilter, var indicesToIgnoreWithFilter) = 
-                        IdentifyInternal(dataSet, doDelay, pidFilterParams);
+                        Identify_Level2(dataSet, doDelay, pidFilterParams, false, doDetectFrozenData);
 
                     if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
                     {
@@ -153,7 +196,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         var pidFilterParams = new PidFilterParams(true, 1, filterTime_s);
                         dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
                         (var idParamsWithFilter, var UwithFilter, var indicesToIgnore_withFilter) =
-                            IdentifyInternal(dataSet, doDelay, pidFilterParams, filterUmeas);
+                            Identify_Level2(dataSet, doDelay, pidFilterParams, filterUmeas, doDetectFrozenData);
 
                         if (IsFirstModelBetterThanSecondModel(idParamsWithFilter, bestPidParameters))
                         {
@@ -247,14 +290,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doFilterUmeas"> if set to true, the measurement of the manipulated variable will be filtered
         /// This helps identification if there are periods with flatlined data that are oversampled,
         /// but will give incorrect Ti if the entire dataset is oversampled.</param>
-        /// 
+        /// <param name="doDetectFrozenData">If true, the identification will try to identify periods where all data is frozen and ignore those portions. </param>
         /// <returns></returns>
-        private (PidParameters, double[,], List<int>) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
-            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false)
+        private (PidParameters, double[,], List<int>) Identify_Level2(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
+            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false, bool doDetectFrozenData = true)
         {
-            bool doDetectFrozenData = true;// consider testing both with and without this flag set.
             const bool useConstantTimeBase = true;// default is true, false is experimental. 
-     //       const bool doFlipKpIfNeeded = true; // default is true, would like to set to false and remove this workaround code.
 
             this.timeBase_s = dataSet.GetTimeBase();
             var pidParam = new PidParameters();
@@ -272,6 +313,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 pidFilter = new PidFilter(pidFilterParams, timeBase_s);
                 pidParam.Filtering = pidFilterParams;
+                solverID += "(ymeas filtered)";
             }
            
             pidParam.Fitting = new FittingInfo();
@@ -355,9 +397,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 var uminIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
                 var ymaxIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetYmax(), VectorFindValueType.BiggerOrEqual));
                 var yminIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
-
-
-
                 var indToIgnoreFromChooserReg = Index.Shift(CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, 
                     detectFrozenData: doDetectFrozenData).ToArray(),-nIterationsToLookBack);
 
@@ -545,8 +584,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>the simulated value, and the number of restarts</returns>
         public (double[],int) GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, List<int> indToIgnore)
         {
+            bool enableSimulatorRestarting = false;
             var pidModel = new PidModel(pidParams, "pid");
-            (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore);
+            (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore,enableSimulatorRestarting);
             dataset.U_sim = Array2D<double>.CreateFromList(new List<double[]> { simulatedU });
             return (simulatedU,numSimRestarts);
         }

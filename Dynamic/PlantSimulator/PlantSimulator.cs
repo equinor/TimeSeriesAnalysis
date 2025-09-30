@@ -578,11 +578,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
         /// <param name="doDetermineIndicesToIgnore"> is set to true, the simulator tries to determine indices to ignore internally</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
+        /// <param name="enableSimulatorRestarting">if set to true, the simulator will try to restart after long periods of flat data</param>
         /// <returns></returns>
-        public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
+        public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, bool enableSimulatorRestarting=true)
         {
             const bool doUseLastGoodValueRatherThanLastValue = true;// experimentally, try using the values of the last good time. 
             const bool doVariableTimeBase = false;// experimentally, vary the timebase based on the timestamp and time diff since last good value.
+            const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc = 0.20; // design variable.
 
             int? N = inputData.GetLength();
             if (!N.HasValue)
@@ -654,8 +656,8 @@ namespace TimeSeriesAnalysis.Dynamic
             int nConsecutiveBadSamplesCounter = 0;
             int numRestartCounter = -1;
             double largestTc =  GetLargestTimeConstant();
-            const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargetsTc = 0.20; // design variable.
-            double restartSimulatorAfterBadDataPeriod_s = largestTc * restartAfterConsecutiveBadDataTimePeriod_FractionOfLargetsTc;
+
+            double restartSimulatorAfterBadDataPeriod_s = largestTc * restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc;
             double restartSimulatorAfterBadDataPeriod_samples = Math.Ceiling(restartSimulatorAfterBadDataPeriod_s / inputDataMinimal.GetTimeBase());
 
 
@@ -668,7 +670,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 {
                     if (largestTc > 0)
                     {
-                        if (nConsecutiveBadSamplesCounter > restartSimulatorAfterBadDataPeriod_samples)
+                        if (nConsecutiveBadSamplesCounter > restartSimulatorAfterBadDataPeriod_samples && enableSimulatorRestarting)
                             doRestartModels = true;
                     }
                     prevGoodTimeIndex = curGoodTimeIndex;
