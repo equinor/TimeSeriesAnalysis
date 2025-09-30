@@ -87,6 +87,8 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             const bool doFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, the filter should normally not be returned
+            const bool doFlipKp = true; // test if flipping the sign of Kp produces a better fit score.
+
 
             // 1. try identification with delay of one sample but without filtering
             (var idParamsWithDelay, var U_withDelay, var indicesToIgnore_withDelay)
@@ -161,6 +163,34 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                     }
                 }
+
+                // 5. check if flipping the Kp produces a better Kp. 
+                if (doFlipKp)
+                {
+                    var pidParamFlipped = new PidParameters(bestPidParameters);
+                    pidParamFlipped.Kp = -bestPidParameters.Kp;
+
+                    var uSimFlipped = Array2D<double>.Create(GetSimulatedU(pidParamFlipped, dataSet, bestPidParameters.DelayOutputOneSample, bestIndicesToIgnore).Item1);
+                    double flippedFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSimFlipped.GetColumn(0), dataSet.BadDataID, bestIndicesToIgnore);
+
+                    if (flippedFitScore > 0 && flippedFitScore > bestPidParameters.Fitting.FitScorePrc)
+                    {
+                        if (pidParamFlipped.Fitting == null)
+                            pidParamFlipped.Fitting = new FittingInfo();
+
+                        pidParamFlipped.Fitting.WasAbleToIdentify = true;
+
+                        if (pidParamFlipped.Fitting.SolverID == null)
+                            pidParamFlipped.Fitting.SolverID = "PidIdentifier (Kp flipped)";
+                        else
+                            pidParamFlipped.Fitting.SolverID += "(Kp flipped)";
+
+                        bestU = uSimFlipped;
+                        bestPidParameters = pidParamFlipped;
+                        bestPidParameters.Fitting.FitScorePrc = flippedFitScore;
+                    }
+                }
+
             }
             
             // 6. finally return the "best" result
@@ -173,6 +203,7 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             return bestPidParameters;
         }
+
 
         private double[] GetUMinusFF(UnitDataSet dataSet)
         {
@@ -221,8 +252,9 @@ namespace TimeSeriesAnalysis.Dynamic
         private (PidParameters, double[,], List<int>) IdentifyInternal(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
             PidFilterParams pidFilterParams = null, bool doFilterUmeas=false)
         {
+            bool doDetectFrozenData = true;// consider testing both with and without this flag set.
             const bool useConstantTimeBase = true;// default is true, false is experimental. 
-            const bool doFlipKpIfNeeded = true; // default is true, would like to set to false and remove this workaround code.
+     //       const bool doFlipKpIfNeeded = true; // default is true, would like to set to false and remove this workaround code.
 
             this.timeBase_s = dataSet.GetTimeBase();
             var pidParam = new PidParameters();
@@ -324,7 +356,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 var ymaxIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetYmax(), VectorFindValueType.BiggerOrEqual));
                 var yminIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
 
-                var indToIgnoreFromChooserReg = Index.Shift(CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, detectFrozenData: true).ToArray(),-nIterationsToLookBack);
+
+
+                var indToIgnoreFromChooserReg = Index.Shift(CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, 
+                    detectFrozenData: doDetectFrozenData).ToArray(),-nIterationsToLookBack);
 
                 // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
                 /*
@@ -461,32 +496,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // check if flipping Kp results in a singificantly higher Fitscore, if so, go for it. 
             double fitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSim.GetColumn(0), dataSet.BadDataID, indToIgnore);
-            bool isFlipped = false;
-            if (fitScore < -0.1 && doFlipKpIfNeeded)
-            {
-                var pidParamFlipped = new PidParameters(pidParam);
-                pidParamFlipped.Kp = -pidParam.Kp;
-                var uSimFlipped = Array2D<double>.Create(GetSimulatedU(pidParamFlipped, dataSet, isPIDoutputDelayOneSample, indToIgnore).Item1);
-                double flippedFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSimFlipped.GetColumn(0), dataSet.BadDataID, indToIgnore);
-
-                if (flippedFitScore > 0 && flippedFitScore > fitScore)
-                {
-                    if (pidParamFlipped.Fitting == null)
-                        pidParamFlipped.Fitting = new FittingInfo();    
-
-                    if (pidParamFlipped.Fitting.SolverID == null)
-                        pidParamFlipped.Fitting.SolverID = "PidIdentifier (Kp flipped)";
-                    else
-                        pidParamFlipped.Fitting.SolverID += "(Kp flipped)";
-
-                    dataSet.U_sim = uSimFlipped;
-                    pidParam = pidParamFlipped;
-                    pidParam.Fitting.FitScorePrc = flippedFitScore;
-                    isFlipped = true;
-                }
-            }
-            if (!isFlipped)
-                pidParam.Fitting.FitScorePrc = fitScore;
+            pidParam.Fitting.FitScorePrc = fitScore;
 
             pidParam.Kp = SignificantDigits.Format(pidParam.Kp, nDigitsParams);
             pidParam.Ti_s = SignificantDigits.Format(pidParam.Ti_s, nDigitsParams);
