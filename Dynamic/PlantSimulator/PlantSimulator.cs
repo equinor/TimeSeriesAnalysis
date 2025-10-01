@@ -585,7 +585,6 @@ namespace TimeSeriesAnalysis.Dynamic
             bool enableSimulatorRestarting=true, bool doVariableTimeBase = false)
         {
             const bool doUseLastGoodValueRatherThanLastValue = true;// experimentally, try using the values of the last good time. 
-       //    const bool doVariableTimeBase = false;// experimentally, vary the timebase based on the timestamp and time diff since last good value.
             const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc = 0.20; // design variable.
 
             int? N = inputData.GetLength();

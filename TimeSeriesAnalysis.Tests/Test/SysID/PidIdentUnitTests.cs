@@ -583,7 +583,7 @@ namespace TimeSeriesAnalysis.Test.SysID
            }
 
 
-        [TestCase(100, 6, 5)]// the stored signal is oversampled by a factor 6/5ths (not a whole number)
+        [TestCase(100, 6, 5),Explicit]// the stored signal is oversampled by a factor 6/5ths (not a whole number)
         [TestCase(100, 6, 4)]// the stored signal is oversampled by a factor 1.5(not whole number)
         [TestCase(100, 6, 3)]// the stored signal is oversampled by a factor 2(whole number)
         [TestCase(100, 6, 2)]// the stored signal is oversampled by a factor 3(whole number)

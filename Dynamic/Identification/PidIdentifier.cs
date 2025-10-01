@@ -92,10 +92,10 @@ namespace TimeSeriesAnalysis.Dynamic
             List<int> indToIgnoreOrig = null;
             if (dataSet.IndicesToIgnore != null)
                  indToIgnoreOrig = new List<int>(dataSet.IndicesToIgnore);
-            var paramWithoutFrozen = Identify_Level1(ref dataSet, false);
+            var paramWithoutFrozen = Identify_Level1(ref dataSet, doDetectFrozenData: false);
           //  usimUnfrozen = dataSet.U_sim.GetColumn(0); ;
             dataSet.IndicesToIgnore = indToIgnoreOrig;
-            var paramWithFrozen =  Identify_Level1(ref dataSet, true);
+            var paramWithFrozen =  Identify_Level1(ref dataSet,doDetectFrozenData: true);
 
           //  return paramWithFrozen;//debug, TODO:Remove
 
@@ -157,7 +157,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 bestPidParameters = idParamsWithDelay;
                 bestU = U_withDelay;
                 bestIndicesToIgnore = indicesToIgnore_withDelay;
-
             }
             else
             {
@@ -298,7 +297,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private (PidParameters, double[,], List<int>) Identify_Level2(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
             PidFilterParams pidFilterParams = null, bool doFilterUmeas=false, bool doDetectFrozenData = true)
         {
-            const bool useConstantTimeBase = true;// default is true, false is experimental. 
+            const bool useConstantTimeBase = false;// default is true, false is experimental. 
 
             this.timeBase_s = dataSet.GetTimeBase();
             var pidParam = new PidParameters();
@@ -318,11 +317,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 pidParam.Filtering = pidFilterParams;
                 solverID += "(ymeas filtered)";
             }
-            if (doDetectFrozenData)
-            {
-                solverID += "(oversampled data removed)";
-            }
-
            
             pidParam.Fitting = new FittingInfo();
             if (pidScaling!=null)
@@ -367,6 +361,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 nSamplesToLookBack = 1;
             }
 
+
+            var goodIndices = new List<int>();
+
             //since eprev and eprevprev are needed, need to look two itertaions back, which means first to indices need to be ignored
             // in regression
             {
@@ -407,6 +404,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 var yminIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
                 var indToIgnoreFromChooserReg = Index.Shift(CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, 
                     detectFrozenData: doDetectFrozenData).ToArray(),-nIterationsToLookBack);
+                if ( doDetectFrozenData && indToIgnoreFromChooserReg.Count()>0 )
+                {
+                    solverID += "(oversampled data removed)";
+                }
+
 
                 // Anti-surge controllers: in PI-control only if the compressor operates between the control line and the surge line.
                 /*
@@ -434,6 +436,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] X1reg = new double[bufferLength];
                 double[] X2reg = new double[bufferLength];
                 double[] Yreg = new double[bufferLength];
+
                 if (useConstantTimeBase)
                 {
                     X1reg = new double[bufferLength];
@@ -445,8 +448,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    // experimental.
-                    var goodIndices = Index.InverseIndices(ucurReg.Count(), indicesToIgnoreReg);
+                    goodIndices = Index.InverseIndices(ucurReg.Count(), indicesToIgnoreReg);
                     X1reg = new double[goodIndices.Count()];
                     X2reg = new double[goodIndices.Count()];
                     Yreg = new double[goodIndices.Count()];
@@ -562,8 +564,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                pidParam.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints();
-                pidParam.Fitting.NFittingBadDataPoints = indToIgnore.Count();
+                pidParam.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints(); 
+                pidParam.Fitting.NFittingBadDataPoints = dataSet.GetNumDataPoints() - goodIndices.Count();
             }
 
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
@@ -589,11 +591,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="pidParams"></param>
         /// <param name="dataset"> dataset, including including the "indicesToIgnore"</param>
         /// <param name="isPIDoutputDelayOneSample"></param>
+        /// <param name="indToIgnore"></param>
         /// <returns>the simulated value, and the number of restarts</returns>
-        public (double[],int) GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, List<int> indToIgnore)
+        public (double[],int) GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, 
+            List<int> indToIgnore)
         {
             bool enableSimulatorRestarting = false;
-            bool doVariableTimeBase = false;
+            bool doVariableTimeBase = false;//todO: currently this does not work, is not implemented properly
             var pidModel = new PidModel(pidParams, "pid");
             (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore,
                 enableSimulatorRestarting, doVariableTimeBase);

@@ -245,7 +245,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.SetIndicesToIgnore(unitData.IndicesToIgnore);
             else
                 inputData.SetIndicesToIgnore(indToIgnore);
-            var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, doDetermineIndicesToIgnore,out var simData, enableSimulatorRestarting);
+            var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, doDetermineIndicesToIgnore,out var simData, 
+                enableSimulatorRestarting, doVariableTimeBase);
 
             if (!isOk)
                 return (false, null,0);
