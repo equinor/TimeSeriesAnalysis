@@ -321,9 +321,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// including the tracking signal (only applicable if this is a split range controller) and optionally the gainScehduling variable if controller is to gain-schedule
         /// </summary>
         public double Iterate(double y_process_abs, double y_set_abs, double? uTrackSignal=null, double? gainSchedulingVariable=null,
-            double? feedForwardVariable=null)
+            double? feedForwardVariable=null, double? stepLength_s=null)
         {
             double u;
+
+            double internalStepLength_s = TimeBase_s;
+            if (stepLength_s.HasValue)
+            {
+                internalStepLength_s = stepLength_s.Value;
+            }
 
             if (isInAuto == false)
                 return u_prev;
@@ -363,11 +369,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 e_prev_prev_unscaled = 0;
             double e_unscaled = CalcUnscaledE(y_process_abs, y_set_abs);
             //% protoct controller from divide - by - zero error
-            if (TimeBase_s < 0.1)
-                TimeBase_s = 0.1;
+            if (internalStepLength_s < 0.1)
+                internalStepLength_s = 0.1;
             if (Ti > 0 || Ti< 0)
-                u = u_prev + KpUnscaled * (e_unscaled - e_prev_unscaled) + KpUnscaled * TimeBase_s / Ti * e_unscaled 
-                    + KpUnscaled * Td / TimeBase_s * (e_unscaled - 2 * e_prev_unscaled + e_prev_prev_unscaled);
+                u = u_prev + KpUnscaled * (e_unscaled - e_prev_unscaled) + KpUnscaled * internalStepLength_s / Ti * e_unscaled 
+                    + KpUnscaled * Td / internalStepLength_s * (e_unscaled - 2 * e_prev_unscaled + e_prev_prev_unscaled);
             else
                 u = u0 + KpUnscaled * e_unscaled;
 

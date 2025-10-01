@@ -96,12 +96,15 @@ namespace TimeSeriesAnalysis.Dynamic
           //  usimUnfrozen = dataSet.U_sim.GetColumn(0); ;
             dataSet.IndicesToIgnore = indToIgnoreOrig;
             var paramWithFrozen =  Identify_Level1(ref dataSet, true);
-           /* usimFrozen = dataSet.U_sim.GetColumn(0);
-            Shared.EnablePlots();
-            Plot.FromList(new List<double[]> { usimUnfrozen, usimFrozen, dataSet.U.GetColumn(0) },
-                new List<string> { "y1= u_simUnfrozen", "y1= u_simfronzen", "y1=umeas" },dataSet.Times);
-            Shared.DisablePlots();
-           */
+
+          //  return paramWithFrozen;//debug, TODO:Remove
+
+            /* usimFrozen = dataSet.U_sim.GetColumn(0);
+             Shared.EnablePlots();
+             Plot.FromList(new List<double[]> { usimUnfrozen, usimFrozen, dataSet.U.GetColumn(0) },
+                 new List<string> { "y1= u_simUnfrozen", "y1= u_simfronzen", "y1=umeas" },dataSet.Times);
+             Shared.DisablePlots();
+            */
             var fitScoreWithFrozen = paramWithFrozen.Fitting.FitScorePrc;
             var fitScoreWithoutFrozen = paramWithoutFrozen.Fitting.FitScorePrc;
 
@@ -125,7 +128,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
-        /// <param name="doDetectFrozenData">if true, the model attempts to find and ignore portions of frozen data</param>
+        /// <param name="doDetectFrozenData">if true, the model attempts to find and ignore portions of frozen data(will also detect oversampled data)</param>
         /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify_Level1(ref UnitDataSet dataSet, bool doDetectFrozenData)
         {
@@ -315,6 +318,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 pidParam.Filtering = pidFilterParams;
                 solverID += "(ymeas filtered)";
             }
+            if (doDetectFrozenData)
+            {
+                solverID += "(oversampled data removed)";
+            }
+
            
             pidParam.Fitting = new FittingInfo();
             if (pidScaling!=null)
@@ -585,8 +593,10 @@ namespace TimeSeriesAnalysis.Dynamic
         public (double[],int) GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, List<int> indToIgnore)
         {
             bool enableSimulatorRestarting = false;
+            bool doVariableTimeBase = false;
             var pidModel = new PidModel(pidParams, "pid");
-            (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore,enableSimulatorRestarting);
+            (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore,
+                enableSimulatorRestarting, doVariableTimeBase);
             dataset.U_sim = Array2D<double>.CreateFromList(new List<double[]> { simulatedU });
             return (simulatedU,numSimRestarts);
         }

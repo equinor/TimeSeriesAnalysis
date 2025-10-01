@@ -489,6 +489,14 @@ namespace TimeSeriesAnalysis.Dynamic
                     return new double[] { Double.NaN };
                 }
             }
+
+            if (timeBase_s <= 0)
+            {
+                Shared.GetParserObj().AddError(GetID() +
+                    ":Iterate() returned NaN because it was given a negative timebase");
+                return new double[] { Double.NaN };
+            }
+
             if (this.lowPass1order == null)
             {
                 this.lowPass1order = new LowPass(timeBase_s);
@@ -513,7 +521,7 @@ namespace TimeSeriesAnalysis.Dynamic
             double x_dynamic = x_ss;
             if (modelParameters.TimeConstant_s >= 0 && modelParameters.DampingRatio == 0)
             {
-                x_dynamic = lowPass1order.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration);
+                x_dynamic = lowPass1order.Filter(x_ss, modelParameters.TimeConstant_s, 1, isFirstIteration,timeBase_s);
             }
             else if (modelParameters.TimeConstant_s >= 0 && modelParameters.DampingRatio > 0)
             {

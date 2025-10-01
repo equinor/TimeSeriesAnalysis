@@ -36,8 +36,6 @@ namespace TimeSeriesAnalysis.Dynamic
             if (timeBase_s > 0)
             {
                 this.nBufferSize = (int)Math.Ceiling((double)(timeDelay_s / timeBase_s));
-   //             if (this.nBufferSize == 0)
-    //                Console.WriteLine("");
                 if (delayBuffer == null)
                 {
                     delayBuffer = new double[this.nBufferSize];

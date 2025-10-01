@@ -579,11 +579,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doDetermineIndicesToIgnore"> is set to true, the simulator tries to determine indices to ignore internally</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
         /// <param name="enableSimulatorRestarting">if set to true, the simulator will try to restart after long periods of flat data</param>
+        /// <param name="doVariableTimeBase">if set to true, the simulator will vary the timbease based on indicestoignore(jumping from one good value to the next)</param>
         /// <returns></returns>
-        public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, bool enableSimulatorRestarting=true)
+        public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, 
+            bool enableSimulatorRestarting=true, bool doVariableTimeBase = false)
         {
             const bool doUseLastGoodValueRatherThanLastValue = true;// experimentally, try using the values of the last good time. 
-            const bool doVariableTimeBase = false;// experimentally, vary the timebase based on the timestamp and time diff since last good value.
+       //    const bool doVariableTimeBase = false;// experimentally, vary the timebase based on the timestamp and time diff since last good value.
             const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc = 0.20; // design variable.
 
             int? N = inputData.GetLength();

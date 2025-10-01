@@ -591,8 +591,6 @@ namespace TimeSeriesAnalysis.Test.SysID
 
         public void OversampledData_VariableTimebase(int N, double timebaseTrue, double timebaseOversampled)
         {
-            const bool doDownsampleCopy = false;// originally true:TODO: set false to test if variable timebase pididentifier is able to still identify.
-
             // Define parameters
             var truePidParams = new PidParameters()
             {
@@ -625,6 +623,18 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             // pidIdentifier should itself try to vary the timbease.
             var idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
+                    Replace(")", "_").Replace(",", "_") + "y";
+                Plot.FromList(new List<double[]> { pidDataSetOversampled.Y_meas, pidDataSetOversampled.Y_setpoint, 
+                    pidDataSetOversampled.U.GetColumn(0),pidDataSetOversampled.U_sim.GetColumn(0) },
+                    new List<string> { "y1=y_meas", "y1=y_setpoint", "y3=u", "y3=u_sim" },
+                    pidDataSet.GetTimeBase(), caseId);
+                Shared.DisablePlots();
+            }
 
 
             Console.WriteLine(idModelParams.ToString());

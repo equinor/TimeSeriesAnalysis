@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 feedForwardVariable = inputs[(int)PidModelInputsIdx.FeedForward];
             }
 
-            var rawOut = pid.Iterate(y_process_abs, y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable);
+            var rawOut = pid.Iterate(y_process_abs, y_set_abs, uTrackSignal, gainSchedulingVariable, feedForwardVariable, timeBase_s);
 
             double u = rawOut;
             if (pidParameters.DelayOutputOneSample)
