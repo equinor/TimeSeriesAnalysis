@@ -621,7 +621,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             // Identify model on oversampled data
             var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
 
-            // pidIdentifier should itself try to vary the timbease.
+            // pidIdentifier should itself try to vary the timebase.
             var idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled);
 
             if (false)

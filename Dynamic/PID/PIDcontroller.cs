@@ -83,7 +83,6 @@ namespace TimeSeriesAnalysis.Dynamic
         private bool isFFActive_prev = false;//previous value of the feed forward active signal
         private double u_ff_prev;
 
-
         // double anti-surge related:
         private PidAntiSurgeParams antiSurgeParms=null;
         private double u_ff_antisurge_prev;
@@ -507,6 +506,7 @@ namespace TimeSeriesAnalysis.Dynamic
             u_prev = u;
             e_prev_prev_unscaled = e_prev_unscaled;
             e_prev_unscaled = e_unscaled;
+
             return u;
         }
 

@@ -643,57 +643,67 @@ namespace TimeSeriesAnalysis.Dynamic
                 return false;
             }
 
-            var idxToIgnore = inputDataMinimal.GetIndicesToIgnore();
-            int curGoodInputTimeIndex = 0, prevGoodInputTimeIndex = 0;
-            // if start of dataset is bad, then parse forward until first good time index..
-            while (idxToIgnore.Contains(curGoodInputTimeIndex) && curGoodInputTimeIndex < inputDataMinimal.GetLength())
-            {
-                curGoodInputTimeIndex++;
-            }
-            prevGoodInputTimeIndex = curGoodInputTimeIndex - 1;//TODO:! not general for variable timestep
+
 
             // simulate for all time steps(after first step!)
 
-            int nConsecutiveBadSamplesCounter = 0;
+
             int numRestartCounter = -1;
             double largestTc =  GetLargestTimeConstant();
 
             double restartSimulatorAfterBadDataPeriod_s = largestTc * restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc;
             double restartSimulatorAfterBadDataPeriod_samples = Math.Ceiling(restartSimulatorAfterBadDataPeriod_s / inputDataMinimal.GetTimeBase());
 
-            var inputTimeList = new List<int>();
+            var idxToIgnore = inputDataMinimal.GetIndicesToIgnore();
+            var inputTimeIdxList = new List<int>();
             if (doVariableTimeBase)
             {
-                inputTimeList = Index.InverseIndices(N.Value, idxToIgnore);
+                inputTimeIdxList = Index.InverseIndices(N.Value, idxToIgnore);
             }
             else
             {
-                inputTimeList = Index.MakeIndexArray(0,N.Value - 1).ToList();
+                inputTimeIdxList = Index.MakeIndexArray(0,N.Value - 1).ToList();
             }
 
-            //  for (int curInputTimeIdx = 0; curInputTimeIdx < N; curInputTimeIdx++)
             int curOutputTimeIdx = 0;
-            foreach (int curInputTimeIdx in inputTimeList)
+            int prevInputTimeIdx = inputTimeIdxList.First();
+
+            // these three variables are only relevant if using fixed step length.
+            int curGoodInputTimeIndex = 0;
+            int prevGoodInputTimeIndex = 0;
+            int nConsecutiveBadSamplesCounter = 0;
+
+            foreach (int curInputTimeIdx in inputTimeIdxList)
             {
                 bool doRestartModels = false;
                 if (curInputTimeIdx == 0)
                     doRestartModels = true;
-                if (!idxToIgnore.Contains(curInputTimeIdx))
+      
+                if (doVariableTimeBase)
                 {
-                    if (largestTc > 0)
-                    {
-                        if (nConsecutiveBadSamplesCounter > restartSimulatorAfterBadDataPeriod_samples && enableSimulatorRestarting)
-                            doRestartModels = true;
-                    }
-                    prevGoodInputTimeIndex = curGoodInputTimeIndex;
-                    curGoodInputTimeIndex = curInputTimeIdx;
-                    nConsecutiveBadSamplesCounter = 0;
+                    var stepSize_s = (inputData.GetTimeStamps().ElementAt(curInputTimeIdx) - inputData.GetTimeStamps().ElementAt(prevInputTimeIdx)).TotalSeconds;
+                    if (stepSize_s > restartSimulatorAfterBadDataPeriod_s)
+                        doRestartModels = true;
                 }
                 else
                 {
-                    nConsecutiveBadSamplesCounter++;
+                    if (!idxToIgnore.Contains(curInputTimeIdx))
+                    {
+                        if (largestTc > 0)
+                        {
+                            if (nConsecutiveBadSamplesCounter > restartSimulatorAfterBadDataPeriod_samples && enableSimulatorRestarting)
+                                doRestartModels = true;
+                        }
+                        prevGoodInputTimeIndex = curGoodInputTimeIndex;
+                        curGoodInputTimeIndex = curInputTimeIdx;
+                        nConsecutiveBadSamplesCounter = 0;
+                    }
+                    else
+                    {
+                        nConsecutiveBadSamplesCounter++;
+                    }
                 }
-             
+
                 // warm start every model on first data point, and after any long period of bad data
                 if (doRestartModels)
                 {
@@ -736,6 +746,17 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
 
+                // calculate the step size
+                var simStepLength_s = inputData.GetTimeBase(); ;
+                if (doVariableTimeBase)
+                {
+                    simStepLength_s = inputData.GetTimeDiff_s(curInputTimeIdx, prevInputTimeIdx);
+                    if (simStepLength_s <= 0)
+                    {
+                        Shared.GetParserObj().AddError("PlantSimulator.Simulate() negative or zero step size!");
+                    }
+                }
+                // loop through every model in the right order, calculating the value at the next iteration.
                 for (int modelIdx = 0; modelIdx < orderedSimulatorIDs.Count; modelIdx++)
                 {
                     var model = modelDict[orderedSimulatorIDs.ElementAt(modelIdx)];
@@ -752,42 +773,46 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         else
                         {
-                            var modelID = pidControlledOutputsDict[junctionSignalID];
-                            if (modelID != null) // Simulating a single PID-model not the whole loop
+                            var pidControlledModelID = pidControlledOutputsDict[junctionSignalID];
+                            if (pidControlledModelID != null) // Simulating a single PID-model not the whole loop
                             {
-                                double? value =0;
-                          
-                                if (doUseLastGoodValueRatherThanLastValue)
-                                {
-                                    value = simData.GetValue(modelID, curGoodInputTimeIndex-1); //y_proc[k-1] ;//TODO:! not general for variable timestep
-                                }
-                                else   // original code: constant timebase:
-                                    value = simData.GetValue(modelID, curInputTimeIdx - 1); //y_proc[k-1]
+                                double? y_value =0;
 
-                                if (modelID != null)
+                                if (doVariableTimeBase)
                                 {
-                                    if (modelDict[modelID].GetAdditiveInputIDs() != null)       // + D[k] 
+                                    y_value = simData.GetValue(pidControlledModelID, prevInputTimeIdx); //y_proc[k-1]
+                                }
+                                else
+                                {
+                                    y_value = simData.GetValue(pidControlledModelID, prevGoodInputTimeIndex); //y_proc[k-1]
+                                }
+
+                                if (pidControlledModelID != null)
+                                {
+                                    if (modelDict[pidControlledModelID].GetAdditiveInputIDs() != null)       // + D[k] 
                                     {
-                                        double[] additiveSignalsValues = new double[0];
-                                        if (doUseLastGoodValueRatherThanLastValue)
+                                        var additiveSignalsValues = new double[0];
+
+                                        if (doVariableTimeBase)
                                         {
-                                            additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
-                                                modelDict[modelID].GetAdditiveInputIDs(), curGoodInputTimeIndex, simData, inputDataMinimal);
+                                            additiveSignalsValues = GetValuesFromEitherDataset(modelDict[pidControlledModelID],
+                                            modelDict[pidControlledModelID].GetAdditiveInputIDs(), curInputTimeIdx, simData, inputDataMinimal);
                                         }
                                         else
                                         {
-                                            additiveSignalsValues = GetValuesFromEitherDataset(modelDict[modelID],
-                                                modelDict[modelID].GetAdditiveInputIDs(), curInputTimeIdx, simData, inputDataMinimal);
+                                            additiveSignalsValues = GetValuesFromEitherDataset(modelDict[pidControlledModelID],
+                                                modelDict[pidControlledModelID].GetAdditiveInputIDs(), curGoodInputTimeIndex, simData, inputDataMinimal);
                                         }
+
                                         foreach (var signalValue in additiveSignalsValues)
                                         {
-                                            value += signalValue;
+                                            y_value += signalValue;
                                         }
                                     }
                                 }
-                                if (value.HasValue)
+                                if (y_value.HasValue)
                                 {
-                                    bool isOk = simData.AddDataPoint(junctionSignalID, curInputTimeIdx, value.Value);
+                                    bool isOk = simData.AddDataPoint(junctionSignalID, curInputTimeIdx, y_value.Value);
                                 }
                                 else
                                 {
@@ -800,7 +825,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     ///////////////////////
 
                     double[] inputVals = null;
-                    inputVals = GetValuesFromEitherDataset(model, inputIDs, curGoodInputTimeIndex, simData, inputDataMinimal);
+                    if (doVariableTimeBase)
+                        inputVals = GetValuesFromEitherDataset(model, inputIDs, curInputTimeIdx, simData, inputDataMinimal);
+                    else
+                        inputVals = GetValuesFromEitherDataset(model, inputIDs, curGoodInputTimeIndex, simData, inputDataMinimal);
+
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
@@ -808,13 +837,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         return false;
                     }
 
-                    var simTimeBase_s = inputData.GetTimeBase(); ;
-                    if (doVariableTimeBase)
-                    {
-                        simTimeBase_s = inputData.GetTimeDiff_s(curGoodInputTimeIndex, prevGoodInputTimeIndex);
-                    }
-
-                    double[] outputVal = model.Iterate(inputVals, simTimeBase_s);
+                    double[] outputVal = model.Iterate(inputVals, simStepLength_s);
 
                     if (pidControlledOutputsDict.Keys.Contains(model.GetOutputID()))
                     {
@@ -842,7 +865,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         if (curOutputTimeIdx == 0)
                         {
-                            simData.InitNewSignal(model.GetID(), outputVal[1], inputTimeList.Count());
+                            simData.InitNewSignal(model.GetID(), outputVal[1], inputTimeIdxList.Count());
                         }
                         bool isOk2 = simData.AddDataPoint(model.GetID(), curInputTimeIdx, outputVal[1]);
                         if (!isOk2)
@@ -850,8 +873,10 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     }
                 }
-                curOutputTimeIdx++; 
+                curOutputTimeIdx++;
+                prevInputTimeIdx = curInputTimeIdx;
             }
+
             if (inputDataMinimal != null)
                 if (inputDataMinimal.GetTimeStamps() != null)
             simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());

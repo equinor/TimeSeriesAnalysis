@@ -615,7 +615,7 @@ namespace TimeSeriesAnalysis
         /// <param name="olderIndex"></param>
         /// <param name="newerIndex"></param>
         /// <returns></returns>
-        public double GetTimeDiff_s(int olderIndex, int newerIndex)
+        public double GetTimeDiff_s(int newerIndex, int olderIndex)
         {
             if (timeStamps == null)
                 return this.GetTimeBase()*(newerIndex- olderIndex);

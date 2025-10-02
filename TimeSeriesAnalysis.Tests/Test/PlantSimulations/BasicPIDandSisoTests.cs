@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Math;
 using Accord.Statistics.Models.Regression.Fitting;
 using NUnit.Framework;
 
@@ -514,7 +515,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         //
         // Incredibly important that this unit tests passes, as SimulateSingle is used to estimate the disturbance as part of initalization of 
-        // Simulate(), so these two methods need to simulate in a consisten way for disturbance estimation to work, which again is vital for 
+        // Simulate(), so these two methods need to simulate in a consistent way for disturbance estimation to work, which again is vital for 
         // disturbance estimation and closed-loop unit identification to work.
         //
 
@@ -700,8 +701,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(isOk2);
        //     Assert.AreEqual(1, simData_withFlatLines.GetNumSimulatorRestarts(),"simulator should restart once");
             Assert.IsTrue(fitScore > 60, "simulation should restart and this should ensure that there is no large devaiation after the flatline period and a high fitscore.");
-
-
         }
 
 
@@ -727,19 +726,171 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
             (bool isOk, double[] y_sim, _) = PlantSimulatorHelper.SimulateSingle(dataSet, model);
             // plot
-            bool doPlot = false;
-            if (doPlot)
+            if (false)
             {
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]> { y_sim, u1 }, new List<string> { "y1=ymeas ", "y3=u1" }, timeBase_s);
                 Shared.DisablePlots();
             }
-            //assert
-            //  Assert.IsNotNull(retSim);
             Assert.IsTrue(isOk);
             Assert.IsTrue(y_sim[30 + timeDelay_s] == 0, "step should not arrive at y_sim too early");
             Assert.IsTrue(y_sim[31 + timeDelay_s] == 1, "steps should be delayed exactly timeDelay_s later  ");
         }
+
+        [Test]
+ /*       public void VariableTimeStepSimulations_PIDPerfectDataShouldMatchFixedStepSize()
+        {
+            double newSetpoint = 51;
+            int N = 100;
+
+            var plantSimFixed = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1 });
+            plantSimFixed.ConnectModels(processModel1, pidModel1);
+            plantSimFixed.ConnectModels(pidModel1, processModel1);
+
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSimFixed.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
+                TimeSeriesCreator.Step(1, N, Ysetpoint, newSetpoint));
+            inputData.CreateTimestamps(timeBase_s);
+
+            var plantSimVar = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1 });
+            plantSimVar.ConnectModels(processModel1, pidModel1);
+            plantSimVar.ConnectModels(pidModel1, processModel1);
+
+            bool isOk2 = plantSimVar.Simulate(inputData, doDetermineIndicesToIgnore: false, out TimeSeriesDataSet simDataVar,
+                enableSimulatorRestarting: false, doVariableTimeBase: true);
+
+            bool isOk = plantSimFixed.Simulate(inputData, doDetermineIndicesToIgnore:false, out TimeSeriesDataSet simDataFixed,
+                enableSimulatorRestarting:false,doVariableTimeBase: false);
+
+            Assert.AreEqual(simDataFixed.GetValues(processModel1.GetID(), SignalType.Output_Y), simDataVar.GetValues(processModel1.GetID(), SignalType.Output_Y));
+            Assert.AreEqual(simDataFixed.GetValues(pidModel1.GetID(), SignalType.PID_U), simDataVar.GetValues(pidModel1.GetID(), SignalType.PID_U));
+
+            if (true)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<(double[], DateTime[])> {
+                      (simDataFixed.GetValues(processModel1.GetID(),SignalType.Output_Y),simDataFixed.GetTimeStamps()),
+                      (simDataVar.GetValues(processModel1.GetID(),SignalType.Output_Y),simDataVar.GetTimeStamps()),
+                      (simDataFixed.GetValues(pidModel1.GetID(),SignalType.PID_U),simDataFixed.GetTimeStamps()),
+                      (simDataVar.GetValues(pidModel1.GetID(),SignalType.PID_U),simDataVar.GetTimeStamps()),
+                      (inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),inputData.GetTimeStamps())},
+                   new List<string> { "y1=y_measFixed", "y1=y_measVar", "y3=u_pidFixed", "y3=u_pidVar", "y1=setpoint" },
+                   TestContext.CurrentContext.Test.Name);
+                Shared.DisablePlots();
+            }
+        }*/
+
+        //TODO: test also with timedelay
+        [TestCase(new int[] { 5, 15, 25 })]
+        public void VariableTimeStepSimulations_UnitMOdelSkipsOverBadIndices(int[] indToIgnore)
+        {
+            int N = 30;
+
+            var plantSimFixed = new PlantSimulator(
+                new List<ISimulatableModel> { processModel1 });
+            var inputData = new TimeSeriesDataSet();
+ 
+            inputData.Add(plantSimFixed.AddExternalSignal(processModel1, SignalType.External_U),
+                TimeSeriesCreator.Step(1, N, 50, 51));
+            inputData.CreateTimestamps(timeBase_s);
+            bool isOk = plantSimFixed.Simulate(inputData, doDetermineIndicesToIgnore: false, out TimeSeriesDataSet simDataFixed,
+                enableSimulatorRestarting: false, doVariableTimeBase: false);
+
+            var plantSimVar = new PlantSimulator(
+                new List<ISimulatableModel> { processModel1 });
+
+            inputData.SetIndicesToIgnore(new List<int>(indToIgnore));
+
+            var extU = inputData.GetValues(processModel1.GetID(), SignalType.External_U);
+            foreach (var index in indToIgnore)
+                extU[index] = double.NaN;
+
+            inputData.ReplaceValues(processModel1.GetID(), SignalType.External_U, extU);
+
+
+            bool isOk2 = plantSimVar.Simulate(inputData, doDetermineIndicesToIgnore: false, out TimeSeriesDataSet simDataVar,
+                enableSimulatorRestarting: false, doVariableTimeBase: false);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<(double[], DateTime[])> {
+                      (simDataFixed.GetValues(processModel1.GetID(),SignalType.Output_Y),simDataFixed.GetTimeStamps()),
+                      (simDataVar.GetValues(processModel1.GetID(),SignalType.Output_Y),simDataVar.GetTimeStamps())
+                      },
+                   new List<string> { "y1=y_measFixed", "y1=y_measVar" },
+                   TestContext.CurrentContext.Test.Name);
+                Shared.DisablePlots();
+            }
+
+            //     Assert.AreEqual(simDataFixed.GetValues(processModel1.GetID(), SignalType.Output_Y), simDataVar.GetValues(processModel1.GetID(), SignalType.Output_Y));
+            //     Assert.AreEqual(simDataFixed.GetValues(pidModel1.GetID(), SignalType.PID_U), simDataVar.GetValues(pidModel1.GetID(), SignalType.PID_U));
+        }
+
+
+
+
+        //TODO: test also with timedelay
+        [TestCase(new int[] { 4})]
+      //  [TestCase(new int[] { 10, 11 } )]
+        public void VariableTimeStepSimulations_PIDSkipsOverBadIndices(int[] indToIgnore)
+        {
+            double newSetpoint = 51;
+            int N = 30;
+
+            var plantSimFixed = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1 });
+            plantSimFixed.ConnectModels(processModel1, pidModel1);
+            plantSimFixed.ConnectModels(pidModel1, processModel1);
+            var inputData = new TimeSeriesDataSet();
+            inputData.Add(plantSimFixed.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset),
+                TimeSeriesCreator.Step(1, N, Ysetpoint, newSetpoint));
+            inputData.CreateTimestamps(timeBase_s);
+            bool isOk = plantSimFixed.Simulate(inputData, doDetermineIndicesToIgnore: false, out TimeSeriesDataSet simDataFixed,
+                enableSimulatorRestarting: false, doVariableTimeBase: false);
+
+            var plantSimVar = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1 });
+            plantSimVar.ConnectModels(processModel1, pidModel1);
+            plantSimVar.ConnectModels(pidModel1, processModel1);
+
+            var pid_u = inputData.GetValues(pidModel1.GetID(), SignalType.Setpoint_Yset);
+            foreach (var index in indToIgnore)
+                pid_u[index] = double.NaN;
+
+            inputData.ReplaceValues(pidModel1.GetID(), SignalType.Setpoint_Yset, pid_u);
+
+
+            inputData.SetIndicesToIgnore(new List<int>(indToIgnore));
+
+            bool isOk2 = plantSimVar.Simulate(inputData, doDetermineIndicesToIgnore: false, out TimeSeriesDataSet simDataVar,
+                enableSimulatorRestarting: false, doVariableTimeBase: false);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(new List<(double[], DateTime[])> {
+                      (simDataFixed.GetValues(processModel1.GetID(),SignalType.Output_Y),simDataFixed.GetTimeStamps()),
+                      (simDataVar.GetValues(processModel1.GetID(),SignalType.Output_Y),simDataVar.GetTimeStamps()),
+                      (simDataFixed.GetValues(pidModel1.GetID(),SignalType.PID_U),simDataFixed.GetTimeStamps()),
+                      (simDataVar.GetValues(pidModel1.GetID(),SignalType.PID_U),simDataVar.GetTimeStamps()),
+                      (inputData.GetValues(pidModel1.GetID(),SignalType.Setpoint_Yset),inputData.GetTimeStamps())},
+                   new List<string> { "y1=y_measFixed", "y1=y_measVar", "y3=u_pidFixed", "y3=u_pidVar", "y1=setpoint" },
+                   TestContext.CurrentContext.Test.Name);
+                Shared.DisablePlots();
+            }
+
+            //     Assert.AreEqual(simDataFixed.GetValues(processModel1.GetID(), SignalType.Output_Y), simDataVar.GetValues(processModel1.GetID(), SignalType.Output_Y));
+            //     Assert.AreEqual(simDataFixed.GetValues(pidModel1.GetID(), SignalType.PID_U), simDataVar.GetValues(pidModel1.GetID(), SignalType.PID_U));
+        }
+
+
+
+
+
+
 
 
     }

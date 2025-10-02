@@ -597,7 +597,7 @@ namespace TimeSeriesAnalysis.Dynamic
             List<int> indToIgnore)
         {
             bool enableSimulatorRestarting = false;
-            bool doVariableTimeBase = true;//todO: currently this does not work, is not implemented properly
+            bool doVariableTimeBase = false;//todo: currently this does not work, is not implemented properly
             var pidModel = new PidModel(pidParams, "pid");
             (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore,
                 enableSimulatorRestarting, doVariableTimeBase);
