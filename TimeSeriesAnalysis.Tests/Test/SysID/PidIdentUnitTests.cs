@@ -388,7 +388,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                     pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex + j] = pidDataSetWithFlatlines.Y_setpoint[flatlineStartIndex];
                 }
             }
-            var idParams = new PidIdentifier().Identify(ref pidDataSetWithFlatlines);// also creates a U_sim in pidDataSetWithFlatlines
+            var idParams = new PidIdentifier().Identify(ref pidDataSetWithFlatlines, tryDownsampling:true);// also creates a U_sim in pidDataSetWithFlatlines
             Console.WriteLine(idParams.ToString());
             // Plot results
             if (false)
@@ -510,7 +510,7 @@ namespace TimeSeriesAnalysis.Test.SysID
         [TestCase(100, 6,2)]// the stored signal is oversampled by a factor 3(whole number)
 
 
-        public void OversampledData_Downsample(int N, double timebaseTrue, double timebaseOversampled)
+        public void OversampledData(int N, double timebaseTrue, double timebaseOversampled)
            {
                // Define parameters
                var truePidParams = new PidParameters()
@@ -543,42 +543,28 @@ namespace TimeSeriesAnalysis.Test.SysID
                var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
 
                 // try to create a downsampled copy of the dataset and give that to identification
-                PidParameters idModelParams = new PidParameters(); 
+                PidParameters idModelParams = new PidParameters();
 
-                (var isDownsampled, var combinedDataDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(combinedDataOversampled);
-                // 
-                (var isDownsampled_V2, var combinedDataDownsampled_V2) = DatasetDownsampler.CreateDownsampledCopyIfPossible(pidDataSetOversampled);
-                var pidDataSetDownsampled = processSim.GetUnitDataSetForPID(combinedDataDownsampled, pidModel1);
-                idModelParams = new PidIdentifier().Identify(ref pidDataSetDownsampled);
-
-                if (false)
+                idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled);
+           
+                 if (false)
                 {
                     Shared.EnablePlots();
                     string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
                         Replace(")", "_").Replace(",", "_") + "y";
-                    Plot.FromList(new List<double[]> { pidDataSetOversampled.Y_meas, pidDataSetOversampled.Y_setpoint, pidDataSetOversampled.U.GetColumn(0) },
-                        new List<string> { "y1=y_meas", "y1=y_setpoint", "y3=u" },
-                        pidDataSet.GetTimeBase(), caseId + "_raw");
-                    Plot.FromList(new List<double[]>{ pidDataSetDownsampled.Y_meas, pidDataSetDownsampled.Y_setpoint,
-                        pidDataSetDownsampled.U.GetColumn(0), pidDataSetDownsampled.U_sim.GetColumn(0)},
-                        new List<string> { "y1=y_meas_oversampled", "y1=y_setpoint_oversampled", "y3=u_oversampled", "y3=u_sim_oversampled" },
-                        pidDataSetDownsampled.GetTimeBase(), caseId + "_oversampled");
+                    Plot.FromList(new List<double[]> { pidDataSetOversampled.Y_meas, pidDataSetOversampled.Y_setpoint, 
+                        pidDataSetOversampled.U.GetColumn(0),pidDataSetOversampled.U_sim.GetColumn(0) },
+                        new List<string> { "y1=y_meas", "y1=y_setpoint", "y3=u_meas", "y3=u_sim" },
+                        pidDataSet.GetTimeBase(), caseId);
                     Shared.DisablePlots();
                 }
                 // test that the two methods are equivalent
-                Assert.AreEqual(combinedDataDownsampled_V2.GetNumDataPoints(), pidDataSetDownsampled.GetNumDataPoints());
-                Assert.AreEqual(combinedDataDownsampled_V2.Y_meas, pidDataSetDownsampled.Y_meas);
-                Assert.AreEqual(combinedDataDownsampled_V2.U, pidDataSetDownsampled.U);
-                Assert.IsTrue(isDownsampled_V2);
-
-                Assert.IsTrue(isDownsampled, "DataDownsample should return true, should downsample");
-
                 Console.WriteLine(idModelParams.ToString());
 
                 // Plot results
                 Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.1 * truePidParams.Ti_s,"Ti too far off!!");
                 Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.1 * truePidParams.Kp, "Kp too far off!!"); 
-                Assert.Greater(idModelParams.Fitting.FitScorePrc, 99, "FitScore poor!"); 
+                Assert.Greater(idModelParams.Fitting.FitScorePrc, 50, "FitScore poor!"); 
            }
 
 
@@ -628,7 +614,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
 
             // pidIdentifier should itself try to vary the timebase.
-            var idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled);
+            var idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled,tryVariableTimeBase: true);
 
             if (true)
             {

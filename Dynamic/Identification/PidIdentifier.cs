@@ -9,6 +9,7 @@ using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
 using System.ComponentModel.Design;
 using Accord.Collections;
+using TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -83,47 +84,71 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Identifies a PID-controller from a UnitDataSet
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
+        /// <param name="tryDownsampling">try identification against a downsampled copy of the dataset internally</param>
+        /// <param name="tryVariableTimeBase">experimental: default is false (if set to true,several unit tests fail because "flipKp" is triggered.)</param>
         /// <returns>the identified parameters of the PID-controller</returns>
-        public PidParameters Identify(ref UnitDataSet dataSet)
+        public PidParameters Identify(ref UnitDataSet dataSet, bool tryDownsampling= true, bool tryVariableTimeBase = false)
         {
-            bool tryVariableTimeBase = false; // experimental: default is false (if set to true,several unit tests fail because "flipKp" is triggered.)
+            PidParameters bestParam = null; // return parameters
+            double[,] bestUsim = null;
+
+            var dataSetCopy = new UnitDataSet(dataSet);
+            var dataSetCopy2 = new UnitDataSet(dataSet);
+            var dataSetCopy3 = new UnitDataSet(dataSet);
+            if (tryDownsampling)
+            {
+                (var isDownsampled, var dataSetDownsampled) = DatasetDownsampler.CreateDownsampledCopyIfPossible(dataSetCopy);
+                if (isDownsampled)
+                {
+                    var paramDownsampled = Identify_Level1(ref dataSetDownsampled, doDetectFrozenData: false,
+                        doVariableTimeBase: false);
+                    paramDownsampled.Fitting.SolverID += "(downsampled)";
+                    bestParam = paramDownsampled;
+                    bestUsim = DatasetDownsampler.UpsampleSignal(dataSetDownsampled.U_sim, dataSetDownsampled.Times, dataSetCopy.Times);
+                }
+            }
 
             // try both with and without frozen data detection, and pick the best result
-            List<int> indToIgnoreOrig = null;
-            if (dataSet.IndicesToIgnore != null)
-                 indToIgnoreOrig = new List<int>(dataSet.IndicesToIgnore);
+           // List<int> indToIgnoreOrig = null;
+           // if (dataSet.IndicesToIgnore != null)
+            //     indToIgnoreOrig = new List<int>(dataSet.IndicesToIgnore);
 
             // do estimation while NOT trying to detect frozen data and with NO variable time base
-            var paramWithoutFrozen = Identify_Level1(ref dataSet, doDetectFrozenData: false, 
+            var paramConstTimebase = Identify_Level1(ref dataSetCopy2, doDetectFrozenData: false, 
                 doVariableTimeBase: false);
-
-            // experimental : do estimation while trying to detect frozen data and with and without using variable timebase
-            PidParameters paramWithFrozen = null;
+            if (bestParam == null)
+            {
+                bestUsim = dataSetCopy2.U_sim;
+                bestParam = paramConstTimebase;
+            }
+            else if (paramConstTimebase.Fitting.FitScorePrc > bestParam.Fitting.FitScorePrc && paramConstTimebase.Fitting.WasAbleToIdentify)
+            {
+                bestUsim = dataSetCopy2.U_sim;
+                bestParam = paramConstTimebase;
+            }
+            // detect frozen data, but try to just simulate through those gaps and ignore the fit in those sections
+          //  dataSet.IndicesToIgnore = indToIgnoreOrig;
+            var paramWithFrozenConstTimebase = Identify_Level1(ref dataSetCopy3, doDetectFrozenData: true, doVariableTimeBase: false);
+            if (paramWithFrozenConstTimebase.Fitting.FitScorePrc > bestParam.Fitting.FitScorePrc
+                && paramWithFrozenConstTimebase.Fitting.WasAbleToIdentify)
+            {
+                bestUsim = dataSetCopy3.U_sim;
+                bestParam = paramWithFrozenConstTimebase;
+            }
+            // there may be a bug here that causes Kp to be flipped.
             if (tryVariableTimeBase)
             {
+                var dataSetCopy4 = new UnitDataSet(dataSet);
                 // try to vary the timebase, jumping from one good value to the next
-                dataSet.IndicesToIgnore = indToIgnoreOrig;
-                var paramWithFrozenVariableTimebase = Identify_Level1(ref dataSet, doDetectFrozenData: true,
+                // dataSet.IndicesToIgnore = indToIgnoreOrig;
+                var paramWithFrozenVariableTimebase = Identify_Level1(ref dataSetCopy4, doDetectFrozenData: true,
                      doVariableTimeBase: true);
-
-                // detect frozen data, but try to just simulate through those gaps and ignore the fit in those sections
-                dataSet.IndicesToIgnore = indToIgnoreOrig;
-                var paramWithFrozenConstTimebase = Identify_Level1(ref dataSet, doDetectFrozenData: true, doVariableTimeBase: false);
-
-                if (paramWithFrozenConstTimebase.Fitting.WasAbleToIdentify && !paramWithFrozenVariableTimebase.Fitting.WasAbleToIdentify)
-                    paramWithFrozen = paramWithFrozenConstTimebase;
-                else if (!paramWithFrozenConstTimebase.Fitting.WasAbleToIdentify && paramWithFrozenVariableTimebase.Fitting.WasAbleToIdentify)
-                    paramWithFrozen = paramWithFrozenVariableTimebase;
-                else if (paramWithFrozenConstTimebase.Fitting.FitScorePrc > paramWithFrozenVariableTimebase.Fitting.FitScorePrc)
-                    paramWithFrozen = paramWithFrozenConstTimebase;
-                else
-                    paramWithFrozen = paramWithFrozenVariableTimebase;
-            }
-            else
-            {
-                // do estimation while not trying to detect frozen data(just simulate through any gaps)
-                dataSet.IndicesToIgnore = indToIgnoreOrig;
-                paramWithFrozen = Identify_Level1(ref dataSet, doDetectFrozenData: true, doVariableTimeBase: false);
+                if (paramWithFrozenVariableTimebase.Fitting.FitScorePrc > bestParam.Fitting.FitScorePrc
+                     && paramWithFrozenVariableTimebase.Fitting.WasAbleToIdentify)
+                {
+                    bestUsim = dataSetCopy4.U_sim;
+                    bestParam = paramWithFrozenVariableTimebase;
+                }
             }
 
             /* usimFrozen = dataSet.U_sim.GetColumn(0);
@@ -133,21 +158,11 @@ namespace TimeSeriesAnalysis.Dynamic
              Shared.DisablePlots();
             */
 
-            
-            if (!paramWithFrozen.Fitting.WasAbleToIdentify && paramWithoutFrozen.Fitting.WasAbleToIdentify)
-                return paramWithoutFrozen;
-            if (paramWithFrozen.Fitting.WasAbleToIdentify && !paramWithoutFrozen.Fitting.WasAbleToIdentify)
-                return paramWithFrozen;
 
-            if (paramWithoutFrozen.Fitting.FitScorePrc > paramWithFrozen.Fitting.FitScorePrc)
-            {
-                return paramWithoutFrozen;
-            }
-            else
-            {
-                return paramWithFrozen;
-            }
-           
+            dataSet.U_sim = bestUsim;
+            return bestParam;
+
+
         }
 
         /// <summary>
@@ -239,8 +254,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (doFlipKp)
                 {
                     var pidParamFlipped = new PidParameters(bestPidParameters);
+                    if (pidParamFlipped.Fitting == null)
+                        pidParamFlipped.Fitting = new FittingInfo();
+                    pidParamFlipped.Fitting.WasAbleToIdentify = true;
                     pidParamFlipped.Kp = -bestPidParameters.Kp;
-
+                    dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
+                    var uSim = Array2D<double>.Create(GetSimulatedU(bestPidParameters, dataSet, bestPidParameters.DelayOutputOneSample,
+                        bestIndicesToIgnore, doVariableTimeBase).Item1);
+                    dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
+     
                     var uSimFlipped = Array2D<double>.Create(GetSimulatedU(pidParamFlipped, dataSet, bestPidParameters.DelayOutputOneSample, 
                         bestIndicesToIgnore, doVariableTimeBase).Item1);
                     double flippedFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSimFlipped.GetColumn(0), 
@@ -248,10 +270,9 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     if (flippedFitScore > 0 && flippedFitScore > bestPidParameters.Fitting.FitScorePrc)
                     {
-                        if (pidParamFlipped.Fitting == null)
-                            pidParamFlipped.Fitting = new FittingInfo();
 
-                        pidParamFlipped.Fitting.WasAbleToIdentify = true;
+                        pidParamFlipped.Fitting.NFittingBadDataPoints = bestPidParameters.Fitting.NFittingBadDataPoints;
+                        pidParamFlipped.Fitting.NFittingTotalDataPoints = bestPidParameters.Fitting.NFittingTotalDataPoints;
 
                         if (pidParamFlipped.Fitting.SolverID == null)
                             pidParamFlipped.Fitting.SolverID = "PidIdentifier (Kp flipped)";
@@ -631,7 +652,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var pidModel = new PidModel(pidParams, "pid");
             (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore,
                 enableSimulatorRestarting, doVariableTimeBase);
-            dataset.U_sim = Array2D<double>.CreateFromList(new List<double[]> { simulatedU });
+        //    dataset.U_sim = Array2D<double>.CreateFromList(new List<double[]> { simulatedU });
             return (simulatedU,numSimRestarts);
         }
     }
