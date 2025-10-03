@@ -46,19 +46,26 @@ namespace TimeSeriesAnalysis
         /// <param name="FilterTc_s">filter time constant in seconds</param>
         /// <param name="order">filter order, either 1 or 2 is supported</param>
         /// <param name="doReset">usually false, setting to true causes filter to reset to the value of signal</param>
+        /// <param name="stepLength_s">if given, the filter ignores any "timebase" and uses the stepLength_ provided that can vary for each step</param>
         /// <returns></returns>
-        public double Filter(double signal, double FilterTc_s, int order=1, bool doReset = false)
+        public double Filter(double signal, double FilterTc_s, int order=1, bool doReset = false, double? stepLength_s = null)
         {
+            double internalStepLength_s = this.timeBase_s;
+            if (stepLength_s.HasValue)
+            {
+                internalStepLength_s = stepLength_s.Value;
+            }
+
             if (nSignals < 2)
             {
                 nSignals++;
             }
             double a;
             double filteredSignal= signal;
-            if (FilterTc_s < 0.4 * this.timeBase_s)
+            if (FilterTc_s < 0.4 * internalStepLength_s)
                 a = 0;// (*/ if cutoff frequency is set close to sampling freq, the filter will fail fail - to - safe and just drop filtering*)
             else
-                a = 1 / (1 + this.timeBase_s / FilterTc_s); // (*time constant *)
+                a = 1 / (1 + internalStepLength_s / FilterTc_s); // (*time constant *)
 
             if (Double.IsNaN(a))
             {

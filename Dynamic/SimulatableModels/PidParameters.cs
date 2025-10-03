@@ -256,6 +256,9 @@ namespace TimeSeriesAnalysis.Dynamic
             sb.AppendLine("  -------------------------");
             int nDigits = 5;
             sb.AppendLine("Fit score(%):" + SignificantDigits.Format(Fitting.FitScorePrc, nDigits).ToString(CultureInfo.InvariantCulture));
+
+            sb.AppendLine("RsqDiff:" + SignificantDigits.Format(Fitting.RsqDiff, nDigits).ToString(CultureInfo.InvariantCulture));
+
             if (Fitting.NumSimulatorRestarts == 0)
                 sb.AppendLine("Number of simulator restarts in fitting: " + Fitting.NumSimulatorRestarts );
             else

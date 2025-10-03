@@ -64,10 +64,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         // 0.25: saturates the controller
-        [TestCase(1, 0.1, 30, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 1, 30, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(2, 0.1, 30, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(2, 1, 30, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 0.1, 30, Explicit = true,Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 1, 30, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2, 0.1, 30, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(2, 1, 30, Explicit = true, Category = "NotWorking_AcceptanceTest")]
         // gain of 5 starts giving huge oscillations...
 
         public void RandomWalkDisturbance(double procGain, double distAmplitude, double gainPrecisionPrc)

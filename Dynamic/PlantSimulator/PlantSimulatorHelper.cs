@@ -119,12 +119,15 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="model"></param>
         /// <param name="doDetermineIndicesToIgnore"></param>
         /// <param name="simData"></param>
+        /// <param name="enableSimulatorRestarting"></param>
+        /// <param name="doVariableTimeBase"></param>
         /// <returns></returns>
         public static bool SimulateSingle(TimeSeriesDataSet inputData, ISimulatableModel model,
-            bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData)
+            bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, bool enableSimulatorRestarting = true,
+            bool doVariableTimeBase = false)
         {
             PlantSimulator plant = new PlantSimulator(new List<ISimulatableModel> { model });
-            return plant.Simulate(inputData, doDetermineIndicesToIgnore, out simData);
+            return plant.Simulate(inputData, doDetermineIndicesToIgnore, out simData, enableSimulatorRestarting, doVariableTimeBase);
         }
 
 
@@ -133,10 +136,14 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitData"></param>
         /// <param name="model"></param>
+        /// <param name="indToIgnore"></param>
+        /// <param name="enableSimulatorRestarting"></param>
+        /// <param name="doVariableTimeBase"></param>
         /// <returns>tuple : true/false if simulation ran, the simulated output, and the number of simulation restarts</returns>
-        public static (bool, double[],int) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, List<int> indToIgnore=null)
+        public static (bool, double[],int) SimulateSingle(UnitDataSet unitData, ISimulatableModel model, List<int> indToIgnore=null
+            , bool enableSimulatorRestarting = true, bool doVariableTimeBase = false)
         {
-            return SimulateSingleUnitDataWrapper(unitData, model, indToIgnore);
+            return SimulateSingleUnitDataWrapper(unitData, model, indToIgnore, enableSimulatorRestarting, doVariableTimeBase);
         }
 
         /// <summary>
@@ -171,10 +178,11 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitData">the dataset to be simualted over, and where the Y_meas is updated with result</param>
         /// <param name="model">the model to be simulated</param>
+        /// <param name="enableSimulatorRestarting"></param>
         /// <returns></returns>
-        public static (bool, double[],int) SimulateSingleToYsim(UnitDataSet unitData, ISimulatableModel model)
+        public static (bool, double[],int) SimulateSingleToYsim(UnitDataSet unitData, ISimulatableModel model, bool enableSimulatorRestarting = true)
         {
-            (bool isOk, double[] y_proc, int numSimRestarts) = SimulateSingleUnitDataWrapper(unitData, model);
+            (bool isOk, double[] y_proc, int numSimRestarts) = SimulateSingleUnitDataWrapper(unitData, model, null,enableSimulatorRestarting);
             unitData.Y_sim = y_proc;
             return (isOk, y_proc, numSimRestarts);
         }
@@ -190,9 +198,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="unitData">contains a unit data set that must have U filled, Y_sim will be written here</param>
         /// <param name="model">model to simulate</param>
-        /// <param name="indToIgnore">if specific, this specifies the indices to be ignored rather than unitData</param>
+        /// <param name="indToIgnore">if specified, this specifies the indices to be ignored rather than unitData</param>
+        /// <param name="enableSimulatorRestarting"></param>
+        /// <param name="doVariableTimeBase"></param>
         /// <returns>a tuple, first a true if able to simulate, otherwise false, second is the simulated time-series "y_proc" without any additive,third is number of simulator re-starts </returns>
-        static private (bool, double[],int) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model, List<int> indToIgnore=null)
+        static private (bool, double[],int) SimulateSingleUnitDataWrapper(UnitDataSet unitData, ISimulatableModel model, List<int> indToIgnore=null,
+            bool enableSimulatorRestarting = true, bool doVariableTimeBase = false)
         {
             bool doDetermineIndicesToIgnore = false;
             string defaultOutputName = "output";
@@ -234,7 +245,8 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputData.SetIndicesToIgnore(unitData.IndicesToIgnore);
             else
                 inputData.SetIndicesToIgnore(indToIgnore);
-            var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, doDetermineIndicesToIgnore,out var simData);
+            var isOk = PlantSimulatorHelper.SimulateSingle(inputData, modelCopy, doDetermineIndicesToIgnore,out var simData, 
+                enableSimulatorRestarting, doVariableTimeBase);
 
             if (!isOk)
                 return (false, null,0);

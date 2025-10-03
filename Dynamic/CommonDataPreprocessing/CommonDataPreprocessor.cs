@@ -35,7 +35,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// For best results, only include those time-series that are needed for simulation, remove unused time-series from this dataset.
         /// </summary>
         /// <param name="dataSet">dataset to be investigated(if this dataset has IndicesToIgnore set, then they are included in the returned lst)</param>
-        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removd/param>
+        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removed/param>
         /// <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"(only use when dataset includes measoured outputs y with noise)</param>
         /// <returns>a sorted list of indicest to ignore</returns>
         public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet, bool detectBadData = true, bool detectFrozenData=false)

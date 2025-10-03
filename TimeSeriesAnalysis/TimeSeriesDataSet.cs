@@ -13,6 +13,7 @@ using TimeSeriesAnalysis.Dynamic;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.Design;
 using System.Configuration;
+using System.Runtime.CompilerServices;
 
 namespace TimeSeriesAnalysis
 {
@@ -32,6 +33,8 @@ namespace TimeSeriesAnalysis
         Dictionary<string, double> dataset_constants;
         List<int> indicesToIgnore;
         int numSimulatorRestarts;
+
+        string Description = string.Empty;  
 
         string csvFileName = string.Empty;
         /// <summary>
@@ -67,6 +70,30 @@ namespace TimeSeriesAnalysis
             timeStamps = inputDataSet.timeStamps;
             indicesToIgnore = inputDataSet.indicesToIgnore;
         }
+
+        /// <summary>
+        /// Gets the description of the dataset
+        /// </summary>
+
+        public string GetDescritpion()
+        {
+            return Description;
+        }
+
+        /// <summary>
+        /// Set the description of the dataset
+        /// </summary>
+        /// <param name="description"></param>
+        /// <param name="doAppend"> is set to true, the text is appended to previous text</param>
+        public void SetDescritpion(string description, bool doAppend= false)
+        { 
+            if (doAppend)
+                Description += description;
+            else
+                Description = description;
+        }
+
+
 
         /// <summary>
         /// Constructor that copies another dataset into the returned object, but only the values and times for the indices given
@@ -588,7 +615,7 @@ namespace TimeSeriesAnalysis
         /// <param name="olderIndex"></param>
         /// <param name="newerIndex"></param>
         /// <returns></returns>
-        public double GetTimeDiff_s(int olderIndex, int newerIndex)
+        public double GetTimeDiff_s(int newerIndex, int olderIndex)
         {
             if (timeStamps == null)
                 return this.GetTimeBase()*(newerIndex- olderIndex);

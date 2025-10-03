@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Accord.Math;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 
 namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
@@ -23,8 +25,8 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
 
             // if the above list is "periodic"
 
-            //if (avgSamplesBtwGoodIdx >= 1 && minSamplesBtwGoodIdx >= 1)
-            if (avgSamplesBtwGoodIdx >= 1 )
+            if (avgSamplesBtwGoodIdx >= 1 && minSamplesBtwGoodIdx >= 1)
+            //if (avgSamplesBtwGoodIdx >= 1 )
             {
                 // then create a downsampled copy of the original dataset.
                 return (true, new TimeSeriesDataSet(rawData, listFrozenSampleIdx));
@@ -50,6 +52,25 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
             return (false, rawData);
         }
 
+        /// <summary>
+        /// Upsample a downsampled signal
+        /// </summary>
+        /// <param name="signalToBeUpsampled"></param>
+        /// <param name="downsampledTimestamps"></param>
+        /// <param name="desiredTimestamps"></param>
+        /// <returns></returns>
+        internal static double[,] UpsampleSignal(double[,] signalToBeUpsampled, DateTime[] downsampledTimestamps, DateTime[] desiredTimestamps)
+        {
+            double[] ret = new double[desiredTimestamps.Count()];
 
+            int curSignalIdx = 0;
+            for (int curOutIdx = 0; curOutIdx < ret.Count(); curOutIdx++)
+            {
+                while (downsampledTimestamps[curSignalIdx] < desiredTimestamps[curOutIdx] && curSignalIdx< signalToBeUpsampled.Length-2 )
+                    curSignalIdx++;
+                ret[curOutIdx]  = signalToBeUpsampled[curSignalIdx,0];
+            }
+            return Array2D<double>.CreateFromList(new List<double[]> { ret });
+        }
     }
 }
