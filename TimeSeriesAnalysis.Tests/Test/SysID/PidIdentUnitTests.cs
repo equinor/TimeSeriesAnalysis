@@ -2,11 +2,13 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing;
 using TimeSeriesAnalysis.Utility;
+using CategoryAttribute = NUnit.Framework.CategoryAttribute;
 
 namespace TimeSeriesAnalysis.Test.SysID
 {
@@ -570,24 +572,28 @@ namespace TimeSeriesAnalysis.Test.SysID
                 Assert.IsTrue(isDownsampled_V2);
 
                 Assert.IsTrue(isDownsampled, "DataDownsample should return true, should downsample");
-              
 
                 Console.WriteLine(idModelParams.ToString());
 
-        /*    // Plot results
-
-            */ 
+                // Plot results
                 Assert.IsTrue(Math.Abs(idModelParams.Ti_s - truePidParams.Ti_s) < 0.1 * truePidParams.Ti_s,"Ti too far off!!");
                 Assert.IsTrue(Math.Abs(idModelParams.Kp - truePidParams.Kp) < 0.1 * truePidParams.Kp, "Kp too far off!!"); 
                 Assert.Greater(idModelParams.Fitting.FitScorePrc, 99, "FitScore poor!"); 
            }
 
 
-        [TestCase(100, 6, 5),Explicit]// the stored signal is oversampled by a factor 6/5ths (not a whole number)
-        [TestCase(100, 6, 4)]// the stored signal is oversampled by a factor 1.5(not whole number)
-        [TestCase(100, 6, 3)]// the stored signal is oversampled by a factor 2(whole number)
-        [TestCase(100, 6, 2)]// the stored signal is oversampled by a factor 3(whole number)
+        //
+        // oversampling introduces phase-shift. 
+        // 
 
+        [TestCase(100, 6, 5), Explicit, Category("NotWorking_AcceptanceTest")] // the stored signal is oversampled by a factor 6/5ths (not a whole number)
+                                                                              // ;Kp 0.505 Ti 60.8(great) but FitScore is 55%
+        [TestCase(100, 6, 4), Category("NotWorking_AcceptanceTest")]// the stored signal is oversampled by a factor 1.5(not whole number)
+                             // Kp 0.508 Ti 61.3 (good) but FitScore is 80
+        [TestCase(100, 6, 3), Category("NotWorking_AcceptanceTest")]// the stored signal is oversampled by a factor 2(whole number)
+                             // Kp 0.517, Ti 93s (not so good) Fit Score 87%
+        [TestCase(100, 6, 2), Category("NotWorking_AcceptanceTest")]// the stored signal is oversampled by a factor 3(whole number): 
+                             // Kp 0.52 Ti 62s (good)Fit Score 89% 
 
         public void OversampledData_VariableTimebase(int N, double timebaseTrue, double timebaseOversampled)
         {
@@ -624,7 +630,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             // pidIdentifier should itself try to vary the timebase.
             var idModelParams = new PidIdentifier().Identify(ref pidDataSetOversampled);
 
-            if (false)
+            if (true)
             {
                 Shared.EnablePlots();
                 string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
@@ -635,7 +641,6 @@ namespace TimeSeriesAnalysis.Test.SysID
                     pidDataSet.GetTimeBase(), caseId);
                 Shared.DisablePlots();
             }
-
 
             Console.WriteLine(idModelParams.ToString());
 

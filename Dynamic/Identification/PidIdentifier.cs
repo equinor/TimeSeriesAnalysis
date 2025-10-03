@@ -86,18 +86,45 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify(ref UnitDataSet dataSet)
         {
-            //double[] usimFrozen, usimUnfrozen;
+            bool tryVariableTimeBase = false; // experimental: default is false (if set to true,several unit tests fail because "flipKp" is triggered.)
 
             // try both with and without frozen data detection, and pick the best result
             List<int> indToIgnoreOrig = null;
             if (dataSet.IndicesToIgnore != null)
                  indToIgnoreOrig = new List<int>(dataSet.IndicesToIgnore);
-            var paramWithoutFrozen = Identify_Level1(ref dataSet, doDetectFrozenData: false);
-          //  usimUnfrozen = dataSet.U_sim.GetColumn(0); ;
-            dataSet.IndicesToIgnore = indToIgnoreOrig;
-            var paramWithFrozen =  Identify_Level1(ref dataSet,doDetectFrozenData: true);
 
-          //  return paramWithFrozen;//debug, TODO:Remove
+            // do estimation while NOT trying to detect frozen data and with NO variable time base
+            var paramWithoutFrozen = Identify_Level1(ref dataSet, doDetectFrozenData: false, 
+                doVariableTimeBase: false);
+
+            // experimental : do estimation while trying to detect frozen data and with and without using variable timebase
+            PidParameters paramWithFrozen = null;
+            if (tryVariableTimeBase)
+            {
+                // try to vary the timebase, jumping from one good value to the next
+                dataSet.IndicesToIgnore = indToIgnoreOrig;
+                var paramWithFrozenVariableTimebase = Identify_Level1(ref dataSet, doDetectFrozenData: true,
+                     doVariableTimeBase: true);
+
+                // detect frozen data, but try to just simulate through those gaps and ignore the fit in those sections
+                dataSet.IndicesToIgnore = indToIgnoreOrig;
+                var paramWithFrozenConstTimebase = Identify_Level1(ref dataSet, doDetectFrozenData: true, doVariableTimeBase: false);
+
+                if (paramWithFrozenConstTimebase.Fitting.WasAbleToIdentify && !paramWithFrozenVariableTimebase.Fitting.WasAbleToIdentify)
+                    paramWithFrozen = paramWithFrozenConstTimebase;
+                else if (!paramWithFrozenConstTimebase.Fitting.WasAbleToIdentify && paramWithFrozenVariableTimebase.Fitting.WasAbleToIdentify)
+                    paramWithFrozen = paramWithFrozenVariableTimebase;
+                else if (paramWithFrozenConstTimebase.Fitting.FitScorePrc > paramWithFrozenVariableTimebase.Fitting.FitScorePrc)
+                    paramWithFrozen = paramWithFrozenConstTimebase;
+                else
+                    paramWithFrozen = paramWithFrozenVariableTimebase;
+            }
+            else
+            {
+                // do estimation while not trying to detect frozen data(just simulate through any gaps)
+                dataSet.IndicesToIgnore = indToIgnoreOrig;
+                paramWithFrozen = Identify_Level1(ref dataSet, doDetectFrozenData: true, doVariableTimeBase: false);
+            }
 
             /* usimFrozen = dataSet.U_sim.GetColumn(0);
              Shared.EnablePlots();
@@ -105,15 +132,14 @@ namespace TimeSeriesAnalysis.Dynamic
                  new List<string> { "y1= u_simUnfrozen", "y1= u_simfronzen", "y1=umeas" },dataSet.Times);
              Shared.DisablePlots();
             */
-            var fitScoreWithFrozen = paramWithFrozen.Fitting.FitScorePrc;
-            var fitScoreWithoutFrozen = paramWithoutFrozen.Fitting.FitScorePrc;
 
+            
             if (!paramWithFrozen.Fitting.WasAbleToIdentify && paramWithoutFrozen.Fitting.WasAbleToIdentify)
                 return paramWithoutFrozen;
             if (paramWithFrozen.Fitting.WasAbleToIdentify && !paramWithoutFrozen.Fitting.WasAbleToIdentify)
                 return paramWithFrozen;
 
-            if (fitScoreWithoutFrozen > fitScoreWithFrozen)
+            if (paramWithoutFrozen.Fitting.FitScorePrc > paramWithFrozen.Fitting.FitScorePrc)
             {
                 return paramWithoutFrozen;
             }
@@ -130,7 +156,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
         /// <param name="doDetectFrozenData">if true, the model attempts to find and ignore portions of frozen data(will also detect oversampled data)</param>
         /// <returns>the identified parameters of the PID-controller</returns>
-        public PidParameters Identify_Level1(ref UnitDataSet dataSet, bool doDetectFrozenData)
+        public PidParameters Identify_Level1(ref UnitDataSet dataSet, bool doDetectFrozenData, bool doVariableTimeBase)
         {
             const bool doFiltering = true; // default is true (this improves performance significantly)
             const bool returnFilterParameters = false; // even if filtering helps improve estimates, the filter should normally not be returned
@@ -138,13 +164,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // 1. try identification with delay of one sample but without filtering
             (var idParamsWithDelay, var U_withDelay, var indicesToIgnore_withDelay)
-                = Identify_Level2(dataSet, true,null, false, doDetectFrozenData);
+                = Identify_Level2(dataSet, true,null, false, doDetectFrozenData, doVariableTimeBase);
 
             // 2. try identification without delay of one sample (yields better results often if dataset is downsampled
             //    relative to the clock that the pid algorithm ran on originally)
             dataSet.IndicesToIgnore = null;// nb! avoid re-using indices to ignore from step above..
             (var idParamsWithoutDelay, var U_withoutDelay, var indicesToIgnore_withoutDelay) = 
-                Identify_Level2(dataSet, false, null, false, doDetectFrozenData);
+                Identify_Level2(dataSet, false, null, false, doDetectFrozenData, doVariableTimeBase);
 
             // save which is the "best" estimate for comparison 
             bool doDelay = true;
@@ -215,8 +241,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     var pidParamFlipped = new PidParameters(bestPidParameters);
                     pidParamFlipped.Kp = -bestPidParameters.Kp;
 
-                    var uSimFlipped = Array2D<double>.Create(GetSimulatedU(pidParamFlipped, dataSet, bestPidParameters.DelayOutputOneSample, bestIndicesToIgnore).Item1);
-                    double flippedFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSimFlipped.GetColumn(0), dataSet.BadDataID, bestIndicesToIgnore);
+                    var uSimFlipped = Array2D<double>.Create(GetSimulatedU(pidParamFlipped, dataSet, bestPidParameters.DelayOutputOneSample, 
+                        bestIndicesToIgnore, doVariableTimeBase).Item1);
+                    double flippedFitScore = FitScoreCalculator.Calc(dataSet.U.GetColumn(0), uSimFlipped.GetColumn(0), 
+                        dataSet.BadDataID, bestIndicesToIgnore);
 
                     if (flippedFitScore > 0 && flippedFitScore > bestPidParameters.Fitting.FitScorePrc)
                     {
@@ -295,20 +323,21 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doDetectFrozenData">If true, the identification will try to identify periods where all data is frozen and ignore those portions. </param>
         /// <returns></returns>
         private (PidParameters, double[,], List<int>) Identify_Level2(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
-            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false, bool doDetectFrozenData = true)
+            PidFilterParams pidFilterParams = null, bool doFilterUmeas=false, bool doDetectFrozenData = true, bool doVariableTimeBase = false)
         {
-            const bool useConstantTimeBase = false;// default is true, false is experimental. 
+            //const bool useConstantTimeBase = true;// default is true, false is experimental. 
 
             this.timeBase_s = dataSet.GetTimeBase();
             var pidParam = new PidParameters();
             string solverID = "PidIdentifier";
-            if (useConstantTimeBase)
+            if (doVariableTimeBase)
             {
-                solverID += "(constant timebase)";
+                solverID += "(variable timebase)";
+          
             }
             else
             {
-                solverID += "(variable timebase)";
+                solverID += "(constant timebase)";
             }
 
             if (pidFilterParams != null)
@@ -437,16 +466,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double[] X2reg = new double[bufferLength];
                 double[] Yreg = new double[bufferLength];
 
-                if (useConstantTimeBase)
-                {
-                    X1reg = new double[bufferLength];
-                    X2reg = new double[bufferLength];
-                    Yreg = new double[bufferLength];
-                    Yreg = vec.Subtract(ucurReg, uprevReg);
-                    X1reg = vec.Subtract(ecurReg, eprevReg);
-                    X2reg = vec.Multiply(ecurReg, timeBase_s);
-                }
-                else
+                if (doVariableTimeBase)
                 {
                     goodIndices = Index.InverseIndices(ucurReg.Count(), indicesToIgnoreReg);
                     X1reg = new double[goodIndices.Count()];
@@ -463,14 +483,24 @@ namespace TimeSeriesAnalysis.Dynamic
                         X2reg[goodInd] = ecurReg[ind] * timeSinceLastGoodInd_s;
                     }
                 }
+                else
+                {
+                    X1reg = new double[bufferLength];
+                    X2reg = new double[bufferLength];
+                    Yreg = new double[bufferLength];
+                    Yreg = vec.Subtract(ucurReg, uprevReg);
+                    X1reg = vec.Subtract(ecurReg, eprevReg);
+                    X2reg = vec.Multiply(ecurReg, timeBase_s);
+                }
 
 
                 double[][] inputs = { X1reg, X2reg };
                 // important: use the un-regularized solver here!!
-                if (useConstantTimeBase)
-                    regressResults = vec.RegressUnRegularized(Yreg, inputs, indicesToIgnoreReg.ToArray());
-                else
+                if(doVariableTimeBase)
                     regressResults = vec.RegressUnRegularized(Yreg, inputs);
+                else 
+                    regressResults = vec.RegressUnRegularized(Yreg, inputs, indicesToIgnoreReg.ToArray());
+
 
                 var b = regressResults.Param;
 
@@ -536,7 +566,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 pidParam.Fitting.EndTime = dataSet.Times.Last();
             }
 
-            (var u_sim, int numSimRestarts) = GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indToIgnore);
+            (var u_sim, int numSimRestarts) = GetSimulatedU(pidParam, dataSet, isPIDoutputDelayOneSample, indToIgnore, doVariableTimeBase);
             double[,] uSim = Array2D<double>.Create(u_sim);
 
             pidParam.Fitting.WasAbleToIdentify = true;
@@ -557,17 +587,17 @@ namespace TimeSeriesAnalysis.Dynamic
             pidParam.Fitting.Umin = new double[] { SignificantDigits.Format(vec.Min(dataSet.U.GetColumn(0)), nDigitsParams) };
             pidParam.Fitting.Umax = new double[] { SignificantDigits.Format(vec.Max(dataSet.U.GetColumn(0)), nDigitsParams) };
 
-            if (useConstantTimeBase)
-            {
-                pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
-                pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
-            }
-            else
+
+            if (doVariableTimeBase)
             {
                 pidParam.Fitting.NFittingTotalDataPoints = dataSet.GetNumDataPoints(); 
                 pidParam.Fitting.NFittingBadDataPoints = dataSet.GetNumDataPoints() - goodIndices.Count();
             }
-
+            else
+            {
+                pidParam.Fitting.NFittingTotalDataPoints = regressResults.NfittingTotalDataPoints;
+                pidParam.Fitting.NFittingBadDataPoints = regressResults.NfittingBadDataPoints;
+            }
             pidParam.Fitting.RsqDiff = regressResults.Rsq;
 
             if (false)
@@ -592,12 +622,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="dataset"> dataset, including including the "indicesToIgnore"</param>
         /// <param name="isPIDoutputDelayOneSample"></param>
         /// <param name="indToIgnore"></param>
+        /// <param name="doVariableTimeBase"></param>
         /// <returns>the simulated value, and the number of restarts</returns>
         public (double[],int) GetSimulatedU(PidParameters pidParams, UnitDataSet dataset,bool isPIDoutputDelayOneSample, 
-            List<int> indToIgnore)
+            List<int> indToIgnore, bool doVariableTimeBase = false)
         {
             bool enableSimulatorRestarting = false;
-            bool doVariableTimeBase = false;//todo: currently this does not work, is not implemented properly
             var pidModel = new PidModel(pidParams, "pid");
             (var isOk,var simulatedU, int numSimRestarts) =  PlantSimulatorHelper.SimulateSingle(dataset, pidModel, indToIgnore,
                 enableSimulatorRestarting, doVariableTimeBase);

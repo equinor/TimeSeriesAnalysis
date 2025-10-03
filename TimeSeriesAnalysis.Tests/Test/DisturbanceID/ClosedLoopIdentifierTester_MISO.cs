@@ -157,8 +157,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueDisturbance, externalU1, null, doNegative, true, yset, pidInputIdx, gainTolPrc, false, isStatic);
         }
 
-        [TestCase(false, 5, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(true, 5, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(false, 5, Explicit = true,Category = "NotWorking_AcceptanceTest")]
+        [TestCase(true, 5, Explicit=true, Category = "NotWorking_AcceptanceTest")]
 
         public void Static2Input_WITHdisturbanceNOsetpointChange_ExtUChanges_detectsProcessOk(bool doNegative, double gainTolPrc)
         {

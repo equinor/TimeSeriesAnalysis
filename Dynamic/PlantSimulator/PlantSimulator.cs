@@ -584,7 +584,6 @@ namespace TimeSeriesAnalysis.Dynamic
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, 
             bool enableSimulatorRestarting=true, bool doVariableTimeBase = false)
         {
-            const bool doUseLastGoodValueRatherThanLastValue = true;// experimentally, try using the values of the last good time. 
             const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc = 0.20; // design variable.
 
             int? N = inputData.GetLength();
@@ -642,11 +641,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
                 return false;
             }
-
-
-
             // simulate for all time steps(after first step!)
-
 
             int numRestartCounter = -1;
             double largestTc =  GetLargestTimeConstant();
