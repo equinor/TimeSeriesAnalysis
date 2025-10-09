@@ -182,14 +182,14 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 if (minIdx == 0)
                     return "";
-                if (minIdx >= v_in.Length)
+                if (minIdx >= v_in.Length-1)
                     return "";
                 double v_min = (new Vec()).Min(v_in);
                 double v_max = (new Vec()).Max(v_in);
                 double v_range = v_max - v_min;
                 if (minIdx == 0 )
                     return "@min";
-                if (minIdx >= v_in.Length)
+                if (minIdx >= v_in.Length-1)
                     return "@max";
 
                 if (v_in[minIdx + 1] == v_in[minIdx - 1])
