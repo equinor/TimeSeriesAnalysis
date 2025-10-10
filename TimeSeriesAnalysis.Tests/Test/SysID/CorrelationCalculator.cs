@@ -42,6 +42,40 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.AreEqual(1, results["oppsiteSignal"]);
         }
 
+
+
+        [TestCase(double.NaN)]
+        [TestCase(-9999)]
+        public void CorrelateToSelf_IgnoreBadData(double badDataId)
+        {
+            int N = 10;
+            var dataset = new TimeSeriesDataSet();
+            var amplitude = 10;
+            var mainSignal = TimeSeriesCreator.Step(N / 2, N, 0, amplitude);
+            for (int i = 0; i < N; i +=4)
+            { 
+                mainSignal[i] = badDataId; 
+            }
+            double[] otherSignal = new double[N];
+
+            mainSignal.CopyTo(otherSignal, 0);
+            for (int i = 0; i < N; i += 3)
+            {
+                otherSignal[i] = badDataId;
+            }
+
+            dataset.Add("mainSignal", mainSignal);
+            dataset.Add("oppsiteSignal", otherSignal);
+
+            var indToIgnore = TimeSeriesAnalysis.Dynamic.BadDataFinder.GetAllBadIndices(dataset, badDataId);
+
+            var results = CorrelationCalculator.Calculate("mainSignal", dataset,indToIgnore);
+            Assert.AreEqual(1, results["oppsiteSignal"]);
+        }
+
+
+
+
         [TestCase]
         public void CorrelateToZero()
         {
@@ -75,9 +109,6 @@ namespace TimeSeriesAnalysis.Test.SysID
 
             Assert.AreEqual(delaySamples,results[1].timeDelay_s);
             Assert.AreEqual(0, results[1].timeConstant_s);
-     //       Assert.AreEqual(null,results[2].timeDelay_s,"dont bother calculating negative time-delays or time constants" );
-
-
         }
 
 

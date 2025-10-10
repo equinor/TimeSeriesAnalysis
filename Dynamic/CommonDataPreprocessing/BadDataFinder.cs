@@ -13,10 +13,10 @@ namespace TimeSeriesAnalysis.Dynamic
     /// that it is especially important to filter out, otherwise it may 
     /// destory identification of dynamic terms.
     /// </summary>
-    static class BadDataFinder
+    public static class BadDataFinder
     {
         /// <summary>
-        /// 
+        /// Get all the values which are NaN or equal to the badValueIndicatingValue for a single vector/array
         /// </summary>
         /// <param name="inData"></param>
         /// <param name="badValueIndicatingValue"></param>
@@ -24,9 +24,29 @@ namespace TimeSeriesAnalysis.Dynamic
         static public  List<int> GetAllBadIndices(double[] inData, double badValueIndicatingValue)
         {
             List<int> badValueIndices = GetBadValueIndices(inData, badValueIndicatingValue);
-            //   List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
 
             List<int> badIndices = badValueIndices;
+            return badIndices;
+        }
+
+        /// <summary>
+        /// Get all the values which are NaN or equal to the badValueIndicatingValue for any and all datapoints in an entire
+        /// TimeSeriesDataSet
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="badValueIndicatingValue"></param>
+        /// <returns></returns>
+        static public List<int> GetAllBadIndices(TimeSeriesDataSet inputData, double badValueIndicatingValue)
+        {
+            List<int> badIndices = new List<int>();
+
+            foreach (var signalName in inputData.GetSignalNames())
+            {
+                var curData = inputData.GetValues(signalName);
+                var curBadindices = GetBadValueIndices(curData, badValueIndicatingValue);
+                badIndices = badIndices.Union(curBadindices).ToList();  
+            }
+            badIndices.Sort();
             return badIndices;
         }
 
@@ -46,28 +66,13 @@ namespace TimeSeriesAnalysis.Dynamic
         static private List<int> GetBadValueIndices(double[] inData, double badValueIndicatingValue)
         {
             List<int> badIndices = (new Vec(badValueIndicatingValue)).FindValues(inData, badValueIndicatingValue, VectorFindValueType.NaN);
-           // List<int> interpolatedIndices = GetIndicesWhereDataSeemsInterpolatedByIMS(inData);
             return badIndices;
         }
 
-        // in some cases if the IMS is sampled too frequntly, the ims will return interpolated 
-        // data to "fill in" the data request, this interpolated data needs to be identified and removed,
-        // otherwise it will fill in. In general you cannot expect this interpolated data to follow a
-        // steady pattern, in some cases you may have four good data points and one bad, followed by eight good data points, 
-        // for instance. 
 
-        static public List<int> GetIndicesWhereDataSeemsInterpolatedByIMS(double[] inData)
-        {
-            List<int> interpolatedDataInd = new List<int>();
-            for (int i = 1; i < inData.Count(); i++)
-            {
-                if (inData[i] == inData[i - 1])
-                {
-                    interpolatedDataInd.Add(i);
-                }
-            }
-            return interpolatedDataInd;
-        }
+
+
+
 
     }
 }
