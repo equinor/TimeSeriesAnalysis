@@ -55,6 +55,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // causes some unit tests to fail
             const bool useOnlyFitScore = false; //would like: true
 
+            if (firstModel.Fitting.WasAbleToIdentify == true && !secondModel.Fitting.WasAbleToIdentify)
+                return true;
+            if (!firstModel.Fitting.WasAbleToIdentify == true && secondModel.Fitting.WasAbleToIdentify)
+                return false;
+
             if (useOnlyFitScore)
             {
                 if (firstModel.Fitting.FitScorePrc > secondModel.Fitting.FitScorePrc)
@@ -444,14 +449,18 @@ namespace TimeSeriesAnalysis.Dynamic
                 ecurReg = Vec<double>.SubArray(e_scaled, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
                 eprevReg = Vec<double>.SubArray(e_scaled, idxStart - 1 - nSamplesToLookBack, idxEnd - 1 - nSamplesToLookBack);
 
+                // needed for removing data outside range defined in scaling.
+                var ycur = Vec<double>.SubArray(dataSet.Y_meas, idxStart - nSamplesToLookBack, idxEnd - nSamplesToLookBack);
+
+
                 // replace -9999 or NaNs in dataset
                 var indBadUcurReg = BadDataFinder.GetAllBadIndicesPlussNext(ucurReg, dataSet.BadDataID);
                 var indBadEcurReg = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(ecurReg, dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
 
                 var umaxIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
                 var uminIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
-                var ymaxIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetYmax(), VectorFindValueType.BiggerOrEqual));
-                var yminIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
+                var ymaxIndReg = Index.AppendTrailingIndices(vec.FindValues(ycur, pidParam.Scaling.GetYmax(), VectorFindValueType.BiggerOrEqual));
+                var yminIndReg = Index.AppendTrailingIndices(vec.FindValues(ycur, pidParam.Scaling.GetYmin(), VectorFindValueType.SmallerOrEqual));
                 var indToIgnoreFromChooserReg = Index.Shift(CommonDataPreprocessor.ChooseIndicesToIgnore(dataSet, detectBadData: false, 
                     detectFrozenData: doDetectFrozenData).ToArray(),-nIterationsToLookBack);
                 if ( doDetectFrozenData && indToIgnoreFromChooserReg.Count()>0 )
