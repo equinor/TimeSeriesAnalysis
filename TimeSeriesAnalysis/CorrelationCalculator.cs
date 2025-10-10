@@ -125,19 +125,20 @@ namespace TimeSeriesAnalysis
         /// returning the results in a list from highest to lowest score _absolute_ correlation factor
         /// </summary>
         /// <param name="mainSignalName"></param>
-        /// <param name="dataSet">the dataset, which must have a correctly set timestamps in order to estimate time constants</param>
+        /// <param name="dataSet">the dataset, which must have a correctly set timestamps in order to estimate time constants(also consider indicesToIgnore!)</param>
         /// <param name="minimumCorrCoeffToDoTimeshiftCalc">calculate time-shift for every corr coeff with absolute value that is above this threshold(0.0-1.0)</param>
         /// <param name="minimumFitScore">for a time-shift to be valid, the resulting model nees to have Rsq over this threshold</param>
         /// <returns>a</returns>
         public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet,
-            double minimumCorrCoeffToDoTimeshiftCalc=0.4,double minimumFitScore = 10)
+             double minimumCorrCoeffToDoTimeshiftCalc=0.4,double minimumFitScore = 10)
         {
-            (double?,double?) EstimateTimeShift(double[] signalIn, double[] signalOut)
+            (double?,double?) EstimateTimeShift(double[] signalIn, double[] signalOut,List<int> indToIgnore )
             {
                 var dataSetUnit = new UnitDataSet();
                 dataSetUnit.Y_meas = signalOut;
                 dataSetUnit.U = Array2D<double>.CreateFromList(new List<double[]> { signalIn });
                 dataSetUnit.CreateTimeStamps(dataSet.GetTimeBase());
+                dataSetUnit.IndicesToIgnore = indToIgnore;
                 var identModel = UnitIdentifier.Identify(ref dataSetUnit);
                 if (identModel.modelParameters.Fitting.WasAbleToIdentify && identModel.modelParameters.Fitting.FitScorePrc > minimumFitScore)
                 {
@@ -150,7 +151,7 @@ namespace TimeSeriesAnalysis
 
             List<CorrelationObject> ret = new List<CorrelationObject>();
 
-            (double[,] matrix, string[] signalNames) = dataSet.GetAsMatrix();
+            (double[,] matrix, string[] signalNames) = dataSet.GetAsMatrix(dataSet.GetIndicesToIgnore());
             // not found in datset.
             if (!signalNames.Contains<string>(mainSignalName))
                 return ret;
@@ -180,7 +181,7 @@ namespace TimeSeriesAnalysis
                     double[] curSignalValues = dataSet.GetValues(curSignalName);
                     if (curSignalValues != null)
                     {
-                        (timeConstant_s,timeDelay_s) = EstimateTimeShift(curSignalValues,mainSignalValues);
+                        (timeConstant_s,timeDelay_s) = EstimateTimeShift(curSignalValues,mainSignalValues,dataSet.GetIndicesToIgnore());
                     }
                 }
                 ret.Add(new CorrelationObject(curSignalName, curCorrCoef,timeConstant_s, timeDelay_s)); 
