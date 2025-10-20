@@ -265,6 +265,26 @@ namespace TimeSeriesAnalysis.Test.Fundamentals
         }
 
         [Test]
+        public void FindValues_Inf ()
+        {
+            double[] vec = { 0, 1, 2, 3, 4, double.PositiveInfinity, 6, 7, 8, double.NegativeInfinity, 10 };
+            List<int> vecResult = (new Vec()).FindValues(vec, 0, VectorFindValueType.Inf);
+            List<int> vecExpt = new List<int> {5,9 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+
+        [Test]
+        public void FindValues_NotInf()
+        {
+            double[] vec = { 0, 1, 2, 3, 4, double.PositiveInfinity, 6, 7, 8, double.NegativeInfinity, 10 };
+            List<int> vecResult = (new Vec()).FindValues(vec, 0, VectorFindValueType.NotInf);
+            List<int> vecExpt = new List<int> { 0,1,2,3,4,6,7,8,10 };
+            Assert.AreEqual(vecExpt, vecResult);
+        }
+
+
+        [Test]
         public void GetIndicesOfValues()
         {
             var vec2 = new List<int> { 10, 30, 50, 70 };
