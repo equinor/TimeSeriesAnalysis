@@ -300,7 +300,7 @@ namespace TimeSeriesAnalysis
         /// Also capable of finding NaN values.
         /// </summary>
         /// <param name="vec"></param>
-        /// <param name="value"></param>
+        /// <param name="value">some types of searches require a value, otherwise can be left as anything</param>
         /// <param name="type"></param>
         /// <param name="indicesToIgnore"> if given, these indices are ignored when doing the operation</param>
         /// <returns></returns>
@@ -379,22 +379,38 @@ namespace TimeSeriesAnalysis
                 for (int i = 0; i < vec.Length; i++)
                 {
                     if (vec[i] != value)
-                        Add(i);//indices.Add(i);
+                        Add(i);
                 }
             }
             else if (type == VectorFindValueType.SameAsPrevious)
             {
-                for (int i = 1; i < vec.Length; i++)
+                for (int i = 1; i < vec.Length; i++)//NB! index 1!
                 {
-                    if (vec[i] == vec[i-1])
+                    if (vec[i] == vec[i - 1])
                         Add(i);
                 }
             }
             else if (type == VectorFindValueType.DifferentFromPrevious)
             {
-                for (int i = 1; i < vec.Length; i++)
+                for (int i = 1; i < vec.Length; i++)//NB! index 1!
                 {
-                    if (vec[i] != vec[i-1])
+                    if (vec[i] != vec[i - 1])
+                        Add(i);
+                }
+            }
+            else if (type == VectorFindValueType.Inf)
+            {
+                for (int i = 0; i < vec.Length; i++)
+                {
+                    if (double.IsInfinity(vec[i]) )
+                        Add(i);
+                }
+            }
+            else if (type == VectorFindValueType.NotInf)
+            {
+                for (int i = 0; i < vec.Length; i++)
+                {
+                    if (!double.IsInfinity(vec[i]))
                         Add(i);
                 }
             }

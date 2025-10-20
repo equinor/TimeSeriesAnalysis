@@ -52,9 +52,15 @@ namespace TimeSeriesAnalysis
         /// Find values that are different from the previous index value
         /// Note that in this case "Find" algorithm will disregard the supplied "value"
         /// </summary>
-        DifferentFromPrevious = 10
-
-
+        DifferentFromPrevious = 10,
+        /// <summary>
+        /// Find values that are infinite (Double.PositiveInfinity or Double.NegativeInfinity)
+        /// </summary>
+        Inf = 11,
+        /// <summary>
+        /// Find values that are NOT infinite (Double.PositiveInfinity or Double.NegativeInfinity)
+        /// </summary>
+        NotInf = 12,
     }
 
     /// <summary>
