@@ -58,9 +58,12 @@ namespace TimeSeriesAnalysis.Dynamic.CommonDataPreprocessing
         /// <param name="signalToBeUpsampled"></param>
         /// <param name="downsampledTimestamps"></param>
         /// <param name="desiredTimestamps"></param>
-        /// <returns></returns>
+        /// <returns>will return null if signaltobeupsampled is null. otherwise it returns the upsampled signal.</returns>
         internal static double[,] UpsampleSignal(double[,] signalToBeUpsampled, DateTime[] downsampledTimestamps, DateTime[] desiredTimestamps)
         {
+            if (signalToBeUpsampled == null)
+                return null;
+
             double[] ret = new double[desiredTimestamps.Count()];
 
             int curSignalIdx = 0;
