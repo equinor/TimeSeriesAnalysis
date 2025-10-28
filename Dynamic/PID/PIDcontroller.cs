@@ -357,6 +357,8 @@ namespace TimeSeriesAnalysis.Dynamic
             // scaling
             double KpScalingFactor = pidScaling.GetKpScalingFactor();
             double KpUnscaled = Kp / KpScalingFactor;
+           // double KpUnscaled = Kp * KpScalingFactor;
+
 
             // it iterate PID-controller one timestep
             // y_process_abs is the absolute value of the process value(scalar)

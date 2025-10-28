@@ -179,11 +179,15 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// Get a scaling factor to convert and unscaled Kp
+        /// 
+        /// By defintion KpUnscaled = Kp / KpScalingFactor
+        /// 
         /// </summary>
         /// <returns></returns>
         public double GetKpScalingFactor()
         {
-            return GetYScaleFactor() / GetUScaleFactor();
+            return GetUScaleFactor() / GetYScaleFactor(); // verified as correct
+          ///   return GetYScaleFactor() / GetUScaleFactor(); // does not match AIM behaviour
         }
 
 
