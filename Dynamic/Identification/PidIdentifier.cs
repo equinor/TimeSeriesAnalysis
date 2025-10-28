@@ -434,6 +434,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (pidParam.Scaling.IsKpScalingOn())
                 {
                     yScaleFactor = 1 / pidScaling.GetKpScalingFactor();
+                   // yScaleFactor = pidScaling.GetKpScalingFactor();
                 }
                 if (yScaleFactor == 1)
                 {
