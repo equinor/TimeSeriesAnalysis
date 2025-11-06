@@ -195,6 +195,40 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
 
         }
 
+        [TestCase()]
+
+        public void Downsample()
+        {
+            int N = 100;
+            int timeBase_s = 1;
+
+            var data = new TimeSeriesDataSet();
+            data.Add("test1", TimeSeriesCreator.Sinus(1, 20, timeBase_s, N));
+            data.Add("test2", TimeSeriesCreator.Step(N / 2, N, 1, 2));
+            data.AddConstant("const1", 5);
+            data.CreateTimestamps(timeBase_s);
+
+            var downsampled = data.CreateDownsampledCopy(2);
+            var downsampled2 = data.CreateDownsampledCopy(3);
+
+            if (false)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(
+                    new List<(double[], DateTime[])>
+                    {
+                    (data.GetValues("test1"), data.GetTimeStamps()),
+                    (downsampled.GetValues("test1"), downsampled.GetTimeStamps()),
+                    (downsampled2.GetValues("test1"), downsampled2.GetTimeStamps())
+                    },
+                    new List<string> { "y1=orig", "y1=downsample", "y1=downsample2" }, "DownsampleTest"
+                    );
+                Shared.DisablePlots();
+            }
+        }
+
+
+
 
     }
 

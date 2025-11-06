@@ -187,7 +187,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double GetKpScalingFactor()
         {
             return GetUScaleFactor() / GetYScaleFactor(); // verified as correct
-          ///   return GetYScaleFactor() / GetUScaleFactor(); // does not match AIM behaviour
+          //   return GetYScaleFactor() / GetUScaleFactor(); // does not match AIM behaviour
         }
 
 

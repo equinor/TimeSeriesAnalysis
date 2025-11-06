@@ -374,6 +374,71 @@ namespace TimeSeriesAnalysis
 
 
 
+        /// <summary>
+        /// Returns a copy of the dataset that is downsampled by the given factor.
+        /// </summary>
+        /// <param name="downsampleFactor">value greater than 1 indicating that every Floor(n*factor) value of the orignal data will be transferred.</param>
+        /// <param name="keyIndex">optional index around which to perform the downsampling.</param>
+        /// <returns></returns>
+        public TimeSeriesDataSet CreateDownsampledCopy( double downsampleFactor, int keyIndex = 0)
+        {
+            var ret = new TimeSeriesDataSet();
+            ret.SetTimeStamps(Vec<DateTime>.Downsample(GetTimeStamps().ToArray(), downsampleFactor, keyIndex).ToList());
+            if (this.indicesToIgnore != null)
+            {
+                ret.indicesToIgnore = Vec<int>.Downsample(this.indicesToIgnore.ToArray(), downsampleFactor, keyIndex).ToList();
+            }
+            foreach (var signalName in GetSignalNames())
+            {
+                ret.Add(signalName, Vec<double>.Downsample(GetValues(signalName), downsampleFactor, keyIndex));
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Returns a copy of the dataset that is oversampled by the given factor. 
+        /// </summary>
+        /// <param name="timeBaseOversampled">desired time base </param>
+        /// <returns> a downsampled copy, or null if operation failed. (Method will return null if no timestamps are given.)</returns>
+        public TimeSeriesDataSet CreateOversampledCopy( double timeBaseOversampled)
+        {
+            var ret = new TimeSeriesDataSet();
+
+            if (GetTimeStamps().Length == 0)
+            {
+                return null;
+            }
+            double oversampleFactor = GetTimeBase() / timeBaseOversampled;
+            int N = (int)Math.Ceiling(GetNumDataPoints() * oversampleFactor);
+            ret.CreateTimestamps(timeBase_s: GetTimeBase() / oversampleFactor,
+                N: N,
+                t0: GetTimeStamps()[0]);
+
+            foreach (var signalName in GetSignalNames())
+            {
+                var newSignal = new double[N];
+                int curOrigTimeIdx = 0;
+                for (var curNewTimeIdx = 0; curNewTimeIdx < ret.GetTimeStamps().Count(); curNewTimeIdx++)
+                {
+                    bool whileIsDone = false;
+                    while (curOrigTimeIdx < GetNumDataPoints() - 1 && !whileIsDone)
+                    {
+                        if (ret.GetTimeStamps().ElementAt(curNewTimeIdx) >= GetTimeStamps().ElementAt(curOrigTimeIdx + 1))
+                        {
+                            curOrigTimeIdx++;
+                        }
+                        else
+                        {
+                            whileIsDone = true;
+                        }
+
+                    }
+                    newSignal[curNewTimeIdx] = GetValue(signalName, curOrigTimeIdx).Value;
+                }
+                ret.Add(signalName, newSignal);
+            }
+            return ret;
+        }
 
 
         /// <summary>
