@@ -60,6 +60,9 @@ namespace TimeSeriesAnalysis
                 return null;
             if (factor <= 1)
                 return vec;
+            if (vec.Length == 0)
+                return vec;
+
             
             // Find downsampled indices
             var ind = new List<int>();
