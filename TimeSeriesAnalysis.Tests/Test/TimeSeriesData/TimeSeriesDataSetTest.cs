@@ -207,6 +207,7 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
             data.Add("test2", TimeSeriesCreator.Step(N / 2, N, 1, 2));
             data.AddConstant("const1", 5);
             data.CreateTimestamps(timeBase_s);
+            data.SetIndicesToIgnore(new List<int>());
 
             var downsampled = data.CreateDownsampledCopy(2);
             var downsampled2 = data.CreateDownsampledCopy(3);
