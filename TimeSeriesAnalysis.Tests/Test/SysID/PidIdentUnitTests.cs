@@ -123,7 +123,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             Assert.IsTrue(isOk);
 
             var combinedData = inputData.Combine(simData);
-            var downsampleData = OversampledDataDetector.CreateDownsampledCopy(combinedData,downsampleFactor);
+            var downsampleData = combinedData.CreateDownsampledCopy(downsampleFactor);
             var pidDataSet = processSim.GetUnitDataSetForPID(downsampleData, pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
             Console.WriteLine(idResult.ToString());
@@ -232,7 +232,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             simData.AddNoiseToSignal("SubProcess1-Output_Y", noiseAmplitude,495495);
             var combinedData = inputData.Combine(simData);
-            var downsampleData = OversampledDataDetector.CreateDownsampledCopy(combinedData,downsampleFactor);
+            var downsampleData = combinedData.CreateDownsampledCopy(downsampleFactor);
             // ----do not use inputData or simData below this line----
             var pidDataSet = processSim.GetUnitDataSetForPID(downsampleData, pidModel1);
             var idResult = new PidIdentifier().Identify(ref pidDataSet);
@@ -537,7 +537,7 @@ namespace TimeSeriesAnalysis.Test.SysID
                var pidDataSet = processSim.GetUnitDataSetForPID(combinedData, pidModel1);
 
                // Oversample synthetic data
-               var combinedDataOversampled = OversampledDataDetector.CreateOversampledCopy(combinedData, timebaseOversampled);
+               var combinedDataOversampled = combinedData.CreateOversampledCopy(timebaseOversampled);
 
                // Identify model on oversampled data
                var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);
@@ -608,7 +608,7 @@ namespace TimeSeriesAnalysis.Test.SysID
             var pidDataSet = processSim.GetUnitDataSetForPID(combinedData, pidModel1);
 
             // Oversample synthetic data
-            var combinedDataOversampled = OversampledDataDetector.CreateOversampledCopy(combinedData, timebaseOversampled);
+            var combinedDataOversampled = combinedData.CreateOversampledCopy(timebaseOversampled);
 
             // Identify model on oversampled data
             var pidDataSetOversampled = processSim.GetUnitDataSetForPID(combinedDataOversampled, pidModel1);

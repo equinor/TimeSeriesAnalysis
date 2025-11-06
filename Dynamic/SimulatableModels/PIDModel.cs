@@ -35,7 +35,7 @@ namespace TimeSeriesAnalysis.Dynamic
     public class PidModel : ModelBaseClass, ISimulatableModel
     {
         /// <summary>
-        /// The paramters which define the behavior of the PidModel
+        /// The parameters which define the behavior of the PidModel
         /// </summary>
         public PidParameters pidParameters;
         private PidController pid;

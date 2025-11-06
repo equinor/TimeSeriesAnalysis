@@ -24,7 +24,8 @@ namespace TimeSeriesAnalysis
         /// <param name="badDataID">a special value that indicates not-a-number in the data</param>
         /// <param name="initialIndicesToIgnore">ignore inital number of indices in meas and sim</param>
         /// <returns> a fit score that is maximum 100 percent, but can also go negative if fit is poor</returns>
-        public static double Calc(double[] meas, double[] sim, double badDataID, List<int> indToIgnore = null, int initialIndicesToIgnore = 2)
+        public static double Calc(double[] meas, double[] sim, double badDataID, 
+            List<int> indToIgnore = null, int initialIndicesToIgnore = 2)
         {
             if (meas == null)
                 return double.NaN;
