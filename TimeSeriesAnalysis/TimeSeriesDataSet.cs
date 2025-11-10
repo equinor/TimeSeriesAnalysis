@@ -393,7 +393,7 @@ namespace TimeSeriesAnalysis
             {
                 simpleDownsample = true;
             }
-            if (this.indicesToIgnore.Count == 0)
+            else if (this.indicesToIgnore.Count == 0)
             {
                 simpleDownsample = true;
             }
