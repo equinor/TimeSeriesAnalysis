@@ -191,7 +191,7 @@ namespace TimeSeriesAnalysis
         /// <param name="downsampleFactor"></param>
         /// <param name="keyindex"></param>
         /// <returns></returns>
-        static public T[,] Downsample(T[,] matrix, double downsampleFactor, int keyindex = 0)
+        static public T[,] Downsample(T[,] matrix, int downsampleFactor, int keyindex = 0)
         {
             if (matrix == null)
                 return null;

@@ -137,7 +137,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="originalDataSet"></param>
         /// <param name="downsampleFactor">factor by which to downsample the original dataset</param>
         /// <param name="keyIndex">index around which to center the downsampling</param>
-        public UnitDataSet(UnitDataSet originalDataSet, double downsampleFactor, int keyIndex=0)
+        public UnitDataSet(UnitDataSet originalDataSet, int downsampleFactor, int keyIndex=0)
         {
             this.ProcessName = originalDataSet.ProcessName + "downsampledFactor" + downsampleFactor;
 

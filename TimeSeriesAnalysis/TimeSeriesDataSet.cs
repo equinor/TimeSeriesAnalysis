@@ -380,17 +380,46 @@ namespace TimeSeriesAnalysis
         /// <param name="downsampleFactor">value greater than 1 indicating that every Floor(n*factor) value of the orignal data will be transferred.</param>
         /// <param name="keyIndex">optional index around which to perform the downsampling.</param>
         /// <returns></returns>
-        public TimeSeriesDataSet CreateDownsampledCopy( double downsampleFactor, int keyIndex = 0)
+        public TimeSeriesDataSet CreateDownsampledCopy( int downsampleFactor, int keyIndex = 0)
         {
             var ret = new TimeSeriesDataSet();
             ret.SetTimeStamps(Vec<DateTime>.Downsample(GetTimeStamps().ToArray(), downsampleFactor, keyIndex).ToList());
-            if (this.indicesToIgnore != null)
+
+            //      foreach(var val in)
+
+            bool simpleDownsample = false;
+
+            if (this.indicesToIgnore == null)
             {
-                ret.indicesToIgnore = Vec<int>.Downsample(this.indicesToIgnore.ToArray(), downsampleFactor, keyIndex).ToList();
+                simpleDownsample = true;
             }
-            foreach (var signalName in GetSignalNames())
+            if (this.indicesToIgnore.Count == 0)
             {
-                ret.Add(signalName, Vec<double>.Downsample(GetValues(signalName), downsampleFactor, keyIndex));
+                simpleDownsample = true;
+            }
+
+            if (simpleDownsample)
+            {
+                foreach (var signalName in GetSignalNames())
+                {
+                    ret.Add(signalName, Vec<double>.Downsample(GetValues(signalName), downsampleFactor, keyIndex));
+                }
+                ret.indicesToIgnore = this.indicesToIgnore;
+            }
+            else
+            {
+                // note that if indices to ignore contains actual indices, then the values of these will need to be changed
+                // also, in some cases there might be lots of indices to be ignored due to over-sampling, 
+                // but if downsampling pick the "good" value for each sample, then the number of indices to ignore can be reduced by downsampling
+
+                var newIndToIgnore = new List<int>();
+                foreach (var signalName in GetSignalNames())
+                {
+                    var downsampleTuple = Vec<double>.Downsample(GetValues(signalName), downsampleFactor, indicesToIgnore);
+                    ret.Add(signalName, downsampleTuple.Item1);
+                    newIndToIgnore = downsampleTuple.Item2;
+                }
+                ret.indicesToIgnore = newIndToIgnore;
             }
             return ret;
         }

@@ -195,11 +195,15 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
 
         }
 
-        [TestCase()]
+        [TestCase(2, new int[] { 5, 10, 15, 80, 90 }, new int[] { }) ]
+        [TestCase(2, new int[] { 0,1,2,3,4,5,6,7,8,9,10 }, new int[] {0,1,2,3,4 })  ]
+        [TestCase(4, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, new int[] { 0, 1 })]
+        [TestCase(4, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11 }, new int[] { 0, 1,2})]
+        [TestCase(10, new int[] { 91,92,93,94,95,96,97,98,99,100}, new int[] {10})]
 
-        public void Downsample()
+        public void Downsample(int downsampleFactor, int[] indToIgnoreArray, int[] expIndToIgnore)
         {
-            int N = 100;
+            int N = 101;
             int timeBase_s = 1;
 
             var data = new TimeSeriesDataSet();
@@ -207,10 +211,15 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
             data.Add("test2", TimeSeriesCreator.Step(N / 2, N, 1, 2));
             data.AddConstant("const1", 5);
             data.CreateTimestamps(timeBase_s);
-            data.SetIndicesToIgnore(new List<int>());
+            data.SetIndicesToIgnore(new List<int>(indToIgnoreArray) );
 
-            var downsampled = data.CreateDownsampledCopy(2);
-            var downsampled2 = data.CreateDownsampledCopy(3);
+            var downsampled = data.CreateDownsampledCopy(downsampleFactor);
+
+            if (downsampled.GetIndicesToIgnore().Count > 0)
+            {
+                Assert.IsTrue(downsampled.GetIndicesToIgnore().Max() <= downsampled.GetLength() - 1);
+            }
+            Assert.AreEqual(new List<int>(expIndToIgnore), downsampled.GetIndicesToIgnore());
 
             if (false)
             {
@@ -220,9 +229,8 @@ namespace TimeSeriesAnalysis.Tests.TimeSeriesData
                     {
                     (data.GetValues("test1"), data.GetTimeStamps()),
                     (downsampled.GetValues("test1"), downsampled.GetTimeStamps()),
-                    (downsampled2.GetValues("test1"), downsampled2.GetTimeStamps())
                     },
-                    new List<string> { "y1=orig", "y1=downsample", "y1=downsample2" }, "DownsampleTest"
+                    new List<string> { "y1=orig", "y1=downsample" }, "DownsampleTest"
                     );
                 Shared.DisablePlots();
             }
