@@ -417,55 +417,6 @@ namespace TimeSeriesAnalysis.Test.SysID
             DefaultAsserts(model, designParameters,0,1);
         }
 
-        /// <summary>
-        /// Many times data is stored at a lower time-resolution than is ideal for identification of especially dynamic 
-        /// systems. When plotting the data, it is then often reduced to a "staircase" and if attempting to identify based on this 
-        /// "staircase" the results can be poor. 
-        /// This unit test attempts to 
-        /// </summary>
-        /// <param name="N_hf">number of timesteps in original "high frequency" data</param>
-        /// <param name="downsampleFactor"></param>
-   /*     [TestCase(1000,50)]
-        public void OversampleDownsampledData(int N_hf, int downsampleFactor)
-        {
-            double timeConstant_s = 20;
-            int timeDelay_s = 0;
-
-            double bias = 2;
-            double noiseAmplitude = 0.01;
-
-            double[] u1 = TimeSeriesCreator.Step((int)Math.Ceiling(N_hf * 0.4), N_hf, 0, 1);
-            double[,] U = Array2D<double>.CreateFromList(new List<double[]> { u1 });
-
-            UnitParameters designParameters = new UnitParameters
-            {
-                TimeConstant_s = timeConstant_s,
-                TimeDelay_s = timeDelay_s,
-                LinearGains = new double[] { 1 },
-                U0 = Vec<double>.Fill(1, 1),
-                Bias = bias
-            };
-
-            var hfDataSet = CreateDataSet(designParameters, U, timeBase_s, noiseAmplitude);
-            UnitDataSet downsampledDataSet;
-            if (downsampleFactor > 1)
-                downsampledDataSet = new UnitDataSet(hfDataSet, downsampleFactor);
-            else
-                downsampledDataSet = new UnitDataSet(hfDataSet);
-            var modelId = new UnitIdentifier();
-            var model = modelId.Identify(ref downsampledDataSet, designParameters.U0, designParameters.UNorm);
-
-            string caseId = TestContext.CurrentContext.Test.Name;
-            plot.FromList(new List<double[]> { model.GetFittedDataSet().Y_sim,
-                model.GetFittedDataSet().Y_meas, u1 },
-                 new List<string> { "y1=ysim", "y1=ymeas", "y3=u1" }, (int)timeBase_s, caseId, default,
-                 caseId.Replace("(", "").Replace(")", "").Replace(",", "_"));
-
-            Assert.IsTrue(Math.Abs(timeConstant_s - model.modelParameters.TimeConstant_s) < 5);
-          //  DefaultAsserts(model, designParameters, 0, 1);
-        }*/
-
-
         // TODO: testing the uncertainty estimates(after adding them back)
         [TestCase( 0, 0, 0,  Category = "Static")]
         [TestCase(21, 0, 0,  Category = "Static")]

@@ -61,14 +61,27 @@ namespace TimeSeriesAnalysis.Test.Fundamentals
         {
             double[] vec1 = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
             double[] expResult = new double[] { 1, 5, 9, 13 };
-            var result =  Vec<double>.Downsample(vec1,4);
+            var result = Vec<double>.Downsample(vec1, 4);
             Assert.AreEqual(expResult, result);
         }
 
 
+        [TestCase(4, new int[] { 0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14 }, new double[] { 3, 7, 11, 15 }, new int[]{}) ]
+        [TestCase(4, new int[] { 0, 1, 2, 3 }, new double[] { 3, 7, 11, 15 }, new int[] {0 })]
+        [TestCase(4, new int[] { 1,2,3 }, new double[] {0, 4,8, 12}, new int[] {  })]
+        [TestCase(4, new int[] { 1, 3, 5, 7, 9, 11, 13, 15}, new double[] { 0, 4, 8, 12 }, new int[] { })]
+        [TestCase(4, new int[] { 1, 2, 3, 5,6, 7, 9,10, 11, 13,14, 15 }, new double[] { 0, 4, 8, 12 }, new int[] { })]
+        [TestCase(4, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }, new double[] { 3, 7, 11, 15 }, new int[] {0,1,2,3 })]
 
-
-
+        public void Downsample_IndToIgnore_corretIgnoreVals(int factor, int[] indToIgnoreArray,
+            double[] expVec1, int[] expIndToIgnore)
+        {
+            double[] vec1 = new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+            var indToIgnore = new List<int>(indToIgnoreArray);
+            var result = Vec<double>.Downsample(vec1, factor, indToIgnore);
+            Assert.AreEqual(expVec1, result.Item1);
+            Assert.AreEqual(expIndToIgnore, result.Item2.ToArray());
+        }
 
 
         [Test]

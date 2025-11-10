@@ -54,7 +54,7 @@ namespace TimeSeriesAnalysis
         /// <param name="factor"></param>
         /// <param name="keyIndex"></param>
         /// <returns></returns>
-        static public T[] Downsample(T[] vec, double factor, int keyIndex = 0)
+        static public T[] Downsample(T[] vec, int factor, int keyIndex = 0)
         {
             if (vec == null)
                 return null;
@@ -63,22 +63,11 @@ namespace TimeSeriesAnalysis
             if (vec.Length == 0)
                 return vec;
 
-            
-            // Find downsampled indices
             var ind = new List<int>();
-            int count = 0;
-            for (int i = keyIndex; i >= 0; i = keyIndex - (int)Math.Ceiling(factor*count))
+            for (int i = keyIndex ; i < vec.Length; i +=factor )
             {
                 ind.Add(i);
-                count++;
             }
-            count = 1;
-            for (int i = keyIndex + (int)Math.Floor(factor); i < vec.Length; i = keyIndex + (int)Math.Floor(factor*count))
-            {
-                ind.Add(i);
-                count++;
-            }
-            ind.Sort();
 
             // Populate and return downsampled vector
             var ret = new List<T>();
@@ -88,6 +77,83 @@ namespace TimeSeriesAnalysis
             }
             return ret.ToArray();
         }
+
+
+
+        /// <summary>
+        /// Downsample a vector by a given factor, while ignore
+        /// indices to ignore, and returns a new "downsampled" ind to ignore
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="factor"></param>
+        /// <param name="indToIgnore">indices in vec that are to be ignored.</param>
+        /// <returns>the downsampled list and the new indices to ignore</returns>
+        static public (T[],List<int>) Downsample(T[] vec, int factor, List<int> indToIgnore)
+        {
+     
+            if (vec == null)
+                return (null, null);
+            if (factor <= 1)
+                return (vec,indToIgnore);
+            if (vec.Length == 0)
+                return (vec, indToIgnore);
+
+            if (indToIgnore == null)
+                return (Downsample(vec, factor, 0),new List<int>());
+            if (indToIgnore.Count ==0)
+                return (Downsample(vec, factor, 0), new List<int>());
+
+            // find dowsampled indices
+            var newIndToIgnore = new List<int>();
+            var ind = new List<int>();
+
+            int keyIndex = 0;
+
+            while (indToIgnore.Contains(keyIndex) && keyIndex < factor-1)
+                keyIndex ++;
+            if (keyIndex == factor)
+                keyIndex = factor - 1;
+
+
+            for (int i = keyIndex; i < vec.Length; i += factor)
+            {
+                if (!indToIgnore.Contains(i))
+                    ind.Add(i);
+                else
+                { 
+                    int trackBackInd = 1 ;
+                    bool goodValueFound = false;
+                    while ((i - trackBackInd) >= Math.Max(0,i-factor) && !goodValueFound && trackBackInd<factor)
+                    {
+                        if (!indToIgnore.Contains(i - trackBackInd))
+                        {
+                            goodValueFound = true;
+                        }
+                        trackBackInd++;
+                    }
+                    if (goodValueFound)
+                    {
+                        ind.Add(i - trackBackInd);
+                    }
+                    else
+                    {
+                        ind.Add(i);// add value even if bad.
+                        newIndToIgnore.Add(ind.Count-1);
+                    }
+                }
+            }
+
+            // Populate and return downsampled vector
+            var ret = new List<T>();
+            for (int i = 0; i < ind.Count(); i++)
+            {
+                ret.Add(vec[ind[i]]);
+            }
+            return (ret.ToArray(),newIndToIgnore);
+        }
+
+
+
 
         ///<summary>
         /// creates an array of size N where every element has value value
