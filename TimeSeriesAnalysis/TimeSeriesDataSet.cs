@@ -900,12 +900,24 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="processID"></param>
         /// <param name="signalType"></param>
+        ///  <param name="newValues"></param>
         /// <param name="index"></param>
         /// <returns></returns>
         public void ReplaceValues(string processID, SignalType signalType, double[] newValues, int index = 0)
         {
             string signalName = SignalNamer.GetSignalName(processID, signalType, index);
+            ReplaceValues(signalName, newValues, index);
+        }
 
+        /// <summary>
+        /// Replaces the values of a specific signal
+        /// </summary>
+        /// <param name="signalName"></param>
+        /// <param name="newValues"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public void ReplaceValues(string signalName, double[] newValues, int index = 0)
+        {
             if (dataset.ContainsKey(signalName))
             {
                 if (Vec<double>.IsConstant(newValues))
@@ -929,7 +941,7 @@ namespace TimeSeriesAnalysis
                 }
 
                 var N = GetLength();
-                return ;
+                return;
             }
             return;
         }
