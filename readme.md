@@ -29,11 +29,11 @@ The methods in this library are *scalable* and *modular*, i.e. by chaining toget
 
 Models can be run alongside the plant, and monitoring the difference between measured and modelled values can provide insight into changes in the plant (anomaly detection.) By manually simulating changes on these kinds of models, "what-if" scenarios can be evaluted either manually or automatically. One very interesting such use-case is to evaluate the possible benefits of re-tuning PID-controllers.
 
-The above use-cases could be put under the umbrella term "advanced analytics", i.e. using algorithms and data to make deep insights about causes and effects to make predictions and reccomendations. 
+The above use-cases could be put under the umbrella term "advanced analytics", i.e. using algorithms and data to make deep insights about causes and effects to make predictions and recommendations. 
 
 ### Explainable models for low-information datasets
 
-Note that although this library uses regression methods and algorithms to learn parameters to describe data, the methodology is somewhat different from traditional machine learning in that models follow the principles of system identification rather than AI. 
+Note that although this library uses regression methods and algorithms to learn parameters to describe data, the methodology is somewhat different from traditional machine learning in that models follow the principles of system identification. 
 The number of free parameters are kept low by design, as this makes reduces the likelihood of over-fitting. Over-fitting is particularly important when dealing with industrial data, as this kind of data has to be used "as-is" and one often has less information than one would like. 
 Another benefit of keepting the number of fitted paramters low is that models remain *explainable* and human-understandable, and it becomes possible to combine fitted models with human pre-knowledge, what is often referred to as "grey-box" modeling.
 
@@ -57,7 +57,7 @@ Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduc
 
 ## Getting started
 
-Regardless if you call this library from C#, Python or Matlab, the resulting code is very similar. 
+Regardless if you reference this library from C#, Python or Matlab, the resulting code is very similar. 
 A good first step is to read through the [getting started](https://equinor.github.io/TimeSeriesAnalysis/articles/examples.html) examples 
 and try copying in that code and getting it to run to get the hang of things
 
