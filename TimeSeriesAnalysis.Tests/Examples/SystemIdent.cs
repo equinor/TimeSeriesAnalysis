@@ -194,11 +194,14 @@ namespace TimeSeriesAnalysis._Examples
             inputData.CreateTimestamps(timeBase_s);
             var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
             Assert.IsTrue(isOk);
-            var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+            var combinedDataSet = inputData.Combine(simData);
+            // Serialize 
+            combinedDataSet.ToCsv("BasicPID.csv");
+            processSim.Serialize("BasicPID.json");
+            //
+            var pidDataSet = processSim.GetUnitDataSetForPID(combinedDataSet, pidModel1);
 
             var identifiedModel = new UnitModel();
-
-            //  (var identifiedModel, var estDisturbance) = ClosedLoopUnitIdentifier.Identify(pidDataSet, pidModel1.GetModelParameters());
 
              var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, pidModel1.GetModelParameters());
 

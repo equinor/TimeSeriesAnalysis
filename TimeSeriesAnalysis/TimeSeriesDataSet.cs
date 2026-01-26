@@ -75,7 +75,7 @@ namespace TimeSeriesAnalysis
         /// Gets the description of the dataset
         /// </summary>
 
-        public string GetDescritpion()
+        public string GetDescription()
         {
             return Description;
         }
@@ -85,7 +85,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="description"></param>
         /// <param name="doAppend"> is set to true, the text is appended to previous text</param>
-        public void SetDescritpion(string description, bool doAppend= false)
+        public void SetDescription(string description, bool doAppend= false)
         { 
             if (doAppend)
                 Description += description;

@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Accord.IO;
+using Accord.Statistics;
+//using System.Text.Json;
+//using System.Text.Json.Serialization;
+
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -8,14 +14,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Accord.IO;
-using Accord.Statistics;
-
-//using System.Text.Json;
-//using System.Text.Json.Serialization;
-
-using Newtonsoft.Json;
-
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Utility;
 
@@ -545,7 +543,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Simulate plant. This version of simualte does not internally determine any indices to ignore, but it will consider
+        /// Simulate plant. This version of simulate does not internally determine any indices to ignore, but it will consider
         /// indicesToIgnore of <c>inputData</c>
         /// </summary>
         /// <param name="inputData"></param>
@@ -563,13 +561,13 @@ namespace TimeSeriesAnalysis.Dynamic
         /// disturbance with a signal named according to SignalNamer.EstDisturbance() convention
         /// </para>
         /// <para>
-        ///  The simulation will also set the <c>PlantFitScore</c> which can be used to evalute the fit of the simulation to the plant data.
+        ///  The simulation will also set the <c>PlantFitScore</c> which can be used to evaluate the fit of the simulation to the plant data.
         ///  For this score to be calculated, the measured time-series corresponding to <c>simData</c> need to be provided in <c>inputData</c>
         ///  </para>
         ///  <para>
         ///  If <c>doDetermineIndicesToIgnore</c> is set to <c>false</c>, then the 
         ///  the simulation will consider the <c>.IndicesToIgnore</c> member of the inputData, and ignore these data indices, re-starting dynamic
-        ///  models once periods of bad data pass.(this indcies will be padded internally do not need to be padded when supplied)
+        ///  models once periods of bad data pass.(this indicies will be padded internally do not need to be padded when supplied)
         ///  If instead set to <c>true</c>, the simulator will parse the input data to determine 
         ///  bad indices, but it will not be able to determine periods of "frozen" datasets (as outputs y are generally not required to be given in the input data.)
         /// </para>
@@ -579,7 +577,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doDetermineIndicesToIgnore"> is set to true, the simulator tries to determine indices to ignore internally</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
         /// <param name="enableSimulatorRestarting">if set to true, the simulator will try to restart after long periods of flat data</param>
-        /// <param name="doVariableTimeBase">if set to true, the simulator will vary the timbease based on indicestoignore(jumping from one good value to the next)</param>
+        /// <param name="doVariableTimeBase">if set to true, the simulator will vary the time base based on indicestoignore(jumping from one good value to the next)</param>
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, 
             bool enableSimulatorRestarting=true, bool doVariableTimeBase = false)
@@ -609,7 +607,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 connections.InitAndDetermineCalculationOrderOfModels(modelDict);
             simData = new TimeSeriesDataSet();
 
-            // initalize the new time-series to be created in simData.
+            // initialize the new time-series to be created in simData.
             var init = new PlantSimulatorInitalizer(this);
 
             var inputDataMinimal = SelectMinimalInputData(inputData);
@@ -899,10 +897,11 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 foreach (var inputID in model.Value.GetBothKindsOfInputIDs())
                 {
-                    var values = rawInputData.GetValues(inputID);
-                    if (values != null)
+                    if (rawInputData.ContainsSignal(inputID))
                     {
-                        retTimeSeries.Add(inputID, values);
+                        var values = rawInputData.GetValues(inputID);
+                        if (values != null)
+                            retTimeSeries.Add(inputID, values);
                     }
                 }
                 var outputID = model.Value.GetOutputID();
