@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Accord.Math;
 using Accord.Statistics.Models.Regression.Fitting;
 using NUnit.Framework;
+using System.Globalization;
 
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
@@ -117,50 +118,18 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase,Explicit]
         public void SimulateSingle_SecondOrderSystem()
         {
-            string v1 = "7";
+            var  zetasToTry = new List<double> { 0.05, 0.10, 0.15, 0.20, 0.25, 0.5, 1, 2 };
+
+            var ySimList = new List<double[]>();
+
+         
             int N = 5000;
             int Nstep = 50;
 
-            var modelParams2ndOrder = new UnitParameters
-            {
-                TimeConstant_s = 50,
-                DampingRatio = 0.1,
-                LinearGains = new double[] { 1 },
-                TimeDelay_s = 0,
-                Bias = 5
-            };
+            var simDescList = new List<string>();
+            var inputData = new TimeSeriesDataSet();
 
-            // using this "raw" value, we see that at damping= 1corresponds in a 1.order system to doublng the time constant 
-            // and using the dampingzeta= 2 the time constant must be quadrupled
-            //  double timeConstantCorrection = (1 + Math.Pow(DampingZeta, 2));
-            //  double omega_n = 1 / (FilterTc_s * timeConstantCorrection);
-
-            // if dampingratio = 0.25  then timeconst of 1.order system 50 (factor=1)
-            // if dampingratio = 0.5  then timeconst of 1.order system  50(factor=1)
-            // if dampingratio = 0.625  then timeconst of 1.order system  62.5(factor=1.25)
-            // if dampingratio = 0.75  then timeconst of 1.order system  75(factor=1.5)
-            // if dampingratio = 1 - then timeconstant of 1.order system must be 100(factor=2)
-            // if dampingratio = 2  then timeconst of 1.order system must be 200(factor=4)
-            // if dampingratio = 3  then timeconst of 1.order system must be 300(factor=6)
-            // if dampingratio = 4  then timeconst of 1.order system must be 400(factor=8)
-            // if dampingratio = 5  then timeconst of 1.order system must be 600(factor=10)
-            // if dampingratio = 6  then timeconst of 1.order system must be 800(factor=12)
-
-            //         var factor = Math.Max(1, 1 + Math.Pow(modelParams2ndOrder.DampingRatio - 0.5, 1 / 2)); // works between 0-1.
-
-            var DampingZeta = modelParams2ndOrder.DampingRatio;
-
-         /*   var factor = 1.0;
-            if (DampingZeta <= 0)
-            {
-                factor = 0;
-            }
-            else if (DampingZeta < 1)
-            {
-                factor = Math.Max(1, 1 + Math.Pow(DampingZeta - 0.5, 1 / 2));
-            }
-            else
-                factor = DampingZeta * 2;*/
+            var simData = new TimeSeriesDataSet();
 
             var modelParams1stOrder = new UnitParameters
             {
@@ -170,32 +139,65 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 TimeDelay_s = 0,
                 Bias = 5
             };
+            string v1 = "TimeConstant "+ modelParams1stOrder.TimeConstant_s+"s";
 
-            var procModel = new UnitModel(modelParams2ndOrder,"second order system");
             var procModel2 = new UnitModel(modelParams1stOrder, "first order system");
 
-            var plantSim = new PlantSimulator(
-                new List<ISimulatableModel> { procModel,procModel2 });
+            foreach (var zeta in zetasToTry)
+            {
+                simDescList.Add("y1=y_sim zeta " + zeta.ToString("F3", CultureInfo.InvariantCulture));
+                var modelParams2ndOrder = new UnitParameters
+                {
+                    TimeConstant_s = 150,
+                    DampingRatio = zeta,
+                    LinearGains = new double[] { 1 },
+                    TimeDelay_s = 0,
+                    Bias = 5
+                };
 
-            var inputData = new TimeSeriesDataSet();
-            inputData.Add(plantSim.AddExternalSignal(procModel, SignalType.External_U), TimeSeriesCreator.Step(Nstep, N, 50, 55));
-            inputData.Add(plantSim.AddExternalSignal(procModel2, SignalType.External_U), TimeSeriesCreator.Step(Nstep, N, 50, 55));
-            inputData.CreateTimestamps(timeBase_s);
-            var isOk = plantSim.Simulate(inputData,out TimeSeriesDataSet simData);
-            Assert.IsTrue(isOk);
- 
+                var DampingZeta = modelParams2ndOrder.DampingRatio;
+                var procModel = new UnitModel(modelParams2ndOrder, "second order system");
+                var plantSim = new PlantSimulator(
+                    new List<ISimulatableModel> { procModel, procModel2 });
+    
+                inputData.Add(plantSim.AddExternalSignal(procModel, SignalType.External_U), TimeSeriesCreator.Step(Nstep, N, 50, 55));
+                inputData.Add(plantSim.AddExternalSignal(procModel2, SignalType.External_U), TimeSeriesCreator.Step(Nstep, N, 50, 55));
+                inputData.CreateTimestamps(timeBase_s);
+                var isOk = plantSim.Simulate(inputData, out simData);
+
+                ySimList.Add(simData.GetValues(procModel.GetID(), SignalType.Output_Y));
+                Assert.IsTrue(isOk);
+                PsTest.CommonAsserts(inputData, simData, plantSim);
+            }
+
             if (true)
             {
+                simDescList.Add("y3=u");
+                ySimList.Add(inputData.GetValues(procModel2.GetID(), SignalType.External_U));
+
+                simDescList.Add("y1= first order");
+                ySimList.Add(simData.GetValues(procModel2.GetID(), SignalType.Output_Y));
+
                 Shared.EnablePlots();
-                Plot.FromList(new List<double[]> {
-                simData.GetValues(procModel.GetID(),SignalType.Output_Y),
-                simData.GetValues(procModel2.GetID(),SignalType.Output_Y),
-                inputData.GetValues(procModel.GetID(),SignalType.External_U)},
-                new List<string> { "y1=y_secondorder", "y1=y_firstorder",  "y3=u" },
+                Plot.FromList(ySimList,simDescList,
                 timeBase_s, TestContext.CurrentContext.Test.Name+ v1);
                 Shared.DisablePlots();
             }
-            PsTest.CommonAsserts(inputData, simData, plantSim);
+
+
+
+            /*   if (true)
+               {
+                   Shared.EnablePlots();
+                   Plot.FromList(new List<double[]> {
+                   simData.GetValues(procModel.GetID(),SignalType.Output_Y),
+                   simData.GetValues(procModel2.GetID(),SignalType.Output_Y),
+                   inputData.GetValues(procModel.GetID(),SignalType.External_U)},
+                   new List<string> { "y1=y_secondorder", "y1=y_firstorder",  "y3=u" },
+                   timeBase_s, TestContext.CurrentContext.Test.Name+ v1);
+                   Shared.DisablePlots();
+               }*/
+         //   PsTest.CommonAsserts(inputData, simData, plantSim);
 
         }
 
@@ -308,7 +310,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             Assert.IsTrue(lastYsimE < 0.01, "PID should bring system to setpoint after setpoint change");
             BasicPIDCommonTests(simData,pidModel1);
 
-            SerializeHelper.Serialize("BasicPID_disturbanceStep",plantSim,inputData,simData);
+        //    SerializeHelper.Serialize("BasicPID_disturbanceStep",plantSim,inputData,simData);
             var combinedData = inputData.Combine(simData);
             // step 2: check that if given an inputDataset that includes simData-variables, the 
             // plant simulator is still able to run
