@@ -20,10 +20,10 @@ Identification starts with finding a linear static model, which acts as a refere
 
 ## Time constant and bias 
 
-The solver solves for terms [a,b,c] jointly. The objective function is formulated in terms of **differences**, finding the parameters which
-produce the minimum sum of square differences ``sum_{k=2}^N(y[k]-y[k-1])^2``.
+The solver solves for terms $[a,b,c]$ jointly. The objective function is formulated in terms of **differences**, finding the parameters which
+produce the minimum sum of square differences $\sum_{k=2}^N(y[k]-y[k-1])^2$.
 
-Because the optimization problem of finding ``[a,b,c,q,t_d]`` requires solving a **difference** equation and the solver looks at difference between subsequent data points, the formulation favors estimating ``[a,b,c,]``, but at the expense of the value of the bias ``q``. Thus once the parameters ``[a,b,c,]`` which express the dynamics are found, the bias ``q`` is found in a subsequent calculation 
+Because the optimization problem of finding $[a,b,c,q,t_d]$ requires solving a **difference** equation and the solver looks at difference between subsequent data points, the formulation favors estimating ``[a,b,c,]``, but at the expense of the value of the bias ``q``. Thus once the parameters ``[a,b,c,]`` which express the dynamics are found, the bias ``q`` is found in a subsequent calculation 
 ``UnitIdentifier.ReEstimateBias()``to minimize the overall difference between measured and modeled outputs ``y``.
 
 ## Nonlinear terms 
@@ -38,8 +38,8 @@ function and R-squared is **significant**, i.e. over a threshold.
 
 ## Time delay 
 
-Determining ``[a,b,c,q,t_d]`` can be expressed as a **linear mixed-integer** problem.
-If the integer term ``t_d`` is given, then determining the *continuous parameters* ``[a,b,c,q]`` is a *linear* optimization problem.
+Determining $[a,b,c,q,t_d]$` can be expressed as a **linear mixed-integer** problem.
+If the integer term $t_d$ is given, then determining the *continuous parameters* $[a,b,c,q]$ is a *linear* optimization problem.
 
 The solver ``UnitIdentifier`` takes a *sequential* approach to solving the joint estimation problem.
 It solves for the *continuous* parameters starting at zero time delay and then for ever-increasing time-delays identifies and compares, until the logic determines that 
@@ -53,11 +53,11 @@ This logic is implemented in the class ``ProcessTimeDelayIdentifier``.
 
 The flow of the solver is as below:
 
-- start at zero time delay ``t_d``,
+- start at zero time delay $t_d$`,
 - while( ``TimeDelay`` object says to continue ),
-	- solve the model with no curvatures c=0
-	- Solve for ``[a,b,c,]`` with every combination of curvatures on/off for a given ``t_d``,
-	- for each given ``[a,c,d,t_q]`` find the bias ``q``,
+	- solve the model with no curvatures $c=0$
+	- Solve for $[a,b,c,]$ with every combination of curvatures on/off for a given $t_d$,
+	- for each given $[a,c,d,t_q]$ find the bias $q$,
 	- choose the best model of the above for the given time delay
 	- save the best model run for the given time-delay in the `TimeDelay`` class object, and
 	- increase time delay.

@@ -22,17 +22,17 @@ Now consider and compare the same step disturbance, but this time a PID-controll
  ![ex1](./images/sysid_disturbance_ex2.png)
 
 The disturbance initally appears on the system output, then is slowly counter-acted by change of the manipulated 
-variable ``u`` by feedback control, thus moving the effect of the disturbance from the output ``y`` to the 
-manipulated ``u``.
+variable $u$ by feedback control, thus moving the effect of the disturbance from the output $y$ to the 
+manipulated $u$.
 
-Observing the offset between setpoint and measurement gives a *"high-frequency"* ``d_HF`` response and is seen 
-first, while the change in ``u`` is gradual and *"low-frequency"* ``d_LF`` and the approach
+Observing the offset between setpoint and measurement gives a *"high-frequency"* $d_{HF}$ response and is seen 
+first, while the change in $u$ is gradual and *"low-frequency"* $d_LF$ and the approach
 will attempt to combine the two as shown below
 
 ![ex3](./images/sysid_disturbance_ex3.png)
 
-*The aim of this section is to develop an algorithm to estimate the the un-measured disturbance ``d``
-indirectly based on the measured ``u`` and ``e``*
+*The aim of this section is to develop an algorithm to estimate the the un-measured disturbance $d$
+indirectly based on the measured $u$ and $e$*
 
 ## Why is distrubance signal estimation important?
 
@@ -50,49 +50,49 @@ The challenge in describing disturbances in feedback-systems is that the feedbac
  to counter-act the very disturbance which needs to be described by changing the manipulated
  variable.
  
- Thus, the effect of the disturbance is in the short-term seen on the system output ``y``,
+ Thus, the effect of the disturbance is in the short-term seen on the system output $y$,
  but in the long-term the effects of the disturbance are seen on the feedback-manipulated variable
- ``u``. The PID-controller will act with some time-constant on ``u``,and this change in ``u``
- will again act back on the output ``y`` with a delay or dynamic behavior that is 
+ $u$. The PID-controller will act with some time-constant on $u$,and this change in $u$
+ will again act back on the output $y$ with a delay or dynamic behavior that is 
  given by the process(described by the process model.) To know what amplitude a disturbance has,
  requires knowledge of how much effect (or "gain") the change in manipulated variable u will 
- have caused on the output ``y``.
+ have caused on the output $y$.
 
-The measurement ``y_meas``shows us the combination of the disturbance ``d`` and the process output ``y_process``
+The measurement $y_meas$ shows us the combination of the disturbance $d$ and the process output $y_{proc}$
 
-`` y_meas[k] = y_proc(u[k-1]) +d[k] = ``
+$$y_{meas}[k] = y_{proc}(u[k-1]) +d[k] $$
 
-Note the above convention for y_proc, d and y_meas are consistent with the convention used by PlantSimulator. 
-This is important, as the PlantSimulator is used in the estimtion of disturbances. 
+Note the above convention for $y_{proc}$, $d$ and $y_{meas}$ are consistent with the convention used by ``PlantSimulator''. 
+This is important, as the ``PlantSimulator'' is used in the estimtion of disturbances. 
 
 
-In most cases only a single u(t) is considered, and this is the pid-output ``u=u_pid(k)``.
+In most cases only a single $u(t)$ is considered, and this is the pid-output $u=u_{pid}(k)$.
 
 > [!Note]
-> in general it is hard to know if the observed closed-loop behavior ``y_meas``,``u_pid`` 
-> is due to a process with large process gain and the u_pid responding to large disturbances
+> in general it is hard to know if the observed closed-loop behavior $y_{meas}$,$u_{pid}$ 
+> is due to a process with large process gain and the $u_{pid}$ responding to large disturbances
 > or if the pid-controller is reacting to small disturbances for a process with small gains. 
 
 
 Observations
-- Note that ``y_process`` is not directly observable unless the disturbance is zero.
-- y_process depends on one or more inputs u(t) that are measured. 
-- one of the inputs to the ``y_process`` is the output of the pid-controller, which looks at ``y_meas`` 
-and tries to counter-act disturbances that enter, thus ``y_process`` and ``d(t)`` will be covariant.
+- Note that $y_{proc}$` is not directly observable unless the disturbance is zero.
+- $y_{proc}$ depends on one or more inputs u(t) that are measured. 
+- one of the inputs to the $y_{proc}$ is the output of the pid-controller, which looks at $y_{meas}$ 
+and tries to counter-act disturbances that enter, thus $y_{proc}$ and $d(t)$ will be covariant.
  
 
 > [!Note]
 > If the process model were known in a closed feedback loop, then the disturbance is also known 
-> because the influence of the process on the measured output ``y_meas`` could be subtracted
-> to determine ``d``. 
+> because the influence of the process on the measured output $y_{meas}$ could be subtracted
+> to determine $d$. 
 
 If a model of the process can be determine that is close to the actual process output
 
-``y_process = y_mod(u(t))``
+$$y_process = y_mod(u(t))$$
 
 then an estimate of the disturbance is given by
 
-``d_est(t) = y_meas(t) - y_mod(u(t)) ``
+$$d_{est}(t) = y_{meas}(t) - y_{mod}(u(t)) $$
 
 > [!Note]
 > *The two tasks of estimating the disturbance and estimating the process model are linked*:
@@ -152,27 +152,27 @@ what process model best describes the data for the given disturbance signal, the
 of the disturbance is updated using the model, back-and-forth until both estimates hopefully converge.
 
 Let the control deviation ``e`` be defined as
-```
-e = (y_meas-y_set)
-```
+$$
+e = (y_{meas}-y_{set})
+$$
 
 Further, the disturbance is divided into a high-frequency part ``d_HF``
 and a low-frequency part ``d_LF``,
 and it is assumed that 
-```
+$$
 d = d_HF+d_LF = d_HF(e)+ d_LF(u)
-```
-``d_LF`` will in general also be a function of the process model, especially the process gain.
+$$
+$$d_LF$$ will in general also be a function of the process model, especially the process gain.
 
 
 ### Estimating the disturbance vector when a model is assumed
 
-By ``y_meas = y_mod(u) + d``, where ``y_internal(u)`` is the response of the process
+By $$y_{meas} = y_{mod}(u) + d$$, where $$y_internal(u)$$ is the response of the process
 
 it stands to reason that once the a model ``y_mod(u)`` is assumed, the disturbance vector can be calculated
 by subtracting the effect of the model from the measured ``y_meas``:
 
-``d_est(t) = y_meas(t) - y_mod(u(t)) ``
+$$d_est(t) = y_meas(t) - y_mod(u(t)) $$
 
 
 ### Step 1 : First, model-free estimate of the process gain
