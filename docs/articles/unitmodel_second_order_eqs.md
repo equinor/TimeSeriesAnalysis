@@ -8,7 +8,7 @@
 > but neither the ``UnitIdentifier`` or ``ClosedLoopUnitIdentifier`` support determining this parameter 
 > automatically. Using the below equations, it should be possible to extend these solvers to 
 > attempt to fit a second-order model that is linear-in-parameters, and then relate the parameters found
-> to more interpretable paramters like time-constant and damping ratio $\zeta$
+> to more interpretable parameters like time-constant and damping ratio $\zeta$
 
 A simple second order system is often described in the s-plane as
 
