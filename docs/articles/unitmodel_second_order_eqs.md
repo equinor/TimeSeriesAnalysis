@@ -138,7 +138,7 @@ How to interpret the damping ratio in practical terms
 
 - $\zeta >= 1$
  means no overshoot, i.e. in that case the system is better described by a first-order system. 
-- $\ 0.3 < \zeta < 1$
+- $0.3 < \zeta < 1$
  will mean a single overshoot peak, and a single dip after the initial overshoot
 - as $\zeta <0.3$ gets smaller (approaches zero) there is more rapid overshoot and more visible oscillations after the overshoot in a  step response.
 
