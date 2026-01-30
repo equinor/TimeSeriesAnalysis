@@ -23,14 +23,14 @@ where $x[k]$ is the *state* at time $k$, $d[k]$ is an *external disturbance* at 
 
 furthermore the *state* $x[k]$ is modeled as
 $$
-x[k] = a•x[k-1] + b \cdot (u[k-td]-u_0) + q					
+x[k] = a \cdot x[k-1] + b \cdot (u[k-td]-u_0) + q					
 $$
 where $t_d$ here denotes the time-delay in samples.
 
 The parameter $a$ in the above equation should always be between $[0;0.9999]$ .
 
 > [!Note]
-> Notice that if $a=0$ the the recursive term is stricken, the disturbance is neglected and time delay is zero, then the model reverts to standard linear static model $y[k] = b\cdot u[k]$.
+> Notice that if $a=0$ the the recursive term is stricken, the disturbance is neglected and time delay is zero, then the model reverts to standard linear static model $y[k] = b \cdot u[k]$.
 
 
 The model 
@@ -39,7 +39,7 @@ The model
 
 The above shows the model for a single input $u$, but the model excepts any number of inputs, so in the case of two inputs $u_1$ and $u_2$ for instance
 $$
-x[k] = a\cdotx[k-1] + b_1\cdot(u_1[k-t_d]-u_{10})+ b_2\cdot(u_2[k-t_d]-u_{20}) + q		
+x[k] = a \cdot x[k-1] + b_1\cdot(u_1[k-t_d]-u_{10})+ b_2\cdot(u_2[k-t_d]-u_{20}) + q		
 $$
 
 > [!Note]
@@ -51,7 +51,7 @@ $$
 
 Optionally the default model can be extended with a square term:
 $$ 
-x[k] = a•x[k-1] + b\cdot(u[k-t_d]-u_0) + c/u_{Norm}\cdot(u[k-t_d]-u_0)^2 + q	
+x[k] = a \cdot x[k-1] + b \cdot(u[k-t_d]-u_0) + c/u_{Norm} \cdot(u[k-t_d]-u_0)^2 + q	
 $$
 Internally the parameter $c$ is referred to as the **"Curvature"** of the default model.
 

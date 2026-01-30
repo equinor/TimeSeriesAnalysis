@@ -10,7 +10,7 @@
           href: python.md      
         - name: Calling this library from Matlab 
           href: matlab.md 
-        - name: Rebuilding the library in C# 
+        - name: Setting up and running unit tests
           href: c_sharp.md 
         - name: Setting up built-in plotting (mainly for C#)
           href: plot_setup.md
