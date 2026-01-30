@@ -22,4 +22,4 @@ In versions ``1.x`` of ``TimeSeriesAnalysis``, Accord.NET is only used inside ``
 Accord.NET has implemented **classification**, **clustering**, **kernel methods** and **hypothesis testing** that may become useful in future work within data-mining and building larger scale models toward version ``2.x``. 
 
 >[!Note]
-> It is also possible to bulid on top of ML.NET in development toward version 2.0.
+> It is also possible to build on top of ML.NET in development toward version 2.0.

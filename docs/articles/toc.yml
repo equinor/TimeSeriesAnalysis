@@ -10,7 +10,7 @@
           href: python.md      
         - name: Calling this library from Matlab 
           href: matlab.md 
-        - name: Rebuilding the library in C# 
+        - name: Setting up and running unit tests
           href: c_sharp.md 
         - name: Setting up built-in plotting (mainly for C#)
           href: plot_setup.md
@@ -67,13 +67,17 @@
 
         - name: The "Unit Model"
           href: sysid_defaultmodel.md
-
-        - name: Unit Model identification
-          href: unitidentifier.md
-
-        - name: Closed-loop disturbance estimation
-          href: sysid_disturbance.md
-
+          items:
+            - name: First-order equations
+              href: unitmodel_first_order_eqs.md 
+            - name: Second-order equations
+              href: unitmodel_second_order_eqs.md 
+            - name: Unit Model identification
+              href: unitidentifier.md
+            - name: Closed-loop unit model and disturbance estimation
+              href: sysid_disturbance.md
+        -  name: Gain-scheduled models
+           href: gain_sched_eqs.md
 
         - name: Fit scores 
           href: fitscores.md

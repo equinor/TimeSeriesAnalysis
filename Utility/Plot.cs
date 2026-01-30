@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis.Utility
 
     public class Plot
     {
-        const string plotDataPath = @"C:\inetpub\wwwroot\plotly\Data";
+        static readonly string plotDataPath = Path.Combine("..", "..", "..", "..", "www", "plotly", "Data");
         const string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
         const string chromePath2 = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
         const string plotlyURL = @"localhost\plotly\index.html";
@@ -346,8 +346,18 @@ namespace TimeSeriesAnalysis.Utility
             {
                 plotDataPathInternal = plotDataPathAppConfig[0];
             }
-            if (!plotDataPathInternal.EndsWith("\\"))
-                plotDataPathInternal += "\\";
+            if (!Path.IsPathRooted(plotDataPathInternal))
+            {
+                plotDataPathInternal = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, plotDataPathInternal));
+            }
+            if (!Directory.Exists(plotDataPathInternal))
+            {
+                Directory.CreateDirectory(plotDataPathInternal);
+
+                Shared.GetParserObj().AddWarning("Created directory: " + plotDataPathInternal);
+            }
+            if (!plotDataPathInternal.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                plotDataPathInternal += Path.DirectorySeparatorChar;
 
             return  plotDataPathInternal;
         }
@@ -410,6 +420,8 @@ namespace TimeSeriesAnalysis.Utility
                 plotDataPathInternal += "\\";
             */
             var plotDataPathInternal = GetPlotlyDataPath();
+
+
 
             string fileName = plotDataPathInternal + tagName + ".csv";
 

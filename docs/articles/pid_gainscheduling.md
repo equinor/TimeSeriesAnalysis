@@ -29,7 +29,7 @@ The resulting plot is shown below:
 ![Example 5 result](./images/ex_gainscheduling_part2.png)
 
 > [!Note]
-> In order to get an approximately equally rapid disturbacne rejection at setpoint ``y=70``
+> In order to get an approximately equally rapid disturbance rejection at setpoint ``y=70``
 > as for ``y=20``, ``Kp`` had to be increased from ``0.3`` to ``1 ``, so by about a factor of three.
 > It would be quite hard to find a single PID-controller tuning that would work equally well across
 > the entire span of possible outputs ``y``. Thus a gain-scheduled controller could be useful here.

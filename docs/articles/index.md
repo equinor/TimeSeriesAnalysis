@@ -53,10 +53,10 @@ in industrial control.
 > [!Note]
 > **A grey-box model** is built to have parameters fitted 
 > to time-series data (like black-box models), but at the same time each parameter has an
-> intuitive phyiscal interpretation (like a white-box model).
+> intuitive physical interpretation (like a white-box model).
 
 Grey-box models attempt a "best of both worlds" compromise 
-between "white box" models (where paramters are set using prior knowlege)
+between "white box" models (where parameters are set using prior knowledge)
 and "black-box" models (where parameters are determined by fitting and have no direct physical interpretation.)
 
 The aim is to make models that can represent large and complex plants, yet where the meaning of 
@@ -94,6 +94,12 @@ vendor software, or running in the cloud), and
 - the quality, behavior and performance of each component can be inspected and, if need be, improved,i.e. there
 are no code "black boxes".
 
-An advantage of an open software stack is that it can create industrial collaboration, and industrial/academic
-collaboration that can hopefully raise the quality of software by pooling resources.
+### Open source
+
+The software is shared as open-source.
+
+> [!Note] 
+>
+> An advantage of an open software stack is that it can create **industrial collaboration** and that **industrial/academic
+> collaboration** can hopefully raise the quality of software by pooling resources.
 
