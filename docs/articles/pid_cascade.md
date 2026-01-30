@@ -7,7 +7,7 @@ while the outer loop could for instance be a level that depends on the flow rate
 
 ![Cascade system](./images/ex_cascade.png)
 
-A sinusoidal disturbance ``D1`` is introduced on process1, wheras a step disturbance is introduced halfway through 
+A sinusoidal disturbance ``D1`` is introduced on process1, whereas a step disturbance is introduced halfway through 
 the simulation in ``D2``, and the aim is for the cascade controllers to reject both disturbances as well as possible. 
 
 The code to implement the controllers:
@@ -32,8 +32,8 @@ comment in the code lines:
 The resulting open-loop simulation results:
 ![Cascade system](./images/ex_cascade_open_loop_results.png)
 
-These simualtions show the benefits of the cascade control over open-loop:
-- transients in ``y2`` of ``+/-0.5``, are reduced to approximiately ``+/-0.1``, and
+These simulations show the benefits of the cascade control over open-loop:
+- transients in ``y2`` of ``+/-0.5``, are reduced to approximately ``+/-0.1``, and
 - the step disturbance in ``y2`` is rejected.
 
 > [!Note]

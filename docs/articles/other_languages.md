@@ -12,7 +12,7 @@ that allows you to access the methods in this library.
 > Once an assembly is loaded in ``MatLab``, it cannot be unloaded except by restarting the program.
 
 > [!Note]
-> Not all .NET features are supported in ``MatLab`` a list of limitiations is given in 
+> Not all .NET features are supported in ``MatLab`` a list of limitations is given in 
 > https://se.mathworks.com/help/matlab/matlab_external/limitations-to-net-support.html
 
 
@@ -86,7 +86,7 @@ ans =
     {'TimeSeriesAnalysis.Dynamic.MovingAvg'                    }
 ```
 
-It is possible to load classes form namesapces like ``TimeSeriesAnalysis.Utility`` and ``TimeSeriesAnalysis.Dynamic`` as well, for instance:
+It is possible to load classes form namespaces like ``TimeSeriesAnalysis.Utility`` and ``TimeSeriesAnalysis.Dynamic`` as well, for instance:
 ```
 >> import TimeSeriesAnalysis.*
 >> import TimeSeriesAnalysis.Utility.*

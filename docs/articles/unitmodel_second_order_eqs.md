@@ -1,7 +1,16 @@
 
-### The unit-model : second order systems
-A simple second order system is often described in the s-plane as
+## The unit-model : second order systems
 
+
+
+>[!Note]
+> Currently, the ``UnitModel`` has support for manually specifying a second-order term $\zeta$
+> but neither the ``UnitIdentifier`` or ``ClosedLoopUnitIdentifier`` support determining this parameter 
+> automatically. Using the below equations, it should be possible to extend these solvers to 
+> attempt to fit a second-order model that is linear-in-parameters, and then relate the parameters found
+> to more interpretable paramters like time-constant and damping ratio $\zeta$
+
+A simple second order system is often described in the s-plane as
 
 $$
 
@@ -126,9 +135,10 @@ $$y[k] = a_1 \cdot y[k-1] + a_2 \cdot y[k-2] + (1-a_1-a_2) \cdot u[k]$$
 
 #### Interpreting the damping ratio
 How to interpret the damping ration in practical terms
--$\zeta >= 1$
- means no overshoot, i.e. in that case the system is better described by a first-order sytem. 
+
+- $\zeta >= 1$
+ means no overshoot, i.e. in that case the system is better described by a first-order system. 
 - $\ 0.3 < \zeta < 1$
- will mean a single overshoot peak, and a single dip after the inital overshoot
+ will mean a single overshoot peak, and a single dip after the initial overshoot
 - as $\zeta <0.3$ gets smaller (approaches zero) there is more rapid overshoot and more visible oscillations after the overshoot in a  step response.
 

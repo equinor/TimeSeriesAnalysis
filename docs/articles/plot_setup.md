@@ -10,7 +10,7 @@ If you have set up plotting correctly, you should be able to run the "PlotUnitTe
 
 For plotting to work you need four prerequisites
 - Chrome must installed (by default in ``C:\Program Files (x86)\Google\Chrome\Application\chrome.exe``)
-- you need to be running a local http-server, if it servers a folder ``[wwwroot]`` then beneath it there mustbe a ``[wwwroot]\plotly`` that contains the javscript files in the "www\plotly" subfolder in the TimeSeriesAnalysis repository
+- you need to be running a local http-server, if it servers a folder ``[wwwroot]`` then beneath it there must be a ``[wwwroot]\plotly`` that contains the javascript files in the "www\plotly" subfolder in the TimeSeriesAnalysis repository
 - the folder ``[wwwroot]\plotly\Data`` needs to match the ``plotDataPath`` in Plot (by default: ``C:\inetpub\wwwroot\plotly\Data``). CSV-data files will be written in here.
 - the front-end JavaScript code needs to find the time-series data in csv-files in its ``localhost\plotly\data`` folder.
 - (if your http-server is serving another folder than ``C:\inetpub\wwwroot`` up on ``localhost``, you need to use ``mklink` to link this folder with the http-server's ``[root]\plotly\data`` folder )

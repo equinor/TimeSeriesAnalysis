@@ -56,7 +56,7 @@ in industrial control.
 > intuitive phyiscal interpretation (like a white-box model).
 
 Grey-box models attempt a "best of both worlds" compromise 
-between "white box" models (where paramters are set using prior knowlege)
+between "white box" models (where parameters are set using prior knowledge)
 and "black-box" models (where parameters are determined by fitting and have no direct physical interpretation.)
 
 The aim is to make models that can represent large and complex plants, yet where the meaning of 
