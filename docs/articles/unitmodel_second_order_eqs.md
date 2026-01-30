@@ -56,35 +56,35 @@ $$
 and 
 
 $$
-\frac{d^2y[t]}{dt^2} \approx \frac{y[k]-y[k-1]}{T_s} - \frac{y[k-1]-y[k-2]}{T_s} = \frac{y[k] - 2\cdot y[k-1] + y[k-2]}{T_s}
+\frac{d^2y[t]}{dt^2} \approx \left( \frac{y[k]-y[k-1]}{T_s} - \frac{y[k-1]-y[k-2]}{T_s} \right) \cdot \frac{1}{T_s} = \frac{y[k] - 2\cdot y[k-1] + y[k-2]}{T_s^2}
 $$
 
 so that:
 
 $$
-\frac{y[k] - 2\cdot y[k-1] + y[k-2]}{T_s} +  \left(2\cdot\zeta\cdot\omega_n \right) \cdot \frac{y[k]-y[k-1]}{T_s} + \omega_n^2 \cdot y(k) = \omega_n^2 \cdot u(k) 
+\frac{y[k] - 2\cdot y[k-1] + y[k-2]}{T_s^2} +  \left(2\cdot\zeta\cdot\omega_n \right) \cdot \frac{y[k]-y[k-1]}{T_s} + \omega_n^2 \cdot y(k) = \omega_n^2 \cdot u(k) 
 $$
 
 $$
-y[k] \left (1/T_s + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)  =   \frac{2\cdot y[k-1] - y[k-2]}{T_s} +  \left(2\cdot\zeta\cdot\omega_n \right) \cdot \frac{y[k-1]}{T_s} +  \omega_n^2 \cdot u(k) 
+y[k] \left (\frac{1}{T_s^2} + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)  =   \frac{2\cdot y[k-1] - y[k-2]}{T_s^2} +  \left(2\cdot\zeta\cdot\omega_n \right) \cdot \frac{y[k-1]}{T_s} +  \omega_n^2 \cdot u(k) 
 $$
 
 $$
-y[k] \left (1/T_s + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)  =   \frac{2 + 2\cdot\zeta\cdot\omega_n }{T_s} \cdot y[k-1] -  \frac{-1}{T_s}\cdot y[k-2] +  \omega_n^2 \cdot u(k) 
+y[k] \left (\frac{1}{T_s^2} + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)  =   \left(\frac{2}{T_s^2} + \frac{2\cdot\zeta\cdot\omega_n }{T_s}\right) \cdot y[k-1] -  \frac{1}{T_s^2}\cdot y[k-2] +  \omega_n^2 \cdot u(k) 
 $$
 
 thus
 
 $$
-a_1 = \frac{2 + 2\cdot\zeta\cdot\omega_n }{T_s} \cdot \left(  1/T_s + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)^{-1}
+a_1 = \left(\frac{2}{T_s^2} + \frac{2\cdot\zeta\cdot\omega_n }{T_s}\right) \cdot \left(  \frac{1}{T_s^2} + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)^{-1}
 $$
 
 $$
-a_2 =  -\frac{1}{T_s} \cdot \left(  1/T_s + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)^{-1}
+a_2 =  \left(-\frac{1}{T_s^2} \right)\cdot \left(  \frac{1}{T_s^2} + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)^{-1}
 $$
 
 $$
-b =  \omega_n^2 \cdot \left(  1/T_s + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)^{-1}
+b =  \omega_n^2 \cdot \left(  \frac{1}{T_s^2} + \frac{2\cdot\zeta\cdot\omega_n}{T_s}+\omega_n^2 \right)^{-1}
 $$
 
 #### Steady-state
