@@ -43,7 +43,7 @@ indication that the dataset may have had little information and that the model i
 
 ### ClosedLoopUnitIdentifier: no time-delays
 - the ``ClosedLoopUnitIdenfitifer`` will always return zero time-delay. There is no fundamental reason why the 
-sovler could not return these values, but it is not implemented yet.  
+solver could not return these values, but it is not implemented yet.  
 
 ### Cascade systems: simulateable but not able to identify multiple disturbance signals 
 - in a cascade of two pid-controllers, the ``ClosedLoopUnitIdentifier`` is unable to determine the disturbance signals acting on both pid-loops. The ``PlantSimulator`` is able to simulate cascade systems if two external disturbance signals are specified, but they system is unable to determine both disturbances simultaneously at the moment. 
