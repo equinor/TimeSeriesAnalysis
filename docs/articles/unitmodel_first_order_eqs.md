@@ -24,7 +24,7 @@ The result is that ``UnitModel`` can describe systems that are
 and because each parameter estimation is a linear regression that is computationally very efficient, the total 
 estimation include structure selection should still be time-efficient. 
 
-The resulting model should be very fast to simulate, numerically stable and paramters are still be interpretable for humans. 
+The resulting model should be very fast to simulate, numerically stable and parameters are still be interpretable for humans. 
 
 ---
 
