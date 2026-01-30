@@ -27,7 +27,7 @@ and $b$ that is determined directly in regression. A theoretical relationship be
 - the tracking functionality of the included PID-controller needs work(reformulation?),
  the example of tracking is unfinished as a result,
 
-### PidModel paramter uncertainty
+### PidModel parameter uncertainty
 
 - the uncertainty of estimated PID-parameters is currently not calculated or stored, but it is 
 possible to do so
