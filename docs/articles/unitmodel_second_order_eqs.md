@@ -134,7 +134,7 @@ The second order filter of gain 1 is thus:
 $$y[k] = a_1 \cdot y[k-1] + a_2 \cdot y[k-2] + (1-a_1-a_2) \cdot u[k]$$
 
 #### Interpreting the damping ratio
-How to interpret the damping ration in practical terms
+How to interpret the damping ratio in practical terms
 
 - $\zeta >= 1$
  means no overshoot, i.e. in that case the system is better described by a first-order system. 
