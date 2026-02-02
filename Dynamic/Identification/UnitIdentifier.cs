@@ -278,7 +278,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var warningList = new List<UnitdentWarnings>();
 
-            //nb! this is quite a high uppper bound, in the worst case this can cause
+            //nb! this is quite a high upper bound, in the worst case this can cause
             //  an obscene number of iterations of the below while loop. 
             TimeSpan span = dataSet.GetTimeSpan();
              double maxExpectedTc_s = span.TotalSeconds / 4;
@@ -441,7 +441,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private static UnitParameters ChooseBestModel(UnitParameters fallbackModel,List<UnitParameters> allModels)
         {
             var bestModel = fallbackModel;
-            // models will be arranged from least to most numer of curvature terms
+            // models will be arranged from least to most number of curvature terms
             // in case of doubt, do not add in extra curvature that does not significantly improve the objective function
             foreach (UnitParameters curModel in allModels)
             {
@@ -528,7 +528,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 var indUbad = new List<int>();
                 for (int colIdx = 0; colIdx < dataSet.U.GetNColumns(); colIdx++)
                 {
-                    indUbad = indUbad.Union(BadDataFinder.GetAllBadIndicesPlussNext(dataSet.U.GetColumn(colIdx),
+                    indUbad = indUbad.Union(BadDataFinder.GetAllBadIndicesPlusNext(dataSet.U.GetColumn(colIdx),
                         dataSet.BadDataID)).ToList();
                 }
                 List<int> indYcurBad = vec.FindValues(ycur, dataSet.BadDataID, VectorFindValueType.NaN);
@@ -599,7 +599,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
                 // actually, the a and b are related to internal states x, while y is a measurement 
                 // that is subject to noise and disturbances, and it is important to formulate the identification 
-                // so that noise and disturances do not influence Tc estimates.
+                // so that noise and disturbances do not influence Tc estimates.
                 // one alternative is to pre-filter y, another is to formulate problems so that noise if averaged out by
 
                 // ----------------------------------------
@@ -609,7 +609,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
                 // ----------------------------------------
-                // to improve the perforamnce in estimating process dynamics when distrubances are in effect
+                // to improve the performance in estimating process dynamics when disturbance are in effect
                 //formulation2: without the assumption y[k-1] (approx=) x[k-1]
 
                 // to guess at the process disturbances :

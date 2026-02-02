@@ -8,7 +8,7 @@ namespace TimeSeriesAnalysis
 {
 
     /// <summary>
-    /// Treating time series as tuples of corrsponding dates/values
+    /// Treating time series as tuples of corresponding dates/values
     /// </summary>
     public class TimeSeries
     {
@@ -81,7 +81,7 @@ namespace TimeSeriesAnalysis
         /// </para>
         /// </summary>
         /// <param name="input">the original time-series to be clipped</param>
-        /// <param name="nSpanDays">the desired length of the returend dataset</param>
+        /// <param name="nSpanDays">the desired length of the returned dataset</param>
         /// <param name="nDaysBack">the number of days to push the end of the returned dataset back(default is zero, in which case method gets last nSpanDays)</param>
         /// <returns></returns>
         public static (double[], DateTime[]) GetSubsetOfDays((double[], DateTime[]) input, int nSpanDays, int nDaysBack = 0)

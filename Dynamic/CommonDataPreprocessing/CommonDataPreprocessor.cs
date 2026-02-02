@@ -6,7 +6,7 @@ using System.Text;
 namespace TimeSeriesAnalysis.Dynamic
 {
     /// <summary>
-    /// Common logic that is to be shared among PlantSimulator and different Identification algoirthms, to choose
+    /// Common logic that is to be shared among PlantSimulator and different Identification algorithms, to choose
     /// data points that are to be ignored when either simulating or identifying or both.
     /// </summary>
     public static class CommonDataPreprocessor
@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// - if detectFrozenData=true, it will also consider the dataset "frozen" if all tags in dataset retain the exact same value from one data point to the next
         /// </summary>
         /// <param name="dataSet"></param>
-        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removd/param>
+        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removed</param>
         /// <param name="detectFrozenData"> if set to true, then any time sample where all inputs are empty will be removed</param>
         /// <returns></returns>
         public static List<int> ChooseIndicesToIgnore(UnitDataSet dataSet, bool detectBadData =true, bool detectFrozenData = false)
@@ -35,16 +35,17 @@ namespace TimeSeriesAnalysis.Dynamic
         /// For best results, only include those time-series that are needed for simulation, remove unused time-series from this dataset.
         /// </summary>
         /// <param name="dataSet">dataset to be investigated(if this dataset has IndicesToIgnore set, then they are included in the returned lst)</param>
-        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removed/param>
-        /// <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"(only use when dataset includes measoured outputs y with noise)</param>
-        /// <returns>a sorted list of indicest to ignore</returns>
+        /// <param name="detectBadData"> if set to true, then any time where any input data equals badDataId or NaN is removed</param>
+        /// <param name="detectFrozenData">if set to true, all indices where none of the data changes are considered "frozen"
+        /// (only use when dataset includes measured outputs y with noise)</param>
+        /// <returns>a sorted list of indices to ignore</returns>
         public static List<int> ChooseIndicesToIgnore(TimeSeriesDataSet dataSet, bool detectBadData = true, bool detectFrozenData=false)
         {
             var indicesToIgnore = new List<int>();
             if (dataSet.GetIndicesToIgnore().Count() > 0)
             {
                 // note that for identification often the trailing indices need also to be removed due to the nature of 
-                // reursive models. We can never be certain if this sort of "padded out" indices to ignore is provided or not.
+                // recursive models. We can never be certain if this sort of "padded out" indices to ignore is provided or not.
                 var indicesMinusOne = Index.Max(Index.Subtract(dataSet.GetIndicesToIgnore().ToArray(), 1), 0).Distinct<int>();
                 indicesToIgnore = Index.AppendTrailingIndices(indicesMinusOne.ToList());
             }
@@ -53,7 +54,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 foreach (var signalID in dataSet.GetSignalNames())
                 {
                     var signalValues = dataSet.GetValues(signalID);
-                    var signalBadValuesIdx = BadDataFinder.GetAllBadIndicesPlussNext(signalValues, dataSet.BadDataID);
+                    var signalBadValuesIdx = BadDataFinder.GetAllBadIndicesPlusNext(signalValues, dataSet.BadDataID);
                     indicesToIgnore = indicesToIgnore.Union(signalBadValuesIdx).ToList();
                 }
             }

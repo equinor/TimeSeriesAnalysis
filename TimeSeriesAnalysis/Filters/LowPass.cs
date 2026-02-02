@@ -11,8 +11,8 @@ namespace TimeSeriesAnalysis
     /// Low-pass filtering of time-series.
     /// <para>
     /// This filter is in a recursive(feedback) IIR form that is simple to implement, has few coefficients, 
-    /// requires litte memory and computation. This filter is causal, meaning that
-    /// for calcuating the filtered value at time <c>k</c> it does not use future values such as <c>k+1</c>, but 
+    /// requires little memory and computation. This filter is causal, meaning that
+    /// for calculating the filtered value at time <c>k</c> it does not use future values such as <c>k+1</c>, but 
     /// this is at the expense of introducing a time-shift/phase-shift.
     /// </para>
     /// <seealso cref="HighPass"/>
@@ -46,7 +46,7 @@ namespace TimeSeriesAnalysis
         /// <param name="FilterTc_s">filter time constant in seconds</param>
         /// <param name="order">filter order, either 1 or 2 is supported</param>
         /// <param name="doReset">usually false, setting to true causes filter to reset to the value of signal</param>
-        /// <param name="stepLength_s">if given, the filter ignores any "timebase" and uses the stepLength_ provided that can vary for each step</param>
+        /// <param name="stepLength_s">if given, the filter ignores any "time base" and uses the stepLength_ provided that can vary for each step</param>
         /// <returns></returns>
         public double Filter(double signal, double FilterTc_s, int order=1, bool doReset = false, double? stepLength_s = null)
         {

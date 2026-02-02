@@ -31,7 +31,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// correct order with the correct input signals.
     /// </para>
     /// <para>
-    /// By default, the model attempts to start in steady-state, intalization handled by <c>ProcessSimulatorInitializer</c>
+    /// By default, the model attempts to start in steady-state, initialization handled by <c>ProcessSimulatorInitializer</c>
     /// (this requires no user interaction).
     /// </para>
     /// <para>
@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// </para>
     /// <seealso cref="UnitModel"/>
     /// <seealso cref="PidModel"/>
-    /// <seealso cref="PlantSimulatorInitalizer"/>
+    /// <seealso cref="PlantSimulatorInitializer"/>
     /// <seealso cref="Select"/>
     /// </summary>
     public class PlantSimulator
@@ -106,7 +106,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 string modelID = model.GetID();
                 if (modelDict.ContainsKey(modelID))
                 {
-                    Shared.GetParserObj().AddError("PlantSimulator failed to initalize, modelID" + modelID + "is not unique");
+                    Shared.GetParserObj().AddError("PlantSimulator failed to initialize, modelID" + modelID + "is not unique");
                 }
                 else
                 {
@@ -273,7 +273,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get a list of all the outputs that are pid-controlled and thus need different treatment in the simualor. 
+        /// Get a list of all the outputs that are pid-controlled and thus need different treatment in the simulator. 
         /// 
         /// NOte that in the case that a PIDmodel is simulated in isolation using for example SimulateSingle, the 
         /// </summary>
@@ -305,7 +305,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Returns the largets timeconstant in the the plant (in seconds)
+        /// Returns the largest time-constant in the the plant (in seconds)
         /// </summary>
         /// <returns></returns>
         private double GetLargestTimeConstant()
@@ -368,7 +368,6 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public UnitDataSet GetUnitDataSetForPID(TimeSeriesDataSet inputData, PidModel pidModel)
         {
-            bool allOk = true;
             var unitModID = connections.GetUnitModelControlledByPID(pidModel.GetID(), modelDict);
             string[] modelInputIDs = null;
             if (unitModID != null)
@@ -388,7 +387,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         dataset.U.WriteColumn(modelInputIdx, inputData.GetValues(inputID));
                     else
                     {
-                        allOk = false;
+                  //    allOk = false;
                         dataset.U = new double[inputData.GetLength().Value, 1];
                         dataset.U.WriteColumn(0, inputData.GetValues(pidModel.GetOutputID()));
                     }
@@ -415,10 +414,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         dataset.Y_setpoint = inputData.GetValues(inputID);
                     }
-                    else
+                    /*else
                     {
                         allOk = false;
-                    }
+                    }*/
                 }
                 else if (inputIDidx == (int)PidModelInputsIdx.Y_meas)
                 {
@@ -427,10 +426,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         dataset.Y_meas = inputData.GetValues(inputID);
                     }
-                    else
+                   /* else
                     {
                         allOk = false;
-                    }
+                    }*/
                 }
                 //todo: feedforward?
                 /*else if (type == SignalType.Output_Y_sim)
@@ -439,7 +438,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
                 else
                 {
-                    throw new Exception("unexepcted signal type");
+                    throw new Exception("unexpected signal type");
                 }*/
             }
             return dataset;
@@ -455,14 +454,13 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Get ConnenectionParser object.
+        /// Get ConnectionParser object.
         /// </summary>
         /// <returns></returns>
         public ConnectionParser GetConnections()
         {
             return connections;
         }
-
         /// <summary>
         /// Get a dictionary of all models.
         /// </summary>
@@ -473,9 +471,9 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Gets data for a given model from either of two datasets (usally the inputdata and possibly simulated data. 
+        /// Gets data for a given model from either of two datasets (usually the input data and possibly simulated data. 
         /// This method also has a special treatment of PID-inputs.
-        /// This method is called to retreive input data during simulation.
+        /// This method is called to retrieve input data during simulation.
         /// </summary>
         /// <param name="model">the model that the data is for()</param>
         /// <param name="inputIDs"></param>
@@ -567,17 +565,17 @@ namespace TimeSeriesAnalysis.Dynamic
         ///  <para>
         ///  If <c>doDetermineIndicesToIgnore</c> is set to <c>false</c>, then the 
         ///  the simulation will consider the <c>.IndicesToIgnore</c> member of the inputData, and ignore these data indices, re-starting dynamic
-        ///  models once periods of bad data pass.(this indicies will be padded internally do not need to be padded when supplied)
+        ///  models once periods of bad data pass.(this indices will be padded internally do not need to be padded when supplied)
         ///  If instead set to <c>true</c>, the simulator will parse the input data to determine 
         ///  bad indices, but it will not be able to determine periods of "frozen" datasets (as outputs y are generally not required to be given in the input data.)
         /// </para>
         /// 
         /// </summary>
-        /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and timebase)</param>
+        /// <param name="inputData">the external signals for the simulation(also, determines the simulation time span and time-base)</param>
         /// <param name="doDetermineIndicesToIgnore"> is set to true, the simulator tries to determine indices to ignore internally</param>
         /// <param name="simData">the simulated data set to be outputted(excluding the external signals)</param>
         /// <param name="enableSimulatorRestarting">if set to true, the simulator will try to restart after long periods of flat data</param>
-        /// <param name="doVariableTimeBase">if set to true, the simulator will vary the time base based on indicestoignore(jumping from one good value to the next)</param>
+        /// <param name="doVariableTimeBase">if set to true, the simulator will vary the time base based on indicesToIgnore(jumping from one good value to the next)</param>
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, 
             bool enableSimulatorRestarting=true, bool doVariableTimeBase = false)
@@ -608,7 +606,7 @@ namespace TimeSeriesAnalysis.Dynamic
             simData = new TimeSeriesDataSet();
 
             // initialize the new time-series to be created in simData.
-            var init = new PlantSimulatorInitalizer(this);
+            var init = new PlantSimulatorInitializer(this);
 
             var inputDataMinimal = SelectMinimalInputData(inputData);
             // parse dataset and determine indices that are to be ignored when simulating.
@@ -636,7 +634,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             if (!didInit)
             {
-                Shared.GetParserObj().AddError("PlantSimulator failed to initalize.");
+                Shared.GetParserObj().AddError("PlantSimulator failed to initialize.");
                 return false;
             }
             // simulate for all time steps(after first step!)
@@ -826,7 +824,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     if (inputVals == null)
                     {
                         Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Model \"" + model.GetID() +
-                            "\" error retreiving input values.");
+                            "\" error retrieving input values.");
                         return false;
                     }
 
@@ -840,7 +838,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         if (!isOk)
                         {
                             Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \""
-                                + model.GetOutputID() + "\", indicating an error in initalization. ");
+                                + model.GetOutputID() + "\", indicating an error in initialization. ");
                             return false;
                         }
                     }
@@ -850,7 +848,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         if (!isOk)
                         {
                             Shared.GetParserObj().AddError("PlantSimulator.Simulate() failed. Unable to add data point for  \""
-                                + model.GetOutputID() + "\", indicating an error in initalization. ");
+                                + model.GetOutputID() + "\", indicating an error in initialization. ");
                             return false;
                         }
                     }
@@ -937,7 +935,7 @@ namespace TimeSeriesAnalysis.Dynamic
             settings.TypeNameHandling = TypeNameHandling.Auto; 
             settings.Formatting = Formatting.Indented;
 
-            // models outputs that are not connected to anyting are "null"
+            // models outputs that are not connected to anything are "null"
 
             foreach (var keyvalue in this.modelDict)
             {

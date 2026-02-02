@@ -9,7 +9,7 @@ using TimeSeriesAnalysis.Dynamic;
 namespace TimeSeriesAnalysis
 {
     /// <summary>
-    /// Holds the result of a correlation calcultion between two vectors
+    /// Holds the result of a correlation calculation between two vectors
     /// </summary>
     public class CorrelationObject
     {
@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         public string signalName;
         /// <summary>
-        /// a correlation factor betweeen -1 and 1 indicating the degree of correlation
+        /// a correlation factor between -1 and 1 indicating the degree of correlation
         /// </summary>
         public double correlationFactor;
         /// <summary>
@@ -47,12 +47,12 @@ namespace TimeSeriesAnalysis
     }
 
     /// <summary>
-    /// Class that performns correlations between vectors
+    /// Class that performs correlations between vectors
     /// </summary>
     public class CorrelationCalculator
     {
         /// <summary>
-        /// Determine the correlation betweeen vectors v1 and v2
+        /// Determine the correlation between vectors v1 and v2
         /// </summary>
         /// <param name="v1"></param>
         /// <param name="v2"></param>
@@ -126,8 +126,8 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="mainSignalName"></param>
         /// <param name="dataSet">the dataset, which must have a correctly set timestamps in order to estimate time constants(also consider indicesToIgnore!)</param>
-        /// <param name="minimumCorrCoeffToDoTimeshiftCalc">calculate time-shift for every corr coeff with absolute value that is above this threshold(0.0-1.0)</param>
-        /// <param name="minimumFitScore">for a time-shift to be valid, the resulting model nees to have Rsq over this threshold</param>
+        /// <param name="minimumCorrCoeffToDoTimeshiftCalc">calculate time-shift for every corr coefficient with absolute value that is above this threshold(0.0-1.0)</param>
+        /// <param name="minimumFitScore">for a time-shift to be valid, the resulting model needs to have Rsq over this threshold</param>
         /// <returns>a</returns>
         public static List<CorrelationObject> CalculateAndOrder(string mainSignalName, TimeSeriesDataSet dataSet,
              double minimumCorrCoeffToDoTimeshiftCalc=0.4,double minimumFitScore = 10)
@@ -152,11 +152,11 @@ namespace TimeSeriesAnalysis
             List<CorrelationObject> ret = new List<CorrelationObject>();
 
             (double[,] matrix, string[] signalNames) = dataSet.GetAsMatrix(dataSet.GetIndicesToIgnore());
-            // not found in datset.
+            // not found in dataset.
             if (!signalNames.Contains<string>(mainSignalName))
                 return ret;
 
-            var indice = Vec<string>.GetIndicesOfValue(mainSignalName,signalNames.ToList()).First();
+            var index = Vec<string>.GetIndicesOfValue(mainSignalName,signalNames.ToList()).First();
 
             var mainSignalValues = dataSet.GetValues(mainSignalName);
             // signal was not found in the dataset.
@@ -164,7 +164,7 @@ namespace TimeSeriesAnalysis
                 return ret;
 
             double[,] corrMatrix = Measures.Correlation(matrix);
-            double[] corr = corrMatrix.GetColumn(indice);
+            double[] corr = corrMatrix.GetColumn(index);
             double[] sortedValues = Vec<double>.Sort((new Vec()).Abs(corr), VectorSortType.Descending,out int[] sortIdx);
 
             for (int i=0; i < sortedValues.Length; i++)

@@ -16,7 +16,7 @@ namespace TimeSeriesAnalysis
     /// This is a finite-impulse-response type filter.
     /// </para>
     /// <para>
-    /// An alterntive to this filter is <seealso cref="LowPass"/>, which is infinite-impulse-repsonse, and also 
+    /// An alterative to this filter is <seealso cref="LowPass"/>, which is infinite-impulse-response, and also 
     /// requires less working memory(this filter needs to hold a buffer equal to <c>bufferSize</c>, but 
     /// <seealso cref="LowPass"/> only needs to keep its last value in memory). 
     /// <seealso cref="LowPass"/> will have less phase-shift/time-shift, because it 
@@ -87,7 +87,7 @@ namespace TimeSeriesAnalysis
         /// Run filter over a vector of values
         /// </summary>
         /// <param name="signal">vector of values to be filtered</param>
-        /// <returns>the moving-averge filtered version of <c>values</c></returns>
+        /// <returns>the moving-average filtered version of <c>values</c></returns>
         public double[] Filter(double[] signal)
         {
             List<double> ret = new List<double>();

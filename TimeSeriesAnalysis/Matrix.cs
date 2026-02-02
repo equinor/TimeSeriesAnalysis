@@ -9,13 +9,14 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis
 {
     ///<summary>
-    ///Operations for treating 2D-arrays as mathetmatical matrices
+    ///Operations for treating 2D-arrays as mathematical matrices
     ///</summary>
 
     public static class Matrix
     {
         ///<summary>
-        ///  Appends another row onto an existing matrix. Returns null if this was not possible(ie. dimnesions dont agree). 
+        ///  Appends another row onto an existing matrix. Returns null if this was not possible(ie. dimensions do
+        ///nt agree). 
         ///</summary>
         static public double[,] AppendRow(double[,] matrix , double[] newRowVec)
         {
@@ -78,7 +79,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        ///  Multipliy either entire matrix or single row(optional third input) by a scalar
+        ///  Multiply either entire matrix or single row(optional third input) by a scalar
         ///</summary>
 
         static public double[,] Mult(double[,] matrix, double scalar, int singleMatrixRowToMult = -1)
@@ -102,7 +103,7 @@ namespace TimeSeriesAnalysis
         }
 
         ///<summary>
-        ///  Multipliy either entire matrix or single row(optional third input) by a vector (returns vector)
+        ///  Multiply either entire matrix or single row(optional third input) by a vector (returns vector)
         ///</summary>
 
         static public double[] Mult(double[,] matrix, double[] vector)
@@ -127,7 +128,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        ///  Multipliy either entire matrix or single row(optional third input) by a vector (returns a matrix)
+        ///  Multiply either entire matrix or single row(optional third input) by a vector (returns a matrix)
         ///</summary>
 
         static public double[,] ComponentMult(double[,] matrix, double[] vector, int singleMatrixRowToMult = -1)

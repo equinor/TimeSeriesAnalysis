@@ -208,7 +208,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 new GainSchedModel(gainSchedP9_singleThreshold_threeInputs_bias_and_time_delay, "GainSched_ID1"),
                 new GainSchedModel(gainSchedP5_nineThresholds_singleInput, "GainSched_ID2"),
                 new GainSchedModel(gainSchedP6_singleThreshold_singleInput_static_nonzeroOperatingPointU, null) // note that even in this case, the
-                // plot should be uniuqe as long as the comment provided is unique
+                // plot should be unique as long as the comment provided is unique
             };
 
             int i = 0;
@@ -247,14 +247,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
 
 
-
-
-
-
-
-
-
-
         [TestCase(1, "up", Description = "static, two gains, no timedelay, no bias")]
         [TestCase(5, "up", Description = "nine gains")]
         [TestCase(6, "up", Description = "nine gains,high operating point")]
@@ -264,7 +256,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
       //  [TestCase(7, "down", Description = "nine gains,high operating point")]
         //     [TestCase(2, "down", Description = "two gains, two time-constants very different, creates bump in simulated y")]
 
-        public void ContinousGradualRamp_BumplessModelOutput(int ver, string upOrDown)
+        public void ContinuousGradualRamp_BumplessModelOutput(int ver, string upOrDown)
         {
             int padBeginIdx = 10;
             int padEndIdx = 40; 
@@ -313,7 +305,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                      inputData.GetValues(refModel.GetID(),SignalType.External_U,0),
                      },
                     new List<string> { "y1=y_sim", "y3=u1" },
-                    timeBase_s, "ContinousGradualRamp_BumplessModelOutput" + ver + upOrDown); 
+                    timeBase_s, "ContinuousGradualRamp_BumplessModelOutput" + ver + upOrDown); 
                 Shared.DisablePlots();
             }
             PsTest.CommonAsserts(inputData, simData, plantSim);
@@ -330,8 +322,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
 
         [TestCase(1, 5, 17.5, Description = "static, two gains, no timedelay, no bias")]
-        [TestCase(2, 5, 17.5, Description = "dynamic, two timeconstants, two gain, no timedelay, no bias")]
-        [TestCase(3, -10, 2.5, Description = "dynamic, two timeconstants, two gains, bias, timedelay ")]
+        [TestCase(2, 5, 17.5, Description = "dynamic, two time-constants, two gain, no timedelay, no bias")]
+        [TestCase(3, -10, 2.5, Description = "dynamic, two time-constants, two gains, bias, timedelay ")]
        // [TestCase(4, -15, -40, Description = "dynamic, two timeconstants, two gains, bias and timedelay")]
         public void SingleThreshold_DifferentGainsAboveAndBelowThreshold(int ver, double step1Out, double step3Out)
         {
@@ -442,9 +434,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase(2, Description = "steps below the threshold")]
         public void NoThresholds_OneInput_RunsOk(int modelVer )
         {
-            var tolerance = 0.1;
-
-            // Arrange
+                    // Arrange
             GainSchedModel gainSched = null;
             if (modelVer == 1)
             {

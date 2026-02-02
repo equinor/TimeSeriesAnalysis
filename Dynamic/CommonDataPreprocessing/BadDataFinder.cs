@@ -11,7 +11,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// <summary>
     /// For dynamic model identification in system identification, bad data points will create "spurious dynamics"
     /// that it is especially important to filter out, otherwise it may 
-    /// destory identification of dynamic terms.
+    /// destroy identification of dynamic terms.
     /// </summary>
     public static class BadDataFinder
     {
@@ -58,7 +58,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inData"></param>
         /// <param name="badValueIndicatingValue"></param>
         /// <returns></returns>
-        static public List<int> GetAllBadIndicesPlussNext(double[] inData, double badValueIndicatingValue)
+        static public List<int> GetAllBadIndicesPlusNext(double[] inData, double badValueIndicatingValue)
         {
             return Index.AppendTrailingIndices(GetAllBadIndices(inData, badValueIndicatingValue));
         }

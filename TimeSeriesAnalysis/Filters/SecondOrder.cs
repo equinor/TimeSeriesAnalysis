@@ -35,13 +35,11 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="signal">data point</param>
         /// <param name="FilterTc_s">filter time constant in seconds</param>
-        /// <param name="DampingZeta">filter time constant in seconds(also reffered to as zeta )</param> 
+        /// <param name="DampingZeta">filter damping factor zeta (0.3-1 results a single overshoot peak, less than 0.3 results in multiple peaks, over 1 results in a damped response with no overshoot) </param> 
         /// <param name="doReset">usually false, setting to true causes filter to reset to the value of signal</param>
         /// <returns></returns>
         public double Filter(double signal, double FilterTc_s, double DampingZeta=0, bool doReset = false)
         {
-           // DampingZeta = 0;
-
             double startUpSignals = 2;
             if (nSignals < startUpSignals)
             {
@@ -49,12 +47,11 @@ namespace TimeSeriesAnalysis
                 this.prevPrevFilteredSignal = signal;// (*Force filter to steady - state *)
                 this.prevFilteredSignal = signal; // (*Force filter to steady - state *)
             }
-            //double a;
+
             double filteredSignal= signal;
 
             // The "FilterTc_s is supposed to be the first-order time-constant, but this 
             // needs to be translated to omega_n using a function that will also depend on DampingZeta
-
 
             var factor = 1.0;
             if (DampingZeta <= 0)

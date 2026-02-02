@@ -22,7 +22,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="nanValue">valeue to be treated as NaN and ignored if applicable</param>
+        /// <param name="nanValue">value to be treated as NaN and ignored if applicable</param>
         public RecursiveAverage(double nanValue = -9999)
         {
             Reset();
