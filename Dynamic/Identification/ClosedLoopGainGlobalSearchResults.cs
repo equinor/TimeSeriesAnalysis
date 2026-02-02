@@ -148,7 +148,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 return new Tuple<UnitModel,string>(null,"");
 
             // calculate strength of a minimum - strength is value between 0 and 100, higher is stronger
-            // this is a metric of how flat the objective space is, the lower the strenght, the flatter the objective function
+            // this is a metric of how flat the objective space is, the lower the strength, the flatter the objective function
             Tuple<double,int> CalcStrengthOfObjectiveMinimum(double[] values)
             {
                 Vec vec2 = new Vec();
@@ -238,7 +238,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (v1_Strength < strength_cutoff && v2_Strength < strength_cutoff && v3_Strength < strength_cutoff)
             {
                 // quite frequently the algorithm arrives here, where all the three "strengths" are zero. 
-                // if there is a persistent disturbance like a randomwalk or sinus and no changes in the 
+                // if there is a persistent disturbance like a random walk or sinus and no changes in the 
                 // setpoint or in external inputs to the process model. 
 
                 if (doV4)

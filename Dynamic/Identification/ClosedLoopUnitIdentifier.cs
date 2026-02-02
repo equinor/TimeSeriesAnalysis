@@ -1,4 +1,5 @@
 ﻿using Accord.Math;
+using Accord.Statistics.Models.Fields.Functions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace TimeSeriesAnalysis.Dynamic
          *  Algorithm 
          *  
         
-         *  - intial step (model-free guess of process gain)
+         *  - initial step (model-free guess of process gain)
          *  multiple passes: ass of the algorithm is
          *  - step1 ("global search" for linear pid-gains), starting with result of last step
          *  - step2(estimate time constant), starting with result of last step.
@@ -45,7 +46,7 @@ namespace TimeSeriesAnalysis.Dynamic
          */
 
         const int MAX_NUM_PASSES = 2;
-        const double LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE = 60 + 1;
+        const double LARGEST_TIME_CONSTANT_TO_CONSIDER_TIME_BASE_MULTIPLE = 60 + 1;
         static int[] step1GlobalSearchNumIterations =  new int[] { 10 ,20};// 50 total iterations usually enough, maybe even lower, something like 30 is probable
         // these are given for each pass.
         static double[] step1GainGlobalSearchUpperBoundPrc = new double[] { 150, 40 } ;
@@ -77,7 +78,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <remarks>
         /// </remarks>
         /// <param name = "dataSet">the unit data set, containing both the input to the unit and the output</param>
-        /// <param name = "pidParams">if the setpoint of the control changes in the time-set, then the paramters of pid control need to be given.</param>
+        /// <param name = "pidParams">if the setpoint of the control changes in the time-set, then the parameters of pid control need to be given.</param>
         /// <param name = "pidInputIdx">the index of the PID-input to the unit model</param>
         /// 
         /// <returns>The unit model(only parameters, no signal ids!), with the name of the newly created disturbance added to the additiveInputSignals</returns>
@@ -207,9 +208,9 @@ namespace TimeSeriesAnalysis.Dynamic
                             + " to " + max_gain.ToString("F3", CultureInfo.InvariantCulture));
 
 
-                    var step1model = Step1GlobalSearchLinearPidGain(dataSet, pidParams, pidInputIdx,
+                    var step1model = Step1GlobalSearchProcessGain(dataSet, pidParams, pidInputIdx,
                         idUnitModelsList.Last(), min_gain, max_gain, fittingSpecs, step1GlobalSearchNumIterations.ElementAt(passNumber - 1));
-                    // note that step 1 may return 
+                    // note that step 1 may fail, return null  
                     if (step1model != null)
                     {
                         GSdescription = step1model.GetModelParameters().Fitting.SolverID;
@@ -236,7 +237,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         var unitModel = idUnitModelsList.Last();
                        // version 1
                         var step2Model = Step2GlobalSearchTimeConstant(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est,passNumber);
-                        // version 2:  find the time contant that gives the lowest FitScore in closed loop simulations.
+                        // version 2:  find the time constant that gives the lowest FitScore in closed loop simulations.
                       //  step2Model = Step2GlobalSearchTimeConstantFitScoreVersion(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est);
                         SaveSearchResult(step2Model);
                         ConsoleDebugOut(sbSolverOutput,step2Model, "Pass " + passNumber + " Step 2");
@@ -418,8 +419,8 @@ namespace TimeSeriesAnalysis.Dynamic
             }
 
             var timeBase = dataSet.GetTimeBase();
-            double candiateTc_s = 0;
-            candidateTc.Add(candiateTc_s);
+            double candidateTc_s = 0;
+            candidateTc.Add(candidateTc_s);
             bool curDevIsDecreasing = true;
             double firstDev = CalcDev(d_est);
             distDevs.Add(firstDev);
@@ -427,11 +428,11 @@ namespace TimeSeriesAnalysis.Dynamic
             // for the first pass, start with Tc= 0 and increase as long as this causes CalcDev(d_est) to keep decreasing
             if (passNumber == 1)
             {
-                while (candiateTc_s < LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE * timeBase && curDevIsDecreasing)
+                while (candidateTc_s < LARGEST_TIME_CONSTANT_TO_CONSIDER_TIME_BASE_MULTIPLE * timeBase && curDevIsDecreasing)
                 {
-                    candiateTc_s += timeBase;
+                    candidateTc_s += timeBase;
                     var newParams = unitModel_prev.GetModelParameters().CreateCopy();
-                    newParams.TimeConstant_s = candiateTc_s;
+                    newParams.TimeConstant_s = candidateTc_s;
                     var newModel = new UnitModel(newParams);
                     var distIdResult_Test = DisturbanceCalculator.CalculateDisturbanceVector
                         (dataSet, newModel, pidInputIdx, pidParams);
@@ -441,27 +442,27 @@ namespace TimeSeriesAnalysis.Dynamic
                     else
                         curDevIsDecreasing = false;
                     distDevs.Add(curDev);
-                    candidateTc.Add(candiateTc_s);
+                    candidateTc.Add(candidateTc_s);
                 }
-                if (candiateTc_s == LARGEST_TIME_CONSTANT_TO_CONSIDER_TIMEBASE_MULTIPLE)
+                if (candidateTc_s == LARGEST_TIME_CONSTANT_TO_CONSIDER_TIME_BASE_MULTIPLE)
                 {
-                    // you may get here when the disturbance is continous and noisy
+                    // you may get here when the disturbance is continuous and noisy
                     Console.WriteLine("warning: ClosedLoopIdentifierFailedToFindAUniqueProcessTc");
                 }
-                if (candiateTc_s > 0)
+                if (candidateTc_s > 0)
                 {
-                    candiateTc_s -= timeBase;
+                    candidateTc_s -= timeBase;
                 }
             }
             else
             {
-                // for any subsequent passes, the search should at least consider [0, Tcest_s+timebase_S]
+                // for any subsequent passes, the search should at least consider [0, Tcest_s+timebase_S*PASS2_MAX_FACTOR]
                 // and only after searching through all of these should the Tc with the smallest CalcDev(d_est)
                 // be selected.
-
+                const int PASS2_MAX_FACTOR = 3;
                 var TcLast = unitModel_prev.GetModelParameters().TimeConstant_s;
                 var minDistDevVal_TcLast = Double.PositiveInfinity;
-                for (double Tc = timeBase; Tc < TcLast + timeBase * 3; Tc++)
+                for (double Tc = timeBase; Tc < TcLast + timeBase * PASS2_MAX_FACTOR; Tc++)
                 {
                     var newParams = unitModel_prev.GetModelParameters().CreateCopy();
                     newParams.TimeConstant_s = Tc;
@@ -479,14 +480,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 // have observed that Tc=0 and Tc=Tclast have the same value for curDev, in that case choose TcLast
                 var minDistDevVal = vec.Min(distDevs.ToArray(), out int minInd);
                 if (minDistDevVal == minDistDevVal_TcLast)
-                    candiateTc_s = TcLast;
+                    candidateTc_s = TcLast;
                 else
-                    candiateTc_s = candidateTc.ElementAt(minInd);
+                    candidateTc_s = candidateTc.ElementAt(minInd);
             }
 
             // TODO: it would be possible to divide the time-constant into a time-delay and a time constant 
             var step2params = unitModel_prev.GetModelParameters().CreateCopy();
-            step2params.TimeConstant_s = candiateTc_s;
+            step2params.TimeConstant_s = candidateTc_s;
             var step2Model = new UnitModel(step2params);
 
             return step2Model;
@@ -523,8 +524,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Try to model the effects of other non-pid inputs in a MISO-system, given an inital estimate of d_est and unitModel, 
-        /// when the gain of the pid-output is forced equat to pidProcGain(depreated)
+        /// Try to model the effects of other non-pid inputs in a MISO-system, given an initial estimate of d_est and unitModel, 
+        /// when the gain of the pid-output is forced equal to pidProcGain(deprecated)
         /// </summary>
         /// <param name="pidProcGain">the estimated gain of the the pid-controlled input (which has input pidInputIdx)</param>
         /// <param name="d_est">the estimated disturbance </param>
@@ -532,7 +533,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="unitDataSet"></param>
         /// <param name="pidInputIdx">what input in the unitDataSet is controlled by the pid-controller?</param>
         /// <param name="fittingSpecs"></param>
-        /// <param name="pidParams">paramters of the pid-controller</param>
+        /// <param name="pidParams">parameters of the pid-controller</param>
         /// <returns></returns>
         private static (double[], UnitParameters,double[]) GlobalSearchMisoModelEstimatedDisturbance(double pidProcGain, double[] d_est, 
             UnitModel unitModel, UnitDataSet unitDataSet, int pidInputIdx, FittingSpecs fittingSpecs, PidParameters pidParams)
@@ -547,7 +548,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 doIncludeYsetpointAsInput = false;
             var alternativeMISOModel = (UnitModel)unitModel.Clone("MISO");
 
-            // part 1: analysis of SISO estimate above, used to find inital estimtes
+            // part 1: analysis of SISO estimate above, used to find initial estimates
             // the d_est from above will give a d_est that also include terms related to any changes in y_set
             // but also in the non-pid input ("external" inputs u)
             {
@@ -681,13 +682,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
         /// <summary>
         /// tries  <c>N=numberOfGlobalSearchIterations</c>  process gains of the <c>unitModel</c> in the range[minPidProcessGain,maxPidProcessGain], using a closed-loop simulation 
-        /// that includes the PID-model with paramters pidParams that acts on input <c>pidInputIdx</c> of the unit model.
+        /// that includes the PID-model with parameters pidParams that acts on input <c>pidInputIdx</c> of the unit model.
         /// 
-        /// The method also accepts an inital guess of the unit model, <c>unitModel_run1</c>
+        /// The method also accepts an initial guess of the unit model, <c>unitModel_run1</c>
         /// 
         /// if Y_setpoint changes:
         /// looking to find the process gain that "decouples" d_est from Y_setpoint as much as possible.
-        /// or antoher way to look at ti is that the output U with setpoint effects removed should be as decoupled 
+        /// or another way to look at it is that the output U with setpoint effects removed should be as decoupled 
         /// form Y_setpoint.
         /// 
         /// </summary>
@@ -700,7 +701,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="fittingSpecs"></param>
         /// <param name="numberOfGlobalSearchIterations"></param>
         /// <returns>the best model and the step size used as a tuple</returns>
-        private static UnitModel Step1GlobalSearchLinearPidGain(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx,
+        private static UnitModel Step1GlobalSearchProcessGain(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx,
             UnitModel unitModel_prev, double minPidProcessGain, double maxPidProcessGain, FittingSpecs fittingSpecs, int numberOfGlobalSearchIterations = 40)
         {
             var range = maxPidProcessGain - minPidProcessGain;
@@ -725,7 +726,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // //////////////////////////////////////////////////
             // try all the process gains between the min and the max and rank them 
             // 
-            for (var curCandPidProcGain = minPidProcessGain; curCandPidProcGain <= maxPidProcessGain; curCandPidProcGain += range / numberOfGlobalSearchIterations)
+            for (var curCandProcGain = minPidProcessGain; curCandProcGain <= maxPidProcessGain; curCandProcGain += range / numberOfGlobalSearchIterations)
             {
                 double[] u_pid_adjusted = null;
                 UnitParameters candParameters;
@@ -734,11 +735,11 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (nGains == 1)
                 {
                     (var curCandSISOModel, var curCandDistEst_SISO) =
-                       Step1GlobalSearchEstimateSISOdisturbanceForProcGain(curCandPidProcGain, unitModel_prev, pidInputIdx, dataSet, pidParams);
+                       Step1GlobalSearchEstimateSISOdisturbanceForProcGain(curCandProcGain, unitModel_prev, pidInputIdx, dataSet, pidParams);
                     dEst = curCandDistEst_SISO.d_est;
                     if (curCandSISOModel == null)
                     {
-                        Console.WriteLine("warning: EstimateSISOdisturbanceForProcGain returned null ");
+                        Console.WriteLine("warning: Step1GlobalSearchEstimateSISOdisturbanceForProcGain returned null ");
                         continue;
                     }
                     u_pid_adjusted = curCandDistEst_SISO.adjustedUnitDataSet.U.GetColumn(pidInputIdx);
@@ -757,7 +758,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     // try to rewrite inspired by the deprecated GlobalSearchMisoModelEstimatedDisturbance
 
                     (var curCandMISOModel, var curCandDistEst_MISO) =
-                        Step1GlobalSearchEstimateMISOdisturbanceForProcGain(curCandPidProcGain, unitModel_prev, pidInputIdx, dataSet, pidParams);
+                        Step1GlobalSearchEstimateMISOdisturbanceForProcGain(curCandProcGain, unitModel_prev, pidInputIdx, dataSet, pidParams);
                     dEst = curCandDistEst_MISO.d_est;
                     u_pid_adjusted = curCandDistEst_MISO.adjustedUnitDataSet.U.GetColumn(pidInputIdx);
                     candParameters = curCandMISOModel.modelParameters.CreateCopy();
@@ -768,10 +769,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 // save the time-series for debug-plotting
                 if (doDebugPlot)
                 {
-                    yProcPlotNames.Add("y1=y_p(Kp" + curCandPidProcGain.ToString("F2", CultureInfo.InvariantCulture));
-                    uSimPlotNames.Add("y3=u_sim(Kp" + curCandPidProcGain.ToString("F2", CultureInfo.InvariantCulture));
-                    dEstPlotNames.Add("y2=d(Kp=" + curCandPidProcGain.ToString("F2", CultureInfo.InvariantCulture) + ")");
-                    candPidGainList.Add(curCandPidProcGain);
+                    yProcPlotNames.Add("y1=y_p(Kp" + curCandProcGain.ToString("F2", CultureInfo.InvariantCulture));
+                    uSimPlotNames.Add("y3=u_sim(Kp" + curCandProcGain.ToString("F2", CultureInfo.InvariantCulture));
+                    dEstPlotNames.Add("y2=d(Kp=" + curCandProcGain.ToString("F2", CultureInfo.InvariantCulture) + ")");
+                    candPidGainList.Add(curCandProcGain);
                     dEstList.Add(dEst);
                     uPidAdjList.Add(u_pid_adjusted);
                     var yProc = vec.Subtract(dataSet.Y_meas, dEst);
@@ -791,7 +792,11 @@ namespace TimeSeriesAnalysis.Dynamic
                   Plot.FromList(dEstList, dEstPlotNames, dataSet.Times);
                   Shared.DisablePlots();*/
 
-                double Power(double[] inSignal)
+
+                // 
+                // In the documentation, this method is referred to as "Q" - the accumulated travel distance of a signal
+                //     
+                double AccTravelDistance(double[] inSignal)
                 {
                     return vec.Mean(vec.Abs(vec.Diff(inSignal))).Value;
                 }
@@ -811,10 +816,10 @@ namespace TimeSeriesAnalysis.Dynamic
                     // this is a slightly better predictor, than the above range, when the power of the Yproc matches the power of d_HR, that is usually close to the process gain. 
                     // if anything, these two signals tend to match when the process gain is slighlty too low. 
 
-                    var dEstPower = Power(dEstList.ElementAt(i));
-                    var yProcPower = Power(yProcessList.ElementAt(i));
-                    var yMeasPower = Power(dataSet.Y_meas);
-                    var uMeasPower = Power(dataSet.U.GetColumn(0));
+                    var dEstPower = AccTravelDistance(dEstList.ElementAt(i));
+                    var yProcPower = AccTravelDistance(yProcessList.ElementAt(i));
+                    var yMeasPower = AccTravelDistance(dataSet.Y_meas);
+                    var uMeasPower = AccTravelDistance(dataSet.U.GetColumn(0));
                     var meanDest = vec.Mean(dEstList.ElementAt(i)).Value;
 
                     // dEstPower, will always be slightly higher than yProcPower, due to the HF element in it
@@ -822,7 +827,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
                     // both dEstPower and yProcPower should be _above_ yMeasPower for the "true" process gain, but this is not a sufficient condition to find a unique Kp, there are many Kp that would fit this criteria. 
                     // IT SEEMS THAT WHEN yProcPower == uMeasPower, then the process gain is correct.
-                    // it is acutally easier to think of disturbance d_LF and d_HF as d_y and d_u, as d_HF is really just e= ymeas-ysetp and d_u is depends on u. 
+                    // it is actually easier to think of disturbance d_LF and d_HF as d_y and d_u, as d_HF is really just e= y_meas-y_setpoint and 
+                    // d_u is depends on u. 
                     // this means, that d_y will not change for different guesses of the process gain or process time-constant, only d_u does that. 
                     // note that d_LF or "d_u" is basically the inverse of the y_process.
                     string comment =

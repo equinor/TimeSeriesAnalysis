@@ -265,7 +265,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// given an estimate of the unit model (reference unit model) for a closed loop system.
         /// ymeas[k] = y_proc[k-1] +d[k] by convention
         /// </summary>
-        /// <param name="unitDataSet">the dataset describing the unit, over which the disturbance is to be found, datset must specify Y_setpoint,Y_meas and U</param>
+        /// <param name="unitDataSet">the dataset describing the unit, over which the disturbance is to be found, dataset must specify Y_setpoint,Y_meas and U</param>
         /// <param name="unitModel">the estimate of the unit</param>
         /// <param name="pidInputIdx">the index of the pid-input in the unitModel</param>
         /// <param name="pidParams">the parameters if known of the pid-controller in the closed loop</param>
