@@ -18,7 +18,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Parses a column of strings in an array/matrix of strings 
         /// </summary>
-        /// <param name="matrix">a 2D-aray of strings</param>
+        /// <param name="matrix">a 2D-array of strings</param>
         /// <param name="columnNumber">the index of the column to parse</param>
         /// <param name="dateFormat">the DateTime dateformat,For the format of dateFormat, see https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings</param>
         /// <returns></returns>

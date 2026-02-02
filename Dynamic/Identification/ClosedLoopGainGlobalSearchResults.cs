@@ -19,11 +19,6 @@ namespace TimeSeriesAnalysis.Dynamic
         const double v1_Strength_Threshold = 0.2;// if below this value, then v2 and v3 are added to the objective function.
 
         /// <summary>
-        /// list of linear gains tried in global search
-        /// </summary>
-        public List<double> pidLinearProcessGainList; 
-
-        /// <summary>
         /// list of covariance between d_Est and y_Set, calculated for each linear gains
         /// </summary>
         public List<double> covBtwDestAndYsetList;
@@ -169,7 +164,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 double valBelow = values.ElementAt(minIndex - 1);
 
                 // note that in some cases, the "true" value is between two points on the grid,
-                // so it is not unexpected to have a vaue on one side be quite close to the value at "minIndex"
+                // so it is not unexpected to have a value on one side be quite close to the value at "minIndex"
                 double valBeside = Math.Max(valAbove, valBelow);
                 return new Tuple<double,int>(100 * (1 - val / valBeside),minIndex);
             }

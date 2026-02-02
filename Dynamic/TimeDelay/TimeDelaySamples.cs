@@ -10,15 +10,12 @@ namespace TimeSeriesAnalysis.Dynamic
     /// Delays a signal by a specific number of time steps, keeping an internal buffer of delayed values 
     /// between iterations.
     /// <para>
-    /// This is a reasuble class for providing time-delay functionality to simulatable models.
+    /// This is a reusable class for providing time-delay functionality to simulateable models.
     /// </para>
-    /// <seealo cref="UnitModel"/>
+    /// <seealso cref="UnitModel"/>
     /// </summary>
     public class TimeDelaySamples
     {
-        private double timeBase_s;
-        private double timeDelay_s;
-
         private double[] delayBuffer;
         private int delayBufferPosition;
         private int delaySignalCounter;

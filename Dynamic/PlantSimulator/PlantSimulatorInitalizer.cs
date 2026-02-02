@@ -20,7 +20,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// using mathematical programming/matrix solvers.
     /// </para>
     /// </summary>
-    public class PlantSimulatorInitalizer
+    public class PlantSimulatorInitializer
     {
         private PlantSimulator simulator;
         private List<string> orderedSimulatorIDs;
@@ -29,7 +29,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Constructor
         /// </summary>
         /// <param name="simulator">simulator object that already includes connections,models and signals to be simulated</param>
-        public PlantSimulatorInitalizer(PlantSimulator simulator)
+        public PlantSimulatorInitializer(PlantSimulator simulator)
         {
             this.simulator = simulator;
             var connections = simulator.GetConnections();

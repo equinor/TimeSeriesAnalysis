@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 using System.Globalization;
 using System.IO;
 
@@ -10,17 +10,13 @@ using Newtonsoft.Json;
 
 using TimeSeriesAnalysis.Utility;
 using TimeSeriesAnalysis.Dynamic;
-using Newtonsoft.Json.Linq;
-using System.ComponentModel.Design;
-using System.Configuration;
-using System.Runtime.CompilerServices;
 
 namespace TimeSeriesAnalysis
 {
 
 
     /// <summary>
-    /// A class that holds time-series data for any number of tags, and with built in support for serlalizing/deserializing to a csv-file.
+    /// A class that holds time-series data for any number of tags, and with built in support for serializing/deserializing to a csv-file.
     /// <para>
     /// Time is either treated by giving a timeBase in seconds and a starting time, or by  
     /// specifying a vector of timestamps.
@@ -256,7 +252,7 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Adds noise to a given signal in the datset. 
+        /// Adds noise to a given signal in the dataset. 
         /// (This is mainly intended for testing identification algorithms against simulated data.)
         /// </summary>
         /// <param name="signalName">name of signal to have noise added to it</param>
@@ -307,7 +303,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Used in conjunction with AppendDataPoint when appending data to the data set.
         /// Appends a time stamp, and updates the number of data points N, if the timestamp
-        /// does not already exist and is newer than the newest time stampe in the curent dataset.
+        /// does not already exist and is newer than the newest time stamp in the current dataset.
         /// 
         /// </summary>
         /// <returns>true if able to append, otherwise false</returns>
@@ -377,7 +373,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         /// Returns a copy of the dataset that is downsampled by the given factor.
         /// </summary>
-        /// <param name="downsampleFactor">value greater than 1 indicating that every Floor(n*factor) value of the orignal data will be transferred.</param>
+        /// <param name="downsampleFactor">value greater than 1 indicating that every Floor(n*factor) value of the original data will be transferred.</param>
         /// <param name="keyIndex">optional index around which to perform the downsampling.</param>
         /// <returns></returns>
         public TimeSeriesDataSet CreateDownsampledCopy( int downsampleFactor, int keyIndex = 0)
@@ -471,11 +467,11 @@ namespace TimeSeriesAnalysis
 
 
         /// <summary>
-        /// Creates internal timestamps from a given start time and timebase, must be called after filling the values 
+        /// Creates internal timestamps from a given start time and time-base, must be called after filling the values 
         /// </summary>
         /// <param name="timeBase_s">the time between samples in the dataset, in total seconds</param>
         /// <param name="N">number of datapoints</param>
-        /// <param name="t0">start time, can be null, which can be usedful for testing</param>
+        /// <param name="t0">start time, can be null, which can be useful for testing</param>
         public void CreateTimestamps(double timeBase_s, int N=0, DateTime? t0 = null)
         {
             if (t0 == null)
@@ -557,9 +553,9 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Get the timebase, the average time between two samples in the dataset
+        /// Get the time-base, the average time between two samples in the dataset
         /// </summary>
-        /// <returns>The timebase in seconds</returns>
+        /// <returns>The time-base in seconds</returns>
         public double GetTimeBase()
         {
             if (timeStamps.Count > 2)
@@ -588,7 +584,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="signalName"></param>
         /// <param name="timeIdx"></param>
-        /// <returns>May return null if an error occured</returns>
+        /// <returns>May return null if an error occurred</returns>
         public double? GetValue(string signalName, int timeIdx)
         {
             if (signalName == null)
@@ -619,7 +615,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="signalNames"></param>
         /// <param name="timeIdx"></param>
-        /// <returns>May return null if an error occured</returns>
+        /// <returns>May return null if an error occurred</returns>
         public double[] GetData(string[] signalNames, int timeIdx)
         {
             double[] retData = new double[signalNames.Length];
@@ -674,7 +670,7 @@ namespace TimeSeriesAnalysis
 
         }
         /// <summary>
-        /// Get the names of all the singals, wheter constant or varying
+        /// Get the names of all the signals, whether constant or varying
         /// </summary>
         /// <returns></returns>
         public string[] GetSignalNames()
@@ -813,20 +809,20 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Define a new signal, specifying only its inital value
+        /// Define a new signal, specifying only its initial value
         /// </summary>
         /// <param name="signalName"></param>
-        /// <param name="initalValue">the value of time zero</param>
+        /// <param name="initialValue">the value of time zero</param>
         /// <param name="N">number of time stamps</param>
         /// <param name="nonYetSimulatedValue">what value to fill in for future undefined times, default:nan</param>
-        public void InitNewSignal(string signalName, double initalValue, int N, double nonYetSimulatedValue = double.NaN)
+        public void InitNewSignal(string signalName, double initialValue, int N, double nonYetSimulatedValue = double.NaN)
         {
-            Add(signalName, Vec<double>.Concat(new double[] { initalValue },
+            Add(signalName, Vec<double>.Concat(new double[] { initialValue },
                 Vec<double>.Fill(nonYetSimulatedValue, N - 1)));
         }
 
         /// <summary>
-        /// Determine if internal IndicesToIgnore is "null" i.e. has not been speified
+        /// Determine if internal IndicesToIgnore is "null" i.e. has not been specified
         /// </summary>
         /// <returns>true if IndicesToIgnore is not null, or false it is null</returns>
         public bool IsIndicesToIgnoreSet()
@@ -1090,7 +1086,7 @@ namespace TimeSeriesAnalysis
         /// </summary>
         /// <param name="fileName">The CSV-file name</param>
         /// <param name="csvSeparator">the separator to use in the csv-file(despite the name, the most common is perhaps ";" which Excel will recognize automatically)</param>
-        /// <param name="nSignificantDigits">the number of singificant digits to include for each variable</param>
+        /// <param name="nSignificantDigits">the number of significant digits to include for each variable</param>
         /// <returns>true if successful, otherwise false</returns>
         public bool ToCsv(string fileName, string csvSeparator = ";", int nSignificantDigits = 5)
         {
@@ -1177,7 +1173,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         ///  When a dataset has been loaded from csv-file and changed, this method writes said changes back to the csv-file. 
         /// </summary>
-        /// <returns>true if succesful, otherwise false</returns>
+        /// <returns>true if successful, otherwise false</returns>
         public bool UpdateCsv()
         {
             return ToCsv(csvFileName);

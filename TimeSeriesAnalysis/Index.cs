@@ -9,37 +9,37 @@ using System.Threading.Tasks;
 namespace TimeSeriesAnalysis
 {
     /// <summary>
-    /// Class with utility-methods forr working with indices (vectors of integers)
+    /// Class with utility-methods for working with indices (vectors of integers)
     /// 
     /// There are some special features of indices: they should never be negative,
-    /// and indice vectors are often monotonically increasing.
+    /// and indices vectors are often monotonically increasing.
     /// </summary>
     public class Index
     {
-        private static double valuteToReturnElementIsNaN = double.NaN;// so fi an element is either NaN or "-9999", what value shoudl a calculation return?
+        private static double valueToReturnElementIsNaN = double.NaN;// so if an element is either NaN or "-9999", what value should a calculation return?
 
         /// <summary>
         ///  When filtering out bad data before identification of
         ///  difference equations that depend both y[k] and y[k-1]
-        ///  it will some times be neccessary, to append the trailing indices
+        ///  it will some times be necessary, to append the trailing indices
         /// </summary>
-        static public List<int> AppendTrailingIndices(List<int> indiceArray)
+        static public List<int> AppendTrailingIndices(List<int> indicesArray)
         {
-            List<int> appendedIndiceArray = new List<int>(indiceArray);
+            List<int> appendedIndicesArray = new List<int>(indicesArray);
             List<int> indicesToAdd = new List<int>();
-            for (int i = 0; i < indiceArray.Count; i++)
+            for (int i = 0; i < indicesArray.Count; i++)
             {
-                int curVal = indiceArray.ElementAt(i);
-                if (!indiceArray.Contains(curVal + 1))
+                int curVal = indicesArray.ElementAt(i);
+                if (!indicesArray.Contains(curVal + 1))
                     indicesToAdd.Add(curVal + 1);
             }
-            appendedIndiceArray.AddRange(indicesToAdd);
-            appendedIndiceArray.Sort();
-            return appendedIndiceArray;
+            appendedIndicesArray.AddRange(indicesToAdd);
+            appendedIndicesArray.Sort();
+            return appendedIndicesArray;
         }
 
         ///<summary>
-        /// elementwise addition of val2 to array1
+        /// Element-wise addition of val2 to array1
         ///</summary>
 
         public static int[] Add(int[] array1, int val2)
@@ -50,7 +50,7 @@ namespace TimeSeriesAnalysis
             for (int i = 0; i < array1.Length; i++)
             {
                 if (IsNaN(array1[i]))
-                    retVal[i] = (int)valuteToReturnElementIsNaN;
+                    retVal[i] = (int)valueToReturnElementIsNaN;
                 else
                     retVal[i] = array1[i] + val2;
             }
@@ -71,7 +71,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        /// given a list of sorted indeces and a desired vector size N, returns the indices that are not in "sortedIndices"
+        /// given a list of sorted indices and a desired vector size N, returns the indices that are not in "sortedIndices"
         /// i.e. of the "other vectors
         ///</summary>
         public static List<int> InverseIndices(int N, List<int> sortedIndices)
@@ -156,7 +156,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        ///  Removes ceratin indices from the array
+        ///  Removes certain indices from the array
         ///</summary>
         public static int[] Remove(int[] array, List<int> indicesToRemove)
         {
@@ -175,7 +175,7 @@ namespace TimeSeriesAnalysis
         }
 
         /// <summary>
-        /// Shifts the indice array by an integer, (positive or negative value)
+        /// Shifts the indices array by an integer, (positive or negative value)
         /// Note that the return index array by will not have negative indices, so returned array may be smaller in dimension that input
         /// </summary>
         /// <param name="inArray"></param>

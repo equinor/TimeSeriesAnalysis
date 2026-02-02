@@ -156,14 +156,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            /* usimFrozen = dataSet.U_sim.GetColumn(0);
-             Shared.EnablePlots();
-             Plot.FromList(new List<double[]> { usimUnfrozen, usimFrozen, dataSet.U.GetColumn(0) },
-                 new List<string> { "y1= u_simUnfrozen", "y1= u_simfronzen", "y1=umeas" },dataSet.Times);
-             Shared.DisablePlots();
-            */
-
-
             dataSet.U_sim = bestUsim;
             return bestParam;
 
@@ -175,6 +167,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="dataSet">a UnitDataSet, where .Y_meas, .Y_setpoint and .U are analyzed</param>
         /// <param name="doDetectFrozenData">if true, the model attempts to find and ignore portions of frozen data(will also detect oversampled data)</param>
+        /// <param name="doVariableTimeBase">if true, the model will attempt to vary the time base internally to improve fit</param>
         /// <returns>the identified parameters of the PID-controller</returns>
         public PidParameters Identify_Level1(ref UnitDataSet dataSet, bool doDetectFrozenData, bool doVariableTimeBase)
         {
@@ -344,9 +337,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="isPIDoutputDelayOneSample"></param>
         /// <param name="pidFilterParams">optional filter to apply to y</param>
         /// <param name="doFilterUmeas"> if set to true, the measurement of the manipulated variable will be filtered
-        /// This helps identification if there are periods with flatlined data that are oversampled,
+        /// This helps identification if there are periods with flat-lined data that are oversampled,
         /// but will give incorrect Ti if the entire dataset is oversampled.</param>
         /// <param name="doDetectFrozenData">If true, the identification will try to identify periods where all data is frozen and ignore those portions. </param>
+        /// <param name="doVariableTimeBase">if true, the model will attempt to vary the time base internally to improve fit</param>
         /// <returns></returns>
         private (PidParameters, double[,], List<int>) Identify_Level2(UnitDataSet dataSet, bool isPIDoutputDelayOneSample,
             PidFilterParams pidFilterParams = null, bool doFilterUmeas=false, bool doDetectFrozenData = true, bool doVariableTimeBase = false)
@@ -358,19 +352,19 @@ namespace TimeSeriesAnalysis.Dynamic
             string solverID = "PidIdentifier";
             if (doVariableTimeBase)
             {
-                solverID += "(variable timebase)";
+                solverID += "(variable time-base)";
           
             }
             else
             {
-                solverID += "(constant timebase)";
+                solverID += "(constant time-base)";
             }
 
             if (pidFilterParams != null)
             {
                 pidFilter = new PidFilter(pidFilterParams, timeBase_s);
                 pidParam.Filtering = pidFilterParams;
-                solverID += "(ymeas filtered)";
+                solverID += "(y_meas filtered)";
             }
            
             pidParam.Fitting = new FittingInfo();
@@ -396,7 +390,7 @@ namespace TimeSeriesAnalysis.Dynamic
             {
                 int kernelLength = (int)Math.Floor(pidFilter.GetParams().TimeConstant_s / timeBase_s);
                 uMinusFF = (new Vec()).NonCausalSmooth(uMinusFF, kernelLength);
-                solverID += "(Umeas was filtered)";
+                solverID += "(U_meas was filtered)";
             }
             double uRange = vec.Max(uMinusFF) - vec.Min(uMinusFF);
             double Kpest, Tiest, Rsq; 
@@ -419,7 +413,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             var goodIndices = new List<int>();
 
-            //since eprev and eprevprev are needed, need to look two itertaions back, which means first to indices need to be ignored
+            //since eprev and eprevprev are needed, need to look two iterations back, which means first to indices need to be ignored
             // in regression
             {
                 int nIterationsToLookBack = 2;
@@ -455,8 +449,8 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
                 // replace -9999 or NaNs in dataset
-                var indBadUcurReg = BadDataFinder.GetAllBadIndicesPlussNext(ucurReg, dataSet.BadDataID);
-                var indBadEcurReg = Index.Shift(BadDataFinder.GetAllBadIndicesPlussNext(ecurReg, dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
+                var indBadUcurReg = BadDataFinder.GetAllBadIndicesPlusNext(ucurReg, dataSet.BadDataID);
+                var indBadEcurReg = Index.Shift(BadDataFinder.GetAllBadIndicesPlusNext(ecurReg, dataSet.BadDataID).ToArray(), -nSamplesToLookBack);
 
                 var umaxIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetUmax(), VectorFindValueType.BiggerOrEqual));
                 var uminIndReg = Index.AppendTrailingIndices(vec.FindValues(ucurReg, pidParam.Scaling.GetUmin(), VectorFindValueType.SmallerOrEqual));
