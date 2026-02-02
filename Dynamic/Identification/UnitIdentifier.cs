@@ -609,7 +609,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
                 // ----------------------------------------
-                // to improve the performance in estimating process dynamics when disturbance are in effect
+                // to improve the performance in estimating process dynamics when disturbances are in effect
                 //formulation2: without the assumption y[k-1] (approx=) x[k-1]
 
                 // to guess at the process disturbances :
