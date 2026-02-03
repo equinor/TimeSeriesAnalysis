@@ -153,7 +153,7 @@ performance of the method:
 
 The ``accumulated traveled travel`` $Q$ of a signal we defined as :
 $$
-Q(x) = \sum_{t=0}^{N-1} |x[k+1]-x[t]| 
+Q(x) = \sum_{t=0}^{N-1} |x[t+1]-x[t]| 
 $$
 This metric is used extensively in the below algorithm.
 
