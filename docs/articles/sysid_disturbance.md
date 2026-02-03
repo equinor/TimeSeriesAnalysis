@@ -48,7 +48,7 @@ $$y_{meas}[k] = y_{proc}(u[k]) +d[k] $$
 Note the above convention for $y_{proc}$, $d$ and $y_{meas}$ are consistent with the convention used by ``PlantSimulator``. 
 This is important, as the ``PlantSimulator`` is used in the estimation of disturbances. 
 
-If a model of the process can be determine that is close to the actual process output
+If a model of the process can be determined that is close to the actual process output
 
 $$y_{process} = y_{mod}(u(t)) $$
 
