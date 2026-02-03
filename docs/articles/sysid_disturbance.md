@@ -154,7 +154,7 @@ process gain and process time constant is **sequential** (as opposed to simultan
 
 This algorithm is implemented in the class ``ClosedLoopUnitIdentifier``, as follows:
 
-given an estimate of the PidModel from prior knowledge or from ``PidIdnentifier``:
+given an estimate of the PidModel from prior knowledge or from ``PidIdentifier``:
 - **choose indices to ignore (bad or frozen portions of data)**
 - **use a heuristic to get an initial static "model-free" guess for the process model (process gain and -sign) (``step0``)**
 - set heuristic broad search range for the process gain $[G_{min},G_{max}]$
