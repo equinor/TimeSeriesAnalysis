@@ -362,7 +362,7 @@ for the estimated disturbance vector $d_{est}$.
 
 
 
-### Sidenote: Alternative method to estimate process gain based on $d_{LF}$
+### Side-note: Alternative method to estimate process gain based on $d_{LF}$
 
 Refer to the example at the top of this section. 
 
@@ -394,3 +394,21 @@ or even
 $$d_{est}(t) \geq e(t)$$
 
 
+## Performance, conclusions and further work
+
+In unit tests summarize the expected performance for different types of use-cases
+- **step-disturbances** accuracy to within 5% is for static processes and 10% for dynamic processes are typical
+- **random-walk disturbances** accuracy to within 12-25% for static processes, but very poor accuracy for dynamic processes. 
+- **sinus-disturbances** poor accuracy for dynamic and static processes.
+- the method is able to remove data points to be ignored from the analysis (bad data points) and still succeed
+- the method does well even for multiple-input systems provided that there is excitation in the non-pid controlled inputs (in fact this appears to make estimation easier.)
+
+**Conclusions**
+- The algorithm seems to work well on certain types of common disturbances where the process is close to steady-state but then intermittently is excited (``step disturbances``).
+- The algorithm struggles if the disturbance is so "rich" that the system in fact never reaches steady-state(such as in the case of a random-walk or sinus). 
+- In situations where the algorithm does poorly, the algorithm is usually not able to improve on the ``step0`` initial estimate, 
+typically because global search does not reveal any minimum in any of the considered metrics in ``pass1``. 
+- If the method is unable to improve on the ``step0``, it is recommended to re-identify the model on other data until the algorithm converges over two passes. 
+
+**Further work**
+- look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``)
