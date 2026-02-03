@@ -69,7 +69,7 @@ $$
 
 > [!Note]
 >
-> $d_{LF}$ will depend on thee process model, and especially the process gain.
+> $d_{LF}$ will depend on the process model, and especially the process gain.
 >
 
 Let the control deviation $e$ be defined as
