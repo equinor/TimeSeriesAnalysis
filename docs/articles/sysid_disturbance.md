@@ -37,16 +37,13 @@ indirectly based on the measured $u$ and $e$*
 >**Why is disturbance signal estimation important?**
 >
 >Disturbances are the "action" or "excitation" that causes feedback-controlled systems to 
->move, if these signals could be estimated, then a disturbance could be "played back" in 
->a simulation and different changes to the control system could be assessed and compared.
->
->Describing the disturbance signal is also important for identifying the other components 
->of a feedback-controlled system correctly, as disturbances are "non-white" noise that tends
->to skew estimates (destroying the regression accuracy) if not accounted for.
+>move. If disturbance signals could be estimated, then a disturbance could be "played back" in 
+>a "what-if" simulation and different changes to the control system could be assessed and compared offline.
+
 
 The measurement $y_{meas}$ shows us the combination of the disturbance $d$ and the process output $y_{proc}$
 
-$$y_{meas}[k] = y_{proc}(u[k-1]) +d[k] $$
+$$y_{meas}[k] = y_{proc}(u[k]) +d[k] $$
 
 Note the above convention for $y_{proc}$, $d$ and $y_{meas}$ are consistent with the convention used by ``PlantSimulator``. 
 This is important, as the ``PlantSimulator`` is used in the estimation of disturbances. 
@@ -59,30 +56,12 @@ then an estimate of the disturbance is given by
 
 $$d_{est}(t) = y_{meas}(t) - y_{mod}(u(t)) $$
 
-Further, the disturbance is divided into
--a high-frequency part $d_{HF}$ that depends on $e(t)$, and 
-- a low-frequency part $d_{LF}$ that depends on $u(t)$
-and it is assumed that 
-$$
-d = d_{HF}+d_{LF} = d_{HF}(e)+ d_{LF}(u)
-$$
-
 > [!Note]
+> **When the process model is known, then the disturbance is implicitly also known**
 >
-> $d_{LF}$ will depend on the process model, and especially the process gain.
+> The above equation shows that when the process model is known, the disturbance signal is implicitly known.
+> The tasks of determining the disturbance and determining the process model are one and the same.
 >
-
-Let the control deviation $e$ be defined as
-$$
-e = (y_{meas}-y_{set})
-$$
-
-By $$y_{meas} = y_{mod}(u) + d$$, where $$y_{internal}(u)$$ is the response of the process
-
-it stands to reason that once the a model $y_{mod}(u)$ is assumed, the disturbance vector can be calculated
-by subtracting the effect of the model from the measured $y_{meas}$:
-
-$$d_{est}(t) = y_{meas}(t) - y_{mod}(u(t)) $$
 
 
 ### What are the challenges?
@@ -106,23 +85,12 @@ In most cases only a single $u(t)$ is considered, and this is the pid-output $u=
 > is due to a process with large process gain and the $u_{pid}$ responding to large disturbances
 > or if the pid-controller is reacting to small disturbances for a process with small gains. 
 
-
 Observations
-- Note that $y_{proc}$` is not directly observable unless the disturbance is zero.
+- Note that $y_{proc}$ is not directly observable unless the disturbance is zero.
 - $y_{proc}$ depends on one or more inputs u(t) that are measured. 
 - one of the inputs to the $y_{proc}$ is the output of the pid-controller, which looks at $y_{meas}$ 
 and tries to counter-act disturbances that enter, thus $y_{proc}$ and $d(t)$ will be covariant.
- 
 
-> [!Note]
-> If the process model were known in a closed feedback loop, then the disturbance is also known 
-> because the influence of the process on the measured output $y_{meas}$ could be subtracted
-> to determine $d$. 
-
-> [!Note]
-> *The two tasks of estimating the disturbance and estimating the process model are linked*:
-> *if you have solved one, you > have solved the other.*
- 
 It is in general much easier to determine the gain of the process if there is **"external excitation"** either
 - the pid-controller is set in manual mode and a step change is performed, or
 - a setpoint step or some other setpoint change is applied to the pid-controller, or
@@ -133,49 +101,43 @@ no introduced excitation.** In some cases it will be impossible to determine a u
 useful if instead the method returned a range of possible values. 
 
 
-> [!Note]
-> **Tools for estimating closed-loop**
->
-> The tools at our disposal are:
-> - It can be assumed that a dynamic model of the PID-controller is available (``PidModel``) 
-> - The ability to do both open-loop simulations of the ``UnitModel`` using ``PlantSimulator``
-> - The ability to do closed-loop simulations of the ``UnitModel`` and ``PidModel`` together using ``PlantSimulator``
->
-> Based on these tools:
-> - it will be possible to do a large number of very **computationally inexpensive dynamic simulations** over a given dataset 
-> for different parameters choices, so **"trial-and-error" global search for parameters** is feasible
-> - it is possible to **create synthetic datasets** using the above methods where the "true" values will be known, and these datasets could
-be combined with the methods of automatic unit testing to ensure that the method works as expected.
 
 ## Approach 
 
-The chosen approach to solve the linked problem of solving for 
-process gain and process time constant is **sequential** (as opposed to simultaneous).
+### Sequential Gain-Time Constant Identification for Closed-Loop Disturbance Reconstruction
 
-This algorithm is implemented in the class ``ClosedLoopUnitIdentifier``, as follows:
+The goal of the method is to find a ``UnitModel`` that describes the process that the ``PidModel`` is controlling, based on measured time-series data.
 
-given an estimate of the PidModel from prior knowledge or from ``PidIdentifier``:
-- **choose indices to ignore (bad or frozen portions of data)**
-- **use a heuristic to get an initial static "model-free" guess for the process model (process gain and -sign) (``step0``)**
-- set heuristic broad search range for the process gain $[G_{min},G_{max}]$
-- one "pass" 
-	1. **taking the best current guess of process time-constant, estimate the process gain by a global search between $[G_{min},G_{max}]$ (``step1``)**
-	2. **taking the best process gain from step1, estimate the process time-constant(``step2``)** 
-	- (try to improve the model by testing time-delays)(not implemented)
-	3. **reduce the range of $[G_{min},G_{max}]$** around the value found in step 1 and do another pass, or exit 
+The terms in the ``UnitModel`` listed in terms of their relative importance are:
+- process gain (most significant)
+- process time constant 
+- process time delay (*not currently implemented*)
+- process curvature (*not currently implemented*,least significant)
 
 > [!Note]
-> **Convergence**
-> 
-> - It has been found that doing 2 passes is usually sufficient to converge. 	
-> - There is no sense doing a second pass if the steps 1 and 2 did not cause any change in parameters (in which case only one pass is done)
-> - In general there is no guarantee that a sequential optimization will converge, but the method usually does so in practice if information exists in
-> the data set
+> **All terms in ``UnitModel`` are important**
+>
+> Failure to describe time-delays or curvatures may cause poor match in process gains and time constants. 
+> Thus all terms in the ``UnitModel`` are actually important.
 
-This algorithm is implemented in the class ``ClosedLoopUnitIdentifier``.
+The method attempts to exploit *co-simulations* of  ``PidModel`` and ``UnitModel`` in the ``PlantSimulator``, and that these simulations are
+- very computationally inexpensive (i.e. can be run numerous times), and 
+- the simulations can be fully automated.
 
-A number of test scenarios are simulated and used to benchmark the algorithm in the unit test library:
+The method can be classified as **disturbance reconstruction**, as for each candidate ``UnitModel`` a disturbance signal is inferred, 
+and the closed-loop system is simulated with this disturbance. 
 
+Determining the process gain and time-constants are *coupled*. As the process gain is the most influence on the resulting simulations, it is chosen to determined
+it first.
+
+The chosen approach to attempt to deconstruct this problem is **sequential** estimating  
+process gain and process time constant (as opposed to solving simultaneously).
+
+Each sequential step uses a form of ``global-search`` or ``trial-and-error`` to simulate the system for numerous values, and then attempts to rank 
+the resulting simulations to determine the most promising estimate. 
+
+A large number of synthetic datasets with known solutions are used to guide the design of the algorithm, and to classify the properties and 
+performance of the method:
 - step disturbances
 - random walk disturbances
 - sinusoidal disturbances
@@ -184,9 +146,51 @@ A number of test scenarios are simulated and used to benchmark the algorithm in 
 
 
 > [!Note]
+> In other parts of the library objective metrics that describe the fit between modelled and measured output are used to select models.
+> In closed-loop, this kind of scoring is much less cut-and-dry, because by our definition, the disturbance signal is all parts of the measured 
+> output $y_{meas}$ that the process model is unable to describe with $y_{process}$, thus **the disturbance signal may include model errors**, and 
+> usually $d_{est}$ results in $y_{meas}=_{process}+d_{est}$, so that the **deviation between measured and modelled output (including disturbance) is zero.**
+
+The ``accumulated traveled travel`` $Q$ of a signal we defined as :
+$$
+Q(x) = \sum_{t=0}^{N-1} |x[k+1]-x[t]| 
+$$
+This metric is used extensively in the below algorithm.
+
+### Algorithm outline
+
+
+This algorithm is implemented in the class ``ClosedLoopUnitIdentifier``, as follows:
+
+given an estimate of the ``PidModel`` from prior knowledge or from ``PidIdentifier``:
+- **choose indices to ignore (bad or frozen portions of data)**
+- **use a heuristic to get an initial static "model-free" guess for the process model (process gain and -sign) (``step0``)**
+- set heuristic broad search range for the process gain $[G_{min},G_{max}]$
+- one "pass" 
+	1. **taking the best current guess of process time-constant, estimate the process gain by a global search between $[G_{min},G_{max}]$ (``step1``)**
+	2. **taking the best process gain from step1, estimate the process time-constant(``step2``)** 
+	- (try to improve the model by testing time-delays)(not implemented)
+	3. **reduce the range of $[G_{min},G_{max}]$** around the value found in ``step1`` and do another pass, or exit if pass did not find an improved gain. 
+
+> [!Note]
+> **Convergence**
+> 
+> - It has been found that doing 2 passes is usually sufficient to converge(usually a third pass does not further improve the estimates). 
+> - In general the bound on the gain need to be wide enough that the true value is hopefully not outside the initial bounds, but also the wider the 
+>   bounds the more distance between each attempted gain for a given number of runs. How wide to chose these bounds, and how much to narrow the bounds for the second pass are heuristically set (based on performance in unit tests). 	
+> - There is no sense doing a second pass if the steps 1 and 2 did not cause any change in parameters (in which case only one pass is done)
+> - In general there is no guarantee that a sequential optimization will converge, but the method usually does so in practice if information exists in
+> the data set
+> - If the data has a insufficient level of excitation, it sometimes happens that the algorithm is unable to produce estimates in step1 and step2
+> that improve on step0. This is a strong indicator that identification should be re-done on another dataset at a later time.
+
+
+
+> [!Note]
 > **Outstanding issues of ``ClosedLoopUnitIdentifier``**
 > - the method does not use the supplied ``FittingSpecs`` to select indices to be ignored based on user-supplied minimum or maximums in inputs or outputs.
 > - the outlined final step of refining the identified model to also determine a time-delay is not implemented
+> - the method could conceivably be extended to include identification of even nonlinear process model terms, but this is not implemented.
 
 
 ### Step 0
@@ -201,9 +205,14 @@ subsequent sequential estimation.
 For the first iteration, all process dynamics and non-linearities are neglected, 
 a linear static model essentially boils down to estimating the process gain. 
 
+Let the control deviation $e$ be defined as
+$$
+e = (y_{meas}-y_{set})
+$$
+
 <img src="./images/sysid_disturbance_init.png" alt="step1 heuristic" width="400" >
 
-This first estimate of the process gain $G_0$ in a linear model $y = G_0 x u$
+This first estimate of the process gain $G_0$ in a linear model $y(t) = G_0 \cdot u(t) + b$
 is found by the approximation 
 $$
 G_0 = \frac{\max(e)}{\max(u)-\min(u)}  
@@ -230,18 +239,11 @@ be simulated to give an initial $y_{mod}(u)$, so that an estimate $d_{est}(t)$ c
 >as disturbance step produces far better gain estimates than if the disturbance is a steady sinus(so that the system never reaches steady-state.)
 
 
-### The accumulated traveled distance of a signal 
 
-The ``accumulated traveled travel`` $Q$ of a signal we defined as :
-$$
-Q(x) = \sum_{t=0}^{N-1} |x[k+1]-x[t]| 
-$$
-
-This metric is used extensively in the below algorithm.
 
 ##### Step 0: Guessing the sign of the process gain
 
-Methods for open-loop estimation when applied naively to closed loop
+Methods for open-loop estimation when applied naively to closed-loop
 time-series often estimate process gain with incorrect sign. 
 
 The reason for this is that cause-and-effect relationships are different 
@@ -252,6 +254,8 @@ for closed loop signals, and to also include information about the setpoint $y_ 
 to the algorithm, so that the algorithm can infer about the control error $e$.
 
 > [!Note]
+> **Counter-intuitive input/output relationship in closed-loop systems**
+>
 > As an example, if inputs $u$ and output $y$ *increase* in unison,
 > you would in the open-loop case assume that the process gain is *positive*.
 > In the closed-loop case, the same relation between input and output change
@@ -298,9 +302,8 @@ In this case, the global search instead attempts to find the process gain that r
 expressed as: 
 
 $$
-G_{est} = \min_{G} Q(d_{est}{G}) 
+G_{est} = \min_{G} Q(d_{est}(G)) 
 $$
-
 
 > [!Note]
 >- this method is heuristic
@@ -321,7 +324,7 @@ $$
 	- **"v4"**: if solutions space for the above three are all flat, chose the gain that minimizes $Q(d_{est}(G))$
 
 > [!Note]
->** Better estimates when setpoints change**
+>**Better estimates when set-points change**
 >
 > The algorithm seems to in general give better estimates of the process if there are step changes in the external inputs 
 >or in the pid-setpoint, and the algorithm appears to be able to handle both cases. 
@@ -359,7 +362,18 @@ for the estimated disturbance vector $d_{est}$.
 
 
 
-### Alternative method to estimate gains based on $d_{LF}$
+### Sidenote: Alternative method to estimate process gain based on $d_{LF}$
+
+Refer to the example at the top of this section. 
+
+The disturbance can be imagined as having two distinct parts:
+- a high-frequency part $d_{HF}$ that depends on $e(t)$, and 
+- a low-frequency part $d_{LF}$ that depends on $u(t)$
+and it is assumed that 
+$$
+d = d_{HF}+d_{LF} = d_{HF}(e)+ d_{LF}(u)
+$$
+
 
 There are essentially two ways of calculating the disturbance
 
@@ -371,12 +385,12 @@ $$d_{LF} (u) = \hat{y}(u(t))- \hat{y} (u(t_0))$$
 
 Note that $d_{HF}$ does not change with changing estimates of the model gain or other parameters, while $d_{LF}$ does. 
 
-Combining the two above means that 
+The algorithm in the above sections struggles most in the case that the disturbances are relatively flat, while there are no 
+setpoint changes, so that there is a general lack of excitation. 
 
-$$d_{LF}(u) = (\bar{y} - y_{proc}(\hat{u})) - d_{HF}(\hat{u}, y_{set})$$
+In those cases $d_{LF}$ may be small, and so it may be possible to aid estimation by assuming 
+$$d_{est}(t) \approx e(t)$$
+or even 
+$$d_{est}(t) \geq e(t)$$
 
-The smaller the process gain is the more $d_{est}$ is similar to $d_{LF}$.
 
-It is possible to plot the solution space of the d_est for different $K_p$, and in periods where there is small changes in the integral
-term of the pid-controller, the disturbance looks quite similar for different Kp. So while in some periods vary with a factor 10 
-when $K_p$ varies with a factor 10, in other periods it just varies with a factor 2.
