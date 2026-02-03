@@ -217,7 +217,7 @@ of knowledge of the dynamics at this early stage of estimation.
 Given the gain an initial ``UnitModel`` is created with a rudimentary bias and operating point $u_0$, so that the model can 
 be simulated to give an initial $y_{mod}(u)$, so that an estimate $d_{est}(t)$ can be found.
 
-> [!Note!]
+> [!Note]
 > **Step 0 dynamic artifacts in the estimated disturbance**
 > 
 >Because no process dynamics are assumed yet, $d_{est}(t)$ at this stage will include some transient artifacts if the process
