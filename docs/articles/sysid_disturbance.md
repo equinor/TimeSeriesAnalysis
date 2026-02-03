@@ -127,7 +127,7 @@ The method attempts to exploit *co-simulations* of  ``PidModel`` and ``UnitModel
 The method can be classified as **disturbance reconstruction**, as for each candidate ``UnitModel`` a disturbance signal is inferred, 
 and the closed-loop system is simulated with this disturbance. 
 
-Determining the process gain and time-constants are *coupled*. As the process gain is the most influence on the resulting simulations, it is chosen to determined
+Determining the process gain and time constants are *coupled*. As the process gain has the most influence on the resulting simulations, it is chosen to determine
 it first.
 
 The chosen approach to attempt to deconstruct this problem is **sequential** estimating  
