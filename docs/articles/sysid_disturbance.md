@@ -308,7 +308,7 @@ $$
 > [!Note]
 >- this method is heuristic
 >- the objective usually has a minimum, but not always (such as if the disturbance is a perfect sinus in unit tests)
->- the objective space is fairly flat, the minimum has a fairly low ``strength'', i.e neighboring process gains have almost equally low objectives
+>- the objective space is fairly flat, the minimum has a fairly low "strength", i.e neighboring process gains have almost equally low objectives
 >- the objective space seems to be more concave ("stronger" i.e. more significant minimums) when the process gain is higher.
 
 **Step 1 algorithm:**
