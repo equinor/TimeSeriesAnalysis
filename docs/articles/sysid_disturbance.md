@@ -142,7 +142,7 @@ useful if instead the method returned a range of possible values.
 > - The ability to do closed-loop simulations of the ``UnitModel`` and ``PidModel`` together using ``PlantSimulator``
 >
 > Based on these tools:
-> - it will be possible to due a large number of very **computationally inexpensive dynamic simulations** over a given dataset 
+> - it will be possible to do a large number of very **computationally inexpensive dynamic simulations** over a given dataset 
 > for different parameters choices, so **"trial-and-error" global search for parameters** is feasible
 > - it is possible to **create synthetic datasets** using the above methods where the "true" values will be known, and these datasets could
 be combined with the methods of automatic unit testing to ensure that the method works as expected.
