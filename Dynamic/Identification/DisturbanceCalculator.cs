@@ -32,7 +32,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         None=0,
         /// <summary>
-        /// Set disturbance to zero beacause simulator did not run
+        /// Set disturbance to zero because simulator did not run
         /// </summary>
         UnitSimulatorUnableToRun =1,
     }
@@ -42,7 +42,7 @@ namespace TimeSeriesAnalysis.Dynamic
     // it can have phase-shift and can look different than a normal
 
     /// <summary>
-    /// Internal class to store a single sub-run of the DisturnanceIdentifierInternal
+    /// Internal class to store a single sub-run of the DisturbanceIdentifierInternal
     /// 
     /// </summary>
     public class DisturbanceIdResult
@@ -75,7 +75,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double estPidProcessGain;
         
         /// <summary>
-        /// Constuctor
+        /// Constructor
         /// </summary>
         /// <param name="dataSet"></param>
         public DisturbanceIdResult(UnitDataSet dataSet)
@@ -152,7 +152,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 unitModelCopy.additiveInputIDs = null;
 
                 // a time delay of one sample must be applied because by convention
-                // y_meas[k] = y_proces[k-1] + d[k]
+                // y_meas[k] = y_process[k-1] + d[k]
                 unitModelCopy.modelParameters.TimeDelay_s = unitModelCopy.modelParameters.TimeDelay_s + unitDataSet.GetTimeBase();
 
                var processSim_noDist = new PlantSimulator(
@@ -221,7 +221,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         else
                         {
                             int N = unitDataSet.GetNumDataPoints();
-                            // set all unitmodle external inputsvalues to constant value equalt to initial value
+                            // set all unitmodel external input values to constant value equal to initial value
                             var newU = Vec<double>.Fill(unitDataSet.U.GetColumn(inputIdx)[idxFirstGoodValue], N);
                             unitDataSet_adjusted.U = Matrix.ReplaceColumn(unitDataSet_adjusted.U, inputIdx, newU);
                         }

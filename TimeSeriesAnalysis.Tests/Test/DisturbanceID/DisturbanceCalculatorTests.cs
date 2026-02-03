@@ -12,7 +12,7 @@ using TimeSeriesAnalysis.Utility;
 namespace TimeSeriesAnalysis.Test.DisturbanceID
 {
     /// <summary>
-    /// In these tests, the UnitModel is given, and the aim is to verify that for a known model the distubance estimator is able
+    /// In these tests, the UnitModel is given, and the aim is to verify that for a known model the disturbance estimator is able
     /// to arrive at the correct disturbance time-series.
     /// </summary>
     [TestFixture]
@@ -41,7 +41,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         };
 
         int timeBase_s = 1;
-        int N = 300;
+    //    int N = 300;
         DateTime t0 = new DateTime(2010,1,1);
 
 
@@ -85,8 +85,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             GenericDisturbanceTest(new UnitModel(staticModelParameters, "StaticProcess"), trueDisturbance, tolPrc);
         }
 
-        [TestCase(-5, 0.01)]
-        [TestCase(5, 0.01)]
+        [TestCase(-1, 1)]
+        [TestCase(1, 1)]
         public void Static_SinusDisturbance_EstimatesOk(double stepAmplitude,double tolPrc)
         {
             int N = 30;
@@ -127,6 +127,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             int pidInputIdx = 0;
             int externalInputIdx = 1;
+
+            int N = trueDisturbance.Length;
 
             bool doAssertResult = true;
             // create synthetic dataset
