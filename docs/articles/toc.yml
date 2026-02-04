@@ -52,11 +52,13 @@
                 - name: Loading and saving PlantSimulator objects to and from json-files
                   href: files_plants.md
           
+- name: Development approach
+  href: development_approach.md
 
 - name: System identification
   href: sysid.md
   items:
-        - name: System identification litterature
+        - name: System identification literature
           href: sysid_litterature.md
 
         - name: System identification tricks-of-the-trade
