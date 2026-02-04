@@ -70,21 +70,44 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, gainPrecisionPrc,false, isStatic);
         }
 
+        [TestCase(5, 1.0,500), Explicit("Does poorly.further work needed" )]
+        [TestCase(1, 5.0,500)]
+
+        public void SinusDisturbance(double distSinusAmplitude, double gainPrecisionPrc, int N)
+        {
+            var period = N / 2;
+           
+            var  modelParametersLoc = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 1.5 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+          // try with steady-state before and after to see if this improves estimates
+          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Constant(0,100), TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Constant(0,200)));
+          var yset = TimeSeriesCreator.Constant( 50,trueDisturbance.Length);
+          CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParametersLoc, "Process"), trueDisturbance,
+            false, true, yset, gainPrecisionPrc,false, isStatic);
+        }
+
+
+
 
         // 0.25: saturates the controller
         // gain of 5 starts giving huge oscillations...
 
         // generally, the smaller the process gain, the lower the precision of the estimated process gain.
-        //(halfing the gain-> halving the precision)
+        //(halving the gain-> halving the precision)
         // first seed
         [TestCase(1, 0.1, 25, 105,1000)]
         [TestCase(2, 0.1, 15, 105,1500)]
         // second seed 
-        [TestCase(1, 1, 25, 50,1000)]
+        [TestCase(1, 1, 10, 50,1000)]
 
         [TestCase(2, 1, 12, 50, 2000)]
         // third  seed 
-        [TestCase(1, 0.1, 25, 71,1500)]
+        [TestCase(1, 0.1, 16, 71,1500)]
         [TestCase(2, 0.1, 12, 70, 2000)]
 
 
@@ -155,7 +178,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             double stepAmplitude = 10;
             double gainTolPrc = 10;
-            bool doAddBadData = false;
+            bool doAddBadData = true;
             N = 350;
             var locParameters = new UnitParameters
             {

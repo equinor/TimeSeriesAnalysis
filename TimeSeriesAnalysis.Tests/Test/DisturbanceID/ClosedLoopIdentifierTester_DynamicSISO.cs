@@ -72,11 +72,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void RandomWalkDisturbance(double procGain, double distAmplitude, double gainPrecisionPrc)
         {
-            int seed = 50; // important: this seend will if time constant is zero be able to find a model 
+            int seed = 50; // important: this seed will if time constant is zero be able to find a model 
             int N = 2000;
             var locParameters = new UnitParameters
             {
-                TimeConstant_s = 2,//should be nonzero for dynamic test (fails if  timconstant_s i larger than about 2)
+                TimeConstant_s = 10,//should be nonzero for dynamic test (fails if  timconstant_s i larger than about 2)
                 LinearGains = new double[] { procGain },
                 TimeDelay_s = 0,
                 Bias = 5
@@ -88,6 +88,29 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, gainPrecisionPrc);
             Shared.DisablePlots();
         }
+
+        [TestCase(5, 1.0,500), Explicit("Does poorly.further work needed" )]
+        [TestCase(1, 5.0,500)]
+
+        public void SinusDisturbance(double distSinusAmplitude, double gainPrecisionPrc, int N)
+        {
+            var period = N / 2;
+           
+            var  modelParametersLoc = new UnitParameters
+            {
+                TimeConstant_s = 20,
+                LinearGains = new double[] { 1.5 },
+                TimeDelay_s = 0,
+                Bias = 5
+            };
+          // try with steady-state before and after to see if this improves estimates
+          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Constant(0,100), TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Constant(0,200)));
+          var yset = TimeSeriesCreator.Constant( 50,trueDisturbance.Length);
+          CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParametersLoc, "Process"), trueDisturbance,
+            false, true, yset, gainPrecisionPrc,false, isStatic:false);
+        }
+
+
 
         [TestCase(5, 1.0)]
 
@@ -144,11 +167,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             int N = 100;
             double noiseAmplitude = 0.01;
-             //Shared.EnablePlots();
+            Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(40, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
                 doNegativeGain,true,null,  processGainAllowedOffsetPrc);
-            //Shared.DisablePlots();
+            Shared.DisablePlots();
         }
 
 

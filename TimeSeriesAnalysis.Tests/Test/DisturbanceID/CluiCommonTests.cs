@@ -60,12 +60,12 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
             var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
             if (doAddBadData)
             {
-            /*    pidDataSet.Y_setpoint[255] = Double.NaN;
+                pidDataSet.Y_setpoint[255] = Double.NaN;
                 pidDataSet.Y_setpoint[155] = Double.NaN;
                 pidDataSet.Y_setpoint[55] = Double.NaN;
                 pidDataSet.Y_meas[300] = Double.NaN;
                 pidDataSet.Y_meas[200] = Double.NaN;
-                pidDataSet.Y_meas[100] = Double.NaN;*/
+                pidDataSet.Y_meas[100] = Double.NaN;
                 pidDataSet.U[50, 0] = Double.NaN;
                 pidDataSet.U[20, 0] = Double.NaN;
                 pidDataSet.U[5, 0] = Double.NaN;
@@ -119,22 +119,24 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
         {
             Vec vec = new Vec();
 
-            double distTrueAmplitude = vec.Max(vec.Abs(trueDisturbance));
             Assert.IsTrue(estDisturbance != null);
-            string caseId = TestContext.CurrentContext.Test.Name.Replace("(", "_").
-                Replace(")", "_").Replace(",", "_") + "y";
+            string caseId = TestContext.CurrentContext.Test.Name + "y";
             bool doDebugPlot = false;
             if (doDebugPlot)
             {
                 double[] d_HF = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);
+               // this gives "perfectly" the d_LF, that together with d_HF gives d_est
                 double[] d_LF = vec.Multiply(vec.Subtract(unitDataSet.Y_proc, unitDataSet.Y_proc[0]), -1);
+                // experimental code, comment out
+               // var factor = 1.97/1.5*1.10;
+               // double[] d_LF = vec.Multiply(vec.Subtract(unitDataSet.Y_proc, unitDataSet.Y_proc[0]), -1/factor);
 
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ unitDataSet.Y_meas, unitDataSet.Y_setpoint,unitDataSet.Y_proc,
-                unitDataSet.U.GetColumn(0), unitDataSet.U_sim.GetColumn(0), estDisturbance, trueDisturbance, d_HF,d_LF },
+                unitDataSet.U.GetColumn(0), unitDataSet.U_sim.GetColumn(0), estDisturbance, trueDisturbance, d_HF,d_LF,vec.Add(d_LF,d_HF) },
                     new List<string> { "y1=y_meas", "y1=y_set", "y1=y_proc", "y2=u_meas(right)","y2=u_sim(right)", 
-                        "y3=est disturbance", "y3=true disturbance","y3= d_HF","y3=d_LF"},
-                    unitDataSet.GetTimeBase(), caseId + "commonplotandasserts");
+                        "y3=est disturbance", "y3=true disturbance","y3= d_HF","y3=d_LF","y3=d_LF+d_HF"},
+                    unitDataSet.GetTimeBase(), caseId + "_CommonPlotsAndAsserts");
                 Shared.DisablePlots();
             }
 
@@ -142,15 +144,6 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
             double estGain = identifiedModel.modelParameters.GetTotalCombinedProcessGain(0);
             double trueGain = trueModel.modelParameters.GetTotalCombinedProcessGain(0);
             double gainOffsetPrc = Math.Abs(estGain - trueGain) / Math.Abs(trueGain) * 100;
-           /* if (Vec.IsAllValue(trueDisturbance, 0))
-            {
-
-            }
-            else
-            {
-                double disturbanceOffset = vec.Mean(vec.Abs(vec.Subtract(trueDisturbance, estDisturbance))).Value;
-                Assert.IsTrue(disturbanceOffset < distTrueAmplitude * maxAllowedMeanDisturbanceOffsetPrc / 100, "true disturbance and actual disturbance too far apart");
-            }*/
             Assert.IsTrue(gainOffsetPrc < maxAllowedGainOffsetPrc, "est.gain:" + estGain + "|true gain:" + trueGain);
 
             // time constant
