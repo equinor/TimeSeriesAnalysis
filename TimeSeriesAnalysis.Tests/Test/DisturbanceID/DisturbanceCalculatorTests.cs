@@ -41,7 +41,6 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         };
 
         int timeBase_s = 1;
-    //    int N = 300;
         DateTime t0 = new DateTime(2010,1,1);
 
 

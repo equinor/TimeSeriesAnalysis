@@ -48,7 +48,7 @@ $$y_{meas}[k] = y_{proc}(u[k]) +d[k] $$
 Note the above convention for $y_{proc}$, $d$ and $y_{meas}$ are consistent with the convention used by ``PlantSimulator``. 
 This is important, as the ``PlantSimulator`` is used in the estimation of disturbances. 
 
-If a model of the process can be determine that is close to the actual process output
+If a model of the process can be determined that is close to the actual process output
 
 $$y_{process} = y_{mod}(u(t)) $$
 
@@ -127,7 +127,7 @@ The method attempts to exploit *co-simulations* of  ``PidModel`` and ``UnitModel
 The method can be classified as **disturbance reconstruction**, as for each candidate ``UnitModel`` a disturbance signal is inferred, 
 and the closed-loop system is simulated with this disturbance. 
 
-Determining the process gain and time-constants are *coupled*. As the process gain is the most influence on the resulting simulations, it is chosen to determined
+Determining the process gain and time constants are *coupled*. As the process gain has the most influence on the resulting simulations, it is chosen to determine
 it first.
 
 The chosen approach to attempt to deconstruct this problem is **sequential** estimating  
@@ -153,7 +153,7 @@ performance of the method:
 
 The ``accumulated traveled travel`` $Q$ of a signal we defined as :
 $$
-Q(x) = \sum_{t=0}^{N-1} |x[k+1]-x[t]| 
+Q(x) = \sum_{t=0}^{N-1} |x[t+1]-x[t]| 
 $$
 This metric is used extensively in the below algorithm.
 
@@ -318,7 +318,7 @@ $$
 > [!Note]
 >- this method is heuristic
 >- the objective usually has a minimum, but not always (such as if the disturbance is a perfect sinus in unit tests)
->- the objective space is fairly flat, the minimum has a fairly low ``strength'', i.e neighboring process gains have almost equally low objectives
+>- the objective space is fairly flat, the minimum has a fairly low "strength", i.e neighboring process gains have almost equally low objectives
 >- the objective space seems to be more concave ("stronger" i.e. more significant minimums) when the process gain is higher.
 
 **Step 1 algorithm:**
