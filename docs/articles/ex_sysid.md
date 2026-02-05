@@ -48,7 +48,7 @@ fitting : no error or warnings
 ```
 
 Notice how the process gains $[0.958;1.96]$ are fairly close to the true $[1;2]$, 
-the time constant $14.1$ s` is fairly close to the true $15$ secondeds and the time delay is spot-on at $5$ secconds.
+the time constant $14.1$ s is fairly close to the true $15$ seconds and the time delay is spot-on at $5$ seconds.
 
 R-squared ("R2") is ~84 out of 100 maximum, and this indicates a relatively good match of the model.
 
