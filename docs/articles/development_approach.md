@@ -19,17 +19,25 @@ Most of the tests are thus more correctly termed ``Scenario tests``, ``Acceptanc
 sometimes some of these tests represent stretch goals that may need to be checked-in to the code in a non-passing state. 
 
 
-> [!Note]
-> **Make non-functioning tests ``Explicit`` rather than commenting out**
->
-> Note that some tests related to plotting are ``Explicit``, and will need be run 
-> one-by-one. This has been done on the "Getting Started" unit test, to avoid 
-> needlessly creating plots on "Run All" unit tests. 
-> 
-> It is considered preferable to make a test explicit rather than deleting it or commenting it out if it represents a scenario test that fail, as this stores what has been attempted, and is an important record. 
-> By keeping the code commented, in the code avoids becoming stale in case any methods are
-> re-factored.
 
+## Make non-functioning tests ``Explicit`` rather than commenting out
+
+Note that some tests related to plotting are ``Explicit``, and will need be run 
+one-by-one. This has been done on the "Getting Started" unit test, to avoid 
+needlessly creating plots on "Run All" unit tests. 
+ 
+It is considered preferable to make a test explicit rather than deleting it or commenting it out if it represents a scenario test that fail, as this stores what has been attempted, and is an important record. 
+By keeping the code commented, in the code avoids becoming stale in case any methods are
+re-factored.
+
+It is suggested to also add non-working acceptance tests to the category ``NotWorking_AcceptanceTest`` as shown below.
+```csharp
+ [TestCase(5, 1.0, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+ NonWorkingTest(double trueParameter ,double tolerancePrc)
+ {
+ }
+```
+This ensures that the tests are excluded on the GitHub, which has a workflow to automatically re-run tests when code is checked in. 
 
 ## Tests as a tool for tuning methods and refactoring without performance deteriorating
 
