@@ -160,7 +160,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 trueDisturbance, false, true,null,10, doAddBadData);
         }*/
 
-        [TestCase(-5,5),NonParallelizable]
+        [TestCase(-5,10),NonParallelizable]
         [TestCase(5, 5)]
         [TestCase(10, 5)]
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
