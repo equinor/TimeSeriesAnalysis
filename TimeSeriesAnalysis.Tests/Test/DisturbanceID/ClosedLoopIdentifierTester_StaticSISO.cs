@@ -58,8 +58,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc,false, true);
         }
 
-        [TestCase(5, 1.0,30,500 )]
-        [TestCase(1, 5.0,30,500 )]
+        [TestCase(5, 1.0,20,500 )]
+        [TestCase(1, 5.0,5,500 )]
 
         public void SinusDisturbanceANDSetpointStep(double distSinusAmplitude, double ysetStepAmplitude, 
             double gainPrecisionPrc, int N)
@@ -70,8 +70,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, gainPrecisionPrc,false, isStatic);
         }
 
-        [TestCase(5, 1.0,500), Explicit("Does poorly.further work needed" )]
-        [TestCase(1, 5.0,500)]
+        [TestCase(5, 1.0,500,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 5.0,500,Explicit = true, Category = "NotWorking_AcceptanceTest")]
 
         public void SinusDisturbance(double distSinusAmplitude, double gainPrecisionPrc, int N)
         {

@@ -41,7 +41,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         const int MaxNumberOfPasses = 4;
         const double LargestTimeConstantTimeBaseMultiple = 60 + 1;
-        static int[] Step1GlobalSearchNumIterations =  new int[] { 10 ,10, 10,10};// 50 total iterations usually enough, maybe even lower, something like 30 is probable
+        static int[] Step1GlobalSearchNumIterations =  new int[] { 10 ,20, 10,10};// 50 total iterations usually enough, maybe even lower, something like 30 is probable
         // these are given for each pass.
         static double[] Step1GainGlobalSearchUpperBoundPrc = new double[] { 150, 40, 20,10 } ;
         static double[] Step1GainGlobalSearchLowerBoundPrc = new double[] { 90, 40, 10, 10 };
@@ -221,8 +221,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                     {
-                        // do not save null result, let step2 run even on a step0 model if neccessary
-                        sbSolverOutput.AppendLine("pass" + passNumber + "Step1,GS1: FAILED");
+                        // do not save null result, let step2 run even on a step0 model if necessary
+                        sbSolverOutput.AppendLine("Pass " + passNumber + " Step1: FAILED to find a minimum");
                     }
                 }
                 //

@@ -98,7 +98,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[] Umax;
 
         /// <summary>
-        /// A string containting detailed output of the solver, may include line-breaks
+        /// A string containing detailed output of the solver, may include line-breaks
         /// </summary>
         public string SolverOutput;
 
