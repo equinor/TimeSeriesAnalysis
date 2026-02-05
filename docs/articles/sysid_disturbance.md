@@ -424,7 +424,7 @@ typically because global search does not reveal any minimum in any of the consid
 
 **Further work**
 - look into adding other criteria for ``Pass1`` that can help the sequential optimization in situations where the existing 
- "v1","v2","v3" and "v4" do not reveal any minima, and thus the heuristic estiamte of ``Pass0`` may be returned. 
+ "v1","v2","v3" and "v4" do not reveal any minima, and thus the heuristic estimate of ``Pass0`` may be returned. 
 
 - look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``) 
 
