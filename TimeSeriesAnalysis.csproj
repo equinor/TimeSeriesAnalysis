@@ -5,7 +5,7 @@
     	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	<DefineConstants>$(DefineConstants);WithDocs</DefineConstants>
     	<Description>Time-series modeling and simulation, based on system identification. Supports transients/dynamic and static models, filters and PID-control. </Description>
-    	<Copyright>Equinor 2022-25</Copyright>
+    	<Copyright>Equinor 2022-26</Copyright>
     	<PackageProjectUrl>https://github.com/equinor/timeseriesanalysis</PackageProjectUrl>
     	<RepositoryType>git</RepositoryType>
     	<PackageTags>data-mining; time-series; dynamic-simulations; pid-control; multivariate-statistics; advanced-analytics;mpc-control;digital-twins</PackageTags>
@@ -14,7 +14,7 @@
 	<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     	<RepositoryUrl>https://github.com/equinor/TimeSeriesAnalysis.git</RepositoryUrl>
     	<PackageReadmeFile>readme.md</PackageReadmeFile>
-    	<Version>1.4.31</Version>
+    	<Version>1.4.32</Version>
     	<Company>Equinor</Company>
     	<Authors>Equinor</Authors>
     	<IncludeSymbols>true</IncludeSymbols>
