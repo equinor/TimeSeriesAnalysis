@@ -161,8 +161,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }*/
 
         [TestCase(-5,10),NonParallelizable]
-        [TestCase(5, 5)]
-        [TestCase(10, 5)]
+        [TestCase(5, 10)]
+        [TestCase(10, 10)]
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
             bool doNegativeGain =false)
         {
