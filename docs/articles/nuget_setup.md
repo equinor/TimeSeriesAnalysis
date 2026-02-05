@@ -15,7 +15,7 @@ In ``Visual Studio``, examine the menu ``TOOLS>NuGet Package Manager>Package Man
 You should have the following selected:
  - Allow NuGet to download missing packages (should be ``Checked``)
  - Automatically check for missing packages during build in Visual Studio (should be ``Checked``)
- - Default package management format should be ``PacakgeReference``
+ - Default package management format should be ``PackageReference``
 
 > [!Note]
 > If you are having issues with NuGet, you can try pressing ``Clear All NuGet Cache(s)`` in the above dialog box.

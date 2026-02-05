@@ -8,7 +8,7 @@ Simulating multiple processes together is orchestrated by the class ``PlantSimul
 The ``PlantSimulator`` is used extensively to create generic time-series data for unit tests. 
 
 It is also used internally in some of the classes that do system identification, such as ``ClosedLoopUnitIdentifier``, ``DisturbanceCalculator``
-and the ``GainSchedIdentfier``. 
+and the ``GainSchedIdentifier``. 
 
 **The intention is that the ``PlantSimulator`` class should be able to simulate any well-formulated
 combination of models that implement the ``ISimulateableModel`` (such as ``PIDModel``,``Select`` and ``UnitModel``.)**
@@ -86,30 +86,31 @@ PID-loops are a special case of a computational loop.
 
 In a closed loop the simulation order will be
 
-- *PidModel* reads ``y_meas[k]`` and ``y_setpoint[k]`` and calculates ``u_pid[k]``
-- the process model (usally a *UnitModel*) gives ``u_pid[k]`` and any other inputs ``u[k]`` and outputs an internal state ``y_proc[k]``
-- In the next iteration y_meas[k+1] = y_proc[k] + d[k+1]
+- *PidModel* reads $y_{meas}[k]$ and $y_{setpoint}[k]$ and calculates $u_{pid}[k]$
+- the process model (usually a *UnitModel*) gives $u_{pid}[k]$ and any other inputs $u[k]$ and outputs an internal state $y_{proc}[k]$
+- In the next iteration 
+$$y_{meas}[k+1] = y_{proc}[k] + d[k+1]$$
 
-This is *by convention*, and is how the simulator avoids both reading to ymeas[k] and writing to ymeas[k] in the same iteration.
+This is *by convention*, and is how the simulator avoids both reading to $y_{meas}[k]$ and writing to $y_{meas}[k]$ in the same iteration.
 
 This above means that implicitly all closed-loop processes in a manner of speaking have a time delay of 1. 
 
 It is somewhat challenging to define this behavior so that it is consistent when a model is for instance open-loop tested, then a pid-control is applied. 
-A static process by definition has ``y[k] = f(u[k])`` but in a closed loop that could mean that the measurement y[k] that is used to determine u_pid[k]
+A static process by definition has $y[k] = f(u[k])$ but in a closed loop that could mean that the measurement $y[k]$ that is used to determine $u_{pid}[k]$
 is again overwritten by the output of astatic process. 
 
-It coudl also be possible to deal with this by stating that PID-controllers by convention deal with the signals of the previous step, but so that
-u_pid[k] = f(y_set[k], y_meas[k-1]), but this does not match real-world industrial data, it introduces a lag. It may be that in some cases pid-controllers
-are implemented like this, but often the analysis is done on down-sampled data, and in that case ``u_pid[k]`` appears simultanous to changes in ``y_meas[k]``
+It could also be possible to deal with this by stating that PID-controllers by convention deal with the signals of the previous step, but so that
+$u_{pid}[k] = f(y_{set}[k], y_{meas}[k-1])$, but this does not match real-world industrial data, it introduces a lag. It may be that in some cases pid-controllers
+are implemented like this, but often the analysis is done on down-sampled data, and in that case $u_{pid}[k]$ appears simultaneous to changes in $y_{meas}[k]$
  
-**Implicitly the above also defines how to interpret the disturbance d[k].** To be extremely precise with how this is defined is important, as the PlantSimulator is
-used internally to back-calculte disturbances as is described in the above section, and how the distrubance is calcualted will again be important as both single simulations and co-simulations 
+**Implicitly the above also defines how to interpret the disturbance $d[k]$.** To be extremely precise with how this is defined is important, as the PlantSimulator is
+used internally to back-calculate disturbances as is described in the above section, and how the disturbance is calculated will again be important as both single simulations and co-simulations 
 are used by ClosedLoopUnitIdentifier to identify the process model including possibly time constants and time-delays. 
 
 ### Computational loops other than PID-feedback loops
 
 The PlantSimulator can deal with computational loops other than PID-feedback loops. 
-These are initalized to steady-state by co-simulating the loop for a number of iterations until the outputs hopefully settle on a steady value. 
+These are initialized to steady-state by co-simulating the loop for a number of iterations until the outputs hopefully settle on a steady value. 
 
 
 

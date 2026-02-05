@@ -12,7 +12,7 @@
 - **start by modeling the process control system** (PID-control loops), as this is the handle through which process changes are made.
 	- to model the process control system, the library must be able to describe **dynamics**, **feedbacks** and different kinds of 
 	**PID-controllers**.
-- try to **recreate disturbance signals** ``D`` of each PID-control loop **explicitly**, as this is the *"excitation"* that causes 
+- try to **recreate disturbance signals** $D$ of each PID-control loop **explicitly**, as this is the *"excitation"* that causes 
 variation in an industrial process, yet these signals are not measured or observed directly. How do disturbances move through a process with multiple PID-control stages? Can this be simulated? An explicit estimate of disturbances allows "playback" in simulations, which means that the response of the control system with other tunings or configurations can potentially be assessed in simulation.
 	- such a representation would negate the need for "tuning rules" for PID-controllers, they could instead be tuned **by simulation**
 	- it would become possible to consider the **joint effect** on re-tuning **multiple** PID-controllers 

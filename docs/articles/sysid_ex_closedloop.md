@@ -21,14 +21,14 @@ ProcessGains(at u0) :
 Bias : 50 ± 1.6
 ```
 
-The dataset created is shown below, a disturbance step creates a first order respone in the output ''y_meas'', as the 
+The dataset created is shown below, a disturbance step creates a first order response in the output ''y_meas'', as the 
 PID-controller works to bring ''y_meas'' back to the setpoint ''y_set``. In a real dataset, the actual disturbance would of course be unkown, 
 but the advantage of creating a synthetic dataet is that the disturbance is known and can be compared to the estimate.
 
 ![Ex_Dataset](./images/sysid_ex_closedloop1.png)
 
-The below three plots show the comparison of ``u``, ``y`` and disturbance ``d`` for the given syntethic dataset with the result of
- `ClosedLoopIdentifer''. 
+The below three plots show the comparison of ``u``, ``y`` and disturbance ``d`` for the given synthetic dataset with the result of
+ `ClosedLoopIdentifier''. 
 
 ![Ex_u](./images/sysid_ex_closedloop2.png)
 

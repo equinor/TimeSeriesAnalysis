@@ -1,6 +1,6 @@
 # Example : realistic linear regression  
 
-This example uses a ficticious csv-file example.csv, that has column headers
+This example uses a fictitious csv-file example.csv, that has column headers
  "Time","Var1","Var2","Var3","Var4,"Var5",Var6","Var7".
  
 "Var1" is to be modelled by ``Var2``-``Var6`` as regressors, while Var7 is to be multiplied to ``Var2``-``Var6``. 

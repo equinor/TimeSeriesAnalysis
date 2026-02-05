@@ -5,7 +5,7 @@ The library is intended to be able to read and write data to file as csv(comma-s
 Internally the code is stored in objects of the ``TimeSeriesDataSet`` type. 
 
 This class has a method ``LoadFromCSV()`` that can read a dataset from a csv-file, or a string with the
-contents of a csv-file. Using the method ``ToCsv()`` the time series data in a this object can also be peristed
+contents of a csv-file. Using the method ``ToCsv()`` the time series data in a this object can also be persisted
 to a csv-file. 
 
 The format of the csv file is as follows. Note that ``,`` is used to delinate the columns, so that 
