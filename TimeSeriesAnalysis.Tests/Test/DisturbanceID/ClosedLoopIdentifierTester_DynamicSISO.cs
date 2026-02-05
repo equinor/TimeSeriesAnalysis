@@ -73,7 +73,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             int N = 2000;
             var locParameters = new UnitParameters
             {
-                TimeConstant_s = 10,//should be nonzero for dynamic test (fails if  timconstant_s i larger than about 2)
+                TimeConstant_s = 10, // should be nonzero for dynamic test
                 LinearGains = new double[] { procGain },
                 TimeDelay_s = 0,
                 Bias = 5
