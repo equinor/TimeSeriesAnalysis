@@ -69,7 +69,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
         public void RandomWalkDisturbance(double procGain, double distAmplitude, double gainPrecisionPrc)
         {
-            int seed = 50; // important: this seed will if time constant is zero be able to find a model 
+            int seed = 50; // important: this seed will be able to find a model when time constant is zero
             int N = 2000;
             var locParameters = new UnitParameters
             {
