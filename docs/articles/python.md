@@ -27,7 +27,7 @@ In order to set up a working configuration in Windows, follow the steps below:
 > pip install pythonnet
 ```
 
-5. Download a complete build of the TimeSeriesAnalysis assembly and accompanying dependecies from the list of [online releases](https://github.com/equinor/TimeSeriesAnalysis/releases), and unzip the assembly in a designated folder you have created in your project directory (e.g. "C:\Appl\myProject\TSABuild").
+5. Download a complete build of the TimeSeriesAnalysis assembly and accompanying dependencies from the list of [online releases](https://github.com/equinor/TimeSeriesAnalysis/releases), and unzip the assembly in a designated folder you have created in your project directory (e.g. "C:\Appl\myProject\TSABuild").
 
 > [!Note]
 > Alternatively, you can build and assemble the Dynamic-link libraries yourself, and copy the *.ddl-files into the folder in your project directory.
@@ -58,7 +58,7 @@ The non-private classes, structs, interfaces and methods from the TimeSeriesAnal
 
 ### Using the modules in Python
 
-Classes and methods can be imported from the ``TimeSeriesAnalysis`` namespace and subnamespaces and used in Python.
+Classes and methods can be imported from the ``TimeSeriesAnalysis`` namespace and sub-namespaces and used in Python.
 
 Importing the vector class and implementing the vector addition
 ```Python

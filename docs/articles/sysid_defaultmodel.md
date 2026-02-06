@@ -73,7 +73,7 @@ should be chosen as ``30``.
 
 ##  Process gain and time constant
  
-$a $ is related to the *time-constant* $T_c$ by the equation
+$a$ is related to the *time-constant* $T_c$ by the equation
 $$
 a = \frac{1}{1+\frac{Ts}{Tc}}
 $$  

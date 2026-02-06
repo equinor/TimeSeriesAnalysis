@@ -159,7 +159,6 @@ This metric is used extensively in the below algorithm.
 
 ### Algorithm outline
 
-
 This algorithm is implemented in the class ``ClosedLoopUnitIdentifier``, as follows:
 
 given an estimate of the ``PidModel`` from prior knowledge or from ``PidIdentifier``:
@@ -172,10 +171,21 @@ given an estimate of the ``PidModel`` from prior knowledge or from ``PidIdentifi
 	- (try to improve the model by testing time-delays)(not implemented)
 	3. **reduce the range of $[G_{min},G_{max}]$** around the value found in ``step1`` and do another pass, or exit if pass did not find an improved gain. 
 
+The algorithm is given a number of design constants that have been determined by trial-and-error
+- ``MaxNumberOfPasses`` : the maximum number of passes (usually $4$)
+- ``LargestTimeConstantTimeBaseMultiple``: the largest time-constant to consider (expressed as a multiple of the time base)
+- ``Step1GlobalSearchNumIterations``: the number of different process gains within the given bounds to try for each given step (an array)
+- ``Step1GainGlobalSearchUpperBoundPrc``: the *upper* bounds of each the gain global search, express as a percentage of the current estimate (an array)
+- ``Step1GainGlobalSearchLowerBoundPrc``: the *lower* bounds of each the gain global search, express as a percentage of the current estimate (an array)
+
+``Step1GainGlobalSearchUpperBoundPrc`` and ``Step1GainGlobalSearchLowerBoundPrc`` are set to be wide for the first pass, and then narrow for each subsequent pass.
+
+The number of total simulations across four passes is set to be around ~50, and the order of magnitude of computational time required to reach a solution is typically $0.1$-$2$ seconds for datasets with $N=1000$.
+
 > [!Note]
 > **Convergence**
 > 
-> - It has been found that doing 2 passes is usually sufficient to converge(usually a third pass does not further improve the estimates). 
+> - Good performance is usually achieved within 2-4 passes is usually sufficient in unit tests with known true parameters.
 > - In general the bound on the gain need to be wide enough that the true value is hopefully not outside the initial bounds, but also the wider the 
 >   bounds the more distance between each attempted gain for a given number of runs. How wide to chose these bounds, and how much to narrow the bounds for the second pass are heuristically set (based on performance in unit tests). 	
 > - There is no sense doing a second pass if the steps 1 and 2 did not cause any change in parameters (in which case only one pass is done)
@@ -321,14 +331,16 @@ $$
 	- **"v1"**: if setpoint is flat and no other inputs, chose the gain that minimizes $Q(u_{pid,adj}(G))$ (unless solution space is flat)
 	- **"v2"**: if the setpoint is changing chose the gain that minimizes covariance between $d_{est}(G)$ and setpoint(unless solution space is flat)
 	- **"v3"**: if the is more than one input chose the gain that minimizes covariance between $d_{est}(G)$ and other input(unless solution space is flat)
-	- **"v4"**: if solutions space for the above three are all flat, chose the gain that minimizes $Q(d_{est}(G))$
+	- **"v4"**: if solutions space for the above three are all flat, look if any gain minimizes $Q(d_{est}(G))$ (only if this solution space has a minima not at the extremes)
 
 > [!Note]
->**Better estimates when set-points change**
+>**Better estimates when set-points change, "v4" is weak link in algorithm**
 >
 > The algorithm seems to in general give better estimates of the process if there are step changes in the external inputs 
->or in the pid-setpoint, and the algorithm appears to be able to handle both cases. 
->
+> or in the pid-setpoint, and the algorithm appears to be able to handle both cases. The "v4" objective is the current weak link of the 
+> algorithm, and adding other criteria for scenarios when v1-v3 are flat solution spaces should be a topic for further work. 
+> Often there is no minima in the v4 solution space, and the sequential solver fails to improve on the heuristic initial estimate, and also fails
+> to find a time-constant(as it never gets to ``step2``). 
 
 ### Step2
 
@@ -411,4 +423,11 @@ typically because global search does not reveal any minimum in any of the consid
 - If the method is unable to improve on the ``step0``, it is recommended to re-identify the model on other data until the algorithm converges over two passes. 
 
 **Further work**
-- look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``)
+- look into adding other criteria for ``Pass1`` that can help the sequential optimization in situations where the existing 
+ "v1","v2","v3" and "v4" do not reveal any minima, and thus the heuristic estimate of ``Pass0`` may be returned. 
+
+- look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``) 
+
+> [!Note]
+> Some code related to multiple-input single output systems was commented out of ``ClosedLoopUnitIdentifier`` on a previous refactor. 
+> This code should be worked back into the use. 

@@ -1,7 +1,7 @@
 # Plotly.js
 
 Plotting of time-series is based on the ``plotly.js`` library, which is released under the ``MIT license``
-and is free to distribute and use commerically.
+and is free to distribute and use commercially.
 
 No changes are made or will be made to the original source files, but this class
 library is distributed with some additional javascript code that handles reading the URL and reading 

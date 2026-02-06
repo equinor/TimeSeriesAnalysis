@@ -5,7 +5,7 @@ and is well-behaved enough to either succeed or fail gracefully for any given in
 
 Based on experience, a number of design choices have been made in the design of ``UnitModel`` and ``UnitIdentifier``, these tricks are presented as a numbered list below:
 
-1. **base identification on linear regression**: choose models that are *linear-in-parameters*, as you will need to do a large number of identification runs, and linear regression is both fast, robust  and easy to analyze. Note that *it will still be possible to express nonlinearities, but you avoid the complications of introducing nonlinear optimization solvers*.
+1. **base identification on linear regression**: choose models that are *linear-in-parameters*, as you will need to do a large number of identification runs, and linear regression is both fast, robust  and easy to analyze. Note that *it will still be possible to express non-linearities, but you avoid the complications of introducing nonlinear optimization solvers*.
 2. **add regularization** that will bring parameters to zero in the case the dataset contains no information on this parameter
 3. **use a robust solver** (such as *Singular Value Decomposition*,SVD) in combination with regularization, avoid that the parameters will take on extreme values in the case that there is little information on some variables,
 4. **choose a model structure that is an extension of a linear, static model**: the model should be possible to simplify to a normal static, linear model by striking terms - this way there is a fall-back in cases of little information in the data ,

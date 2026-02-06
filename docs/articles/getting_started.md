@@ -26,7 +26,7 @@ Perhaps the easiest way to get started is to work in C# in Visual Studio:
 - find the package on NuGet and download into your application (Nuget is built in to Visual Studio)
 
 ## Setting up an empty c# project
-- create a new solution, with one exectutable project, for instance a ``console application``.
+- create a new solution, with one executable project, for instance a ``console application``.
 - make sure the reference to the TimeSeriesAnalysis library is added to your solution (for instance through NuGet)
 - import the name spaces : ``import TimeSeriesAnalysis`` in you C# header
 - start calling methods from the API.

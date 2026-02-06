@@ -39,12 +39,12 @@ namespace TimeSeriesAnalysis.Dynamic
          *  
          */
 
-        const int MAX_NUM_PASSES = 2;
-        const double LARGEST_TIME_CONSTANT_TO_CONSIDER_TIME_BASE_MULTIPLE = 60 + 1;
-        static int[] step1GlobalSearchNumIterations =  new int[] { 10 ,20};// 50 total iterations usually enough, maybe even lower, something like 30 is probable
+        const int MaxNumberOfPasses = 4;
+        const double LargestTimeConstantTimeBaseMultiple = 60 + 1;
+        static int[] Step1GlobalSearchNumIterations =  new int[] { 10 ,20, 10,10}; // iterations per pass (10, 20, 10, 10) = 50 total across 4 passes; 50 is usually enough
         // these are given for each pass.
-        static double[] step1GainGlobalSearchUpperBoundPrc = new double[] { 150, 40 } ;
-        static double[] step1GainGlobalSearchLowerBoundPrc = new double[] { 90, 40 };
+        static double[] Step1GainGlobalSearchUpperBoundPrc = new double[] { 150, 40, 20,10 } ;
+        static double[] Step1GainGlobalSearchLowerBoundPrc = new double[] { 90, 40, 10, 10 };
 
         ////////////////////////
         const bool doDebuggingPlot = false;
@@ -156,11 +156,11 @@ namespace TimeSeriesAnalysis.Dynamic
             var GSdescription = "";
             // ----------------
             // init: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
-            // to give a first estimate of the disturbance (used to initalize steps 2 and 3 below)
+            // to give a first estimate of the disturbance (used to initialize steps 2 and 3 below)
             var unitModel_init = InitModelFreeEstimateClosedLoopProcessGain(dataSet, pidParams, pidInputIdx, fittingSpecs);
             ConsoleDebugOut(sbSolverOutput,unitModel_init, "Init");
             SaveSearchResult(unitModel_init);
-            // step1, MISO: ident (add inital estimates of any other inputs to the above model-free estiamte) 
+            // step1, MISO: ident (add initial estimates of any other inputs to the above model-free estimate) 
             /* if (isMISO)
              {
                  dataSetRun1.D = idDisturbancesList.Last().d_est;
@@ -176,7 +176,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             double maxStableProcessGainAbs = Math.Abs(1 / pidParams.Kp * 0.98);
 
-            for (int passNumber = 1;passNumber<= MAX_NUM_PASSES; passNumber++)//NB! passNumber starts at 1.
+            for (int passNumber = 1;passNumber<= MaxNumberOfPasses; passNumber++)//NB! passNumber starts at 1.
             {
                 // /////////////////////
                 //   "step1" : "global search" for linear pid-gains
@@ -189,13 +189,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     double max_gain, min_gain;
                     if (pidProcGainPrevEstimate > 0)
                     {
-                        max_gain = Math.Min(pidProcGainPrevEstimate * (1 + step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100), maxStableProcessGainAbs) ;
-                        min_gain = Math.Min(pidProcGainPrevEstimate * (1 - step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100), maxStableProcessGainAbs);
+                        max_gain = Math.Min(pidProcGainPrevEstimate * (1 + Step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100), maxStableProcessGainAbs) ;
+                        min_gain = Math.Min(pidProcGainPrevEstimate * (1 - Step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100), maxStableProcessGainAbs);
                     }
                     else
                     {
-                        min_gain = -Math.Min(Math.Abs(pidProcGainPrevEstimate * (1 + step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100)), maxStableProcessGainAbs);
-                        max_gain = -Math.Min(Math.Abs(pidProcGainPrevEstimate * (1 - step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100)), maxStableProcessGainAbs);
+                        min_gain = -Math.Min(Math.Abs(pidProcGainPrevEstimate * (1 + Step1GainGlobalSearchUpperBoundPrc.ElementAt(passNumber - 1) / 100)), maxStableProcessGainAbs);
+                        max_gain = -Math.Min(Math.Abs(pidProcGainPrevEstimate * (1 - Step1GainGlobalSearchLowerBoundPrc.ElementAt(passNumber - 1) / 100)), maxStableProcessGainAbs);
                     }
 
                     sbSolverOutput.AppendLine("Pass " + passNumber + " Step 1 " + "pid-process gain bounds: " + min_gain.ToString("F3", CultureInfo.InvariantCulture)
@@ -203,7 +203,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
                     var step1model = Step1GlobalSearchProcessGain(dataSet, pidParams, pidInputIdx,
-                        idUnitModelsList.Last(), min_gain, max_gain, fittingSpecs, step1GlobalSearchNumIterations.ElementAt(passNumber - 1));
+                        idUnitModelsList.Last(), min_gain, max_gain, fittingSpecs, Step1GlobalSearchNumIterations.ElementAt(passNumber - 1));
                     // note that step 1 may fail, return null  
                     if (step1model != null)
                     {
@@ -215,10 +215,15 @@ namespace TimeSeriesAnalysis.Dynamic
                         GSdescription = "Pass" + passNumber + ",Step 1 global-search had a flat objective space and returned null - model uncertain.";
                     }
                     if (step1model != null)
+                    {
+                        SaveSearchResult(step1model);
                         ConsoleDebugOut(sbSolverOutput,step1model, "Pass " + passNumber + " Step 1", " GS output: " + GSdescription);
+                    }
                     else
-                        sbSolverOutput.AppendLine("pass" + passNumber + "Step1,GS1: FAILED");
-                    SaveSearchResult(step1model);
+                    {
+                        // do not save null result, let step2 run even on a step0 model if necessary
+                        sbSolverOutput.AppendLine("Pass " + passNumber + " Step1: FAILED to find a minimum");
+                    }
                 }
                 //
                 // "Step 2" : global search for time constant.
@@ -422,7 +427,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // for the first pass, start with Tc= 0 and increase as long as this causes CalcDev(d_est) to keep decreasing
             if (passNumber == 1)
             {
-                while (candidateTc_s < LARGEST_TIME_CONSTANT_TO_CONSIDER_TIME_BASE_MULTIPLE * timeBase && curDevIsDecreasing)
+                while (candidateTc_s < LargestTimeConstantTimeBaseMultiple * timeBase && curDevIsDecreasing)
                 {
                     candidateTc_s += timeBase;
                     var newParams = unitModel_prev.GetModelParameters().CreateCopy();
@@ -438,7 +443,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     distDevs.Add(curDev);
                     candidateTc.Add(candidateTc_s);
                 }
-                if (candidateTc_s == LARGEST_TIME_CONSTANT_TO_CONSIDER_TIME_BASE_MULTIPLE)
+                if (candidateTc_s == LargestTimeConstantTimeBaseMultiple)
                 {
                     // you may get here when the disturbance is continuous and noisy
                     Console.WriteLine("warning: ClosedLoopIdentifierFailedToFindAUniqueProcessTc");
@@ -775,6 +780,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
+
             if (doDebugPlot)
             {
                 /*  dEstList.AddRange(uSimList);
@@ -833,7 +839,7 @@ namespace TimeSeriesAnalysis.Dynamic
                          + " uMeasPower=" + uMeasPower.ToString("F3", CultureInfo.InvariantCulture)
                     + " uMeanDest=" + meanDest.ToString("F3", CultureInfo.InvariantCulture);
 
-                    Shared.EnablePlots();
+                    /*Shared.EnablePlots();
                     Plot.FromList(new List<double[]> { dEstList.ElementAt(i), vec.Subtract(yProcessList.ElementAt(i), vec.Mean(yProcessList.ElementAt(i)).Value),
                         vec.Subtract(dataSet.Y_meas, vec.Mean(dataSet.Y_meas).Value),
                         dataSet.Y_meas,
@@ -841,7 +847,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         dataSet.U.GetColumn(0)},
                         new List<string> { "y1=d_est", "y1=y_processDetrend", "y1=y_meas", "y1=u_pidDetrend", "y3=u_pid" }, dataSet.Times, comment);
                     Shared.DisablePlots();
-                    Thread.Sleep(200);
+                    Thread.Sleep(200);*/
                 }
             }
 
@@ -991,14 +997,14 @@ namespace TimeSeriesAnalysis.Dynamic
                 int nGains = unitDataSet.U.GetNColumns();
                 if (nGains == 1)
                 {
-                    var unitParamters = new UnitParameters();
-                    unitParamters.LinearGains = new double[nGains];
-                    unitParamters.LinearGains[pidInputIdx] = estPidInputProcessGain;
-                    unitParamters.U0 = new double[nGains];
-                    unitParamters.U0[pidInputIdx] = pidInput_u0[pidInputIdx];
-                    unitParamters.UNorm = Vec<double>.Fill(1, nGains);
-                    unitParamters.Bias = unitDataSet.Y_meas[indexOfFirstGoodValue];
-                    unitModel = new UnitModel(unitParamters);
+                    var unitParameters = new UnitParameters();
+                    unitParameters.LinearGains = new double[nGains];
+                    unitParameters.LinearGains[pidInputIdx] = estPidInputProcessGain;
+                    unitParameters.U0 = new double[nGains];
+                    unitParameters.U0[pidInputIdx] = pidInput_u0[pidInputIdx];
+                    unitParameters.UNorm = Vec<double>.Fill(1, nGains);
+                    unitParameters.Bias = unitDataSet.Y_meas[indexOfFirstGoodValue];
+                    unitModel = new UnitModel(unitParameters);
                 }
                 else
                 {
@@ -1013,7 +1019,7 @@ namespace TimeSeriesAnalysis.Dynamic
             return unitModel;
         }
 
-        // new MISO verison 
+        // new MISO version 
         private static Tuple<UnitModel, DisturbanceIdResult> Step1GlobalSearchEstimateMISOdisturbanceForProcGain(double pidProcGain, UnitModel prevModel,
             int pidInputIdx, UnitDataSet unitDataSet, PidParameters pidParams)
         {
@@ -1024,7 +1030,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var newUnitModel = UnitIdentifier.IdentifyLinearAndStaticWhileKeepingLinearGainFixed(unitDataSet, pidInputIdx, pidProcGain,
                  prevModel.GetModelParameters().U0.ElementAt(pidInputIdx), 1);
 
-            // TEMPRORARY:FORCE MODEL TO BE ACCURATE 
+            // TEMPORARY:FORCE MODEL TO BE ACCURATE 
             /*var newUnitModel = (UnitModel)prevModel.Clone("test");
             var parameters = newUnitModel.GetModelParameters();
             parameters.LinearGains = new double[] { 0.5, 0.25, -1.00 };
@@ -1034,8 +1040,8 @@ namespace TimeSeriesAnalysis.Dynamic
             parameters.U0 = new double[] { 0, 0, 0 };
             newUnitModel.SetModelParameters(parameters);
             */
-            var disturbanceIdresult = DisturbanceCalculator.CalculateDisturbanceVector(unitDataSet, newUnitModel, pidInputIdx, pidParams);
-            return new Tuple<UnitModel, DisturbanceIdResult> (newUnitModel, disturbanceIdresult);
+            var disturbanceIdResult = DisturbanceCalculator.CalculateDisturbanceVector(unitDataSet, newUnitModel, pidInputIdx, pidParams);
+            return new Tuple<UnitModel, DisturbanceIdResult> (newUnitModel, disturbanceIdResult);
         }
 
         private static Tuple<UnitModel, DisturbanceIdResult> Step1GlobalSearchEstimateSISOdisturbanceForProcGain(double pidProcGain, UnitModel referenceMISOmodel, 
@@ -1089,7 +1095,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// Adds the U_sim and Y_sim to the 
         /// </summary>
         /// <param name="unitData">unit dataset for simulation</param>
-        /// <param name="modelParams">paramters or UnitModel</param>
+        /// <param name="modelParams">parameters or UnitModel</param>
         /// <param name="pidParams">parameters of PidModel</param>
         ///  <param name="pidInputIdx">index of the pid input in the process model</param>
         /// <param name="name">optional name used for plotting</param>

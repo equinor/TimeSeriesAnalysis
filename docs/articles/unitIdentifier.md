@@ -15,7 +15,7 @@ The idea is to automate the work-flow of selecting the best model structure in t
 Identification starts with finding a linear static model, which acts as a reference against which all subsequent identification runs is to be compared.
 
 > [!Note]
-> If the linear,static fit between the output and the given inputs does not at least broadly follow the measured output, then adding nonlinearities 
+> If the linear,static fit between the output and the given inputs does not at least broadly follow the measured output, then adding non-linearities 
 > time-delays or time-constants rarely if ever is meaningful. 
 
 ## Time constant and bias 

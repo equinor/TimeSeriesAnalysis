@@ -42,7 +42,7 @@ Results:
 - the estimated bias is close to the actual value (1).
 
 Overall, this is example shows a successful use of identification method. Under the hood 
-``UnitIdenfier`` has *automatically* tested and evaluated a number of different linear/nonlinear and static/dynamic 
+``UnitIdentifier`` has *automatically* tested and evaluated a number of different linear/nonlinear and static/dynamic 
 combinations before deciding on the returned nonlinear, dynamic model structure. 
 **The major intended design benefit of using ``UnitIdentifier`` is that the user is spared
 the details of this low-level model selection process.**
@@ -60,7 +60,7 @@ The user did *not* need to *specify* if the model should be linear or nonlinear,
 any number of un-ordered time-series and produce a general ``PlantSimulator``. 
 This more challenging task will be a topic for later examples.* 
 
-The gain-curves are plotted by the example code, plots shown below comparing true and estimted models:
+The gain-curves are plotted by the example code, plots shown below comparing true and estimated models:
 ![Nonlinear gain-curve1](./images/sysid_ex_nonlin2.png)
 ![Nonlinear gain-curve2](./images/sysid_ex_nonlin3.png)
 

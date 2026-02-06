@@ -47,8 +47,8 @@ fitting R2: 84,27
 fitting : no error or warnings
 ```
 
-Notice how the process gains ``[0.958;1.96]`` are fairly close to the true ``[1;2]``, 
-the time constant ``14,1 sec`` is fairly close to the true ``15 sec`` and the time delay is spot-on at ``5 sec``.
+Notice how the process gains $[0.958;1.96]$ are fairly close to the true $[1;2]$, 
+the time constant $14.1$ s is fairly close to the true $15$ seconds and the time delay is spot-on at $5$ seconds.
 
 R-squared ("R2") is ~84 out of 100 maximum, and this indicates a relatively good match of the model.
 
@@ -78,8 +78,8 @@ The resulting plot, which compares the dynamic and static models is shown below:
 
 ![Example 4:output](./images/ex4_statvsdyn.png)
 
-The model gains of the static model is ``[0.69;1.29]``, which is not quite as close as 
-the estimate ``[0.958;1.96]`` of the dynamic identification to the true values: ``[1;2]``.
+The model gains of the static model is $[0.69;1.29]$, which is not quite as close as 
+the estimate $[0.958;1.96]$ of the dynamic identification to the true values: $[1;2]$.
 
 > [!Note]
 > This example illustrates an extremely important but slightly subtle lesson about the utility of

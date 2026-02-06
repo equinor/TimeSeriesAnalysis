@@ -2,8 +2,8 @@
 
 ### *Grey-box models* 
 
-*"Such a model set, whose parameters are basically viewed as vehicles for adjusting the fit to the data and do not reflect phyiscal considerations
-in the system, is called black box. Model sets with adjustable paramters with physical interpretation may, accordingly, be called gray boxes"*.
+*"Such a model set, whose parameters are basically viewed as vehicles for adjusting the fit to the data and do not reflect physical considerations
+in the system, is called black box. Model sets with adjustable parameters with physical interpretation may, accordingly, be called gray boxes"*.
 
 (*Lennart Ljung, System Identificaton,theory for the user 2nd ed.)
 
@@ -25,7 +25,7 @@ Example: If ``x`` is the system state, then
 ### *State* of a system
 
 So the state of a system is the values of a set of variables that together define the current condition of the system 
-uniequly. Often in system identfication the system state is referred to as ``x``. Note that the output ``y`` is not neccesarily  the same as the state. If the system is described by the differential equation, then the state ``x`` 
+uniquely. Often in system identification the system state is referred to as ``x``. Note that the output ``y`` is not necessarily  the same as the state. If the system is described by the differential equation, then the state ``x`` 
 is the solution of this equation set.
 
 ### *Steady-state* versus *transient*
@@ -34,15 +34,15 @@ is the solution of this equation set.
 
 ### *Static* versus *dynamic*
 
-A model is termed ``static`` if any changes in inputs fully propagete immediately the outputs. 
+A model is termed ``static`` if any changes in inputs fully propagate immediately the outputs. 
 So a static model is a model with no ``transients``, and thus has no time-constant or time-delay terms. 
 
 ### *Working point* and *local* models
 
 Any nonlinear system can be approximated as linear around a *working point*. So a *local* model in this context
-is a model that is intended to mainly approximate the actual system close to a given value ``u0`` of the manipulated variables. Depending on the degree of non-linearity, the working range aroundt the working point that the model is useful for will vary. 
+is a model that is intended to mainly approximate the actual system close to a given value ``u0`` of the manipulated variables. Depending on the degree of non-linearity, the working range around the working point that the model is useful for will vary. 
 
 
 ### *Tuning dataset* versus *validation dataset*
 
-The ``tuning dataset``, also referred to as the ``fitted dataset`` is the actual set of data that the model was fitted against. It is common practice in system identifiation to evaluate models *not on the fit to the tuning set but on a fresh set of data*, and this fresh data set used for evaluation is referred to as the *validation dataset*. 
+The ``tuning dataset``, also referred to as the ``fitted dataset`` is the actual set of data that the model was fitted against. It is common practice in system identification to evaluate models *not on the fit to the tuning set but on a fresh set of data*, and this fresh data set used for evaluation is referred to as the *validation dataset*. 
