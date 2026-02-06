@@ -154,6 +154,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var fittingSpecs = new FittingSpecs();
             fittingSpecs.u0 = u0;
             var GSdescription = "";
+            sbSolverOutput.AppendLine("Max time-constant in step2: " +LargestTimeConstantTimeBaseMultiple.ToString("F0") +  " seconds" );
             // ----------------
             // init: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give a first estimate of the disturbance (used to initialize steps 2 and 3 below)
@@ -407,46 +408,48 @@ namespace TimeSeriesAnalysis.Dynamic
         private static UnitModel Step2GlobalSearchTimeConstant(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx,
             UnitModel unitModel_prev, double[] d_est, int passNumber)
         {
-            var distDevs = new List<double>();
+            var disturbanceQvals = new List<double>();
             var candidateTc = new List<double>();
 
             var vec = new Vec(dataSet.BadDataID);
 
-            double CalcDev(double[] disturbance)
+            double CalcQ(double[] disturbance)
             {
                 return vec.Mean(vec.Abs(vec.Diff(disturbance))).Value;
             }
 
             var timeBase = dataSet.GetTimeBase();
-            double candidateTc_s = 0;
-            candidateTc.Add(candidateTc_s);
-            bool curDevIsDecreasing = true;
-            double firstDev = CalcDev(d_est);
-            distDevs.Add(firstDev);
+
+            var TcInitial_s = 0.0;
+            if (passNumber > 1)
+                 TcInitial_s = unitModel_prev.GetModelParameters().TimeConstant_s;
+
+            double candidateTc_s = TcInitial_s;
+            bool curQIsDecreasing = true;
 
             // for the first pass, start with Tc= 0 and increase as long as this causes CalcDev(d_est) to keep decreasing
             if (passNumber == 1)
             {
-                while (candidateTc_s < LargestTimeConstantTimeBaseMultiple * timeBase && curDevIsDecreasing)
+                // try increasing the time constant and observe if Q decreases
+                while (candidateTc_s < LargestTimeConstantTimeBaseMultiple * timeBase && curQIsDecreasing)
                 {
-                    candidateTc_s += timeBase;
                     var newParams = unitModel_prev.GetModelParameters().CreateCopy();
                     newParams.TimeConstant_s = candidateTc_s;
                     var newModel = new UnitModel(newParams);
                     var distIdResult_Test = DisturbanceCalculator.CalculateDisturbanceVector
                         (dataSet, newModel, pidInputIdx, pidParams);
-                    var curDev = CalcDev(distIdResult_Test.d_est);
-                    if (curDev < distDevs.Last<double>())
-                        curDevIsDecreasing = true;
-                    else
-                        curDevIsDecreasing = false;
-                    distDevs.Add(curDev);
+                    var curQ = CalcQ(distIdResult_Test.d_est);
+                    if (disturbanceQvals.Count()>0)
+                    {
+                        if (curQ < disturbanceQvals.Last<double>())
+                            curQIsDecreasing = true;
+                        else
+                            curQIsDecreasing = false;
+                        }
+                    disturbanceQvals.Add(curQ);
                     candidateTc.Add(candidateTc_s);
-                }
-                if (candidateTc_s == LargestTimeConstantTimeBaseMultiple)
-                {
-                    // you may get here when the disturbance is continuous and noisy
-                    Console.WriteLine("warning: ClosedLoopIdentifierFailedToFindAUniqueProcessTc");
+                    if(curQIsDecreasing)
+                         candidateTc_s += timeBase;
                 }
                 if (candidateTc_s > 0)
                 {
@@ -455,33 +458,23 @@ namespace TimeSeriesAnalysis.Dynamic
             }
             else
             {
-                // for any subsequent passes, the search should at least consider [0, Tcest_s+timebase_S*PASS2_MAX_FACTOR]
-                // and only after searching through all of these should the Tc with the smallest CalcDev(d_est)
-                // be selected.
-                const int PASS2_MAX_FACTOR = 3;
-                var TcLast = unitModel_prev.GetModelParameters().TimeConstant_s;
-                var minDistDevVal_TcLast = Double.PositiveInfinity;
-                for (double Tc = timeBase; Tc < TcLast + timeBase * PASS2_MAX_FACTOR; Tc++)
+                 var minQ_TcLast = Double.PositiveInfinity;
+                for (double Tc = 0; Tc < LargestTimeConstantTimeBaseMultiple * timeBase ; Tc+= timeBase)
                 {
                     var newParams = unitModel_prev.GetModelParameters().CreateCopy();
                     newParams.TimeConstant_s = Tc;
                     var newModel = new UnitModel(newParams);
                     var distIdResult_Test = DisturbanceCalculator.CalculateDisturbanceVector
                         (dataSet, newModel, pidInputIdx, pidParams);
-                    var curDev = CalcDev(distIdResult_Test.d_est);
-                    distDevs.Add(curDev);
+                    var curQ = CalcQ(distIdResult_Test.d_est);
+                    disturbanceQvals.Add(curQ);
                     candidateTc.Add(Tc);
-                    if (Tc == TcLast)
+                    if (curQ < minQ_TcLast)
                     {
-                        minDistDevVal_TcLast = curDev;
+                        minQ_TcLast = curQ;
+                        candidateTc_s = Tc;
                     }
                 }
-                // have observed that Tc=0 and Tc=Tclast have the same value for curDev, in that case choose TcLast
-                var minDistDevVal = vec.Min(distDevs.ToArray(), out int minInd);
-                if (minDistDevVal == minDistDevVal_TcLast)
-                    candidateTc_s = TcLast;
-                else
-                    candidateTc_s = candidateTc.ElementAt(minInd);
             }
 
             // TODO: it would be possible to divide the time-constant into a time-delay and a time constant 
@@ -492,7 +485,13 @@ namespace TimeSeriesAnalysis.Dynamic
             return step2Model;
         }
 
-
+        /// <summary>
+        /// Create a text out that is both passed to console, and will be written to FittingInfo.
+        /// </summary>
+        /// <param name="sb">string builder that is appended to </param>
+        /// <param name="unitModel">can be empty in which case only the description and addonText are output</param>
+        /// <param name="description"></param>
+        /// <param name="addOnTxt"></param>
         private static void ConsoleDebugOut(StringBuilder sb, UnitModel unitModel, string description,string addOnTxt ="")
         {
             // note that unitModel can be NULL!
