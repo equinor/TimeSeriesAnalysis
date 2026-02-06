@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using TimeSeriesAnalysis.Utility;
@@ -236,9 +237,13 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         var unitModel = idUnitModelsList.Last();
                        // version 1
-                        var step2Model = Step2GlobalSearchTimeConstant(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est,passNumber);
+                      //  var step2Model = Step2GlobalSearchTimeConstant(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est,passNumber);
                         // version 2:  find the time constant that gives the lowest FitScore in closed loop simulations.
                       //  step2Model = Step2GlobalSearchTimeConstantFitScoreVersion(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est);
+                        // version 3: find the version with the lowest _plantwide_ fitscore
+
+                        var step2Model = Step2GlobalSearchPlantWideFitScore(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est, passNumber);
+
                         SaveSearchResult(step2Model);
                         ConsoleDebugOut(sbSolverOutput,step2Model, "Pass " + passNumber + " Step 2");
                     }
@@ -484,6 +489,122 @@ namespace TimeSeriesAnalysis.Dynamic
 
             return step2Model;
         }
+
+        /// <summary>
+        ///  In the simulator or real data it is seen that the process time constant can be estimated by 
+        /// looking the plantwide fit score. This method attempts to apply the same principle programmatically. 
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="pidParams"></param>
+        /// <param name="pidInputIdx"></param>
+        /// <param name="unitModel"></param>
+        /// <param name="d_est"></param>
+        /// <param name="passNumber"></param>
+        /// <returns></returns>
+
+
+        private static UnitModel Step2GlobalSearchPlantWideFitScore(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx,
+            UnitModel unitModel, double[] d_est, int passNumber)
+        {
+
+            bool doDetermineIndicesToIgnore = false;
+            bool enableSimulatorRestarting = false;;
+
+            var plantWideFitScores = new List<double>(); 
+            var TcCandidates     = new List<double>();   
+    var pidModel = new PidModel(pidParams, "PID");
+
+            // the below are just used for debugging and analysis of the results, not used in the actual selection of the best time constant. 
+             var disturbanceList = new List<double[]>();
+             var ySimList = new List<double[]>();
+             var uSimList = new List<double[]>();
+            var timestamps = new  DateTime[]{};
+            var plotNames = new List<string>(); 
+
+
+            var unitModel_current = (UnitModel)unitModel.Clone("Clone" );
+            // TODO:probably unnecessary to try all time constants, may be sufficient to consider if they are improving or not. 
+            for (double Tc = 0; Tc < LargestTimeConstantTimeBaseMultiple * dataSet.GetTimeBase(); Tc+= dataSet.GetTimeBase())
+            {
+                TcCandidates.Add(Tc);
+                plotNames.Add("Tc=" + Tc.ToString("F1", CultureInfo.InvariantCulture) + "s");
+                unitModel_current.modelParameters.TimeConstant_s = Tc;
+                var (plantSimObj, inputData) = PlantSimulatorHelper.CreateFeedbackLoopWithEstimatedDisturbance(dataSet, pidModel, unitModel_current, pidInputIdx);
+                // nb! for plantwide fit score, the "measured" u_pid from "dataset" must be added (so these two can be compared
+                inputData.Add(SignalNamer.GetSignalName(pidModel.ID, SignalType.PID_U),dataSet.U.GetColumn(pidInputIdx));
+                var  isOk = plantSimObj.Simulate(inputData, doDetermineIndicesToIgnore, out var simData, enableSimulatorRestarting);
+                plantWideFitScores.Add(plantSimObj.PlantFitScore);
+
+
+                //for debug plots
+                disturbanceList.Add(simData.GetValues(unitModel_current.ID, SignalType.Disturbance_D));
+                ySimList.Add(simData.GetValues(unitModel_current.ID, SignalType.Output_Y));
+                uSimList.Add(simData.GetValues(pidModel.ID, SignalType.PID_U));
+                if (Tc == 0)
+                    timestamps = inputData.GetTimeStamps(); 
+
+
+                if (!isOk)
+                {
+                    Console.WriteLine("simulation failed");
+                }
+                  Console.WriteLine("Tc = " + Tc.ToString("F1", CultureInfo.InvariantCulture) + " s, plantwide fit score: " +
+                      plantSimObj.PlantFitScore.ToString("F2", CultureInfo.InvariantCulture) + " %");
+           }
+
+            // debug plots.
+          /*  Shared.EnablePlots();
+            Plot.FromList(disturbanceList,plotNames,timestamps, "Disturbances");
+            Shared.DisablePlots();
+
+            Shared.EnablePlots();
+            Plot.FromList(ySimList,plotNames,timestamps, "ySim");
+            Shared.DisablePlots();
+
+            Shared.EnablePlots();
+            Plot.FromList(uSimList,plotNames,timestamps, "uSim");
+            Shared.DisablePlots();*/
+
+
+
+            var bestIdx = plantWideFitScores.IndexOf(plantWideFitScores.Max());
+            var bestTc = TcCandidates.ElementAt(bestIdx);    
+
+            unitModel_current.modelParameters.TimeConstant_s = bestTc;
+            return unitModel_current;
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Create a text out that is both passed to console, and will be written to FittingInfo.

@@ -318,7 +318,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (IsNaN(unitDataSet_adjusted.Y_meas[i]) || IsNaN(y_proc[i]))
                     d_est[i] = double.NaN;
                 else
-                    d_est[i] = unitDataSet_adjusted.Y_meas[i] - y_proc[i-1]; // NB!!!  note by definiton y_proc[i-1]
+                    d_est[i] = unitDataSet_adjusted.Y_meas[i] - y_proc[i-1]; // NB!!!  note by definition y_proc[i-1]
             }
             d_est[0] = unitDataSet_adjusted.Y_meas[0] - y_proc[0];
 
