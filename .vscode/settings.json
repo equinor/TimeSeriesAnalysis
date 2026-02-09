@@ -11,8 +11,16 @@
         "Newtonsoft",
         "oversample",
         "Oversampled",
+        "Parallelizable",
         "plotly",
         "Simulatable",
-        "snupkg"
+        "SISO",
+        "snupkg",
+        "timebase",
+        "umin",
+        "unitdata",
+        "Ymeas",
+        "yset",
+        "Ysim"
     ]
 }

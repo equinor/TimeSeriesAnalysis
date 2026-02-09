@@ -76,7 +76,7 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
             var estPidParam = new PidParameters(pidModel1.GetModelParameters());
 
             var identifiedModel = new UnitModel();
-            var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, estPidParam);
+            var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet,badIndicesHandling:default,pidParams:estPidParam);
             if (identifiedModel != null)
             {
                 Console.WriteLine(identifiedModel.ToString());
@@ -87,8 +87,6 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
                     CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel, trueProcessModel, processGainAllowedOffsetPrc, 30, isStatic);
                 }
             }
-
-
         }
 
         static void DisturbancesToString(double[] estDisturbance, double[] trueDisturbance)
@@ -121,7 +119,7 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
 
             Assert.IsTrue(estDisturbance != null);
             string caseId = TestContext.CurrentContext.Test.Name + "y";
-            bool doDebugPlot = false;
+            bool doDebugPlot = true;
             if (doDebugPlot)
             {
                 double[] d_HF = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);

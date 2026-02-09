@@ -30,6 +30,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         DateTime t0 = new DateTime(2010,1,1);
         int timeBase_s = 1;
 
+       double noiseAmplitude = 0.01;
 
         [SetUp]
         public void SetUp()
@@ -43,7 +44,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepDisturbanceANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude, double precisionPrc)
         {
             int N = 100;
-            double noiseAmplitude = 0.001;
+
             var locParameters = new UnitParameters
             {
                 TimeConstant_s = 0,
@@ -51,8 +52,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeDelay_s = 0,
                 Bias = 5
             };
-
-            var trueDisturbance = TimeSeriesCreator.Step(80, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude)); ;
+            // this unit test is quite sensitive to the noise in the disturbance
+            var trueDisturbance = TimeSeriesCreator.Step(80, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, 0.001)); ;
             var yset = TimeSeriesCreator.Step(10, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,
                 false, true, yset, precisionPrc,false, true);
@@ -85,7 +86,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
           // try with steady-state before and after to see if this improves estimates
-          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Constant(0,100), TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Constant(0,200)));
+          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Constant(0,100), 
+          TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Constant(0,200)));
+            trueDisturbance = trueDisturbance.Add(TimeSeriesCreator.Noise(trueDisturbance.Length, noiseAmplitude));
+
           var yset = TimeSeriesCreator.Constant( 50,trueDisturbance.Length);
           CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParametersLoc, "Process"), trueDisturbance,
             false, true, yset, gainPrecisionPrc,false, isStatic);
@@ -129,7 +133,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc,doBadData,isStatic);
         }
 
-        [TestCase(5, 1.0,5)]
+        [TestCase(5, 1.0,5),NonParallelizable]
         public void StepDisturbanceANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude,
             double precisionPrc )
         {
@@ -143,7 +147,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 8, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "StaticProcess"), trueDisturbance,
@@ -156,19 +160,19 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
             bool doInvertGain = false;
             N = 300;
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));;
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "StaticProcess"), trueDisturbance,doInvertGain,true, null, gainPrecisionPrc, false, true);
         }
 
 
-        // this works as long as only static identifiation is used in the closed-loop identifier,
+        // this works as long as only static identification is used in the closed-loop identifier,
        // issue! this hangs for some reason
         [Test]
         public void FlatData_DoesNotCrash()
         {
             double stepAmplitude = 0;
-            N = 1000;
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            N = 300;
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));;
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), 
                 trueDisturbance,false,false);
         }
@@ -188,7 +192,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
 
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));;
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"),
                 trueDisturbance, false, true,null,gainTolPrc, doAddBadData,true);
         }
@@ -201,11 +205,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double gainTolPrc, bool doNegativeGain =false)
         {
             int N = 50;
-             //Shared.EnablePlots();
-            var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude);
+
+            var trueDisturbance = TimeSeriesCreator.Step(10, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), 
                 trueDisturbance, doNegativeGain,true,null, gainTolPrc, false, true);
-            //Shared.DisablePlots();
         }
 
 

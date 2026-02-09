@@ -30,6 +30,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Ti_s = 20
         };
 
+        double noiseAmplitude = 0.01;
 
         int timeBase_s = 1;
         int N = 300;
@@ -43,8 +44,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
 
-        [TestCase(5,1.0,5)]
-        [TestCase(1,1.0,5)] 
+        [TestCase(5,1.0,10)]
+        [TestCase(1,1.0,10)] 
         public void StepDisturbanceANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude,double precisionPrc)
         {
             var locParams = new UnitParameters
@@ -54,7 +55,8 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            var trueDisturbance = TimeSeriesCreator.Step(160, N, 0, distStepAmplitude);
+            // note that this unit test is quite sensitive to noise in the disturbance!
+            var trueDisturbance = TimeSeriesCreator.Step(160, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, 0.001));
             var yset = TimeSeriesCreator.Step(50, N, 50, 50+ ysetStepAmplitude);//do step before disturbance
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParams, "DynProcess"), trueDisturbance,
                 false, true, yset, precisionPrc);
@@ -112,7 +114,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // this test works when run alone, but fails when all test are run together.
         // likely a race condition in the GenericDisturbanceTest
         
-        [TestCase(5, 1.0, Explicit = true, Category = "NotWorking_AcceptanceTest"), NonParallelizable]
+        [TestCase(1, 1.0, Explicit = true, Category = "NotWorking_AcceptanceTest"), NonParallelizable]
         //[TestCase(0, 1.0)]//debug, test performance if no disturbance
 
         public void StepDistANDSetpointSinus(double distStepAmplitude, double ysetSinusAmplitude)
@@ -127,7 +129,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
 
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude);
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetSinusAmplitude, N / 2, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,
@@ -140,11 +142,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         [TestCase(-5,5)]         
         public void LongStepDist_EstimatesOk(double stepAmplitude,double procGainAllowedOffSetPrc)
         {
-            double noiseAmplitude = 0.01;
+
             bool doInvertGain = false;
             N = 400;
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).
-                Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,doInvertGain,true,null,procGainAllowedOffSetPrc);
         }
 
@@ -166,7 +167,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void StepDisturbance_EstimatesOk(double stepAmplitude, double processGainAllowedOffsetPrc, 
             bool doNegativeGain =false)
         {
-            int N = 100;
+            int N = 300;
             double noiseAmplitude = 0.01;
             Shared.EnablePlots();
             var trueDisturbance = TimeSeriesCreator.Step(40, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));

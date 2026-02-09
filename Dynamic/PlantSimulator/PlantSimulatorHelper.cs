@@ -149,10 +149,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Simulates a single model for a unit dataset and adds the output to unitData.Y_meas of the unitData, optionally with noise
         /// </summary>
-        /// <param name="unitData">the dataset to be simualted over, and where the Y_meas is updated with result</param>
+        /// <param name="unitData">the dataset to be simulated over, and where the Y_meas is updated with result</param>
         /// <param name="model">the model to be simulated</param>
         /// <param name="noiseAmplitude">the amplitude of noise to be added to Y_meas</param>
-        /// <param name="noiseSeed">a seed value of the randm noise(specify so that tests are repeatable)</param>
+        /// <param name="noiseSeed">a seed value of the rand noise(specify so that tests are repeatable)</param>
         /// <returns></returns>
         public static bool SimulateSingleToYmeas(UnitDataSet unitData, ISimulatableModel model, double noiseAmplitude = 0,
              int noiseSeed = 123)
@@ -176,7 +176,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Simulates a single model for a unit dataset and adds the output to unitData.Y_meas of the unitData, optionally with noise
         /// </summary>
-        /// <param name="unitData">the dataset to be simualted over, and where the Y_meas is updated with result</param>
+        /// <param name="unitData">the dataset to be simulated over, and where the Y_meas is updated with result</param>
         /// <param name="model">the model to be simulated</param>
         /// <param name="enableSimulatorRestarting"></param>
         /// <returns></returns>

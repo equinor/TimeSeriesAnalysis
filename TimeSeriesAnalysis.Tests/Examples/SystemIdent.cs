@@ -203,7 +203,7 @@ namespace TimeSeriesAnalysis._Examples
 
             var identifiedModel = new UnitModel();
 
-             var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, pidModel1.GetModelParameters());
+             var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, badIndicesHandling:default, pidParams:  pidModel1.GetModelParameters());
 
             Console.WriteLine(identifiedModel.ToString());
 
