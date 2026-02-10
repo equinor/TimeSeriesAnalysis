@@ -67,7 +67,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
         const int MaxNumberOfPasses = 4;
         const double LargestTimeConstantTimeBaseMultiple = 60 + 1;
-        static int[] Step1GlobalSearchNumIterations =  new int[] { 10 ,20, 10,10}; // iterations per pass (10, 20, 10, 10) = 50 total across 4 passes; 50 is usually enough
+        static int[] Step1GlobalSearchNumIterations =  new int[] { 20 ,20, 10,10}; // iterations per pass (10, 20, 10, 10) = 50 total across 4 passes; 50 is usually enough
         // these are given for each pass.
         static double[] Step1GainGlobalSearchUpperBoundPrc = new double[] { 150, 40, 20,10 } ;
         static double[] Step1GainGlobalSearchLowerBoundPrc = new double[] { 90, 40, 10, 10 };
@@ -196,7 +196,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // to give a first estimate of the disturbance (used to initialize steps 2 and 3 below)
             var unitModel_init = InitModelFreeEstimateClosedLoopProcessGain(dataSet, pidParams, pidInputIdx, fittingSpecs);
             ////////////////////////////
-           // unitModel_init.modelParameters.LinearGains = new double[]{1.5};// TODO: do not leave in code!!! only for debugging! 
+          // unitModel_init.modelParameters.LinearGains = new double[]{0.8};// TODO: do not leave in code!!! only for debugging! 
              ///////////////////
             SolverOutputAppend(sbSolverOutput,unitModel_init, "Init");
             SaveSearchResult(unitModel_init);
@@ -280,7 +280,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             // do not save null result, let step2 run even on a step0 model if necessary
                             sbSolverOutput.AppendLine("Pass " + passNumber + " Step1 minQ: FAILED to find a minimum");
                             doDHF_DLF_version = true;
-                            // tODO: this mainly happens if the signal is more like a sinus or random-walk rather then step-like, 
+                            // this mainly happens if the signal is more like a sinus or random-walk rather then step-like, 
                             // in this case, try to redo-step 1 based on finding the gain that results in max(d_LF) == max (d_HF)
 
                             step1model = Step1GlobalSearch_dLFmax_equals_dHF_max(dataSet, pidParams, pidInputIdx, idUnitModelsList.Last(), min_gain, max_gain,  
@@ -400,7 +400,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
 
-
+/*
         private static UnitModel Step2GlobalSearchTimeConstantFitScoreVersion(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx, UnitModel unitModel, double[] d_est)
         {
             var pidModel = new PidModel(pidParams, "PID");
@@ -470,10 +470,10 @@ namespace TimeSeriesAnalysis.Dynamic
             // todo: determine the Tc that has the highest plant fit score
            // Console.WriteLine(fitScores.ToString());
             return null;//todo
-        }
+        }*/
 
         /// <summary>
-        /// "look for the time-constant that gives the disturbance that minimzes "Q" the absolute summed difference of the d_est
+        /// "look for the time-constant that gives the disturbance that minimizes "Q" the absolute summed difference of the d_est
         /// </summary>
         /// <param name="dataSet"></param>
         /// <param name="pidParams"></param>
@@ -582,7 +582,7 @@ namespace TimeSeriesAnalysis.Dynamic
             for (double Gain = minGain; Gain < maxGain; Gain  += (double)( maxGain-minGain)/(double)nIterations)
             {
                 GainCandidates.Add(Gain);
-                plotNames.Add("Gain=" + Gain.ToString("F1", CultureInfo.InvariantCulture) + "s");
+                plotNames.Add("y1= Gain_" + Gain.ToString("F1", CultureInfo.InvariantCulture) + "_s");
   
                 var unitModel_cur = (UnitModel)unitModel.Clone("Clone" ); // do this to make sure the simulations dont "add up"
                 unitModel_cur.modelParameters.LinearGains = new double[] { Gain };
@@ -614,11 +614,10 @@ namespace TimeSeriesAnalysis.Dynamic
                 disturbanceList.Add(simData.GetValues("_D_process"));
                 ySimList.Add(simData.GetValues("y_meas"));
                 uSimList.Add(simData.GetValues("PID_U"));
-               
                 dLF_List.Add(d_LF(simData.GetValues(unitModel_cur.ID)));
 
-//                if (Tc == 0)
-  //                  timestamps = inputData.GetTimeStamps(); 
+                if (Gain == minGain)
+                    timestamps = inputData.GetTimeStamps(); 
 
                 if (!isOk)
                 {
@@ -628,12 +627,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 GC.Collect();
            }
 
-            // debug plots.
-  /*          Shared.EnablePlots();
-            Plot.FromList(disturbanceList,plotNames,timestamps, "Disturbances Pass"+passNumber);
-            Plot.FromList(dLF_List,plotNames,timestamps, "d_LF Pass:"+passNumber);
-            Shared.DisablePlots();
-*/
 
             var vec = new Vec(dataSet.BadDataID);
             var dLFmax = new List<double>();
@@ -652,6 +645,25 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitModel_ret = (UnitModel)unitModel.Clone("Clone" );
             unitModel_ret.modelParameters.LinearGains = new double[] { bestGain };
          
+            bool    doDebuggingPlot = true;
+            // debug plots.
+            if (doDebuggingPlot)
+            {
+                Shared.EnablePlots();
+                Plot.FromList(disturbanceList,plotNames,timestamps, "Disturbances Pass"+passNumber);
+
+                dLF_List.Add(dHF);
+                plotNames.Add("y1=d_HF");
+                dLF_List.Add(dataSet.Y_meas);
+                plotNames.Add("y3=Y_meas");
+                dLF_List.Add(dataSet.Y_setpoint);
+                plotNames.Add("y3=Y_set");
+
+                Plot.FromList(dLF_List,plotNames,timestamps, "d_LF Pass"+passNumber);
+                Shared.DisablePlots();
+            }
+
+
             return unitModel_ret;
 
         }
@@ -729,13 +741,6 @@ namespace TimeSeriesAnalysis.Dynamic
 //                if (Tc == 0)
   //                  timestamps = inputData.GetTimeStamps(); 
 
- /*               if (!isOk)
-                {
-                    Console.WriteLine("simulation failed");
-                }*/
-          /*        Console.WriteLine("Tc = " + Tc.ToString("F1", CultureInfo.InvariantCulture) + " s, plant wide fit score: " +
-                      plantSimObj.PlantFitScore.ToString("F2", CultureInfo.InvariantCulture) + " %");
-*/
                 simData = null;;
                 GC.Collect();
            }
@@ -1411,6 +1416,7 @@ namespace TimeSeriesAnalysis.Dynamic
         private static double[] d_LF (double[] Y_proc)
         {
              var vec = new Vec();   
+          //   return Vec<double>.Concat(new double[]{0},vec.Multiply(vec.Subtract(Y_proc, Y_proc[0]), -1));
              return vec.Multiply(vec.Subtract(Y_proc, Y_proc[0]), -1);
         }
     

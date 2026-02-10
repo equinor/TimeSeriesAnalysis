@@ -498,3 +498,17 @@ model.
 	- it *may* be that the maximal amplitude of $d_{LF}$ can provide a bound on the maximal amplitude at $d_{est}$
 
 $$\max_t d_{LF}(t) \approx \max_t d_{HF}(t)$$ 
+
+#### Alternative algorithm 
+
+*The below method is under evaluation and included in latest builds on a trial basis*
+
+- if ``Pass1`` of the ``minQ``based algorithm above fail to yield a solution:
+- Repeat for a number of passes similar to the ``minQ`` algorithms above
+	- ``Step1``: attempt to find a gain $G$ so that the difference between $d_{HF}$ and $d_{LF}$ is minimized, holding $T_c$ constant
+	- ``Step2``: attempt to find a time-constant $T_c$ so that the difference between $d_{HF}$ and $d_{LF}$ is minimized, holding gain $G$ constant
+
+**This method will only be used if the ``minQ`` algorithm fails to find gains that improve on ``pass0`` initial heuristic.**
+
+
+

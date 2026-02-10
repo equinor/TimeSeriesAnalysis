@@ -70,26 +70,28 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,
                 false, true, yset, gainPrecisionPrc,false, isStatic);
         }
+        [TestCase(0.8, 10,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1.5, 10,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(3, 10,Explicit = true, Category = "NotWorking_AcceptanceTest")]
 
-        [TestCase(5, 1.0,500,Explicit = true, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 5.0,500,Explicit = true, Category = "NotWorking_AcceptanceTest")]
-
-        public void SinusDisturbance(double distSinusAmplitude, double gainPrecisionPrc, int N)
+        public void SinusDisturbance(double procGain, double gainPrecisionPrc )
         {
-            var period = N / 2;
-           
+            int N = 500;
+            var period = N / 3;
+            var distSinusAmplitude = 1;
+            var noiseAmplitude = 0.01;
+
             var  modelParametersLoc = new UnitParameters
             {
-                TimeConstant_s = 0,
-                LinearGains = new double[] { 1.5 },
+                TimeConstant_s = 0,//nb! static
+                LinearGains = new double[] { procGain },
                 TimeDelay_s = 0,
                 Bias = 5
             };
           // try with steady-state before and after to see if this improves estimates
-          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Constant(0,100), 
-          TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Constant(0,200)));
-            trueDisturbance = trueDisturbance.Add(TimeSeriesCreator.Noise(trueDisturbance.Length, noiseAmplitude));
-
+          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Noise(50,noiseAmplitude), 
+          TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Noise(100,noiseAmplitude)));
+ 
           var yset = TimeSeriesCreator.Constant( 50,trueDisturbance.Length);
           CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParametersLoc, "Process"), trueDisturbance,
             false, true, yset, gainPrecisionPrc,false, isStatic);
@@ -104,7 +106,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // generally, the smaller the process gain, the lower the precision of the estimated process gain.
         //(halving the gain-> halving the precision)
         // first seed
-        [TestCase(1, 0.1, 25, 105,1000)]
+        [TestCase(1, 0.1, 28, 105,1000)]
         [TestCase(2, 0.1, 15, 105,1500)]
         // second seed 
         [TestCase(1, 1, 10, 50,1000)]

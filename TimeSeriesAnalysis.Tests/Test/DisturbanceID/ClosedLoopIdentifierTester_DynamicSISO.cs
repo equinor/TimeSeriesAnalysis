@@ -96,20 +96,20 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         }
 
         /*
-            Performance on these seem to be improved, it finds time-contants in the correct ballpark, but for some reason the gain estimates are always around 2?
+            Performance on these seem to be improved, it finds time-constants in the correct ballpark, but for some reason the gain estimates are always around 2?
         */
 
-        [TestCase(2, 10,20, Explicit = true, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 10,20,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1.5, 10,20, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(3, 10,20,Explicit = true, Category = "NotWorking_AcceptanceTest")]
 
-        [TestCase(2, 10,10, Explicit = true, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 10,10,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1.5, 10,10, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(3, 10,10,Explicit = true, Category = "NotWorking_AcceptanceTest")]
         public void SinusDisturbance(double procGain, double gainPrecisionPrc, double timeConst_s)
         {
             int N = 500;
-            var period = N / 2;
+            var period = N / 3;
            
-            var distSinusAmplitude = 1;
+            var distSinusAmplitude = 2;
 
             var  modelParametersLoc = new UnitParameters
             {
@@ -134,7 +134,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // this test works when run alone, but fails when all test are run together.
         // likely a race condition in the GenericDisturbanceTest
         
-        [TestCase(1, 1.0, Explicit = true, Category = "NotWorking_AcceptanceTest"), NonParallelizable]
+        [TestCase(1, 1.0)]//  //Explicit = true, Category = "NotWorking_AcceptanceTest"), NonParallelizable]
         //[TestCase(0, 1.0)]//debug, test performance if no disturbance
 
         public void StepDistANDSetpointSinus(double distStepAmplitude, double ysetSinusAmplitude)
