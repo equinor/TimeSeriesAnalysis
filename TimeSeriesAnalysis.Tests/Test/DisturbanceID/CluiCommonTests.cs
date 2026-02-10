@@ -125,9 +125,6 @@ namespace TimeSeriesAnalysis.Tests.DisturbanceID
                 double[] d_HF = vec.Subtract(unitDataSet.Y_meas, unitDataSet.Y_setpoint);
                // this gives "perfectly" the d_LF, that together with d_HF gives d_est
                 double[] d_LF = vec.Multiply(vec.Subtract(unitDataSet.Y_proc, unitDataSet.Y_proc[0]), -1);
-                // experimental code, comment out
-               // var factor = 1.97/1.5*1.10;
-               // double[] d_LF = vec.Multiply(vec.Subtract(unitDataSet.Y_proc, unitDataSet.Y_proc[0]), -1/factor);
 
                 Shared.EnablePlots();
                 Plot.FromList(new List<double[]>{ unitDataSet.Y_meas, unitDataSet.Y_setpoint,unitDataSet.Y_proc,

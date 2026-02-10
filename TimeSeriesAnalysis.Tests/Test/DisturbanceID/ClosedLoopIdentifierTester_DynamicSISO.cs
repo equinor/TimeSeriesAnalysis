@@ -62,6 +62,13 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc);
         }
 
+
+
+        /*
+        Note that the performance of these have improved with the implementation of  dHLF/dHF fallback of clui,
+        but moreso for the time constant than the gain estimates, which still hover around 1.2-1.5?
+        */
+
         // 0.25: saturates the controller
         [TestCase(1, 0.1, 30, Explicit = true,Category = "NotWorking_AcceptanceTest")]
         [TestCase(1, 1, 30, Explicit = true, Category = "NotWorking_AcceptanceTest")]
@@ -88,22 +95,35 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             Shared.DisablePlots();
         }
 
-        [TestCase(5, 1.0,500, Explicit = true, Category = "NotWorking_AcceptanceTest")]
-        [TestCase(1, 5.0,500,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        /*
+            Performance on these seem to be improved, it finds time-contants in the correct ballpark, but for some reason the gain estimates are always around 2?
+        */
 
-        public void SinusDisturbance(double distSinusAmplitude, double gainPrecisionPrc, int N)
+        [TestCase(2, 10,20, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 10,20,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+
+        [TestCase(2, 10,10, Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        [TestCase(1, 10,10,Explicit = true, Category = "NotWorking_AcceptanceTest")]
+        public void SinusDisturbance(double procGain, double gainPrecisionPrc, double timeConst_s)
         {
+            int N = 500;
             var period = N / 2;
            
+            var distSinusAmplitude = 1;
+
             var  modelParametersLoc = new UnitParameters
             {
-                TimeConstant_s = 20,
-                LinearGains = new double[] { 1.5 },
+                TimeConstant_s = timeConst_s,
+                LinearGains = new double[] { procGain },
                 TimeDelay_s = 0,
                 Bias = 5
             };
+
+          var noiseAmplitude = 0.01;
+
           // try with steady-state before and after to see if this improves estimates
-          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Constant(0,100), TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Constant(0,200)));
+          var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Noise(100,noiseAmplitude), TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), 
+          TimeSeriesCreator.Noise(200,noiseAmplitude)));
           var yset = TimeSeriesCreator.Constant( 50,trueDisturbance.Length);
           CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParametersLoc, "Process"), trueDisturbance,
             false, true, yset, gainPrecisionPrc,false, isStatic:false);

@@ -1,3 +1,3 @@
 rem dotnet tool install -g dotnet-serve
 
-dotnet serve --directory _site --path-base /tsadocs
+dotnet serve --directory _site --path-base /tsadocs --port 8081

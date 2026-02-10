@@ -101,6 +101,46 @@ no introduced excitation.** In some cases it will be impossible to determine a u
 useful if instead the method returned a range of possible values. 
 
 
+## Example: relationship between the time constant estimate and the shape of the estimated disturbance 
+
+### Step disturbance
+
+Consider a step disturbance applied to a linear system with a time constant $T_c=10s$ and gain $G=1.5$ as shown above:
+
+<img src="./images/clui/step_disturbance_dataset.png" alt="dataset" width="700" >
+
+It is important to understand how disturbance estimates will vary with different estimates of the time-constant, when 
+the estimated gain is close to but not exactly equal to the true gain (these estimates will be found with ``step0`` and ``step1`` algorithms
+below.)
+
+Given an estimate of the gain of $G=1.63$, the below image shows how the estimate of the disturbance $d_{est}$ varies with different process time-constants
+
+<img src="./images/clui/step_disturbance_pass1_step2_different_disturbanes_for_different_timeconstants.png" alt="dataset" width="700" >
+
+**Note that for the "true" value of the time constant $T_c=10$, $d_{est}$ has *the least transient dynamics*, but the farther off from this true value $T_c$ is,
+the more transient dynamics have "bled" into the disturbance estimate.** An algorithm that tries to minimize an objective function which describes the "cumulative amount of transient dynamics" in the disturbance estimate, could be a used to estimate the time-constant for a given process gain. 
+
+### Sinus disturbances
+
+Given as the same linear process above, apply instead a sinus disturbance, between periods of a flat disturbance
+
+<img src="./images/clui/sinus_disturbance_dataset.png" alt="dataset" width="700" >
+
+As above, we calculate the disturbance estimate for different estimates of the time constant $T_c$, for an initial gain estimate of $G=2.02$
+
+<img src="./images/clui/sinus_disturbance_pass1_step2_different_disturbances.png" alt="dataset" width="700" >
+
+**In the case of a sinus disturbance, the disturbance is continuously changing, and and it is no longer easy to discern which of the the above disturbances is 
+the least affected by process dynamics bleeding through. In fact, the disturbances for different time-constants have similar shapes, but the apparent amplitude changes (even thought the process gain is constant).**
+
+### Discussion
+
+- **It could seem that without abrupt changes in the "true" disturbance (like a step-change), it is hard to separate the effects of dynamics (like time-constants) and the effect of gain on the shape of the
+disturbance.**
+- **Conversely, if there is an abrupt change in the disturbance, it does seem possible to determine the process time constant of the model. An "abrupt change" does not have to be a planned excitation, but for many 
+pid-loops those kind of changes may occur intermittently during normal operations**. 
+- For the above synthetic examples, the $u_{pid}$, and $y_{sim} = d_{est} + y_{proc}$ are identical for all time-constants, so are not plotted. 
+Since they are identical, it is not obvious that they can be used to aid in the search for the most likely time-constant.
 
 ## Approach 
 
@@ -374,6 +414,36 @@ for the estimated disturbance vector $d_{est}$.
 
 
 
+
+## Performance, conclusions and further work
+
+In unit tests summarize the expected performance for different types of use-cases
+- **step-disturbances** accuracy to within 5% is for static processes and 10% for dynamic processes are typical
+- **random-walk disturbances** accuracy to within 12-25% for static processes, but very poor accuracy for dynamic processes. 
+- **sinus-disturbances** poor accuracy for dynamic and static processes.
+- the method is able to remove data points to be ignored from the analysis (bad data points) and still succeed
+- the method does well even for multiple-input systems provided that there is excitation in the non-pid controlled inputs (in fact this appears to make estimation easier.)
+
+**Conclusions**
+- The algorithm seems to work well on certain types of common disturbances where the process is close to steady-state but then intermittently is excited (``step disturbances``).
+- The algorithm struggles if the disturbance is so "rich" that the system in fact never reaches steady-state(such as in the case of a random-walk or sinus). 
+- In situations where the algorithm does poorly, the algorithm is usually not able to improve on the ``step0`` initial estimate, 
+typically because global search does not reveal any minimum in any of the considered metrics in ``pass1``. 
+- If the method is unable to improve on the ``step0``, it is recommended to re-identify the model on other data until the algorithm converges over two passes. 
+
+**Further work**
+- look into adding other criteria for ``Pass1`` that can help the sequential optimization in situations where the existing 
+ "v1","v2","v3" and "v4" do not reveal any minima, and thus the heuristic estimate of ``Pass0`` may be returned. 
+
+- look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``) 
+
+> [!Note]
+> Some code related to multiple-input single output systems was commented out of ``ClosedLoopUnitIdentifier`` on a previous refactor. 
+> This code should be worked back into the use. 
+
+
+
+
 ### Side-note: Alternative method to estimate process gain based on $d_{LF}$
 
 Refer to the example at the top of this section. 
@@ -405,29 +475,26 @@ $$d_{est}(t) \approx e(t)$$
 or even 
 $$d_{est}(t) \geq e(t)$$
 
+#### Step disturbance
 
-## Performance, conclusions and further work
+The same "step disturbance" example as higher in this section is revisited, and plotting $d_{LF}$ and $d_{HF}$, and their sum:
 
-In unit tests summarize the expected performance for different types of use-cases
-- **step-disturbances** accuracy to within 5% is for static processes and 10% for dynamic processes are typical
-- **random-walk disturbances** accuracy to within 12-25% for static processes, but very poor accuracy for dynamic processes. 
-- **sinus-disturbances** poor accuracy for dynamic and static processes.
-- the method is able to remove data points to be ignored from the analysis (bad data points) and still succeed
-- the method does well even for multiple-input systems provided that there is excitation in the non-pid controlled inputs (in fact this appears to make estimation easier.)
+<img src="./images/clui/step_disturbance_dLF_and_dHF.png" alt="step1 heuristic" width="1000" >
 
-**Conclusions**
-- The algorithm seems to work well on certain types of common disturbances where the process is close to steady-state but then intermittently is excited (``step disturbances``).
-- The algorithm struggles if the disturbance is so "rich" that the system in fact never reaches steady-state(such as in the case of a random-walk or sinus). 
-- In situations where the algorithm does poorly, the algorithm is usually not able to improve on the ``step0`` initial estimate, 
-typically because global search does not reveal any minimum in any of the considered metrics in ``pass1``. 
-- If the method is unable to improve on the ``step0``, it is recommended to re-identify the model on other data until the algorithm converges over two passes. 
+#### Sinus disturbance
 
-**Further work**
-- look into adding other criteria for ``Pass1`` that can help the sequential optimization in situations where the existing 
- "v1","v2","v3" and "v4" do not reveal any minima, and thus the heuristic estimate of ``Pass0`` may be returned. 
+The same "sinus disturbance" example as higher in this section is revisited, and plotting $d_{LF}$ and $d_{HF}$, and their sum:
 
-- look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``) 
+<img src="./images/clui/sinus_disturbance_dLF_and_dHF.png" alt="step1 heuristic" width="1000" >
 
-> [!Note]
-> Some code related to multiple-input single output systems was commented out of ``ClosedLoopUnitIdentifier`` on a previous refactor. 
-> This code should be worked back into the use. 
+
+#### Discussion
+
+- In the step disturbance case, the maximal amplitude of $d_{LF}$ matches the amplitude of the true disturbance. This example illustrates how 
+$d_{LF}$ could for some disturbance provide hints on the magnitude of the process gain. Remember that $d_{LF}$ is determined independently of any process
+model. 
+- In the sinus disturbance case, it is far less obvious how to exploit these terms to aid in the selection of process model and disturbance estimate:
+	- $d_{LF}$ and $d_ {HF}$ and the true disturbance $d$ are all phase-shifted from one another
+	- it *may* be that the maximal amplitude of $d_{LF}$ can provide a bound on the maximal amplitude at $d_{est}$
+
+$$\max_t d_{LF}(t) \approx \max_t d_{HF}(t)$$ 
