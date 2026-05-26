@@ -276,6 +276,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 false, true, yset, precisionPrc,doBadData,isStatic);
         }
 
+        // for whatever reason, this test seems to sometimes fail if run with other test, but not if run alone. 
         [TestCase(5, 1.0,5),NonParallelizable]
         public void StepDisturbanceANDSetpointSinus(double distStepAmplitude, double ysetStepAmplitude,
             double precisionPrc )

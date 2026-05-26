@@ -89,10 +89,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             };
             var trueDisturbance = TimeSeriesCreator.RandomWalk(N,distAmplitude, 0, seed);
             var yset = TimeSeriesCreator.Constant( 50, N);
-            Shared.EnablePlots();
+           // Shared.EnablePlots();
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,
                 false, true, yset, gainPrecisionPrc);
-            Shared.DisablePlots();
+           // Shared.DisablePlots();
         }
 
         /*

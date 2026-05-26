@@ -217,12 +217,15 @@ namespace TimeSeriesAnalysis.Dynamic
             double maxStableProcessGainAbs = Math.Abs(1 / pidParams.Kp * 0.98);
 
             bool doDHF_DLF_version = false; // fall back to this if pass 1 is unable to find a minimum (sinus/random-walk disturbance)
+            bool abortSearch = false;// 
 
+            const bool abortIfPass1Step1DoesNotFindSolution = true;
 
             for (int passNumber = 1;passNumber<= MaxNumberOfPasses; passNumber++)//NB! passNumber starts at 1.
             {
                 // /////////////////////
                 //   "step1" : "global search" for linear pid-gains
+                if (abortSearch == false)
                 {
                     if (idUnitModelsList.Last() == null)
                         continue;
@@ -279,6 +282,8 @@ namespace TimeSeriesAnalysis.Dynamic
                         {
                             // do not save null result, let step2 run even on a step0 model if necessary
                             sbSolverOutput.AppendLine("Pass " + passNumber + " Step1 minQ: FAILED to find a minimum");
+                            if (abortIfPass1Step1DoesNotFindSolution)
+                                abortSearch =  true;
                             doDHF_DLF_version = true;
                             // this mainly happens if the signal is more like a sinus or random-walk rather then step-like, 
                             // in this case, try to redo-step 1 based on finding the gain that results in max(d_LF) == max (d_HF)
@@ -295,7 +300,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // "Step 2" : global search for time constant.
                 // 
 
-                if (idUnitModelsList.Count() > 0)
+                if (idUnitModelsList.Count() > 0 && abortSearch == false)
                 {
                     if (idUnitModelsList.Last() != null)
                     {
@@ -645,7 +650,10 @@ namespace TimeSeriesAnalysis.Dynamic
             var unitModel_ret = (UnitModel)unitModel.Clone("Clone" );
             unitModel_ret.modelParameters.LinearGains = new double[] { bestGain };
          
-            bool    doDebuggingPlot = true;
+            ////////////////////////////////////////
+            ///  DEBUGGING PLOT(should be disabled normally)
+
+            bool    doDebuggingPlot = false;
             // debug plots.
             if (doDebuggingPlot)
             {
@@ -665,7 +673,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 Plot.FromList(dLF_List,plotNames,timestamps, "d_LF Pass"+passNumber);
                 Shared.DisablePlots();
             }
-
+            ///////////////////////////////////
 
             return unitModel_ret;
 
