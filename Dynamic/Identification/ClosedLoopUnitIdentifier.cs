@@ -584,7 +584,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 GainCandidates.Add(Gain);
                 plotNames.Add("y1= Gain_" + Gain.ToString("F1", CultureInfo.InvariantCulture) + "_s");
   
-                var unitModel_cur = (UnitModel)unitModel.Clone("Clone" ); // do this to make sure the simulations dont "add up"
+                var unitModel_cur = (UnitModel)unitModel.Clone("Clone" ); // do this to make sure the simulations don't "add up"
                 unitModel_cur.modelParameters.LinearGains = new double[] { Gain };
                 
                 var pidModel1 = new PidModel(pidParams, "PID1");
@@ -658,6 +658,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 plotNames.Add("y3=Y_meas");
                 dLF_List.Add(dataSet.Y_setpoint);
                 plotNames.Add("y3=Y_set");
+                dLF_List.Add(dataSet.U.GetColumn(pidInputIdx));
+                plotNames.Add("y4=U_pid");
+
 
                 Plot.FromList(dLF_List,plotNames,timestamps, "d_LF Pass"+passNumber);
                 Shared.DisablePlots();

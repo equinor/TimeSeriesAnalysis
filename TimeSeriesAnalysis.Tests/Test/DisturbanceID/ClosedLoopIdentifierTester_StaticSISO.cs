@@ -97,6 +97,147 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             false, true, yset, gainPrecisionPrc,false, isStatic);
         }
 
+        // idea is to compare two different gains in the sinus case and see how different the time-series simulation look
+        // not really a test, but a way to generate a figure for the documentation.
+       
+        [TestCase(Explicit = true, Category = "Documentation")]
+        public void DOCUMENTATION_CompareDataForDifferentGainsInSinusCase()
+        {
+            
+            int N = 500;
+            var period = N / 3;
+            var distSinusAmplitude = 1;
+            var noiseAmplitude = 0.01;
+
+            PidParameters pidParameters1 = new PidParameters()
+            {
+                Kp = 0.2,
+                Ti_s = 20
+            };
+
+            var unitDataSetList = new List<UnitDataSet> ();
+
+
+            var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Noise(50,noiseAmplitude), 
+                TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Noise(100,noiseAmplitude)));
+
+            for (double procGain =1;procGain<2.5; procGain +=1)
+            {
+
+                var  modelParametersLoc = new UnitParameters
+                {
+                    TimeConstant_s = 0,//nb! static
+                    LinearGains = new double[] { procGain },
+                    U0 = new double[]{50},
+                    TimeDelay_s = 0,
+                    Bias = 50
+                };
+                // try with steady-state before and after to see if this improves estimates
+
+                var usedProcParameters = modelParametersLoc.CreateCopy();
+                var usedProcessModel = new UnitModel(usedProcParameters, "UsedProcessModel");
+                var usedPidParameter = new PidParameters(pidParameters1);
+
+                // create synthetic dataset
+                var pidModel1 = new PidModel(usedPidParameter, "PID1");
+
+                var processSim = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, usedProcessModel });
+                processSim.ConnectModels(usedProcessModel, pidModel1);
+                processSim.ConnectModels(pidModel1, usedProcessModel);
+                var inputData = new TimeSeriesDataSet();
+                inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, trueDisturbance.Length));
+                inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.Disturbance_D), trueDisturbance);
+                inputData.CreateTimestamps(timeBase_s);
+                var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+                Assert.IsTrue(isOk);
+                var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+                unitDataSetList.Add(pidDataSet);
+            }
+
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]>{ unitDataSetList[0].Y_meas, unitDataSetList[1].Y_meas, unitDataSetList[0].Y_setpoint, 
+            unitDataSetList[0].U.GetColumn(0), unitDataSetList[1].U.GetColumn(0) , trueDisturbance },
+                new List<string> { "y1=y_meas(G=1)","y1=y_meas(G=2)", "y1=y_set", "y3=u_pid(G=1)","y3=u_pid(G=2)","y4=d_true" },
+                unitDataSetList[0].GetTimeBase(),TestContext.CurrentContext.Test.Name );
+            Shared.DisablePlots();
+        }
+
+
+ [TestCase(Explicit = true, Category = "Documentation")]
+        public void DOCUMENTATION_CompareDataForDifferentDisturbanceAmplitudesInSinusCase()
+        {
+            
+            int N = 500;
+            var period = N / 3;
+            var noiseAmplitude = 0.01;
+
+            PidParameters pidParameters1 = new PidParameters()
+            {
+                Kp = 0.2,
+                Ti_s = 20
+            };
+
+            var unitDataSetList = new List<UnitDataSet> ();
+
+
+            var disturbanceList = new List<double[]>();
+
+
+            double procGain  = 1.5;
+
+            for (double distSinusAmplitude =1;distSinusAmplitude<2.0; distSinusAmplitude +=0.6)
+            {
+
+                var  modelParametersLoc = new UnitParameters
+                {
+                    TimeConstant_s = 0,//nb! static
+                    LinearGains = new double[] { procGain },// scale gain with disturbance amplitude to get similar output amplitude
+                    U0 = new double[]{50},
+                    TimeDelay_s = 0,
+                    Bias = 50
+                };
+                if(distSinusAmplitude>1)
+                    modelParametersLoc.LinearGains[0] = 4;
+                // try with steady-state before and after to see if this improves estimates
+
+                var usedProcParameters = modelParametersLoc.CreateCopy();
+                var usedProcessModel = new UnitModel(usedProcParameters, "UsedProcessModel");
+                var usedPidParameter = new PidParameters(pidParameters1);
+
+                // create synthetic dataset
+                var pidModel1 = new PidModel(usedPidParameter, "PID1");
+
+                var processSim = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, usedProcessModel });
+                processSim.ConnectModels(usedProcessModel, pidModel1);
+                processSim.ConnectModels(pidModel1, usedProcessModel);
+                var inputData = new TimeSeriesDataSet();
+
+                var trueDisturbance = TimeSeriesCreator.Concat(TimeSeriesCreator.Noise(50,noiseAmplitude), 
+                TimeSeriesCreator.Concat(TimeSeriesCreator.Sinus(distSinusAmplitude,period,timeBase_s,N ), TimeSeriesCreator.Noise(100,noiseAmplitude)));
+                disturbanceList.Add(trueDisturbance);
+
+                inputData.Add(processSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, trueDisturbance.Length));
+                inputData.Add(processSim.AddExternalSignal(usedProcessModel, SignalType.Disturbance_D), trueDisturbance);
+                inputData.CreateTimestamps(timeBase_s);
+                var isOk = processSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+                Assert.IsTrue(isOk);
+                var pidDataSet = processSim.GetUnitDataSetForPID(inputData.Combine(simData), pidModel1);
+                unitDataSetList.Add(pidDataSet);
+            }
+
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]>{ unitDataSetList[0].Y_meas, unitDataSetList[1].Y_meas, unitDataSetList[0].Y_setpoint, 
+            unitDataSetList[0].U.GetColumn(0), unitDataSetList[1].U.GetColumn(0) , disturbanceList[0],disturbanceList[1] },
+                new List<string> { "y1=y_meas(d1)", "y1=y_meas(d2)","y1=y_set", "y3=u_pid(d1)","y3=u_pid(d2)","y4=d1","y4=d2" },
+                unitDataSetList[0].GetTimeBase(),TestContext.CurrentContext.Test.Name );
+            Shared.DisablePlots();
+        }
+
+
 
 
 

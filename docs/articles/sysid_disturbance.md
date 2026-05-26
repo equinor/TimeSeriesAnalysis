@@ -361,7 +361,7 @@ $$
 >- the objective space is fairly flat, the minimum has a fairly low "strength", i.e neighboring process gains have almost equally low objectives
 >- the objective space seems to be more concave ("stronger" i.e. more significant minimums) when the process gain is higher.
 
-**Step 1 algorithm:**
+**Step 1``minQ`` algorithm:**
 - given an initial process model (with a zero or nonzero time-constant) and an estimate of the PID-model(including $K_p$)
 - given a range $[G_{min}, G_{max}]$
 - for a number of gains $G$ between $G_{min}$ and $G_{max}$
@@ -401,7 +401,7 @@ then be modelled
 In step 2, the model found in step 1 is modified by attempting to add add larger and larger time constants to the identified model, and analyzing the ``accumulated absolute travel`` $Q$, 
 for the estimated disturbance vector $d_{est}$.
 
-**Step 2 algorithm:**
+**Step 2 ``minQ`` algorithm:**
 - given an initial process model (with a nonzero process gain)
 - if first pass:
 	- start at $T_c=0$
@@ -491,15 +491,15 @@ The same "sinus disturbance" example as higher in this section is revisited, and
 #### Discussion
 
 - In the step disturbance case, the maximal amplitude of $d_{LF}$ matches the amplitude of the true disturbance. This example illustrates how 
-$d_{LF}$ could for some disturbance provide hints on the magnitude of the process gain. Remember that $d_{LF}$ is determined independently of any process
-model. 
+$d_{LF}$ could for some disturbance provide hints on the magnitude of the process gain. So that 
+$$\max_t d_{LF}(t) \approx \max_t d_{HF}(t)$$ 
 - In the sinus disturbance case, it is far less obvious how to exploit these terms to aid in the selection of process model and disturbance estimate:
 	- $d_{LF}$ and $d_ {HF}$ and the true disturbance $d$ are all phase-shifted from one another
-	- it *may* be that the maximal amplitude of $d_{LF}$ can provide a bound on the maximal amplitude at $d_{est}$
+	- the 
+	$$\max_t d_{LF}(t) \neq \max_t d_{HF}(t)$$ 
 
-$$\max_t d_{LF}(t) \approx \max_t d_{HF}(t)$$ 
 
-#### Alternative algorithm 
+#### Alternative $d_{LF}/d_{HF}$ algorithm 
 
 *The below method is under evaluation and included in latest builds on a trial basis*
 
@@ -508,7 +508,33 @@ $$\max_t d_{LF}(t) \approx \max_t d_{HF}(t)$$
 	- ``Step1``: attempt to find a gain $G$ so that the difference between $d_{HF}$ and $d_{LF}$ is minimized, holding $T_c$ constant
 	- ``Step2``: attempt to find a time-constant $T_c$ so that the difference between $d_{HF}$ and $d_{LF}$ is minimized, holding gain $G$ constant
 
-**This method will only be used if the ``minQ`` algorithm fails to find gains that improve on ``pass0`` initial heuristic.**
+This method has been tested as a stand-in for the ``minQ`` method above in those cases where the ``step1`` of that algorithm is unable t
+determine any gain that corresponds to a local minimum of $Q$
+
+The observation in unit-test where the solution is known is that the ``step2`` of the method does appear to give promising estimates of the time-constant in 
+exactly those unit tests that are challenging for ``minQ`` method, such as when disturbances are random walks or sinuses. The ``step2`` method appears to work 
+better the better estimates of gains that it receives, and in that regard the challenge is that the ``step1`` algorithm in the $d_{LF}/d_{HF}$ does not appear to be 
+reliable. 
+
+Consider the unit test ``SinusDisturbance(0.8d,10)``(static, $G=0.8$)
+
+the below screenshots show how $d_{LF}$ varies for different gains in this alternative ``pass1`` and how the resulting $d_{est} = d_{HF} + d_{LF}$ looks.
 
 
+ <img src="./images/clui/sinus_disturbance_D_LF_example.png" alt="step1 heuristic" width="1000" >
 
+ <img src="./images/clui/sinus_disturbance_d_LF_example2.png" alt="step1 heuristic" width="1000" >
+
+
+Observations: 
+- All of these $d_{LF}$ choices for different process gain result in the same $y_{meas}$ and the same $u_{pid}$. 
+- All disturbances seem to go through **points of concurrency** (points where all potential disturbances lines for a given time constant meet.)
+- The amplitude of the $d_{est}$ changes for different gains, but so does the *phase*.
+- It should be obvious that selecting lines based on $Q(d_{est})$ would be pointless, as higher gains always result in lower cumulative absolute distance traveled.  
+
+Basically the bottom image is a *parametrization of the solution space* for $d_{est}$ in terms of process gain. The image shows how the process gain is the most
+significant parameter describing the disturbance signal, for a given dataset with a known control deviation $e(t)$. The candidate disturbances are roughly speaking similar in appearance, but
+they are scaled and phase-shifted versions of each other.  
+
+If some additional piece of information could be used to determine describe the phase or amplitude of the disturbance, even just for a brief time window, then this would allow
+choosing the most appropriate process gain. 
