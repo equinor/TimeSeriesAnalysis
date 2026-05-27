@@ -1,5 +1,43 @@
 # Closed-loop disturbance signal estimation
 
+## Summary of method capabilities and limitations
+
+A fairly complex closed-loop estimation algoirthm has been developed. 
+
+The method has been developed by scenario-testing for syntethtic datasets, and these tests act as documentation both of 
+what works and what does not work. 
+
+
+### Capabilities 
+
+For static SISO models (see tests ``ClosdLoopUnitIdentifierTester_StaticSISO``):
+- the method is able to determine that the process is steady(zero time constant), and gives acceptable estimates of process gain both in tests where 
+-- disturbance is a step or step-like
+-- disturbance is a random walk, 
+-- with or without accompaniying PID setpoint changes.
+
+For static SISO models (see tests ``ClosdLoopUnitIdentifierTester_DynamicSISO``):
+- the method is able to determine that the process is non-zero (non-zero time constant), and gives acceptable estimates for process gain and time constant 
+-- disturbance is a step or step-like
+-- with or without accompaniying PID setpoint changes.
+
+For MISO systems (see tests ``ClosdLoopUnitIdentifierTester_MISO``):
+- The solver is able to handle some MISO-cases in scenario tests
+
+### Limitations, further work
+
+- In all cases, be it static or dynamic, SISO or MISO, the method gives poor estimates in cases where the disturbance is a pure sinus or sinus-like, and in some random-walk examples the same is seen for systems with nonzero time constants (In most cases where the disturbance is a sinus or sinus-like, the solver detects that the step1 search space is flat and returns the warning ``ClosedLoopEst_GlobalSearchFailedToFindLocalMinima`` ). 
+- for MISO-systems but far less effort has been put into this feature and it is less mature.(some code related to MISO-systems has been commented out in a previous refactor, shoudl be added back in further work) 
+- the solver does not attempt to infer if there is a non-zero time-delay in the process model (this could be addressed in further work)
+- the solver does not attempt to infer if the process has a nonlinear curvature term in the process model (this could be addressed in further work)
+- the solver ignores FittingSpecs arguments related to de-selecting data outside of specified bound (code has been commented out, could be addressed in further work.)
+
+### Workarounds
+
+- a practical workaround is to attempt to fit the model on another dataset with different excitation if  warning ``ClosedLoopEst_GlobalSearchFailedToFindLocalMinima`` is seen.
+- If a system is MISO, a possible workaround is to model the output as a superposition of multiple SISO-systems. 
+
+
 ## Definitions and motivating example
 
 The *disturbance* is an additive signal that moves the output of the given unit process.
@@ -82,8 +120,8 @@ In most cases only a single $u(t)$ is considered, and this is the pid-output $u=
 
 > [!Note]
 > in general it is hard to know if the observed closed-loop behavior $y_{meas}$,$u_{pid}$ 
-> is due to a process with large process gain and the $u_{pid}$ responding to large disturbances
-> or if the pid-controller is reacting to small disturbances for a process with small gains. 
+> is due to a process with large process gain combined with a large disturbances
+> or if the time-series is due to a small process gain and and a smaller disturbances. 
 
 Observations
 - Note that $y_{proc}$ is not directly observable unless the disturbance is zero.
@@ -233,15 +271,6 @@ The number of total simulations across four passes is set to be around ~50, and 
 > the data set
 > - If the data has a insufficient level of excitation, it sometimes happens that the algorithm is unable to produce estimates in step1 and step2
 > that improve on step0. This is a strong indicator that identification should be re-done on another dataset at a later time.
-
-
-
-> [!Note]
-> **Outstanding issues of ``ClosedLoopUnitIdentifier``**
-> - the method does not use the supplied ``FittingSpecs`` to select indices to be ignored based on user-supplied minimum or maximums in inputs or outputs.
-> - the outlined final step of refining the identified model to also determine a time-delay is not implemented
-> - the method could conceivably be extended to include identification of even nonlinear process model terms, but this is not implemented.
-
 
 ### Step 0
 ##### The first, model-free estimate of the process gain
