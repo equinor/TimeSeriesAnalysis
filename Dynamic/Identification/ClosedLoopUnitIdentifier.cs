@@ -195,20 +195,17 @@ namespace TimeSeriesAnalysis.Dynamic
             // init: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give a first estimate of the disturbance (used to initialize steps 2 and 3 below)
             var unitModel_init = InitModelFreeEstimateClosedLoopProcessGain(dataSet, pidParams, pidInputIdx, fittingSpecs);
-            ////////////////////////////
-          // unitModel_init.modelParameters.LinearGains = new double[]{0.8};// TODO: do not leave in code!!! only for debugging! 
              ///////////////////
             SolverOutputAppend(sbSolverOutput,unitModel_init, "Init");
             SaveSearchResult(unitModel_init);
             // step1, MISO: ident (add initial estimates of any other inputs to the above model-free estimate) 
-            /* if (isMISO)
+             /*if (isMISO)
              {
-                 dataSetRun1.D = idDisturbancesList.Last().d_est;
-                 var unitModel_step1Miso = UnitIdentifier.IdentifyLinearAndStatic(ref dataSetRun1, fittingSpecs, false);// no time-delay estimation.
+                 dataSet.D = idDisturbancesList.Last().d_est;
+                 var unitModel_step1Miso = UnitIdentifier.IdentifyLinearAndStatic(ref dataSet, fittingSpecs, false);// no time-delay estimation.
                  unitModel_step1Miso.modelParameters.LinearGainUnc = null;
-                 if (doConsoleDebugOut)
-                     ConsoleDebugOut(unitModel_step1Miso, "Step 1,MISO");
-                 SaveSearchResult(unitModel_step1Miso);
+                SolverOutputAppend(sbSolverOutput, unitModel_step1Miso, "Step 1,MISO");
+                SaveSearchResult(unitModel_step1Miso);
              }*/
 
             // ----------------
@@ -284,7 +281,8 @@ namespace TimeSeriesAnalysis.Dynamic
                             sbSolverOutput.AppendLine("Pass " + passNumber + " Step1 minQ: FAILED to find a minimum");
                             if (abortIfPass1Step1DoesNotFindSolution)
                                 abortSearch =  true;
-                            doDHF_DLF_version = true;
+                            else 
+                                doDHF_DLF_version = true;
                             // this mainly happens if the signal is more like a sinus or random-walk rather then step-like, 
                             // in this case, try to redo-step 1 based on finding the gain that results in max(d_LF) == max (d_HF)
 
@@ -318,11 +316,8 @@ namespace TimeSeriesAnalysis.Dynamic
                             step2Model = Step2GlobalSearchTimeConstant_minimumQ(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est,passNumber);
                             SolverOutputAppend(sbSolverOutput,step2Model, "Pass " + passNumber + " Step 2(minQ version)");
                        }
-                        // version 2:  find the time constant that gives the lowest FitScore in closed loop simulations.
-                      //  step2Model = Step2GlobalSearchTimeConstantFitScoreVersion(dataSet, pidParams, pidInputIdx, unitModel, idDisturbancesList.Last().d_est);
-
                         SaveSearchResult(step2Model);
-                  
+                 
                     }
                 }
             }// end PASS
@@ -406,78 +401,6 @@ namespace TimeSeriesAnalysis.Dynamic
             }
         }
 
-
-/*
-        private static UnitModel Step2GlobalSearchTimeConstantFitScoreVersion(UnitDataSet dataSet, PidParameters pidParams, int pidInputIdx, UnitModel unitModel, double[] d_est)
-        {
-            var pidModel = new PidModel(pidParams, "PID");
-
-            var fitScores = new List<double>();
-            var Tcs = new List<double>();
-
-            var TcListTest = new List<double>() { 0, 5, 10, 15 };//for debugging, generalize
-            var modelParams = unitModel.GetModelParameters();
-
-            // TODO: need to estimate disturbance and add it to the simulation in each case.
-            var runCounter = 0;
-            var d_estList = new List<double[]>();
-            var d_estDesc = new List<string>();
-            var y_simList = new List<double[]>();
-            var y_simDesc = new List<string>();
-            var u_simList = new List<double[]>();
-            var u_simDesc = new List<string>();
-            DateTime[] dateTimes = null;
-            bool doDebugPlot = true;
-
-            (var plantSim, var inputData) = PlantSimulatorHelper.CreateFeedbackLoopWithEstimatedDisturbance(dataSet, pidModel, unitModel, pidInputIdx);
-            if (doDebugPlot)
-            {
-                y_simList.Add(inputData.GetValues(unitModel.ID, SignalType.Output_Y));
-                y_simDesc.Add("y1= y_meas");
-                u_simList.Add(inputData.GetValues(pidModel.ID, SignalType.PID_U));
-                u_simDesc.Add("y3= u_meas");
-            }
-
-            foreach (var Tc in TcListTest)
-            {
-                modelParams.TimeConstant_s = Tc;
-                ((UnitModel)plantSim.modelDict[unitModel.ID]).SetModelParameters(modelParams);
-
-                var inputDataCoSim = new TimeSeriesDataSet(inputData);
-                // 2. co-simulate with disturbance from 1.
-                bool isCoSimOK = plantSim.Simulate(inputDataCoSim, out var simData);
-                if (isCoSimOK)
-                {
-                    fitScores.Add(plantSim.PlantFitScore); // issue: these are now always 100%???
-                    Tcs.Add(Tc);
-                }
-                // debugging plot
-                if (doDebugPlot)
-                {
-                    y_simList.Add(simData.GetValues(unitModel.ID, SignalType.Output_Y));
-                    y_simDesc.Add("y1= y_sim" + runCounter);
-                    u_simList.Add(simData.GetValues(pidModel.ID, SignalType.PID_U));
-                    u_simDesc.Add("y3= u_sim" + runCounter);
-                    d_estList.Add(simData.GetValues(unitModel.ID, SignalType.Disturbance_D));
-                    d_estDesc.Add("y2= d_est" + runCounter);
-                    dateTimes = inputDataCoSim.GetTimeStamps();
-                }
-                runCounter++;
-            }
-            if (doDebugPlot)
-            {
-                y_simList.AddRange(u_simList);
-                y_simList.AddRange(d_estList);
-                y_simDesc.AddRange(u_simDesc);
-                y_simDesc.AddRange(d_estDesc);
-                Shared.EnablePlots();
-                Plot.FromList(y_simList, y_simDesc, dateTimes, "debug");
-                Shared.DisablePlots();
-            }
-            // todo: determine the Tc that has the highest plant fit score
-           // Console.WriteLine(fitScores.ToString());
-            return null;//todo
-        }*/
 
         /// <summary>
         /// "look for the time-constant that gives the disturbance that minimizes "Q" the absolute summed difference of the d_est
