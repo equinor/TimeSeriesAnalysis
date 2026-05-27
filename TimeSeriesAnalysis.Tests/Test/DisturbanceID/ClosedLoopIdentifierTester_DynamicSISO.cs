@@ -41,10 +41,11 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         public void SetUp()
         {
             Shared.GetParserObj().EnableDebugOutput();
+            N = 300;
         }
 
 
-        [TestCase(5,1.0,10)]
+        [TestCase(5,1.0,10), NonParallelizable]
         [TestCase(1,1.0,10)] 
         public void StepDisturbanceANDSetpointStep(double distStepAmplitude, double ysetStepAmplitude,double precisionPrc)
         {
@@ -134,7 +135,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         // this test works when run alone, but fails when all test are run together.
         // likely a race condition in the GenericDisturbanceTest
         
-        [TestCase(1, 1.0)]//  //Explicit = true, Category = "NotWorking_AcceptanceTest"), NonParallelizable]
+        [TestCase(1, 1.0), NonParallelizable]//  //Explicit = true, Category = "NotWorking_AcceptanceTest"), NonParallelizable]
         //[TestCase(0, 1.0)]//debug, test performance if no disturbance
 
         public void StepDistANDSetpointSinus(double distStepAmplitude, double ysetSinusAmplitude)
