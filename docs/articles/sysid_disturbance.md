@@ -16,7 +16,7 @@ For static SISO models (see tests ``ClosedLoopIdentifierTester_StaticSISO``):
 -- disturbance is a random walk, 
 -- with or without accompaniying PID setpoint changes.
 
-For static SISO models (see tests ``ClosdLoopUnitIdentifierTester_DynamicSISO``):
+For dynamic SISO models (see tests ``ClosedLoopIdentifierTester_DynamicSISO``):
 - the method is able to determine that the process is non-zero (non-zero time constant), and gives acceptable estimates for process gain and time constant 
 -- disturbance is a step or step-like
 -- with or without accompaniying PID setpoint changes.
