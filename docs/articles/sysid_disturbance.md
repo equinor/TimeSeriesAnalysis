@@ -2,10 +2,10 @@
 
 ## Summary of method capabilities and limitations
 
-A fairly complex closed-loop estimation algoirthm has been developed. 
+A fairly complex closed-loop estimation algorithm has been developed.
 
-The method has been developed by scenario-testing for syntethtic datasets, and these tests act as documentation both of 
-what works and what does not work. 
+The method has been developed by scenario-testing for synthetic datasets, and these tests act as documentation both of
+what works and what does not work.
 
 
 ### Capabilities 
