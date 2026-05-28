@@ -554,7 +554,7 @@ sbSolverOutput.AppendLine("Max time-constant in step2: " + (LargestTimeConstantT
                     Console.WriteLine("simulation failed");
                 }
                 simData = null;
-                GC.Collect();
+            //    GC.Collect();
            }
 
 
