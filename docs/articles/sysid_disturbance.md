@@ -21,7 +21,7 @@ For dynamic SISO models (see tests ``ClosedLoopIdentifierTester_DynamicSISO``):
 -- disturbance is a step or step-like
 -- with or without accompaniying PID setpoint changes.
 
-For MISO systems (see tests ``ClosdLoopUnitIdentifierTester_MISO``):
+For MISO systems (see tests ``ClosedLoopIdentifierTester_MISO``):
 - The solver is able to handle some MISO-cases in scenario tests
 
 ### Limitations, further work
