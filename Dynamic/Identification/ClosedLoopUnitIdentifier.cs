@@ -327,7 +327,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var retModel = CleanUpModel(identUnitModel,dataSet, pidParams, pidInputIdx, didStep1Succeed,  GSdescription, sbSolverOutput);
             if (abortSearch)
                 retModel.modelParameters.AddWarning(UnitdentWarnings.ClosedLoopEst_GlobalSearchFailedToFindLocalMinima);
-            return  (identUnitModel, retDisturbance);
+            return  (retModel, retDisturbance);
         }
 
 

@@ -165,7 +165,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
         {
 
             bool doInvertGain = false;
-            N = 400;
+       //     N = 400;
             var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, stepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(modelParameters, "Process"), trueDisturbance,doInvertGain,true,null,procGainAllowedOffSetPrc);
         }
