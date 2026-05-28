@@ -190,7 +190,7 @@ namespace TimeSeriesAnalysis.Dynamic
             var fittingSpecs = new FittingSpecs();
             fittingSpecs.u0 = u0;
             var GSdescription = "";
-            sbSolverOutput.AppendLine("Max time-constant in step2: " +LargestTimeConstantTimeBaseMultiple.ToString("F0") +  " seconds" );
+sbSolverOutput.AppendLine("Max time-constant in step2: " + (LargestTimeConstantTimeBaseMultiple * dataSet.GetTimeBase()).ToString("F0", CultureInfo.InvariantCulture) + " seconds");
             // ----------------
             // init: no process model assumed, let disturbance estimator guesstimate a pid-process gain, 
             // to give a first estimate of the disturbance (used to initialize steps 2 and 3 below)
