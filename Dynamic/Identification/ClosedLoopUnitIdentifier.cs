@@ -508,8 +508,10 @@ sbSolverOutput.AppendLine("Max time-constant in step2: " + (LargestTimeConstantT
 
             double[] dHF = new double[0];
 
-            // TODO:probably unnecessary to try all time constants, may be sufficient to consider if they are improving or not. 
-            for (double Gain = minGain; Gain < maxGain; Gain  += (double)( maxGain-minGain)/(double)nIterations)
+            var gainStep = (maxGain - minGain) / Math.Max(1, nIterations);
+            if (gainStep <= 0 || double.IsNaN(gainStep) || double.IsInfinity(gainStep))
+                return (UnitModel)unitModel.Clone("Clone");
+            for (double Gain = minGain; Gain < maxGain; Gain += gainStep)
             {
                 GainCandidates.Add(Gain);
                 plotNames.Add("y1= Gain_" + Gain.ToString("F1", CultureInfo.InvariantCulture) + "_s");

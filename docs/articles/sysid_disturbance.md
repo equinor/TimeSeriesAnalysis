@@ -2,26 +2,26 @@
 
 ## Summary of method capabilities and limitations
 
-A fairly complex closed-loop estimation algoirthm has been developed. 
+A fairly complex closed-loop estimation algorithm has been developed.
 
-The method has been developed by scenario-testing for syntethtic datasets, and these tests act as documentation both of 
-what works and what does not work. 
+The method has been developed by scenario-testing for synthetic datasets, and these tests act as documentation both of
+what works and what does not work.
 
 
 ### Capabilities 
 
-For static SISO models (see tests ``ClosdLoopUnitIdentifierTester_StaticSISO``):
+For static SISO models (see tests ``ClosedLoopIdentifierTester_StaticSISO``):
 - the method is able to determine that the process is steady(zero time constant), and gives acceptable estimates of process gain both in tests where 
 -- disturbance is a step or step-like
 -- disturbance is a random walk, 
 -- with or without accompaniying PID setpoint changes.
 
-For static SISO models (see tests ``ClosdLoopUnitIdentifierTester_DynamicSISO``):
+For dynamic SISO models (see tests ``ClosedLoopIdentifierTester_DynamicSISO``):
 - the method is able to determine that the process is non-zero (non-zero time constant), and gives acceptable estimates for process gain and time constant 
 -- disturbance is a step or step-like
 -- with or without accompaniying PID setpoint changes.
 
-For MISO systems (see tests ``ClosdLoopUnitIdentifierTester_MISO``):
+For MISO systems (see tests ``ClosedLoopIdentifierTester_MISO``):
 - The solver is able to handle some MISO-cases in scenario tests
 
 ### Limitations, further work
