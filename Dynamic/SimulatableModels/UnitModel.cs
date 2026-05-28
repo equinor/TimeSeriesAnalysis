@@ -85,7 +85,7 @@ namespace TimeSeriesAnalysis.Dynamic
             InitSim(modelParameters);
         }
         /// <summary>
-        /// Initalizer of model that for the given dataSet also creates the resulting y_sim.
+        /// Initializer of model that for the given dataSet also creates the resulting y_sim.
         /// </summary>
         /// <param name="modelParameters"></param>
         /// <param name="dataSet"></param>
@@ -232,7 +232,7 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Calcuate the steady-state input if the output and all-but-one input are known.
+        /// Calculate the steady-state input if the output and all-but-one input are known.
         /// </summary>
         /// <para>
         /// This method has no concept of disturbances, so a nonzero disturbance at time zero may throw it off.
@@ -475,7 +475,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="timeBase_s">the time in seconds between samples</param>
         /// <param name="badValueIndicator">value in U that is to be treated as NaN</param>
         /// <returns>the updated process model state (x) - the output without any output noise or disturbance.
-        ///  NaN is returned if model was not able to be identfied, or if no good U values have been given yet.
+        ///  NaN is returned if model was not able to be identified, or if no good U values have been given yet.
         ///  If some data points in U inputs are NaN or equal to <c>badValueIndicator</c>, the last good value is returned 
         /// </returns>
         public double[] Iterate(double[] inputs, double timeBase_s, double badValueIndicator = -9999)
@@ -810,6 +810,13 @@ namespace TimeSeriesAnalysis.Dynamic
                 sb.AppendLine("solver: " + modelParameters.Fitting.SolverID);
 
                 sb.AppendLine("simulator restarts:" + modelParameters.Fitting.NumSimulatorRestarts);
+
+                if (modelParameters.Fitting.SolverOutput != null && modelParameters.Fitting.SolverOutput != "")
+                {
+                    sb.AppendLine("------------------------- Solver output: -------------------------");
+                    sb.Append(modelParameters.Fitting.SolverOutput);
+                }
+
             }
             return sb.ToString();
         }

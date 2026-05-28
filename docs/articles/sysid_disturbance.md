@@ -1,5 +1,43 @@
 # Closed-loop disturbance signal estimation
 
+## Summary of method capabilities and limitations
+
+A fairly complex closed-loop estimation algorithm has been developed.
+
+The method has been developed by scenario-testing for synthetic datasets, and these tests act as documentation both of
+what works and what does not work.
+
+
+### Capabilities 
+
+For static SISO models (see tests ``ClosedLoopIdentifierTester_StaticSISO``):
+- the method is able to determine that the process is steady(zero time constant), and gives acceptable estimates of process gain both in tests where 
+-- disturbance is a step or step-like
+-- disturbance is a random walk, 
+-- with or without accompaniying PID setpoint changes.
+
+For dynamic SISO models (see tests ``ClosedLoopIdentifierTester_DynamicSISO``):
+- the method is able to determine that the process is non-zero (non-zero time constant), and gives acceptable estimates for process gain and time constant 
+-- disturbance is a step or step-like
+-- with or without accompaniying PID setpoint changes.
+
+For MISO systems (see tests ``ClosedLoopIdentifierTester_MISO``):
+- The solver is able to handle some MISO-cases in scenario tests
+
+### Limitations, further work
+
+- In all cases, be it static or dynamic, SISO or MISO, the method gives poor estimates in cases where the disturbance is a pure sinus or sinus-like, and in some random-walk examples the same is seen for systems with nonzero time constants (In most cases where the disturbance is a sinus or sinus-like, the solver detects that the step1 search space is flat and returns the warning ``ClosedLoopEst_GlobalSearchFailedToFindLocalMinima`` ). 
+- for MISO-systems but far less effort has been put into this feature and it is less mature.(some code related to MISO-systems has been commented out in a previous refactor, shoudl be added back in further work) 
+- the solver does not attempt to infer if there is a non-zero time-delay in the process model (this could be addressed in further work)
+- the solver does not attempt to infer if the process has a nonlinear curvature term in the process model (this could be addressed in further work)
+- the solver ignores FittingSpecs arguments related to de-selecting data outside of specified bound (code has been commented out, could be addressed in further work.)
+
+### Workarounds
+
+- a practical workaround is to attempt to fit the model on another dataset with different excitation if  warning ``ClosedLoopEst_GlobalSearchFailedToFindLocalMinima`` is seen.
+- If a system is MISO, a possible workaround is to model the output as a superposition of multiple SISO-systems. 
+
+
 ## Definitions and motivating example
 
 The *disturbance* is an additive signal that moves the output of the given unit process.
@@ -82,8 +120,8 @@ In most cases only a single $u(t)$ is considered, and this is the pid-output $u=
 
 > [!Note]
 > in general it is hard to know if the observed closed-loop behavior $y_{meas}$,$u_{pid}$ 
-> is due to a process with large process gain and the $u_{pid}$ responding to large disturbances
-> or if the pid-controller is reacting to small disturbances for a process with small gains. 
+> is due to a process with large process gain combined with a large disturbances
+> or if the time-series is due to a small process gain and and a smaller disturbances. 
 
 Observations
 - Note that $y_{proc}$ is not directly observable unless the disturbance is zero.
@@ -101,6 +139,46 @@ no introduced excitation.** In some cases it will be impossible to determine a u
 useful if instead the method returned a range of possible values. 
 
 
+## Example: relationship between the time constant estimate and the shape of the estimated disturbance 
+
+### Step disturbance
+
+Consider a step disturbance applied to a linear system with a time constant $T_c=10s$ and gain $G=1.5$ as shown above:
+
+<img src="./images/clui/step_disturbance_dataset.png" alt="dataset" width="700" >
+
+It is important to understand how disturbance estimates will vary with different estimates of the time-constant, when 
+the estimated gain is close to but not exactly equal to the true gain (these estimates will be found with ``step0`` and ``step1`` algorithms
+below.)
+
+Given an estimate of the gain of $G=1.63$, the below image shows how the estimate of the disturbance $d_{est}$ varies with different process time-constants
+
+<img src="./images/clui/step_disturbance_pass1_step2_different_disturbanes_for_different_timeconstants.png" alt="dataset" width="700" >
+
+**Note that for the "true" value of the time constant $T_c=10$, $d_{est}$ has *the least transient dynamics*, but the farther off from this true value $T_c$ is,
+the more transient dynamics have "bled" into the disturbance estimate.** An algorithm that tries to minimize an objective function which describes the "cumulative amount of transient dynamics" in the disturbance estimate, could be a used to estimate the time-constant for a given process gain. 
+
+### Sinus disturbances
+
+Given as the same linear process above, apply instead a sinus disturbance, between periods of a flat disturbance
+
+<img src="./images/clui/sinus_disturbance_dataset.png" alt="dataset" width="700" >
+
+As above, we calculate the disturbance estimate for different estimates of the time constant $T_c$, for an initial gain estimate of $G=2.02$
+
+<img src="./images/clui/sinus_disturbance_pass1_step2_different_disturbances.png" alt="dataset" width="700" >
+
+**In the case of a sinus disturbance, the disturbance is continuously changing, and and it is no longer easy to discern which of the the above disturbances is 
+the least affected by process dynamics bleeding through. In fact, the disturbances for different time-constants have similar shapes, but the apparent amplitude changes (even thought the process gain is constant).**
+
+### Discussion
+
+- **It could seem that without abrupt changes in the "true" disturbance (like a step-change), it is hard to separate the effects of dynamics (like time-constants) and the effect of gain on the shape of the
+disturbance.**
+- **Conversely, if there is an abrupt change in the disturbance, it does seem possible to determine the process time constant of the model. An "abrupt change" does not have to be a planned excitation, but for many 
+pid-loops those kind of changes may occur intermittently during normal operations**. 
+- For the above synthetic examples, the $u_{pid}$, and $y_{sim} = d_{est} + y_{proc}$ are identical for all time-constants, so are not plotted. 
+Since they are identical, it is not obvious that they can be used to aid in the search for the most likely time-constant.
 
 ## Approach 
 
@@ -193,15 +271,6 @@ The number of total simulations across four passes is set to be around ~50, and 
 > the data set
 > - If the data has a insufficient level of excitation, it sometimes happens that the algorithm is unable to produce estimates in step1 and step2
 > that improve on step0. This is a strong indicator that identification should be re-done on another dataset at a later time.
-
-
-
-> [!Note]
-> **Outstanding issues of ``ClosedLoopUnitIdentifier``**
-> - the method does not use the supplied ``FittingSpecs`` to select indices to be ignored based on user-supplied minimum or maximums in inputs or outputs.
-> - the outlined final step of refining the identified model to also determine a time-delay is not implemented
-> - the method could conceivably be extended to include identification of even nonlinear process model terms, but this is not implemented.
-
 
 ### Step 0
 ##### The first, model-free estimate of the process gain
@@ -321,7 +390,7 @@ $$
 >- the objective space is fairly flat, the minimum has a fairly low "strength", i.e neighboring process gains have almost equally low objectives
 >- the objective space seems to be more concave ("stronger" i.e. more significant minimums) when the process gain is higher.
 
-**Step 1 algorithm:**
+**Step 1``minQ`` algorithm:**
 - given an initial process model (with a zero or nonzero time-constant) and an estimate of the PID-model(including $K_p$)
 - given a range $[G_{min}, G_{max}]$
 - for a number of gains $G$ between $G_{min}$ and $G_{max}$
@@ -361,7 +430,7 @@ then be modelled
 In step 2, the model found in step 1 is modified by attempting to add add larger and larger time constants to the identified model, and analyzing the ``accumulated absolute travel`` $Q$, 
 for the estimated disturbance vector $d_{est}$.
 
-**Step 2 algorithm:**
+**Step 2 ``minQ`` algorithm:**
 - given an initial process model (with a nonzero process gain)
 - if first pass:
 	- start at $T_c=0$
@@ -371,6 +440,36 @@ for the estimated disturbance vector $d_{est}$.
 - for subsequent passes:
 	- seek through $Q(d_{est}(T_c))$ for [0, T_{c,pass1}] (using ``PlantSimulator``)
 	- choose the $T_c$ with the lowest $Q(d_est{est}(T_c))$
+
+
+
+
+## Performance, conclusions and further work
+
+In unit tests summarize the expected performance for different types of use-cases
+- **step-disturbances** accuracy to within 5% is for static processes and 10% for dynamic processes are typical
+- **random-walk disturbances** accuracy to within 12-25% for static processes, but very poor accuracy for dynamic processes. 
+- **sinus-disturbances** poor accuracy for dynamic and static processes.
+- the method is able to remove data points to be ignored from the analysis (bad data points) and still succeed
+- the method does well even for multiple-input systems provided that there is excitation in the non-pid controlled inputs (in fact this appears to make estimation easier.)
+
+**Conclusions**
+- The algorithm seems to work well on certain types of common disturbances where the process is close to steady-state but then intermittently is excited (``step disturbances``).
+- The algorithm struggles if the disturbance is so "rich" that the system in fact never reaches steady-state(such as in the case of a random-walk or sinus). 
+- In situations where the algorithm does poorly, the algorithm is usually not able to improve on the ``step0`` initial estimate, 
+typically because global search does not reveal any minimum in any of the considered metrics in ``pass1``. 
+- If the method is unable to improve on the ``step0``, it is recommended to re-identify the model on other data until the algorithm converges over two passes. 
+
+**Further work**
+- look into adding other criteria for ``Pass1`` that can help the sequential optimization in situations where the existing 
+ "v1","v2","v3" and "v4" do not reveal any minima, and thus the heuristic estimate of ``Pass0`` may be returned. 
+
+- look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``) 
+
+> [!Note]
+> Some code related to multiple-input single output systems was commented out of ``ClosedLoopUnitIdentifier`` on a previous refactor. 
+> This code should be worked back into the use. 
+
 
 
 
@@ -405,29 +504,66 @@ $$d_{est}(t) \approx e(t)$$
 or even 
 $$d_{est}(t) \geq e(t)$$
 
+#### Step disturbance
 
-## Performance, conclusions and further work
+The same "step disturbance" example as higher in this section is revisited, and plotting $d_{LF}$ and $d_{HF}$, and their sum:
 
-In unit tests summarize the expected performance for different types of use-cases
-- **step-disturbances** accuracy to within 5% is for static processes and 10% for dynamic processes are typical
-- **random-walk disturbances** accuracy to within 12-25% for static processes, but very poor accuracy for dynamic processes. 
-- **sinus-disturbances** poor accuracy for dynamic and static processes.
-- the method is able to remove data points to be ignored from the analysis (bad data points) and still succeed
-- the method does well even for multiple-input systems provided that there is excitation in the non-pid controlled inputs (in fact this appears to make estimation easier.)
+<img src="./images/clui/step_disturbance_dLF_and_dHF.png" alt="step1 heuristic" width="1000" >
 
-**Conclusions**
-- The algorithm seems to work well on certain types of common disturbances where the process is close to steady-state but then intermittently is excited (``step disturbances``).
-- The algorithm struggles if the disturbance is so "rich" that the system in fact never reaches steady-state(such as in the case of a random-walk or sinus). 
-- In situations where the algorithm does poorly, the algorithm is usually not able to improve on the ``step0`` initial estimate, 
-typically because global search does not reveal any minimum in any of the considered metrics in ``pass1``. 
-- If the method is unable to improve on the ``step0``, it is recommended to re-identify the model on other data until the algorithm converges over two passes. 
+#### Sinus disturbance
 
-**Further work**
-- look into adding other criteria for ``Pass1`` that can help the sequential optimization in situations where the existing 
- "v1","v2","v3" and "v4" do not reveal any minima, and thus the heuristic estimate of ``Pass0`` may be returned. 
+The same "sinus disturbance" example as higher in this section is revisited, and plotting $d_{LF}$ and $d_{HF}$, and their sum:
 
-- look into the unit tests where it is attempted to estimate multiple-input single-output systems with non-zero disturbance.(``Static2Input_NOdisturbanceWITHsetpointChange_ExtUChanges_detectsProcessOk``) 
+<img src="./images/clui/sinus_disturbance_dLF_and_dHF.png" alt="step1 heuristic" width="1000" >
 
-> [!Note]
-> Some code related to multiple-input single output systems was commented out of ``ClosedLoopUnitIdentifier`` on a previous refactor. 
-> This code should be worked back into the use. 
+
+#### Discussion
+
+- In the step disturbance case, the maximal amplitude of $d_{LF}$ matches the amplitude of the true disturbance. This example illustrates how 
+$d_{LF}$ could for some disturbance provide hints on the magnitude of the process gain. So that 
+$$\max_t d_{LF}(t) \approx \max_t d_{HF}(t)$$ 
+- In the sinus disturbance case, it is far less obvious how to exploit these terms to aid in the selection of process model and disturbance estimate:
+	- $d_{LF}$ and $d_ {HF}$ and the true disturbance $d$ are all phase-shifted from one another
+	- the 
+	$$\max_t d_{LF}(t) \neq \max_t d_{HF}(t)$$ 
+
+
+#### Alternative $d_{LF}/d_{HF}$ algorithm 
+
+*The below method is under evaluation and included in latest builds on a trial basis*
+
+- if ``Pass1`` of the ``minQ``based algorithm above fail to yield a solution:
+- Repeat for a number of passes similar to the ``minQ`` algorithms above
+	- ``Step1``: attempt to find a gain $G$ so that the difference between $d_{HF}$ and $d_{LF}$ is minimized, holding $T_c$ constant
+	- ``Step2``: attempt to find a time-constant $T_c$ so that the difference between $d_{HF}$ and $d_{LF}$ is minimized, holding gain $G$ constant
+
+This method has been tested as a stand-in for the ``minQ`` method above in those cases where the ``step1`` of that algorithm is unable t
+determine any gain that corresponds to a local minimum of $Q$
+
+The observation in unit-test where the solution is known is that the ``step2`` of the method does appear to give promising estimates of the time-constant in 
+exactly those unit tests that are challenging for ``minQ`` method, such as when disturbances are random walks or sinuses. The ``step2`` method appears to work 
+better the better estimates of gains that it receives, and in that regard the challenge is that the ``step1`` algorithm in the $d_{LF}/d_{HF}$ does not appear to be 
+reliable. 
+
+Consider the unit test ``SinusDisturbance(0.8d,10)``(static, $G=0.8$)
+
+the below screenshots show how $d_{LF}$ varies for different gains in this alternative ``pass1`` and how the resulting $d_{est} = d_{HF} + d_{LF}$ looks.
+
+
+ <img src="./images/clui/sinus_disturbance_D_LF_example.png" alt="step1 heuristic" width="1000" >
+
+ <img src="./images/clui/sinus_disturbance_d_LF_example2.png" alt="step1 heuristic" width="1000" >
+
+
+Observations: 
+- All of these $d_{LF}$ choices for different process gain result in the same $y_{meas}$ and the same $u_{pid}$. 
+- All disturbances seem to go through **points of concurrency** (points where all potential disturbances lines for a given time constant meet.)
+- The amplitude of the $d_{est}$ changes for different gains, but so does the *phase*.
+- It should be obvious that selecting lines based on $Q(d_{est})$ would be pointless, as higher gains always result in lower cumulative absolute distance traveled.  
+
+Basically the bottom image is a *parametrization of the solution space* for $d_{est}$ in terms of process gain. The image shows how the process gain is the most
+significant parameter describing the disturbance signal, for a given dataset with a known control deviation $e(t)$. The candidate disturbances are roughly speaking similar in appearance, but
+they are scaled and phase-shifted versions of each other.  
+
+If some additional piece of information could be used to determine describe the phase or amplitude of the disturbance, even just for a brief time window, then this would allow
+choosing the most appropriate process gain. 

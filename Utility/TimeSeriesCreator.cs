@@ -124,7 +124,7 @@ namespace TimeSeriesAnalysis.Utility
 
 
         /// <summary>
-        /// Create a white-noise random time-series
+        /// Create a white-noise random time-series between -noiseAmplitude and +noiseAmplitude of length N. If seed is provided, the same noise will be generated each time for the same inputs.
         /// </summary>
         /// <param name="N"></param>
         /// <param name="noiseAmplitude"></param>

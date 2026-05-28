@@ -49,8 +49,8 @@ namespace TimeSeriesAnalysis
 
         /// <summary>
         /// Determines a score for how well a simulation fits with inputData. This can 
-        /// be compared over time to see any signs of degredation of the plant over time
-        /// 
+        /// be compared over time to see any signs of degradation of the plant over time, or used to aid in 
+        /// the selection of the "best" model structure, model parameters or both in a candidate set.
         /// </summary>
         /// <param name="plantSimObj"></param>
         /// <param name="inputData"></param>

@@ -403,7 +403,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
             var identifiedModel = new UnitModel();
 
-            var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, pidModel1.GetModelParameters(), pidInputIdx);
+            var estDisturbance = ClosedLoopUnitIdentifier.Identify(ref identifiedModel, pidDataSet, badIndicesHandling:default, pidParams: pidModel1.GetModelParameters(), pidInputIdx);
 
             Console.WriteLine(identifiedModel.ToString());
             Console.WriteLine();
@@ -413,7 +413,7 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
             {
                 CommonPlotAndAsserts(pidDataSet, estDisturbance, trueDisturbance, identifiedModel,
                     trueProcessModel, processGainAllowedOffsetPrc, 30,isStatic);
-            }
+            } 
         }
 
         void DisturbancesToString(double[] estDisturbance, double[] trueDisturbance)
