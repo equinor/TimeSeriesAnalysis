@@ -10,7 +10,7 @@ what works and what does not work.
 
 ### Capabilities 
 
-For static SISO models (see tests ``ClosdLoopUnitIdentifierTester_StaticSISO``):
+For static SISO models (see tests ``ClosedLoopIdentifierTester_StaticSISO``):
 - the method is able to determine that the process is steady(zero time constant), and gives acceptable estimates of process gain both in tests where 
 -- disturbance is a step or step-like
 -- disturbance is a random walk, 
