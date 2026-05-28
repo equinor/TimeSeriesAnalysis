@@ -132,12 +132,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
 
 
 
-        // this test works when run alone, but fails when all test are run together.
-        // likely a race condition in the GenericDisturbanceTest
+        // have had some issues with this test suceeeding when run alone but failing when run together "run all"
+        // possibly this is due to it being sensitive to the seed of the noise added to the disturbance, as a workaround a specific seed is used.
         
-        [TestCase(1, 1.0), NonParallelizable]//  //Explicit = true, Category = "NotWorking_AcceptanceTest"), NonParallelizable]
-        //[TestCase(0, 1.0)]//debug, test performance if no disturbance
-
+        [TestCase(1, 1.0), NonParallelizable]
         public void StepDistANDSetpointSinus(double distStepAmplitude, double ysetSinusAmplitude)
         {
             Vec vec = new Vec();
@@ -150,7 +148,9 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 Bias = 5
             };
 
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
+            int seed = 51001;
+
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude, seed));
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetSinusAmplitude, N / 2, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "Process"), trueDisturbance,

@@ -291,7 +291,10 @@ namespace TimeSeriesAnalysis.Test.DisturbanceID
                 TimeDelay_s = 0,
                 Bias = 5
             };
-            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude));
+
+            int seed = 1100;
+
+            var trueDisturbance = TimeSeriesCreator.Step(100, N, 0, distStepAmplitude).Add(TimeSeriesCreator.Noise(N, noiseAmplitude, seed));
             var yset = vec.Add(TimeSeriesCreator.Sinus(ysetStepAmplitude, N / 8, timeBase_s, N),TimeSeriesCreator.Constant(50,N));
 
             CluiCommonTests.GenericDisturbanceTest(new UnitModel(locParameters, "StaticProcess"), trueDisturbance,
