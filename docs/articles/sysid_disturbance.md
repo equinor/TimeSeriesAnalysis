@@ -14,12 +14,12 @@ For static SISO models (see tests ``ClosedLoopIdentifierTester_StaticSISO``):
 - the method is able to determine that the process is steady(zero time constant), and gives acceptable estimates of process gain both in tests where 
 -- disturbance is a step or step-like
 -- disturbance is a random walk, 
--- with or without accompaniying PID setpoint changes.
+-- with or without accompanying PID setpoint changes.
 
 For dynamic SISO models (see tests ``ClosedLoopIdentifierTester_DynamicSISO``):
 - the method is able to determine that the process is non-zero (non-zero time constant), and gives acceptable estimates for process gain and time constant 
 -- disturbance is a step or step-like
--- with or without accompaniying PID setpoint changes.
+-- with or without accompanying PID setpoint changes.
 
 For MISO systems (see tests ``ClosedLoopIdentifierTester_MISO``):
 - The solver is able to handle some MISO-cases in scenario tests
@@ -67,7 +67,7 @@ will attempt to combine the two as shown below
 
 <img src="./images/sysid_disturbance_ex3.png" alt="example, step3" width="400" >
 
-*The aim of this section is to develop an algorithm to estimate the the un-measured disturbance $d$
+*The aim of this section is to develop an algorithm to estimate the un-measured disturbance $d$
 indirectly based on the measured $u$ and $e$*
 
 

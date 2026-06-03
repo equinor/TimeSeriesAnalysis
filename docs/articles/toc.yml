@@ -106,7 +106,7 @@
           items:
             - name: Cascade control
               href: pid_cascade.md 
-            - name: Feedforward control
+            - name: Feed-forward control
               href: pid_feedforward.md
             - name: Gain-scheduling
               href: pid_gainscheduling.md
@@ -116,6 +116,10 @@
 
 - name: Data preprocessing
   href: data_preproc.md
+
+- name: Process modeling
+  href: process_modeling.md
+
 
 - name: List of known limitations 
   href: limitations.md
