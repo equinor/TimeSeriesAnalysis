@@ -56,7 +56,7 @@ A PID-loop consisting of a unit model and a PID will be referred to as a *"loop 
 
 ![Single-loop model](./images/loopmodel.png)
 
-For many loops, the setpoint is either a constant  or is itself the determined by another loop model in cascade control.
+For many loops, the setpoint is either constant or is determined by another loop model in cascade control.
 Then the only boundary condition that needs to be modeled is the disturbance signal. The disturbance signal can be determined once the process variable 
 measurement ``Y`` and the output of the PID ``U`` are known, and if a process model is assumed that relates ``U`` to ``X``, 
 then ``D = Y- X``.
