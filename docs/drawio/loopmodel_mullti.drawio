@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.50">
   <diagram id="fzO03wv9BZFiFF_Ac6_G" name="Page-1">
-    <mxGraphModel dx="1449" dy="1065" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1370" dy="1002" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -64,7 +64,7 @@
         <mxCell id="nUzw-Zuf8LoMZrGpods9-25" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="&lt;b&gt;Y_a&lt;/b&gt;" vertex="1">
           <mxGeometry height="30" width="30" x="300" y="370" as="geometry" />
         </mxCell>
-        <mxCell id="nUzw-Zuf8LoMZrGpods9-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" value="Propagation UnitModel" vertex="1">
+        <mxCell id="nUzw-Zuf8LoMZrGpods9-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" value="Propagation Model" vertex="1">
           <mxGeometry height="60" width="120" x="350" y="130" as="geometry" />
         </mxCell>
         <mxCell id="nUzw-Zuf8LoMZrGpods9-27" edge="1" parent="1" source="nUzw-Zuf8LoMZrGpods9-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=2;">
@@ -157,8 +157,26 @@
         <mxCell id="nUzw-Zuf8LoMZrGpods9-47" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="&lt;b&gt;Y_c&lt;/b&gt;" vertex="1">
           <mxGeometry height="30" width="30" x="700" y="450" as="geometry" />
         </mxCell>
-        <mxCell id="nUzw-Zuf8LoMZrGpods9-48" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" value="Propagation UnitModel" vertex="1">
+        <mxCell id="nUzw-Zuf8LoMZrGpods9-48" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" value="Propagation Model" vertex="1">
           <mxGeometry height="60" width="120" x="350" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="x9lVfQ2LbQ-bOCy7WZbQ-1" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;" target="nUzw-Zuf8LoMZrGpods9-26" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="440" y="80" as="sourcePoint" />
+            <mxPoint x="450" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x9lVfQ2LbQ-bOCy7WZbQ-2" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="450" y="410" as="sourcePoint" />
+            <mxPoint x="450" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x9lVfQ2LbQ-bOCy7WZbQ-3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="&lt;b&gt;External signals&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="30" x="440" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="x9lVfQ2LbQ-bOCy7WZbQ-4" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="&lt;b&gt;External signals&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="30" x="425" y="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

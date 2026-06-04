@@ -114,10 +114,10 @@
               href: pid_select.md
 
 
-- name: Data preprocessing
+- name: Data pre-processing
   href: data_preproc.md
 
-- name: Process modeling
+- name: Disturbance-driven modeling
   href: process_modeling.md
 
 

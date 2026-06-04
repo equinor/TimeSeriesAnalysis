@@ -1,10 +1,10 @@
-# Plant modeling
+# Disturbance-driven plant modeling
 
 To apply the identification and simulation methods of this library to real-world processes, which 
 may consist of equipment such as valves, compressors, heat-exchangers, may require 
 some context-specific adaptations. 
 
-## General considerations 
+## Plant modeling: General considerations 
 
 To apply the methods of this library to modeling larger plant, there are several techniques that need to be employed:
 - *regressor / input transformations* :capturing non-linearities by transforming inputs, for instance by raising the input to a power
@@ -15,8 +15,6 @@ What design choices are made during modeling may depend on the intended purpose 
 Use-cases can be broadly separated into
 - *"condition monitoring"* : the model is only intended to run concurrently with a given dataset
 - *"what-if" simulations*: the model is intended to be used to evaluate different hypothetical scenarios that don't match the given data(i.e. some variables are *free variables*).
-
-
 
 
 ### Boundary conditions
@@ -53,7 +51,7 @@ in longer computational times.
 
 ## Disturbance-driven modeling
 
-### Single-loop disturbance-driven modeling
+### Single-loop disturbance-driven modeling (DDM)
 
 A PID-loop consisting of a unit model and a PID will be referred to as a *"loop model"*. These models have a very interesting property:
 
@@ -73,16 +71,37 @@ A "loop model" as defined above is capable of "what-if" simulations given the ab
 is first determined by the given input signals ``Yset``, ``Y`` and ``U`` and the assumed process model. Then this disturbance signal is can	be used to simulate what-if scenarios
 where either the setpoint takes a different trajectory, or a different version of the PID model is used (such as different tuning.)
 
+> [!NOTE]
+>**Setpoint-driven modeling**
+> Traditionally, loops are determined by varying the *setpoint* and the disturbance is considered negligible, sometimes experiments are performed on the process at rest.
+> This is a valid approach, but the drawback is that such a tuning campaign is not always possible, it disturbs normal operation and thus comes with a significant costs, and
+> it also has a certain risk of causing a triggering the safety systems automatic shutdown.
 
-### Multi-loop disturbance-driven modeling
+
+### Multi-loop disturbance-driven modeling 
 
 In process systems, equipment is connected with downstream equipment, and especially in oil and gas, the main disturbance is the actual feed at the very upstream boundary.
-A further challenge is that this boundary is not directly measured. 
+The feed disturbance propagates through multiple loops, that collaborate to even out the disturbance, using buffer capacities of different capacity and also the travel time between equipment.  
+There is generally no measurement at the feed inlet, so the initial disturbance is unmeasured, but is observed indirectly by its consequences through the processing train. 
 
-In these kind of larger plants, it is sometimes observed that the disturbances propagate, and that the disturbance acting on the downstream loops is reliably correlated with signals on
-on one or more upstream loops. 
+Based on the problem description, it would be desirable if the single-loop disturbance driven modeling approach above could be extended to analyze multiple loops together.
+
+In general, simulating the propagation of disturbances across multiple loops would require "*propagation models*" that link process values of upstream loops with the disturbances of downstream loops,
+as shown below
+
 
 ![Multi-loop models](./images/loopmodel_multi.png)
+
+
+> [!NOTE]
+>**Propagation models**
+> - the choice of propagation model inputs is a design choice that *should* be informed by the topology of the process plant
+> - propagation models *should* ideally link to the measured process values of upstream loops
+> - propagation models *could* also include external non-loop signals as inputs(if necessary), but remember that for what-if simulations these inputs will need to be frozen, or they must themselves be modelled. 
+> - propagation models can link to *one* or *multiple* upstream loops 
+> - propagation models could be modeled using single or multiple ``UnitModel`` models, in which case parameters can be determined used ``UnitIdentifier``.
+> - propagation models will likely need to include transport delay. 
+
 
 
 
