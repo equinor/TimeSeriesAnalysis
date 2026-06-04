@@ -43,7 +43,7 @@ This represents a challenge for what-if simulation, as many physical quantities 
 - the heat transfer in heat exchangers
 - the pressure rise over a compressor
 
-Introducing mass rates into a plant model also causes a dilemma for the designer, as mass conservation requires adding algebraic equations to the a solver, which rules out explicit solvers and results 
+Introducing mass rates into a plant model also causes a dilemma for the designer, as mass conservation requires adding algebraic equations to a solver, which rules out explicit solvers and results 
 in longer computational times. 
 
 ## Disturbance-driven modeling
