@@ -1,8 +1,6 @@
 # Disturbance-driven plant modeling
 
-To apply the identification and simulation methods of this library to real-world processes, which 
-may consist of equipment such as valves, compressors, heat-exchangers, may require 
-some context-specific adaptations. 
+Applying the identification and simulation methods of this library to real-world processes—consisting of equipment such as valves, compressors, and heat exchangers—may require some context-specific adaptations.
 
 ## Plant modeling: General considerations 
 
