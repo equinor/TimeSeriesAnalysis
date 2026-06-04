@@ -4,10 +4,9 @@ Applying the identification and simulation methods of this library to real-world
 
 ## Plant modeling: General considerations 
 
-To apply the methods of this library to modeling larger plant, there are several techniques that need to be employed:
-- *regressor / input transformations* :capturing non-linearities by transforming inputs, for instance by raising the input to a power
-- *choice of inputs*: the choice of which input or inputs to use in modeling to predict each output is a design choice, and these choices will have implications 
-
+To apply the methods of this library to modeling a larger plant, several techniques may be needed:
+- *Regressor/input transformations*: capture non-linearities by transforming inputs, for instance by raising an input to a power.
+- *Choice of inputs*: selecting which input(s) to use to predict each output is a design choice, and these choices have implications for simulation boundary conditions.
 What design choices are made during modeling may depend on the intended purpose of the model. 
 
 Use-cases can be broadly separated into
