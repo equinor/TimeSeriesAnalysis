@@ -1,10 +1,11 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
-
 using TimeSeriesAnalysis;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
@@ -26,10 +27,15 @@ namespace TimeSeriesAnalysis._Examples
 
         public void CascadeControl_Ex()
         {
-            CascadeControl();
+            var dataExplicitDisturbance = CascadeControl_explicitDisturbance();
+
         }
 
-        public TimeSeriesDataSet CascadeControl()
+        /// <summary>
+        /// In this example, the cascade control structure is driven by an explicitly provided external signal
+        /// </summary>
+        /// <returns></returns>
+        public TimeSeriesDataSet CascadeControl_explicitDisturbance()
         {
             int N = 600;
             #region CascadeControl
@@ -69,12 +75,6 @@ namespace TimeSeriesAnalysis._Examples
             var pid2 = new PidModel(pidParameters2, "PID2");
 
             var sim = new PlantSimulator(new List<ISimulatableModel> { process1, process2, pid1, pid2 });
-
-         //  pid1.SetManualOutput(50);
-         //   pid1.SetToManualMode();
-
-         //   pid2.SetManualOutput(50);
-         //   pid2.SetToManualMode();
 
             sim.ConnectModels(process1, process2);
             sim.ConnectModels(process1, pid1);
@@ -571,16 +571,177 @@ namespace TimeSeriesAnalysis._Examples
                 new List<string> { "y1=y_sim", "y2=D", "y3=u_pid" },
                 timeBase_s, TestContext.CurrentContext.Test.Name );
             Shared.DisablePlots();
-    
-
-
-
         }
 
+        [Test, Explicit]
+        public void DisturbanceModeling_TwoLoops_Ex()
+        {
+            int N = 600;
+            #region CascadeControl
+
+            var processParameters1 = new UnitParameters
+            {
+                TimeConstant_s = 2,//rapid
+                LinearGains = new double[] { 1.1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 0,
+                Bias = 50
+            };
+
+            var processParameters2 = new UnitParameters
+            {
+                TimeConstant_s = 30,//slow
+                LinearGains = new double[] { 1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 5,
+                Bias = 50
+            };
+            var pidParameters1 = new PidParameters()
+            {
+                Kp = 1.5,
+                Ti_s = 52 
+            };
+            var pidParameters2 = new PidParameters()
+            {
+                Kp = 1,
+                Ti_s = 40 
+            };
+            var process1
+                = new UnitModel(processParameters1, "Process_Loop1");
+            var process2
+                = new UnitModel(processParameters2, "Process_Loop2");
+            var pid1 = new PidModel(pidParameters1, "PID_Loop1");
+            var pid2 = new PidModel(pidParameters2, "PID_Loop2");
+
+            var sim = new PlantSimulator(new List<ISimulatableModel> { process1, process2, pid1, pid2 });
+
+            sim.ConnectModels(process1, pid1);
+            sim.ConnectModels(pid1, process1);
+
+            sim.ConnectModels(process2, pid2);
+            sim.ConnectModels(pid2,process2);
+
+            var inputData = new TimeSeriesDataSet();
+
+            inputData.Add(sim.AddExternalSignal(pid1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.Add(sim.AddExternalSignal(pid2, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+      
+            // specify disturbances
+            inputData.Add(sim.AddExternalSignal(process1, SignalType.Disturbance_D), TimeSeriesCreator.Step(300, N, 0, 1));// Step happens earlier
+            inputData.Add(sim.AddExternalSignal(process2, SignalType.Disturbance_D), TimeSeriesCreator.Step(350, N, 0, 1));// Step happens later
+            inputData.CreateTimestamps(timeBase_s, N);
+
+            var isOK = sim.Simulate(inputData, out var simResult);
 
 
+         //   Shared.EnablePlots();
+            Plot.FromList(new List<double[]>
+                {
+                simResult.GetValues(process1.GetID(),SignalType.Output_Y),
+                simResult.GetValues(process2.GetID(),SignalType.Output_Y),
+                inputData.GetValues(pid2.GetID(),SignalType.Setpoint_Yset),
+                simResult.GetValues(pid1.GetID(),SignalType.PID_U),
+                simResult.GetValues(pid2.GetID(),SignalType.PID_U)
+                },
+                new List<string> { "y1=y1", "y2=y2[right]", "y2=y2_set[right]", "y3=u1", "y4=u2[right]" },
+                timeBase_s, "DisturbanceModeling_Ex");
+            //  Shared.DisablePlots();
 
 
+            ///////////////////////////////////////////////////////////////////////////////////////
+            ///STEP 2
+            // now in simData there exists "realistic" pv Y and mv values U that correspond to two 
+            // step disturbances. 
+            // next, we want to demonstrate using just this measured data the PlantSimulator is able to re-estimate the disturbances
+
+            var signalNames = new List<string>();
+            signalNames.Add(SignalNamer.GetSignalName(pid1.GetID(), SignalType.PID_U, 0));
+            signalNames.Add(SignalNamer.GetSignalName(pid2.GetID(), SignalType.PID_U, 0));
+            signalNames.Add(SignalNamer.GetSignalName(pid1.GetID(), SignalType.Setpoint_Yset, 0));
+            signalNames.Add(SignalNamer.GetSignalName(pid2.GetID(), SignalType.Setpoint_Yset, 0));
+            signalNames.Add(SignalNamer.GetSignalName(process1.GetID(), SignalType.Output_Y, 0));
+            signalNames.Add(SignalNamer.GetSignalName(process2.GetID(), SignalType.Output_Y, 0));
+
+            var inputDataStep2 = new TimeSeriesDataSet();
+            foreach (var signalName in signalNames)
+            {
+                if (simResult.ContainsSignal(signalName))
+                    inputDataStep2.Add(signalName, simResult.GetValues(signalName));
+                else if (inputData.ContainsSignal(signalName))
+                    inputDataStep2.Add(signalName, inputData.GetValues(signalName));
+            }
+
+            inputDataStep2.SetTimeStamps(inputData.GetTimeStamps().ToList());
+
+            var isOK2 = sim.Simulate(inputDataStep2, out var simResultStep2);
+
+            //Shared.EnablePlots();
+            Plot.FromList(new List<double[]>
+                {
+                simResultStep2.GetValues(process1.GetID(),SignalType.Disturbance_D),
+                inputData.GetValues(process1.GetID(),SignalType.Disturbance_D),
+                simResultStep2.GetValues(process2.GetID(),SignalType.Disturbance_D),
+                inputData.GetValues(process2.GetID(),SignalType.Disturbance_D)
+                },
+                new List<string> { "y1=D1_step1", "y1=D1_step2", "y3=D2_step1", "y3=D2_step2"},
+                    timeBase_s, "DisturbanceModeling_Ex_Step2");
+            //Shared.DisablePlots();
+            // Note that the PlantSimulator has been able to re-create the disturbances for both loops 
+
+            //////////////////////////////////////////////////////////////////////////////////////////
+            /// Step 3
+            /// In the third step, a new PlantSimulator is built, where the disturbance on loop2 is modeled from 
+            /// signals from loop 1
+            /// 
+
+            var distModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 1 },
+                U0 = new double[] { 50 },
+                TimeDelay_s = 50,
+                Bias = 0
+            };
+
+            var distModel = new UnitModel(distModelParameters, "DistModel");
+
+            var simStep3 = new PlantSimulator(new List<ISimulatableModel> { process1, process2, pid1, pid2, distModel });
+
+            simStep3.ConnectModels(process1, pid1);
+            simStep3.ConnectModels(pid1, process1);
+
+            simStep3.ConnectModels(process2, pid2);
+            simStep3.ConnectModels(pid2, process2);
+
+            simStep3.ConnectModels(process1, distModel);
+            //NB! the above line appears to add a _second_ additive input to the model, 
+            // things to try: - rename the output of distModel to "_D_process2"
+
+            simStep3.ConnectModelToOutput(distModel,process2); //NB! note a different method is used to connect this signal
+
+            var isOK3 = simStep3.Simulate(inputDataStep2, out var simResultStep3);
+
+            Shared.EnablePlots();
+            Plot.FromList(new List<double[]>
+                {
+                simResultStep2.GetValues(process1.GetID(),SignalType.Disturbance_D),
+                inputData.GetValues(process1.GetID(),SignalType.Disturbance_D),
+                simResultStep2.GetValues(process2.GetID(),SignalType.Disturbance_D),
+                inputData.GetValues(process2.GetID(),SignalType.Disturbance_D),
+                simResultStep2.GetValues(process1.GetID(),SignalType.Output_Y),
+                simResultStep2.GetValues(process2.GetID(),SignalType.Output_Y),
+                simResultStep2.GetValues(distModel.GetID(),SignalType.Output_Y),
+                },
+                new List<string> { "y1=D1_step1", "y1=D1_step2", "y2=D2_step1", "y2=D2_step2","y3=y_proc1", "y3=y_proc2", "y3=y_distmodel" },
+                    timeBase_s, "DisturbanceModeling_Ex_Step3");
+            Shared.DisablePlots();
+
+            #endregion
+
+            Assert.IsTrue(isOK);
+            Assert.IsTrue(isOK2);
+            Assert.IsTrue(isOK3);
+        }
 
     }
 }
