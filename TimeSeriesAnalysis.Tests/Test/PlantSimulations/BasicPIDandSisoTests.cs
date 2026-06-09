@@ -30,10 +30,13 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         UnitModel processModel1;
         UnitModel processModel2;
         UnitModel processModel3;
+        UnitModel staticModel;
         PidParameters pidParameters1;
         PidModel pidModel1;
         PidParameters pidParameters2;
         PidModel pidModel2;
+
+        UnitParameters staticModelParameters;
 
         [SetUp]
         public void SetUp()
@@ -62,9 +65,20 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 Bias = 5
             };
 
+            staticModelParameters = new UnitParameters
+            {
+                TimeConstant_s = 0,
+                LinearGains = new double[] { 1 },
+                TimeDelay_s = 0,
+                Bias = 0
+            };
+
+
             processModel1 = new UnitModel(modelParameters1, "SubProcess1");
             processModel2 = new UnitModel(modelParameters2, "SubProcess2");
             processModel3 = new UnitModel(modelParameters3, "SubProcess3");
+            staticModel = new UnitModel(staticModelParameters, "Static");
+
 
             pidParameters1 = new PidParameters()
             {
@@ -402,29 +416,29 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             /// 
             {
                 var plantSim = new PlantSimulator(
-                   new List<ISimulatableModel> { pidModel1, processModel1, processModel2 });//note: second process-model
+                   new List<ISimulatableModel> { pidModel1, processModel1, staticModel });//note: second process-model
                 plantSim.ConnectModels(processModel1, pidModel1);
                 plantSim.ConnectModels(pidModel1, processModel1);
-                plantSim.ConnectModels(processModel1, processModel2);
+                plantSim.ConnectModels(processModel1, staticModel);
 
                 var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
                 Assert.IsTrue(isOk);
 
-                AssertHasValuesAndIsNotNullOrNan(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D),N);
-                AssertHasValuesAndIsNotNullOrNan(simData.GetValues(processModel2.GetID(), SignalType.Output_Y), N);
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D),N);
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
             }
 
             ///////////////////////////////////////////////////////////////////
-            /// step3 is to make a plant with two loops and connect the disturbances
+            /// step3 is to make a plant with one loop and a modeled disturbance that connects to the output of a third processmodel 
             /// the PlantSimulator will have to create the disturbance signal and then use that to simulate the downstream output of processModel2
             /// 
             {
                 var plantSim = new PlantSimulator(
-                   new List<ISimulatableModel> { pidModel1, processModel1, processModel2, processModel3 });//note: third process model
+                   new List<ISimulatableModel> { pidModel1, processModel1, staticModel, processModel3 });//note: third process model
                 plantSim.ConnectModels(processModel1, pidModel1);
                 plantSim.ConnectModels(pidModel1, processModel1);
-                plantSim.ConnectModels(processModel1, processModel2);
-                plantSim.ConnectModelToOutput(processModel2,processModel3);
+                plantSim.ConnectModels(processModel1, staticModel);
+                plantSim.ConnectModelToOutput(staticModel, processModel3);
 
                 var inputId = "ProcessModel3_extU";
 
@@ -435,25 +449,53 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
                 Assert.IsTrue(isOk);
 
-                AssertHasValuesAndIsNotNullOrNan(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
-                AssertHasValuesAndIsNotNullOrNan(simData.GetValues(processModel2.GetID(), SignalType.Output_Y), N);
-                AssertHasValuesAndIsNotNullOrNan(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
             }
 
 
+            ///////////////////////////////////////////////////////////////////
+            /// step4 is to make a plant with two full loops, 
+            /// the PlantSimulator will have to create the disturbance signal and then use that to simulate the downstream output of processModel2
+            /// 
+            {
+                var plantSim = new PlantSimulator(
+                   new List<ISimulatableModel> { pidModel1, processModel1, staticModel, processModel3, pidModel2 });//note: third process model
+                plantSim.ConnectModels(processModel1, pidModel1);
+                plantSim.ConnectModels(pidModel1, processModel1);
+                
+                plantSim.ConnectModels(processModel1, staticModel);
+                plantSim.ConnectModelToOutput(staticModel, processModel3);
 
+                plantSim.ConnectModels(pidModel2, processModel3);
+                plantSim.ConnectModels(processModel3,pidModel2 );
 
+                var setpointId = SignalNamer.GetSignalName(pidModel2.GetID(), SignalType.Setpoint_Yset);
+                inputData.Add(setpointId, TimeSeriesCreator.Constant(50,N));
+                plantSim.AddExternalSignal(pidModel2, SignalType.Setpoint_Yset);
+                var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+                Assert.IsTrue(isOk);
+
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
+            }
 
         }
 
-        void AssertHasValuesAndIsNotNullOrNan(double[] values, int Nexpected)
+        void AssertHasValuesAndIsNotNullOrNanOrFlat(double[] values, int Nexpected)
         {
             Assert.IsNotNull(values);
             Assert.IsTrue(values.Count() == Nexpected);
             foreach (var value in values)
             {
-                Assert.That(value != Double.NaN);
+                Assert.That(Double.IsNaN(value),"value should not be nan");
+                Assert.That(Double.IsInfinity(value), "value should not be inf");
             }
+            Assert.That(!Vec<double>.IsConstant(values),"value should not be flat/constant");
+
+
         }
 
 
