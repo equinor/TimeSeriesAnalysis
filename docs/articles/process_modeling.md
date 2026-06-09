@@ -77,7 +77,8 @@ where either the setpoint takes a different trajectory, or a different version o
 
 ### Multi-loop disturbance-driven modeling 
 
-In process systems, equipment is connected with downstream equipment, and especially in oil and gas, the main disturbance is the actual feed at the very upstream boundary.
+**Unmeasured inlet disturbances**
+In process systems, equipment is connected with downstream equipment, and especially in oil and gas, *the main disturbance is the actual feed at the very upstream boundary*.
 The feed disturbance propagates through multiple loops, that collaborate to even out the disturbance, using buffer capacities of different capacity and also the travel time between equipment.  
 There is generally no measurement at the feed inlet, so the initial disturbance is unmeasured, but is observed indirectly by its consequences through the processing train. 
 
@@ -89,24 +90,63 @@ as shown below
 
 ![Multi-loop models](./images/loopmodel_multi.png)
 
-
 > [!NOTE]
 >**Propagation models**
 > - the choice of propagation model inputs is a design choice that *should* be informed by the topology of the process plant
-> - propagation models *should* ideally link to the measured process values of upstream loops
+> - propagation models *could* ideally use to the process value $y$, and/or the PID-output $u$ of upstream loops as input or inputs
 > - propagation models *could* also include external non-loop signals as inputs(if necessary), but remember that for what-if simulations these inputs will need to be frozen, or they must themselves be modelled. 
 > - propagation models can link to *one* or *multiple* upstream loops 
-> - propagation models could be modeled using single or multiple ``UnitModel`` models, in which case parameters can be determined used ``UnitIdentifier``.
+> - propagation models could be modeled using single or multiple ``UnitModel`` models, in which case parameters can be determined using ``UnitIdentifier``.
 > - propagation models will likely need to include transport delay. 
 
 
 
+### Choosing the inputs of propagation models
 
 
 
+**Using the PID-output $u$** 
+The influence of disturbances are short-lived at the output $y$ of loops, instead the PID-controller moves the disturbance to the PID-output $u$
+and for this reason these signals are the natural first choice when attempting to design propagation models.
 
+> [!NOTE]
+>**PlantSimulator limitation**
+> Currently version of the ``PlantSimulator`` does not supports using the process value $y$ as input to the propagation model, but this can 
+> be remedied in future version. 
 
+**Using correlation analysis**
+The ``CorrelationCalculator`` can be used to investigate the correlation between estimated disturbance $D$ of a downstream loop and a large batch of other process variables. A high correlation may give a hint at causal links, but does not guaranteed causality(see below.) 
 
+**Using time-domain analysis (time-delays and/or time-constants)**
+As we expect transport delays from upstream causes to downstream effects, the analysis of correlations can be supplemented with identification of
+any such transport delays. This could be accomplished by simply attempting to fit a ``UnitModel`` using the ``UnitIdentifier`` from each 
+highly correlated signal to the estimated disturbance $D$.
+The ``CorrelationCalculator`` does this kind of analysis as standard and will return time delays and time constants when found.
+(note that even if nonzero time delay or time constants are found, causality is not guaranteed.)
+
+**Using knowledge of process topology**
+The process topology is generally known from process diagrams, and this can be used either as the primary method of establishing propagation, or it can be used
+after the fact as validation. 
+
+**Avoid co-linear variables**
+The dataset of given time-series in a process plant that is tightly coupled and has multiple feedback loops, will likely contain a number of signals that are 
+both highly correlated with the disturbance $D$ but *also with each other*.
+Normal principles of system identification applies when designing propagation models, highly collinear input variables in the same model often results in 
+ambiguous choice of parameters, and often adding extra co-linear input variables does not improve the prediction accuracy of identified models. A good approach
+is often to start with a single input and argue in additional inputs by documenting improved model predictions (preferably on fresh validation data sets.)
+
+**External (non-PID) signals**
+Some signals not related to PID-control can probably in some cases improve propagation models. This could for instance be tags that describe routing or other on/off status
+of equipment. 
+
+> [!NOTE]
+>**On adding external signals**
+>If intending to use the resulting multi-loop disturbance driven model to simulate "what if" scenarios, then any external signals added to propagation models (or anywhere else 
+>in the model for that matter) will either need to kept frozen, or changed as part of the "what-if" scenario. Adding pressures, flow or temperatures that fluctuate with the internal 
+>variables of the model may limit the ability to do "what-if" simulations, so this is perhaps best reserved for boundary conditions that are used-specified and stationary like routing. 
+
+**Nonlinearity**
+When attempting to model propagation, the models returned by ``UnitIdentifier`` *can* and often *are* locally nonlinear. 
 
 
 

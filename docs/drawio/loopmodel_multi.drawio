@@ -208,17 +208,17 @@
         <mxCell id="rxwtbpwcY3zWA3ehpqC0-6" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="&lt;b&gt;U_2&lt;/b&gt;" vertex="1">
           <mxGeometry height="30" width="30" x="700" y="145" as="geometry" />
         </mxCell>
-        <mxCell id="rxwtbpwcY3zWA3ehpqC0-7" edge="1" parent="1" source="nUzw-Zuf8LoMZrGpods9-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;strokeWidth=2;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="nUzw-Zuf8LoMZrGpods9-48">
+        <mxCell id="rxwtbpwcY3zWA3ehpqC0-7" edge="1" parent="1" source="nUzw-Zuf8LoMZrGpods9-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=2;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="nUzw-Zuf8LoMZrGpods9-48">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="380" y="430" />
+              <mxPoint x="380" y="410" />
             </Array>
             <mxPoint x="490" y="500" as="sourcePoint" />
             <mxPoint x="370" y="430" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="rxwtbpwcY3zWA3ehpqC0-8" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="&lt;b&gt;U_a&lt;/b&gt;" vertex="1">
-          <mxGeometry height="40" width="20" x="310" y="380" as="geometry" />
+          <mxGeometry height="30" width="30" x="300" y="380" as="geometry" />
         </mxCell>
         <mxCell id="rxwtbpwcY3zWA3ehpqC0-9" edge="1" parent="1" source="nUzw-Zuf8LoMZrGpods9-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;strokeWidth=2;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="nUzw-Zuf8LoMZrGpods9-48">
           <mxGeometry relative="1" as="geometry">
