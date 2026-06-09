@@ -714,12 +714,17 @@ namespace TimeSeriesAnalysis._Examples
             simStep3.ConnectModels(pid2, process2);
 
             simStep3.ConnectModels(process1, distModel);
+          
+
             //NB! the above line appears to add a _second_ additive input to the model, 
             // things to try: - rename the output of distModel to "_D_process2"
 
-            simStep3.ConnectModelToOutput(distModel,process2); //NB! note a different method is used to connect this signal
+//            simStep3.ConnectModelToOutput(distModel,process2); //NB! note a different method is used to connect this signal
 
+            process2.additiveInputIDs[0] = distModel.GetOutputID();
+              
             var isOK3 = simStep3.Simulate(inputDataStep2, out var simResultStep3);
+
 
             Shared.EnablePlots();
             Plot.FromList(new List<double[]>

@@ -12,6 +12,7 @@ using System.Globalization;
 
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
+using NuGet.Frameworks;
 
 namespace TimeSeriesAnalysis.Test.PlantSimulations
 {
@@ -318,6 +319,104 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         //    Assert.IsTrue(isOk2);
 
         }
+
+        [Test]
+        public void BasicPIDwithProcessConnectedToOutput_SpecifiedDisturbanceSignal_RunsAndConverges()
+        {
+            double disurbanceStartValue = 0;
+            var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1, processModel2 });
+            plantSim.ConnectModels(processModel1, pidModel1);
+            plantSim.ConnectModels(pidModel1, processModel1);
+            plantSim.ConnectModels(processModel1, processModel2);
+
+            var inputData = new TimeSeriesDataSet();
+            var distID = plantSim.AddExternalSignal(processModel1, SignalType.Disturbance_D);
+            inputData.Add(distID, TimeSeriesCreator.Step(N / 4, N, disurbanceStartValue, disurbanceStartValue + 1));
+            inputData.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+            inputData.CreateTimestamps(timeBase_s);
+            var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+
+        //    Shared.EnablePlots();
+            Plot.FromList(new List<double[]> {
+                simData.GetValues(processModel1.GetID(),SignalType.Output_Y),
+                simData.GetValues(pidModel1.GetID(),SignalType.PID_U),
+                inputData.GetValues(processModel1.GetID(),SignalType.Disturbance_D) },
+                new List<string> { "y1=y_sim1", "y3=u", "y4=d" },
+                timeBase_s, "BasicPIDwithProcessConnectedToOutput_RunsAndConverges");
+     //       Shared.DisablePlots();
+    
+            Assert.IsTrue(isOk);
+
+            Assert.That(simData.GetValues(processModel2.GetID(), SignalType.Output_Y) != null);
+            Assert.That(simData.GetValues(processModel2.GetID(), SignalType.Output_Y).Count() ==  N);
+            Assert.That(simData.GetValues(processModel2.GetID(), SignalType.Output_Y)[0] != double.NaN);
+
+        }
+
+
+        [Test]
+        public void BasicPIDwithProcessConnectedToOutput_EstimatedDisturbanceSignal_RunsAndConverges()
+        {
+            //////////////////////////////////////////////////
+            ///  first we need to simulate with known disturbance, to get the y and u signals 
+            var inputData = new TimeSeriesDataSet();
+            {
+                var plantSim = new PlantSimulator(
+                new List<ISimulatableModel> { pidModel1, processModel1 });
+                plantSim.ConnectModels(processModel1, pidModel1);
+                plantSim.ConnectModels(pidModel1, processModel1);
+
+                var inputDataLoc = new TimeSeriesDataSet();
+                var distID = plantSim.AddExternalSignal(processModel1, SignalType.Disturbance_D);
+                inputDataLoc.Add(distID, TimeSeriesCreator.Step(N / 4, N, 0, 0 + 1));
+                inputDataLoc.Add(plantSim.AddExternalSignal(pidModel1, SignalType.Setpoint_Yset), TimeSeriesCreator.Constant(50, N));
+                inputDataLoc.CreateTimestamps(timeBase_s);
+                var isOk = plantSim.Simulate(inputDataLoc, out TimeSeriesDataSet simData);
+
+                var combinedData = inputDataLoc.Combine(simData);
+                var signals = new List<string>();
+                // add just y, u, and setpoint, but importantly don't add the disturbance!
+                signals.Add(SignalNamer.GetSignalName(processModel1.GetID(), SignalType.Output_Y));
+                signals.Add(SignalNamer.GetSignalName(pidModel1.GetID(), SignalType.Setpoint_Yset));
+                signals.Add(SignalNamer.GetSignalName(pidModel1.GetID(), SignalType.PID_U));
+                foreach (var signal in signals)
+                    inputData.Add(signal, combinedData.GetValues(signal));
+                inputData.SetTimeStamps(combinedData.GetTimeStamps().ToList());
+
+            }
+            //
+            ///////////////////////////////////////////////////////////////////
+            /// step2 is to simulate the system without applying the disturbance explicitly, 
+            /// the PlantSimulator will have to create the disturbance signal and then use that to simulate the downstream output of processModel2
+            /// 
+            {
+                var plantSim = new PlantSimulator(
+                   new List<ISimulatableModel> { pidModel1, processModel1, processModel2 });
+                plantSim.ConnectModels(processModel1, pidModel1);
+                plantSim.ConnectModels(pidModel1, processModel1);
+                plantSim.ConnectModels(processModel1, processModel2);
+
+                var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
+                Assert.IsTrue(isOk);
+
+                AssertHasValuesAndIsNotNullOrNan(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D),N);
+                AssertHasValuesAndIsNotNullOrNan(simData.GetValues(processModel2.GetID(), SignalType.Output_Y), N);
+
+            }
+        }
+
+        void AssertHasValuesAndIsNotNullOrNan(double[] values, int Nexpected)
+        {
+            Assert.IsNotNull(values);
+            Assert.IsTrue(values.Count() == Nexpected);
+            foreach (var value in values)
+            {
+                Assert.That(value != Double.NaN);
+            }
+        }
+
+
 
         [TestCase(true)]
         [TestCase(false)]
