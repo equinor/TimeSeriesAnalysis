@@ -475,12 +475,23 @@ namespace TimeSeriesAnalysis
             {
                 return true;
             }
+            if (array.Length == 0)
+                return false;
+
             int count = 0;
-            while (IsNaN(array[count]) && count < array.Length - 1)
+            bool doContinue = true;
+            while (doContinue && IsNaN(array[count]) )
             {
                 count++;
+                if (count >= array.Length)
+                {
+                 doContinue = false;
+                }
             }
-            if (count >= array.Length - 1)
+            if (count == 0)
+                return false;
+
+            if (count >= array.Length )
             {
                 return true;
             }

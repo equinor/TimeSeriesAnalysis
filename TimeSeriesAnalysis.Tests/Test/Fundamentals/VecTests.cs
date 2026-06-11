@@ -111,6 +111,37 @@ namespace TimeSeriesAnalysis.Test.Fundamentals
             Assert.AreEqual(idx, idxExp);
         }
 
+        [TestCase(1)]
+        [TestCase(3)]
+        [TestCase(10)]
+        public void IsAllNan_isTrueOk(int nVals)
+        {
+            double[] vec = Vec<double>.Fill(double.NaN, nVals);
+            bool isAllNan = (new Vec()).IsAllNaN(vec);
+            Assert.AreEqual(true,isAllNan);
+        }
+
+        [TestCase(1)]
+        [TestCase(3)]
+        [TestCase(10)]
+        public void IsAllNan_isFalseOk(int nVals)
+        {
+            double[] vec = Vec<double>.Fill(1, nVals);
+            bool isAllNan = (new Vec()).IsAllNaN(vec);
+            Assert.AreEqual(false, isAllNan);
+        }
+
+        [Test]
+        public void IsAllNan_emptyArrayOk()
+        {
+            double[] vec = new double[0];
+            bool isAllNan = (new Vec()).IsAllNaN(vec);
+            Assert.AreEqual(false, isAllNan);
+        }
+
+
+
+
         [Test]
         public void Mean_isOk()
         {
