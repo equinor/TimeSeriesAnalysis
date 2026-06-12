@@ -283,7 +283,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]
-        [TestCase(4, Description = "an adidtional processmodel3 outside the pid loop is connected to processmodel1")]
+        [TestCase(4, Description = "an additional processmodel3 outside the pid loop is connected to processmodel1")]
         public void PIDandSerial2_RunsAndConverges(int ver)
         {
             List<ISimulatableModel> modelList = new List<ISimulatableModel>();

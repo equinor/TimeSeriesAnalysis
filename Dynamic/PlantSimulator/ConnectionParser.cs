@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -179,6 +179,125 @@ namespace TimeSeriesAnalysis.Dynamic
             return compLoopDict;
         }
 
+        /// <summary>
+        /// Attempt to re-write into the determination of calculation order into a much simpler logic by
+        /// leveraging GetAllUpstreamModels_All.
+        /// </summary>
+        /// <param name="modelDict"></param>
+        /// <returns></returns>
+        public (List<string>, Dictionary<string, List<string>>) InitAndDetermineCalculationOrderOfModels(
+                Dictionary<string, ISimulatableModel> modelDict)
+        {
+            Init(modelDict);
+            Dictionary<string, List<string>> computationalLoopDict = FindComputationalLoops(modelDict);
+
+            List<string> orderedModelAndLoopIDs = new List<string>();
+            // HashSet gives O(1) Contains/Remove since order does not matter for unprocessed tracking
+            HashSet<string> unprocessedModels = new HashSet<string>(modelDict.Keys);
+
+            // Add all root models (no transitive upstream at all)
+            foreach (var model in modelDict.Keys)
+            {
+                if (GetAllUpstreamModels_All(model).Count == 0)
+                {
+                    orderedModelAndLoopIDs.Add(model);
+                    unprocessedModels.Remove(model);
+                }
+            }
+
+            int loopCounter = 0;
+            bool doContinue = true;
+            while (doContinue)
+            {
+                loopCounter++;
+                bool madeProgress = false;
+
+                // Pass 1: add any model whose direct upstream models are all already resolved
+                foreach (var model in unprocessedModels.ToList())
+                {
+                    if (DoesModelDependOnlyOnGivenModels(model, orderedModelAndLoopIDs))
+                    {
+                        orderedModelAndLoopIDs.Add(model);
+                        unprocessedModels.Remove(model);
+                        madeProgress = true;
+                    }
+                }
+
+                // Pass 2: if stuck, break PID feedback loops by adding PIDs whose upstream PIDs are all resolved.
+                // PIDs read from the previous timestep so they can be computed before the process model they control.
+                if (!madeProgress && unprocessedModels.Count > 0)
+                {
+                    foreach (var modelID in unprocessedModels.ToList())
+                    {
+                        if (!madeProgress)
+                        { 
+                            // if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
+                            {
+                                bool hasUnresolvedUpstreamPID = GetAllUpstreamModels_All(modelID)
+                                    .Any(u => unprocessedModels.Contains(u)
+                                            && modelDict.ContainsKey(u)
+                                            && modelDict[u].GetProcessModelType() == ModelType.PID);
+
+                                if (!hasUnresolvedUpstreamPID)
+                                {
+                                    orderedModelAndLoopIDs.Add(modelID);
+                                    unprocessedModels.Remove(modelID);
+                                    madeProgress = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Pass 3: if still stuck, add algebraic/computational loop groups whose external upstreams are resolved
+                if (!madeProgress && unprocessedModels.Count > 0)
+                {
+                    foreach (var loop in computationalLoopDict)
+                    {
+                        var modelsInLoop = new HashSet<string>(loop.Value);
+                        if (!modelsInLoop.Any(m => unprocessedModels.Contains(m)))
+                            continue;
+
+                        bool allExternalUpstreamsResolved = true;
+                        foreach (var modelInLoop in loop.Value)
+                        {
+                            foreach (var upstream in GetAllUpstreamModels_All(modelInLoop))
+                            {
+                                if (!modelsInLoop.Contains(upstream) && !orderedModelAndLoopIDs.Contains(upstream))
+                                {
+                                    allExternalUpstreamsResolved = false;
+                                    break;
+                                }
+                            }
+                            if (!allExternalUpstreamsResolved) break;
+                        }
+
+                        if (allExternalUpstreamsResolved)
+                        {
+                            foreach (var modelInLoop in loop.Value)
+                            {
+                                if (unprocessedModels.Contains(modelInLoop))
+                                {
+                                    orderedModelAndLoopIDs.Add(modelInLoop);
+                                    unprocessedModels.Remove(modelInLoop);
+                                    madeProgress = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (unprocessedModels.Count == 0 || !madeProgress || loopCounter > 200)
+                    doContinue = false;
+            }
+
+            if (unprocessedModels.Count > 0)
+                Shared.GetParserObj().AddError("ConnectionParser.InitAndDetermineCalculationOrderOfModels() did not parse all models.");
+
+            return (orderedModelAndLoopIDs, computationalLoopDict);
+        }
+
+
 
 
         /// <summary>
@@ -186,9 +305,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <returns>returns the <see langword="string"/> of sorted model IDs, the order in which modelDict models are to be run.
         /// If the plant contains computational loops, the IDs of the computational loops are also in these lists instead of 
-        /// the indivudal models. 
+        /// the individual models. 
         /// </returns>
-        public (List<string>, Dictionary<string, List<string>>) InitAndDetermineCalculationOrderOfModels(
+        public (List<string>, Dictionary<string, List<string>>) InitAndDetermineCalculationOrderOfModels_old(
             Dictionary<string, ISimulatableModel> modelDict)
         {
             Init(modelDict);
@@ -207,7 +326,7 @@ namespace TimeSeriesAnalysis.Dynamic
             while (continueLoop)
             {
 
-                // forward-coupled models (i.e. models in series with no feedbacks and not dependant on feedbacks)
+                // forward-coupled models (i.e. models in series with no feedback and not dependent on feedback)
                 {
                     // 1.any purely forward-coupled models should be processed from left->right
                     List<string> forwardModelIDs = GetModelsWithNoUpstreamConnections(modelDict);
@@ -230,7 +349,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         {
                             if (unprocessedModels.Count == 0)
                                 continue;
-                            List<string> upstreamModelIDs = GetAllUpstreamModels(downstreamModelID);
+                            List<string> upstreamModelIDs = GetAllUpstreamModels_1Level(downstreamModelID);
                             if (DoesArrayContainAll(orderedModelAndLoopIDs, upstreamModelIDs))
                             {
                                 orderedModelAndLoopIDs.Add(downstreamModelID);
@@ -245,11 +364,15 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
 
                 // 3. find all the PID-controller models, these should be run first in any feedback loops, as the
-                // look back to the past data point and are easy to initalize based on their setpoint.
+                // look back to the past data point and are easy to initialize based on their setpoint.
 
-                // Note that controllers may be in cascades, so the order in they are processed may be signficant
+                // Note that controllers may be in cascades, so the order in they are processed may be significant
                 // the calculation order should always be to start with the outermost pid-controllers and to 
                 // work your way in.
+
+                // note also that in "disturbance-driven modeling" some feedback loops can be upstream of other feedback loops,
+                // in which case
+
                 if (unprocessedModels.Count > 0)
                 {
                     bool areUnprocessedPIDModelsLeft = true;
@@ -265,7 +388,8 @@ namespace TimeSeriesAnalysis.Dynamic
                             // b) are connected to a model that is already in "pidModels"
                             if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
                             {
-                                var upstreamModelIDs = GetAllUpstreamModels(modelDict[modelID].GetID());
+                                var upstreamModelIDs = GetAllUpstreamModels_1Level(modelDict[modelID].GetID());
+                              //  var upstreamModelIDs = GetAllUpstreamModels_All(modelDict[modelID].GetID());
                                 bool modelHasUpstreamPIDNOTAlreadyProcessed = false;
                                 foreach (var upstreamModelID in upstreamModelIDs)
                                 {
@@ -480,7 +604,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="modelID"></param>
         /// <returns></returns>
-        public List<string> GetAllUpstreamModels(string modelID)
+        public List<string> GetAllUpstreamModels_1Level(string modelID)
         {
             var upstreamModels = new List<string>();
             foreach ((string, string) connection in connections)
@@ -494,6 +618,35 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
+        /// List all upstream models on multiple levels by recursively parsing connections
+        /// </summary>
+        /// <param name="modelID"></param>
+        /// <returns></returns>
+        public List<string> GetAllUpstreamModels_All(string modelID)
+        {
+            var visited = new HashSet<string>();
+            var queue = new Queue<string>(GetAllUpstreamModels_1Level(modelID));
+
+            while (queue.Count > 0)
+            {
+                var curModel = queue.Dequeue();
+                if (!visited.Add(curModel))
+                    continue;
+
+                foreach (var upstream in GetAllUpstreamModels_1Level(curModel))
+                {
+                    if (upstream == modelID)
+                        continue;
+                    if (!visited.Contains(upstream))
+                        queue.Enqueue(upstream);
+                }
+            }
+
+            return visited.ToList();
+        }
+
+
+        /// <summary>
         /// Query if the model has an upstream PID-model.
         /// </summary>
         /// <param name="modelID"></param>
@@ -501,7 +654,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public bool HasUpstreamPID(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
-            var upstreamModelIDs = GetAllUpstreamModels(modelID);
+            var upstreamModelIDs = GetAllUpstreamModels_1Level(modelID);
 
             foreach (string upstreamID in upstreamModelIDs)
             {
@@ -521,7 +674,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns></returns>
         public string[] GetUpstreamPIDIds(string modelID, Dictionary<string, ISimulatableModel> modelDict)
         {
-            var upstreamModelIDs = GetAllUpstreamModels(modelID);
+            var upstreamModelIDs = GetAllUpstreamModels_1Level(modelID);
 
             List<string> upstreamPIDIds = new List<string>();
 
@@ -543,7 +696,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>returns null if no model is found</returns>
         public string GetUnitModelControlledByPID(string pidModelID, Dictionary<string, ISimulatableModel> modelDict)
         {
-            var upstreamModelIDs = GetAllUpstreamModels(pidModelID);
+            var upstreamModelIDs = GetAllUpstreamModels_1Level(pidModelID);
 
             if (upstreamModelIDs.Count == 0)
                 return null;
@@ -628,7 +781,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <returns>return true if model can be calculated if the givenModelIds are given, otherwise false</returns>
         private bool DoesModelDependOnlyOnGivenModels(string modelId, List<string> givenModelIDs)
         {
-            List<string> upstreamModelIds = GetAllUpstreamModels(modelId);
+            List<string> upstreamModelIds = GetAllUpstreamModels_All(modelId);
             return DoesArrayContainAll(givenModelIDs, upstreamModelIds);
         }
 

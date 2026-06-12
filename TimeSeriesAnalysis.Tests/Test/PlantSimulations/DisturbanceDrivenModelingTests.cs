@@ -162,7 +162,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         // is "driven by the upstream loop",as the pid output U of loop 1 is fed through a unitmodel and then applied to
         // the additive output of loop2. 
         // the "actual" full system is tested in "step2" below, step 1 is creating the data artificially.
-        [Test, Explicit]
+        [Test]
         public void TwoLoops_U_of_loop1_drives_D_of_loop2_RunsAndConverges()
         {
             //////////////////////////////////////////////////

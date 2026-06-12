@@ -261,7 +261,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             foreach (var pidID in pidIDs)
             {
-                var upstreamModels = simulator.connections.GetAllUpstreamModels(pidID);
+                var upstreamModels = simulator.connections.GetAllUpstreamModels_1Level(pidID);
 
                 if (upstreamModels.Count == 0)
                     continue;
