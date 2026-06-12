@@ -2,6 +2,7 @@
 using NUnit.Framework.Interfaces;
 using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
+using TimeSeriesAnalysis._Examples;
 using TimeSeriesAnalysis.Dynamic;
 using TimeSeriesAnalysis.Utility;
 
@@ -87,6 +88,45 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             minSelect1 = new Select(SelectType.MIN, "MINSELECT");
             maxSelect1 = new Select(SelectType.MAX, "MAXSELECT");
         }
+
+        [Test]
+        public void CascadeControl()
+        {
+            ProcessControl pc = new ProcessControl();
+            Shared.DisablePlots();
+            var dataSet = pc.CascadeControl_explicitDisturbance();
+        }
+
+        [Test]
+        public void FeedForwardControl_Part1()
+        {
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.FeedForward_Part1();
+            Assert.IsTrue(dataSet.GetValue("Process1-Output_Y", 599) - 60 < 0.01);
+        }
+
+
+        [Test]
+        public void FeedForwardControl_Part2()
+        {
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.FeedForward_Part2();
+        }
+
+        [Test]
+        public void GainScheduling()
+        {
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.GainScheduling();
+        }
+        [Test]
+        public void MinSelect()
+        {
+            ProcessControl pc = new ProcessControl();
+            var dataSet = pc.MinSelect();
+
+        }
+
 
         [Test]
         public void MinSelectWithPID_RunsAndConverges()
