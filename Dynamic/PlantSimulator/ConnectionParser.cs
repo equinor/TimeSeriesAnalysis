@@ -215,7 +215,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 // Pass 1: add any model whose direct upstream models are all already resolved
                 foreach (var model in unprocessedModels.ToList())
                 {
-                    if (DoesModelDependOnlyOnGivenModels(model, orderedModelAndLoopIDs))
+                    if (DoesModelDependOnlyOnGivenModels_1Level(model, orderedModelAndLoopIDs))
                     {
                         orderedModelAndLoopIDs.Add(model);
                         unprocessedModels.Remove(model);
@@ -231,19 +231,21 @@ namespace TimeSeriesAnalysis.Dynamic
                     {
                         if (!madeProgress)
                         { 
-                            // if (modelDict[modelID].GetProcessModelType() == ModelType.PID)
-                            {
-                                bool hasUnresolvedUpstreamPID = GetAllUpstreamModels_All(modelID)
-                                    .Any(u => unprocessedModels.Contains(u)
-                                            && modelDict.ContainsKey(u)
-                                            && modelDict[u].GetProcessModelType() == ModelType.PID);
+                            bool hasUnresolvedUpstreamPID = GetAllUpstreamModels_All(modelID)
+                                .Any(u => unprocessedModels.Contains(u)
+                                        && modelDict.ContainsKey(u)
+                                        && modelDict[u].GetProcessModelType() == ModelType.PID);
+                            /*
+                            bool hasUnresolvedDirectlyUpstream = GetAllUpstreamModels_1Level(modelID)
+                                .Any(u => unprocessedModels.Contains(u)
+                                  && modelDict.ContainsKey(u));
+                            */
 
-                                if (!hasUnresolvedUpstreamPID)
-                                {
-                                    orderedModelAndLoopIDs.Add(modelID);
-                                    unprocessedModels.Remove(modelID);
-                                    madeProgress = true;
-                                }
+                            if (!hasUnresolvedUpstreamPID /*&& !hasUnresolvedDirectlyUpstream*/)
+                            {
+                                orderedModelAndLoopIDs.Add(modelID);
+                                unprocessedModels.Remove(modelID);
+                                madeProgress = true;
                             }
                         }
                     }
@@ -488,7 +490,7 @@ namespace TimeSeriesAnalysis.Dynamic
                             {
                                 continue;
                             }
-                            if (DoesModelDependOnlyOnGivenModels(currentModelID, orderedModelAndLoopIDs))
+                            if (DoesModelDependOnlyOnGivenModels_1Level(currentModelID, orderedModelAndLoopIDs))
                             {
                                 orderedModelAndLoopIDs.Add(currentModelID);
                                 unprocessedModels.Remove(currentModelID);
@@ -779,9 +781,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="modelId"></param>
         /// <param name="givenModelIDs"></param>
         /// <returns>return true if model can be calculated if the givenModelIds are given, otherwise false</returns>
-        private bool DoesModelDependOnlyOnGivenModels(string modelId, List<string> givenModelIDs)
+        private bool DoesModelDependOnlyOnGivenModels_1Level(string modelId, List<string> givenModelIDs)
         {
-            List<string> upstreamModelIds = GetAllUpstreamModels_All(modelId);
+            List<string> upstreamModelIds = GetAllUpstreamModels_1Level(modelId);
             return DoesArrayContainAll(givenModelIDs, upstreamModelIds);
         }
 
