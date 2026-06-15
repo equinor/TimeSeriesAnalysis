@@ -223,25 +223,25 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
 
-                // Pass 2: if stuck, break PID feedback loops by adding PIDs whose upstream PIDs are all resolved.
-                // PIDs read from the previous timestep so they can be computed before the process model they control.
+                // Pass 2: if stuck, break PID feedback loops by adding PIDs whose direct upstream PIDs are all resolved.
+                // Only PID models are considered here; PIDs read from the previous timestep so they can be computed
+                // before the process model they control. Checking only 1-level upstream avoids deadlocks in cascade
+                // or select topologies where every PID sees another unresolved PID in its transitive upstream chain.
                 if (!madeProgress && unprocessedModels.Count > 0)
                 {
                     foreach (var modelID in unprocessedModels.ToList())
                     {
                         if (!madeProgress)
-                        { 
-                            bool hasUnresolvedUpstreamPID = GetAllUpstreamModels_All(modelID)
+                        {
+                            if (modelDict[modelID].GetProcessModelType() != ModelType.PID)
+                                continue;
+
+                            bool hasUnresolvedUpstreamPID = GetAllUpstreamModels_1Level(modelID)
                                 .Any(u => unprocessedModels.Contains(u)
                                         && modelDict.ContainsKey(u)
                                         && modelDict[u].GetProcessModelType() == ModelType.PID);
-                            /*
-                            bool hasUnresolvedDirectlyUpstream = GetAllUpstreamModels_1Level(modelID)
-                                .Any(u => unprocessedModels.Contains(u)
-                                  && modelDict.ContainsKey(u));
-                            */
 
-                            if (!hasUnresolvedUpstreamPID /*&& !hasUnresolvedDirectlyUpstream*/)
+                            if (!hasUnresolvedUpstreamPID)
                             {
                                 orderedModelAndLoopIDs.Add(modelID);
                                 unprocessedModels.Remove(modelID);
