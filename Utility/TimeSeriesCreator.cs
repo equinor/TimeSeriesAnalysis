@@ -132,7 +132,7 @@ namespace TimeSeriesAnalysis.Utility
         /// <returns></returns>
         static public double[] Noise(int N, double noiseAmplitude, int? seed=null)
         {
-            return Vec.Rand(N, -noiseAmplitude, noiseAmplitude, null);
+            return Vec.Rand(N, -noiseAmplitude, noiseAmplitude, seed);
         }
 
         /// <summary>
