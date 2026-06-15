@@ -103,7 +103,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             ProcessControl pc = new ProcessControl();
             var dataSet = pc.FeedForward_Part1();
             Assert.IsTrue(System.Math.Abs(dataSet.GetValue("Process1-Output_Y", 599).Value - 60) < 0.01);
-
+        }
 
         [Test]
         public void FeedForwardControl_Part2()

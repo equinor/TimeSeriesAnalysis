@@ -577,7 +577,7 @@ sbSolverOutput.AppendLine("Max time-constant in step2: " + (LargestTimeConstantT
             var unitModel_ret = (UnitModel)unitModel.Clone("Clone" );
             unitModel_ret.modelParameters.LinearGains = new double[] { bestGain };
          
-            ////////////////////////////////////////
+
             ///  DEBUGGING PLOT(should be disabled normally)
 
             bool    doDebuggingPlot = false;

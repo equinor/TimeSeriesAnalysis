@@ -296,7 +296,7 @@ namespace TimeSeriesAnalysis.Dynamic
             if (unprocessedModels.Count > 0)
             {
                 Shared.GetParserObj().AddError(
-                    $"ConnectionParser.InitAndDetermineCalculationOrderOfModels() did not parse all models. Remaining: {string.Join(\", \", unprocessedModels.OrderBy(x => x))}");
+                    $"ConnectionParser.InitAndDetermineCalculationOrderOfModels() did not parse all models. " );
 
                 // Avoid silently skipping models in the simulator loop.
                 orderedModelAndLoopIDs.AddRange(unprocessedModels.Where(id => !orderedModelAndLoopIDs.Contains(id)).OrderBy(id => id));
