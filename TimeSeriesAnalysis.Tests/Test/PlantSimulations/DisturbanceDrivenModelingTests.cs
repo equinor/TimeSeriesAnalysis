@@ -210,7 +210,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
                 Assert.IsTrue(isOk);
 
-                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);//fails!
+                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
             }
