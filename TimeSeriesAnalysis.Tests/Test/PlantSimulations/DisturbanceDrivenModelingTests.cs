@@ -89,6 +89,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
         }
 
+
+        // one pid loop, driven by a specified external disturbance D, and then the output "y" of the loop is the input to "processModel2"
         [Test]
         public void BasicPIDwithProcessConnectedToOutputY_SpecifiedDisturbanceSignal_RunsAndConverges()
         {
@@ -119,6 +121,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel2.GetID(), SignalType.Output_Y),N);
         }
 
+
+
+        // one pid loop, and then "processModel2" is connected to the output "u" of the pid
 
         [Test]
         public void BasicPIDwithProcessConnectedToPID_U_SpecifiedDisturbanceSignal_RunsAndConverges()
@@ -152,10 +157,8 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
 
 
 
-        // this test fails, because PlantSimulator does not currently support this feature      
-
-        [Test, Explicit]
-        public void BasicPIDwithProcessConnectedToOutputY_EstimatedDisturbanceSignal_RunsAndConverges()
+         [Test]
+        public void TwoLoops_U_of_loop1_drives_D_of_loop2_RunsAndConverges()
         {
             //////////////////////////////////////////////////
             ///  first we need to simulate with known disturbance, to get the y and u signals 
@@ -184,54 +187,9 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 inputData.SetTimeStamps(combinedData.GetTimeStamps().ToList());
 
             }
-            //
-            ///////////////////////////////////////////////////////////////////
-            /// step2 is to simulate the system without applying the disturbance explicitly, 
-            /// the PlantSimulator will have to create the disturbance signal and then use that to simulate the downstream output of processModel2
-            /// 
-            {
-                var plantSim = new PlantSimulator(
-                   new List<ISimulatableModel> { pidModel1, processModel1, staticModel });//note: second process-model
-                plantSim.ConnectModels(processModel1, pidModel1);
-                plantSim.ConnectModels(pidModel1, processModel1);
-                plantSim.ConnectModels(processModel1, staticModel);
-
-                var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
-                Assert.IsTrue(isOk);
-
-                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
-                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
-            }
 
             ///////////////////////////////////////////////////////////////////
-            /// step3 is to make a plant with one loop and a modeled disturbance that connects to the output of a third processmodel 
-            /// the PlantSimulator will have to create the disturbance signal and then use that to simulate the downstream output of processModel2
-            /// 
-            {
-                var plantSim = new PlantSimulator(
-                   new List<ISimulatableModel> { pidModel1, processModel1, staticModel, processModel3 });//note: third process model
-                plantSim.ConnectModels(processModel1, pidModel1);
-                plantSim.ConnectModels(pidModel1, processModel1);
-                plantSim.ConnectModels(processModel1, staticModel);
-                plantSim.ConnectModelToOutput(staticModel, processModel3);
-
-                var inputId = "ProcessModel3_extU";
-
-                processModel3.SetInputIDs([inputId]);
-
-                inputData.Add(inputId, TimeSeriesCreator.TwoSteps(50, 100, N, -1, 2, 3));
-
-                var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
-                Assert.IsTrue(isOk);
-
-                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
-                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
-                AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
-            }
-
-
-            ///////////////////////////////////////////////////////////////////
-            /// step4 is to make a plant with two full loops, 
+            /// step2 is to make a plant with two full loops, 
             /// the PlantSimulator will have to create the disturbance signal and then use that to simulate the downstream output of processModel2
             /// 
             {
@@ -256,7 +214,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
             }
-
         }
 
         void AssertHasValuesAndIsNotNullOrNanOrFlat(double[] values, int Nexpected)
