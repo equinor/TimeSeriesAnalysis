@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Data;
+using System.Threading.Tasks;
 
 namespace TimeSeriesAnalysis.Dynamic
 {
@@ -192,19 +190,28 @@ namespace TimeSeriesAnalysis.Dynamic
             Dictionary<string, List<string>> computationalLoopDict = FindComputationalLoops(modelDict);
 
             List<string> orderedModelAndLoopIDs = new List<string>();
-            // HashSet gives O(1) Contains/Remove since order does not matter for unprocessed tracking
-            HashSet<string> unprocessedModels = new HashSet<string>(modelDict.Keys);
+            List<string> unprocessedModels = new List<string>(modelDict.Keys);
 
-            // Add all root models (no transitive upstream at all)
+            // Cache upstream counts once to avoid recomputing during pass0 and the sort below.
+            Dictionary<string, int> upstreamCounts = modelDict.Keys
+                .ToDictionary(m => m, m => GetAllUpstreamModels_All(m).Count);
+
+            //  pass0: Add all root models (no transitive upstream at all)
             foreach (var model in modelDict.Keys)
             {
-                if (GetAllUpstreamModels_All(model).Count == 0)
+                if (upstreamCounts[model] == 0)
                 {
                     orderedModelAndLoopIDs.Add(model);
                     unprocessedModels.Remove(model);
                 }
             }
 
+            // Sort by ascending number of transitive upstream models so that models closer to
+            // the root are attempted first in the while-loop below.
+            unprocessedModels = unprocessedModels
+                .OrderBy(m => upstreamCounts[m])
+                .ToList();
+            
             int loopCounter = 0;
             bool doContinue = true;
             while (doContinue)
@@ -212,7 +219,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 loopCounter++;
                 bool madeProgress = false;
 
-                // Pass 1: add any model whose direct upstream models are all already resolved
+
+
+                // Pass 1: add any model whose direct upstream models are all already resolved or have no upstream models
                 foreach (var model in unprocessedModels.ToList())
                 {
                     if (DoesModelDependOnlyOnGivenModels_1Level(model, orderedModelAndLoopIDs))
@@ -224,7 +233,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
 
                 // Pass 2: if stuck, break PID feedback loops by adding PIDs whose direct upstream PIDs are all resolved.
-                // Only PID models are considered here; PIDs read from the previous timestep so they can be computed
+                // Only PID models are considered here; PIDs read from the previous time step so they can be computed
                 // before the process model they control. Checking only 1-level upstream avoids deadlocks in cascade
                 // or select topologies where every PID sees another unresolved PID in its transitive upstream chain.
                 if (!madeProgress && unprocessedModels.Count > 0)

@@ -156,9 +156,15 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         }
 
 
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
 
-         [Test]
-        public void TwoLoops_U_of_loop1_drives_D_of_loop2_RunsAndConverges()
+        public void TwoLoops_U_of_loop1_drives_D_of_loop2_RunsAndConvergesRegardlessOfOrderGiven(int orderId)
         {
             //////////////////////////////////////////////////
             ///  first we need to simulate with known disturbance, to get the y and u signals 
@@ -193,8 +199,45 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
             /// the PlantSimulator will have to create the disturbance signal and then use that to simulate the downstream output of processModel2
             /// 
             {
-                var plantSim = new PlantSimulator(
-                   new List<ISimulatableModel> { pidModel1, processModel1, staticModel, processModel3, pidModel2 });//note: third process model
+                PlantSimulator plantSim = new PlantSimulator(new List<ISimulatableModel> { });
+                if (orderId == 0)
+                {
+                    plantSim = new PlantSimulator(
+                       new List<ISimulatableModel> { pidModel1, processModel1, staticModel, processModel3, pidModel2 });
+                }
+                else if (orderId == 1)
+                {
+                    plantSim = new PlantSimulator(
+                        new List<ISimulatableModel> { pidModel1, pidModel2, processModel1, staticModel, processModel3 });
+                }
+                else if (orderId == 2)
+                {
+                    plantSim = new PlantSimulator(
+                       new List<ISimulatableModel> { pidModel2,pidModel1, processModel1, staticModel, processModel3  }); 
+                }
+                else if (orderId == 3)
+                {
+                    plantSim = new PlantSimulator(
+                        new List<ISimulatableModel> { staticModel, processModel1, processModel3, pidModel2, pidModel1, });
+                }
+                else if (orderId == 4)
+                {
+                    plantSim = new PlantSimulator(
+                        new List<ISimulatableModel> { pidModel1, staticModel, processModel3, pidModel2, processModel1, });
+                }
+                else if (orderId == 5)
+                {
+                    plantSim = new PlantSimulator(
+                         new List<ISimulatableModel> { processModel3, pidModel1, staticModel, pidModel2, processModel1 });
+                }
+                else if (orderId == 6)
+                {
+                    plantSim = new PlantSimulator(
+                        new List<ISimulatableModel> { staticModel, processModel3, pidModel1, pidModel2, processModel1 });
+                }
+                // the order that these models need to be run in the simulator is
+                // PID1-Process1-Static-PID2-Process3, 
+
                 plantSim.ConnectModels(processModel1, pidModel1);
                 plantSim.ConnectModels(pidModel1, processModel1);
 

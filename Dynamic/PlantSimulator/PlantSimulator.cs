@@ -85,6 +85,12 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
+        /// The order in which models need to be simulated (determined by the connection parser)
+        /// </summary>
+        private List<string> orderedSimulatorIDs = new List<string>();
+
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="processModelList"> A list of process models, each implementing <c>ISimulatableModel</c></param>
@@ -461,13 +467,33 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return connections;
         }
+
         /// <summary>
-        /// Get a dictionary of all models.
+        /// Returns the model dictionary in the order it was given in the constructor (hint: GetModelsInOrder() is preferred in most cases)
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string,ISimulatableModel> GetModels()
+        public Dictionary<string, ISimulatableModel> GetModels()
         {
             return modelDict;
+        }
+
+
+        /// <summary>
+        /// Get a dictionary of all models(returned in the order the models should be simulated).
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string,ISimulatableModel> GetModelsInOrder()
+        {
+            if (orderedSimulatorIDs == null) return modelDict;
+            if (orderedSimulatorIDs.Count == 0) return modelDict;
+
+            var orderedDict = new Dictionary<string, ISimulatableModel>();
+            foreach (var id in orderedSimulatorIDs)
+            {
+                if (modelDict.TryGetValue(id, out var model))
+                    orderedDict.Add(id, model);
+            }
+            return orderedDict;
         }
 
         /// <summary>
@@ -594,15 +620,16 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (!modelDict.ElementAt(i).Value.IsModelSimulatable(out string explStr))
                 {
                     Shared.GetParserObj().AddError("PlantSimulator could not run, model "+
-                        modelDict.ElementAt(i).Key + " lacks all required inputs to be simulatable:"+ 
+                        modelDict.ElementAt(i).Key + " lacks all required inputs to be simulateble:"+ 
                         explStr);
                     simData = null;
                     return false;
                 }
             }
 
-            (var orderedSimulatorIDs,var compLoopDict) = 
+            (var orderedSimulatorIDs_loc,var compLoopDict) = 
                 connections.InitAndDetermineCalculationOrderOfModels(modelDict);
+            orderedSimulatorIDs = orderedSimulatorIDs_loc;
             simData = new TimeSeriesDataSet();
 
             // initialize the new time-series to be created in simData.
@@ -622,7 +649,11 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // todo: disturbances could also instead be estimated in closed-loop? 
             var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict);
-
+            if (!didInit)
+            {
+                Shared.GetParserObj().AddError("PlantSimulator failed to initialize.");
+                return false;
+            }
             // need to keep special track of pid-controlled outputs.
             var pidControlledOutputsDict = DeterminePidControlledOutputs();
             // create internal "process outputs" for each such model
@@ -632,13 +663,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 simData.InitNewSignal(signalID, Double.NaN, N.Value);
             }
 
-            if (!didInit)
-            {
-                Shared.GetParserObj().AddError("PlantSimulator failed to initialize.");
-                return false;
-            }
             // simulate for all time steps(after first step!)
-
             int numRestartCounter = -1;
             double largestTc =  GetLargestTimeConstant();
 
