@@ -467,6 +467,17 @@ namespace TimeSeriesAnalysis.Dynamic
         {
             return connections;
         }
+
+        /// <summary>
+        /// Returns the model dictionary in the order it was given in the constructor (hint: GetModelsInOrder() is preferred in most cases)
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, ISimulatableModel> GetModels()
+        {
+            return modelDict;
+        }
+
+
         /// <summary>
         /// Get a dictionary of all models(returned in the order the models should be simulated).
         /// </summary>

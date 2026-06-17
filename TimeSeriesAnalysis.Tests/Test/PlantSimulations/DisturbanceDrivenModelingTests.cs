@@ -162,6 +162,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
         [TestCase(3)]
         [TestCase(4)]
         [TestCase(5)]
+        [TestCase(6)]
 
         public void TwoLoops_U_of_loop1_drives_D_of_loop2_RunsAndConvergesRegardlessOfOrderGiven(int orderId)
         {
@@ -232,7 +233,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 else if (orderId == 6)
                 {
                     plantSim = new PlantSimulator(
-                        new List<ISimulatableModel> { staticModel, processModel3, pidModel1, staticModel, pidModel2, processModel1 });
+                        new List<ISimulatableModel> { staticModel, processModel3, pidModel1, pidModel2, processModel1 });
                 }
                 // the order that these models need to be run in the simulator is
                 // PID1-Process1-Static-PID2-Process3, 

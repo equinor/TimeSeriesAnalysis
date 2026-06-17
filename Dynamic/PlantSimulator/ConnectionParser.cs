@@ -192,13 +192,16 @@ namespace TimeSeriesAnalysis.Dynamic
             Dictionary<string, List<string>> computationalLoopDict = FindComputationalLoops(modelDict);
 
             List<string> orderedModelAndLoopIDs = new List<string>();
-            // HashSet gives O(1) Contains/Remove since order does not matter for unprocessed tracking
             List<string> unprocessedModels = new List<string>(modelDict.Keys);
+
+            // Cache upstream counts once to avoid recomputing during pass0 and the sort below.
+            Dictionary<string, int> upstreamCounts = modelDict.Keys
+                .ToDictionary(m => m, m => GetAllUpstreamModels_All(m).Count);
 
             //  pass0: Add all root models (no transitive upstream at all)
             foreach (var model in modelDict.Keys)
             {
-                if (GetAllUpstreamModels_All(model).Count == 0)
+                if (upstreamCounts[model] == 0)
                 {
                     orderedModelAndLoopIDs.Add(model);
                     unprocessedModels.Remove(model);
@@ -208,7 +211,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // Sort by ascending number of transitive upstream models so that models closer to
             // the root are attempted first in the while-loop below.
             unprocessedModels = unprocessedModels
-                .OrderBy(m => GetAllUpstreamModels_All(m).Count)
+                .OrderBy(m => upstreamCounts[m])
                 .ToList();
             
             int loopCounter = 0;
