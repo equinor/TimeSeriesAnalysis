@@ -57,7 +57,7 @@ namespace TimeSeriesAnalysis.Dynamic
             bool isOk = false;
 
             // a dictionary that should contain the signalID of each "internal" simulated variable as a .Key,
-            // the initial value will be calculated .Value, but is NaN unit calculated.
+            // the initial value will be calculated .Value, but is NaN until calculated.
             var signalValuesAtT0 = new Dictionary<string, double>();
 
             isOk = EstimateDisturbances(ref inputData, ref simData, ref signalValuesAtT0);
