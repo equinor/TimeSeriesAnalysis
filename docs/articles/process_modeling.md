@@ -2,53 +2,15 @@
 
 Applying the identification and simulation methods of this library to real-world processes—consisting of equipment such as valves, compressors, and heat exchangers—may require some context-specific adaptations.
 
-## Plant modeling: General considerations 
-
-To apply the methods of this library to modeling a larger plant, several techniques may be needed:
-- *Regressor/input transformations*: capture non-linearities by transforming inputs, for instance by raising an input to a power.
-- *Choice of inputs*: selecting which input(s) to use to predict each output is a design choice, and these choices have implications for simulation boundary conditions.
-What design choices are made during modeling may depend on the intended purpose of the model. 
-
-Use-cases can be broadly separated into
-- *"condition monitoring"* : the model is only intended to run concurrently with a given dataset
-- *"what-if" simulations*: the model is intended to be used to evaluate different hypothetical scenarios that don't match the given data(i.e. some variables are *free variables*).
-
-
-### Boundary conditions
-
-The choice of input to models is a design decision, as when an input is included it must either be supplied to the simulation, or further models may need to be added to relate this input
-to other boundary conditions.
-
-For example, the flow through a choke can be described using the choke opening $z$ alone, but most choke equations include both the choke opening $z$ and the differential pressure $\sqrt{\Delta p}$
-
-For condition monitoring, any available time-series can be used as boundary conditions for the model, but for a what-if simulation, *only boundary variables that are independent 
-of the free variables* should be included.
-
-
-> [!NOTE]
->**Example**
-> Most physical equations for mass through a choke are of the form $\dot{m} = f(z,\Delta p)$. 
-> For *condition monitoring* it makes sense to feed $\Delta p$ time-series as a boundary condition into this equation along with $z$ to estimate a mass flow. 
-> However, this choice of input is problematic for  *what-if simulations*, as the differential pressure depends on the choke opening, and so to allow the choke opening to 
-> vary freely, one would need to model how $\Delta p$ changes with $z$ as well ($\Delta p = g(z)$), in effect turning $\dot{m} = f(z,\Delta p) =  f(z,g(z)) = h(z)$. 
-
-
-### Mass flow 
-
-Especially for oil and gas the feed rate is usually not directly measured, but can only be inferred from downstream measurements after separation. 
-
-This represents a challenge for what-if simulation, as many physical quantities in a process plant will depend on the mass rate:
-- the pressure drop over pipes
-- the pressure drop over chokes
-- the heat transfer in heat exchangers
-- the pressure rise over a compressor
-
-Introducing mass rates into a plant model also causes a dilemma for the designer, as mass conservation requires adding algebraic equations to a solver, which rules out explicit solvers and results 
-in longer computational times. 
 
 ## Disturbance-driven modeling
 
-### Single-loop disturbance-driven modeling (DDM)
+Disturbance driven modeling is used to denote a certain style of models that attempt to model plants by modeling and estimating disturbance signals and how 
+they propagate. This dynamic process modeling that is suitable to be applied to real-world time series of one or more feedback loops, and rely on 
+closed-loop identification of the process models of such loops. 
+
+
+### Single-loop disturbance-driven modeling (sDDMs)
 
 A PID-loop consisting of a unit model and a PID will be referred to as a *"loop model"*. These models have a very interesting property:
 
@@ -75,7 +37,7 @@ where either the setpoint takes a different trajectory, or a different version o
 > it also has a certain risk of causing a triggering the safety systems automatic shutdown.
 
 
-### Multi-loop disturbance-driven modeling 
+### Multi-loop disturbance-driven modeling and propagation models (mDDMs)
 
 **Unmeasured inlet disturbances**
 In process systems, equipment is connected with downstream equipment, and especially in oil and gas, *the main disturbance is the actual feed at the very upstream boundary*.
@@ -99,11 +61,72 @@ as shown below
 > - propagation models could be modeled using single or multiple ``UnitModel`` models, in which case parameters can be determined using ``UnitIdentifier``.
 > - propagation models will likely need to include transport delay. 
 
+## Possible use-cases
+
+sDDM models can be used to:  
+- analyze how the estimated disturbance would have been handled differently with a different controller (either a different structure, or more often with different PID-tuning)
+
+mDDM model can be used for the same things as single-loop models, but also enable other potential use-cases, such as:
+- determining the upstream origin of downstream disturbances 
+- analyzing the resulting impact on downstream loops from upstream re-tuning
+- analyzing the impact of advanced control techniques that use feed-forward or setpoint changes to achieve better overall system performance
+
+### Determining the upstream origin of downstream disturbances 
+
+Designing mDDMs can be seen as hypothesis testing of causal relationships in process plants. A mDDM with good predictive properties gives causal explanations,
+that can be used to infer the root cause or point of origin of disturbances that propagate across multiple larger systems. 
+
+This could be used to for instance root causes of feedback systems with standing oscillations. 
+
+### Analyzing the resulting impact on downstream loops from upstream re-tuning
+
+The control philosophy of processing plants is often to distribute the task of stabilizing and ensuring sufficient performance across multiple feedback loops, 
+that jointly cooperate to produce the desired performance. 
+
+The aim is rarely to keep the process value as close as possible to setpoint for all loops. Some loops are purposely tuned slower to allow buffer capacity 
+in the plant to damp out disturbance, and/or to avoid excessive manipulator usage that would hasten wear on equipment such as chokes. 
+
+Often the task of damping out disturbances is spread across multiple equipment, an inlet separator may for instance slightly dampen a large disturbance, while 
+some remnant is passed on as a disturbance to a second stage separator etc. 
+
+To analyze this kind of distributed behavior an mDDM is ideally suited. 
+
+### Analyzing the impact of advanced control techniques or supervisory control 
+
+In some cases techniques that either change the setpoint of feedback loops or introduce feed-forward are used to help improve the overall performance of 
+a distributed control system. 
+
+Such techniques could be
+- cascade control, 
+- feed-forward terms in feedback loops,
+- min- or max select control, and/or
+- model-based predictive control
+
+Often such techniques are labelled "supervisory control", and these techniques area applied on top of the loops at the regulatory layer.
+
+mDDMs are ideally suited to study such control techniques. 
+
+## How to build a disturbance-driven model
+
+Building mDDMs boils down to choosing 
+- which loops should be modeled together in the same plant, and
+- designing the propagation models, which is mostly about choosing the inputs of said models. 
+
+The two main foreseen sources of information in this design process are
+- correlation analysis between disturbances, and 
+- knowledge of the process topology.
+
+Preferably, these two sources should be combined for best results.
+
+It may be easier to both work with several smaller models of detached subsets of the overall plant. 
+
+So for instance looking only at the topology might lead you to create mDDMs that are bigger than need be and that connect 
+parts of the actual entity being modeled that are actually separate in practice. 
+
+On the flip side, if only considering correlations, one might falsely conclude causation from correlation. 
 
 
 ### Choosing the inputs of propagation models
-
-
 
 **Using the PID-output $u$** 
 The influence of disturbances are short-lived at the output $y$ of loops, instead the PID-controller moves the disturbance to the PID-output $u$
@@ -150,6 +173,49 @@ When attempting to model propagation, the models returned by ``UnitIdentifier`` 
 
 
 
+## Addendum: Plant modeling - General considerations 
+
+To apply the methods of this library to modeling a larger plant, several techniques may be needed:
+- *Regressor/input transformations*: capture non-linearities by transforming inputs, for instance by raising an input to a power.
+- *Choice of inputs*: selecting which input(s) to use to predict each output is a design choice, and these choices have implications for simulation boundary conditions.
+What design choices are made during modeling may depend on the intended purpose of the model. 
+
+Use-cases can be broadly separated into
+- *"condition monitoring"* : the model is only intended to run concurrently with a given dataset
+- *"what-if" simulations*: the model is intended to be used to evaluate different hypothetical scenarios that don't match the given data(i.e. some variables are *free variables*).
+
+
+### Boundary conditions
+
+The choice of input to models is a design decision, as when an input is included it must either be supplied to the simulation, or further models may need to be added to relate this input
+to other boundary conditions.
+
+For example, the flow through a choke can be described using the choke opening $z$ alone, but most choke equations include both the choke opening $z$ and the differential pressure $\sqrt{\Delta p}$
+
+For condition monitoring, any available time-series can be used as boundary conditions for the model, but for a what-if simulation, *only boundary variables that are independent 
+of the free variables* should be included.
+
+
+> [!NOTE]
+>**Example**
+> Most physical equations for mass through a choke are of the form $\dot{m} = f(z,\Delta p)$. 
+> For *condition monitoring* it makes sense to feed $\Delta p$ time-series as a boundary condition into this equation along with $z$ to estimate a mass flow. 
+> However, this choice of input is problematic for  *what-if simulations*, as the differential pressure depends on the choke opening, and so to allow the choke opening to 
+> vary freely, one would need to model how $\Delta p$ changes with $z$ as well ($\Delta p = g(z)$), in effect turning $\dot{m} = f(z,\Delta p) =  f(z,g(z)) = h(z)$. 
+
+
+### Mass flow 
+
+Especially for oil and gas the feed rate is usually not directly measured, but can only be inferred from downstream measurements after separation. 
+
+This represents a challenge for what-if simulation, as many physical quantities in a process plant will depend on the mass rate:
+- the pressure drop over pipes
+- the pressure drop over chokes
+- the heat transfer in heat exchangers
+- the pressure rise over a compressor
+
+Introducing mass rates into a plant model also causes a dilemma for the designer, as mass conservation requires adding algebraic equations to a solver, which rules out explicit solvers and results 
+in longer computational times. 
 
 
 

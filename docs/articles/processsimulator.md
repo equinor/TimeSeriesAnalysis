@@ -1,9 +1,35 @@
 
 # PlantSimulator
 
-Simulating multiple processes together is orchestrated by the class ``PlantSimulator``.
+## Overview
 
-## Significance
+Simulating graphs or single or multiple connected ``ISimulateable`` models (so called "plants") over a given dataset of boundary conditions 
+is done by calling the ``PlantSimulator``.
+
+The ``PlantSimulator`` works as an *explicit* solver, solving the models one-by-one in a feasible order. 
+The class will itself determine an order to solve the models in given their connections and the given boundary conditions, by parsing the graph of the plant
+as well as the given signals in the boundary condition dataset. 
+
+This parsing to determine the order is done by the class ``ConnectionParser`` automatically. 
+
+Both the ``PlantSimulator`` and the ``ConnectionParser`` are designed to support 
+- PID-feedback loops
+- non-PID computational loops, and 
+- disturbances signals, both estimated and modeled. 
+
+The advantage of this approach is that the resulting solver is extremely computationally efficient. It avoids some of the potential complexity of 
+introducing an implicit solver to solve all model equations simultaneously, but trades some of this complexity for more logic required to parse 
+and order the graph of the model before solving. 
+
+The ``PlantSimulator`` is able to determine the steady-state solution in the first time step, and will initialize the model to this steady-state condition. 
+The advantage of this is that no initial condition needs to be provided to the simulator. (This feature is the motivation behind requiring the ``ISimulateableModel`` 
+interface to include methods for a model to return its steady-state solution for a given input.) 
+
+Great care has been done to test certain typical graph configurations in unit tests. In general it cannot be guaranteed that the ``PlantSimulator`` will 
+always be able solve any given combination of models, connections and input data. 
+
+
+## Details of the simulator 
 
 The ``PlantSimulator`` is used extensively to create generic time-series data for unit tests. 
 
@@ -17,7 +43,7 @@ Furthermore, it is intended that all models in the library should implement the 
 simulations should be done using ``PlantSimulator`` and only using this class. 
 
 
-## External interface
+### External interface
 
 Connections can be done using
 - ``ConnectSignal`` connects a signal to a model
@@ -48,21 +74,12 @@ The class ``PlantSimulatorHelper`` gives some convenience methods that make it e
 - methods that allow calling the PlantSimulator with data in ``UnitData`` datasets rather than the more general ``TimeSeriesDataSet``.
 - methods that return a PlantSimulator object with a standard feedback loop. 
 
-## Internal workings
+### Internal workings
 
 Internally each signal in the returned ``TimeSeriesDataSet``
  is named by a naming convention that is handled by ``SignalNamer``, which combines
 information about modelID and signal type to create a unique ID for each signal in the simulation. 
 
-### Determining calculation order, parsing connections
-
-By default, ``PlantSimulator`` traverses the combination of models and signals to create a feasible run-order in 
-which to run the model, orchestrated by ``ConnectionParser.DetermineCalculationOrderOfModels``. 
-Models are then 
-run in that given order for each iteration in ``PlantSimulator.Simulate()``. 
-This means that process simulation does not rely on simultaneously solving large sets of dynamic equations, 
-which an approach that may be easier to comprehend and debug, but it is reliant on the quite complex logic required
-to determine the calculation order.
 
 ### Initialization of the dynamic model
 
