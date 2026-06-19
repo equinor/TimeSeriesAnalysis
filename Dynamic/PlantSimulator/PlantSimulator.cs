@@ -572,11 +572,12 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="simData"></param>
+        /// <param name="doEstimateDisturbances"></param>
         /// <returns>true if able to simulate, otherwise false</returns>
-        public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
-        {
-            return Simulate(inputData, false, out simData);
-        }
+public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData, bool doEstimateDisturbances=true)
+{
+    return Simulate(inputData, false, out simData, doEstimateDisturbances: doEstimateDisturbances);
+}
 
         /// <summary>
         /// Perform a "plant-wide" full dynamic simulation of the entire plant,i.e. all models in the plant, given the specified connections and external signals. 
@@ -604,7 +605,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doVariableTimeBase">if set to true, the simulator will vary the time base based on indicesToIgnore(jumping from one good value to the next)</param>
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, 
-            bool enableSimulatorRestarting=true, bool doVariableTimeBase = false)
+            bool enableSimulatorRestarting=true, bool doVariableTimeBase = false, bool doEstimateDisturbances= true)
         {
             const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc = 0.20; // design variable.
 
@@ -647,8 +648,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputDataMinimal.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
             }
 
-            // todo: disturbances could also instead be estimated in closed-loop? 
-            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict);
+            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict, doEstimateDisturbances);
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initialize.");
@@ -893,6 +893,26 @@ namespace TimeSeriesAnalysis.Dynamic
                 prevInputTimeIdx = curInputTimeIdx;
             }
 
+
+            // post-calculate the disturbances signals "_D.." for loops that have just been simulated even wit modelled disturbances
+            // note that this requires the "full" dataset not just the minimal dataset
+            // do this as a final step, separate from simulation, to avoid any confusion of what signal to actually use during simulation.
+
+            if (doEstimateDisturbances)
+            {
+                var estDistDataSet = new TimeSeriesDataSet();
+                var numEstDisturbances = init.EstimateDisturbances(inputData, ref estDistDataSet);
+                if (numEstDisturbances > 0)
+                {
+                    foreach (var estDistName in estDistDataSet.GetSignalNames())
+                    {
+                        if (!simData.ContainsSignal(estDistName))
+                        {
+                            simData.Add(estDistName, estDistDataSet.GetValues(estDistName));
+                        }
+                    }
+                }
+            }
             if (inputDataMinimal != null)
                 if (inputDataMinimal.GetTimeStamps() != null)
             simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());
@@ -900,12 +920,8 @@ namespace TimeSeriesAnalysis.Dynamic
             simData.SetNumSimulatorRestarts(numRestartCounter);
             PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData, inputDataMinimal.GetIndicesToIgnore() );
 
-
-
             return true;
         }
-
-
 
         /// <summary>
         /// Choose only the input time series that are actually used by a given plant
