@@ -898,19 +898,21 @@ public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData,
             // note that this requires the "full" dataset not just the minimal dataset
             // do this as a final step, separate from simulation, to avoid any confusion of what signal to actually use during simulation.
 
-            var estDistDataSet = new TimeSeriesDataSet();
-            var numEstDisturbances = init.EstimateDisturbances( inputData, ref estDistDataSet);
-            if (numEstDisturbances > 0)
+            if (doEstimateDisturbances)
             {
-                foreach (var estDistName in estDistDataSet.GetSignalNames())
+                var estDistDataSet = new TimeSeriesDataSet();
+                var numEstDisturbances = init.EstimateDisturbances(inputData, ref estDistDataSet);
+                if (numEstDisturbances > 0)
                 {
-                    if (!simData.ContainsSignal(estDistName))
+                    foreach (var estDistName in estDistDataSet.GetSignalNames())
                     {
-                        simData.Add(estDistName, estDistDataSet.GetValues(estDistName));
+                        if (!simData.ContainsSignal(estDistName))
+                        {
+                            simData.Add(estDistName, estDistDataSet.GetValues(estDistName));
+                        }
                     }
                 }
             }
-
             if (inputDataMinimal != null)
                 if (inputDataMinimal.GetTimeStamps() != null)
             simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());

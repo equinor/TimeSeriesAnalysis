@@ -257,7 +257,6 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
-AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Disturbance_D), N);
             }
 
         }

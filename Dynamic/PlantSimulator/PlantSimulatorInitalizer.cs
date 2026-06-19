@@ -65,7 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // it is not automatically an error that should be flagged
             if (doEstimateDisturbances)
             {
-                var numDisturbances = EstimateDisturbancesAndPruneInputDataAheadOfSimulation(ref inputData, ref simData, ref signalValuesAtT0);
+                EstimateDisturbancesAndPruneInputDataAheadOfSimulation(ref inputData, ref simData, ref signalValuesAtT0);
             }
             // estimated disturbances are in "simData", so include them in the "combined" dataset
             var combinedData = inputData.Combine(simData);
@@ -272,8 +272,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            //int numEstimtedDisturbances = 0;
-
             int numEstimatedDisturbances = EstimateDisturbances(inputData, ref simData);
 
             foreach (var pidID in pidIDs)
@@ -347,7 +345,6 @@ namespace TimeSeriesAnalysis.Dynamic
                     var processModel = (UnitModel)simulator.modelDict[processId];
                     var pidModel = (PidModel)simulator.modelDict[pidID];
                     var pidParams = pidModel.GetModelParameters();
-                    var pidOutName = pidModel.outputID;
                     var pidInputIdx = 0;
                     (var isDataOk, var dataset) = PlantSimulatorHelper.GetUnitDataSetForLoop(inputData, pidModel, processModel);
                     if (isDataOk)
