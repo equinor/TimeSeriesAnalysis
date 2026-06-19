@@ -65,7 +65,7 @@ namespace TimeSeriesAnalysis.Dynamic
             // it is not automatically an error that should be flagged
             if (doEstimateDisturbances)
             {
-                var numDisturbances = EstimateDisturbances(ref inputData, ref simData, ref signalValuesAtT0);
+                var numDisturbances = EstimateDisturbancesAndPruneInputDataAheadOfSimulation(ref inputData, ref simData, ref signalValuesAtT0);
             }
             // estimated disturbances are in "simData", so include them in the "combined" dataset
             var combinedData = inputData.Combine(simData);
@@ -259,7 +259,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="simData"></param>
         /// <param name="signalValuesAtT0"></param>
         /// <returns>returns the number of estimated disturbances</returns>
-        public int EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
+        public int EstimateDisturbancesAndPruneInputDataAheadOfSimulation(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
             ref Dictionary<string, double> signalValuesAtT0)
         {
             // find all PID-controllers
@@ -272,7 +272,9 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
 
-            int numEstimtedDisturbances = 0;
+            //int numEstimtedDisturbances = 0;
+
+            int numEstimatedDisturbances = EstimateDisturbances(inputData, ref simData);
 
             foreach (var pidID in pidIDs)
             {
@@ -286,7 +288,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (inputData.ContainsSignal(estDisturbanceId))
                     continue;
 
-                {
+                /*{
                     var processModel = (UnitModel)simulator.modelDict[processId];
                     var pidModel = (PidModel)simulator.modelDict[pidID];
                     var pidParams = pidModel.GetModelParameters();
@@ -308,33 +310,38 @@ namespace TimeSeriesAnalysis.Dynamic
                         simData.Add(estDisturbanceId, distResult.d_est);
                         numEstimtedDisturbances++;
                     }
-                }
+                }*/
                 
-                if (signalValuesAtT0 !=null)
+                // prune inputData set and add initial values where possible 
+                string y_meas_signal = simulator.modelDict[processId].GetOutputID();
+                double? value = inputData.GetValue(y_meas_signal, 0);
+                if (value.HasValue)
                 {
-                    string y_meas_signal = simulator.modelDict[processId].GetOutputID();
-                    double? value = inputData.GetValue(y_meas_signal, 0);
-                    if (value.HasValue)
-                    {
-                        signalValuesAtT0.Add(y_meas_signal, value.Value);
-                        inputData.Remove(y_meas_signal);
-                    }
-                    else
-                        continue;
-                    string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
-                    double? value2 = inputData.GetValue(u_pid_signal, 0);
-                    if (value2.HasValue)
-                    {
-                        signalValuesAtT0.Add(u_pid_signal, value2.Value);
-                        inputData.Remove(u_pid_signal);
-                    }
-                    else
-                        continue;
+                    signalValuesAtT0.Add(y_meas_signal, value.Value);
+                    inputData.Remove(y_meas_signal);
                 }
+                else
+                    continue;
+                string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
+                double? value2 = inputData.GetValue(u_pid_signal, 0);
+                if (value2.HasValue)
+                {
+                    signalValuesAtT0.Add(u_pid_signal, value2.Value);
+                    inputData.Remove(u_pid_signal);
+                }
+                else
+                    continue;
+          
             }
-            return numEstimtedDisturbances;
+            return numEstimatedDisturbances;
         }
 
+        /// <summary>
+        /// for a given inputData, compute every disturbance of every loop where U and Y are given
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="simData">estimated disturbances are added here.</param>
+        /// <returns>the number of estimated disturbances</returns>
         public int EstimateDisturbances(TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
         {
             List<string> pidIDs = new List<string>();
