@@ -574,10 +574,10 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="simData"></param>
         /// <param name="doEstimateDisturbances"></param>
         /// <returns>true if able to simulate, otherwise false</returns>
-        public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData, bool doEstimateDisturbances=true)
-        {
-            return Simulate(inputData, false, out simData);
-        }
+public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData, bool doEstimateDisturbances=true)
+{
+    return Simulate(inputData, false, out simData, doEstimateDisturbances: doEstimateDisturbances);
+}
 
         /// <summary>
         /// Perform a "plant-wide" full dynamic simulation of the entire plant,i.e. all models in the plant, given the specified connections and external signals. 
