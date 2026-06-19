@@ -288,30 +288,6 @@ namespace TimeSeriesAnalysis.Dynamic
                 if (inputData.ContainsSignal(estDisturbanceId))
                     continue;
 
-                /*{
-                    var processModel = (UnitModel)simulator.modelDict[processId];
-                    var pidModel = (PidModel)simulator.modelDict[pidID];
-                    var pidParams = pidModel.GetModelParameters();
-                    var pidOutName = pidModel.outputID;
-                    var pidInputIdx = 0; 
-                    (var isDataOk,var dataset) = PlantSimulatorHelper.GetUnitDataSetForLoop(inputData, pidModel, processModel);
-                    if (isDataOk)
-                    {
-                        if (dataset.U.Length > 1)
-                        { 
-                            string pidOutId = pidModel.outputID;
-                            for (int i = 0; i < processModel.ModelInputIDs.Length; i++)
-                            {
-                                if (processModel.ModelInputIDs[i] == pidOutId)
-                                    pidInputIdx = i;
-                            }
-                        }
-                        var distResult = DisturbanceCalculator.CalculateDisturbanceVector(dataset, processModel, pidInputIdx, pidParams);
-                        simData.Add(estDisturbanceId, distResult.d_est);
-                        numEstimtedDisturbances++;
-                    }
-                }*/
-                
                 // prune inputData set and add initial values where possible 
                 string y_meas_signal = simulator.modelDict[processId].GetOutputID();
                 double? value = inputData.GetValue(y_meas_signal, 0);
@@ -392,17 +368,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 }
             }
             return numEstimtedDisturbances;
-
         }
-
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// Initializes sub-processes inside PID-feedback loops "from right-to-left"(backwards,finds  for a given y what is u)
