@@ -178,7 +178,7 @@ namespace TimeSeriesAnalysis.Dynamic
                
                 // rewrite:
                // (var processSim_noDist, var inputData_noDist) = PlantSimulatorHelper.CreateFeedbackLoop(unitDataSet, pidModel1, unitModel, pidInputIdx);
-                var noDist_isOk = processSim_noDist.Simulate(inputData_noDist, out TimeSeriesDataSet simData_noDist);
+                var noDist_isOk = processSim_noDist.Simulate(inputData_noDist, out TimeSeriesDataSet simData_noDist, doEstimateDisturbances:false);
                 if (noDist_isOk)
                 {
                     int idxFirstGoodValue = 0;
@@ -281,7 +281,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
             // using the pidParams and unitModel, and if relevant any given y_set and external U, try to subtract the effects of 
             // non-disturbance related changes in the dataset producing "unitDataSet_adjusted"
-            var unitDataSet_adjusted = RemoveSetpointAndOtherInputChangeEffectsFromDataSet(unitDataSet, unitModel, pidInputIdx, pidParams);
+            var unitDataSet_adjusted = RemoveSetpointAndOtherInputChangeEffectsFromDataSet(unitDataSet, unitModel,pidInputIdx, pidParams);
             unitDataSet_adjusted.D = null;
             (bool isOk, double[] y_proc, int numSimRestarts) = PlantSimulatorHelper.SimulateSingle(unitDataSet_adjusted, unitModel);
 

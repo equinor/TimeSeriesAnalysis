@@ -572,8 +572,9 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         /// <param name="inputData"></param>
         /// <param name="simData"></param>
+        /// <param name="doEstimateDisturbances"></param>
         /// <returns>true if able to simulate, otherwise false</returns>
-        public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData)
+        public bool Simulate(TimeSeriesDataSet inputData, out TimeSeriesDataSet simData, bool doEstimateDisturbances=true)
         {
             return Simulate(inputData, false, out simData);
         }
@@ -604,7 +605,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="doVariableTimeBase">if set to true, the simulator will vary the time base based on indicesToIgnore(jumping from one good value to the next)</param>
         /// <returns></returns>
         public bool Simulate (TimeSeriesDataSet inputData, bool doDetermineIndicesToIgnore, out TimeSeriesDataSet simData, 
-            bool enableSimulatorRestarting=true, bool doVariableTimeBase = false)
+            bool enableSimulatorRestarting=true, bool doVariableTimeBase = false, bool doEstimateDisturbances= true)
         {
             const double restartAfterConsecutiveBadDataTimePeriod_FractionOfLargestTc = 0.20; // design variable.
 
@@ -647,8 +648,7 @@ namespace TimeSeriesAnalysis.Dynamic
                 inputDataMinimal.SetIndicesToIgnore(inputDataMinimal.GetIndicesToIgnore());
             }
 
-            // todo: disturbances could also instead be estimated in closed-loop? 
-            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict);
+            var didInit = init.ToSteadyStateAndEstimateDisturbances(ref inputDataMinimal, ref simData, compLoopDict, doEstimateDisturbances);
             if (!didInit)
             {
                 Shared.GetParserObj().AddError("PlantSimulator failed to initialize.");

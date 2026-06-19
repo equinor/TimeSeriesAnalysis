@@ -256,7 +256,10 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel1.GetID(), SignalType.Disturbance_D), N);
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(staticModel.GetID(), SignalType.Output_Y), N);
                 AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Output_Y), N);
+                // NB! would like to have the estimated disturbance "_D" for the second loop even when this disturbance is also modeled(for comparison) 
+              //  AssertHasValuesAndIsNotNullOrNanOrFlat(simData.GetValues(processModel3.GetID(), SignalType.Disturbance_D), N);
             }
+
         }
 
         void AssertHasValuesAndIsNotNullOrNanOrFlat(double[] values, int Nexpected)

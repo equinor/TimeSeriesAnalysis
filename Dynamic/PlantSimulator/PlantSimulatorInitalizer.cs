@@ -52,7 +52,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="compLoopDict">dictionary of all computational loops</param>
 
         public bool ToSteadyStateAndEstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
-            Dictionary<string,List<string>> compLoopDict)
+            Dictionary<string,List<string>> compLoopDict,bool doEstimateDisturbances)
         {
             bool isOk = false;
 
@@ -60,12 +60,13 @@ namespace TimeSeriesAnalysis.Dynamic
             // the initial value will be calculated .Value, but is NaN until calculated.
             var signalValuesAtT0 = new Dictionary<string, double>();
 
-            isOk = EstimateDisturbances(ref inputData, ref simData, ref signalValuesAtT0);
-            // TODO:note that this test needs to be disabled,for certain tests to pass,should be investigated.
-            //if (!isOk)
-            //    return false;
-
-
+            // note that the DisturbanceCalculator for instance will send in reduced input data sets from which disturbances
+            // cannot be estimated. EstimatedDisturbances should estimate when possible, but if it is unable to so,
+            // it is not automatically an error that should be flagged
+            if (doEstimateDisturbances)
+            {
+                var numDisturbances = EstimateDisturbances(ref inputData, ref simData, ref signalValuesAtT0);
+            }
             // estimated disturbances are in "simData", so include them in the "combined" dataset
             var combinedData = inputData.Combine(simData);
 
@@ -257,8 +258,8 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="inputData">note that for closed loop systems u and y signals are removed(these are used to estimate disturbance, removing them triggers code in PlantSimulator to re-estimate them)</param>
         /// <param name="simData"></param>
         /// <param name="signalValuesAtT0"></param>
-        /// <returns>true if everything went ok, otherwise false</returns>
-        private bool EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
+        /// <returns>returns the number of estimated disturbances</returns>
+        private int EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
             ref Dictionary<string, double> signalValuesAtT0)
         {
             // find all PID-controllers
@@ -270,6 +271,8 @@ namespace TimeSeriesAnalysis.Dynamic
                     pidIDs.Add(model.Key);
                 }
             }
+
+            int numEstimtedDisturbances = 0;
 
             foreach (var pidID in pidIDs)
             {
@@ -303,6 +306,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         }
                         var distResult = DisturbanceCalculator.CalculateDisturbanceVector(dataset, processModel, pidInputIdx, pidParams);
                         simData.Add(estDisturbanceId, distResult.d_est);
+                        numEstimtedDisturbances++;
                     }
                 }
                 
@@ -315,7 +319,7 @@ namespace TimeSeriesAnalysis.Dynamic
                         inputData.Remove(y_meas_signal);
                     }
                     else
-                        return false;
+                        continue;
                 }
                 {
                     string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
@@ -326,10 +330,10 @@ namespace TimeSeriesAnalysis.Dynamic
                         inputData.Remove(u_pid_signal);
                     }
                     else
-                        return false;
+                        continue;
                 }
             }
-            return true;
+            return numEstimtedDisturbances;
         }
 
 
