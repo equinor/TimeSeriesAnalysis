@@ -893,6 +893,24 @@ namespace TimeSeriesAnalysis.Dynamic
                 prevInputTimeIdx = curInputTimeIdx;
             }
 
+
+            // post-calculate the disturbances signals "_D.." for loops that have just been simulated even wit modelled disturbances
+            // note that this requires the "full" dataset not just the minimal dataset
+            // do this as a final step, separate from simulation, to avoid any confusion of what signal to actually use during simulation.
+
+            var estDistDataSet = new TimeSeriesDataSet();
+            var numEstDisturbances = init.EstimateDisturbances( inputData, ref estDistDataSet);
+            if (numEstDisturbances > 0)
+            {
+                foreach (var estDistName in estDistDataSet.GetSignalNames())
+                {
+                    if (!simData.ContainsSignal(estDistName))
+                    {
+                        simData.Add(estDistName, estDistDataSet.GetValues(estDistName));
+                    }
+                }
+            }
+
             if (inputDataMinimal != null)
                 if (inputDataMinimal.GetTimeStamps() != null)
             simData.SetTimeStamps(inputDataMinimal.GetTimeStamps().ToList());
@@ -900,12 +918,8 @@ namespace TimeSeriesAnalysis.Dynamic
             simData.SetNumSimulatorRestarts(numRestartCounter);
             PlantFitScore = FitScoreCalculator.GetPlantWideSimulated(this, inputData, simData, inputDataMinimal.GetIndicesToIgnore() );
 
-
-
             return true;
         }
-
-
 
         /// <summary>
         /// Choose only the input time series that are actually used by a given plant

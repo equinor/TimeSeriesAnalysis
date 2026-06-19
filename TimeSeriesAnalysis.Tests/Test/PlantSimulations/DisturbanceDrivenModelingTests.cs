@@ -250,6 +250,7 @@ namespace TimeSeriesAnalysis.Test.PlantSimulations
                 var setpointId = SignalNamer.GetSignalName(pidModel2.GetID(), SignalType.Setpoint_Yset);
                 inputData.Add(setpointId, TimeSeriesCreator.Constant(50, N));
                 plantSim.AddExternalSignal(pidModel2, SignalType.Setpoint_Yset);
+
                 var isOk = plantSim.Simulate(inputData, out TimeSeriesDataSet simData);
                 Assert.IsTrue(isOk);
 

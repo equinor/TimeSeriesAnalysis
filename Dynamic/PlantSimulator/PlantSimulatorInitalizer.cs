@@ -259,7 +259,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <param name="simData"></param>
         /// <param name="signalValuesAtT0"></param>
         /// <returns>returns the number of estimated disturbances</returns>
-        private int EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
+        public int EstimateDisturbances(ref TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData,
             ref Dictionary<string, double> signalValuesAtT0)
         {
             // find all PID-controllers
@@ -310,6 +310,7 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                 }
                 
+                if (signalValuesAtT0 !=null)
                 {
                     string y_meas_signal = simulator.modelDict[processId].GetOutputID();
                     double? value = inputData.GetValue(y_meas_signal, 0);
@@ -320,13 +321,11 @@ namespace TimeSeriesAnalysis.Dynamic
                     }
                     else
                         continue;
-                }
-                {
                     string u_pid_signal = simulator.modelDict[pidID].GetOutputID();
-                    double? value = inputData.GetValue(u_pid_signal, 0);
-                    if (value.HasValue)
+                    double? value2 = inputData.GetValue(u_pid_signal, 0);
+                    if (value2.HasValue)
                     {
-                        signalValuesAtT0.Add(u_pid_signal, value.Value);
+                        signalValuesAtT0.Add(u_pid_signal, value2.Value);
                         inputData.Remove(u_pid_signal);
                     }
                     else
@@ -336,7 +335,58 @@ namespace TimeSeriesAnalysis.Dynamic
             return numEstimtedDisturbances;
         }
 
+        public int EstimateDisturbances(TimeSeriesDataSet inputData, ref TimeSeriesDataSet simData)
+        {
+            List<string> pidIDs = new List<string>();
+            foreach (var model in simulator.GetModelsInOrder())
+            {
+                if (model.Value.GetProcessModelType() == ModelType.PID)
+                {
+                    pidIDs.Add(model.Key);
+                }
+            }
 
+            int numEstimtedDisturbances = 0;
+
+            foreach (var pidID in pidIDs)
+            {
+                var upstreamModels = simulator.connections.GetAllUpstreamModels_1Level(pidID);
+
+                if (upstreamModels.Count == 0)
+                    continue;
+                var processId = upstreamModels.First();
+                var estDisturbanceId = SignalNamer.EstDisturbance(processId);
+
+                if (inputData.ContainsSignal(estDisturbanceId))
+                    continue;
+
+                {
+                    var processModel = (UnitModel)simulator.modelDict[processId];
+                    var pidModel = (PidModel)simulator.modelDict[pidID];
+                    var pidParams = pidModel.GetModelParameters();
+                    var pidOutName = pidModel.outputID;
+                    var pidInputIdx = 0;
+                    (var isDataOk, var dataset) = PlantSimulatorHelper.GetUnitDataSetForLoop(inputData, pidModel, processModel);
+                    if (isDataOk)
+                    {
+                        if (dataset.U.Length > 1)
+                        {
+                            string pidOutId = pidModel.outputID;
+                            for (int i = 0; i < processModel.ModelInputIDs.Length; i++)
+                            {
+                                if (processModel.ModelInputIDs[i] == pidOutId)
+                                    pidInputIdx = i;
+                            }
+                        }
+                        var distResult = DisturbanceCalculator.CalculateDisturbanceVector(dataset, processModel, pidInputIdx, pidParams);
+                        simData.Add(estDisturbanceId, distResult.d_est);
+                        numEstimtedDisturbances++;
+                    }
+                }
+            }
+            return numEstimtedDisturbances;
+
+        }
 
 
 
