@@ -12,7 +12,7 @@ namespace TimeSeriesAnalysis.Dynamic
     /// 
     /// Be careful as the objective function is different for the static estimation that considers the absolute values,
     /// while dynamic estimation considers "diffs"- for this reason it is best to use RsqDiff and RsqAbs
-    /// when comparing different model runs which can be a combination fo static and dynamic
+    /// when comparing different model runs which can be a combination of static and dynamic
     /// </summary>
     public class FittingInfo
     {
@@ -22,7 +22,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// True if identification was able to identify, otherwise false.
         /// Note that this flag is not an indication that the model is good, i.e. that the data
-        /// had sufficient information to determine unique paramters that describe the dataset well. 
+        /// had sufficient information to determine unique parameters that describe the dataset well. 
         /// This flag only indicates that regression did not crash during identification.
         /// </summary>
         public bool WasAbleToIdentify { get; set; }
