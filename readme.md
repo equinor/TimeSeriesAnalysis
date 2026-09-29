@@ -63,7 +63,7 @@ and try copying in that code and getting it to run to get the hang of things
 
 ### Calling this library from Python
 
-A library of [Python bindings](https://github.com/equinor/timeseriesanalysis-py) exist to make this library easily callable from Python,
+A library of [Python bindings](https://github.com/equinor/timeseriesanalysis-py) exists to make this library easily callable from Python,
 based on [Python.Net](http://pythonnet.github.io/).
 
 ### Calling this library from MatLab
