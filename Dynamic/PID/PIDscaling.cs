@@ -39,7 +39,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// </summary>
         public double u_min;
         /// <summary>
-        /// The maximum pid output(mainipulatd-) value
+        /// The maximum pid output(manipulated-) value
         /// </summary>
         public double u_max;
         /// <summary>
@@ -180,7 +180,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// <summary>
         /// Get a scaling factor to convert and unscaled Kp
         /// 
-        /// By defintion KpUnscaled = Kp / KpScalingFactor
+        /// By definition KpUnscaled = Kp / KpScalingFactor
         /// 
         /// </summary>
         /// <returns></returns>
@@ -210,14 +210,14 @@ namespace TimeSeriesAnalysis.Dynamic
         }
 
         /// <summary>
-        /// Ask if scaling is at defautl values
+        /// Ask if scaling is at default values
         /// </summary>
         /// <returns></returns>
         public bool IsDefault() { return isDefault; }
 
 
         /// <summary>
-        /// Get the minumum Y
+        /// Get the minimum Y
         /// </summary>
         /// <returns></returns>
         public double GetYmin() { return y_min; }

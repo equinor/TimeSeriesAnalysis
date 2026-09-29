@@ -21,7 +21,7 @@ namespace TimeSeriesAnalysis
         /// <summary>
         ///  When filtering out bad data before identification of
         ///  difference equations that depend both y[k] and y[k-1]
-        ///  it will some times be necessary, to append the trailing indices
+        ///  it will sometimes be necessary, to append the trailing indices
         /// </summary>
         static public List<int> AppendTrailingIndices(List<int> indicesArray)
         {
@@ -59,7 +59,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        /// All checks for NaN will test both for Double.IsNan and if value== a specific "nan" value (-9999)
+        /// All checks for NaN will test both for Double.IsNaN and if value== a specific "nan" value (-9999)
         ///</summary>
         private static bool IsNaN(double value)
         {
@@ -118,7 +118,7 @@ namespace TimeSeriesAnalysis
 
 
         ///<summary>
-        ///  creates a monotonically increasing integer (11.12.13...) array starting at startValue and ending at endValue
+        ///  creates a monotonically increasing integer (11, 12, 13...) array starting at startValue and ending at endValue
         ///</summary>
         public static int[] MakeIndexArray(int startValue, int endValue)
         {
@@ -176,7 +176,7 @@ namespace TimeSeriesAnalysis
 
         /// <summary>
         /// Shifts the indices array by an integer, (positive or negative value)
-        /// Note that the return index array by will not have negative indices, so returned array may be smaller in dimension that input
+        /// Note that the return index array by will not have negative indices, so returned array may be smaller in dimension than input
         /// </summary>
         /// <param name="inArray"></param>
         /// <param name="shiftByIndex"></param>

@@ -46,22 +46,22 @@ namespace TimeSeriesAnalysis.Dynamic
         double GSVariableLP_Tc_s ;
 
         /// <summary>
-        /// Gain-sheduling(x) variable minimum 
+        /// Gain-scheduling(x) variable minimum 
         /// </summary>
         public double GS_x_Min;
 
         /// <summary>
-        /// Gain-sheduling(x) variable x1,x=GsVariable
+        /// Gain-scheduling(x) variable x1,x=GsVariable
         /// </summary>
         public double GS_x_1;
 
         /// <summary>
-        /// Gain-sheduling(x) variable  x2,x=GsVariable
+        /// Gain-scheduling(x) variable  x2,x=GsVariable
         /// </summary>
         public double GS_x_2;
 
         /// <summary>
-        /// Gain-sheduling(x) variable maximum 
+        /// Gain-scheduling(x) variable maximum 
         /// </summary>
         public double GS_x_Max;
 
