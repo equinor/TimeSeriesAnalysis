@@ -121,7 +121,11 @@
   href: use_cases.md
   items:
     - name: Disturbance-driven modeling
-      href: process_modeling.md
+      href: disturbance_driven_modeling.md
+    - name: Condition monitoring
+      href: condition_monitoring.md
+    - name: Integration with first-order simulators
+      href: first_order_simulators.md
 
 
 - name: List of known limitations 

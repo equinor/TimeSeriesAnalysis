@@ -1,9 +1,12 @@
-# Disturbance-driven plant modeling
+# Disturbance-driven modeling
 
-Applying the identification and simulation methods of this library to real-world processes—consisting of equipment such as valves, compressors, and heat exchangers—may require some context-specific adaptations.
+Use-cases for feedback loop analysis are.
+- disturbance-driven modeling (single or multiple loops) : PID-controller monitoring, what-if and screening 
+- disturbance correlation analysis (multiple loops)
+- disturbance root cause analysis 
 
-
-## Disturbance-driven modeling
+> [!Note]
+> **Simulators:** feedback-loops can be analyzed without a simulator,black-box plant models of the closed-loop can be found with ``ClosedLoopUnitIdentifier'', but especially if doing root cause analysis it is useful to know the plant topology (which is often easiest to extract from a simulator if available).
 
 Disturbance driven modeling is used to denote a certain style of models that attempt to model plants by modeling and estimating disturbance signals and how 
 they propagate. This dynamic process modeling that is suitable to be applied to real-world time series of one or more feedback loops, and rely on 
@@ -170,52 +173,5 @@ of equipment.
 
 **Nonlinearity**
 When attempting to model propagation, the models returned by ``UnitIdentifier`` *can* and often *are* locally nonlinear. 
-
-
-
-## Addendum: Plant modeling - General considerations 
-
-To apply the methods of this library to modeling a larger plant, several techniques may be needed:
-- *Regressor/input transformations*: capture non-linearities by transforming inputs, for instance by raising an input to a power.
-- *Choice of inputs*: selecting which input(s) to use to predict each output is a design choice, and these choices have implications for simulation boundary conditions.
-What design choices are made during modeling may depend on the intended purpose of the model. 
-
-Use-cases can be broadly separated into
-- *"condition monitoring"* : the model is only intended to run concurrently with a given dataset
-- *"what-if" simulations*: the model is intended to be used to evaluate different hypothetical scenarios that don't match the given data(i.e. some variables are *free variables*).
-
-
-### Boundary conditions
-
-The choice of input to models is a design decision, as when an input is included it must either be supplied to the simulation, or further models may need to be added to relate this input
-to other boundary conditions.
-
-For example, the flow through a choke can be described using the choke opening $z$ alone, but most choke equations include both the choke opening $z$ and the differential pressure $\sqrt{\Delta p}$
-
-For condition monitoring, any available time-series can be used as boundary conditions for the model, but for a what-if simulation, *only boundary variables that are independent 
-of the free variables* should be included.
-
-
-> [!NOTE]
->**Example**
-> Most physical equations for mass through a choke are of the form $\dot{m} = f(z,\Delta p)$. 
-> For *condition monitoring* it makes sense to feed $\Delta p$ time-series as a boundary condition into this equation along with $z$ to estimate a mass flow. 
-> However, this choice of input is problematic for  *what-if simulations*, as the differential pressure depends on the choke opening, and so to allow the choke opening to 
-> vary freely, one would need to model how $\Delta p$ changes with $z$ as well ($\Delta p = g(z)$), in effect turning $\dot{m} = f(z,\Delta p) =  f(z,g(z)) = h(z)$. 
-
-
-### Mass flow 
-
-Especially for oil and gas the feed rate is usually not directly measured, but can only be inferred from downstream measurements after separation. 
-
-This represents a challenge for what-if simulation, as many physical quantities in a process plant will depend on the mass rate:
-- the pressure drop over pipes
-- the pressure drop over chokes
-- the heat transfer in heat exchangers
-- the pressure rise over a compressor
-
-Introducing mass rates into a plant model also causes a dilemma for the designer, as mass conservation requires adding algebraic equations to a solver, which rules out explicit solvers and results 
-in longer computational times. 
-
 
 
