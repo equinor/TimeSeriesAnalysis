@@ -63,11 +63,8 @@ and try copying in that code and getting it to run to get the hang of things
 
 ### Calling this library from Python
 
-The library can be conveniently used from ``Python``
-- grab the zipped binaries from a [release](https://github.com/equinor/TimeSeriesAnalysis/releases) and unzip 
-- set up [Python.Net](http://pythonnet.github.io/),
-- start calling the [API-methods](https://equinor.github.io/TimeSeriesAnalysis/api/TimeSeriesAnalysis.html) 
-(see help article [Getting started:Python](https://equinor.github.io/TimeSeriesAnalysis/articles/python.html).)
+A library of [Python bindings](https://github.com/equinor/timeseriesanalysis-py) exists to make this library easily callable from Python,
+based on [Python.Net](http://pythonnet.github.io/).
 
 ### Calling this library from MatLab
 
