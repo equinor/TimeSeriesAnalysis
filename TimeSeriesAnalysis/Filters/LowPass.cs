@@ -63,7 +63,7 @@ namespace TimeSeriesAnalysis
             double a;
             double filteredSignal= signal;
             if (FilterTc_s < 0.4 * internalStepLength_s)
-                a = 0;// (*/ if cutoff frequency is set close to sampling freq, the filter will fail fail - to - safe and just drop filtering*)
+                a = 0;// (*/ if cutoff frequency is set close to sampling freq, the filter will fail - to - safe and just drop filtering*)
             else
                 a = 1 / (1 + internalStepLength_s / FilterTc_s); // (*time constant *)
 

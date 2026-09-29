@@ -93,7 +93,7 @@ namespace TimeSeriesAnalysis.Dynamic
         /// To turn a TimeSeriesDataSet created with sister-method <c>CreateTimeSeriesDataSetFromUnitDataSet</c> back into 
         /// a UnitDataSet
         /// </summary>
-        /// <param name="tsDataSet">a TimeSeriesDataSet crated with <c>CreateTimeSeriesDataSetFromUnitDataSet</c></param>
+        /// <param name="tsDataSet">a TimeSeriesDataSet created with <c>CreateTimeSeriesDataSetFromUnitDataSet</c></param>
         /// <returns></returns>
         public static UnitDataSet CreateUnitDataSetFromTimeSeriesData(TimeSeriesDataSet tsDataSet)
         {
