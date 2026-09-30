@@ -15,7 +15,7 @@ The following are use-cases for proxies as described above
    - as part of quality control of physical simulators 
    - as a structured way to estimate gains or other parameters that are uncertain in physical simulators
    - as ``hybrid soft-sensors''
-   - as a way to add feedback control loops and dynamic simulation capability to to otherwise steady-state simulators
+   - as a way to add feedback control loops and dynamic simulation capability to otherwise steady-state simulators
    - as a part of closed-loop model-based optimization and/or control.
 
 
