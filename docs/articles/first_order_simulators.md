@@ -28,8 +28,8 @@ The following are use-cases for proxies as described above
 
 > [!Note]
 > **Nonlinear gains:** There are at least two supported ways to express nonlinear gains with this library. 
-> Either a ``UnitModel`` can be given a local ``.Curvature`` parameter, or a ``GainSchedModel`` can be set up to interpolate   
-> gains from a given table. ``UnitIdentfier`` and ``GainSchedIdentifer`` both support estimating these gain parameters 
+> Either a `UnitModel` can be given local `Curvatures` parameters through `UnitParameters`, or a `GainSchedModel` can be set up to interpolate  
+> gains from a given table. `UnitIdentifier` and `GainSchedIdentifier` both support estimating these gain parameters
 > from time-series, which could be either measured or simulated time-series. 
 >
 > The challenge with estimating nonlinear gains from measured data is that it requires significant excitation which is often not seen unless a planned excitation campaign is done, but a simulated dataset can be excited at will.
