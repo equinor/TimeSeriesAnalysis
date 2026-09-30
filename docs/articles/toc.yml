@@ -117,8 +117,15 @@
 - name: Data preprocessing
   href: data_preproc.md
 
-- name: Disturbance-driven modeling
-  href: process_modeling.md
+- name: Use-cases 
+  href: use_cases.md
+  items:
+    - name: Disturbance-driven modeling
+      href: disturbance_driven_modeling.md
+    - name: Condition monitoring
+      href: condition_monitoring.md
+    - name: Integration with physics-based simulators
+      href: first_order_simulators.md
 
 
 - name: List of known limitations 

@@ -17,13 +17,13 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// An array of 95%  uncertatinty in the linear gains  (u-u0))
+        /// An array of 95%  uncertainty in the linear gains  (u-u0))
         /// </summary>
         public double[] LinearGainUnc { get; set; } = null;
 
 
         /// <summary>
-        /// The nonlinear curvature of the process gain, this paramter is multiplied + Curvatures*((u-u0)/Unorm)^2.
+        /// The nonlinear curvature of the process gain, this parameter is multiplied + Curvatures*((u-u0)/Unorm)^2.
         /// If value is <c>null</c>c> then no curvatures are added to the model
         /// </summary>
         public double[] Curvatures { get; set; } = null;
@@ -40,7 +40,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double TimeConstant_s { get; set; } = 0;
 
         /// <summary>
-        /// The uncertinty of the time constant estimate
+        /// The uncertainty of the time constant estimate
         /// </summary>
         public double? TimeConstantUnc_s { get; set; } = null;
 
@@ -53,7 +53,7 @@ namespace TimeSeriesAnalysis.Dynamic
 
 
         /// <summary>
-        /// Damping (second-order) values between ~0.3-0.99 will cause step response with a single visibl overshoot. )
+        /// Damping (second-order) values between ~0.3-0.99 will cause step response with a single visible overshoot. )
         /// Set to zero to disable damping. 
         /// As values less than 0.3 approach zero, the step response will become more and more oscillatory.  
         /// </summary>
@@ -76,7 +76,7 @@ namespace TimeSeriesAnalysis.Dynamic
         public double[] U0 { get; set; } = null;
 
         /// <summary>
-        /// A "normal range" of U that is used in the nonlinear curvature term ((u-u0)/Unorm)^2.
+        /// A "normal range" of U that is used in the nonlinear curvature term ((u-u0)/U_norm)^2.
         /// If value is <c>null</c>c> then no UNorm is used in the model.
         /// </summary>
         public double[] UNorm { get; set; } = null;
