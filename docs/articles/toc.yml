@@ -124,7 +124,7 @@
       href: disturbance_driven_modeling.md
     - name: Condition monitoring
       href: condition_monitoring.md
-    - name: Integration with first-order simulators
+    - name: Integration with physics-based simulators
       href: first_order_simulators.md
 
 
