@@ -6,42 +6,42 @@ jobs:
         runs-on: windows-latest
         permissions:
             contents: read
+            id-token: write
         steps:
             - uses: actions/checkout@v2
               name: Checkout code
+            
             - name: Setup dotnet 
               uses: actions/setup-dotnet@v1
               with:
                 dotnet-version: '8.x'
+            
             - name: Setup MSBuild Path
               uses: microsoft/Setup-MSBuild@v1.0.3
+            
             - name: Setup NuGet
               uses: NuGet/setup-nuget@v1.0.5
+            
             - name: Query nuget folders(figure out where nunit.consolerunner is stored)
               run: nuget locals global-packages -list
+           
             - name: Restore NuGet Packages
               run: nuget restore TimeSeriesAnalysis.sln
+           
             - name: Build 
               run: dotnet build TimeSeriesAnalysis.sln -c Release
+            
             - name: Pack
               run: dotnet pack TimeSeriesAnalysis.sln -c Release --include-symbols -p:SymbolPackageFormat=snupkg --include-source
-            - name: Nuget on Github Set API key
-              run: nuget setapikey ${{secrets.NUGET_ORG_API_KEY}} -source https://api.nuget.org/v3/index.json
+            
+            - name: NuGet login (trusted publishing)
+              uses: NuGet/login@v1
+              id: login
+              with:
+                user: steinelg
+                    
             - name: Nuget on Github publish 
-              run: nuget push bin\Release\*.nupkg -source https://api.nuget.org/v3/index.json -SkipDuplicate
+              run: nuget push bin\Release\*.nupkg -source https://api.nuget.org/v3/index.json -SkipDuplicate  -ApiKey ${{ steps.login.outputs.NUGET_API_KEY }}
 
-         #   - name: Nuget Set API key
-         #     run: nuget setapikey ${{secrets.NUGET_API_KEY}} -source https://nuget.pkg.github.com/equinor/
-         #   - name: Nuget publish 
-         #     run: nuget push bin\Release\*.nupkg -source https://nuget.pkg.github.com/equinor/ -SkipDuplicate
 
-              
-            #- name: Publish
-            #  uses: rohith/publish-nuget@v2
-            #  with:
-            #    PROJECT_FILE_PATH: TimeSeriesAnalysis.csproj
-            #    TAG_COMMIT: true
-            #    TAG_FORMAT: v*
-            #    NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-            #    NUGET_SOURCE: https://nuget.pkg.github.com/equinor/
                 
