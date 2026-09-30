@@ -1,4 +1,4 @@
-# Integration with first-order simulators
+# Integration with physics-based simulators
 
 Integration with first-order simulators deals with creating hybrids of empirical and physical data or with making fitting or simulation easier or faster. 
 
